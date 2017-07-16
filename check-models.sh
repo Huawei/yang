@@ -18,7 +18,7 @@ function env_check()
 function yang_check()
 {
     local retVal=0
-    for file in *.yang
+    for file in ./network-router/8.9.10/huawei/*.yang
     do
         pyang --lint $file 
         if [ "$?" != "0" ]; then
