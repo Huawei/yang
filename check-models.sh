@@ -20,7 +20,7 @@ function yang_check()
     local retVal=0
     for file in ./network-router/8.9.10/huawei/*.yang
     do
-        pyang --lint $file -p ./network-router/8.9.10/huawei/ -p ../../standard/ietf/RFC/
+        pyang --lint $file -p ./network-router/8.9.10/huawei/ -p ./network-router/8.9.10/ietf/
         if [ "$?" != "0" ]; then
             retVal=1
         fi  
