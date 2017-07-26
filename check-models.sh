@@ -18,9 +18,9 @@ function env_check()
 function yang_check()
 {
     local retVal=0
-    for file in ./network-router/8.9.10/huawei/*.yang
+    for file in ./vendor/huawei/network-router/8.9.10/huawei/*.yang
     do
-        pyang --lint $file -p ./network-router/8.9.10/huawei/ -p ./network-router/8.9.10/ietf/
+        pyang --lint $file -p ./vendor/huawei/network-router/8.9.10/huawei/ -p ./vendor/huawei/network-router/8.9.10/ietf/
         if [ "$?" != "0" ]; then
             retVal=1
         fi  
