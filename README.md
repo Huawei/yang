@@ -2,6 +2,6 @@ This directory contains platform-specific YANG models for Huawei's products. The
 
 
 network-router - models that have some level of supports across all VRP8 platform router products, e.g., CX600, NE40E; there may be deviations either published by devices or available in version specific directories.
-//
+
 
 
