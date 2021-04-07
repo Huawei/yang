@@ -1,0 +1,78 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nvo3-deviations-NE-X1X2 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-nvo3-deviations-NE-X1X2";
+  prefix nvo3-devs-NE-X1X2;
+
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-evpl {
+    prefix evpl;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Management of NVO3.";
+
+  revision 2019-03-01 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-evpl-peers/nvo3:static-evpl-peer/nvo3:preference" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-peers/nvo3:static-peer/nvo3:address" {
+    deviate add {
+      must 'not(../../../static-evpl-peers/static-evpl-peer) or not(../address)';
+    }
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:protocol-bgp" {
+    deviate add {
+      must "not(../static-evpl-peers/static-evpl-peer) or not(../protocol-bgp='peer')";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute/nvo3:source-vtep-ip" {
+    deviate add {
+      must 'not(/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-peers/nvo3:static-peer[nvo3:address=current()]) and not(/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-evpl-peers/nvo3:static-evpl-peer[nvo3:address=current()])';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute/nvo3:bypass-vtep-ip" {
+    deviate add {
+      must 'not(/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-peers/nvo3:static-peer[nvo3:address=current()]) and not(/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-evpl-peers/nvo3:static-evpl-peer[nvo3:address=current()])';
+    }
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-peers/nvo3:static-peer/nvo3:address" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:source-vtep-ip=current()]) and not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:bypass-vtep-ip=current()])';
+    }
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-evpl-peers/nvo3:static-evpl-peer/nvo3:address" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:source-vtep-ip=current()]) and not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:bypass-vtep-ip=current()])';
+    }
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/nvo3:nvo3/nvo3:attribute/nvo3:vtep-ip" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:source-vtep-ip=current()]) and not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:bypass-vtep-ip=current()])';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:pip" {
+    deviate not-supported;
+  }
+}

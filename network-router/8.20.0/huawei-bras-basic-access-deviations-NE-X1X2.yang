@@ -1,0 +1,52 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-basic-access-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-bras-basic-access-deviations-NE-X1X2";
+  prefix bras-basic-access-devs-NE-X1X2;
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-basic-access module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-max-session/bras-basic-access:number" {
+    deviate replace {
+      type uint32 {
+        range "0..262144";
+      }
+    }
+  }
+
+}

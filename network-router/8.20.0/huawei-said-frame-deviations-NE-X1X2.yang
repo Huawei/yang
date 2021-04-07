@@ -1,0 +1,136 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-said-frame-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-said-frame-deviations-NE-X1X2";
+  prefix sf-devs-NE-X1X2;
+
+  import huawei-said-frame {
+    prefix sf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-said-frame module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef said-name-lpu-deviations {
+    type enumeration {
+      enum "ping" {
+        value 2;
+        description 
+          "Said ping node.";
+      }
+      enum "traffic-fail" {
+        value 4;
+        description 
+          "Said traffic-fail node.";
+      }
+      enum "aaa" {
+        value 8;
+        description 
+          "Said aaa node.";
+      }
+      enum "seuloop" {
+        value 22;
+        description 
+          "Said seuloop node.";
+      }
+      enum "reset-board" {
+        value 25;
+        description 
+          "Said reset board node.";
+      }
+    }
+    description 
+      "Said node name lpu deviations.";
+  }
+
+  typedef said-name-mpu-deviations {
+    type enumeration {
+      enum "ping-trunk" {
+        value 3;
+        description 
+          "Said ping-trunk node.";
+      }
+      enum "aaa" {
+        value 8;
+        description 
+          "Said aaa node.";
+      }
+      enum "seu-trunk" {
+        value 20;
+        description 
+          "Said seu-trunk node.";
+      }
+      enum "reset-board" {
+        value 25;
+        description 
+          "Said reset board node.";
+      }
+      enum "cfc" {
+        value 26;
+        description 
+          "Said cfc node.";
+      }
+    }
+    description 
+      "Said node name mpu deviations.";
+  }
+
+  deviation "/sf:said-frame/sf:lpu-nodes/sf:lpu-node/sf:said-name" {
+    deviate replace {
+      type sf-devs-NE-X1X2:said-name-lpu-deviations;
+    }
+  }
+  deviation "/sf:said-frame/sf:lpu-nodes/sf:lpu-node/sf:slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/sf:said-frame/sf:lpunodecfgs/sf:lpunodecfg/sf:said-name" {
+    deviate replace {
+      type sf-devs-NE-X1X2:said-name-lpu-deviations;
+    }
+  }
+  deviation "/sf:said-frame/sf:lpunodecfgs/sf:lpunodecfg/sf:slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/sf:said-frame/sf:mpu-nodes/sf:mpu-node/sf:said-name" {
+    deviate replace {
+      type sf-devs-NE-X1X2:said-name-mpu-deviations;
+    }
+  }
+  deviation "/sf:said-frame/sf:mpunodecfgs/sf:mpunodecfg/sf:said-name" {
+    deviate replace {
+      type sf-devs-NE-X1X2:said-name-mpu-deviations;
+    }
+  }
+
+}

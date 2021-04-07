@@ -1,0 +1,67 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fm-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-fm-deviations-NE-X1X2";
+  prefix fm-devs-NE-X1X2;
+
+  import huawei-fm {
+    prefix fm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviation of Fault management module.";
+
+  revision 2020-05-24 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef inverse-mode-type-deviations {
+    type enumeration {
+      enum forbid-reverse {
+        value 0;
+        description
+          "Forbid reversion.";
+      }
+      enum auto-resume {
+        value 1;
+        description
+          "Automatic reversion resumption.";
+      }
+    }
+    description
+      "The type of inverse mode.";
+  }
+
+  deviation "/fm:clear-all-history-alarm" {
+    deviate not-supported;
+  }
+  deviation "/fm:clear-history-alarm" {
+    deviate not-supported;
+  }
+  deviation "/fm:clear-active-alarm" {
+    deviate not-supported;
+  }
+  deviation "/fm:clear-all-active-alarm" {
+    deviate not-supported;
+  }
+  deviation "/fm:reset-all-alarm-statistic" {
+    deviate not-supported;
+  }
+  deviation "/fm:fm/fm:global/fm:inverse-mode" {
+    deviate replace {
+      type fm-devs-NE-X1X2:inverse-mode-type-deviations;
+    }
+  }
+}

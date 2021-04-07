@@ -1,0 +1,76 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-wdm-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-wdm-deviations-NE-X1X2";
+  prefix wdm-devs-NE-X1X2;
+
+  import huawei-wdm {
+    prefix wdm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-wdm module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef wdms-wdm-fecmode-deviations {
+    type enumeration {
+      enum "standard" {
+          value 1;
+          description
+            "Standard.";
+      }
+      enum "none" {
+          value 0;
+          description
+            "None.";
+      }
+      enum "enhanced" {
+          value 2;
+          description
+            "Enhanced.";
+      }
+      enum "enhanced-i-4" {
+          value 4;
+          description
+            "Enhanced-i-4.";
+      }
+      enum "enhanced-i-7" {
+          value 3;
+          description
+            "Enhanced-i-7.";
+      }
+      enum "lhaul-sd" {
+          value 5;
+          description
+            "Lhaul-sd.";
+      }
+    }
+    description
+      "Fec mode.";
+  }
+  
+  deviation "/wdm:wdm/wdm:wdms/wdm:wdm/wdm:fecmode" {
+    deviate replace {
+      type wdm-devs-NE-X1X2:wdms-wdm-fecmode-deviations;
+    }
+  }
+
+}

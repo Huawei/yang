@@ -1,0 +1,50 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpn-ext-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-evpn-ext-deviations-NE-X1X2";
+  prefix evpn-ext-devs-NE-X1X2;
+
+  import huawei-evpn-ext {
+    prefix evpn-ext;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-evpn-ext module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/lcs:license/lcs:license-items/lcs:license-item/evpn-ext:lcs-port-evpns" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:license-items/lcs:license-item/evpn-ext:lcs-port-vxlans" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/evpn-ext:lcs-port-evpns" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/evpn-ext:lcs-port-vxlans" {
+    deviate not-supported;
+  }
+
+}

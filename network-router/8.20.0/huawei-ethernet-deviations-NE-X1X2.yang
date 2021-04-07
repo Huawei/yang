@@ -1,0 +1,61 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ethernet-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-ethernet-deviations-NE-X1X2";
+  prefix ethernet-devs-NE-X1X2;
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Ethernet Interface.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef symmetry-type-deviations {
+    type enumeration {
+      enum asymmetry {
+        value 0;
+        description
+          "Asymmetry type.";
+      }
+      enum symmetry {
+        value 1;
+        description
+          "Symmetry type.";
+      }
+    }
+    description
+      "Symmetry Type.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-termination/ethernet:qinq-termination/ethernet:symmetry-mode/ethernet:symmetry-type" {
+    deviate replace {
+      type ethernet-devs-NE-X1X2:symmetry-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/ethernet:port-isolate-groups" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:flow-type/ethernet:qinq/ethernet:qinqs/ethernet:qinq-with-pe-segments" {
+    deviate not-supported;
+  }
+}

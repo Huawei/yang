@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-twamp-controller-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-twamp-controller-deviations-NE-X1X2";
+  prefix "twamp-controller-devs-NE-X1X2";
+
+  import huawei-twamp-controller {
+    prefix twamp-controller;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-twamp-controller module.";
+  revision 2019-12-27 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation /twamp-controller:twamp-controller/twamp-controller:client/twamp-controller:sessions/twamp-controller:session/twamp-controller:id {
+    deviate replace {
+       type uint32{
+         range 1..2048;
+      }
+    }
+  }
+}

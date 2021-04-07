@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2vpn-vll-ext-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-l2vpn-vll-ext-deviations-NE-X1X2";
+  prefix l2vpn-vll-ext-devs-NE-X1X2;
+
+  import huawei-l2vpn-vll-ext {
+    prefix l2vpn-vll-ext;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-l2vpn-vll-ext module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/l2vpn-vll-ext:vll-pw-loop-check" {
+    deviate not-supported;
+  }
+
+}

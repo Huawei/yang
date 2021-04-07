@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-http-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-http-deviations-NE-X1X2";
+  prefix http-devs-NE-X1X2;
+
+  import huawei-http {
+    prefix http;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-http module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/http:http/http:servers" {
+    deviate not-supported;
+  }
+  deviation "/http:http/http:server-source" {
+    deviate not-supported;
+  }
+}

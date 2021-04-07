@@ -1,0 +1,43 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-ipv6-address-manage-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-bras-ipv6-address-manage-deviations-NE-X1X2";
+  prefix bras-ipv6-address-manage-devs-NE-X1X2;
+
+  import huawei-bras-ipv6-address-manage {
+    prefix bras-ipv6-address-manage;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-ipv6-address-manage module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-ipv6-address-manage:bras-ipv6-address-manage/bras-ipv6-address-manage:ipv6-prefixs/bras-ipv6-address-manage:ipv6-prefix/bras-ipv6-address-manage:local/bras-ipv6-address-manage:occupied-policy" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv6-address-manage:bras-ipv6-address-manage/bras-ipv6-address-manage:ipv6-prefixs/bras-ipv6-address-manage:ipv6-prefix/bras-ipv6-address-manage:delegation/bras-ipv6-address-manage:occupied-policy" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv6-address-manage:bras-ipv6-address-manage/bras-ipv6-address-manage:ipv6-prefixs/bras-ipv6-address-manage:ipv6-prefix/bras-ipv6-address-manage:remote/bras-ipv6-address-manage:occupied-policy" {
+    deviate not-supported;
+  }
+
+}
