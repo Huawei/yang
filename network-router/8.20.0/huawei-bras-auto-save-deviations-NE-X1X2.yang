@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-auto-save-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-bras-auto-save-deviations-NE-X1X2";
+  prefix bras-auto-save-devs-NE-X1X2;
+
+  import huawei-bras-auto-save {
+    prefix bras-auto-save;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-auto-save module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-auto-save:bras-auto-save/bras-auto-save:auto-save-max-user/bras-auto-save:number" {
+    deviate replace {
+      type uint32 {
+        range "8000..32000";
+      }
+    }
+  }
+
+}

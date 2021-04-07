@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-syslog-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-syslog-deviations-NE-X1X2";
+  prefix syslog-devs-NE-X1X2;
+
+  import huawei-syslog {
+    prefix syslog;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviation of syslog module.";
+
+  revision 2019-04-23 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/syslog:syslog/syslog:domain-servers/syslog:domain-server/syslog:is-brief-format" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:host-name" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:is-activated" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:facility-mask" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:severity-mask" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:is-brief-format" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-y1731-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-y1731-deviations-NE-X1X2";
+  prefix y1731-devs-NE-X1X2;
+
+  import huawei-y1731 {
+    prefix y1731;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Y.1731 is developed by ITU-T for operations, administration and maintenance (OAM) of Ethernet, which providing fault management and performance management solutions for Ethernet.";
+
+  revision 2019-05-05 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef sslm-interval-deviations {
+    type enumeration {
+      enum 1000ms {
+        value 1000;
+        description
+          "Interval of 1000 ms.";
+      }
+      enum 10000ms {
+        value 10000;
+        description
+          "Interval of 10000 ms.";
+      }
+    }
+    description
+      "SSLM interval.";
+  }
+
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:unexpected-mep-alarm" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:synthetic-loss-send/y1731:interval" {
+    deviate replace {
+      type y1731-devs-NE-X1X2:sslm-interval-deviations;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifm-notification-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-ifm-notification-deviations-NE-X1X2";
+  prefix ifm-notification-devs-NE-X1X2;
+
+  import huawei-ifm-notification {
+    prefix ifm-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ifm-notification module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm-notification:physical-admin-if-down" {
+    deviate not-supported;
+  }
+  deviation "/ifm-notification:physical-admin-if-up" {
+    deviate not-supported;
+  }
+}

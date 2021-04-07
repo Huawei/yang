@@ -1,0 +1,64 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mirror-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-mirror-deviations-NE-X1X2";
+  prefix mirror-devs-NE-X1X2;
+
+  import huawei-mirror {
+    prefix mirror;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-mirror module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/mirror:mirror" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/mirror:mirror/mirror:rate-limit-percent" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/mirror:mirror" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-fragments" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-slice" {
+    deviate add {
+      must "count(../port-mirrors/port-mirror)>0 or count(../bas-port-mirrors/bas-port-mirror)>0 or
+(not(count(../port-mirrors/port-mirror)>0 or count(../bas-port-mirrors/bas-port-mirror)>0) and not(../port-mirror-slice))";
+    }
+  }
+
+}

@@ -1,0 +1,38 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-fwd-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-bier-fwd-deviations-NE-X1X2";
+  prefix bier-fwd-devs-NE-X1X2;
+
+  import huawei-bier-fwd {
+    prefix bier-fwd;
+  }
+
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bier-fwd module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bier-fwd:bier-fwd/bier-fwd:select-boards" {
+    deviate not-supported;
+  }
+
+}

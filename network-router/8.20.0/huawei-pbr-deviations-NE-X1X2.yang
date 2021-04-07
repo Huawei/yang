@@ -1,0 +1,61 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pbr-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-pbr-deviations-NE-X1X2";
+  prefix pbr-devs-NE-X1X2;
+
+  import huawei-pbr {
+    prefix pbr;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+  
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-pbr module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/pbr:pbr" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/pbr:pbr" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:ipv4-multinhp-vpn/pbr:ipv4-multinhp-vpn/pbr:multi-vpns" {
+    deviate add {
+      must "count(./multi-vpn/nqa-instance)=0 or count(./multi-vpn)=count(./multi-vpn/nqa-instance)";
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv6/pbr:pbr-ipv6/pbr:ipv6-multinhp-vpn/pbr:ipv6-multinhp-vpn/pbr:multi-vpns" {
+    deviate add {
+      must "count(./multi-vpn/nqa-instance)=0 or count(./multi-vpn)=count(./multi-vpn/nqa-instance)";
+    }
+  }
+}

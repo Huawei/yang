@@ -1,0 +1,148 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-sshs-deviations-NE-X1X2 {
+  namespace "urn:huawei:yang:huawei-sshs-deviations-NE-X1X2";
+  prefix sshs-devs-NE-X1X2;
+
+  import huawei-sshs {
+    prefix sshs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Sshs management.";
+
+  revision 2019-05-01 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef sshs-user-auth-deviations {
+    type enumeration {
+      enum not-set {
+        value 0;
+        description
+          "The user authentication type is not set.";
+      }
+      enum password {
+        value 1;
+        description
+          "User authentication type password.";
+      }
+      enum rsa {
+        value 2;
+        description
+          "User authentication type RSA.";
+      }
+      enum all {
+        value 3;
+        description
+          "User authentication type all.";
+      }
+      enum password-rsa {
+        value 4;
+        description
+          "User authentication type password RSA.";
+      }
+      enum dsa {
+        value 5;
+        description
+          "User authentication type DSA.";
+      }
+      enum password-dsa {
+        value 6;
+        description
+          "User authentication type password DSA.";
+      }
+      enum ecc {
+        value 7;
+        description
+          "User authentication type ECC.";
+      }
+      enum password-ecc {
+        value 8;
+        description
+          "User authentication type password ECC.";
+      }
+      enum sm2 {
+        value 9;
+        description
+          "User authentication type SM2.";
+      }
+      enum password-sm2 {
+        value 10;
+        description
+          "User authentication type password SM2.";
+      }
+    }
+    description
+      "SSH server user authentication type list.";
+  }
+
+  typedef sshs-user-pubkey-type-deviations {
+    type enumeration {
+      enum not-set {
+        value 0;
+        description
+          "Server public key is not set.";
+      }
+      enum RSA {
+        value 1;
+        description
+          "RSA server public key.";
+      }
+      enum DSA {
+        value 2;
+        description
+          "DSA server public key.";
+      }
+      enum ECC {
+        value 3;
+        description
+          "ECC server public key.";
+      }
+      enum SM2 {
+        value 5;
+        description
+          "SM2 server public key.";
+      }
+    }
+    description
+      "SSH server public key encryption type list for user.";
+  }
+
+  deviation "/sshs:sshs/sshs:users/sshs:user/sshs:auth-type" {
+    deviate replace {
+      type sshs-devs-NE-X1X2:sshs-user-auth-deviations;
+    }
+  }
+  deviation "/sshs:sshs/sshs:users/sshs:user/sshs:pub-key-type" {
+    deviate replace {
+      type sshs-devs-NE-X1X2:sshs-user-pubkey-type-deviations;
+    }
+  }
+  deviation "/sshs:sshs/sshs:server/sshs:pki-domain" {
+    deviate not-supported;
+  }
+  deviation "/sshs:sshs/sshs:pubkey-alg" {
+    deviate delete {
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/sm2 = 'true' or ../pubkey-alg/x509v3-ssh-rsa = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true'";
+    }
+    deviate add {
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/sm2 = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true'";
+    }
+  }
+  deviation "/sshs:sshs/sshs:pubkey-alg/sshs:x509v3-ssh-rsa" {
+    deviate not-supported;
+  }
+}
