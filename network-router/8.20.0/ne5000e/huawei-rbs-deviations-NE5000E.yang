@@ -1,0 +1,71 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-rbs-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-rbs-deviations-NE5000E";
+  prefix rbs-devs-NE5000E;
+
+  import huawei-rbs {
+    prefix rbs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Remote backup service, providing service backup between the master and backup devices, such as ARP entry backup.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef service-type-deviations {
+    type enumeration {
+      enum arp {
+        value 5;
+        description
+          "ARP services that can be backed up.";
+      }
+      enum nd {
+        value 32;
+        description
+          "Nd service that can backed up.";
+      }
+    }
+    description
+      "RBP service type.";
+  }
+
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:service-types/rbs:service-type/rbs:type" {
+    deviate replace {
+      type rbs-devs-NE5000E:service-type-deviations;
+    }
+  }
+  deviation "/rbs:rbs/rbs:services/rbs:service/rbs:batch-backups" {
+    deviate not-supported;
+  }
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:name" {
+    deviate add {
+      must "((../rbs:mode='warm' and not (../rbs:service-types/rbs:service-type[rbs:type='nd']) and not (../rbs:service-types/rbs:service-type[rbs:type='arp'])) or (../rbs:mode='hot'))";
+    }
+  }
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:service-types" {
+    deviate add {
+      must "((rbs:service-type[rbs:type='arp'] or rbs:service-type[rbs:type='nd']) and ../rbs:vrrps/rbs:vrrp[rbs:mac-type='none']) or not((rbs:service-type[rbs:type='arp'] or rbs:service-type[rbs:type='nd']))";
+    }
+  }
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:track-type/rbs:vrrp/rbs:vrrps" {
+    deviate add {
+      must "((rbs:vrrp[rbs:mac-type='even'] or rbs:vrrp[rbs:mac-type='odd']) and not(../rbs:service-types/rbs:service-type[rbs:type='arp'] or ../rbs:service-types/rbs:service-type[rbs:type='nd'])) or rbs:vrrp[rbs:mac-type='none']";
+    }
+  }
+}

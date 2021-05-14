@@ -1,0 +1,170 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mirror-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-mirror-deviations-ATN-980B";
+  prefix mirror-devs-ATN-980B;
+
+  import huawei-mirror {
+    prefix mirror;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-mirror module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/mirror:mirror" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/mirror:mirror" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/mirror:mirror/mirror:mirror-to" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:without-header" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-fragments" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:bas-port-mirrors" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:without-filter" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:destination-mac" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:pop-label" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:sub-extend" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:with-linklayer-header" {
+    deviate not-supported;
+  }
+  deviation "/mirror:mirror/mirror:instances/mirror:instance/mirror:instance-car/mirror:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..max";
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/mirror:mirror/mirror:instances/mirror:instance/mirror:instance-car/mirror:pbs" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/mirror:mirror/mirror:mirror-car/mirror:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..max";
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/mirror:mirror/mirror:mirror-car/mirror:pbs" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-slice" {
+    deviate add {
+      must "count(../port-mirrors/port-mirror)>0 or (not(count(../port-mirrors/port-mirror)>0) and not(../port-mirror-slice))";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-car/mirror:cir" {
+    deviate replace {
+      type uint32 {
+        range "0 | 64..max";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-car/mirror:pir" {
+    deviate replace {
+      type uint32 {
+        range "0 | 64..max";
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-car/mirror:cbs" {
+    deviate replace {
+      type uint32 {
+        range "1000..100000000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-car/mirror:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1000..100000000";
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-to/mirror:observe-index" {
+    deviate replace {
+      type string {
+        length "1..50";
+        pattern "(null0)|([1-8])";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:integrateds/mirror:integrated/mirror:observe-port/mirror:port-observe/mirror:observe-index" {
+    deviate replace {
+      type uint8 {
+        range "1..8";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:observe-index" {
+    deviate replace {
+      type uint8 {
+        range "1..8";
+      }
+    }
+  }
+
+}

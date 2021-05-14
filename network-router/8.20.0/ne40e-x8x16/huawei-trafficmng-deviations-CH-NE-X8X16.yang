@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-trafficmng-deviations-CH-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-trafficmng-deviations-CH-NE-X8X16";
+  prefix trafficmng-devs-CH-NE-X8X16;
+
+  import huawei-trafficmng {
+    prefix trafficmng;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-trafficmng module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/trafficmng:trafficmng/trafficmng:sfu-warm-backup-switch" {
+    deviate not-supported;
+  }
+}

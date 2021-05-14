@@ -1,0 +1,62 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pbr-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-pbr-deviations-NE5000E";
+  prefix "pbr-devs-NE5000E";
+
+  import huawei-pbr {
+    prefix "pbr";
+  }
+  import huawei-qos {
+    prefix "qos";
+  }
+  import huawei-devm {
+    prefix "devm";
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Pbr.";
+  revision 2019-04-08 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  
+  deviation /qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:ipv4-nexthop/pbr:ipv4-nexthop/pbr:action-type/pbr:nqa/pbr:nqa/pbr:property/pbr:vpn-network {
+    deviate not-supported;
+  }
+  
+  deviation /qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:ipv4-nexthop/pbr:ipv4-nexthop/pbr:action-type/pbr:none/pbr:none/pbr:property/pbr:vpn-network {
+    deviate not-supported;
+  }
+
+  deviation /devm:devm/devm:mpu-boards/devm:mpu-board/pbr:pbr {
+    deviate not-supported;
+  }
+  deviation /qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:ipv4-multinhp-interface/pbr:ipv4-multinhp-interface/pbr:sip-hash {
+    deviate not-supported;
+  }
+  deviation /qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:ipv4-multinhp/pbr:ipv4-multinhp/pbr:non-revertive {
+    deviate not-supported;
+  }  
+  deviation /qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:ipv4-multinhp-nqa/pbr:ipv4-multinhp-nqa/pbr:non-revertive {
+    deviate not-supported;
+  }  
+  deviation /qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:ipv4-multinhp-vpn/pbr:ipv4-multinhp-vpn/pbr:non-revertive {
+    deviate not-supported;
+  }  
+  deviation /qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv6/pbr:pbr-ipv6/pbr:ipv6-multinhp-interface/pbr:ipv6-multinhp-interface/pbr:sip-hash {
+    deviate not-supported;
+  }
+  
+}

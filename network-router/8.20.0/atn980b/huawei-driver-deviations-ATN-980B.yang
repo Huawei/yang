@@ -1,0 +1,482 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-driver-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-driver-deviations-ATN-980B";
+  prefix driver-devs-ATN-980B;
+
+  import huawei-driver {
+    prefix driver;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-driver module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef fan-workmode-deviations {
+    type enumeration {
+      enum "auto" {
+        value 1;
+        description 
+          "Automatic.";
+      }
+      enum "full" {
+        value 5;
+        description 
+          "Full.";
+      }
+      enum "minimum-percent" {
+        value 9;
+        description 
+          "Minimum-percent.";
+      }
+    }
+    description 
+      "Information of enum type fan-workmode.";
+  }
+
+  deviation "/driver:driver/driver:global-attribute/driver:board-power-on-delay" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:card-power-on-delay" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:dustproof-check" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:energy-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:energy-saving-pm" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:entity-fault-board-isolate" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:entity-fault-card-isolate" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:fault-strategy" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:high-temp-switch" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:interface-match-check" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:least-sfu-number" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:offline-function" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:optional-entity-fault-isolate" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:sfu-switch-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:system-trap" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:temp-query-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:vlt-query-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-forward-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:next-forward-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-work-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:next-work-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:warm-backup-states" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:warm-backup-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-system-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:next-system-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:auto-upgrade-model" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:max-chassis-number" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:split-resume" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:switch-port-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:system-service-type" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:usb-uart-status" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:board-channel-check-status" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:energy-saving-pm-status" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:temperatures/driver:temperature/driver:minor" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:temperatures/driver:temperature/driver:major" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:temperatures/driver:temperature/driver:fatal" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:temperatures/driver:temperature/driver:fan-tmax" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:temperatures/driver:temperature/driver:fan-tmin" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:voltageinfos/driver:voltageinfo/driver:major-voltage-threshold-low" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:voltageinfos/driver:voltageinfo/driver:major-voltage-threshold-high" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:voltageinfos/driver:voltageinfo/driver:fatal-voltage-threshold-low" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:voltageinfos/driver:voltageinfo/driver:fatal-voltage-threshold-high" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:voltageinfos/driver:voltageinfo/driver:low-threshold" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:voltageinfos/driver:voltageinfo/driver:high-threshold" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:electric-current-infos" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:interface-match-check-states" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:area-energyinfos/driver:area-energyinfo/driver:area-assigned-power" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:area-energyinfos/driver:area-energyinfo/driver:board-energys/driver:board-energy/driver:voltage-value" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:area-energyinfos/driver:area-energyinfo/driver:board-energys/driver:board-energy/driver:electrical-value" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:area-energyinfos/driver:area-energyinfo/driver:board-energys/driver:board-energy/driver:power-threshold" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:area-energyinfos/driver:area-energyinfo/driver:board-energys/driver:board-energy/driver:efficiency" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:board-powers" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:electronic-labels/driver:electronic-label/driver:entity-elabel-version" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:mbusnodes" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:multi-chassis-attributes" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:chassis-run-modes" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:stratum-3-clocks" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:system-sync-clocks" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:rollback-attribute/driver:rollback-paf-file" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:slave-defaults" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:inner-links" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-usb-uart-stat" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-on-mpu" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-off-mpu" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-on-lpu" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-off-lpu" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-on-sfu" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-off-sfu" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-on-icu" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-off-icu" {
+    deviate not-supported;
+  }
+  deviation "/driver:reset-icu-board" {
+    deviate not-supported;
+  }
+  deviation "/driver:reset-cmu-board" {
+    deviate not-supported;
+  }
+  deviation "/driver:reset-fan-board" {
+    deviate not-supported;
+  }
+  deviation "/driver:reset-dustproof-net" {
+    deviate not-supported;
+  }
+  deviation "/driver:reset-mbus-node" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-slave-default" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-flash-lock" {
+    deviate not-supported;
+  }
+  deviation "/driver:power-off-card/driver:input/driver:auto-power-on" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-boot-password" {
+    deviate not-supported;
+  }
+  deviation "/driver:auto-upgrade-models" {
+    deviate not-supported;
+  }
+  deviation "/driver:interface-match-check-recovery" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-multi-chassis-id" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-chassis-run-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-next-work-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-split-resume" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-led-flash" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-npu-led-flash" {
+    deviate not-supported;
+  }
+  deviation "/driver:board-channel-check" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-vsu-service-type" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-bip8-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-crc-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-input-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-output-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-sdh-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-symbol-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-trans-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-tx-pause-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-port-bip8-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-port-tx-pause-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-nv-laser-turn" {
+    deviate not-supported;
+  }
+  deviation "/driver:check-lcm-channel" {
+    deviate not-supported;
+  }
+  deviation "/driver:sysmac-load" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-next-system-mode" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:dustproof-attribute" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/driver:driver" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:cmus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:pms" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:ccus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:dacss" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:fans/driver:fan/driver:fan-rate" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:fans/driver:fan/driver:register" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:fans/driver:fan/driver:present" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:fans/driver:fan/driver:fan-number" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:fans/driver:fan/driver:global-speed" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:icus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:pmus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:abnormal-number" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:normal-number" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:power-environments/driver:power-environment/driver:temperature-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:power-environments/driver:power-environment/driver:out-voltage-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:power-environments/driver:power-environment/driver:out-electrical-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:power-environments/driver:power-environment/driver:out-power-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:dmus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:pdus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:vsus" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:temperatures" {
+    deviate replace {
+      config false;
+    }
+  }
+  deviation "/driver:driver/driver:voltageinfos" {
+    deviate replace {
+      config false;
+    }
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:fan-attribute/driver:workmode" {
+    deviate replace {
+      type driver-devs-ATN-980B:fan-workmode-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:fan-attribute/driver:speed" {
+    deviate replace {
+      type uint32 {
+        range "15..100";
+      }
+    }
+  }
+  deviation "/devm:devm/driver:driver/driver:fans/driver:fan/driver:speed" {
+    deviate replace {
+      type uint32 {
+        range "15..100";
+      }
+    }
+  }
+  deviation /driver:check-hardware-version {
+    deviate not-supported;
+  }
+  
+  deviation /devm:devm/devm:chassiss/devm:chassis/driver:chassis-id {
+    deviate not-supported;
+  }
+  deviation /devm:devm/devm:chassiss/devm:chassis/driver:chassis-run-mode {
+    deviate not-supported;
+  }
+  deviation /driver:set-next-run-mode {
+    deviate not-supported;
+  }
+  deviation /driver:set-next-chassis-id {
+    deviate not-supported;
+  } 
+}

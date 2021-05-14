@@ -1,0 +1,134 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-te-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mpls-te-deviations-NE5000E";
+  prefix mpls-te-devs-NE5000E;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2019-03-27 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:global/mpls-te:bandwidth-auto-config-disable" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:global/mpls-te:pce-cleanup-lsp-state" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:global/mpls-te:lsp-loopback-clear-time" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:global/mpls-te:slsp-deduct-rsvp-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:global/mpls-te:frr-switch-delay-time" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:global/mpls-te:rsvp-entropy-label" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:associate-groups" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:global/mpls-te:explicit-path-deletion-down" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-mode" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-frequency" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-max-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-min-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-threshold" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-threshold-absolute" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-enable" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-revertive-mode" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-wtr" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-path-overlap" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-dynamic-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:statistic-enable" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template" {
+    deviate delete {
+      must 'auto-bandwidth-max-bandwidth>=auto-bandwidth-min-bandwidth';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:rsvp-te/mpls-te:fast-reroute/mpls-te:mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:rsvp-te/mpls-te:traffic-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te:binding-sid" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te:reverse-binding-sid" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:rsvp-te/mpls-te:entropy-label" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te:split-tunnel" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:rsvp-te/mpls-te:split-tunnel" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:rsvp-te/mpls-te:disable-reroute" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:rsvp-te/mpls-te:fast-reroute" {
+    deviate delete {
+      must "(enable='true' and mode and mode='facility-backup') or (enable='false' and not(mode='facility-backup'))";
+      must "not(../disable-reroute='true' and enable='true')";
+    }
+  }
+}

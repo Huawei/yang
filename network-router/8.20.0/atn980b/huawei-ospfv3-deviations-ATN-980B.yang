@@ -1,0 +1,102 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ospfv3-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-ospfv3-deviations-ATN-980B";
+  prefix ospfv3-devs-ATN-980B;
+
+  import huawei-ospfv3 {
+    prefix ospfv3;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "OSPFv3 management.";
+
+  revision 2019-04-04 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef import-rt-protocol-deviations {
+    type enumeration {
+      enum direct {
+        value 1;
+        description
+          "Direct route.";
+      }
+      enum ospfv3 {
+        value 7;
+        description
+          "OSPFv3 router.";
+      }
+      enum isis {
+        value 3;
+        description
+          "IS-IS protocol.";
+      }
+      enum static {
+        value 4;
+        description
+          "Static route.";
+      }
+      enum ripng {
+        value 8;
+        description
+          "RIPng routes.";
+      }
+      enum bgp {
+        value 6;
+        description
+          "BGP protocol.";
+      }
+    }
+    description
+      "OSPFv3 import route protocol.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:import-routes/ospfv3:import-route/ospfv3:protocol" {
+    deviate replace {
+      type ospfv3-devs-ATN-980B:import-rt-protocol-deviations;
+    }
+  }
+  deviation "/ospfv3:ospfv3/ospfv3:session-car/ospfv3:cir-interval" {
+    deviate replace {
+      units "pps";
+      default "10";
+    }
+  }
+  deviation "/ospfv3:ospfv3/ospfv3:session-car/ospfv3:cbs-interval" {
+    deviate replace {
+      units "packet";
+      default "100";
+    }
+  }
+  deviation "/ospfv3:ospfv3/ospfv3:session-car/ospfv3:pir-interval" {
+    deviate replace {
+      units "pps";
+      default "2000";
+    }
+  }
+  deviation "/ospfv3:ospfv3/ospfv3:session-car/ospfv3:pbs-interval" {
+    deviate replace {
+      units "packet";
+      default "2000";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:cost-bindings" {
+    deviate not-supported;
+  }
+}

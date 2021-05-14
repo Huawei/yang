@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bd-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-bd-deviations-NE5000E";
+  prefix bd-devs-NE5000E;
+
+  import huawei-bd {
+    prefix bd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "BD management.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bd:bd/bd:instances/bd:instance/bd:bind-service/bd:vsi-name" {
+    deviate not-supported;
+  }
+}

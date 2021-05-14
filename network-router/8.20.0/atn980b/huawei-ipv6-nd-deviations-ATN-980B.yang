@@ -1,0 +1,51 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ipv6-nd-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-ipv6-nd-deviations-ATN-980B";
+  prefix ipv6-nd-devs-ATN-980B;
+
+  import huawei-ipv6-nd {
+    prefix ipv6-nd;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "ND management.";
+
+  revision 2019-11-24 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:ipv6-neighbors/ipv6-nd:ipv6-neighbor/ipv6-nd:nickname" {
+    deviate not-supported;
+  }
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:ipv6-neighbors/ipv6-nd:ipv6-neighbor/ipv6-nd:peer-addr" {
+    deviate not-supported;
+  }
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:ipv6-neighbors/ipv6-nd:ipv6-neighbor/ipv6-nd:source-addr" {
+    deviate not-supported;
+  }
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:ipv6-neighbors/ipv6-nd:ipv6-neighbor/ipv6-nd:vni" {
+    deviate not-supported;
+  }
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:m-lag-global" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/ipv6-nd:nd-bd-property" {
+    deviate not-supported;
+  }
+}

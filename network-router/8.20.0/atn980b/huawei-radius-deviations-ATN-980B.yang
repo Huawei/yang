@@ -1,0 +1,290 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-radius-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-radius-deviations-ATN-980B";
+  prefix radius-devs-ATN-980B;
+
+  import huawei-radius {
+    prefix radius;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-radius module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:radius-server-ipv4s/radius:radius-server-ipv4/radius:ip-account-packet-statistic" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:force-account-stop-packet" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:radius-hw-dhcp-options" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:hw-dhcpv6-options" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:accounting-include-hw-dhcp-option" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:version-type" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:packet-control/radius:interim-accout-resend-count" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:packet-control/radius:start-accout-resend-count" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:packet-control/radius:stop-accout-resend-count" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:packet-control/radius:vas-account-packed-max-length" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:common-attribute/radius:ncp-up-send-start-account" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:common-attribute/radius:encode-option61-to-attribute153" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:common-attribute/radius:decode-fail-ignore-hw-data-filter" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:common-attribute/radius:frame-ip-mask" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-format-called-station-id" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-format-calling-station-id" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-calling-station-id-lns-default" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-vendor-id" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:nas-port-id-format" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-include-nas" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-traffic-unit" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-packet-format" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-tunnel-password" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-connect" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-sub-slot" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-nas-port" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-access-policy" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-user-name" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-action-hw-mng-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-apply" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-disable-account" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:rollover-on-reject" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:llid-fail-disable-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:decode-hw-user-password-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:assign-hw-pcp-server" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:vendor-attribute-multiple" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:calling-station-id-format" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:authen-account-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:lns-authen-account-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:coa-nak-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:daa-account-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:edsg-authen-account-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:edsg-account-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:accounting-request-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:bod-account-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:coa-query-ack-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:access-request-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:coa-logon-ack-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:attribute-action-class" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-authorizations" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:account-cache-retransmit" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:account-cache-warning-threshold" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:account-cache-memory-threshold" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:account-cache-max-packet" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:access-line-id-length-extend" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:account-stop-packet-optimize" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:send-packet-optimize" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:server-speed-limits" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:author-error-reply-method" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-local-ips" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-local-ip-all" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:accounting-server-statistics" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:auth-server-statistics" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:aaa-route-download-status" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:aaa-static-routes" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:auth-client" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:accounting-client" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:attribute-global" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:session-car-bandwidth/radius:cir" {
+    deviate replace {
+      type uint32 {
+        range "0..2000";
+      }
+    }
+    deviate replace {
+      default "125";
+    }
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/radius:radius/radius:session-car-bandwidth/radius:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..2000";
+      }
+    }
+    deviate replace {
+      default "125";
+    }
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/radius:radius/radius:session-car-bandwidth/radius:cbs" {
+    deviate replace {
+      type uint32 {
+        range "0..2000";
+      }
+    }
+    deviate replace {
+      default "125";
+    }
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/radius:radius/radius:session-car-bandwidth/radius:pbs" {
+    deviate replace {
+      type uint32 {
+        range "0..2000";
+      }
+    }
+    deviate replace {
+      default "125";
+    }
+    deviate replace {
+      units packet;
+    }
+  }
+  
+}

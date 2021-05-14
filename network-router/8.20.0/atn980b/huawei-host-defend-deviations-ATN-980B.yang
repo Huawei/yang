@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-host-defend-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-host-defend-deviations-ATN-980B";
+  prefix host-defend-devs-ATN-980B;
+
+  import huawei-host-defend {
+    prefix host-defend;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Host Defend.";
+
+  revision 2020-02-04 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/host-defend:management-plane-defend-slot" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/host-defend:management-plane-defend-slot" {
+    deviate not-supported;
+  }
+  deviation "/host-defend:host-defend/host-defend:management-plane-defend/host-defend:slot-plys" {
+    deviate not-supported;
+  }
+  deviation "/host-defend:host-defend/host-defend:management-plane-defend/host-defend:slot-stats" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,183 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-routing-policy-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-routing-policy-deviations-NE5000E";
+  prefix rtp-devs-NE5000E;
+
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Routing policies are used to filter routes and control the receiving and advertising of routes. By changing the route attributes, such as reachability, you can change the path through which the traffic passes.";
+
+  revision 2019-04-27 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef protocol-type-deviations {
+    type enumeration {
+      enum direct {
+        value 1;
+        description
+          "Direct.";
+      }
+      enum ospf {
+        value 2;
+        description
+          "Open Shortest Path First.";
+      }
+      enum isis {
+        value 3;
+        description
+          "Intermediate System-to-Intermediate System.";
+      }
+      enum static {
+        value 4;
+        description
+          "Static.";
+      }
+      enum rip {
+        value 5;
+        description
+          "Routing Information Protocol.";
+      }
+      enum bgp {
+        value 6;
+        description
+          "Border Gateway Protocol.";
+      }
+      enum ospfv3 {
+        value 7;
+        description
+          "OSPFv3.";
+      }
+      enum ripng {
+        value 8;
+        description
+          "Routing Information Protocol next generation.";
+      }
+    }
+    description
+      "Match protocol type.";
+  }
+
+  typedef route-type-deviations {
+    type enumeration {
+      enum external1 {
+        value 1;
+        description
+          "Type-1 external route of OSPF.";
+      }
+      enum external2 {
+        value 2;
+        description
+          "Type-2 external route of OSPF.";
+      }
+      enum internal {
+        value 4;
+        description
+          "OSPF internal route, including inter-area routes and intra-area routes of OSPF.";
+      }
+      enum isis-level1 {
+        value 5;
+        description
+          "Level-1 route of IS-IS.";
+      }
+      enum isis-level2 {
+        value 6;
+        description
+          "Level-2 route of IS-IS.";
+      }
+      enum nssa-external1 {
+        value 7;
+        description
+          "NSSA type-1 external route of OSPF.";
+      }
+      enum nssa-external2 {
+        value 8;
+        description
+          "NSSA type-2 external route of OSPF.";
+      }
+      enum ibgp {
+        value 10;
+        description
+          "Internal route of BGP.";
+      }
+      enum ebgp {
+        value 11;
+        description
+          "Eternal route of BGP.";
+      }
+      enum evpn-ad {
+        value 23;
+        description
+          "Ethernet Auto-Discovery (A-D) Route.";
+      }
+      enum evpn-es {
+        value 24;
+        description
+          "Ethernet Segment Route.";
+      }
+      enum evpn-inclusive {
+        value 25;
+        description
+          "Inclusive Multicast Route.";
+      }
+      enum evpn-mac {
+        value 28;
+        description
+          "MAC Advertisement Route.";
+      }
+      enum evpn-prefix {
+        value 29;
+        description
+          "IP-prefix routes.";
+      }
+    }
+    description
+      "Match route type.";
+  }
+
+  deviation "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:nodes/rtp:node/rtp:conditions/rtp:match-route-types/rtp:match-route-type/rtp:route-type" {
+    deviate replace {
+      type rtp-devs-NE5000E:route-type-deviations;
+    }
+  }
+  deviation "/rtp:routing-policy/rtp:ext-community-segmented-nexthop-filters" {
+    deviate not-supported;
+  }
+  deviation "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:nodes/rtp:node/rtp:conditions/rtp:match-ext-community-segmented-nexthop-filter" {
+    deviate not-supported;
+  }
+  deviation "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:nodes/rtp:node/rtp:actions/rtp:apply-qos-parameter/rtp:set-qos-parameter/rtp:local-id-ip-precedence/rtp:qos-local-id" {
+    deviate replace {
+      type uint32 {
+        range "1..255";
+      }
+    }
+  }
+  deviation "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:nodes/rtp:node/rtp:conditions/rtp:match-route-originator" {
+    deviate not-supported;
+  }
+  deviation "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:nodes/rtp:node/rtp:conditions/rtp:match-protocols/rtp:match-protocol/rtp:protocol" {
+    deviate replace {
+      type rtp-devs-NE5000E:protocol-type-deviations;
+    }
+  }
+  deviation "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:nodes/rtp:node/rtp:actions/rtp:apply-entropy-label-none" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,34 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bier-deviations-NE5000E";
+  prefix bier-devs-NE5000E;
+
+  import huawei-bier {
+    prefix bier;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Model for Bit Index Explicit Replication (BIER).";
+
+  revision 2019-09-06 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bier:bier" {
+    deviate not-supported;
+  }
+}

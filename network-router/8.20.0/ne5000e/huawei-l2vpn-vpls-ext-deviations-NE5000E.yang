@@ -1,0 +1,57 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2vpn-vpls-ext-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-l2vpn-vpls-ext-deviations-NE5000E";
+  prefix "l2vpn-vpls-ext-devs-NE5000E";
+
+  import huawei-l2vpn {
+    prefix "l2vpn";
+  }
+  import huawei-l2vpn-vpls-ext {
+    prefix "l2vpn-vpls-ext";
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "L2VPN vpls ext.";
+  revision 2019-04-06 {
+    description
+      "The modifications in the schema file are synchronized to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  
+  deviation /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vsi-pipe/l2vpn-vpls-ext:split-mode {
+    deviate delete {
+      must "((../split-mode='false' and not(../ingress-pipe-mode) and not(../egress-pipe-mode) and ../pipe-mode) or (../split-mode='true' and not(../pipe-mode) and ../ingress-pipe-mode and ../egress-pipe-mode and not(../ingress-pipe-mode='uniform' and ../egress-pipe-mode='uniform')))";
+    }
+  }
+
+  deviation /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vsi-pipe/l2vpn-vpls-ext:split-mode {
+    deviate add {
+      must "(../split-mode='false' and not(../ingress-pipe-mode) and not(../egress-pipe-mode) and ../pipe-mode)";
+    }
+  }
+  
+  deviation /l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:pw-source-tunnel-check {
+    deviate not-supported;
+  }
+  deviation /l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:vpls-tm-prune-enable {
+    deviate not-supported;
+  }
+  deviation /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vpls-ext/l2vpn-vpls-ext:convergence-separate {
+    deviate not-supported;
+  }
+  deviation /l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:convergence-separate-in-system {
+    deviate not-supported;
+  }
+}

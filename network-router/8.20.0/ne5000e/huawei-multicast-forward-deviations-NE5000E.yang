@@ -1,0 +1,95 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-forward-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-multicast-forward-deviations-NE5000E";
+  prefix "multicast-forward-devs-NE5000E";
+
+  import huawei-multicast-forward {
+    prefix "multicast-forward";
+  }
+  import huawei-qos {
+    prefix "qos";
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Multicast forwarding table.";
+  revision 2019-06-01 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  
+  deviation /multicast-forward:multicast-forward/multicast-forward:global/multicast-forward:shaping-enable { 
+	deviate not-supported; 
+  } 
+  deviation /multicast-forward:multicast-forward/multicast-forward:global/multicast-forward:bw-car-enable { 
+	deviate not-supported; 
+  }    
+  deviation /multicast-forward:multicast-forward/multicast-forward:global/multicast-forward:fragment-enable { 
+	deviate not-supported; 
+  } 
+  deviation /multicast-forward:multicast-forward/multicast-forward:nat { 
+    deviate not-supported; 
+  } 
+  deviation /multicast-forward:multicast-forward/multicast-forward:multicast-remote-users { 
+    deviate not-supported; 
+  }
+  deviation /multicast-forward:multicast-forward/multicast-forward:spatial-multicast { 
+    deviate not-supported; 
+  }
+  deviation /qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/multicast-forward:behavior-bind-multicast-nat-instance { 
+    deviate not-supported; 
+  }
+  deviation /multicast-forward:reset-bas-multicast-rui-statics {
+    deviate not-supported;
+  }
+  deviation /multicast-forward:multicast-forward/multicast-forward:l3-egress-statistics {
+    deviate not-supported;
+  }
+  deviation /multicast-forward:multicast-forward/multicast-forward:l2-egress-statistics {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-l3-egress-all-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-l3-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-l2-egress-all-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-vlan-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-vsi-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-bd-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:single-fast-switch" { 
+    deviate not-supported; 
+  } 
+  deviation "/multicast-forward:group-fast-switch" { 
+    deviate not-supported; 
+  }
+  deviation "/multicast-forward:get-multicast-forwarding-device" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:send-igmp-packet" {
+    deviate not-supported;
+  }
+  deviation /multicast-forward:multicast-forward/multicast-forward:egress-forward-mode { 
+    deviate not-supported; 
+  }
+}

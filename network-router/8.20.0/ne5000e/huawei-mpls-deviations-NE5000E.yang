@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mpls-deviations-NE5000E";
+  prefix mpls-devs-NE5000E;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2019-03-27 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls:common/mpls:global/mpls:mpls-label-begin" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:global/mpls:mpls-min-label" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:global/mpls:entropy-label-capability" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:bit-err-levels/mpls:bit-err-level" {
+    deviate not-supported;
+  }
+}

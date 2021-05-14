@@ -1,0 +1,317 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-aaa-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-aaa-deviations-NE5000E";
+  prefix aaa-devs-NE5000E;
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+  import huawei-radius-client {
+    prefix radius-client;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Security management, which includes the management on authentication, authorization, accounting, domains, and users.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef aaa-authen-mode-deviations {
+    type enumeration {
+      enum invalid {
+        value 0;
+        description
+          "Invalid authentication mode.";
+      }
+      enum local {
+        value 1;
+        description
+          "Local authentication mode.";
+      }
+      enum hwtacacs {
+        value 2;
+        description
+          "HWTACACS authentication mode.";
+      }
+      enum radius {
+        value 3;
+        description
+          "RADIUS authentication mode.";
+      }
+      enum none {
+        value 4;
+        description
+          "In this mode, users can pass with authentication.";
+      }
+    }
+    description
+      "Authen mode.";
+  }
+
+  typedef aaa-user-access-type-deviations {
+    type enumeration {
+      enum invalid {
+        value 0;
+        description
+          "Invalid user access type.";
+      }
+      enum terminal {
+        value 1;
+        description
+          "Terminal user access type.";
+      }
+      enum telnet {
+        value 2;
+        description
+          "User access type is telnet.";
+      }
+      enum ftp {
+        value 3;
+        description
+          "User access type ftp.";
+      }
+      enum ppp {
+        value 4;
+        description
+          "User access type ppp.";
+      }
+      enum ssh {
+        value 5;
+        description
+          "User access type ssh.";
+      }
+      enum snmp {
+        value 7;
+        description
+          "User access type snmp.";
+      }
+      enum http {
+        value 8;
+        description
+          "User access type http.";
+      }
+    }
+    description
+      "User access type.";
+  }
+
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/aaa:authen-mode-type/aaa:ordered-strictly/aaa:first-authen-mode" {
+    deviate replace {
+      type aaa-devs-NE5000E:aaa-authen-mode-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/aaa:authen-mode-type/aaa:ordered-strictly/aaa:second-authen-mode" {
+    deviate replace {
+      type aaa-devs-NE5000E:aaa-authen-mode-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/aaa:authen-mode-type/aaa:ordered-strictly/aaa:third-authen-mode" {
+    deviate replace {
+      type aaa-devs-NE5000E:aaa-authen-mode-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/aaa:authen-mode-type/aaa:ordered-strictly/aaa:fourth-authen-mode" {
+    deviate replace {
+      type aaa-devs-NE5000E:aaa-authen-mode-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:password-policy/aaa:expired-pwd-reuse-num" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:password-policy/aaa:history-pwd-num" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:password-policy/aaa:pwd-expire-days" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:service-mml" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:service-qx" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:online-offline-rec-switch/aaa:normal-logout-rec-switch" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:abnormal-offline-hidens" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:authorization-schemes/aaa:authorization-scheme/aaa:no-response-policy" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:authorization-schemes/aaa:authorization-scheme/aaa:no-response-times" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:global-policy/aaa:parse-priority" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:global-policy/aaa:realm-location" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:global-policy/aaa:real-name-delimiter" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:global-policy/aaa:real-name-parse-direction" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:global-policy/aaa:roam-character" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:local-server" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:name" {
+    deviate replace {
+      type string {
+        length "1..64";
+        pattern '[^A-Z@]+';
+      }
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:service-mml" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:service-qx" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:service-telnet" {
+    deviate add {
+      must "(../aaa:service-terminal='true') or (../service-telnet='true') or (../service-ftp='true') or (../service-ppp='true') or (../service-ssh='true') or (../service-snmp='true') or (../service-http='true')";
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:time-range-enable" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:radius-server-template" {
+    deviate replace {
+      type leafref {
+        path "/radius-client:radius-client/radius-client:radius-server-groups/radius-client:radius-server-group/radius-client:name";
+      }
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:admin-level" {
+    deviate add {
+      must "not(../aaa:radius-server-template) or ((../aaa:radius-server-template) and (/radius-client:radius-client/radius-client:radius-server-groups/radius-client:radius-server-group[radius-client:name=current()/../aaa:radius-server-template]/radius-client:domain-mode!='no'))";
+    }
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:idle-cut-enable" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:alive-user-qrys/aaa:alive-user-qry/aaa:access-type" {
+    deviate replace {
+      type aaa-devs-NE5000E:aaa-user-access-type-deviations;
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:task-groups" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:task-groups/aaa:task-group" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'manage-tg' or name = 'system-tg' or name = 'monitor-tg' or name = 'visit-tg'";
+      }
+      ext:operation-exclude "update|delete" {
+        ext:filter "name = 'manage-tg' or name = 'system-tg' or name = 'monitor-tg' or name = 'visit-tg'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:user-groups" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:user-groups/aaa:user-group" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'manage-ug' or name = 'system-ug' or name = 'monitor-ug' or name = 'visit-ug'";
+      }
+      ext:operation-exclude "update|delete" {
+        ext:filter "name = 'manage-ug' or name = 'system-ug' or name = 'monitor-ug' or name = 'visit-ug'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:authentication-schemes" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'default'";
+      }
+      ext:operation-exclude "delete" {
+        ext:filter "name = 'default'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:authorization-schemes" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:authorization-schemes/aaa:authorization-scheme" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'default'";
+      }
+      ext:operation-exclude "delete" {
+        ext:filter "name = 'default'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:accounting-schemes" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:accounting-schemes/aaa:accounting-scheme" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'default'";
+      }
+      ext:operation-exclude "delete" {
+        ext:filter "name = 'default'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:domains" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:domains/aaa:domain" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'default'";
+      }
+      ext:operation-exclude "delete" {
+        ext:filter "name = 'default'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:name" {
+    ext:deviate-ext "add" {
+      ext:case-sensitivity "lower-only";
+    }
+  }
+}

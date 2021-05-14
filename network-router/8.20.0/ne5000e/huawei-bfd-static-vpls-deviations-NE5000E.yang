@@ -1,0 +1,58 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bfd-static-vpls-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bfd-static-vpls-deviations-NE5000E";
+  prefix bfd-vpls-devs-NE5000E;
+
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-bfd-static-vpls {
+    prefix bfd-static-vpls;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Bidirectional Forwarding Detection (BFD) is a detection mechanism used uniformly on the entire network. BFD is used to rapidly detect and monitor the connectivity of links or IP routes on a network.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-vpls:vsi-pw/bfd-static-vpls:min-tx-interval-static-vsi-pw" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-vpls:vsi-pw/bfd-static-vpls:min-rx-interval-static-vsi-pw" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd-static-vpls:vpls-groups/bfd-static-vpls:vpls-group/bfd-static-vpls:sub-select-slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+}

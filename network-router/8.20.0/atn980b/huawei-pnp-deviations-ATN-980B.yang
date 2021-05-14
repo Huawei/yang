@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pnp-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-pnp-deviations-ATN-980B";
+  prefix pnp-devs-ATN-980B;
+
+  import huawei-pnp {
+    prefix pnp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-pnp module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/pnp:pnp/pnp:global/pnp:mode" {
+    deviate not-supported;
+  }
+  deviation "/pnp:pnp/pnp:default-routes" {
+    deviate not-supported;
+  }
+  deviation "/pnp:pnp/pnp:dhcp-packet-statistics" {
+    deviate not-supported;
+  }
+  deviation "/pnp:pnp/pnp:dhcpv6-packet-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/pnp:pnp-if" {
+    deviate not-supported;
+  }
+}

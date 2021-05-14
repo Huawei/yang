@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2cpmanagement-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-l2cpmanagement-deviations-ATN-980B";
+  prefix l2cpmanagement-devs-ATN-980B;
+
+  import huawei-l2cpmanagement {
+    prefix l2cpmanagement;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-l2cpmanagement module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/l2cpmanagement:l2cpmanagement/l2cpmanagement:link-protocol-global/l2cpmanagement:eoam3ah-status" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/l2cpmanagement:protocol-actions/l2cpmanagement:protocol-action" {
+    deviate add {
+      must "(action='forwarding' and (protocol-type='c-stp' or protocol-type='s-stp' or protocol-type='elmi' or protocol-type='lacp' or protocol-type='lamp' or protocol-type='eapol' or protocol-type='lldp' or protocol-type='link-oam' or protocol-type='ptp')) or (action='discard' and (protocol-type='c-stp' or protocol-type='s-stp' or protocol-type='elmi' or protocol-type='lacp' or protocol-type='lamp'))";
+    }
+  }
+
+}

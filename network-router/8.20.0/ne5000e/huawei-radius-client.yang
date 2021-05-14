@@ -1,0 +1,369 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-radius-client {
+  namespace urn:huawei:yang:huawei-radius-client;
+  prefix radius-client;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "RADIUS client configuration.";
+  revision 2019-06-27 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "radius";
+
+  typedef radius-server-type {
+    type enumeration {
+      enum "authentication" {
+        value 0;
+        description
+          "Server type as authentication server.";
+      }
+      enum "accounting" {
+        value 1;
+        description
+          "Server type as accounting server.";
+      }
+    }
+    description
+      "The type of RADIUS server.";
+  }
+  typedef radius-mode {
+    type enumeration {
+      enum "primary-secondary" {
+        value 0;
+        description
+          "Group mode as primary secondary.";
+      }
+      enum "load-balance" {
+        value 1;
+        description
+          "Group mode as load balance.";
+      }
+    }
+    description
+      "The type of RADIUS server mode.";
+  }
+  typedef radius-server-mode {
+    type enumeration {
+      enum "secondary-server" {
+        value 0;
+        description
+          "Secondary server.";
+      }
+      enum "primary-server" {
+        value 1;
+        description
+          "Primary server.";
+      }
+    }
+    description
+      "The priority of RADIUS server.";
+  }
+  typedef domain-include-mode {
+    type enumeration {
+      enum "no" {
+        value 0;
+        description
+          "User name excludes domain.";
+      }
+      enum "yes" {
+        value 1;
+        description
+          "User name includes domain.";
+      }
+      enum "original" {
+        value 2;
+        description
+          "User name same as user input.";
+      }
+    }
+    description
+      "The type of domain mode.";
+  }
+
+  container radius-client {
+    description
+      "RADIUS client configuration. It will be replaced by the huawei-radius module defined in unified datacom YANG model.";
+    container global {
+      description
+        "Configure RADIUS global client configuration.";
+      leaf radius-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the RADIUS client services.";
+      }
+      leaf dead-count {
+        type uint32 {
+          range "3..65535";
+        }
+        default "10";
+        description
+          "To configure the dead count for all RADIUS servers.";
+      }
+      leaf dead-interval {
+        type uint32 {
+          range "0..60";
+        }
+        units "s";
+        default "5";
+        description
+          "To configure the dead interval for all the RADIUS servers.";
+      }
+      leaf dead-time {
+        type uint32 {
+          range "1..65535";
+        }
+        units "min";
+        default "3";
+        description
+          "To configure the dead time for all the RADIUS servers.";
+      }
+      leaf fail-rate {
+        type uint32 {
+          range "1..100";
+        }
+        default "100";
+        description
+          "Configure the fail rate for all the RADIUS servers.";
+      }
+      leaf recovery-enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable configure server recovery on response for all the RADIUS servers.";
+      }
+    }
+    container radius-server-groups {
+      description
+        "List of RADIUS group configuration.";
+      list radius-server-group {
+        key "name";
+        max-elements  "128";
+        description
+          "Configure RADIUS group configuration.";
+        leaf name {
+          type string {
+            length "1..32";
+            pattern "[a-z0-9._-]+";
+          }
+          ext:case-sensitivity lower-only;
+          description
+            "RADIUS server group's name. Range supported [a-z][0-9] and [.,_,-].";
+        }
+        leaf retrans-count {
+          type int32 {
+            range "1..5";
+          }
+          default "3";
+          description
+            "Number of times packet retransmission will happen if server is not responding.";
+        }
+        leaf retrans-interval {
+          type int32 {
+            range "3..25";
+          }
+          units "s";
+          default "5";
+          description
+            "Server response timeout value.";
+        }
+        leaf auth-retrans-count {
+          type int32 {
+            range "1..5";
+          }
+          must "../auth-retrans-interval";
+          description
+            "Number of retransmission times of RADIUS authentication request packets if the server is not responding.";
+        }
+        leaf auth-retrans-interval {
+          type int32 {
+            range "3..25";
+          }
+          units "s";
+          must "../auth-retrans-count";
+          description
+            "Authentication response timeout interval of the RADIUS server.";
+        }
+        leaf acct-retrans-count {
+          type int32 {
+            range "1..5";
+          }
+          must "../acct-retrans-interval";
+          description
+            "Number of retransmission times of RADIUS accounting request packets if the server is not responding.";
+        }
+        leaf acct-retrans-interval {
+          type int32 {
+            range "3..25";
+          }
+          units "s";
+          must "../acct-retrans-count";
+          description
+            "Accounting response timeout interval of the RADIUS server.";
+        }
+        leaf shared-key {
+          type pub-type:password-extend {
+            length "1..268";
+          }
+          description
+            "To configure shared key value for a particular group, which is a string ranging from 1 to 128 characters for a unencrypted key and 24 characters or 32 to 268 characters for a encrypted key.";
+        }
+        leaf attr-trans-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the attribute translation.";
+        }
+        leaf group-mode {
+          type radius-mode;
+          default "primary-secondary";
+          description
+            "To configure mode (primary secondary and load balance) for a particular group.";
+        }
+        leaf nas-ip-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "NAS IP Address.";         
+        }
+        leaf source-interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "To configure source interface name at group level.";  
+        }
+        leaf domain-mode {
+          type domain-include-mode;
+          default "yes";
+          description
+            "To configure domain Mode. It can not be set to no when admin-level node in aaa module is configured.";
+        }
+        container ipv4-servers {
+          description
+            "List of servers in a group.";
+          list ipv4-server {
+            key "server-type address port server-mode vpn-name";
+            max-elements  "32";
+            description
+              "Configure RADIUS IPv4 server for a particular group.";
+            leaf server-type {
+              type radius-server-type;
+              description
+                "Type of RADIUS server (authentication or accounting, or both).";
+            }
+            leaf address {
+              type inet:ipv4-address-no-zone;
+              description
+                "IPv4 address of configured server.";
+            }
+            leaf port {
+              type int32 {
+                range "1..65535";
+              }
+              description
+                "Configured server port for a particular server.";
+            }
+            leaf server-mode {
+              type radius-server-mode;
+              description
+                "To configure primary or secondary server.";
+            }
+            leaf vpn-name {
+              type string {
+                length "1..31";
+              }
+              description
+                "Set VPN instance.";
+            }
+            leaf source-interface-name {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "not(../source-address)";
+              description
+                "To configure source interface name.";
+            }
+            leaf shared-key {
+              type pub-type:password-extend {
+                length "1..268";
+              }
+              description
+                "To configure shared key value for a particular server, which is a string ranging from 1 to 128 characters for a unencrypted key and 24 characters or 32 to 268 characters for a encrypted key.";
+            }
+            leaf source-address {
+              type inet:ipv4-address-no-zone;
+              must "not(../source-interface-name)";
+              description
+                "To configure source address.";
+            }
+          }
+        }
+        container ipv6-servers {
+          description
+            "List of servers in a group.";
+          list ipv6-server {
+            key "server-type address port server-mode";
+            max-elements  "32";
+            description
+              "Configure RADIUS IPv6 Server for a particular group.";
+            leaf server-type {
+              type radius-server-type;
+              description
+                "Type of RADIUS server (authentication or accounting, or both).";
+            }
+            leaf address {
+              type inet:ipv6-address-no-zone;
+              description
+                "IPv6 address of configured server.";
+            }
+            leaf port {
+              type int32 {
+                range "1..65535";
+              }
+              description
+                "Configured server port for a particular server.";
+            }
+            leaf server-mode {
+              type radius-server-mode;
+              description
+                "To configure primary or secondary server.";
+            }
+            leaf shared-key {
+              type pub-type:password-extend {
+                length "1..268";
+              }
+              description
+                "To configure shared key value for a particular server, which is a string ranging from 1 to 128 characters for a unencrypted key and 24 characters or 32 to 268 characters for a encrypted key.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

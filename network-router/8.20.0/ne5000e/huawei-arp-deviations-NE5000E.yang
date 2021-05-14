@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-arp-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-arp-deviations-NE5000E";
+  prefix arp-devs-NE5000E;
+
+  import huawei-arp {
+    prefix arp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Address Resolution Protocol (ARP) management, which includes static ARP configuration, dynamic ARP learning, ARP security configuration, ARP entry query, and packet statistics collection.";
+
+  revision 2019-06-12 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/arp:arp/arp:global/arp:l2topo-detect-enable" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:global/arp:topo-detect-disable" {
+    deviate not-supported;
+  }
+}

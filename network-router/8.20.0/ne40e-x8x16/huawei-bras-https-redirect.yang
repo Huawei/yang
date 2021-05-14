@@ -1,0 +1,830 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-https-redirect {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bras-https-redirect";
+  prefix bras-https-redirect;
+  import huawei-qos {
+    prefix qos;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-bras-vas {
+    prefix bras-vas;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+Bantian, Longgang
+Shenzhen 518129
+People's Republic of China
+Website: http://www.huawei.com
+Email: support@huawei.com";
+  description
+    "BRAS HTTPS redirect.";
+  revision 2020-04-29 {
+    description
+      "Chasten function adds default value.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-01-09 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bras-control";
+  /*****************************************************************
+  * type definitions
+  *****************************************************************/  
+  typedef cipher-support-suite-code-type {
+    type enumeration {
+      enum "002F-LS-RSA-WITH-AES-128-GCM-SHA256" {
+        value 1;
+        description
+          "The suite is named TLS_RSA_WITH_AES_128_CBC_SHA (TLS1.2). The key exchange algorithm is RSA. The symmetric encryption algorithm is AES_128_CBC. The abstract algorithm is SHA.";
+      }
+      enum "0035-TLS-RSA-WITH-AES-128-CBC-SHA" {
+        value 2;
+        description
+          "The suite is named TLS_RSA_WITH_AES_256_CBC_SHA (TLS1.2). The key exchange algorithm is RSA. The symmetric encryption algorithm is AES_256_CBC. The abstraction algorithm is SHA.";
+      }
+      enum "C02B-TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256" {
+        value 3;
+        description
+          "The suite is named TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 (TLS1.2). The key exchange algorithm is ECDHE_ECDSA. The symmetric encryption algorithm is AES_128_GCM. The abstract algorithm is SHA256.";
+      }
+      enum "C02F-TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256" {
+        value 4;
+        description
+          "The suite is named TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (TLS1.2). The key exchange algorithm is ECDHE_RSA. The symmetric encryption algorithm is AES_128_GCM. The abstract algorithm is SHA256.";
+      }
+      enum "1301-TLS-AES-128-GCM-SHA256" {
+        value 5;
+        description
+          "The suite is named TLS_AES_128_GCM_SHA256 (TLS1.3). The symmetric encryption algorithm is AES_128_GCM. The abstract algorithm is SHA256.";
+      }
+      enum "1302-TLS-AES-256-GCM-SHA384" {
+        value 6;
+        description
+          "The suite is named TLS_AES_256_GCM_SHA384 (TLS1.3). The symmetric encryption algorithm is AES_256_GCM. The abstract algorithm is SHA384.";
+      }
+    }
+    description
+      "Description of the suite type.";
+  }
+  typedef chasten-user-status-type {
+    type enumeration {
+      enum "block" {
+        value 1;
+        description
+          "The information about blocked users.";
+      }
+      enum "check" {
+        value 2;
+        description
+          "The information about checked users.";
+      }
+    }
+    description
+      "The information about blocked users or checked users.";
+  }
+
+/*****************************************************************
+* data
+*****************************************************************/  
+  
+  container bras-https-redirect {
+    description
+      "BRAS HTTPS redirect.";
+    container access-https-redirect {
+      presence "Indicate the HTTPS redirection function.";
+      description
+        "Enable/disable the HTTPS redirection function.";
+      container javascript-blacklist {
+        presence "Function to insert the JavaScript script during web redirection.";
+        description
+          "Enable/disable to insert the JavaScript script during web redirection.";
+        leaf packet-rate {
+          type uint16 {
+            range "5..600";
+          }
+          units %;
+          default "40";
+          description
+            "Upper limit of the rate at which a user uses HTTPS to access an address.";
+        }
+        leaf aging-time {
+          type uint32 {
+            range "30..4294967295";
+          }
+          units s;
+          default "259200";
+          description
+            "Aging time of the addresses in the HTTPS redirection blacklist.";
+        }
+        leaf retry-times {
+          type uint16 {
+            range "1..600";
+          }
+          default "10";
+          description
+            "Upper limit of the times an address can be added to the cache blacklist.";
+        }
+        leaf retry-interval {
+          type uint16 {
+            range "1..600";
+          }
+          units min;
+          default "3";
+          description
+            "Detection interval.";
+        }
+      }
+      container cipher-suite-support {
+        description
+          "Configure the supported encryption suite.";
+        leaf-list code {
+          type cipher-support-suite-code-type;
+          max-elements "6";
+          ordered-by user;
+          description
+            "Configure IANA code of the suite.";
+        }
+      }
+      container self-signed-modulus {
+        description
+          "Configure the key length of RSA self-signed certificate.";
+        leaf modulus {
+          type uint16 {
+             range "1024 | 2048";
+          }
+          description
+            "Configures the key length of RSA self-signed certificate.";
+        }  
+      }
+      container chasten-flow {
+        description
+          "Configure restrict the number of HTTPS connections that can be established within a specified period.";
+        leaf flow-number {
+          type uint16 {
+            range "1..10000";
+          }
+          default "300";
+          description
+            "Specifies the number of HTTPS flow tables to be created.";
+        }
+        leaf flow-period {
+          type uint16 {
+            range "1..3600";
+          }
+          units "s";
+          default "30";
+          description
+            "Specifies the time for creating the HTTPS flow table.";
+        }
+        leaf flow-block-period {
+          type uint16 {
+            range "1..3600";
+          }
+          units "s";
+          default "30";
+          description
+            "Specifies the block time for HTTPS flow setup.";
+        }
+        leaf flow-block-rate{
+          type uint16 {
+            range "1..10";
+          }
+          default "1";
+          description
+            "Specifies the block rate for HTTPS flow setup.";
+        }
+      }
+      container chasten-redirect {
+        description
+          "Configure restrict the number of HTTPS redirection packets that can be sent as a reply within a specified period.";
+        leaf redirect-number {
+          type uint16 {
+            range "1..10000";
+          }
+          default "300";
+          description
+            "Specifies the number of response redirection packets.";
+        }
+        leaf redirect-period {
+          type uint16 {
+            range "1..3600";
+          }
+          units "s";
+          default "30";
+          description
+            "Specifies the time for responding to redirection packets.";
+        }
+        leaf redirect-block-period {
+          type uint16 {
+            range "1..3600";
+          }
+          units "s";
+          default "30";
+          description
+            "Specifies the block time for HTTPS flow setup.";
+        }
+        leaf redirect-block-rate{
+          type uint16 {
+            range "1..10";
+          }
+          default "1";
+          description
+            "Specifies the block rate for HTTPS flow setup.";
+        }
+      }
+    }
+    container certificate-info {
+      config false;
+      description
+        "Statistics of the certificate about the imported information.";
+      leaf certificate-source {
+        type enumeration {
+          enum "imported" {
+            value 1;
+            description
+              "The imported certificate.";
+          }
+          enum "self-signed" {
+            value 2;
+            description
+              "The self-signed certificate.";
+          }
+        }
+        description
+          "The certificate source.";
+      }
+      leaf last-import-time {
+        type yang:date-and-time;
+        description
+          "The last certificate import time.";
+      }
+      leaf last-delete-time {
+        type yang:date-and-time;
+        description
+          "The last certificate delete time.";
+      }
+      leaf certificate-file-name {
+        type string {
+          length "1..63";
+        }
+        description
+          "The certificate file name.";
+      }
+      leaf certificate-size {
+        type uint16;
+        units "Byte";
+        description
+          "The certificate file size.";
+      }
+      leaf cert-valid-start {
+        type yang:date-and-time;
+        description
+          "The start time of the certificate validity period.";
+      }
+      leaf cert-valid-end {
+        type yang:date-and-time;
+        description
+          "The end time of the certificate validity period.";
+      }
+      leaf imported-pub-key {
+        type uint32;
+        units "Byte";
+        description
+          "The key length of imported certificate.";
+      }
+      leaf key-type {
+        type enumeration {
+          enum "RSA" {
+            value 1;
+            description
+              "Specify the the RSA key type.";
+          }
+          enum "ECDSA" {
+            value 2;
+            description
+              "Specify the the ECDSA key type.";
+          }
+        }
+        description
+          "The key type.";
+      }
+    }
+    container chasten-user-infos {
+      config false;
+      description
+        "List of HTTPS redirection chasten information about a user on a specified board.";
+      list chasten-user-info {
+        key "slot-id user-id";
+        description
+          "Statistics of HTTPS redirection chasten information about a user on a specified board.";
+        leaf slot-id {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot of LPU.";
+        }
+        leaf user-id {
+          type uint32;
+          description
+            "User ID.";
+        }
+        leaf ipv4-address{
+          type inet:ipv4-address-no-zone;
+          description
+            "IPv4 address of the online user.";
+          ext:support-filter "true";
+        }
+        leaf ipv6-address {
+          type inet:ipv6-address-no-zone;
+          description
+            "IPv6 address of the online user.";
+         ext:support-filter "true";
+        }
+        leaf ipv6-pd-prefix {
+          type inet:ipv6-prefix;
+          description
+            "IPv6 PD prefix of the online user.";
+          ext:support-filter "true";
+        }
+        leaf vpn-instance-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Vpn instance name of the online user.";
+          ext:support-filter "true";
+        }
+        leaf status {
+          type chasten-user-status-type;
+          description
+            "Information about blocked users or checked users.";
+          ext:support-filter "true";
+        }
+        leaf start-flow-time {
+          type yang:date-and-time;
+          description
+            "Start detection time of flow chasten within a period.";
+        }
+        leaf flow-number {
+          type uint32;
+          description
+            "Number of established flows of flow chasten within a period.";
+        }
+        leaf check-flow-number {
+          type uint32;
+          description
+            "Number of checked flows of flow chasten within a period.";
+        }
+        leaf block-flow-number {
+          type uint32;
+          description
+            "Number of block flows of flow chasten within a period.";
+        }
+        leaf flow-block-time {
+          type yang:date-and-time;
+          description
+            "Start time of the flow chasten block function. From this time on, the user's HTTPS TCP SYN packets are discarded and flow establishment is prohibited.";
+        }
+        leaf drop-flow-packet-number {
+          type uint32;
+          description
+            "Number of discarded HTTPS TCP SYN packets when the user is in the flow block status. In this case, the flow block status is preferentially detected. If the user is in both the Flow block and Redirect block status, the number of discarded HTTPS TCP SYN packets is displayed as Drop Flow Packet Number.";
+        }
+        leaf start-redirect-time {
+          type yang:date-and-time;
+          description
+            "Start time for detecting the redirect chasten function.";
+        }
+        leaf redirect-number {
+          type uint32;
+          description
+            "Number of redirection packets with a reply received for the redirect chasten function within a period.";
+        }
+        leaf check-redirect-number {
+          type uint32;
+          description
+            "Number of checked redirection packets with a reply received for the redirect chasten function within a period.";
+        }
+        leaf block-redirect-number {
+          type uint32;
+          description
+            "Number of block redirection packets with a reply received for the redirect chasten function within a period.";
+        }
+        leaf redirect-block-time {
+          type yang:date-and-time;
+          description
+            "Start time of the redirect chasten block function. From this time on, the user's HTTPS TCP SYN packets are discarded and flow establishment is prohibited.";
+        }
+        leaf drop-redirect-packet-number {
+          type uint32;
+          description
+            "Number of discarded HTTPS TCP SYN packets when the user is in the redirect block status.";
+        }
+      }
+    }
+    container blacklist-ipv4-infos {
+      config false;
+      description
+        "List of HTTPS redirection blacklist information about the IPv4 addresses.";
+      list blacklist-ipv4-info {
+        key "slot-id ipv4-address";
+        description
+          "Statistics of HTTPS redirection blacklist information about the IPv4 addresses.";
+        leaf slot-id {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot of LPU.";
+        }
+        leaf ipv4-address{
+          type inet:ipv4-address-no-zone;
+          description
+            "IPv4 address of the blacklist.";
+        }
+        leaf age-time {
+          type yang:date-and-time;
+          description
+            "The aging time.";
+        }
+      }
+    }
+    container blacklist-ipv6-infos {
+      config false;
+      description
+        "List of HTTPS redirection blacklist information about the IPv6 addresses.";
+      list blacklist-ipv6-info {
+        key "slot-id ipv6-address";
+        description
+          "Statistics of HTTPS redirection blacklist information about the IPv6 addresses.";
+        leaf slot-id {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot of LPU.";
+        }
+        leaf ipv6-address {
+          type inet:ipv6-address-no-zone;
+          description
+            "IPv6 address of the blacklist.";
+        }
+        leaf age-time {
+          type yang:date-and-time;
+          description
+            "The aging time.";
+        }
+      }
+    }
+  }
+  /*****************************************************************
+  * rpc extension 
+  *****************************************************************/
+  rpc import-certificate-der {
+    description
+      "Import the externally generated certificate and der private key.";
+    input {
+      leaf certificate-file-name {
+        type string {
+          length "1..63";
+        }
+        mandatory true;
+        description
+          "Specify the certificate file name.";
+      }
+      leaf der-key-file-name {
+        type string {
+          length "1..63";
+        }
+        mandatory true;
+        description
+          "Specify the der private key name.";
+      }
+    }
+  }
+  rpc import-certificate-pem {
+    description
+      "Import the externally generated certificate and pem private key.";
+    input {
+      leaf certificate-file-name {
+        type string {
+          length "1..63";
+        }
+        mandatory true;
+        description
+          "Specify the certificate file name.";
+      }
+      leaf pem-key-file-name {
+        type string {
+          length "1..63";
+        }
+        mandatory true;
+        description
+          "Specify the pem private key name.";
+     }
+      leaf password {
+        type pub-type:password-extend {
+            length "1..128";
+        }
+        mandatory true;
+        description
+          "Specify the the pem private key file password, the value is a string of 1 to 128 characters in simple text.";
+      }
+    }
+  }
+  rpc delete-certificate {
+    description
+      "Delete the imported certificate and private key.";
+    input {
+      leaf certificate-delete{
+        type boolean;
+        mandatory true;
+        description
+          "Delete the imported certificate and private key.";
+      }
+    }
+  }
+  rpc delete-chasten {
+    description
+      "Delete information about an HTTPS redirection suppression user on a specified slot ID.";
+    ext:node-ref "/bras-https-redirect:bras-https-redirect/bras-https-redirect:chasten-user-infos/bras-https-redirect:chasten-user-info";
+    input {
+      leaf slot-id {
+        type string {
+          length "1..16";
+        }
+        mandatory true;
+        description
+          "Specifies the slot ID.";
+      }
+    }
+  }
+  rpc delete-chasten-ipv4 {
+    description
+      "Delete information about an HTTPS redirection suppression user on a specified slot ID and IPv4 address.";
+    ext:node-ref "/bras-https-redirect:bras-https-redirect/bras-https-redirect:chasten-user-infos/bras-https-redirect:chasten-user-info";
+    input {
+      leaf slot-id {
+        type string {
+          length "1..16";
+        }
+        mandatory true;
+        description
+          "Specifies the slot ID.";
+      }
+      leaf ipv4-address{
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+        description
+          "Specifies the IPv4 address of the online user.";
+      }
+      leaf vpn-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "Specifies the vpn instance name of the online user.";
+      }
+    }
+  }
+  rpc delete-chasten-ipv6 {
+    description
+      "Delete information about an HTTPS redirection suppression user on a specified slot ID and IPv6 address.";
+    ext:node-ref "/bras-https-redirect:bras-https-redirect/bras-https-redirect:chasten-user-infos/bras-https-redirect:chasten-user-info";
+    input {
+      leaf slot-id {
+        type string {
+          length "1..16";
+        }
+        mandatory true;
+        description
+          "Specifies the slot ID.";
+      }
+      leaf ipv6-address{
+        type inet:ipv6-address-no-zone;
+        mandatory true;
+        description
+          "Specifies the IPv6 address of the online user.";
+      }
+      leaf vpn-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "Specifies the vpn instance name of the online user.";
+      }
+    }
+  }
+  rpc delete-chasten-prefix {
+    description
+      "Delete information about an HTTPS redirection suppression user on a specified slot ID and IPv6 prefix.";
+    ext:node-ref "/bras-https-redirect:bras-https-redirect/bras-https-redirect:chasten-user-infos/bras-https-redirect:chasten-user-info";
+    input {
+      leaf slot-id {
+        type string {
+          length "1..16";
+        }
+        mandatory true;
+        description
+          "Specifies the slot ID.";
+      }
+      leaf ipv6-prefix{
+        type inet:ipv6-prefix;
+        mandatory true;
+        description
+          "Specifies the IPv6 prefix of the online user.";
+      }
+      leaf vpn-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "Specifies the vpn instance name of the online user.";
+      }
+    }
+  }
+  rpc delete-blacklist {
+    description
+      "Delete all IPv4/IPv6 addresses from the HTTPS redirection blacklist.";
+    input {
+      leaf ip-type {
+        type enumeration {
+          enum "ipv4" {
+            value 1;
+            description
+              "Specify the IPv4 type.";
+          }
+          enum "ipv6" {
+            value 2;
+            description
+              "Specify the IPv6 type.";
+          }
+        }
+        mandatory true;
+        description
+          "The IP type.";
+      }
+    }
+  }
+  rpc delete-blacklist-ipv4 {
+    description
+      "Delete specified IPv4 address from the HTTPS redirection blacklist.";
+    ext:node-ref "/bras-https-redirect:bras-https-redirect/bras-https-redirect:blacklist-ipv4-infos/bras-https-redirect:blacklist-ipv4-info";
+    input {
+      leaf ipv4-address {
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+        description
+          "Specify the IPv4 address.";
+      }
+    }
+  }
+  rpc delete-blacklist-ipv6 {
+    description
+      "Delete specified IPv6 address from the HTTPS redirection blacklist.";
+    ext:node-ref "/bras-https-redirect:bras-https-redirect/bras-https-redirect:blacklist-ipv6-infos/bras-https-redirect:blacklist-ipv6-info";
+    input {
+      leaf ipv6-address {
+        type inet:ipv6-address-no-zone;
+        mandatory true;
+        description
+          "Specify the IPv6 address.";
+      }
+    }
+  }
+  /*****************************************************************
+  * augment extension 
+  *****************************************************************/  
+  augment "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/bras-vas:bas" {
+    description
+      "Traffic behaviors.";
+    container https-redirect {
+      description
+        "Configure HTTPS redirect configuration to qos traffic-behavior model.";
+      container cpu-portal {
+        description
+          "Configure HTTPS redirection service.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable to send corresponding packets to the slave core after the HTTPS redirection function is enabled.";
+        }
+      }
+    }
+  }
+  augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
+    description 
+      "Configure HTTPS redirect configuration to the LPU.";
+    container https-redirect {
+      when "/bras-https-redirect:bras-https-redirect/bras-https-redirect:access-https-redirect";
+      description
+        "Configure HTTPS redirect configuration to the LPU.";
+      container chasten-flow {
+        presence "Restricts the number of HTTPS connections that can be established within a specified period.";
+        description
+          "Enable/disable to restrict the number of HTTPS connections that can be established within a specified period.";
+        leaf flow-number {
+          type uint16 {
+            range "1..10000";
+          }
+          mandatory true;
+          description
+            "Specifies the number of HTTPS flow tables to be created.";
+        }
+        leaf flow-period {
+          type uint16 {
+            range "1..3600";
+          }
+          units "s";
+          mandatory true;
+          description
+            "Specifies the time for creating the HTTPS flow table.";
+        }
+        leaf flow-block-period {
+          type uint16 {
+            range "1..3600";
+          }
+          units "s";
+          mandatory true;
+          description
+            "Specifies the block time for HTTPS flow setup.";
+        }
+        leaf flow-block-rate {
+          type uint16 {
+            range "1..10";
+          }
+          mandatory true;
+          description
+            "Specifies the block rate for HTTPS flow setup.";
+        }
+      }
+      container chasten-redirect {
+        presence "Restricts the number of HTTPS redirection packets that can be sent as a reply within a specified period.";
+        description
+          "Enable/disable to restrict the number of HTTPS redirection packets that can be sent as a reply within a specified period.";
+        leaf redirect-number {
+          type uint16 {
+            range "1..10000";
+          }
+          mandatory true;
+          description
+            "Specifies the number of response redirection packets.";
+        }
+        leaf redirect-period {
+          type uint16 {
+            range "1..3600";
+          }
+          units "s";
+          mandatory true;
+          description
+            "Specifies the time for responding to redirection packets.";
+        }
+        leaf redirect-block-period {
+          type uint16 {
+            range "1..3600";
+          }
+          units "s";
+          mandatory true;
+          description
+            "Specifies the block time for HTTPS flow setup.";
+        }
+        leaf redirect-block-rate {
+          type uint16 {
+            range "1..10";
+          }
+          mandatory true;
+          description
+            "Specifies the block rate for HTTPS flow setup.";
+        }
+      }
+    }
+  }
+}
