@@ -1,0 +1,100 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ospfv2-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-ospfv2-deviations-ATN-980B";
+  prefix ospfv2-devs-ATN-980B;
+
+  import huawei-ospfv2 {
+    prefix ospfv2;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "OSPFv2 management.";
+
+  revision 2019-04-04 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:interfaces/ospfv2:interface/ospfv2:bfd/ospfv2:one-arm-echo-flag" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:interfaces/ospfv2:interface/ospfv2:bfd/ospfv2:per-link-flag" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:graceful-restart/ospfv2:gr-non-ietf/ospfv2:gr-non-ietf" {
+    deviate not-supported;
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:session-car/ospfv2:cir-interval" {
+    deviate replace {
+      units "pps";
+      default "10";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:session-car/ospfv2:cbs-interval" {
+    deviate replace {
+      units "packet";
+      default "100";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:session-car/ospfv2:pir-interval" {
+    deviate replace {
+      units "pps";
+      default "2000";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:session-car/ospfv2:pbs-interval" {
+    deviate replace {
+      units "packet";
+      default "2000";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/ospfv2:ospf-import-rts" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:interfaces/ospfv2:interface/ospfv2:source-sub-ip-address" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:cost-bindings" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:bier" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:mpls-ldp-auto-flag" {
+    deviate add {
+      must "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:enable='true' and ../../../../ni:name='_public_' or ../mpls-ldp-auto-flag='none'";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:spf-control/ospfv2:max-load-balancing" {
+    deviate replace {
+      type uint32 {
+        range "1..8";
+      }
+      default "8";
+    }
+  }
+}

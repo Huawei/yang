@@ -1,0 +1,38 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l3-multicast-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-l3-multicast-deviations-ATN-980B";
+  prefix l3mc-devs-ATN-980B;
+
+  import huawei-l3-multicast {
+    prefix l3mc;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-l3-multicast module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3mc:multicast/l3mc:ipv6" {
+    deviate add {
+      must "../../ni:name='_public_'";
+    }
+  }
+}

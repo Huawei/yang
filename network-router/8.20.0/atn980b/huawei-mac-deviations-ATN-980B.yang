@@ -1,0 +1,149 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mac-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-mac-deviations-ATN-980B";
+  prefix mac-devs-ATN-980B;
+
+  import huawei-mac {
+    prefix mac;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "MAC address forwarding.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef mac-type-deviations {
+    type enumeration {
+      enum dynamic {
+        value 2;
+        description
+          "Dynamic type.";
+      }
+      enum dynamic-black-hole {
+        value 15;
+        description
+          "Dynamic blackhole MAC.";
+      }
+    }
+    description
+      "MAC type.";
+  }
+
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:type" {
+    deviate replace {
+      type mac-devs-ATN-980B:mac-type-deviations;
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:uni-suppressions" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/mac:mac/mac:sub-interface-mac-limit/mac:limit-type/mac:limit-parameters/mac:maximum" {
+    deviate replace {
+      type uint32 {
+        range "0..262144";
+      }
+    }
+  }
+  deviation "/mac:mac/mac:mac-limit-rules/mac:mac-limit-rule/mac:maximum" {
+    deviate replace {
+      type uint32 {
+        range "0..262144";
+      }
+    }
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/mac:mac-limit/mac:up-threshold" {
+    deviate add {
+      must "../alarm='disable'";
+    }
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/mac:mac-limit/mac:down-threshold" {
+    deviate add {
+      must "../alarm='disable'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-limit/mac:alarm" {
+    deviate replace {
+      default "enable";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-limit/mac:up-threshold" {
+    deviate add {
+      must "../alarm='disable'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-limit/mac:down-threshold" {
+    deviate add {
+      must "../alarm='disable'";
+    }
+  }
+  deviation "/mac:mac/mac:bd-mac-total-numbers" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:learned-period" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:vsi-name" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:suppression/mac:inbound" {
+    deviate delete {
+      must "../../../l2vpn:work-mode='normal' or ../../../l2vpn:work-mode='i-vsi-b-evpn-interworking'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:suppression/mac:outbound" {
+    deviate delete {
+      must "../../../l2vpn:work-mode='normal' or ../../../l2vpn:work-mode='i-vsi-b-evpn-interworking'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:suppression/mac:inbound" {
+    deviate add {
+      must "../../../l2vpn:work-mode='normal'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:suppression/mac:outbound" {
+    deviate add {
+      must "../../../l2vpn:work-mode='normal'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-limit" {
+    deviate delete {
+      must "../../l2vpn:work-mode='normal' or ../../l2vpn:work-mode='i-vsi-b-evpn-interworking'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-limit" {
+    deviate add {
+      must "../../l2vpn:work-mode='normal'";
+    }
+  }
+}

@@ -1,0 +1,93 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ripng-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-ripng-deviations-ATN-980B";
+  prefix ripng-devs-ATN-980B;
+
+  import huawei-ripng {
+    prefix ripng;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "RIPng management.";
+
+  revision 2019-04-04 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef import-protocol-type-deviations {
+    type enumeration {
+      enum direct {
+        value 1;
+        description
+          "Import direct routes.";
+      }
+      enum isis {
+        value 3;
+        description
+          "Import ISIS routes.";
+      }
+      enum static {
+        value 4;
+        description
+          "Import static routes.";
+      }
+      enum bgp {
+        value 6;
+        description
+          "Import BGP routes.";
+      }
+      enum ospfv3 {
+        value 7;
+        description
+          "Import OSPFv3 routes.";
+      }
+      enum ripng {
+        value 8;
+        description
+          "Import RIPng routes.";
+      }
+    }
+    description
+      "RIPng import protocol type.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/ripng:ripng/ripng:processs/ripng:process/ripng:import-routes/ripng:import-route/ripng:policy-type/ripng:route-filter/ripng:route-filter" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ripng:ripng/ripng:processs/ripng:process/ripng:preference/ripng:policy-type/ripng:route-filter/ripng:route-filter" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ripng:ripng/ripng:processs/ripng:process/ripng:import-routes/ripng:import-route/ripng:protocol" {
+    deviate replace {
+      type ripng-devs-ATN-980B:import-protocol-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ripng:ripng/ripng:processs/ripng:process/ripng:maximum-load-balancing" {
+    deviate replace {
+      type uint8 {
+        range "1..32";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ripng:ripng/ripng:processs/ripng:process/ripng:maximum-load-balancing" {
+    deviate replace {
+      default "32";
+    }
+  }
+}

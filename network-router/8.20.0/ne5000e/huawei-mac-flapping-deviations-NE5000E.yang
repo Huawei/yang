@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mac-flapping-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-mac-flapping-deviations-NE5000E";
+  prefix mac-flapping-devs-NE5000E;
+
+  import huawei-mac-flapping {
+    prefix mac-flapping;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "MAC flapping-based loop detection.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac-flapping:mac-flapping" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:mac-flapping/mac-flapping:global-attribute/mac-flapping:assist-stp" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:mac-flapping/mac-flapping:global-attribute/mac-flapping:traffic-suppression" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:mac-flapping/mac-flapping:global-attribute/mac-flapping:traffic-suppression-threshold" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,53 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-eai-service {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-eai-service";
+  prefix eai-service;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Huawei EAI service.";
+  reference
+    "Huawei private.";
+  revision 2020-05-12 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  container eai-service {
+    description
+      "EAI service management.";
+    container global {
+      description
+        "Configure global attributes.";
+      leaf anomaly-detection-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable EAI anomaly detection.";
+      }
+      leaf resource-prediction-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable EAI resource prediction.";
+      }
+    }
+  }
+
+  ext:task-name "eai";
+}

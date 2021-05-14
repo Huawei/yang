@@ -1,0 +1,78 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2vpn-vpls-ext-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-l2vpn-vpls-ext-deviations-ATN-980B";
+  prefix l2vpn-vpls-ext-devs-ATN-980B;
+
+  import huawei-l2vpn-vpls-ext {
+    prefix l2vpn-vpls-ext;
+  }
+
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-l2vpn-vpls-ext module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:vpls-ldp-fast-switch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:pw-source-tunnel-check" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:convergence-separate-in-system" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:vpls-tm-prune-enable" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vsi-pipe/l2vpn-vpls-ext:color" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:reserve-if-switch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vpls-ext/l2vpn-vpls-ext:vsi-multicast-switch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vpls-ext/l2vpn-vpls-ext:convergence-separate" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vsi-pipe/l2vpn-vpls-ext:pipe-mode" {
+    deviate add {
+      must "(../split-mode='false') and ((../pipe-mode='pipe' and (../service-class)) or (../pipe-mode='shortPipe' and (../service-class) and (../domain-name)) or (../pipe-mode='uniform'))";
+    }
+    deviate delete {
+      must "(../split-mode='false') and ((../pipe-mode='pipe' and (../service-class) and (../color)) or (../pipe-mode='shortPipe' and (../service-class) and (../color) and (../domain-name)) or (../pipe-mode='uniform'))";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vsi-pipe/l2vpn-vpls-ext:ingress-pipe-mode" {
+    deviate add {
+      must "((../split-mode='true') and (((../service-class) and (../ingress-pipe-mode='shortPipe' or ../ingress-pipe-mode='pipe')) or (../ingress-pipe-mode='uniform' and ../egress-pipe-mode!='uniform')))";
+    }
+    deviate delete {
+      must "((../split-mode='true') and (((../service-class) and (../color) and (../ingress-pipe-mode='shortPipe' or ../ingress-pipe-mode='pipe')) or (../ingress-pipe-mode='uniform' and ../egress-pipe-mode!='uniform')))";
+    }
+  }
+
+}

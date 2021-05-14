@@ -1,0 +1,79 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-sshc-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-sshc-deviations-ATN-980B";
+  prefix sshc-devs-ATN-980B;
+
+  import huawei-sshc {
+    prefix sshc;
+  }
+  import huawei-sm2 {
+    prefix sm2;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "SSH client.";
+
+  revision 2019-05-01 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef sshc-pubkey-type-deviations {
+    type enumeration {
+      enum RSA {
+        value 1;
+        description
+          "RSA client public key.";
+      }
+      enum DSA {
+        value 2;
+        description
+          "DSA client public key.";
+      }
+      enum ECC {
+        value 3;
+        description
+          "ECC client public key.";
+      }
+    }
+    description
+      "SSH client public key encryption type list.";
+  }
+
+  deviation "/sshc:sshc/sshc:server-authentications/sshc:server-authentication/sshc:pubkey-type" {
+    deviate replace {
+      type sshc-devs-ATN-980B:sshc-pubkey-type-deviations;
+    }
+  }
+  deviation "/sshc:sshc/sshc:client/sshc:sm2-host-key" {
+    deviate not-supported;
+  }
+  deviation "/sshc:sshc/sshc:pubkey-alg" {
+    deviate delete {
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/sm2 = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true'";
+    }
+    deviate add {
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true'";
+    }
+  }
+  deviation "/sshc:sshc/sshc:server-authentications/sshc:server-authentication/sshc:key-name" {
+    deviate delete {
+      must "(../pubkey-type = 'SM2' and ../key-name = /sm2:sm2/sm2:sm2-peer-keys/sm2:sm2-peer-key[sm2:key-name=current()]/sm2:key-name) or ../pubkey-type != 'SM2'";
+    }
+  }
+  deviation "/sshc:sshc/sshc:pubkey-alg/sshc:sm2" {
+    deviate not-supported;
+  }
+}

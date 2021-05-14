@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-rgm-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-rgm-deviations-NE5000E";
+  prefix rgm-devs-NE5000E;
+
+  import huawei-rgm {
+    prefix rgm;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "IPv4 Direct Route Association.";
+
+  revision 2020-01-20 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/rgm:rgm/rgm:rgm-track/rgm:track-pw" {
+    deviate not-supported;
+  }
+}

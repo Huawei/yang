@@ -1,0 +1,68 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-rip-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-rip-deviations-ATN-980B";
+  prefix rip-devs-ATN-980B;
+
+  import huawei-rip {
+    prefix rip;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "RIP management.";
+
+  revision 2019-04-04 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/rip:rip/rip:processs/rip:process/rip:default-route/rip:default-route-mode/rip:route-filter-name/rip:route-filter-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/rip:rip/rip:processs/rip:process/rip:import-routes/rip:import-route/rip:policy-type/rip:route-filter-name/rip:route-filter-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/rip:rip/rip:processs/rip:process/rip:preference/rip:policy-type/rip:route-filter/rip:route-filter" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/rip:rip/rip:processs/rip:process/rip:maximum-load-balancing" {
+    deviate replace {
+      type uint8 {
+        range "1..8";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/rip:rip/rip:processs/rip:process/rip:maximum-load-balancing" {
+    deviate replace {
+      default "8";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/rip:rip/rip:processs/rip:process/rip:bfd/rip:min-rx" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/rip:rip/rip:processs/rip:process/rip:bfd/rip:min-tx" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+}

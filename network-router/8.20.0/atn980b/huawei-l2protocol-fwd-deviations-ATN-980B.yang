@@ -1,0 +1,198 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2protocol-fwd-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-l2protocol-fwd-deviations-ATN-980B";
+  prefix l2protocol-fwd-devs-ATN-980B;
+
+  import huawei-l2protocol-fwd {
+    prefix l2protocol-fwd;
+  }
+
+  import huawei-evpn {
+    prefix evpn;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+
+  import huawei-bd {
+    prefix bd;
+  }
+
+  import huawei-evpl {
+    prefix evpl;
+  }
+
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-l2protocol-fwd module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef mode-deviations {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description 
+          "Normal.";
+      }
+      enum "tag-aware" {
+        value 6;
+        description 
+          "Tag-aware.";
+      }
+    }
+    description 
+      "Link protocol transport action type.";
+  }
+
+  typedef mode-evpn-deviations {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description 
+          "Normal.";
+      }
+      enum "tag-aware" {
+        value 6;
+        description 
+          "Tag-aware.";
+      }
+      enum "untag" {
+        value 1;
+        description 
+          "Untag.";
+      }
+    }
+    description 
+      "Link protocol transport action type.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/l2protocol-fwd:protocol-actions" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/l2protocol-fwd:link-protocol-transport" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/l2protocol-fwd:link-protocol-transport" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:acs/l2vpn:ac/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action" {
+    deviate add {
+      must "action='transport' and
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ifm:parent-name and
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ifm:l2-mode-enable='false' and
+(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q or
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking)";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:acs/l2vpn:ac/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action/l2protocol-fwd:mode" {
+    deviate replace {
+      type l2protocol-fwd-devs-ATN-980B:mode-deviations;
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-bgp/l2vpn:acs/l2vpn:ac/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action" {
+    deviate add {
+      must "action='transport'";
+    }
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q or
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-bgp/l2vpn:acs/l2vpn:ac/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action/l2protocol-fwd:mode" {
+    deviate replace {
+      type l2protocol-fwd-devs-ATN-980B:mode-deviations;
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action" {
+    deviate add {
+      must "action='transport'";
+    }
+    deviate add {
+      must "action='transport' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ifm:parent-name and
+(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q or
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking)";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action/l2protocol-fwd:mode" {
+    deviate replace {
+      type l2protocol-fwd-devs-ATN-980B:mode-deviations;
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:service-points/bd:service-point/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action" {
+    deviate add {
+      must "action='transport' and
+(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:dot1q/ethernet:vlans or
+((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:dot1q/ethernet:policy-vlans or
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:default or
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:untag or
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:qinqs) and mode='untag')) and
+(not (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:flow-action) or mode='untag') and
+not (/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bds/l2vpn:bd[l2vpn:id=current()/../../../../bd:id]) and ../../../../evpn:evpn";
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:service-points/bd:service-point/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action/l2protocol-fwd:mode" {
+    deviate replace {
+      type l2protocol-fwd-devs-ATN-980B:mode-evpn-deviations;
+    }
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpl:interfaces/evpl:interface/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action" {
+    deviate add {
+      must "action='transport' and
+(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../evpl:name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q or
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../evpl:name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking or
+((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../evpl:name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination or
+/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../evpl:name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination) and mode='untag'))";
+    }
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpl:interfaces/evpl:interface/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action/l2protocol-fwd:mode" {
+    deviate replace {
+      type l2protocol-fwd-devs-ATN-980B:mode-evpn-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/evpn:evpn/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action" {
+    deviate add {
+      must "action='transport' and
+../../../ifm:parent-name and
+../../../ifm:l2-mode-enable='false' and
+(../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q or
+../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/evpn:evpn/l2protocol-fwd:protocol-actions/l2protocol-fwd:protocol-action/l2protocol-fwd:mode" {
+    deviate replace {
+      type l2protocol-fwd-devs-ATN-980B:mode-evpn-deviations;
+    }
+  }
+
+}

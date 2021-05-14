@@ -1,0 +1,92 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mirror-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mirror-deviations-NE5000E";
+  prefix "mirror-devs-NE5000E";
+
+  import huawei-mirror {
+    prefix "mirror";
+  }
+  import huawei-qos {
+    prefix "qos";
+  }
+  import huawei-ifm {
+    prefix "ifm";
+  }
+  import huawei-devm {
+    prefix "devm";
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Mirror.";
+  revision 2019-04-08 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  
+  deviation /qos:qos/qos:global-config/mirror:mirror {
+    deviate not-supported;
+  }
+  
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:destination-mac {
+    deviate not-supported;
+  }    
+            
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:pop-label {
+    deviate not-supported;
+  }    
+            
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:sub-extend {
+    deviate not-supported;
+  }               
+            
+
+  deviation /devm:devm/devm:mpu-boards/devm:mpu-board/mirror:mirror {
+    deviate not-supported;
+  }
+            
+
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:without-header {
+    deviate not-supported;
+  }
+            
+
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-fragments{
+    deviate not-supported;
+  }
+  
+  deviation /devm:devm/devm:lpu-boards/devm:lpu-board/mirror:mirror/mirror:observe-filters {
+    deviate not-supported;
+  }
+			
+
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:bas-port-mirrors {
+    deviate not-supported;
+  }
+  
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirrors/mirror:port-mirror/mirror:cpu-packet{
+    deviate add {
+      must "../mirror:cpu-packet='false'";
+    }
+  }
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:without-filter {
+    deviate not-supported;
+  }
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:with-linklayer-header {
+    deviate not-supported;
+  }
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirrors/mirror:port-mirror/mirror:property/mirror:vlan/mirror:cevlan {
+    deviate not-supported;
+  }
+}

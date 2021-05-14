@@ -1,0 +1,43 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nvo3-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-nvo3-deviations-NE5000E";
+  prefix nvo3-devs-NE5000E;
+
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+  import huawei-evpl {
+    prefix evpl;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Management of NVO3.";
+
+  revision 2020-02-11 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/nvo3:nvo3" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-evpl-peers" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vteps/nvo3:evpl-peers" {
+    deviate not-supported;
+  }
+}

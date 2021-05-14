@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-grpc-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-grpc-deviations-ATN-980B";
+  prefix hw-grpc-devs-ATN-980B;
+
+  import huawei-grpc {
+    prefix hw-grpc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com
+    ";
+  description
+    "Data model which creates the condition for the huawei-grpc.";
+
+  revision 2020-01-10 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/hw-grpc:grpc/hw-grpc:session-car/hw-grpc:cir-interval" {
+    deviate replace {
+      units "pps";
+      default "10";
+    }
+  }
+  deviation "/hw-grpc:grpc/hw-grpc:session-car/hw-grpc:cbs-interval" {
+    deviate replace {
+      units "packet";
+      default "10";
+    }
+  }
+  deviation "/hw-grpc:grpc/hw-grpc:session-car/hw-grpc:pir-interval" {
+    deviate replace {
+      units "pps";
+      default "100";
+    }
+  }
+  deviation "/hw-grpc:grpc/hw-grpc:session-car/hw-grpc:pbs-interval" {
+    deviate replace {
+      units "packet";
+      default "100";
+    }
+  }
+}

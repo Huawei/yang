@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-lsp-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bgp-lsp-deviations-NE5000E";
+  prefix bgp-lsp-devs-NE5000E;
+
+  import huawei-bgp-lsp {
+    prefix bgp-lsp;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bgp-lsp:bgp-lsp/bgp-lsp:bfd/bgp-lsp:parameters" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:global/bgp-lsp:bgp-ttl-mode" {
+    deviate not-supported;
+  }
+}

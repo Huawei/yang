@@ -1,0 +1,73 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-notification-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-clocksync-notification-deviations-NE5000E";
+  prefix clocksync-notification-devs-NE5000E;
+  import huawei-clocksync-notification {
+    prefix clocksync-notification;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of clocksync-notification-deviations-NE5000E.";
+  revision 2020-01-14 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  deviation /clocksync-notification:clock-ces-acr-lock-fail {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:clock-ces-acr-lock-fail-resume {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:clock-fm-switch {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:clock-fm-switch-resume {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:clock-sync-bad {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:clock-sync-bad-resume {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:ptp-acr-sync-bad {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:ptp-acr-sync-bad-resume {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:clock-ces-acr-master-pw-change {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:clock-gnss-model-change {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:ptp-adaptive-ptsf-state-change {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:ptp-adaptive-client-list-change {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:ptp-adaptive-nego-info-change {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:ptp-adaptive-trace-source-change {
+    deviate not-supported;
+  }
+  deviation /clocksync-notification:ptp-pdv-limit-exceed {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nqa-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-nqa-deviations-ATN-980B";
+  prefix nqa-devs-ATN-980B;
+
+  import huawei-nqa {
+    prefix nqa;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Network quality analysis.";
+
+  revision 2019-10-29 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/nqa:nqa/nqa:global/nqa:vxlan-echo-v4" {
+    deviate not-supported;
+  }
+}

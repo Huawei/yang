@@ -1,0 +1,68 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-y1731-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-y1731-deviations-ATN-980B";
+  prefix y1731-devs-ATN-980B;
+
+  import huawei-y1731 {
+    prefix y1731;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Y.1731 is developed by ITU-T for operations, administration and maintenance (OAM) of Ethernet, which providing fault management and performance management solutions for Ethernet.";
+
+  revision 2019-05-05 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:pw-mep" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep" {
+    deviate delete {
+      must '(direction and (if-name or peer-ip)) or (not(direction) and not(if-name) and not(peer-ip))';
+    }
+    deviate add {
+      must '(y1731:direction and y1731:if-name ) or (not(y1731:direction) and not(y1731:if-name))';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:rdi-alarm-disabled" {
+    deviate delete {
+      must "../rdi-alarm-disabled='false' or (../if-name or ../peer-ip)";
+    }
+    deviate add {
+      must "../y1731:rdi-alarm-disabled='false' or (../y1731:if-name)";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:ais-alarm-disabled" {
+    deviate delete {
+      must "../ais-alarm-disabled='false' or (../if-name or ../peer-ip)";
+    }
+    deviate add {
+      must "../y1731:ais-alarm-disabled='false' or (../y1731:if-name)";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:peer-ip" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:vc-id" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:priority" {
+    deviate delete {
+      must '(../priority and not(../peer-ip) and not(../vc-id)) or not(../priority)';
+    }
+  }
+}
