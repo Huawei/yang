@@ -40,6 +40,12 @@ module huawei-rsvp-interface {
      Email: support@huawei.com";
   description
     "Specifies the traffic engineering configuration.";
+  revision 2020-07-11 {
+    description
+      "Add private syntax to the keychain name.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-03-10 {
     description
       "Fixed some nodes condition.";
@@ -114,8 +120,10 @@ module huawei-rsvp-interface {
             when "../enable='true' and ../type='keychain'";
             type string {
               length "1..47";
+              pattern '[^A-Z]+';
             }
             mandatory true;
+            ext:case-sensitivity lower-only;
             description
               "Keychain name. The name is case insensitive.";
           }            

@@ -48,12 +48,21 @@ module huawei-mpls-forward {
     Email: support@huawei.com";
   description
     "MPLS forward.";
- revision 2020-03-25 {
+  revision 2020-06-10 {
+    description
+      "Adding new nodes.";
+    reference "Huawei private.";
+  }
+  revision 2020-05-18 {
+    description
+      "Updating nodes.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-25 {
     description
       "Modifying some non-standard descriptions.";
     reference "Huawei private.";
   }
-
   revision 2020-02-27 {
     description
       "Removing the invalid definition of enumeration type and modifying the invalid statements.";
@@ -557,7 +566,7 @@ module huawei-mpls-forward {
     description
       "MPLS forward configuration to the ifm module.";
     container deephashcfg {
-      when "../ifm:type='Ethernet' or ../ifm:type='GigabitEthernet' or ../ifm:type='100GE' or ../ifm:type='10GE' or ../ifm:type='4x10GE' or ../ifm:type='10x10GE' or ../ifm:type='3x40GE' or ../ifm:type='4x25GE' or ../ifm:type='25GE' or ../ifm:type='50GE' or ../ifm:type='50|100GE' or ../ifm:type='XGigabitEthernet' or ../ifm:type='Pos' or ../ifm:type='40GE' or ../ifm:type='MEth' or ../ifm:type='400GE' or ../ifm:type='GEBrief' or ../ifm:type='200GE'";
+      when "../ifm:type='Ethernet' or ../ifm:type='FlexE' or ../ifm:type='GigabitEthernet' or ../ifm:type='100GE' or ../ifm:type='10GE' or ../ifm:type='4x10GE' or ../ifm:type='10x10GE' or ../ifm:type='3x40GE' or ../ifm:type='4x25GE' or ../ifm:type='25GE' or ../ifm:type='50GE' or ../ifm:type='50|100GE' or ../ifm:type='XGigabitEthernet' or ../ifm:type='Pos' or ../ifm:type='40GE' or ../ifm:type='MEth' or ../ifm:type='400GE' or ../ifm:type='GEBrief' or ../ifm:type='200GE'";
       description
         "Configure MPLS deep hash mode.";
       leaf fragment-field {
@@ -574,7 +583,7 @@ module huawei-mpls-forward {
       }
     }
     container if-poison-reverse {
-      when "../ifm:type='Ethernet' or ../ifm:type='GigabitEthernet' or ../ifm:type='100GE' or ../ifm:type='10GE' or ../ifm:type='4x10GE' or ../ifm:type='10x10GE' or ../ifm:type='3x40GE' or ../ifm:type='4x25GE' or ../ifm:type='25GE' or ../ifm:type='XGigabitEthernet' or ../ifm:type='Eth-Trunk' or ../ifm:type='Ip-Trunk' or ../ifm:type='400GE' or ../ifm:type='Pos' or ../ifm:type='40GE' or ../ifm:type='MEth' or ../ifm:type='GEBrief' or ../ifm:type='200GE' or ../ifm:type='50|100GE' or ../ifm:type='50GE'";
+      when "../ifm:type='Ethernet' or ../ifm:type='FlexE' or ../ifm:type='GigabitEthernet' or ../ifm:type='100GE' or ../ifm:type='10GE' or ../ifm:type='4x10GE' or ../ifm:type='10x10GE' or ../ifm:type='3x40GE' or ../ifm:type='4x25GE' or ../ifm:type='25GE' or ../ifm:type='XGigabitEthernet' or ../ifm:type='Eth-Trunk' or ../ifm:type='Ip-Trunk' or ../ifm:type='400GE' or ../ifm:type='Pos' or ../ifm:type='40GE' or ../ifm:type='MEth' or ../ifm:type='GEBrief' or ../ifm:type='200GE' or ../ifm:type='50|100GE' or ../ifm:type='50GE'";
       presence "Enable poison reverse on an interface";
       description
         "Configure MPLS poison reverse on the interface.";
@@ -601,6 +610,17 @@ module huawei-mpls-forward {
         default "disable";
         description
           "Root node S-PMSI trunk disable flag.";
+      }
+    }
+    container bgp-localifnet-traffic{
+      when "../ifm:type='GigabitEthernet' or ../ifm:type='XGigabitEthernet' or ../ifm:type='10GE' or ../ifm:type='25GE' or ../ifm:type='40GE' or ../ifm:type='50GE' or ../ifm:type='100GE' or ../ifm:type='200GE' or ../ifm:type = 'FlexE' or ../ifm:type='400GE' or ../ifm:type='50|100GE' or ../ifm:type='Ethernet' or ../ifm:type='Eth-Trunk' or ../ifm:type='Ip-Trunk' or ../ifm:type='Pos' or ../ifm:type='4x10GE' or ../ifm:type='10x10GE' or ../ifm:type='3x40GE' or ../ifm:type='4x25GE' or ../ifm:type='Mp-group' or ../ ifm:type='Serial' or ../ifm:class='sub-interface'";
+      description
+        "Configure the HQoS function for the traffic carried by a BGP local IFNET tunnel on an interface.";
+      leaf localifnet-enable {
+        type enable-flag;
+        default "disable";
+        description
+          "Traffic enable flag.";
       }
     }
   }
@@ -774,6 +794,7 @@ module huawei-mpls-forward {
         type uint32 {
           range "5..600";
         }
+        units s;
         default "5";
         description
           "P2MP FRR WTR for forwarding plane.";

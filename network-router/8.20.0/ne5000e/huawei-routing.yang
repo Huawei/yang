@@ -142,7 +142,7 @@ module huawei-routing {
           type leafref {
             path "/rtp:routing-policy/rtp:ipv4-prefix-filters/rtp:ipv4-prefix-filter/rtp:name";
           }
-          must "../enable='true' or not(../ipv4-prefix-ref)";
+          must "../enable='true'";
           description
             "Name of an IPv4 prefix list.";
         }
@@ -151,7 +151,7 @@ module huawei-routing {
           type leafref {
             path "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:name";
           }
-          must "../enable='true' or not(../tunnel-policy-ref)";
+          must "../enable='true'";
           description
             "Name of a tunnel policy.";
         }
@@ -178,7 +178,7 @@ module huawei-routing {
           "Configure thresholds (one alarm threshold and one clear alarm threshold) for the number of IPv4 route prefixes.";
         leaf upper-percent {
           type uint8 {
-            range "1..100";
+            range "2..100";
           }
           units "%";
           default "80";
@@ -187,7 +187,7 @@ module huawei-routing {
         }
         leaf lower-percent {
           type uint8 {
-            range "1..100";
+            range "1..99";
           }
           units "%";
           default "70";
@@ -201,7 +201,7 @@ module huawei-routing {
           "Configure thresholds (one alarm threshold and one clear alarm threshold) for the number of IPv6 route prefixes.";
         leaf upper-percent {
           type uint8 {
-            range "1..100";
+            range "2..100";
           }
           units "%";
           default "80";
@@ -210,7 +210,7 @@ module huawei-routing {
         }
         leaf lower-percent {
           type uint8 {
-            range "1..100";
+            range "1..99";
           }
           units "%";
           default "70";
@@ -451,6 +451,12 @@ module huawei-routing {
           description
             "Maximum number of IPv4 static routes that can be configured.";
         }
+        leaf relay-srv6-nexthop {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of recursing IPv4 unicast static routes to SRv6 routes.";
+        }
       }
       container ipv4-relay-tunnel {
         description
@@ -466,7 +472,7 @@ module huawei-routing {
           type leafref {
             path "/rtp:routing-policy/rtp:ipv4-prefix-filters/rtp:ipv4-prefix-filter/rtp:name";
           }
-          must "../enable='true' or not(../ipv4-prefix-ref)";
+          must "../enable='true'";
           description
             "Name of an IPv4 prefix list.";
         }
@@ -475,7 +481,7 @@ module huawei-routing {
           type leafref {
             path "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:name";
           }
-          must "../enable='true' or not(../tunnel-policy-ref)";
+          must "../enable='true'";
           description
             "Name of a tunnel policy.";
         }
@@ -513,6 +519,12 @@ module huawei-routing {
           description
             "IPv6 Local detection multiplier.";
         }
+        leaf relay-arp-vlink6 {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of recursing IPv6 unicast static routes to ARP Vlink routes.";
+        }
         leaf current-route-num {
           type uint32;
           config false;
@@ -525,6 +537,12 @@ module huawei-routing {
           description
             "Maximum number of IPv6 static routes that can be configured.";
         }
+        leaf relay-srv6-nexthop6 {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of recursing IPv6 unicast static routes to SRv6 routes.";
+        }		
       }
       container max-route-number {
         config false;
@@ -650,7 +668,7 @@ module huawei-routing {
               }
               must "../../../../../../../ni:name='_public_' or ../name='base'";
               description
-                "Topology name. The base topology cannot be deleted. The letters in the topology name should be lowercase.";
+                "Topology name. The base topology cannot be created or deleted. The letters in the topology name should be lowercase.";
             }
             container routes {
                     config false;
@@ -788,6 +806,85 @@ module huawei-routing {
                   description
                     "Sub protocol type.";
                 }
+                leaf tunnel-type {
+                  type tnlm:tunnel-type;
+                  description
+                    "Tunnel type.";
+                }
+                leaf tunnel-id {
+                  type string {
+                    length "1..21";
+                  }
+                  description
+                    "Tunnel ID.";
+                }
+                leaf nexthop-vrf-name {
+                  type string {
+                    length "1..31";
+                  }
+                  description
+                    "Nexthop VPN instance name.";
+                }
+                leaf relay-nexthop {
+                  type inet:ip-address-no-zone;
+                  description
+                    "Iteration next hop.";
+                }				
+                choice tunnel-types {
+                  description
+                    "Tunnel type.";
+                  case mpls-tunnel{  
+                    description
+                      "MPLS tunnel information.";
+                    leaf out-label {
+                      type uint32; 
+                      description
+                        "Outbound label that is used for traffic forwarding along a tunnel.";
+                    }
+                    leaf label-stack {
+                      type string {
+                        length "0..120";
+                      }
+                      description
+                        "Label Stack that is used for traffic forwarding along a tunnel.";
+                    }
+                  }
+                  case sr-policy{  
+                    description
+                      "SR-MPLS TE Policy tunnel information.";
+                    leaf group-id {
+                      type uint32;
+                      description
+                        "Index of an SR-MPLS TE Policy group.";
+                    }
+                    leaf endpoint {
+                      type inet:ip-address-no-zone;
+                      description
+                        "Destination address of an SR-MPLS TE Policy.";
+                    }
+                    leaf color {
+                      type uint32;
+                      description
+                        "Color of an SR-MPLS TE Policy.";
+                    }
+                    leaf policy-name {
+                      type string {
+                        length "0..31";
+                      }
+                      description
+                        "Policy Name of an SR-MPLS TE Policy.";
+                    }
+                  }
+                  case vxlan{ 
+                    description
+                      "VXLAN tunnel information.";
+                    leaf vni {
+                      type uint32;
+                      description
+                        "VXLAN network identifier.";
+                    }                    
+                  }
+                }
               }
             }
             container ipv6-unicast-routes {
@@ -922,6 +1019,43 @@ module huawei-routing {
                   description
                     "Sub protocol type.";
                 }
+                leaf tunnel-type {
+                  type tnlm:tunnel-type;
+                  description
+                    "Tunnel type.";
+                }
+                leaf tunnel-id {
+                  type string {
+                    length "1..21";
+                  }
+                  description
+                    "Tunnel ID.";
+                }
+                leaf nexthop-vrf-name {
+                  type string {
+                    length "1..31";
+                  }
+                  description
+                    "Nexthop VPN instance name.";
+                }
+                leaf relay-nexthop {
+                  type inet:ip-address-no-zone;
+                  description
+                    "Iteration next hop.";
+                }				
+                choice tunnel-types {
+                  description
+                    "Tunnel type.";
+                  case vxlan{ 
+                    description
+                      "VXLAN tunnel information.";
+                    leaf vni {
+                      type uint32;
+                      description
+                        "VXLAN network identifier.";
+                    }                    
+                  }
+                }
               }
             }
             container ipv4-route-statistics {
@@ -1005,7 +1139,7 @@ module huawei-routing {
             container binding-topologys {
               when "../../../../../../../ni:name='_public_' and (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:class='sub-interface' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='Serial' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='100GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='10GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='25GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='40GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='Eth-Trunk' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='Ethernet' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='GigabitEthernet' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='Ip-Trunk' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='LoopBack' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='Mp-group' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../rt:name]/ifm:type='Pos')";
               description
-              "The list of Interface binding topology.";
+              "List of Interface binding topology.";
               list binding-topology {
                 key "topology-name";
                 description
@@ -1138,7 +1272,7 @@ To change the global default priority of IPv6 static routes, use the /rt:routing
             }
             leaf permanent {
               type boolean;
-              must "(../../../../../l3vpn:type='ipv4-unicast' and ../next-hop!='0.0.0.0' and ../topology-name='base') or ../permanent='false'";
+              must "(((../../../../../l3vpn:type='ipv4-unicast' and ../next-hop!='0.0.0.0') or (../../../../../l3vpn:type='ipv6-unicast' and ../next-hop!='::')) and ../topology-name='base') or ../permanent='false'";
               default "false";
               description
                 "Enable/disable permanent advertisement of a static route.";
@@ -1187,6 +1321,14 @@ To change the global default priority of IPv6 static routes, use the /rt:routing
               default "false";
               description
                 "Enable/disable the function of binding a dynamic BFD session to a static route. Dynamic BFD sessions can quickly detect link changes for static routes, which improves network reliability. Precaution: When enabling BFD for a single static route, you need to check whether BFD parameters are set for the static route.";
+            }
+            leaf relay-arp-vlink-route {
+              when "../relay-host-route='true'";
+              type boolean;
+              must "../../../../../l3vpn:type='ipv4-unicast'";
+              default "false";
+              description
+                "Enable/disable static routes to be iterated only to ARP Vlink routes.";
             }
             choice track-setting {
               description
@@ -1416,6 +1558,400 @@ To change the global default priority of IPv6 BFD templates, use the /rt:routing
             default "false";
             description
               "Enable/disable FRR. Before configuring FRR for multicast VPN static routes, you need to configure VPN instances.";
+          }
+        }
+        container ipv4-routes {
+          config false;
+          description
+            "List of static routes.";
+          list ipv4-route {
+            key "topology-name prefix mask-length interface-name vpn-destination-name next-hop relay-next-hop relay-interface-name tunnel-id";
+            description
+              "Operational state of the IPv4 static routing table.";
+            leaf topology-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:name";
+              }
+              description
+                "Name of the specified topology.";
+            }
+            leaf prefix {
+              type inet:ip-address-no-zone;
+              description
+                "Destination IP address.";
+            }
+            leaf mask-length {
+              type uint8 {
+                range "0..128";
+              }
+              description
+                "Mask length of an IP address.";
+            }
+            leaf interface-name {
+              type string {
+                length "0..63";
+              }
+              description
+                "Transmission interface of a route.";
+            }
+            leaf vpn-destination-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+              }
+              description
+                "Name of the destination VPN instance.";
+            }
+            leaf next-hop {
+              type inet:ip-address-no-zone;
+              description
+                "Next-hop IP address of a route.";
+            }
+            leaf relay-next-hop {
+              type inet:ip-address-no-zone;
+              description
+                "Next hop address to which a static route is iterated. If the static route is iterated to a tunnel, this item is displayed as 0.0.0.0.";
+            }
+            leaf relay-interface-name {
+              type string {
+                length "0..63";
+              }
+              description
+                "Name of an iteration outbound interface. If the static route is iterated to a tunnel, this item is displayed as a tunnel name.";
+            }
+            leaf tunnel-id {
+              type string {
+                length "1..21";
+              }
+              description
+                "ID of a tunnel.";
+            }
+            leaf preference {
+              type uint32 {
+                range "1..255";
+              }
+              description
+                "Priority of a static routing protocol. If no priority is specified for the protocol, the global default priority is used.";
+            }
+            leaf cost {
+              type uint32;
+              description
+                "Cost of static route.";
+            }
+            leaf tag {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Tag of a static route.";
+            }
+            leaf interface-state {
+              type string {
+                length "1..8";
+              }
+              description
+                "Interface status.";
+            }
+            leaf state {
+              type string {
+                length "1..25";
+              }
+              description
+                "Route selection result:
+                Active Primary: indicates an active primary route.
+                Active Backup: indicates an active backup route.
+                Inactive Valid: indicates a route that takes part in the route selection but is not preferred.
+                Inactive Invalid: indicates a route that cannot take part in the route selection.";
+            }
+            leaf indirect-id {
+              type pub-type:hex-binary;
+              description
+                "Keyword of indirect next hop.";
+            }
+            leaf local-address {
+              type inet:ip-address-no-zone;
+              description
+                "IP address of the local interface.";
+            }
+            leaf remote-ip {
+              type inet:ip-address-no-zone;
+              description
+                "IP address of the remote P2P interface.";
+            }
+            leaf inherit-cost {
+              type boolean;
+              description
+                "The cost value of the static route will change according to the iterative route cost value.";
+            }
+            leaf label {
+              type uint32;
+              description
+                "Label.";
+            }
+            leaf permanent {
+              type boolean;
+              description
+                "Static route permanent advertisement status.";
+            }
+            leaf no-advertise {
+              type boolean;
+              description
+                "No advertise the static route.";
+            }
+            leaf no-install {
+              type boolean;
+              description
+                "No install the static route.";
+            }
+            leaf bfd-type {
+              type string {
+                length "0..15";
+              }
+              description
+                "Type of BFD enabled for the static route.";
+            }
+            leaf bfd-session-name {
+              type leafref {
+                path "/bfd:bfd/bfd:sessions/bfd:session/bfd:name";
+              }
+              description
+                "Binds a static BFD session to a static route. The static BFD session can detect the session link status and quickly detect link status changes, which improves network reliability.";
+            }
+            leaf bfd-detect {
+              type string {
+                length "1..36";
+              }
+              description
+                "Establishment status of a BFD session:
+                Disable: indicates that the BFD session is not enabled.
+                Up: indicates that the BFD session is established successfully.
+                Down: indicates that the BFD session fails to be established.";
+            }
+            leaf efm-interface-name {
+              type string {
+                length "0..63";
+              }
+              description
+                "EFM interface name.";
+            }
+            leaf efm-detect {
+              type string {
+                length "1..8";
+              }
+              description
+                "Detection status of EFM:
+                Disable: indicates that the EFM detection is not enabled.
+                Up: indicates the EFM detection succeeds.
+                Down: indicates the EFM detection fails.
+                UNKNOWN: indicates the detection status of the EFM test instance is no result.";
+            }
+            leaf nqa-detect {
+              type string {
+                length "1..8";
+              }
+              description
+                "Detection status of an NQA test instance:
+                Disable: indicates that the NQA test instance is not enabled.
+                Up: indicates the detection of the NQA test instance succeeds.
+                Down: indicates the detection of the NQA test instance fails.
+                UNKNOWN: indicates the detection status of the NQA test instance is no result.";
+            }
+          }
+        }
+        container ipv6-routes {
+          config false;
+          description
+            "List of static routes.";
+          list ipv6-route {
+            key "topology-name prefix mask-length interface-name vpn-destination-name next-hop relay-next-hop relay-interface-name tunnel-id";
+            description
+              "Operational state of the IPv6 static routing table.";
+            leaf topology-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:name";
+              }
+              description
+                "Name of the specified topology.";
+            }
+            leaf prefix {
+              type inet:ip-address-no-zone;
+              description
+                "Destination IP address.";
+            }
+            leaf mask-length {
+              type uint8 {
+                range "0..128";
+              }
+              description
+                "Mask length of an IP address.";
+            }
+            leaf interface-name {
+              type string {
+                length "0..63";
+              }
+              description
+                "Transmission interface of a route.";
+            }
+            leaf vpn-destination-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+              }
+              description
+                "Name of the destination VPN instance.";
+            }
+            leaf next-hop {
+              type inet:ip-address-no-zone;
+              description
+                "Next-hop IP address of a route.";
+            }
+            leaf relay-next-hop {
+              type inet:ip-address-no-zone;
+              description
+                "Next hop address to which a static route is iterated. If the static route is iterated to a tunnel, this item is displayed as 0.0.0.0.";
+            }
+            leaf relay-interface-name {
+              type string {
+                length "0..63";
+              }
+              description
+                "Name of an iteration outbound interface. If the static route is iterated to a tunnel, this item is displayed as a tunnel name.";
+            }
+            leaf tunnel-id {
+              type string {
+                length "1..21";
+              }
+              description
+                "ID of a tunnel.";
+            }
+            leaf preference {
+              type uint32 {
+                range "1..255";
+              }
+              description
+                "Priority of a static routing protocol. If no priority is specified for the protocol, the global default priority is used.";
+            }
+            leaf cost {
+              type uint32;
+              description
+                "Cost of static route.";
+            }
+            leaf tag {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Tag of a static route.";
+            }
+            leaf interface-state {
+              type string {
+                length "1..8";
+              }
+              description
+                "Interface status.";
+            }
+            leaf state {
+              type string {
+                length "1..25";
+              }
+              description
+                "Route selection result:
+                Active Primary: indicates an active primary route.
+                Active Backup: indicates an active backup route.
+                Inactive Valid: indicates a route that takes part in the route selection but is not preferred.
+                Inactive Invalid: indicates a route that cannot take part in the route selection.";
+            }
+            leaf indirect-id {
+              type pub-type:hex-binary;
+              description
+                "Keyword of indirect next hop.";
+            }
+            leaf local-address {
+              type inet:ip-address-no-zone;
+              description
+                "IP address of the local interface.";
+            }
+            leaf remote-ip {
+              type inet:ip-address-no-zone;
+              description
+                "IP address of the remote P2P interface.";
+            }
+            leaf inherit-cost {
+              type boolean;
+              description
+                "The cost value of the static route will change according to the iterative route cost value.";
+            }
+            leaf label {
+              type uint32;
+              description
+                "Label.";
+            }
+            leaf permanent {
+              type boolean;
+              description
+                "Static route permanent advertisement status.";
+            }
+            leaf no-advertise {
+              type boolean;
+              description
+                "No advertise the static route.";
+            }
+            leaf no-install {
+              type boolean;
+              description
+                "No install the static route.";
+            }
+            leaf bfd-type {
+              type string {
+                length "0..15";
+              }
+              description
+                "Type of BFD enabled for the static route.";
+            }
+            leaf bfd-session-name {
+              type leafref {
+                path "/bfd:bfd/bfd:sessions/bfd:session/bfd:name";
+              }
+              description
+                "Binds a static BFD session to a static route. The static BFD session can detect the session link status and quickly detect link status changes, which improves network reliability.";
+            }
+            leaf bfd-detect {
+              type string {
+                length "1..36";
+              }
+              description
+                "Establishment status of a BFD session:
+                Disable: indicates that the BFD session is not enabled.
+                Up: indicates that the BFD session is established successfully.
+                Down: indicates that the BFD session fails to be established.";
+            }
+            leaf efm-interface-name {
+              type string {
+                length "0..63";
+              }
+              description
+                "EFM interface name.";
+            }
+            leaf efm-detect {
+              type string {
+                length "1..8";
+              }
+              description
+                "Detection status of EFM:
+                Disable: indicates that the EFM detection is not enabled.
+                Up: indicates the EFM detection succeeds.
+                Down: indicates the EFM detection fails.
+                UNKNOWN: indicates the detection status of the EFM test instance is no result.";
+            }
+            leaf nqa-detect {
+              type string {
+                length "1..8";
+              }
+              description
+                "Detection status of an NQA test instance:
+                Disable: indicates that the NQA test instance is not enabled.
+                Up: indicates the detection of the NQA test instance succeeds.
+                Down: indicates the detection of the NQA test instance fails.
+                UNKNOWN: indicates the detection status of the NQA test instance is no result.";
+            }
           }
         }
       }

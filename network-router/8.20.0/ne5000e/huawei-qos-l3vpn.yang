@@ -70,10 +70,7 @@ module huawei-qos-l3vpn {
             "Direction.";
         }
         leaf slot-id {
-          type qos:slot-id {
-            length "1..32";
-            pattern '(c[cl]c\d+/)?\d+';
-          }
+          type qos:slot-id;
           description
             "Slot ID. The chassis ID must also be specified when have multi chassis, such as 3, clc1/3 or ccc1/3.";
         }
@@ -938,6 +935,9 @@ module huawei-qos-l3vpn {
             mandatory true;
             description
               "Exclude mode.";
+             ext:operation-exclude update {
+              description "After the configuration is created, the node cannot be modified.";
+            }
           }
         }
       }

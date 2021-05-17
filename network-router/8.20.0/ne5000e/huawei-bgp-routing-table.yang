@@ -16,9 +16,6 @@ module huawei-bgp-routing-table {
   import huawei-pub-type {
     prefix pub-type;
   }
-  import huawei-ifm {
-    prefix ifm;
-  }
   import huawei-network-instance {
     prefix ni;
   }
@@ -370,8 +367,8 @@ module huawei-bgp-routing-table {
         "Extended community attribute.";
     }
     leaf interface-name {
-      type leafref {
-        path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+      type string {
+        length "1..63";
       }
       description
         "Name of the outbound interface of a route.";

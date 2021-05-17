@@ -1,3 +1,4 @@
+
 /*
 Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
@@ -7,7 +8,6 @@ module huawei-qos {
   import huawei-pub-type {
     prefix pub-type;
   }
-
   import huawei-extension {
     prefix ext;
   }
@@ -51,6 +51,24 @@ module huawei-qos {
      Email: support@huawei.com";
   description
     "Quality of service.";
+  revision 2020-06-11 {
+    description
+      "Modify descriptions and add units.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-27 {
+    description
+      "Add new nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-04-10 {
+    description
+      "Add new nodes.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-04-01 {
     description
       "Add new nodes.";
@@ -99,7 +117,500 @@ module huawei-qos {
     reference
       "Huawei private.";
   }
+
   ext:task-name "qos";
+  grouping policy-statistics-type {
+    description
+      "Traffic policy statistics information.";
+    leaf match-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of matched packets.";
+    }
+    leaf match-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of matched bytes.";
+    }
+    leaf match-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of matched packets.";
+    }
+    leaf match-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of matched bytes.";
+    }
+    leaf miss-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of unmatched packets.";
+    }
+    leaf miss-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of unmatched bytes.";
+    }
+    leaf match-pass-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of matched and passed packets.";
+    }
+    leaf match-pass-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of matched and passed bytes.";
+    }
+    leaf match-drop-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of matched but discarded packets.";
+    }
+    leaf match-drop-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of matched but discarded bytes.";
+    }
+    leaf miss-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the packets that do not match the policy.";
+    }
+    leaf miss-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the bytes that do not match the policy.";
+    }
+    leaf match-pass-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the packets that match the policy and passed.";
+    }
+    leaf match-pass-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the bytes that match the policy and passed.";
+    }
+    leaf match-drop-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the packets that match the policy but are discarded.";
+    }
+    leaf match-drop-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the bytes that match the policy but are discarded.";
+    }
+    leaf urpf-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of packets discarded by URPF.";
+    }
+    leaf urpf-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of bytes discarded by URPF.";
+    }
+    leaf urpf-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of packets discarded by URPF.";
+    }
+    leaf urpf-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of bytes discarded by URPF.";
+    }
+    leaf car-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of packets processed by CAR.";
+    }
+    leaf car-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of bytes processed by CAR.";
+    }
+    leaf car-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of packets processed by CAR.";
+    }
+    leaf car-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of bytes processed by CAR.";
+    }
+    leaf filter-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of filtered packets.";
+    }
+    leaf filter-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of filtered bytes.";
+    }
+    leaf filter-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of filtered packets.";
+    }
+    leaf filter-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of filtered bytes.";
+    }
+  }
+  grouping classifier-statistics-type {
+    description
+      "Traffic classifier statistics information.";
+    leaf match-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of matched packets.";
+    }
+    leaf match-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of matched bytes.";
+    }
+    leaf match-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of matched packets.";
+    }
+    leaf match-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of matched bytes.";
+    }
+    leaf match-pass-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of matched and passed packets.";
+    }
+    leaf match-pass-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of matched and passed bytes.";
+    }
+    leaf match-drop-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of matched but discarded packets.";
+    }
+    leaf match-drop-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of matched but discarded bytes.";
+    }
+    leaf match-pass-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the packets matching the traffic classifier and passed.";
+    }
+    leaf match-pass-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the bytes matching the traffic classifier and passed.";
+    }
+    leaf match-drop-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the packets matching the traffic classifier but discarded.";
+    }
+    leaf match-drop-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the bytes matching the traffic classifier but discarded.";
+    }
+    leaf filter-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of filtered packets.";
+    }
+    leaf filter-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of filtered bytes.";
+    }
+    leaf filter-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of filtered packets.";
+    }
+    leaf filter-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of filtered bytes.";
+    }
+    leaf urpf-drop-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of the discarded packets by URPF check.";
+    }
+    leaf urpf-drop-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of the discarded bytes by URPF check.";
+    }
+    leaf urpf-drop-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the discarded packets by URPF check.";
+    }
+    leaf urpf-drop-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the discarded bytes by URPF check.";
+    }
+    leaf car-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of the processed packets by CAR.";
+    }
+    leaf car-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of the processed bytes by CAR.";
+    }
+    leaf car-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the passed packets by CAR.";
+    }
+    leaf car-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the passed bytes by CAR.";
+    }
+    leaf car-pass-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of the passed packets by CAR.";
+    }
+    leaf car-pass-bytes {
+      type uint64;
+       units "Byte";
+      description
+        "Number of the passed bytes by CAR.";
+    }
+    leaf car-drop-packets {
+    type uint64;
+      units "packet";
+      description
+        "Rate of the discarded packets by CAR.";
+    }
+    leaf car-drop-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Rate of the discarded bytes by CAR.";
+    }
+    leaf car-pass-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the passed packets CAR.";
+    }
+    leaf car-pass-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the passed bytes by CAR.";
+    }
+    leaf car-drop-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of the discarded packets by CAR.";
+    }
+    leaf car-drop-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the discarded bytes by CAR.";
+    }
+    leaf car-green-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of green packets by CAR.";
+    }
+    leaf car-green-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of the bytes of green packets by CAR.";
+    }
+    leaf car-yellow-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of yellow packets by CAR.";
+    }
+    leaf car-yellow-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of the bytes of yellow packets by CAR.";
+    }
+    leaf car-red-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of red packets by CAR.";
+    }
+    leaf car-red-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "Number of the bytes of red packets by CAR.";
+    }
+    leaf car-green-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of green packets by CAR.";
+    }
+    leaf car-green-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the bytes of green packets by CAR.";
+    }
+    leaf car-yellow-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of yellow packets by CAR.";
+    }
+    leaf car-yellow-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the bytes of yellow packets by CAR.";
+    }
+    leaf car-red-packet-rate {
+      type uint64;
+      units "pps";
+      description
+        "Rate of red packets by CAR.";
+    }
+    leaf car-red-byte-rate {
+      type uint64;
+      units "Byte/s";
+      description
+        "Rate of the bytes of red packets by CAR.";
+    }
+  }
+  grouping car-statistics-type {
+    description
+	  "Car statistics information.";
+	  leaf pass-packets {
+		type uint64;
+		units "packet";
+		description
+		  "Pass packets.";
+	  }
+	  leaf pass-bytes {
+		type uint64;
+		units "Byte";
+		description
+		  "Pass bytes.";
+	  }
+	  leaf pass-packet-rate {
+		type uint64;
+		units "pps";
+		description
+		  "Pass packet rate.";
+	  }
+	  leaf pass-byte-rate {
+		type uint64;
+		units "Byte/s";
+		description
+		  "Pass byte rate.";
+	  }
+	  leaf drop-packets {
+		type uint64;
+		units "packet";
+		description
+		  "Drop packets.";
+	  }
+	  leaf drop-bytes {
+		type uint64;
+		units "Byte";
+		description
+		  "Drop bytes.";
+	  }
+	  leaf drop-packet-rate {
+		type uint64;
+		units "pps";
+		description
+		  "Drop packet rate.";
+	  }
+	  leaf drop-byte-rate {
+		type uint64;
+		units "Byte/s";
+		description
+		  "Drop byte rate.";
+	  }
+    }
   container qos {
     description
       "Quality of service.";
@@ -615,9 +1126,9 @@ module huawei-qos {
               }
             }
           }
-        container share-shapings {
-          description
-            "Configure share shaping.";
+          container share-shapings {
+            description
+              "Configure share shaping.";
             container share-shaping {
               when "../../mode='normal'";
               must "not(not(./af1='true') and not(./af2='true') and not(./af3='true') and not(./af4='true') and not(./ef='true') and not(./cs6='true') and not(./cs7='true'))";
@@ -632,49 +1143,85 @@ module huawei-qos {
               description
                 "Enable/disable share shaping. The configuration involves at least two queues, and the scheduling mode of the queues must be the same.";
               leaf be {
-                type be-type; 
+                type be-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode) and ../be='true')";
+                must "../af1='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode";
+                must "../af2='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode";
+                must "../af3='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode";
+                must "../af4='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode";
+                must "../ef='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
-              description
+                description
                   "BE.";
               }
               leaf af1 {
-                type af1-type; 
+                type af1-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode) and ../af1='true')";
+                must "../af2='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode";
+                must "../af3='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode";
+                must "../af4='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode";
+                must "../ef='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "AF1.";
               }
               leaf af2 {
-                type af2-type; 
+                type af2-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode) and ../af2='true')";
+                must "../af3='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode";
+                must "../af4='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode";
+                must "../ef='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "AF2.";
               }
               leaf af3 {
                 type af3-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode) and ../af3='true')";
+                must "../af4='false' or ../af3='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode";
+                must "../ef='false' or ../af3='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../af3='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../af3='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "AF3.";
               }
               leaf af4 {
                 type af4-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode) and ../af4='true')";
+                must "../ef='false' or ../af4='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../af4='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../af4='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "AF4.";
               }
               leaf ef {
                 type ef-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode) and ../ef='true')";
+                must "../cs6='false' or ../ef='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../ef='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "EF.";
               }
               leaf cs6 {
                 type cs6-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode) and ../cs6='true')";
+                must "../cs7='false' or ../cs6='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "CS6.";
               }
               leaf cs7 {
                 type cs7-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode) and ../cs7='true')";
                 default "false";
                 description
                   "CS7.";
@@ -698,6 +1245,7 @@ module huawei-qos {
                 type uint32 {
                   range "1..4294967294";
                 }
+                units "kbit/s";
                 mandatory true;
                 description
                   "Rate of shaping.";
@@ -736,48 +1284,84 @@ module huawei-qos {
               }
               leaf be {
                 type be-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode) and ../be='true')";
+                must "../af1='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode";
+                must "../af2='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode";
+                must "../af3='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode";
+                must "../af4='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode";
+                must "../ef='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../be='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='be']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "BE.";
               }
               leaf af1 {
-                type af1-type; 
+                type af1-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode) and ../af1='true')";
+                must "../af2='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode";
+                must "../af3='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode";
+                must "../af4='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode";
+                must "../ef='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../af1='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af1']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "AF1.";
               }
               leaf af2 {
-                type af2-type; 
+                type af2-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode) and ../af2='true')";
+                must "../af3='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode";
+                must "../af4='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode";
+                must "../ef='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../af2='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af2']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "AF2.";
               }
               leaf af3 {
                 type af3-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode) and ../af3='true')";
+                must "../af4='false' or ../af3='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode";
+                must "../ef='false' or ../af3='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../af3='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../af3='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af3']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "AF3.";
               }
               leaf af4 {
                 type af4-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode) and ../af4='true')";
+                must "../ef='false' or ../af4='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode";
+                must "../cs6='false' or ../af4='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../af4='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='af4']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "AF4.";
               }
               leaf ef {
                 type ef-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode) and ../ef='true')";
+                must "../cs6='false' or ../ef='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode";
+                must "../cs7='false' or ../ef='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='ef']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "EF.";
               }
               leaf cs6 {
                 type cs6-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode) and ../cs6='true')";
+                must "../cs7='false' or ../cs6='false' or ../../../normal-mode-queues/normal-mode-queue[service-class='cs6']/schedule-mode=../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode";
                 default "false";
                 description
                   "CS6.";
               }
               leaf cs7 {
                 type cs7-type;
+                must "not(not(../../../normal-mode-queues/normal-mode-queue[service-class='cs7']/schedule-mode) and ../cs7='true')";
                 default "false";
                 description
                   "CS7.";
@@ -801,6 +1385,7 @@ module huawei-qos {
                 type uint32 {
                   range "1..4294967294";
                 }
+                units "kbit/s";
                 mandatory true;
                 description
                   "Rate of shaping.";
@@ -1091,6 +1676,14 @@ module huawei-qos {
             description
               "List of configure priority mode flow queue share shaping.";
             list priority-mode-share-shaping {
+              must "not(not(./af1) and not(./af2) and not(./af3) and not(./af4) and not(./ef) and not(./cs6) and not(./cs7))";
+              must "not(not(./be) and not(./af2) and not(./af3) and not(./af4) and not(./ef) and not(./cs6) and not(./cs7))";
+              must "not(not(./be) and not(./af1) and not(./af3) and not(./af4) and not(./ef) and not(./cs6) and not(./cs7))";
+              must "not(not(./be) and not(./af1) and not(./af2) and not(./af4) and not(./ef) and not(./cs6) and not(./cs7))";
+              must "not(not(./be) and not(./af1) and not(./af2) and not(./af3) and not(./ef) and not(./cs6) and not(./cs7))";
+              must "not(not(./be) and not(./af1) and not(./af2) and not(./af3) and not(./af4) and not(./cs6) and not(./cs7))";
+              must "not(not(./be) and not(./af1) and not(./af2) and not(./af3) and not(./af4) and not(./ef) and not(./cs7))";
+              must "not(not(./be) and not(./af1) and not(./af2) and not(./af3) and not(./af4) and not(./ef) and not(./cs6))";
               key "shap-id";
               max-elements  "2";
               description
@@ -1102,49 +1695,69 @@ module huawei-qos {
               }
               leaf be {
                 type queue-select-be-type;
-                must "((../be='true' and (../af1='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or not(../be))"; 
+                must "not(../af1) or ../../../priority-mode-queues/priority-mode-queue[service-class='be']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af1']/priority";
+                must "not(../af2) or ../../../priority-mode-queues/priority-mode-queue[service-class='be']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af2']/priority";
+                must "not(../af3) or ../../../priority-mode-queues/priority-mode-queue[service-class='be']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af3']/priority";
+                must "not(../af4) or ../../../priority-mode-queues/priority-mode-queue[service-class='be']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af4']/priority";
+                must "not(../ef) or ../../../priority-mode-queues/priority-mode-queue[service-class='be']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='ef']/priority";
+                must "not(../cs6) or ../../../priority-mode-queues/priority-mode-queue[service-class='be']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs6']/priority";
+                must "not(../cs7) or ../../../priority-mode-queues/priority-mode-queue[service-class='be']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs7']/priority";
                 description
                   "Queue be.";
               }
               leaf af1 {
                 type queue-select-af1-type;
-                must "((../af1='true' and (../be='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or not(../af1))"; 
+                must "not(../af2) or ../../../priority-mode-queues/priority-mode-queue[service-class='af1']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af2']/priority";
+                must "not(../af3) or ../../../priority-mode-queues/priority-mode-queue[service-class='af1']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af3']/priority";
+                must "not(../af4) or ../../../priority-mode-queues/priority-mode-queue[service-class='af1']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af4']/priority";
+                must "not(../ef) or ../../../priority-mode-queues/priority-mode-queue[service-class='af1']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='ef']/priority";
+                must "not(../cs6) or ../../../priority-mode-queues/priority-mode-queue[service-class='af1']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs6']/priority";
+                must "not(../cs7) or ../../../priority-mode-queues/priority-mode-queue[service-class='af1']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs7']/priority";                
                 description
                   "Queue af1.";
               }
               leaf af2 {
                 type queue-select-af2-type;
-                must "((../af2='true' and (../be='true' or ../af1='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or not(../af2))"; 
+                must "not(../af3) or ../../../priority-mode-queues/priority-mode-queue[service-class='af2']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af3']/priority";
+                must "not(../af4) or ../../../priority-mode-queues/priority-mode-queue[service-class='af2']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af4']/priority";
+                must "not(../ef) or ../../../priority-mode-queues/priority-mode-queue[service-class='af2']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='ef']/priority";
+                must "not(../cs6) or ../../../priority-mode-queues/priority-mode-queue[service-class='af2']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs6']/priority";
+                must "not(../cs7) or ../../../priority-mode-queues/priority-mode-queue[service-class='af2']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs7']/priority";
                 description
                   "Queue af2.";
               }
               leaf af3 {
                 type queue-select-af3-type;
-                must "((../af3='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af4='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or not(../af3))";
+                must "not(../af4) or ../../../priority-mode-queues/priority-mode-queue[service-class='af3']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='af4']/priority";
+                must "not(../ef) or ../../../priority-mode-queues/priority-mode-queue[service-class='af3']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='ef']/priority";
+                must "not(../cs6) or ../../../priority-mode-queues/priority-mode-queue[service-class='af3']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs6']/priority";
+                must "not(../cs7) or ../../../priority-mode-queues/priority-mode-queue[service-class='af3']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs7']/priority";
                 description
                   "Queue af3.";
               }
               leaf af4 {
                 type queue-select-af4-type;
-                must "((../af4='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af3='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or not(../af4))";
+                must "not(../ef) or ../../../priority-mode-queues/priority-mode-queue[service-class='af4']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='ef']/priority";
+                must "not(../cs6) or ../../../priority-mode-queues/priority-mode-queue[service-class='af4']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs6']/priority";
+                must "not(../cs7) or ../../../priority-mode-queues/priority-mode-queue[service-class='af4']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs7']/priority";
                 description
                   "Queue af4.";
               }
               leaf ef {
                 type queue-select-ef-type;
-                must "((../ef='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../cs6='true' or ../cs7='true')) or not(../ef))";
+                must "not(../cs6) or ../../../priority-mode-queues/priority-mode-queue[service-class='ef']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs6']/priority";
+                must "not(../cs7) or ../../../priority-mode-queues/priority-mode-queue[service-class='ef']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs7']/priority";
                 description
                   "Queue ef.";
               }
               leaf cs6 {
                 type queue-select-cs6-type;
-                must "((../cs6='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs7='true')) or not(../cs6))";
+                must "not(../cs7) or ../../../priority-mode-queues/priority-mode-queue[service-class='cs6']/priority=../../../priority-mode-queues/priority-mode-queue[service-class='cs7']/priority";
                 description
                   "Queue cs6.";
               }
               leaf cs7 {
                 type queue-select-cs7-type;
-                must "((../cs7='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs6='true')) or not(../cs7))";
                 description
                   "Queue cs7.";
               }
@@ -1180,6 +1793,196 @@ module huawei-qos {
               }
             }
           }
+          container eight-cos-mode-queues {
+            when "../mode='8cos-enhance'";
+            description
+              "List of configure the scheduling parameters of eight cos mode flow queue.";
+            list eight-cos-mode-queue {
+              key "cos";
+              max-elements "8";
+              description
+                "Configure the scheduling parameters of eight cos mode flow queue.";
+              ext:generated-by system {
+                description "The instances are created and deleted following the flow queue template.";
+              }
+              ext:operation-exclude create|delete {
+                description "The instances cannot be created and deleted.";
+              }
+              leaf cos {
+                type uint8 {
+                  range "0..7";
+                }
+                description
+                  "Class of service.";
+              }
+              container flow-wred {
+                description
+                  "Configure flow wred.";
+                leaf name {
+                  type leafref {
+                    path "../../../../../../../wred-template/flow-wreds/flow-wred/name";
+                  }
+                  description
+                    "Flow wred name.";
+                }
+              }
+              container car-mode {
+                when "../cos=5 or ../cos=6 or ../cos=7";
+                presence "create car-mode";
+                description
+                  "Enable/disable car mode.";
+              }
+              container remark-color {
+                presence "create remark-color";
+                description
+                  "Enable/disable remark color.";
+              }
+              container parent-priority {
+                must "cir-parent-priority < pir-parent-priority";
+                presence "create parent-priority";
+                description
+                  "Configure parent priority.";
+                ext:generated-by system {
+                  description "The instances are created and deleted following the parameters of eight cos mode flow queue.";
+                }
+                ext:operation-exclude create|delete {
+                  description "The instances cannot be created and deleted.";
+                }
+                leaf cir-parent-priority {
+                  type uint8 {
+                    range "0..2";
+                  }
+                  mandatory true;
+                  description
+                    "Cir parent priority value.";
+                }
+                leaf cir-weight {
+                  type uint8 {
+                    range "0..100";
+                  }
+                  description
+                    "Cir weight.";
+                  ext:dynamic-default {
+                    ext:default-value 10 {
+                      when "../../cos=0 or ../../cos=1 or ../../cos=2";
+                      description "The default value is 10 when cos is 0, 1 or 2.";
+                    }
+                    ext:default-value 15 {
+                      when "../../cos=3 or ../../cos=4";
+                      description "The default value is 15 when cos is 3 or 4.";
+                    }
+                    ext:default-value 20 {
+                      when "../../cos=5 or ../../cos=6 or ../../cos=7";
+                      description "The default value is 20 when cos is 5, 6 or 7.";
+                    }
+                  }
+                }
+                leaf pir-parent-priority {
+                  type uint8 {
+                    range "1..3";
+                  }
+                  mandatory true;
+                  description
+                    "Pir parent priority value.";
+                }
+                leaf pir-weight {
+                  type uint8 {
+                    range "0..100";
+                  }
+                  description
+                    "Pir weight.";
+                  ext:dynamic-default {
+                    ext:default-value 10 {
+                      when "../../cos=0 or ../../cos=1 or ../../cos=2";
+                      description "The default value is 10 when cos is 0, 1 or 2.";
+                    }
+                    ext:default-value 15 {
+                      when "../../cos=3 or ../../cos=4";
+                      description "The default value is 15 when cos is 3 or 4.";
+                    }
+                    ext:default-value 20 {
+                      when "../../cos=5 or ../../cos=6 or ../../cos=7";
+                      description "The default value is 20 when cos is 5, 6 or 7.";
+                    }
+                  }
+                }
+              }
+              container pir {
+                must "pbs>=cbs or not(pbs) or not(cbs)";
+                presence "create pir";
+                description
+                  "Configure pir of flow queue.";
+                choice parameter {
+                  mandatory true;
+                  description
+                    "Specify parameter.";
+                  case value-mode {
+                    description
+                      "Specify pir parameter choice case as value mode.";
+                    leaf pir-value {
+                      type uint32 {
+                        range "8..4294967294";
+                      }
+                      units "kbit/s";
+                      must "../pir-value>=../cir-value or not(../cir-value)";
+                      mandatory true;
+                      description
+                        "Peak information rate.";
+                    }
+                    leaf cir-value {
+                      type uint32 {
+                        range "8..4294967294";
+                      }
+                      units "kbit/s";
+                      must "../pir-value>=../cir-value";
+                      description
+                        "Committed information rate.";
+                    }
+                  }
+                  case percent-mode {
+                    description
+                      "Specify pir parameter choice case as percent mode.";
+                    leaf pir-percent {
+                      type uint8 {
+                        range "0..100";
+                      }
+                      units "%";
+                      must "../pir-percent>=../cir-percent or not(../cir-percent)";
+                      mandatory true;
+                      description
+                        "Peak information rate percent.";
+                    }
+                    leaf cir-percent {
+                      type uint8 {
+                        range "0..100";
+                      }
+                      units "%";
+                      must "../pir-percent>=../cir-percent";
+                      description
+                        "Committed information rate percent.";
+                    }
+                  }
+                }
+                leaf pbs {
+                  type uint32 {
+                    range "1..max";
+                  }
+                  units "Byte";
+                  description
+                    "Peak burst size.";
+                }
+                leaf cbs {
+                  when "../cir-value or ../cir-percent";
+                  type uint32 {
+                    range "1..max";
+                  }
+                  units "Byte";
+                  description
+                    "Committed burst size.";
+                }
+              }
+            }
+          }
         }
       }
       container profiles {
@@ -1212,6 +2015,7 @@ module huawei-qos {
               "Profile template description.";
           }
           container user-queues {
+            when "../mode!='8cos-enhance'";
             description
               "List of configure user queue.";
             list user-queue {
@@ -1305,6 +2109,7 @@ module huawei-qos {
                 type leafref {
                   path "../../../../../flow-queues/flow-queue/name";
                 }
+                must "../../../../../flow-queues/flow-queue[name=current()]/mode!='8cos-enhance'";
                 description
                   "Flow queue.";
               }
@@ -1338,6 +2143,7 @@ module huawei-qos {
             }
           }
           container user-queue-weights {
+            when "../mode!='8cos-enhance'";
             description
               "List of configure user queue weight.";
             list user-queue-weight {
@@ -1440,6 +2246,7 @@ module huawei-qos {
                 type leafref {
                   path "../../../../../flow-queues/flow-queue/name";
                 }
+                must "../../../../../flow-queues/flow-queue[name=current()]/mode='normal'";
                 description
                   "Flow queue name.";
               }
@@ -1824,6 +2631,7 @@ module huawei-qos {
                 type leafref {
                   path "../../../../../flow-queues/flow-queue/name";
                 }
+                must "../../../../../flow-queues/flow-queue[name=current()]/mode='normal'";
                 mandatory true;
                 description
                   "Flow queue.";
@@ -1839,6 +2647,7 @@ module huawei-qos {
                 type leafref {
                   path "../../../../../user-group-queues/user-group-queue/name";
                 }
+                must "../../../../../user-group-queues/user-group-queue[name=current()]/mode='normal'";
                 description
                   "User group queue.";
               }
@@ -1848,6 +2657,46 @@ module huawei-qos {
                 }
                 description
                   "Service template.";
+              }
+            }
+          }
+          container eight-cos-mode-queues {
+            when "../mode='8cos-enhance'";
+            description
+              "List of configure eight cos mode queue.";
+            list eight-cos-mode-queue {
+              must "(direction='all' and not(../eight-cos-mode-queue[direction='inbound']) and not(../eight-cos-mode-queue[direction='outbound']) or (direction!='all' and not(../eight-cos-mode-queue[direction='all'])))";
+              key "direction";
+              max-elements "2";
+              description
+                "Configure eight cos mode queue.";
+              leaf direction {
+                type all-direction-type;
+                description
+                  "Direction.";
+              }
+              leaf user-queue-name {
+                type leafref {
+                  path "../../../../../user-queue-templates/user-queue-template/name";
+                }
+                mandatory true;
+                description
+                  "User queue.";
+              }
+              leaf flow-queue-name {
+                type leafref {
+                  path "../../../../../flow-queues/flow-queue/name";
+                }
+                must "../../../../../flow-queues/flow-queue[name=current()]/mode='8cos-enhance'";
+                description
+                  "Flow queue.";
+              }
+              leaf user-group-queue-name {
+                type leafref {
+                  path "../../../../../user-group-queues/user-group-queue/name";
+                }
+                description
+                  "User group queue.";
               }
             }
           }
@@ -1900,6 +2749,7 @@ module huawei-qos {
           "List of configure queue 4cos mapping.";
         list queue-4cos-mapping{
           key "name";
+          max-elements  "8";
           description
             "Configure queue 4cos mapping. This object has default configurations.";
           leaf name {
@@ -1935,7 +2785,7 @@ module huawei-qos {
             }
           }
         }
-      }      
+      }
       container user-group-queues {
         description
           "List of configure user group queue.";
@@ -2083,7 +2933,6 @@ module huawei-qos {
                   range "64..2097152";
                 }
                 units "Byte";
-                must "(../pbs>=../cbs)";
                 mandatory true;
                 description
                   "Peak burst size.";
@@ -2128,15 +2977,12 @@ module huawei-qos {
               description
                 "User group queue statistics.";
               leaf slot-id {
-                type slot-id {
-                  length "1..32";
-                  pattern '(c[cl]c\d+/)?\d+';
-                }
+                type slot-id;
                 description
                   "Slot id.";
               }
               leaf direction {
-                type qos-direction-type;
+                type qos-gq-direction-type;
                 description
                   "Direction.";
               }
@@ -2216,9 +3062,7 @@ module huawei-qos {
               "Service template name.";
           }
           leaf slot-id {
-            type string {
-              length "1..32";
-            }
+            type slot-id;
             description
               "Slot id.";
           }
@@ -2251,6 +3095,17 @@ module huawei-qos {
                 description
                   "Length value of network header.";
               }
+            }
+          }
+          container service-length-on-etm {
+            description
+              "Configure length of network header on ETM.";
+            leaf value {
+              type int32 {
+                range "-63..63";
+              }
+              description
+                "Length value of network header on ETM.";
             }
           }
         }
@@ -2625,12 +3480,27 @@ module huawei-qos {
             description
               "Configure port queue share shaping.";
             container share-shape {
+              must "not(not(./af1='true') and not(./af2='true') and not(./af3='true') and not(./af4='true') and not(./ef='true') and not(./cs6='true') and not(./cs7='true'))";
+              must "not(not(./be='true') and not(./af2='true') and not(./af3='true') and not(./af4='true') and not(./ef='true') and not(./cs6='true') and not(./cs7='true'))";
+              must "not(not(./be='true') and not(./af1='true') and not(./af3='true') and not(./af4='true') and not(./ef='true') and not(./cs6='true') and not(./cs7='true'))";
+              must "not(not(./be='true') and not(./af1='true') and not(./af2='true') and not(./af4='true') and not(./ef='true') and not(./cs6='true') and not(./cs7='true'))";
+              must "not(not(./be='true') and not(./af1='true') and not(./af2='true') and not(./af3='true') and not(./ef='true') and not(./cs6='true') and not(./cs7='true'))";
+              must "not(not(./be='true') and not(./af1='true') and not(./af2='true') and not(./af3='true') and not(./af4='true') and not(./cs6='true') and not(./cs7='true'))";
+              must "not(not(./be='true') and not(./af1='true') and not(./af2='true') and not(./af3='true') and not(./af4='true') and not(./ef='true') and not(./cs7='true'))";
+              must "not(not(./be='true') and not(./af1='true') and not(./af2='true') and not(./af3='true') and not(./af4='true') and not(./ef='true') and not(./cs6='true'))";
               presence "Create share-shape.";
               description
                 "Enable/disable port queue share shaping. The configuration involves at least two queues, and the scheduling mode of the queues must be the same.";
               leaf be {
                 type be-type;
-                must "((../be='true' and (../af1='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or ../be='false')"; 
+                must "not(not(../../../queues/queue[service-class='be']/queue-schedule-mode) and ../be='true')";
+                must "../af1='false' or ../be='false' or ../../../queues/queue[service-class='be']/queue-schedule-mode=../../../queues/queue[service-class='af1']/queue-schedule-mode";
+                must "../af2='false' or ../be='false' or ../../../queues/queue[service-class='be']/queue-schedule-mode=../../../queues/queue[service-class='af2']/queue-schedule-mode";
+                must "../af3='false' or ../be='false' or ../../../queues/queue[service-class='be']/queue-schedule-mode=../../../queues/queue[service-class='af3']/queue-schedule-mode";
+                must "../af4='false' or ../be='false' or ../../../queues/queue[service-class='be']/queue-schedule-mode=../../../queues/queue[service-class='af4']/queue-schedule-mode";
+                must "../ef='false' or ../be='false' or ../../../queues/queue[service-class='be']/queue-schedule-mode=../../../queues/queue[service-class='ef']/queue-schedule-mode";
+                must "../cs6='false' or ../be='false' or ../../../queues/queue[service-class='be']/queue-schedule-mode=../../../queues/queue[service-class='cs6']/queue-schedule-mode";
+                must "../cs7='false' or ../be='false' or ../../../queues/queue[service-class='be']/queue-schedule-mode=../../../queues/queue[service-class='cs7']/queue-schedule-mode";
                 default "false";
                 description
                   "BE.";
@@ -2638,7 +3508,13 @@ module huawei-qos {
               }
               leaf af1 {
                 type af1-type;
-                must "((../af1='true' and (../be='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or ../af1='false')";
+                must "not(not(../../../queues/queue[service-class='af1']/queue-schedule-mode) and ../af1='true')";
+                must "../af2='false' or ../af1='false' or ../../../queues/queue[service-class='af1']/queue-schedule-mode=../../../queues/queue[service-class='af2']/queue-schedule-mode";
+                must "../af3='false' or ../af1='false' or ../../../queues/queue[service-class='af1']/queue-schedule-mode=../../../queues/queue[service-class='af3']/queue-schedule-mode";
+                must "../af4='false' or ../af1='false' or ../../../queues/queue[service-class='af1']/queue-schedule-mode=../../../queues/queue[service-class='af4']/queue-schedule-mode";
+                must "../ef='false' or ../af1='false' or ../../../queues/queue[service-class='af1']/queue-schedule-mode=../../../queues/queue[service-class='ef']/queue-schedule-mode";
+                must "../cs6='false' or ../af1='false' or ../../../queues/queue[service-class='af1']/queue-schedule-mode=../../../queues/queue[service-class='cs6']/queue-schedule-mode";
+                must "../cs7='false' or ../af1='false' or ../../../queues/queue[service-class='af1']/queue-schedule-mode=../../../queues/queue[service-class='cs7']/queue-schedule-mode";
                 default "false";
                 description
                   "AF1.";
@@ -2646,7 +3522,12 @@ module huawei-qos {
               }
               leaf af2 {
                 type af2-type;
-                must "((../af2='true' and (../be='true' or ../af1='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or ../af2='false')"; 
+                must "not(not(../../../queues/queue[service-class='af2']/queue-schedule-mode) and ../af2='true')";
+                must "../af3='false' or ../af2='false' or ../../../queues/queue[service-class='af2']/queue-schedule-mode=../../../queues/queue[service-class='af3']/queue-schedule-mode";
+                must "../af4='false' or ../af2='false' or ../../../queues/queue[service-class='af2']/queue-schedule-mode=../../../queues/queue[service-class='af4']/queue-schedule-mode";
+                must "../ef='false' or ../af2='false' or ../../../queues/queue[service-class='af2']/queue-schedule-mode=../../../queues/queue[service-class='ef']/queue-schedule-mode";
+                must "../cs6='false' or ../af2='false' or ../../../queues/queue[service-class='af2']/queue-schedule-mode=../../../queues/queue[service-class='cs6']/queue-schedule-mode";
+                must "../cs7='false' or ../af2='false' or ../../../queues/queue[service-class='af2']/queue-schedule-mode=../../../queues/queue[service-class='cs7']/queue-schedule-mode";
                 default "false";
                 description
                   "AF2.";
@@ -2654,7 +3535,11 @@ module huawei-qos {
               }
               leaf af3 {
                 type af3-type;
-                must "((../af3='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af4='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or ../af3='false')";
+                must "not(not(../../../queues/queue[service-class='af3']/queue-schedule-mode) and ../af3='true')";
+                must "../af4='false' or ../af3='false' or ../../../queues/queue[service-class='af3']/queue-schedule-mode=../../../queues/queue[service-class='af4']/queue-schedule-mode";
+                must "../ef='false' or ../af3='false' or ../../../queues/queue[service-class='af3']/queue-schedule-mode=../../../queues/queue[service-class='ef']/queue-schedule-mode";
+                must "../cs6='false' or ../af3='false' or ../../../queues/queue[service-class='af3']/queue-schedule-mode=../../../queues/queue[service-class='cs6']/queue-schedule-mode";
+                must "../cs7='false' or ../af3='false' or ../../../queues/queue[service-class='af3']/queue-schedule-mode=../../../queues/queue[service-class='cs7']/queue-schedule-mode";
                 default "false";
                 description
                   "AF3.";
@@ -2662,7 +3547,10 @@ module huawei-qos {
               }
               leaf af4 {
                 type af4-type;
-                must "((../af4='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af3='true' or ../ef='true' or ../cs6='true' or ../cs7='true')) or ../af4='false')";
+                must "not(not(../../../queues/queue[service-class='af4']/queue-schedule-mode) and ../af4='true')";
+                must "../ef='false' or ../af4='false' or ../../../queues/queue[service-class='af4']/queue-schedule-mode=../../../queues/queue[service-class='ef']/queue-schedule-mode";
+                must "../cs6='false' or ../af4='false' or ../../../queues/queue[service-class='af4']/queue-schedule-mode=../../../queues/queue[service-class='cs6']/queue-schedule-mode";
+                must "../cs7='false' or ../af4='false' or ../../../queues/queue[service-class='af4']/queue-schedule-mode=../../../queues/queue[service-class='cs7']/queue-schedule-mode";
                 default "false";
                 description
                   "AF4.";
@@ -2670,7 +3558,9 @@ module huawei-qos {
               }
               leaf ef {
                 type ef-type;
-                must "((../ef='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../cs6='true' or ../cs7='true')) or ../ef='false')";
+                must "not(not(../../../queues/queue[service-class='ef']/queue-schedule-mode) and ../ef='true')";
+                must "../cs6='false' or ../ef='false' or ../../../queues/queue[service-class='ef']/queue-schedule-mode=../../../queues/queue[service-class='cs6']/queue-schedule-mode";
+                must "../cs7='false' or ../ef='false' or ../../../queues/queue[service-class='ef']/queue-schedule-mode=../../../queues/queue[service-class='cs7']/queue-schedule-mode";
                 default "false";
                 description
                   "EF.";
@@ -2678,7 +3568,8 @@ module huawei-qos {
               }
               leaf cs6 {
                 type cs6-type;
-                must "((../cs6='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs7='true')) or ../cs6='false')";
+                must "not(not(../../../queues/queue[service-class='cs6']/queue-schedule-mode) and ../cs6='true')";
+                must "../cs7='false' or ../cs6='false' or ../../../queues/queue[service-class='cs6']/queue-schedule-mode=../../../queues/queue[service-class='cs7']/queue-schedule-mode";
                 default "false";
                 description
                   "CS6.";
@@ -2686,7 +3577,7 @@ module huawei-qos {
               }
               leaf cs7 {
                 type cs7-type;
-                must "((../cs7='true' and (../be='true' or ../af1='true' or ../af2='true' or ../af3='true' or ../af4='true' or ../ef='true' or ../cs6='true')) or ../cs7='false')";
+                must "not(not(../../../queues/queue[service-class='cs7']/queue-schedule-mode) and ../cs7='true')";
                 default "false";
                 description
                   "CS7.";
@@ -2757,6 +3648,7 @@ module huawei-qos {
           "List of configure channel Profile.";
         list channel-profile {
           key "name";
+          max-elements "16";
           description
             "Configure channel Profile.";
           leaf name {
@@ -2826,9 +3718,7 @@ module huawei-qos {
                 description "The instances cannot be created and deleted.";
               }
               leaf slot-id {
-                type string {
-                  length "1..32";
-                }
+                type slot-id;
                 description
                   "Slot ID.";
               }
@@ -2871,12 +3761,13 @@ module huawei-qos {
             }
           }
         }
-      } 
+      }
       container qos-queue-templates {
         description
          "List of configure qos queue template.";
           list qos-queue-template {
             key "name";
+            max-elements "1024";
             description
              "Configure qos queue template.";
             leaf name {
@@ -2906,34 +3797,37 @@ module huawei-qos {
                  type uint8 {
                    range "0..100";
                 }
-                  mandatory true;
-                  description
-                   "CIR percentage.";
-                }
-                leaf pir-percent {
-                 type uint8 {
-                   range "0..100";
-                }
-                  must "(../pir-percent>=../cir-percent)";
-                  mandatory true;
-                  description
-                   "PIR percentage.";
-                }
-                leaf priority {
-                  type queue-schedule-mode;
-                  mandatory true;
-                  description
+                units "%";
+                mandatory true;
+                description
+                 "CIR percentage.";
+              }
+              leaf pir-percent {
+               type uint8 {
+                 range "0..100";
+               }
+               units "%";
+               must "(../pir-percent>=../cir-percent)";
+               mandatory true;
+               description
+                 "PIR percentage.";
+              }
+              leaf priority {
+                type queue-schedule-mode;
+                mandatory true;
+                description
                    "Priority.";
-                }
               }
             }
           }
+        }
       }
       container sub-port-queues {
         description
           "List of configure sub port queue.";
         list sub-port-queue {
           key "name";
+          max-elements "100";
           description
             "Configure sub port queue.";
           leaf name {
@@ -3029,6 +3923,250 @@ module huawei-qos {
                 mandatory true;
                 description
                   "Priority.";
+              }
+            }
+          }
+        }
+      }
+      container user-queue-templates {
+        description
+          "List of configure user queue template.";
+        list user-queue-template {
+          key "name";
+          max-elements "4095";
+          description
+            "Configure user queue template.";
+          leaf name {
+            type string {
+              length "1..63";
+            }
+            description
+              "User queue template name.";
+          }
+          leaf mode {
+            type user-queue-template-type;
+            mandatory true;
+            description
+              "User queue template mode.";
+            ext:operation-exclude update {
+              description "After the user queue template is created, the node cannot be modified.";
+            }
+          }
+          container shaping {
+            must "pbs>=cbs or not(pbs) or not(cbs)";
+            presence "create shaping";
+            description
+              "Configure shaping of user queue template.";
+            choice parameter {
+              mandatory true;
+              description
+                "Specify parameter.";
+              case value-mode {
+                description
+                  "Specify shaping parameter choice case as value mode.";
+                leaf pir-value {
+                  type uint32 {
+                    range "0 | 16..4294967294";
+                  }
+                  units "kbit/s";
+                  must "../pir-value>=../cir-value or not(../cir-value)";
+                  mandatory true;
+                  description
+                    "Peak information rate.";
+                }
+                leaf cir-value {
+                  type uint32 {
+                    range "0 | 16..4294967294";
+                  }
+                  units "kbit/s";
+                  must "../pir-value>=../cir-value";
+                  description
+                    "Committed information rate.";
+                }
+              }
+              case percent-mode {
+                description
+                  "Specify shaping parameter choice case as percent mode.";
+                leaf pir-percent {
+                  type uint8 {
+                    range "0..100";
+                  }
+                  units "%";
+                  must "../pir-percent>=../cir-percent or not(../cir-percent)";
+                  mandatory true;
+                  description
+                    "Peak information rate percent.";
+                }
+                leaf cir-percent {
+                  type uint8 {
+                    range "0..100";
+                  }
+                  units "%";
+                  must "../pir-percent>=../cir-percent";
+                  description
+                    "Committed information rate percent.";
+                }
+              }
+            }
+            leaf pbs {
+              type uint32 {
+                range "1..4194304";
+              }
+              units "Byte";
+              description
+                "Peak burst size.";
+            }
+            leaf cbs {
+              when "../cir-value or ../cir-percent";
+              type uint32 {
+                range "1..4194304";
+              }
+              units "Byte";
+              description
+                "Committed burst size.";
+            }
+          }
+          container service-template {
+            description
+              "Configure service template name.";
+            leaf name {
+              type leafref {
+                path "../../../../service-templates/service-template/name";
+              }
+              must "not(../../../../service-templates/service-template[name=current()]/slot-id)";
+              description
+                "Service template.";
+            }
+          }
+          container priority-sheduler-modes {
+            when "../mode='4-priority'";
+            description
+              "List of configure schedule parameters of four priority mode user queue.";
+            list priority-sheduler-mode {
+              key "priority";
+              description
+                "Configure schedule parameters of four priority mode user queue.";
+              ext:generated-by system {
+                description "The instances are created and deleted following the user queue template.";
+              }
+              ext:operation-exclude create|delete {
+                description "The instances cannot be created and deleted.";
+              }
+              leaf priority {
+                type uint8 {
+                  range "0..3";
+                }
+                description
+                  "Priority.";
+              }
+              leaf schedule-mode {
+                type priority-schedule-mode;
+                mandatory true;
+                description
+                  "Schedule mode.";
+              }
+            }
+          }
+          container parent-priority-weights {
+            when "../mode='4-priority'";
+            description
+              "List of configure weight parameters of four priority mode user queue.";
+            list parent-priority-weight {
+              key "priority";
+              description
+                "Configure weight parameters of four priority mode user queue.";
+              ext:generated-by system {
+                description "The instances are created and deleted following the user queue template.";
+              }
+              ext:operation-exclude create|delete {
+                description "The instances cannot be created and deleted.";
+              }
+              leaf priority {
+                type uint8 {
+                  range "0..3";
+                }
+                description
+                  "Priority.";
+              }
+              leaf weight {
+                type uint8 {
+                  range "1..100";
+                }
+                mandatory true;
+                description
+                  "Weight.";
+              }
+            }
+          }
+          container parent-prioritys {
+            when "../mode='4-priority'";
+            description
+              "List of configure parent priority of four priority mode user queue.";
+            list parent-priority {
+              must "cir-parent-priority <= pir-parent-priority";
+              key "priority";
+              description
+                "Configure parent priority of four priority mode user queue.";
+              ext:generated-by system {
+                description "The instances are created and deleted following the user queue template.";
+              }
+              ext:operation-exclude create|delete {
+                description "The instances cannot be created and deleted.";
+              }
+              leaf priority {
+                type uint8 {
+                  range "0..3";
+                }
+                description
+                  "Priority.";
+              }
+              leaf cir-parent-priority {
+                type uint8 {
+                  range "0..3";
+                }
+                mandatory true;
+                description
+                  "Cir parent priority.";
+              }
+              leaf pir-parent-priority {
+                type uint8 {
+                  range "0..3";
+                }
+                mandatory true;
+                description
+                  "Pir parent priority.";
+              }
+            }
+          }
+          container priority-shapings {
+            when "../mode='4-priority'";
+            description
+              "List of configure shaping parameters of four priority mode user queue.";
+            list priority-shaping {
+              key "priority";
+              description
+                "Configure shaping parameters of four priority mode user queue.";
+              leaf priority {
+                type uint8 {
+                  range "0..2";
+                }
+                description
+                  "Priority.";
+              }
+              leaf pir {
+                type uint32;
+                units "kbit/s";
+                mandatory true;
+                description
+                  "Peak information rate.";
+              }
+              leaf pbs {
+                type uint32 {
+                  range "1..max";
+                }
+                units "Byte";
+                description
+                  "Peak burst size.";
               }
             }
           }
@@ -3209,6 +4347,7 @@ module huawei-qos {
                 type leafref {
                   path "/acl:acl/acl:groups/acl:group/acl:identity";
                 }
+                must "/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type!='interface'";
                 description
                   "Acl number or name.";
               }
@@ -3226,6 +4365,7 @@ module huawei-qos {
                 type leafref {
                   path "/acl:acl/acl:group6s/acl:group6/acl:identity";
                 }
+                must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type!='interface'";
                 description
                   "Acl number or name.";
               }
@@ -3935,7 +5075,7 @@ module huawei-qos {
               }
               leaf pir {
                 type uint32 {
-                  range "1..4294967295";
+                  range "0..4294967295";
                 }
                 units "kbit/s";
                 must "(../pir>=../cir)";
@@ -4139,6 +5279,11 @@ module huawei-qos {
               description
                 "To check the default route.";
             }
+            leaf ignore-default {
+              type ignore-default-type;
+              description
+                "Indicates a mode in which the default route is excluded.";
+            }
           }
           container except-deny-action {
             description
@@ -4176,6 +5321,7 @@ module huawei-qos {
               type leafref {
                 path "../../../../../queue-scheduler-template/flow-queues/flow-queue/name";
               }
+              must "../../../../../qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue[qos:name=current()]/qos:mode='normal'";
               description
                 "Flow queue.";
             }
@@ -4190,6 +5336,7 @@ module huawei-qos {
               type leafref {
                 path "../../../../../queue-scheduler-template/user-group-queues/user-group-queue/name";
               }
+              must "/qos:qos/qos:queue-scheduler-template/qos:user-group-queues/qos:user-group-queue[qos:name=current()]/qos:mode='normal'";
               description
                 "User group queue.";
             }
@@ -4301,6 +5448,7 @@ module huawei-qos {
             }
           }
           container group-mode-policy-nodes {
+            when "../share-mode='disable'";
             description
               "List of the mappings between classifiers and behaviors for group mode.";
             list group-mode-policy-node {
@@ -4409,10 +5557,7 @@ module huawei-qos {
               description
                 "Traffic policy statistics.";
               leaf slot-id {
-                type slot-id {
-                  length "1..32";
-                  pattern '(c[cl]c\d+/)?\d+';
-                }
+                type slot-id;
                 description
                   "Slot id. The chassis ID must also be specified when have multi chassis, such as 3, clc1/3 or ccc1/3.";
               }
@@ -4436,174 +5581,7 @@ module huawei-qos {
                 description
                   "Enable/disable clearing statistics.";
               }
-              leaf match-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of matched packets.";
-              }
-              leaf match-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of matched bytes.";
-              }
-              leaf match-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of matched packets.";
-              }
-              leaf match-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of matched bytes.";
-              }
-              leaf miss-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of unmatched packets.";
-              }
-              leaf miss-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of unmatched bytes.";
-              }
-              leaf match-pass-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of matched and passed packets.";
-              }
-              leaf match-pass-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of matched and passed bytes.";
-              }
-              leaf match-drop-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of matched but discarded packets.";
-              }
-              leaf match-drop-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of matched but discarded bytes.";
-              }
-              leaf miss-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the packets that do not match the policy.";
-              }
-              leaf miss-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the bytes that do not match the policy.";
-              }
-              leaf match-pass-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the packets that match the policy and passed.";
-                }
-              leaf match-pass-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the bytes that match the policy and passed.";
-              }
-              leaf match-drop-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the packets that match the policy but are discarded.";
-              }
-              leaf match-drop-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the bytes that match the policy but are discarded.";
-              }
-              leaf urpf-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of packets discarded by URPF.";
-              }
-              leaf urpf-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of bytes discarded by URPF.";
-              }
-              leaf urpf-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of packets discarded by URPF.";
-              }
-              leaf urpf-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of bytes discarded by URPF.";
-              }
-              leaf car-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of packets processed by CAR.";
-              }
-              leaf car-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of bytes processed by CAR.";
-              }
-              leaf car-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of packets processed by CAR.";
-              }
-              leaf car-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of bytes processed by CAR.";
-              }
-              leaf filter-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of filtered packets.";
-              }
-              leaf filter-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of filtered bytes.";
-              }
-              leaf filter-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of filtered packets.";
-              }
-              leaf filter-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of filtered bytes.";
-              }
+              uses policy-statistics-type;
               container classifier-statisticss {
                 description
                   "List of traffic classifier statistics.";
@@ -4769,13 +5747,13 @@ module huawei-qos {
                     type uint64;
                     units "pps";
                     description
-                      "Number of the passed packets by CAR.";
+                      "Rate of the passed packets by CAR.";
                   }
                   leaf car-byte-rate {
                     type uint64;
                     units "Byte/s";
                     description
-                      "Number of the passed bytes by CAR.";
+                      "Rate of the passed bytes by CAR.";
                   }
                   leaf car-pass-packets {
                     type uint64;
@@ -4790,7 +5768,7 @@ module huawei-qos {
                       "Number of the passed bytes by CAR.";
                   }
                   leaf car-drop-packets {
-                  type uint64;
+                    type uint64;
                     units "packet";
                     description
                       "Rate of the discarded packets by CAR.";
@@ -4809,7 +5787,7 @@ module huawei-qos {
                   }
                   leaf car-pass-byte-rate {
                     type uint64;
-                    units "Byte";
+                    units "Byte/s";
                     description
                       "Rate of the passed bytes by CAR.";
                   }
@@ -4919,6 +5897,27 @@ module huawei-qos {
           }
         }
       }
+      container acl-log {
+        description
+          "Configure ACL log parameter. This node has default configuration.";
+        leaf entry-num {
+          type uint16 {
+            range "1..8191";
+          }
+          default "256";
+          description
+            "Maximum of logs.";
+        }
+        leaf agging-time {
+          type uint8 {
+            range "1..60";
+          }
+          units "min";
+          default "5";
+          description
+            "Statistical interval.";
+        }
+      }
       container global-set-queue-stat {
         description
           "Configure queue-stat interval.";
@@ -4974,27 +5973,6 @@ module huawei-qos {
           }
         }
       }//queue-wreds
-      container acl-log {
-        description
-          "Configure ACL log parameter. This node has default configuration.";
-        leaf entry-num {
-          type uint16 {
-            range "1..8191";
-          }
-          default "256";
-          description
-            "Maximum of logs.";
-        }
-        leaf agging-time {
-          type uint8 {
-            range "1..60";
-          }
-          units "min";
-          default "5";
-          description
-            "Statistical interval.";
-        }
-      }
       container low-latency-enables {
         description
           "List of low latency enable.";
@@ -5029,10 +6007,7 @@ module huawei-qos {
             description "The configuration cannot be created and deleted.";
           }
           leaf slot-id {
-            type slot-id {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot id. The chassis ID must also be specified when have multi chassis, such as 3, clc1/3 or ccc1/3.";
           }
@@ -5116,10 +6091,7 @@ module huawei-qos {
           description
             "Configure packaging function.";
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot id.";
           }
@@ -5174,10 +6146,7 @@ module huawei-qos {
           description
             "Configure collecting packet statistics based on accuracy compensated lengths.";
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot id.";
           }
@@ -5209,10 +6178,7 @@ module huawei-qos {
           description
             "Configure redback packet adjustment on the slot.";
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot id.";
           }
@@ -5246,10 +6212,7 @@ module huawei-qos {
           description
             "Configure enabling CAR and statistics for Layer 3 packets on the slot.";
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot ID.";
           }
@@ -5279,10 +6242,7 @@ module huawei-qos {
           description
             "Configure enabling CAR and statistics for Layer 3 packets on the slot only for L2TP users.";
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot ID.";
           }
@@ -5920,10 +6880,7 @@ module huawei-qos {
               "Direction.";
           }
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot id. The chassis id must also be specified when have multi chassis, such as 3, clc1/3 or ccc1/3.";
           }
@@ -5959,174 +6916,7 @@ module huawei-qos {
             description
               "Enable/disable clearing statistics.";
           }
-          leaf match-packets {
-            type uint64;
-            units "packet";
-            description
-              "Number of matched packets.";
-          }
-          leaf match-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Number of matched bytes.";
-          }
-          leaf match-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Rate of matched packets.";
-          }
-          leaf match-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Rate of matched bytes.";
-          }
-          leaf match-pass-packets {
-            type uint64;
-            units "packet";
-            description
-              "Number of matched and passed packets.";
-          }
-          leaf match-pass-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Number of matched and passed bytes.";
-          }
-          leaf match-pass-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Rate of the packets that match the policy and passed.";
-          }
-          leaf match-pass-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Rate of the bytes that match the policy and passed.";
-          }
-          leaf match-drop-packets {
-            type uint64;
-            units "packet";
-            description
-              "Number of matched but discarded packets.";
-          }
-          leaf match-drop-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Number of matched but discarded bytes.";
-          }
-          leaf match-drop-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Rate of the packets that match the policy but are discarded.";
-          }
-          leaf match-drop-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Rate of the bytes that match the policy but are discarded.";
-          }
-          leaf miss-packets {
-            type uint64;
-            units "packet";
-            description
-              "Number of unmatched packets.";
-          }
-          leaf miss-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Number of unmatched bytes.";
-          }
-          leaf miss-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Rate of the packets that do not match the policy.";
-          }
-          leaf miss-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Rate of the bytes that do not match the policy.";
-          }
-          leaf urpf-packets {
-            type uint64;
-            units "packet";
-            description
-              "Number of packets discarded by URPF.";
-          }
-          leaf urpf-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Number of bytes discarded by URPF.";
-          }
-          leaf urpf-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Rate of packets discarded by URPF.";
-          }
-          leaf urpf-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Rate of bytes discarded by URPF.";
-          }
-          leaf car-packets {
-            type uint64;
-            units "packet";
-            description
-              "Number of packets processed by CAR.";
-          }
-          leaf car-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Number of bytes processed by CAR.";
-          }
-          leaf car-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Rate of packets processed by CAR.";
-          }
-          leaf car-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Rate of bytes processed by CAR.";
-          }
-          leaf filter-packets {
-            type uint64;
-            units "packet";
-            description
-              "Number of filtered packets.";
-          }
-          leaf filter-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Number of filtered bytes.";
-          }
-          leaf filter-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Rate of filtered packets.";
-          }
-          leaf filter-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Rate of filtered bytes.";
-          }
+          uses policy-statistics-type;
           container rule-based-staticss {
             description
               "List of traffic rule classifier statistics.";
@@ -6277,270 +7067,7 @@ module huawei-qos {
                 description
                   "Name of a traffic classifier.";
               }
-              leaf match-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of matched packets.";
-              }
-              leaf match-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of matched bytes.";
-              }
-              leaf match-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of matched packets.";
-              }
-              leaf match-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of matched bytes.";
-              }
-              leaf match-pass-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of matched and passed packets.";
-              }
-              leaf match-pass-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of matched and passed bytes.";
-              }
-              leaf match-pass-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the packets matching the traffic classifier and passed.";
-              }
-              leaf match-pass-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the bytes matching the traffic classifier and passed.";
-              }
-              leaf match-drop-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of matched but discarded packets.";
-              }
-              leaf match-drop-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of matched but discarded bytes.";
-              }
-              leaf match-drop-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the packets matching the traffic classifier but discarded.";
-              }
-              leaf match-drop-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the bytes matching the traffic classifier but discarded.";
-              }
-              leaf urpf-drop-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of the discarded packets by URPF check.";
-              }
-              leaf urpf-drop-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of the discarded bytes by URPF check.";
-              }
-              leaf urpf-drop-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the discarded packets by URPF check.";
-              }
-              leaf urpf-drop-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the discarded bytes by URPF check.";
-              }
-              leaf car-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of the processed packets by CAR.";
-              }
-              leaf car-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of the processed bytes by CAR.";
-              }
-              leaf car-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the passed packets by CAR.";
-              }
-              leaf car-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the passed bytes by CAR.";
-              }
-              leaf car-pass-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of the passed packets by CAR.";
-              }
-              leaf car-pass-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of the passed bytes by CAR.";
-              }
-              leaf car-pass-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the passed packets CAR.";
-              }
-              leaf car-pass-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the passed bytes by CAR.";
-              }
-              leaf car-drop-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Rate of the discarded packets by CAR.";
-              }
-              leaf car-drop-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Rate of the discarded bytes by CAR.";
-              }
-              leaf car-drop-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of the discarded packets by CAR.";
-              }
-              leaf car-drop-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the discarded bytes by CAR.";
-              }
-              leaf car-green-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of green packets by CAR.";
-              }
-              leaf car-green-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of the bytes of green packets by CAR.";
-              }
-              leaf car-green-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of green packets by CAR.";
-              }
-              leaf car-green-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the bytes of green packets by CAR.";
-              }
-              leaf car-yellow-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of yellow packets by CAR.";
-              }
-              leaf car-yellow-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of the bytes of yellow packets by CAR.";
-              }
-              leaf car-yellow-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of yellow packets by CAR.";
-              }
-              leaf car-yellow-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the bytes of yellow packets by CAR.";
-              }
-              leaf car-red-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of red packets by CAR.";
-              }
-              leaf car-red-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of the bytes of red packets by CAR.";
-              }
-              leaf car-red-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of red packets by CAR.";
-              }
-              leaf car-red-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of the bytes of red packets by CAR.";
-              }
-              leaf filter-packets {
-                type uint64;
-                units "packet";
-                description
-                  "Number of filtered bytes.";
-              }
-              leaf filter-bytes {
-                type uint64;
-                units "Byte";
-                description
-                  "Number of filtered packets.";
-              }
-              leaf filter-packet-rate {
-                type uint64;
-                units "pps";
-                description
-                  "Rate of filtered packets.";
-              }
-              leaf filter-byte-rate {
-                type uint64;
-                units "Byte/s";
-                description
-                  "Rate of filtered bytes.";
-              }
+              uses classifier-statistics-type;
               leaf unknownunisup-pass-packets {
                 type uint64;
                 units "packet";
@@ -6780,6 +7307,37 @@ module huawei-qos {
           }
         }
       }
+      container car-resources {
+        description
+          "List of CAR resource state.";
+        list car-resource {
+          key "slot-id car-type";
+          description
+            "CAR resource state.";
+          leaf slot-id {
+            type slot-id;
+            description
+              "Slot id.";
+          }
+          leaf car-type {
+            type string {
+              length "1..96";
+            }
+            description
+              "Car type.";
+          }
+          leaf inbound-resource {
+            type uint32;
+            description
+              "Inbound car resource.";
+          }
+          leaf outbound-resource {
+            type uint32;
+            description
+              "Outbound car resource.";
+          }
+        }
+      }
       container traffic-buffer-usages {
         description
           "List of traffic buffer usage.";
@@ -6789,7 +7347,7 @@ module huawei-qos {
             "Traffic buffer usage state.";
           leaf slot-id {
             type string {
-              length "1..16";
+              length "1..15";
             }
             description
               "Slot id.";
@@ -6836,7 +7394,7 @@ module huawei-qos {
             "Traffic policy resource state.";
           leaf slot-id {
             type string {
-              length "1..16";
+              length "1..15";
             }
             description
               "Slot id.";
@@ -6862,7 +7420,7 @@ module huawei-qos {
             "User group queue resource state.";
           leaf slot-id {
             type string {
-              length "1..16";
+              length "1..15";
             }
             description
               "Slot id.";
@@ -6898,40 +7456,75 @@ module huawei-qos {
           }
         }
       }
-      container car-resources {
-        config false;
+      container queue-statisticss {
         description
-          "List of CAR resource state.";
-        list car-resource {
-          key "slot-id car-type";
+          "List of queue statistics.";
+        list queue-statistics {
+          key "interface-name service-class";
           description
-            "CAR resource state.";
-          leaf slot-id {
-            type string {
-              length "1..32";
+            "Queue statistics.";
+          leaf interface-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
             }
             description
-              "Slot id.";
+              "Interface name.";
           }
-          leaf car-type {
-            type string {
-              length "1..96";
-            }
+          leaf service-class {
+            type qos-service-class;
             description
-              "Car type.";
+              "Class of service.";
           }
-          leaf inbound-resource {
-            type uint32;
+          leaf pass-packets {
+            type uint64;
+            units "packet";
             description
-              "Inbound car resource.";
+              "Pass packets.";
           }
-          leaf outbound-resource {
-            type uint32;
+          leaf pass-bytes {
+            type uint64;
+            units "Byte";
             description
-              "Outbound car resource.";
+              "Pass bytes.";
+          }
+          leaf pass-packet-rate {
+            type uint64;
+            units "pps";
+            description
+              "Pass packet rate.";
+          }
+          leaf pass-byte-rate {
+            type uint64;
+            units "Byte/s";
+            description
+              "Pass byte rate.";
+          }
+          leaf discard-packets {
+            type uint64;
+            units "packet";
+            description
+              "Discard packets.";
+          }
+          leaf discard-bytes {
+            type uint64;
+            units "Byte";
+            description
+              "Discard bytes.";
+          }
+          leaf discard-packet-rate {
+            type uint64;
+            units "pps";
+            description
+              "Discard packet rate.";
+          }
+          leaf discard-byte-rate {
+            type uint64;
+            units "Byte/s";
+            description
+              "Discard byte rate.";
           }
         }
-      }      
+      }
       container port-queue-statisticss {
         config false;
         description
@@ -7366,7 +7959,7 @@ module huawei-qos {
                 "Direction of profile.";
             }
             leaf service-class {
-              type qos-service-class-filter;
+              type qos-service-class-8cos;
               description
                 "Class of service.";
             }
@@ -7458,6 +8051,11 @@ module huawei-qos {
               units "kB";
               description
                 "Size of used buffer.";
+            }
+            leaf clear-time {
+              type yang:date-and-time;
+              description
+                "Time of clearing statistics.";
             }
           }
         }
@@ -7747,75 +8345,6 @@ module huawei-qos {
           }
         }
       }
-      container queue-statisticss {
-        description
-          "List of queue statistics.";
-        list queue-statistics {
-          key "interface-name service-class";
-          description
-            "Queue statistics.";
-          leaf interface-name {
-            type leafref {
-              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
-            }
-            description
-              "Interface name.";
-          }
-          leaf service-class {
-            type qos-service-class;
-            description
-              "Class of service.";
-          }
-          leaf pass-packets {
-            type uint64;
-            units "packet";
-            description
-              "Pass packets.";
-          }
-          leaf pass-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Pass bytes.";
-          }
-          leaf pass-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Pass packet rate.";
-          }
-          leaf pass-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Pass byte rate.";
-          }
-          leaf discard-packets {
-            type uint64;
-            units "packet";
-            description
-              "Discard packets.";
-          }
-          leaf discard-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Discard bytes.";
-          }
-          leaf discard-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Discard packet rate.";
-          }
-          leaf discard-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Discard byte rate.";
-          }
-        }
-      }
       container l2vpn-hard-pipe-statisticss {
         description
           "List of hard pipe traffic statisticss on the AC side.";
@@ -7947,10 +8476,7 @@ module huawei-qos {
               "Type of a IP address.";
           }
           leaf slot-id {
-            type slot-id {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot id. The chassis ID must also be specified when have multi chassis, such as 3, clc1/3 or ccc1/3.";
           }
@@ -8356,7 +8882,7 @@ module huawei-qos {
           }
           leaf slot-id {
             type string {
-              length "1..16";
+              length "1..15";
               pattern '(c[cl]c\d+/)?\d+';
             }
             description
@@ -8407,7 +8933,7 @@ module huawei-qos {
             "Display sub port queue resource state.";
           leaf slot-id {
             type string {
-              length "1..16";
+              length "1..15";
               pattern '(c[cl]c\d+/)?\d+';
             }
             description
@@ -8441,7 +8967,7 @@ module huawei-qos {
         description
           "List of interface CAR statistics.";
         list interface-car-statistics {
-          key "interface-name direction vlan-id slot-id";
+          key "interface-name direction vlan-id slot-id vid";
           description
             "Car statistics.";
           leaf interface-name {
@@ -8464,10 +8990,7 @@ module huawei-qos {
               "VLAN ID.";
           }
           leaf slot-id {
-            type slot-id {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot ID.";
           }
@@ -8478,56 +9001,85 @@ module huawei-qos {
             description
               "Vid.";
           }
-          leaf pass-packets {
-            type uint64;
-            units "packet";
-            description
-              "Pass packets.";
-          }
-          leaf pass-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Pass bytes.";
-          }
-          leaf pass-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Pass packet rate.";
-          }
-          leaf pass-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Pass byte rate.";
-          }
-          leaf drop-packets {
-            type uint64;
-            units "packet";
-            description
-              "Drop packets.";
-          }
-          leaf drop-bytes {
-            type uint64;
-            units "Byte";
-            description
-              "Drop bytes.";
-          }
-          leaf drop-packet-rate {
-            type uint64;
-            units "pps";
-            description
-              "Drop packet rate.";
-          }
-          leaf drop-byte-rate {
-            type uint64;
-            units "Byte/s";
-            description
-              "Drop byte rate.";
-          }
+          uses car-statistics-type;
         }
       }
+      container interface-car-l2-port-statisticss {
+        description
+          "List of interface CAR L2Port statistics.";
+        list interface-car-l2-port-statistics {
+          key "interface-name direction vlan-id slot-id";
+          description
+            "CAR L2Port statistics.";
+          leaf interface-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Interface name.";
+          }
+          leaf direction {
+            type qos-direction-type;
+            description
+              "Direction.";
+          }
+          leaf vlan-id {
+            type uint16 {
+              range "0..4094";
+            }
+            description
+              "VLAN ID.";
+          }
+          leaf slot-id {
+            type slot-id;
+            description
+              "Slot ID.";
+          }
+          uses car-statistics-type;
+        }
+      }
+      container interface-car-8021p-dscp-statisticss {
+        description
+          "List of interface CAR 8021p DSCP statistics.";
+        list interface-car-8021p-dscp-statistics {
+          key "interface-name direction pe-vlan-id priority-value slot-id";
+          description
+            "CAR 8021p DSCP statistics.";
+          leaf interface-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Interface name.";
+          }
+          leaf direction {
+            type qos-direction-type;
+            description
+              "Direction.";
+          }
+          leaf pe-vlan-id {
+            type uint16 {
+              range "0..4094";
+            }
+            description
+              "PE VLAN ID.";
+          }
+          leaf priority-value {
+            type uint16 {
+              range "0..7";
+            }
+            description
+              "Priority Value.";
+          }
+          leaf slot-id {
+            type slot-id;
+            description
+              "Slot ID.";
+          }
+          uses car-statistics-type;
+        }
+      }
+
       container interface-extend-statisticss {
         description
           "List of interface extend statistics.";
@@ -8694,9 +9246,7 @@ module huawei-qos {
           description
             "The total allocation list of sub port queue request resource failure state.";
           leaf slot-id {
-            type string {
-              length "1..32";
-            }
+            type slot-id;
             description
               "Slot ID.";
           }
@@ -8743,10 +9293,7 @@ module huawei-qos {
           description
             "The total allocation list of user group queue request resource failure state.";
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot ID.";
           }
@@ -8793,9 +9340,7 @@ module huawei-qos {
           description
             "The total allocation list of user queue request resource failure state.";
           leaf slot-id {
-            type string {
-              length "1..32";
-            }
+            type slot-id;
             description
               "Slot ID.";
           }
@@ -8843,7 +9388,7 @@ module huawei-qos {
             "Display user queue resource state.";
           leaf slot-id {
             type string {
-              length "1..16";
+              length "1..15";
             }
             description
               "Slot ID.";
@@ -9040,7 +9585,7 @@ module huawei-qos {
             "Port queue statistics.";
           leaf slot-id {
             type string {
-              length "1..16";
+              length "1..15";
               pattern "(c[cl]c\\d+/)?\\d+";
             }
             description
@@ -9157,10 +9702,7 @@ module huawei-qos {
           description
             "Operational state of the channel profile.";
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern "(c[cl]c\\d+/)?\\d+";
-            }
+            type slot-id;
             description
               "Slot ID.";
           }
@@ -9356,9 +9898,7 @@ module huawei-qos {
           "Direction.";
       }
       leaf slot-id {
-        type string {
-          length "1..32";
-        }
+        type slot-id;
         description
           "Slot id.";
       }
@@ -9384,15 +9924,13 @@ module huawei-qos {
           "User group queue name.";
       }
       leaf direction {
-        type qos-direction-type;
+        type qos-gq-direction-type;
         mandatory true;
         description
           "Direction.";
       }
       leaf slot-id {
-        type string {
-          length "1..32";
-        }
+        type slot-id;
         description
           "Slot id.";
       }
@@ -9535,6 +10073,27 @@ module huawei-qos {
         description
           "Direction.";
       }
+      leaf pe-vlan-id {
+        type uint32 {
+          range "1..4094";
+        }
+        description
+          "Pe VLAN id.";
+      }
+      leaf ce-vlan-id {
+        type uint32 {
+          range "1..4094";
+        }
+        description
+          "Ce VLAN id.";
+      }
+      leaf vlan-id {
+        type uint32 {
+          range "1..4094";
+        }
+        description
+          "VLAN id.";
+      }
     }
   }//rpc reset-interface-user-group-queue-statistics
   rpc reset-interface-user-queue-statistics {
@@ -9592,10 +10151,7 @@ module huawei-qos {
     ext:node-ref "/qos:qos/qos:global-query/qos:slot-port-queue-statisticss";
     input {
       leaf slot-id {
-        type string {
-          length "1..32";
-          pattern '(c[cl]c\d+/)?\d+';
-        }
+        type slot-id;
         mandatory true;
         description
           "Slot ID.";
@@ -9692,10 +10248,7 @@ module huawei-qos {
     ext:node-ref "/qos:qos/qos:global-query/qos:fabric-queue-multicast-statisticss";
     input {
       leaf slot-id {
-        type string {
-          length "1..32";
-          pattern '(c[cl]c\d+/)?\d+';
-        }
+        type slot-id;
         mandatory true;
         description
           "Slot ID.";
@@ -9712,8 +10265,6 @@ module huawei-qos {
         description
           "List of configure trust ip-dscp or 8021p.";
         list trust {
-          must "(./vlan-mode='false' and ./begin-vlan=0 and ./end-vlan=0) or (./vlan-mode='true' and ./begin-vlan>0)";
-          must "./begin-vlan <= ./end-vlan";
           key "type direction vlan-mode begin-vlan end-vlan";
           description
             "Configure trust ip-dscp or 8021p.";
@@ -9767,6 +10318,8 @@ module huawei-qos {
         description
           "List of configure traffic policy application.";
         list traffic-policy-apply {
+          must "../../../ifm:l2-mode-enable='false' and (./identifier='no' or not(./identifier)) or ../../../ifm:l2-mode-enable='true'";
+          must "./vlan-mode='false' or (./vlan-mode='true' and not(../../../ifm:l2-mode-enable='true'))";
           key "policy-name direction layer vlan-mode pe-vlan-id";
           description
             "Configure traffic policy application.";
@@ -9802,7 +10355,9 @@ module huawei-qos {
           }
           leaf vlan-id {
             when "../vlan-mode='true'";
-            type pub-type:vlan-range;
+            type pub-type:vlan-range {
+              pattern '((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])+(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)';
+            }
             mandatory true;
             description
               "VLAN id.";
@@ -9881,8 +10436,8 @@ module huawei-qos {
             type template-name;
             description
               "The name of user queue group.";
-            ext:operation-exclude update {
-              description "After the configuration is created, the node cannot be modified.";
+            ext:operation-exclude create|update|delete {
+              description "After the configuration is created, the node cannot be modified and delete. When the list instance has created without group-name, and the group-name can not be created.";
             }
           }
         }
@@ -9903,23 +10458,26 @@ module huawei-qos {
             type uint32{
                 range "0 | 16..4294967294";
             }
+            units "kbit/s";
             mandatory true;
             description
-            "Committed information rate (unit: Kbit/s).";
+            "Committed information rate.";
           }
           leaf pir {
             type uint32{
                 range "0 | 16..4294967294";
             }
+            units "kbit/s";
             must "../pir>=../cir";
             mandatory true;
             description
-              "Peak information rate (unit: Kbit/s).";
+              "Peak information rate.";
           }
           leaf flow-queue-name {
             type leafref {
               path "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:name";
             }
+            must "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue[qos:name=current()]/qos:mode='normal'";
             description
               "Flow queue.";
           }
@@ -9934,6 +10492,7 @@ module huawei-qos {
             type leafref {
               path "/qos:qos/qos:queue-scheduler-template/qos:user-group-queues/qos:user-group-queue/qos:name";
             }
+            must "/qos:qos/qos:queue-scheduler-template/qos:user-group-queues/qos:user-group-queue[qos:name=current()]/qos:mode='normal'";
             description
               "Group Queue.";
           }
@@ -10491,6 +11050,7 @@ module huawei-qos {
           "List of configure queue statisticss interval.";
         list set-queue-stat {
           key "interval";
+          max-elements "1";
           description
             "Configure queue statisticss interval.";
           leaf interval {
@@ -10514,32 +11074,6 @@ module huawei-qos {
           type link-adjustment-type;
           description
             "Shaping mode. If users access the network through PPPoA, the remote link type must be set to cell; if users access the network through PPPoE, the remote link type does not need to be set to cell.";
-        }
-      }
-      container soft-pipe-alarms {
-        description
-          "Configure softpipe bandwidth usage alarm. The soft-pipe alarm will not come into effect without hard-pipe configuration on the interface. Some interface do not support this object.";
-        container soft-pipe-alarm {
-          must "./bandwidth-usage-threshold>=./resume-threshold";
-          presence "create soft-pipe-alarm";
-          description
-            "Enable/disable softpipe bandwidth usage alarm.";
-          leaf bandwidth-usage-threshold {
-            type uint8 {
-              range "1..100";
-            }
-            mandatory true;
-            description
-             "The alarm threshold of soft-pipe bandwidth usage.";
-          }
-          leaf resume-threshold {
-            type uint8 {
-              range "1..100";
-            }
-            mandatory true;
-            description
-              "The resume threshold of soft-pipe bandwidth usage.";
-          }
         }
       }
       container qos-queues {
@@ -10572,8 +11106,9 @@ module huawei-qos {
                 type uint32 {
                   range "0..100000";
                 }
+                units "Mbit/s";
                 description
-                  "Committed information rate (unit: Mbps/s).";
+                  "Committed information rate.";
               }
             }
             case cir-percent {
@@ -10583,6 +11118,7 @@ module huawei-qos {
                 type uint8 {
                   range "0..100";
                 }
+                units "%";
                 description
                   "CIR percentage.";
               }
@@ -10599,9 +11135,10 @@ module huawei-qos {
                 type uint32 {
                   range "1..100000";
                 }
+                units "Mbit/s";
                 must "../pir>=../cir";
                 description
-                  "Peak information rate (unit: Mbps/s).";
+                  "Peak information rate.";
               }
             }
             case pir-percent {
@@ -10611,6 +11148,7 @@ module huawei-qos {
                 type uint8 {
                   range "0..100";
                 }
+                units "%";
                 must "../pir-percent>=../cir-percent";
                 description
                   "PIR percentage.";
@@ -10642,6 +11180,32 @@ module huawei-qos {
           }
         }    
       }
+      container soft-pipe-alarms {
+        description
+          "Configure softpipe bandwidth usage alarm. The soft-pipe alarm will not come into effect without hard-pipe configuration on the interface. Some interface do not support this object.";
+        container soft-pipe-alarm {
+          must "./bandwidth-usage-threshold>=./resume-threshold";
+          presence "create soft-pipe-alarm";
+          description
+            "Enable/disable softpipe bandwidth usage alarm.";
+          leaf bandwidth-usage-threshold {
+            type uint8 {
+              range "1..100";
+            }
+            mandatory true;
+            description
+             "The alarm threshold of soft-pipe bandwidth usage.";
+          }
+          leaf resume-threshold {
+            type uint8 {
+              range "1..100";
+            }
+            mandatory true;
+            description
+              "The resume threshold of soft-pipe bandwidth usage.";
+          }
+        }
+      }
       container flow-queue-template-applys {
         description
           "List of configure flow queue template applications. This node can only be configured on the channelized sub-interface.";
@@ -10654,6 +11218,7 @@ module huawei-qos {
             type leafref {
               path "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:name";
             }
+            must "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue[qos:name=current()]/qos:mode='normal'";
             description
               "Flow queue template name.";
           }
@@ -10776,6 +11341,7 @@ module huawei-qos {
               "Length value of network header.";
           }
           leaf weight-mode {
+            when "../../../../ifm:type='Eth-Trunk'";
             type port-shaping-weight-mode-type;
             description
               "Scale scheduler parameters on aggregate interface weight.";
@@ -10818,7 +11384,7 @@ module huawei-qos {
               }
             }
           }
-        }    
+        }
       }
       container per-hop-behavior-disables {
         description
@@ -10839,7 +11405,9 @@ module huawei-qos {
           }
           leaf vlan-id {
             when "../vlan-mode='true'";
-            type pub-type:vlan-range;
+            type pub-type:vlan-range {
+              pattern '((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])+(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)';
+            }
             mandatory true;
             description
               "VLAN id.";
@@ -10878,7 +11446,9 @@ module huawei-qos {
               "Name of a diffserv domain.";
           }
           leaf vlan-id {
-            type pub-type:vlan-range;
+            type pub-type:vlan-range {
+              pattern '((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])+(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)';
+            }
             mandatory true;
             description
               "VLAN id.";
@@ -10898,10 +11468,7 @@ module huawei-qos {
         description
           "List of configure interface applying car.";
         list car {
-          must "(./vlan-mode='false' and ./begin-vlan=0 and ./end-vlan=0) or (./vlan-mode='true' and ./begin-vlan>0)";
-          must "./begin-vlan <= ./end-vlan";
           must "(./cir-value and ./cbs) or not(./cir-value)";
-          must "(./pir-value and ./pbs) or not(./pir-value)";
           key "direction vlan-mode begin-vlan end-vlan";
           description
             "Configure interface applying car.";
@@ -11089,9 +11656,21 @@ module huawei-qos {
         description
           "Configure Drop Eligible Indicator.";
         leaf vlan-id {
-          type pub-type:vlan-range;
+          type pub-type:vlan-range {
+            pattern '((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])+(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)';
+          }
           description
             "VLAN ID. The VLAN ID must fall within the VLAN ID range of the Layer 2 main interface.";
+        }
+      }
+      container drop-eligible-indicator {
+        when "../../ifm:class='sub-interface'";
+        description
+          "Configure drop eligible indicator.";
+        leaf enable {
+          type empty;
+          description
+            "Enable drop eligible indicator.";
         }
       }
       container trust-untag-ip-precedence {
@@ -11117,7 +11696,9 @@ module huawei-qos {
           }
           leaf vlan-id {
             when "../vlan-mode='true'";
-            type pub-type:vlan-range;
+            type pub-type:vlan-range {
+              pattern '((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])+(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)';
+            }
             mandatory true;
             description
               "VLAN id.";
@@ -11137,41 +11718,77 @@ module huawei-qos {
         description
           "Enable/disable interface share shaping. The configuration involves at least two queues, and the scheduling mode of the queues must be the same.";
         leaf be {
+          when "../../port-queues/port-queue[service-class='be']/queue-schedule-mode";
           type queue-select-be-type;
+          must "not(../af1) or ../../port-queues/port-queue[service-class='be']/queue-schedule-mode=../../port-queues/port-queue[service-class='af1']/queue-schedule-mode";
+          must "not(../af2) or ../../port-queues/port-queue[service-class='be']/queue-schedule-mode=../../port-queues/port-queue[service-class='af2']/queue-schedule-mode";
+          must "not(../af3) or ../../port-queues/port-queue[service-class='be']/queue-schedule-mode=../../port-queues/port-queue[service-class='af3']/queue-schedule-mode";
+          must "not(../af4) or ../../port-queues/port-queue[service-class='be']/queue-schedule-mode=../../port-queues/port-queue[service-class='af4']/queue-schedule-mode";
+          must "not(../ef) or ../../port-queues/port-queue[service-class='be']/queue-schedule-mode=../../port-queues/port-queue[service-class='ef']/queue-schedule-mode";
+          must "not(../cs6) or ../../port-queues/port-queue[service-class='be']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs6']/queue-schedule-mode";
+          must "not(../cs7) or ../../port-queues/port-queue[service-class='be']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs7']/queue-schedule-mode";
           description
             "BE.";
         }
         leaf af1 {
+          when "../../port-queues/port-queue[service-class='af1']/queue-schedule-mode";
           type queue-select-af1-type;
+          must "not(../af2) or ../../port-queues/port-queue[service-class='af1']/queue-schedule-mode=../../port-queues/port-queue[service-class='af2']/queue-schedule-mode";
+          must "not(../af3) or ../../port-queues/port-queue[service-class='af1']/queue-schedule-mode=../../port-queues/port-queue[service-class='af3']/queue-schedule-mode";
+          must "not(../af4) or ../../port-queues/port-queue[service-class='af1']/queue-schedule-mode=../../port-queues/port-queue[service-class='af4']/queue-schedule-mode";
+          must "not(../ef) or ../../port-queues/port-queue[service-class='af1']/queue-schedule-mode=../../port-queues/port-queue[service-class='ef']/queue-schedule-mode";
+          must "not(../cs6) or ../../port-queues/port-queue[service-class='af1']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs6']/queue-schedule-mode";
+          must "not(../cs7) or ../../port-queues/port-queue[service-class='af1']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs7']/queue-schedule-mode";
           description
             "AF1.";
         }
         leaf af2 {
+          when "../../port-queues/port-queue[service-class='af2']/queue-schedule-mode";
           type queue-select-af2-type;
+          must "not(../af3) or ../../port-queues/port-queue[service-class='af2']/queue-schedule-mode=../../port-queues/port-queue[service-class='af3']/queue-schedule-mode";
+          must "not(../af4) or ../../port-queues/port-queue[service-class='af2']/queue-schedule-mode=../../port-queues/port-queue[service-class='af4']/queue-schedule-mode";
+          must "not(../ef) or ../../port-queues/port-queue[service-class='af2']/queue-schedule-mode=../../port-queues/port-queue[service-class='ef']/queue-schedule-mode";
+          must "not(../cs6) or ../../port-queues/port-queue[service-class='af2']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs6']/queue-schedule-mode";
+          must "not(../cs7) or ../../port-queues/port-queue[service-class='af2']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs7']/queue-schedule-mode";
           description
             "AF2.";
         }
         leaf af3 {
+          when "../../port-queues/port-queue[service-class='af3']/queue-schedule-mode";
           type queue-select-af3-type;
+          must "not(../af4) or ../../port-queues/port-queue[service-class='af3']/queue-schedule-mode=../../port-queues/port-queue[service-class='af4']/queue-schedule-mode";
+          must "not(../ef) or ../../port-queues/port-queue[service-class='af3']/queue-schedule-mode=../../port-queues/port-queue[service-class='ef']/queue-schedule-mode";
+          must "not(../cs6) or ../../port-queues/port-queue[service-class='af3']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs6']/queue-schedule-mode";
+          must "not(../cs7) or ../../port-queues/port-queue[service-class='af3']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs7']/queue-schedule-mode";
           description
             "AF3.";
         }
         leaf af4 {
+          when "../../port-queues/port-queue[service-class='af4']/queue-schedule-mode";
           type queue-select-af4-type;
+          must "not(../ef) or ../../port-queues/port-queue[service-class='af4']/queue-schedule-mode=../../port-queues/port-queue[service-class='ef']/queue-schedule-mode";
+          must "not(../cs6) or ../../port-queues/port-queue[service-class='af4']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs6']/queue-schedule-mode";
+          must "not(../cs7) or ../../port-queues/port-queue[service-class='af4']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs7']/queue-schedule-mode";
           description
             "AF4.";
         }
         leaf ef {
+          when "../../port-queues/port-queue[service-class='ef']/queue-schedule-mode";
           type queue-select-ef-type;
+          must "not(../cs6) or ../../port-queues/port-queue[service-class='ef']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs6']/queue-schedule-mode";
+          must "not(../cs7) or ../../port-queues/port-queue[service-class='ef']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs7']/queue-schedule-mode";
           description
             "EF.";
         }
         leaf cs6 {
+          when "../../port-queues/port-queue[service-class='cs6']/queue-schedule-mode";
           type queue-select-cs6-type;
+          must "not(../cs7) or ../../port-queues/port-queue[service-class='cs6']/queue-schedule-mode=../../port-queues/port-queue[service-class='cs7']/queue-schedule-mode";
           description
             "CS6.";
         }
         leaf cs7 {
+          when "../../port-queues/port-queue[service-class='cs7']/queue-schedule-mode";
           type queue-select-cs7-type;
           description
             "CS7."; 
@@ -11260,6 +11877,8 @@ module huawei-qos {
         description
           "List of configure user group queue on VLAN.";
         list user-vlan-user-group-queue-apply {
+          must "./pe-end-vlan-id>=./pe-begin-vlan-id";
+          must "./ce-end-vlan-id>=./ce-begin-vlan-id";
           key "direction pe-begin-vlan-id pe-end-vlan-id ce-begin-vlan-id ce-end-vlan-id";
           description
             "Configure user group queue on VLAN.";
@@ -11284,14 +11903,14 @@ module huawei-qos {
           }
           leaf ce-begin-vlan-id {
             type uint16 {
-              range "0..4094";
+              range "1..4094";
             }
             description
               "Ce begin VLAN id.";
           }
           leaf ce-end-vlan-id {
             type uint16 {
-              range "0..4094";
+              range "1..4094";
             }
             description
               "Ce end VLAN id.";
@@ -11309,6 +11928,7 @@ module huawei-qos {
             type leafref {
               path "/qos:qos/qos:queue-scheduler-template/qos:user-group-queues/qos:user-group-queue/qos:name";
             }
+            must "/qos:qos/qos:queue-scheduler-template/qos:user-group-queues/qos:user-group-queue[qos:name=current()]/qos:mode='normal'";
             mandatory true;
             description
               "Group queue. This node does not support modification or deletion.";
@@ -11370,11 +11990,11 @@ module huawei-qos {
       }
       container resource-pools {
         description
-          "List of configure QoS queue recource.";
+          "List of configure QoS queue resource.";
         list resource-pool {
           key "direction";
           description
-            "Configure QoS queue recource.";
+            "Configure QoS queue resource.";
           leaf direction {
             type qos-direction-type;
             description
@@ -11405,6 +12025,7 @@ module huawei-qos {
             type leafref {
               path "/qos:qos/qos:queue-scheduler-template/qos:user-group-queues/qos:user-group-queue/qos:name";
             }
+            must "/qos:qos/qos:queue-scheduler-template/qos:user-group-queues/qos:user-group-queue[qos:name=current()]/qos:mode='normal'";
             mandatory true;
             description
               "Group queue name.";
@@ -11418,7 +12039,7 @@ module huawei-qos {
             }
             description
               "Group-name.";
-            ext:operation-exclude update {
+            ext:operation-exclude create|update|delete {
               description "After the configuration is created, the node cannot be modified.";
             }
           }
@@ -11481,6 +12102,7 @@ module huawei-qos {
               type uint8 {
                 range "1..100";
               }
+              units "%";
               description
                 "CIR percentage.";
             }
@@ -11584,6 +12206,7 @@ module huawei-qos {
             type leafref {
               path "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:name";
             }
+            must "count(/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile[qos:name=current()]/qos:cars/qos:car)>=1";
             mandatory true;
             description
               "Qos profile name.";
@@ -11744,10 +12367,7 @@ module huawei-qos {
           description
             "Configure weight based scheduling for a source board.";
           leaf slot-id {
-            type string {
-              length "1..32";
-              pattern '(c[cl]c\d+/)?\d+';
-            }
+            type slot-id;
             description
               "Slot ID.";
           }
@@ -11787,6 +12407,7 @@ module huawei-qos {
           type uint32 {
             range "0 | 16..4294967294";
           }
+          units "kbit/s";
           description
             "Cir.";
         }
@@ -11794,6 +12415,7 @@ module huawei-qos {
           type uint32 {
             range "1..4194304";
           }
+          units "Byte";
           description
             "Cbs.";
         }
@@ -11801,6 +12423,7 @@ module huawei-qos {
           type uint32 {
             range "0 | 16..4294967294";
           }
+          units "kbit/s";
           must "(not(../cir) and ../pir>=10000) or (../cir and ../pir>=../cir)";
           description
             "Pir.";
@@ -11810,6 +12433,7 @@ module huawei-qos {
           type uint32 {
             range "1..4194304";
           }
+          units "Byte";
           must "not(../cbs) or (../cbs and ../pbs>=../cbs)";
           description
             "Pbs.";
@@ -11864,7 +12488,7 @@ module huawei-qos {
             ext:operation-exclude update;
           }
         }
-      }
+      }  
     }//augment ifm:interface/ifm:qos
   }//augment ifm:interface
   augment "/ni:network-instance/ni:instances/ni:instance" {
@@ -11909,7 +12533,7 @@ module huawei-qos {
     description
       "Adds qos configuration to license model.";
     container port-hqoss {
-      when "../lcs:name='LCR5S40NHQS0P' or ../lcs:name='LCR5S40XHQS0P' or ../lcs:name='LCR5S40GHQS0P' or ../lcs:name='LCR5S40VHQS0P' or ../lcs:name='LCR5S40YHQS0P'";
+      when "../lcs:name='LCR5S40NHQS0P' or ../lcs:name='LCR5S40XHQS0P' or ../lcs:name='LCR5S40GHQS0P' or ../lcs:name='LCR5S40VHQS0P' or ../lcs:name='LCR5S40YHQS0P' or ../lcs:name='LTNRS69GHQS0P' or ../lcs:name='LTNRS69NHQS0P' or ../lcs:name='LTNRS69VHQS0P' or ../lcs:name='LTNRS69YHQS0P' or ../lcs:name='LTNRS69XHQS0P'";
       description
         "List of configure port hqos license.";
       list port-hqos {

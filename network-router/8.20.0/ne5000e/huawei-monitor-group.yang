@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-monitor-group {
   yang-version 1;
@@ -22,6 +22,12 @@ module huawei-monitor-group {
     Email: support@huawei.com";
   description
     "Global monitor group configuration.";
+  revision 2020-03-09 {
+    description
+      "Fix trigger-up-delay units.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-28 {
     description
       "Initial revision.";

@@ -437,11 +437,11 @@ Flag of checking the non-first fragmented packets.";
           }
           default "5";
           description
-            "ACL step. The value can not be changed.";          
+            "ACL step. The value can not be changed."; 
           ext:operation-exclude update|delete {
             description
               "The value can not be changed.";				  
-          }            
+          }				
         }
         leaf description {
           type string {
@@ -1058,6 +1058,12 @@ Flag of checking the non-first fragmented packets.";
                 "Name of a time range in which an ACL rule takes effect. The value is a string of 1 to 32 characters and must start with an uppercase or lowercase letter.";
               ext:support-filter "true";
             }
+            leaf log-enable {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable logging matched data packets.";
+            }
             container match-statistics {
               config false;
               description
@@ -1411,7 +1417,7 @@ Flag of checking the non-first fragmented packets.";
           ext:operation-exclude update|delete {
             description
               "The value can not be changed.";				  
-          }
+          }				
         }		
         leaf description {
           type string {
@@ -1671,6 +1677,15 @@ Flag of checking the non-first fragmented packets.";
                         "Mask of the source IP address.";
                     }
                   }
+                  case negative-mask {
+                    description
+                      "Wildcard mask of a source IPv6 address."; 
+                    leaf source-wild {
+                      type inet:ipv6-address-no-zone;
+                      description
+                        "Wildcard mask of a source IPv6 address.";
+                    }
+                  }
                 }
               }
             }
@@ -1701,9 +1716,49 @@ Flag of checking the non-first fragmented packets.";
                         "Mask of the destination IP address.";
                     }
                   }
+                  case negative-mask {
+                    description
+                      "Wildcard mask of a destination IPv6 address.";
+                    leaf dest-wild {
+                      type inet:ipv6-address-no-zone;
+                      description
+                        "Wildcard mask of a destination IPv6 address.";
+                    }
+                  }
                 }
               }
-            }				
+            }
+            choice packets-priority {
+              description
+                "Specify packets priority.";
+              case dscp {
+                description
+                  "Differentiated services code point.";
+                leaf dscp {
+                  type uint8 {
+                    range "0..63";
+                  }
+                  description
+                    "Differentiated services code point.";
+                }
+              }
+            }
+            leaf icmp-type {
+              when "../protocol=58";
+              type uint16 {
+                range "0..255";
+              }
+              description
+                "ICMP type. This parameter is available only when the packet protocol is ICMP. If this parameter is not set, packets of all ICMP types are matched.";
+            }
+            leaf icmp-code {
+              when "../protocol=58 and ../icmp-type";
+              type uint16 {
+                range "0..255";
+              }
+              description
+                "ICMP message code. Data packets can be filtered based on the ICMP message code.";
+            }            
             choice vpn {			
               default vpn-instance;	
               description
@@ -1734,7 +1789,28 @@ Flag of checking the non-first fragmented packets.";
             }	
             choice tcp-flag {
               description
-                "Specify TCP-flag.";						
+                "Specify TCP-flag.";
+              case mask {
+                description
+                  "Specify tcp-flag and mask.";
+                leaf tcp-flag-value {
+                  when "../protocol=6";
+                  type uint16 {
+                    range "0..63";
+                  }
+                  description
+                    "TCP flag value.";
+                }
+                leaf tcp-flag-mask {
+                  when "../protocol=6 and ../tcp-flag-value";
+                  type uint16 {
+                    range "0..63";
+                  }
+                  default "63";
+                  description
+                    "TCP flag mask value.";
+                }
+              }                
               case established {
                 description
                   "Specify established.";			  
@@ -1743,6 +1819,34 @@ Flag of checking the non-first fragmented packets.";
                   type empty;
                   description
                     "Match established connections.";
+                }
+              }
+            }
+            choice source-port {
+              description
+                "Specify source port.";
+              case range {
+                description
+                  "Specify source port.";
+                leaf source-port-begin {
+                  when "../protocol=6 or ../protocol=17";
+                  type uint16 {
+                    range "0..65535";
+                  }
+                  must "((../source-port-begin and ../source-port-end) and (../source-port-begin<=../source-port-end) and not(../source-port-begin=0 and ../source-port-end=65535)) or (not (../source-port-begin) and  not (../source-port-end))";
+                  must "(not(../fragment-type))";
+                  description
+                    "Start port number of the source port.";
+                }
+                leaf source-port-end {
+                  when "(../protocol=6 or ../protocol=17)";
+                  type uint16 {
+                    range "0..65535";
+                  }
+                  must "((../source-port-begin and ../source-port-end) and (../source-port-begin<=../source-port-end) and not(../source-port-begin=0 and ../source-port-end=65535)) or (not (../source-port-begin) and  not (../source-port-end))";
+                  must "(not(../fragment-type))";
+                  description
+                    "End port number of the source port.";
                 }
               }
             }			
@@ -1785,7 +1889,7 @@ Flag of checking the non-first fragmented packets.";
             }			
             leaf fragment-type {
               type fragment-ipv6-type;
-              must "(not(../dest-port-begin) and not(../dest-port-end))";
+              must "(not(../dest-port-begin) and not(../dest-port-end) and not(../source-port-begin) and not(../source-port-end))";
               description
                 "Type of packet fragmentation.";
               ext:support-filter "true";
@@ -1797,7 +1901,31 @@ Flag of checking the non-first fragmented packets.";
               config false;
               description
                 "Priority of an advanced ACL rule in configuration mode.";            
-            }				
+            }
+            leaf time-range-name {
+              type leafref {
+                path "/timerange:time-range/timerange:time-range-instances/timerange:time-range-instance/timerange:name";
+              }
+              description
+                "Name of a time range in which an ACL rule takes effect. The value is a string of 1 to 32 characters and must start with an uppercase or lowercase letter.";
+            }
+            leaf log-enable {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable logging matched data packets.";
+            }
+            container match-statistics {
+              config false;
+              description
+                "Operational state of times rules are matched.";
+              leaf match-count {
+                type uint64;
+                config false;
+                description
+                  "Information about the rule matched count.";
+              }
+            }            
           }
         }
       } 
@@ -1867,7 +1995,7 @@ Flag of checking the non-first fragmented packets.";
           }
         }
       }
-    }	
+    }
     container port-pools {
       description
         "List of all ACL port pools.";

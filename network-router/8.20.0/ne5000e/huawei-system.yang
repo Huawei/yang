@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-system {
   namespace "urn:huawei:yang:huawei-system";
@@ -10,6 +10,7 @@ module huawei-system {
   import huawei-extension {
     prefix ext;
   }
+  
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -21,13 +22,58 @@ module huawei-system {
      Email: support@huawei.com";
   description
     "System.";
-  revision 2019-11-13 {
+  revision 2020-03-02 {
     description
       "Initial revision.";
     reference
       "Huawei private.";
   }
   ext:task-name "system";
+  
+  typedef risk-level-type {
+    type enumeration {
+      enum "high" {
+        value 0;
+        description
+          "High level.";
+      }
+      enum "medium" {
+        value 1;
+        description
+          "Medium level.";
+      }
+      enum "low" {
+        value 2;
+        description
+          "Low level.";
+      }
+    }
+    description
+      "Security risk level.";
+    }
+   
+   typedef security-risk-type {
+    type enumeration {
+      enum "insecure-algorithm" {
+        value 0;
+        description
+          "Insecure algorithm type.";
+      }
+      enum "insecure-protocol" {
+        value 1;
+        description
+          "Insecure protocol type.";
+      }
+      enum "insecure-configuration" {
+        value 2;
+        description
+          "Insecure configuration type.";
+      }
+    }
+    description
+      "Security risk type.";
+  }
+
   container system {
     description
       "System.";
@@ -87,7 +133,43 @@ module huawei-system {
           "Time elapses since the system is running.";
       }
       leaf sys-service {
-        type uint8;
+        type bits {
+          bit physical-layer {
+            position 0;
+            description
+              "Physical layer.";
+          }
+          bit data-link-layer {
+            position 1;
+            description
+              "Data Link layer.";
+          }
+          bit network-layer {
+            position 2;
+            description
+              "Network layer.";
+          }
+          bit transport-layer {
+            position 3;
+            description
+              "Transport layer.";
+          }
+          bit session-layer {
+            position 4;
+            description
+              "Session layer.";
+          }
+          bit presentation-layer {
+            position 5;
+            description
+              "Presentation layer.";
+          }
+          bit application-layer {
+            position 6;
+            description
+              "Application layer.";
+          }
+        }
         config false;
         description
           "Integer value which indicates the set of services that this entity offers.";
@@ -153,6 +235,48 @@ module huawei-system {
         config false;
         description
           "System software name. For example, VRPV800R019C10B210D1111_nos.cc.";
+      }
+    }
+
+    container security-risks {
+      config false;
+      description
+        "List of security risk information.";
+      list security-risk {
+        key "level feature-name type content";
+        description
+          "Statistics of security risk.";
+        leaf level {
+          type risk-level-type;
+          description
+            "Security risk Level.";
+        }
+        leaf feature-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Feature name.";
+        }
+        leaf type {
+          type security-risk-type;
+          description
+            "Security risk type.";
+        }
+        leaf content {
+          type string {
+            length "1..511";
+          }
+          description
+            "Risk information.";
+        }
+        leaf repair-action {
+          type string {
+            length "1..511";
+          }
+          description
+            "Repair action.";
+        }
       }
     }
   }

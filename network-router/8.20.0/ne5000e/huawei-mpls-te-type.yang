@@ -1847,6 +1847,27 @@ submodule huawei-mpls-te-type {
     description
       "Tunnel protect switch type.";
   }
+  typedef tunnel-self-ping-type {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable self-ping.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable self-ping.";
+      }
+      enum "block" {
+        value 2;
+        description
+          "Block self-ping.";
+      }
+    }
+    description
+      "RSVP-TE tunnel self-ping enable state type.";
+  }
   typedef tunnel-state {
     type enumeration {
       enum "up" {

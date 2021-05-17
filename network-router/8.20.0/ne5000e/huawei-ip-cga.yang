@@ -42,7 +42,7 @@ module huawei-ip-cga {
   }
   revision 2019-08-30 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -76,6 +76,7 @@ module huawei-ip-cga {
         leaf modifier {
           type inet:ipv6-address-no-zone;
           must "not (../sec-level=1 and ../modifier!='::')";
+          default "::";
           description
             "CGA address modifier.";
         }

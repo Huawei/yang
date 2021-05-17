@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-codesign {
   namespace "urn:huawei:yang:huawei-codesign";
@@ -21,6 +21,18 @@ module huawei-codesign {
      Email: support@huawei.com";
   description
     "Indicate code signature management.";
+    revision 2020-06-29 {
+    description
+      "Modify node description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-04-02 {
+    description
+      "Modify YANG check.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-03-01 {
     description
       "Initial revision.";
@@ -98,7 +110,7 @@ module huawei-codesign {
           type crl-status;
           status deprecated;
           description
-            "CRL status. The alternative leaf node is valid-type.";
+            "CRL status. The node valid is deprecated. You are advised to use the node valid-type.";
         }
         leaf valid-type {
           type valid-type;
@@ -123,7 +135,7 @@ module huawei-codesign {
         }
         leaf name {
           type string {
-            length "5..63";
+            length "4..127";
           }
           ext:support-filter "true";
           description

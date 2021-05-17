@@ -27,13 +27,19 @@ module huawei-ifm-deviations-NE5000E {
     reference "Huawei private.";
   }
 
+  deviation "/ifm:ifm/ifm:global/ifm:sub-interface-link-trap-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:network-layer-status" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:protocol-up-delay-time" {
+    deviate not-supported;
+  }
   deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:is-l2-switch" {
     deviate not-supported;
   }
   deviation "/ifm:ifm/ifm:remote-interfaces" {
-    deviate not-supported;
-  }
-  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:control-flap/ifm:control-flap-count" {
     deviate not-supported;
   }
   deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:dynamic/ifm:sub-if-counts" {
@@ -47,21 +53,12 @@ module huawei-ifm-deviations-NE5000E {
   }
   deviation "/ifm:reset-if-counters-by-type/ifm:input/ifm:if-type" {
     deviate add {
-      must "../ifm:if-type='Ethernet' or ../ifm:if-type ='GigabitEthernet' or ../ifm:if-type='Eth-Trunk'
-            or ../ifm:if-type='Ip-Trunk' or ../ifm:if-type='Pos' or ../ifm:if-type='Tunnel'
-            or ../ifm:if-type='NULL' or ../ifm:if-type='LoopBack' or ../ifm:if-type='Vlanif' or ../ifm:if-type='100GE'
-            or ../ifm:if-type='40GE' or ../ifm:if-type='MTunnel' or ../ifm:if-type='MEth' or ../ifm:if-type='Lmpif'
-            or ../ifm:if-type='Vbdif' or ../ifm:if-type='Nve' or ../ifm:if-type='Wdm'
-            or ../ifm:if-type='400GE'";
+      must "../ifm:if-type='Ethernet' or ../ifm:if-type ='GigabitEthernet' or ../ifm:if-type='Eth-Trunk' or ../ifm:if-type='Ip-Trunk' or ../ifm:if-type='Pos' or ../ifm:if-type='Tunnel' or ../ifm:if-type='NULL' or ../ifm:if-type='LoopBack' or ../ifm:if-type='Vlanif' or ../ifm:if-type='100GE' or ../ifm:if-type='40GE' or ../ifm:if-type='MTunnel' or ../ifm:if-type='MEth' or ../ifm:if-type='Lmpif' or ../ifm:if-type='Vbdif' or ../ifm:if-type='Nve' or ../ifm:if-type='Wdm' or ../ifm:if-type='400GE'";
     }
   }
   deviation "/ifm:reset-if-mib-counters-by-type/ifm:input/ifm:if-type" {
     deviate add {
-      must "../ifm:if-type='Ethernet' or ../ifm:if-type ='GigabitEthernet' or ../ifm:if-type='Eth-Trunk'
-            or ../ifm:if-type='Ip-Trunk' or ../ifm:if-type='Pos' or ../ifm:if-type='Tunnel'
-            or ../ifm:if-type='NULL' or ../ifm:if-type='LoopBack' or ../ifm:if-type='100GE'
-            or ../ifm:if-type='40GE'  or ../ifm:if-type='MTunnel' or ../ifm:if-type='MEth'
-            or ../ifm:if-type='Lmpif' or ../ifm:if-type='Vbdif'  or ../ifm:if-type='400GE'";
+      must "../ifm:if-type='Ethernet' or ../ifm:if-type ='GigabitEthernet' or ../ifm:if-type='Eth-Trunk' or ../ifm:if-type='Ip-Trunk' or ../ifm:if-type='Pos' or ../ifm:if-type='Tunnel' or ../ifm:if-type='NULL' or ../ifm:if-type='LoopBack' or ../ifm:if-type='100GE' or ../ifm:if-type='40GE'  or ../ifm:if-type='MTunnel' or ../ifm:if-type='MEth' or ../ifm:if-type='Lmpif' or ../ifm:if-type='Vbdif'  or ../ifm:if-type='400GE'";
     }
   }
   deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:trap-threshold/ifm:input-rising-rate" {

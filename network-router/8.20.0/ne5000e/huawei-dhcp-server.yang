@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-dhcp-server {
   yang-version 1;
@@ -26,7 +26,13 @@ submodule huawei-dhcp-server {
      Email: support@huawei.com";
   description
     "This module contains a collection of YANG definitions for managing DHCP server.";
-  revision 2019-04-29 {
+  revision 2020-03-13 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-03 {
     description
       "Initial revision.";
     reference
@@ -143,7 +149,7 @@ submodule huawei-dhcp-server {
   }
   grouping dhcp-server-type {
     description
-      "DHCP server.";
+      "Configure DHCP server attributes.";
     container common {
       description
         "Configure DHCP server common attributes.";
@@ -202,7 +208,7 @@ submodule huawei-dhcp-server {
         units "s";
         default "300";
         description
-          "Write delay interval.";
+          "Write delay interval, in the range of 300 to 86400, in seconds.";
       }
       leaf option60-enable {
         type boolean;
@@ -408,6 +414,10 @@ submodule huawei-dhcp-server {
           }
         }
         container renew-time {
+          must "(day = 0 and hour = 0 and minute = 0 and ../rebind-time/day = 0 and ../rebind-time/hour = 0 and ../rebind-time/minute = 0) or
+                (day < ../rebind-time/day) or
+                (day = ../rebind-time/day and hour < ../rebind-time/hour) or
+                (day = ../rebind-time/day and hour = ../rebind-time/hour and minute < ../rebind-time/minute)";
           description
             "Configure the renew time of the pool.";
           leaf day {
@@ -463,7 +473,6 @@ submodule huawei-dhcp-server {
             "Configure the SIP server of the pool.";
           leaf sip-server-mode {
             type sip-mode;
-            must "(../sip-server-mode='ip-mode' and ../sip-server-ip1) or (../sip-server-mode='list-mode' and ../sip-server-name1) or (not (../sip-server-mode))";
             description
               "The mode of SIP server.";
           }

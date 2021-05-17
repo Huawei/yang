@@ -170,6 +170,11 @@ module huawei-rbs {
         description
           "Nd service that can backed up.";
       }
+      enum "dhcpv6-relay" {
+        value 34;		  
+        description
+          "DHCPv6-relay service that can backed up.";
+      }
     }
     description
       "RBP service type.";
@@ -197,30 +202,86 @@ module huawei-rbs {
   }  
   typedef batch-backup-type {
     type enumeration {
-      enum "igmp-snooping" {
-        value 2;
-        description
-          "IGMP snooping services that can be batch backed up.";
-      }
       enum "bras" {
         value 1;
         description
           "BRAS services that can be batch backed up.";
       }
-      enum "l2tp" {
-        value 10;
+      enum "igmp-snooping" {
+        value 2;
         description
-          "L2TP services that can be batch backed up.";
+          "IGMP snooping services that can be batch backed up.";
       }
       enum "multicast" {
         value 9;
         description
           "MULTICAST services that can be batch backed up.";
       }
+      enum "l2tp" {
+        value 10;
+        description
+          "L2TP services that can be batch backed up.";
+      }
       enum "dhcp-server" {
         value 26;
         description
           "DHCP-SERVER services that can be batch backed up.";
+      }
+      enum "dhcpv6-relay" {
+        value 34;
+        description
+          "DHCPV6 relay services that can be batch backed up.";
+      }
+    }
+    description
+      "Service type batch backup.";
+  }
+  typedef batch-backup-rpc-type {
+    type enumeration {
+      enum "all" {
+        value 0;
+        description
+          "All services that can be batch backed up now.";
+      }
+      enum "bras" {
+        value 1;
+        description
+          "BRAS services that can be batch backed up now.";
+      }
+      enum "igmp-snooping" {
+        value 2;
+        description
+          "IGMP snooping services that can be batch backed up.";
+      }
+      enum "arp" {
+        value 5;
+        description
+          "ARP services that can be batch backed up.";
+      }
+      enum "multicast" {
+        value 9;
+        description
+          "MULTICAST services that can be batch backed up.";
+      }
+      enum "l2tp" {
+        value 10;
+        description
+          "L2TP services that can be batch backed up.";
+      }
+      enum "dhcp-server" {
+        value 26;
+        description
+          "DHCP-SERVER services that can be batch backed up.";
+      }
+      enum "ipsec" {
+        value 30;
+        description
+          "IPSEC relay services that can be batch backed up.";
+      }
+      enum "nd" {
+        value 32;
+        description
+          "ND services that can be batch backed up.";
       }
       enum "dhcpv6-relay" {
         value 34;
@@ -476,6 +537,27 @@ module huawei-rbs {
             }
           }
         }
+      }
+    }
+  }
+  rpc batch-backup-now {
+    description
+      "The batch-backup service-type now command immediately backs up user services on an RBS.";
+    ext:node-ref "/rbs:rbs/rbs:services/rbs:service/rbs:batch-backups";
+    input {
+      leaf rbs-name {
+        type leafref {
+          path "/rbs:rbs/rbs:services/rbs:service/rbs:name";
+        }
+        mandatory true;
+        description
+          "RBS instance name.";
+      }
+      leaf service-type {
+        type batch-backup-rpc-type;
+        mandatory true;
+        description
+          "Type of services that are synchronized now.";
       }
     }
   }

@@ -430,6 +430,7 @@ module huawei-clocksync-phy {
         type uint32 {
           range "0..12";
         }
+        units "min";
         default "5";
         description
           "WTR time for a Down interface.";
@@ -444,6 +445,7 @@ module huawei-clocksync-phy {
         type uint32 {
           range "300..1800";
         }
+        units "ms";
         default "1000";
         description
           "Holdoff time of the clock source after an interface changes from normal to abnormal.";
@@ -528,7 +530,7 @@ module huawei-clocksync-phy {
           type string {
             length "1..49";
           }
-          must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:sync-enable='true') or (/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source[clocksync-phy:name=current()]/clocksync-phy:sync-enable='true')";
+          must "((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:sync-enable='true') or ((../source-type='system') and (/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source[clocksync-phy:name=current()]/clocksync-phy:sync-enable='true'))) or (((../source-type='system') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:priority/clocksync-phy:system=0)) or ((../source-type='system') and not(/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source[clocksync-phy:name=current()]/clocksync-phy:system-priority=0)))";
           mandatory true;
           description
             "Name of the selected clock source in forced clock source selection and manual clock source selection.";
@@ -553,13 +555,15 @@ module huawei-clocksync-phy {
       description
         "List of configure physical layer clock source.";
       list source {
+        ext:generated-by system;
+        ext:operation-exclude create|delete;
         key "name";
         description
           "Configure physical clock source.";
         leaf name {
           type string {
             length "1..49";
-            pattern 'bits[0-3]((/[0-9]{1,2}){1,2}){0,1}|ptp|CESACR([0-9]{1,2}/){2,3}[0-9]{1,2}';
+            pattern 'bits[0-3]((/(c?)[0-9]{1,2}){1,2}){0,1}|ptp|CESACR([0-9]{1,2}/){2,3}[0-9]{1,2}';
           }
           description
             "Name of the physical clock source.";
@@ -665,7 +669,6 @@ module huawei-clocksync-phy {
           }
           leaf signal-type {
             type clock-bits-type;
-            must "(../signal-type='2mhz' or ../signal-type='2mbps')";
             default "2mbps";
             description
               "BITS signal type.";
@@ -747,7 +750,7 @@ module huawei-clocksync-phy {
             "Enable/disable clock synchronization for the physical clock source.";
         }
         leaf esmc-send-disable {
-          when "not((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='E1') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='Pos') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='Cpos') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='T1'))";
+          when "not((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:name]/ifm:type='E1') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:name]/ifm:type='Pos') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:name]/ifm:type='Cpos') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:name]/ifm:type='T1'))";
           type boolean;
           default "false";
           description
@@ -774,24 +777,28 @@ module huawei-clocksync-phy {
             "Physical status of the clock source.";
         }
         leaf e1-sabit {
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:name]/ifm:type='E1'";
           type sabit-type;
           default "sa4";
           description
             "Sa timeslot used by the E1 port to send or receive the SSM level.";
         }
         leaf e1-ais-enable {
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:name]/ifm:type='E1'";
           type boolean;
           default "false";
           description
             "Enable/disable association of AIS signals of E1 ports with the clock source status.";
         }
         leaf cpos-ais-enable {
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:name]/ifm:type='Cpos'";
           type boolean;
           default "false";
           description
             "Enable/disable Association of the clock source status with the MS-AIS signal alarm on the CPOS port.";
         }
         leaf cpos-exc-enable {
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:name]/ifm:type='Cpos'";
           type boolean;
           default "false";
           description

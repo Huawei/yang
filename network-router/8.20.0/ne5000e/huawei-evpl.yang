@@ -25,9 +25,9 @@ module huawei-evpl {
      Email: support@huawei.com";
   description
     "Management of Ethernet virtual private line.";
-  revision 2020-03-30 {
+  revision 2020-07-21 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Add node ignore-ac-state.";
     reference
       "Huawei private.";
   }
@@ -85,7 +85,7 @@ module huawei-evpl {
         }
         leaf mode {
           type evpl-mode;
-          ext:operation-exclude update;
+	  ext:operation-exclude update;
           mandatory true;
           description
             "The mode of the EVPL instance, that not support modification.";
@@ -106,6 +106,12 @@ module huawei-evpl {
               must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'PW-VE' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class != 'main-interface') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'PW-VE')";
               description
                 "The name of interface.";
+            }
+            leaf ignore-ac-state {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable ignore the attachment circuit status on an interface.";
             }
           }
         }
@@ -131,6 +137,17 @@ module huawei-evpl {
               description
                 "The address of provider edge node.";
             }
+          }
+        }
+        container evpl-statistics {
+          when "(../mode = 'vxlan-mode')";
+          description
+            "Configure an EVPL instance.";
+          leaf statistics-enable {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable EVPL message statistical function.";
           }
         }
       }

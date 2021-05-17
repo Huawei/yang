@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-dhcpv6-relay {
   yang-version 1;
@@ -20,7 +20,13 @@ submodule huawei-dhcpv6-relay {
      Email: support@huawei.com";
   description
     "This module contains a collection of YANG definitions for managing DHCPv6 relay.";
-  revision 2019-04-29 {
+  revision 2020-03-09 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-16 {
     description
       "Initial revision.";
     reference
@@ -43,7 +49,7 @@ submodule huawei-dhcpv6-relay {
           length "1..69";
         }
         description
-          "Name of the file for saving PD routes. For example, the name can be in the format of cfcard:/dhcp/xxx.pd or home:/dhcp/xxx.pd.";
+          "Name of the file for saving PD routes. For example, the name can be in the format of cfcard:/dhcp/xxx.pd or home:/dhcp/xxx.pd, where xxx can be any characters.";
       }
     }
     container server-groups {

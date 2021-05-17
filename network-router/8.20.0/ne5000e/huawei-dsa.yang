@@ -17,7 +17,7 @@ module huawei-dsa {
      Website: http://www.huawei.com
      Email: support@huawei.com";
   description
-    "Dsa.";
+    "DSA.";
   revision 2019-05-01 {
     description
       "Initial revision.";
@@ -34,24 +34,24 @@ module huawei-dsa {
       }
     }
     description
-      "Dsa key length.";
+      "DSA key length.";
   }
   typedef dsa-encode-type {
     type enumeration {
       enum "der" {
         value 0;
         description
-          "Der.";
+          "DER.";
       }
       enum "pem" {
         value 1;
         description
-          "Pem.";
+          "PEM.";
       }
       enum "openssh" {
         value 2;
         description
-          "Openssh.";
+          "OpenSSH.";
       }
     }
     description
@@ -59,10 +59,10 @@ module huawei-dsa {
   }
   container dsa {
     description
-      "Dsa.";
+      "DSA.";
     container local-keys {
       description
-        "Configure local key table.";
+        "Configure local key code.";
       container local-key {
         presence "create dsaLocalKey.";
         description
@@ -112,6 +112,7 @@ module huawei-dsa {
         "List of peer key table.";
       list peer-key {
         key "key-name";
+        max-elements "20";
         description
           "Configure peer key code. If the key code is bound, it cannot be deleted, you need to unbind and then delete.";
         leaf key-name {
@@ -175,7 +176,7 @@ module huawei-dsa {
     }
     container dsa-global {
       description
-        "Configure Global Configuration.";
+        "Configure global Configuration.";
       leaf max-key-pair {
         type int32 {
           range "1..20";

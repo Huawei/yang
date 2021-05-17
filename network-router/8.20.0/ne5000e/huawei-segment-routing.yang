@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-segment-routing {
   namespace "urn:huawei:yang:huawei-segment-routing";
@@ -29,6 +29,47 @@ module huawei-segment-routing {
      Email: support@huawei.com";
   description
     "Segment routing.";
+  revision 2020-03-13 {
+    description
+      "Modify the format specification.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-09 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-03 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-23 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-15 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-09-21 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -190,6 +231,7 @@ module huawei-segment-routing {
               "SRBE traffic statistics host IP prefix mode.";
           }
         }
+        must "../mode!='ip-prefix' or ../prefix-name";
         default "none";
         description
           "The stats mode of SR traffic.";

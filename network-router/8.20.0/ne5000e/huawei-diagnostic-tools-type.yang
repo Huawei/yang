@@ -18,15 +18,9 @@ submodule huawei-diagnostic-tools-type {
 description
      "Diagnosis tool types.";
 
-  revision 2019-12-12 {
-    description
-      "Add detail-result-type sr-version sr-be-version.";
-    reference
-      "Huawei private.";
-  }
   revision 2019-04-09 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -61,9 +55,8 @@ description
     }
     description
       "Description of dgntl-error-type.";
-  }
-
-typedef detail-result-type {
+  } 
+  typedef detail-result-type {
     type enumeration {
       enum "success" {
         value 0;
@@ -87,15 +80,15 @@ typedef detail-result-type {
   
   typedef sr-version {
     type enumeration {
-      enum "RFC4379" {
-        value 0;
-        description
-          "Rfc4379 version.";
-      }
       enum "DRAFT2" {
         value 2;
         description
           "Draft2 version.";
+      }
+      enum "RFC8287" {
+        value 3;
+        description
+          "Rfc8287 version.";
       }
     }
     description
@@ -175,27 +168,6 @@ typedef detail-result-type {
     }
     description
       "Description of lsp-type.";
-  }
-  typedef dgntl-lsp-path-type {
-    type enumeration {
-      enum "working" {
-        value 0;
-        description
-          "Working.";
-      }
-      enum "hotstandby" {
-        value 1;
-        description
-          "HotStandby.";
-      }
-      enum "primary" {
-        value 2;
-        description
-          "Primary.";
-      }
-    }
-    description
-      "Description of dgntl-lsp-path-type.";
   }
   typedef dgntl-lsp-protocol-origin {
     type enumeration {
@@ -286,4 +258,161 @@ typedef detail-result-type {
     description
       "Description of dgntl-sr-policy-path-type.";
   }
+
+  typedef reply-mode-te {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+      enum level-control-channel {
+        value 4;
+        description
+          "Reply via application level control channel.";
+      }
+    }
+    description
+      "Description of reply-mode-te.";
+  }  
+
+  typedef reply-mode-ip {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+    }
+    description
+      "Description of reply-mode-ip.";
+  }
+
+  typedef reply-mode-bgp {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+    }
+    description
+      "Description of reply-mode-bgp.";
+  }
+
+  typedef reply-mode-srbe {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+    }
+    description
+      "Description of reply-mode-srbe.";
+  }
+
+  typedef reply-mode-vpn {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+    }
+    description
+      "Description of reply-mode-vpn.";
+  }
+
+  typedef reply-mode-srte {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+      enum level-control-channel {
+        value 4;
+        description
+          "Reply via application level control channel.";
+      }
+    }
+    description
+      "Description of reply-mode-srte.";
+  }
+
+  typedef lsp-path {
+    type enumeration {
+      enum working-path {
+        value 0;
+        description
+          "The working path.";
+      }
+      enum hot-standby {
+        value 2;
+        description
+          "The hot standby path.";
+      }
+      enum "primary" {
+        value 3;
+        description
+          "Primary.";
+      }
+    }
+    description
+      "Description of lsp-path.";
+  }
+
+  typedef lsp-remote-fec-type {
+    type enumeration {
+      enum LDP {
+        value 1;
+        description
+          "Specify LDP LSP.";
+      }
+      enum NIL {
+        value 2;
+        description
+          "Specify nil fec.";
+      }
+    }
+    description
+      "Description of lsp-remote-fec-type.";
+  }
+  typedef lsptrace-remote-fec-type {
+    type enumeration {
+      enum LDP {
+        value 1;
+        description
+          "Specify LDP LSP.";
+      }
+    }
+    description
+      "Description of lsptrace-remote-fec-type.";
+  }   
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-sshc {
   namespace "urn:huawei:yang:huawei-sshc";
@@ -16,7 +16,7 @@ module huawei-sshc {
   import huawei-pub-type {
     prefix pub-type;
   }
-    import huawei-rsa {
+  import huawei-rsa {
     prefix rsa;
   }
   import huawei-dsa {
@@ -25,7 +25,6 @@ module huawei-sshc {
   import huawei-ecc {
    prefix ecc;
   }
-  include huawei-sshc-type;
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -37,11 +36,85 @@ module huawei-sshc {
      Email: support@huawei.com";
   description
     "SSH client.";
-  revision 2019-05-01 {
+  revision 2020-07-02 {
     description
       "Initial revision.";
     reference
       "Huawei private.";
+  }
+  typedef sshc-enable-flag {
+    type enumeration {
+      enum "enable" {
+        value 1;
+        description
+          "Accept connection request from unknown or unauthentic clients.";
+      }
+      enum "disable" {
+        value 2;
+        description
+          "Do not accept connection request from unknown or unauthentic clients.";
+      }
+    }
+    description
+      "SSH client bool switch.";
+  }
+  typedef sshc-bool-type {
+    type enumeration {
+      enum "false" {
+        value 0;
+        description
+          "Disabled state.";
+      }
+      enum "true" {
+        value 1;
+        description
+          "Enabled state.";
+      }
+    }
+    description
+      "SSH client.";
+  }
+  typedef sshc-pubkey-type {
+    type enumeration {
+      enum "RSA" {
+        value 1;
+        description
+          "RSA client public key.";
+      }
+      enum "DSA" {
+        value 2;
+        description
+          "DSA client public key.";
+      }
+      enum "ECC" {
+        value 3;
+        description
+          "ECC client public key.";
+      }
+      enum "SM2" {
+        value 5;
+        description
+          "SM2 client public key.";
+      }
+    }
+    description
+      "SSH client public key encryption type list.";
+  }
+  typedef trans-cmd-type {
+    type enumeration {
+      enum "get" {
+        value 2;
+        description
+          "File get operation.";
+      }
+      enum "put" {
+        value 3;
+        description
+          "File put operation.";
+      }
+    }
+    description
+      "SSH client transmission command type.";
   }
   ext:task-name "ssh-client";
   container sshc {
@@ -56,7 +129,7 @@ module huawei-sshc {
         }
         default "0";
         description
-          "If Client does not receive any data from Server for KeepAlive interval time, it sends first KeepAlive message to Server. Further KeepAlive messages are sent after every expiry of KeepAlive interval only for max number of times configured. If Client does not get any response from Server still, Client disconnects the current connection. 0 seconds means do not send KeepAlive message to Server.";
+          "If client does not receive any data from server for keepalive interval time, it sends first keepalive message to server. Further keepalive messages are sent after every expiry of keepalive interval only for max number of times configured. If client does not get any response from server still, client disconnects the current connection. 0 seconds means do not send keepalive message to server.";
       }
       leaf keep-alive-count {
         type int32 {
@@ -64,13 +137,13 @@ module huawei-sshc {
         }
         default "3";
         description
-          "If Client does not receive any data from Server for KeepAlive interval time, it sends first KeepAlive message to Server. Further KeepAlive messages are sent after every expiry of KeepAlive interval only for max number of times configured. If Client does not get any response from Server still, Client disconnects the current connection. By default, KeepAlive maximum count is configured to 3.";
+          "If client does not receive any data from server for keepalive interval time, it sends first keepalive message to server. Further keepalive messages are sent after every expiry of keepalive interval only for max number of times configured. If client does not get any response from server still, client disconnects the current connection.";
       }
       leaf first-time-enable {
-        type sshcenableflag;
+        type sshc-enable-flag;
         default "disable";
         description
-          "If enabled, then RSA public key check for SSH server will be skipped for any new incoming connection. By default, it is disabled.";
+          "If enabled, then RSA public key check for SSH server will be skipped for any new incoming connection.";
       }
       leaf src-interface {
         type pub-type:if-name;
@@ -101,6 +174,7 @@ module huawei-sshc {
         type inet:ipv4-address-no-zone;
         description
           "SCP IPv4 source ip address.";
+        
       }
       leaf scp-vpn-instance-name {
         when "../scp-src-ipv4-addr";
@@ -113,7 +187,7 @@ module huawei-sshc {
       leaf sftp-src-ipv6-addr {
         type inet:ipv6-address-no-zone;
         description
-          "SFTP source IPv6 address.";
+          "Specify the SFTP source IPv6 address.";
       }
       leaf sftp-ipv6-vpn-instance-name {
         when "../sftp-src-ipv6-addr";
@@ -145,6 +219,7 @@ module huawei-sshc {
         "List of SSH host name and key name configuration.";
       list server-authentication {
         key "server-name pubkey-type key-name";
+        max-elements "20";
         description
           "Configure SSH host name and key name policy.";
         leaf server-name {
@@ -155,7 +230,7 @@ module huawei-sshc {
             "Set SSH host name.";
         }
         leaf pubkey-type {
-          type pubkeytype;
+          type sshc-pubkey-type;
           description
             "SSH server public key type.";
         }
@@ -168,7 +243,7 @@ module huawei-sshc {
           must "(../pubkey-type = 'ECC' and ../key-name = /ecc:ecc/ecc:peer-keys/ecc:peer-key[ecc:key-name=current()]/ecc:key-name) or ../pubkey-type != 'ECC'";
           must "(../pubkey-type = 'SM2' and ../key-name = /sm2:sm2/sm2:sm2-peer-keys/sm2:sm2-peer-key[sm2:key-name=current()]/sm2:key-name) or ../pubkey-type != 'SM2'";
           description
-            "Key Name.";
+            "Key name.";
         }
       }
     }
@@ -178,73 +253,73 @@ module huawei-sshc {
       description
         "Configure Encryption algorithms supported for SSHS.";
       leaf descbc {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
           "DES CBC encryption algorithm.";
       }
       leaf des3cbc {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
           "3DES CBC encryption algorithm.";
       }
       leaf aes128cbc {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
           "AES128 CBC encryption algorithm.";
       }
       leaf aes192cbc {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
           "AES192 CBC encryption algorithm.";
       }
       leaf aes256cbc {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
           "AES256 CBC encryption algorithm.";
       }
       leaf aes128ctr {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "true";
         description
           "AES128 CTR encryption algorithm.";
       }
       leaf aes192ctr {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "true";
         description
           "AES192 CTR encryption algorithm.";
       }
       leaf aes256ctr {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "true";
         description
           "AES256 CTR encryption algorithm.";
       }
       leaf arcfour128 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
           "ARCFOUR128 encryption algorithm.";
       }
       leaf arcfour256 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
           "ARCFOUR256 encryption algorithm.";
       }
       leaf aes128gcm {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "true";
         description
           "AES128 GCM encryption algorithm.";
       }
       leaf aes256gcm {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "true";
         description
           "AES256 GCM encryption algorithm.";
@@ -255,46 +330,46 @@ module huawei-sshc {
       description
         "Configure HMAC algorithms supported for SSHS.";
       leaf md5 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "MD5 Hmac Algorithm.";
+          "MD5 hmac algorithm.";
       }
       leaf md596 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "MD5_96 Hmac Algorithm.";
+          "MD5_96 hmac algorithm.";
       }
       leaf sha1 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "SHA1 Hmac Algorithm.";
+          "SHA1 hmac algorithm.";
       }
       leaf sha196 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "SHA1_96 Hmac Algorithm.";
+          "SHA1_96 hmac algorithm.";
       }
       leaf sha2256 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "true";
         description
           "SHA2_256 Hmac Algorithm.";
       }
       leaf sha225696 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "SHA2_256_96 Hmac Algorithm.";
+          "SHA2_256_96 hmac algorithm.";
       }
       leaf sha2512 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "true";
         description
-          "SHA2_512 Hmac Algorithm.";
+          "SHA2_512 hmac algorithm.";
       }
     }
     container kex-alg {
@@ -302,56 +377,56 @@ module huawei-sshc {
       description
         "Configure Key Exchange Algorithm.";
       leaf dh-group14-sha1 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "Diffie-hellman-group14-sha1 algorithm.";
+          "Diffie hellman group14 sha1 algorithm.";
       }
       leaf dh-group1-sha1 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "Diffie-hellman-group1-sha1 algorithm.";
+          "Diffie hellman group1 sha1 algorithm.";
       }
       leaf ecdh-sha2-nistp-521 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "Ecdh-sha2-nistp521 algorithm.";
+          "Ecdh sha2 nistp521 algorithm.";
       }
       leaf ecdh-sha2-nistp-384 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "Ecdh-sha2-nistp384 algorithm.";
+          "Ecdh sha2 nistp384 algorithm.";
       }
       leaf ecdh-sha2-nistp-256 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "Ecdh-sha2-nistp256 algorithm.";
+          "Ecdh sha2 nistp256 algorithm.";
       }
       leaf dh-group-exchange-sha-256 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "true";
         description
-          "Diffie-hellman-group-exchange-sha256 algorithm.";
+          "Diffie hellman group exchange sha256 algorithm.";
       }
       leaf dh-group-exchange-sha1 {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "Diffie-hellman-group-exchange-sha1 algorithm.";
+          "Diffie hellman group exchange sha1 algorithm.";
       }
       leaf sm2-kep {
-        type sshsshcbooltype;
+        type sshc-bool-type;
         default "false";
         description
-          "Sm2kep-sha2-nistp256 algorithm.";
+          "Sm2kep sha2 nistp256 algorithm.";
       }
     }
     container pubkey-alg {
-      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/sm2 = 'true'";
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/sm2 = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true'";
       description
         "Configure public key algorithm.";
       leaf dsa {
@@ -368,7 +443,7 @@ module huawei-sshc {
       }
       leaf rsa {
         type boolean;
-        default "true";
+        default "false";
         description
           "Enable/disable RSA public key algorithm.";
       }
@@ -377,6 +452,18 @@ module huawei-sshc {
         default "false";
         description
           "Enable/disable SM2 public key algorithm.";
+      }
+      leaf rsa-sha2-256 {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable RSA SHA2-256 public key algorithm.";
+      }
+      leaf rsa-sha2-512 {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable RSA SHA2-512 public key algorithm.";
       }
     }
     container rekey {
@@ -388,7 +475,7 @@ module huawei-sshc {
         }
         default "2147483648";
         description
-          "Rekey Max Packet Number.";
+          "Rekey maximum packet number.";
       }
       leaf time {
         type int32 {
@@ -397,7 +484,7 @@ module huawei-sshc {
         units min;
         default "60";
         description
-          "Rekey Time.";
+          "Rekey time.";
       }
       leaf max-data {
         type int32 {
@@ -406,7 +493,108 @@ module huawei-sshc {
         units MB;
         default "1000";
         description
-          "Rekey Max Data.";
+          "Rekey maximum data.";
+      }
+    }
+  }
+  rpc ssh-transfer-file {
+    description
+      "SFTP file transfer.";
+    input {
+      leaf source-ipv4-address {
+        type inet:ipv4-address-no-zone;
+        must "../host-addr-ipv4";
+        description
+          "Specify the source IPv4 address.";
+      }
+      leaf source-ipv6-address {
+        type inet:ipv6-address-no-zone;
+        must "../host-addr-ipv6";
+        description
+          "Specify the source IPv6 address.";
+      }
+      leaf server-port {
+        type uint32 {
+          range "1..65535";
+        }
+        default "22";
+        description
+          "Specify the port number.";
+      }
+      leaf host-addr-ipv4 {
+        type string {
+          length "1..255";
+        }
+        must "not(../host-addr-ipv6)";
+        description
+          "Specify the IPv4 address of remote system (SFTP server).";
+      }
+      leaf host-addr-ipv6 {
+        type string {
+          length "1..255";
+        }
+        description
+          "Specify the IPv6 address of remote system (SFTP server).";
+      }
+      leaf command-type {
+        type trans-cmd-type;
+        description
+          "Specify the type of operation need to be performed (GET/PUT).";
+      }
+      leaf user-name {
+        type string {
+          length "1..255";
+        }
+        mandatory true;
+        description
+          "Specify the user name to authenticate the connection before file transfer.";
+      }
+      leaf password {
+        type pub-type:password;
+        mandatory true;
+        description
+          "Specify the password to authenticate the connection before file transfer.";
+      }
+      leaf local-file-name {
+        type string {
+          length "1..256";
+        }
+        description
+          "Specify the local file name.";
+      }
+      leaf remote-file-name {
+        type string {
+          length "1..256";
+        }
+        description
+          "Specify the remote file name.";
+      }
+      leaf vpn-name {
+        type string {
+          length "1..31";
+        }
+        must "(../host-addr-ipv4) and not(../public-net) and not(../source-interface-name)";
+        description
+          "Specify the VPN instance name of an MPLS VPN.";
+      }
+      leaf ipv6-vpn-name {
+        type string {
+          length "1..31";
+        }
+        must "(../host-addr-ipv6) and not(../public-net) and not(../source-interface-name)";
+        description
+          "Specify the IPv6 VPN instance name of an MPLS VPN.";
+      }
+      leaf public-net {
+        type boolean;
+        description
+          "Using public net or not.";
+      }
+      leaf source-interface-name {
+        type pub-type:if-name;
+        must "not(../public-net)";
+        description
+          "Specify the source interface name.";
       }
     }
   }

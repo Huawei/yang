@@ -2,18 +2,20 @@
 Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-emdi-deviations-NE5000E {
-  yang-version 1;
   namespace "urn:huawei:yang:huawei-emdi-deviations-NE5000E";
-  prefix "emdi-devs-NE5000E";
+  prefix emdi-devs-NE5000E;
 
   import huawei-emdi {
-    prefix "emdi";
+    prefix emdi;
   }
+
   import huawei-devm {
-    prefix "devm";
+    prefix devm;
   }
+
   organization
     "Huawei Technologies Co., Ltd.";
+
   contact
     "Huawei Industrial Base
      Bantian, Longgang
@@ -21,14 +23,17 @@ module huawei-emdi-deviations-NE5000E {
      People's Republic of China
      Website: http://www.huawei.com
      Email: support@huawei.com";
+
   description
-    "Enhanced Media Delivery Index.";
-    
-  revision 2019-11-01 {
+    "This module defines deviation statements for huawei-emdi module.";
+
+  revision 2019-11-06 {
     description
-      "Init revision.";
-    reference "Huawei private.";
+      "Initial revision.";
+    reference
+      "Huawei private.";
   }
+
   deviation "/emdi:emdi/emdi:emdi-enable/emdi:emdi-channel-groups/emdi:emdi-channel-group/emdi:emdi-channels/emdi:emdi-channel/emdi:channel-group-parameters/emdi:vlan-id" {
     deviate not-supported;
   }
@@ -45,4 +50,5 @@ module huawei-emdi-deviations-NE5000E {
       }
     }
   }
+
 }

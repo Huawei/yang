@@ -28,7 +28,7 @@ submodule huawei-nqa-server {
 
   revision 2019-10-25 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -38,7 +38,7 @@ submodule huawei-nqa-server {
       "NQA ICMP server configuration.";
     container icmp-servers {
       description
-        "List of NQA ICMP server.";
+        "List of NQA ICMP server list.";
       list icmp-server {
         key "server-address ni-name";
         description
@@ -53,13 +53,13 @@ submodule huawei-nqa-server {
             path "/ni:network-instance/ni:instances/ni:instance/ni:name";
           }
           description
-            "VPN Name of NQA ICMP server.";
+            "VPN name of NQA ICMP server.";
         }
       }
     }
     container udp-servers {
       description
-        "List of NQA UDP server.";
+        "List of NQA UDP server list.";
       list udp-server {
         key "server-address server-port ni-name";
         description
@@ -87,7 +87,7 @@ submodule huawei-nqa-server {
     }
     container tcp-servers {
       description
-        "List of NQA TCP server.";
+        "List of NQA TCP server list.";
       list tcp-server {
         key "server-address server-port ni-name";
         description

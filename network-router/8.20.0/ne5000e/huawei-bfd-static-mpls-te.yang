@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-bfd-static-mpls-te {
   yang-version 1;
@@ -36,6 +36,19 @@ module huawei-bfd-static-mpls-te {
   description
     "Bidirectional Forwarding Detection (BFD) is a detection mechanism used uniformly on the entire network. BFD is used to rapidly detect and monitor the connectivity of links or IP routes on a network.";
 
+  revision 2020-05-30 {
+    description
+      "Modify the range of reverse-tunnel-id nodes.";
+    reference
+      "Huawei private.";
+  }
+
+  revision 2020-03-13 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-12-30 {
     description
       "Units correct.";
@@ -64,10 +77,10 @@ module huawei-bfd-static-mpls-te {
   ext:task-name "bfd";
   augment "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type" {
     description
-      "Configure bfd for MPLS te.";
+      "Configure BFD for MPLS TE.";
     case te-lsp {
       description
-        "List of BFD static session configurations for te-lsp.";
+        "List of BFD static session configurations for TE-LSP.";
       leaf min-tx-interval-static-te-lsp {
         when "../one-arm-echo-static-te-lsp='false'";
         type uint32 {
@@ -121,13 +134,13 @@ module huawei-bfd-static-mpls-te {
         must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel";
         mandatory true;
         description
-          "Name of a rsvp te tunnel.";
+          "Name of a RSVP TE tunnel.";
       }
       leaf te-backup-lsp-static-te-lsp {
         type boolean;
         default "false";
         description
-          "Enable/disable the LSP to be the primary LSP in a tunnel. By default, the LSP is the primary LSP.";
+          "Enable/disable the LSP to be the primary LSP in a tunnel.";
       }
       leaf one-arm-echo-static-te-lsp {
         type boolean;
@@ -145,7 +158,7 @@ module huawei-bfd-static-mpls-te {
         type boolean;
         default "false";
         description
-          "Enable/disable update the PST when the status of a BFD session changes. On each interface, only one BFD session can be set for this parameter.";
+          "Enable/disable to update the PST when the status of a BFD session changes. On each interface, only one BFD session can be set for this parameter.";
       }
       leaf sr-bit-err-det-static-te-lsp {
         type boolean;
@@ -156,7 +169,7 @@ module huawei-bfd-static-mpls-te {
     }
     case te-tunnel {
       description
-        "List of BFD static session configurations for te-tunnel.";
+        "List of BFD static session configurations for TE-tunnel.";
       leaf min-tx-interval-static-te-tunnel {
         when "../one-arm-echo-static-te-tunnel='false'";
         type uint32 {
@@ -210,7 +223,7 @@ module huawei-bfd-static-mpls-te {
         must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel";
         mandatory true;
         description
-          "Name of a te tunnel.";
+          "Name of a TE tunnel.";
       }
       leaf one-arm-echo-static-te-tunnel {
         type boolean;
@@ -229,22 +242,22 @@ module huawei-bfd-static-mpls-te {
         type boolean;
         default "false";
         description
-          "Enable/disable Session Group.";
+          "Enable/disable session group.";
       }
       leaf process-pst-static-te-tunnel {
         type boolean;
         default "false";
         description
-          "Enable/disable update the PST when the status of a BFD session changes. On each interface, only one BFD session can be set for this parameter.";
+          "Enable/disable to update the PST when the status of a BFD session changes. On each interface, only one BFD session can be set for this parameter.";
       }
     }
   }
   augment "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type" {
     description
-      "Configure bfd for MPLS te.";
+      "Configure BFD for MPLS TE.";
     case te-lsp {
       description
-        "List of BFD auto session configurations for te-lsp.";
+        "List of BFD auto session configurations for TE-LSP.";
       leaf min-tx-interval-auto-te-lsp {
         type uint32 {
           range "3..20000";
@@ -270,7 +283,7 @@ module huawei-bfd-static-mpls-te {
         must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel";
         mandatory true;
         description
-          "Name of a rsvp te tunnel.";
+          "Name of a RSVP TE tunnel.";
       }
       leaf te-backup-lsp-auto-te-lsp {
         type boolean;
@@ -286,7 +299,7 @@ module huawei-bfd-static-mpls-te {
       }
       leaf reverse-tunnel-id-auto-te-lsp {
         type uint32 {
-          range "0..4294967295";
+          range "1..4294967295";
         }
         mandatory true;
         description
@@ -296,12 +309,12 @@ module huawei-bfd-static-mpls-te {
         type boolean;
         default "false";
         description
-          "Enable/disable update the PST when the status of a BFD session changes. On each interface, only one BFD session can be set for this parameter.";
+          "Enable/disable to update the PST when the status of a BFD session changes. On each interface, only one BFD session can be set for this parameter.";
       }
     }
     case te-tunnel {
       description
-        "List of BFD auto session configurations for te-tunnel.";
+        "List of BFD auto session configurations for TE-tunnel.";
       leaf min-tx-interval-auto-te-tunnel {
         type uint32 {
           range "3..20000";
@@ -327,7 +340,7 @@ module huawei-bfd-static-mpls-te {
         must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel";
         mandatory true;
         description
-          "Name of a rsvp te tunnel.";
+          "Name of a RSVP TE tunnel.";
       }
       leaf reverse-lsr-id-auto-te-tunnel {
         type inet:ipv4-address-no-zone;
@@ -337,7 +350,7 @@ module huawei-bfd-static-mpls-te {
       }
       leaf reverse-tunnel-id-auto-te-tunnel {
         type uint32 {
-          range "0..4294967295";
+          range "1..4294967295";
         }
         mandatory true;
         description
@@ -347,13 +360,13 @@ module huawei-bfd-static-mpls-te {
         type boolean;
         default "false";
         description
-          "Enable/disable update the PST when the status of a BFD session changes. On each interface, only one BFD session can be set for this parameter.";
+          "Enable/disable to update the PST when the status of a BFD session changes. On each interface, only one BFD session can be set for this parameter.";
       }
     }
   }
   augment "/bfd:bfd/bfd:sessions/bfd:session" {
     description
-      "Configure bfd group for MPLS te.";
+      "Configure BFD group for MPLS TE.";
     container mpls-te-groups {
       when "../is-group-static-te-lsp='true' or ../is-group-static-te-tunnel='true'";
       description

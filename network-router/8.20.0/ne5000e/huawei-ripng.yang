@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-ripng {
   namespace "urn:huawei:yang:huawei-ripng";
@@ -42,7 +42,32 @@ module huawei-ripng {
      Email: support@huawei.com";
   description
     "RIPng Component.";
-
+  revision 2020-03-13 {
+    description
+      "Modify the format specification.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-03 {
+    description
+      "Modity the description.";
+    reference "Huawei private.";
+  }
+  revision 2020-01-14 {
+    description
+      "Modify node name.";
+    reference "Huawei private.";
+  }
+  revision 2020-01-03 {
+    description
+      "Add container import route and preference.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2019-12-23 {
+    description
+      "Add container interface.";
+    reference "Huawei private.";
+  }
   revision 2019-11-25 {
     description
       "Initial revision.";
@@ -191,6 +216,7 @@ module huawei-ripng {
               type uint32 {
                 range "1..86400";
               }
+              units "s";
               default "120";
               description
                 "When the specified device detects that the route is unreachable,specify the interval for the device to delete a route from the routing table.";
@@ -199,6 +225,7 @@ module huawei-ripng {
               type uint32 {
                 range "1..86400";
               }
+              units "s";
               default "30";
               description
                 "Specify the periodic timer in seconds. RIPng will send route updates periodically at this configured interval.";
@@ -216,6 +243,7 @@ module huawei-ripng {
               type uint32 {
                 range "0..86400";
               }
+              units "s";
               default "0";
               description
                 "A route is suppressed after it ages and becomes unreachable. During the suppression time, no route update is accepted to prevent route flapping. 

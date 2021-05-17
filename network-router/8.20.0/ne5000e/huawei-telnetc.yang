@@ -23,8 +23,8 @@ module huawei-telnetc {
      Website: http://www.huawei.com
      Email: support@huawei.com";
   description
-    "Telnet Client component.";
-  revision 2019-05-01 {
+    "Telnet client component.";
+  revision 2019-05-02 {
     description
       "Initial revision.";
     reference
@@ -33,10 +33,10 @@ module huawei-telnetc {
   ext:task-name "telnet-client";
   container telnetc {
     description
-      "Telnet Client component.";
+      "Telnet client component.";
     container client {
       description
-        "Configure Telnet Client Information.";
+        "Configure Telnet client information.";
       leaf src-interface {
         type pub-type:if-name;
         description
@@ -46,7 +46,7 @@ module huawei-telnetc {
         when "not(../src-interface)";
         type inet:ipv4-address-no-zone;
         description
-          "Source IPv4 Address.";
+          "Source IPv4 address.";
       }
       leaf packet-dscp {
         type uint32 {
@@ -55,6 +55,19 @@ module huawei-telnetc {
         default "48";
         description
           "Config DSCP value.";
+      }
+      leaf src-ipv6-addr {
+        type inet:ipv6-address-no-zone;
+        description
+          "Telnet source IPv6 address.";
+      }
+      leaf ipv6-vpn-instance-name {
+        when "../src-ipv6-addr";
+        type string {
+          length "1..31";
+        }
+        description
+          "The specified VPN instance must exist and IPv6-family must be enabled in the VPN instance.";
       }
     }
   }

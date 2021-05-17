@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-diagnostic-tools-srv6 {
   yang-version 1;
@@ -31,6 +31,18 @@ submodule huawei-diagnostic-tools-srv6 {
   description
     "Srv6 diagnosis tool.";
 
+  revision 2020-01-06 {
+    description
+      "Modify is-delete for trace.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-19 {
+    description
+      "Modify container srh-sid-lists.";
+    reference
+      "Huawei private.";
+  }
    revision 2019-12-10 {
     description
       "Modify srv6-te-start-trace and srv6-te-start-ping.";
@@ -46,16 +58,16 @@ submodule huawei-diagnostic-tools-srv6 {
 
   grouping srv6-ping-trace-result-type {
     description
-      "Test result of srv6 ping and trace.";
+      "List of SRV6 ping and trace tests.";
     container ping-results {
       config false;
       description
-        "List of test result of srv6 ping.";
+        "List of test result of SRV6 ping.";
       list ping-result {
         key "test-name path-index";
         config false;
         description
-          "Statistics of test result of ping.";
+          "Statistics of test result of SRV6 ping.";
         leaf test-name {
           type string {
             length "1..32";
@@ -92,6 +104,7 @@ submodule huawei-diagnostic-tools-srv6 {
           type pub-type:percent {
             range "0..100";
           }
+		  units "%";
           config false;
           description
             "Packet loss ratio of a test.";

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-srpolicy {
   namespace "urn:huawei:yang:huawei-srpolicy";
@@ -39,7 +39,84 @@ module huawei-srpolicy {
      Email: support@huawei.com";
   description
     "Segment Routing Policy.";
-
+  revision 2020-06-28 {
+    description
+      "Modify description information.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-20 {
+    description
+      "Modify the type of template info.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-01 {
+    description
+      "Increate the path verification.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-28 {
+    description
+      "Increate the policy-template.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-25 {
+    description
+      "Increate the policy-maps.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-20 {
+    description
+      "Modify the srpolicy, admin-state.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-26 {
+    description
+      "Modify description information by new rules.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-24 {
+    description
+      "Modify the policy-attributes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-16 {
+    description
+      "Modify description information by new rules.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-28 {
+    description
+      "Modify description information.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-17 {
+    description
+      "Increate the path-mtu.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-01-03 {
+    description
+      "Modify description information.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-18 {
+    description
+      "Increate the SR-MPLS TE Policy group.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Init revision.";
@@ -49,7 +126,7 @@ module huawei-srpolicy {
   ext:task-name  "srpolicy";
   grouping bfd {
     description
-      "SR Policy bfd configuration.";
+      "SR Policy BFD configuration.";
     container bfd {
       description
         "Configure SR Policy BFD.";
@@ -126,9 +203,21 @@ module huawei-srpolicy {
       description
         "Enable/disable BGP-LS.";
     }
+    leaf path-verification {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable path verification.";
+    }
+    leaf suppress-flapping {
+      type boolean;
+      default "true";
+      description
+        "Enable/disable suppress flapping.";
+    }
     leaf policy-threshold-upper {
       type uint32 {
-        range "1..100";
+        range "2..100";
       }
       must "(../policy-threshold-upper>../policy-threshold-lower)";
       default "80";	  
@@ -137,16 +226,15 @@ module huawei-srpolicy {
     }
     leaf policy-threshold-lower {
       type uint32 {
-        range "1..100";
+        range "1..99";
       }
-      must "(../policy-threshold-upper>../policy-threshold-lower)";
       default "75";
       description
         "SR Policy threshold lower limit.";
     }
     leaf list-threshold-upper {
       type uint32 {
-        range "1..100";
+        range "2..100";
       }
       must "(../list-threshold-upper>../list-threshold-lower)";
       default "80";	  
@@ -155,16 +243,32 @@ module huawei-srpolicy {
     }
     leaf list-threshold-lower {
       type uint32 {
-        range "1..100";
+        range "1..99";
       }
-      must "(../list-threshold-upper>../list-threshold-lower)";
       default "75";	  
       description
         "Segment List threshold lower limit.";
     }
+    leaf group-threshold-upper {
+      type uint32 {
+        range "2..100";
+      }
+      must "(../group-threshold-upper>../group-threshold-lower)";
+      default "80";
+      description
+        "Upper threshold for the number of SR Policy groups.";
+    }
+    leaf group-threshold-lower {
+      type uint32 {
+        range "1..99";
+      }
+      default "75";
+      description
+        "Lower threshold for the number of SR Policy groups.";
+    }
     uses bfd;
   }
-  grouping segment-lists {
+  grouping srv4-segment-lists {
     description
       "Global segment lists.";
     container segment-lists {
@@ -212,6 +316,49 @@ module huawei-srpolicy {
                     "MPLS label value.";
                 }
               }
+            }
+          }
+        }
+      }
+    }
+  }
+  grouping srv6-segment-lists {
+    description
+      "Global segment lists.";
+    container segment-lists {
+      description
+        "List of global segment lists.";
+      list segment-list {
+        key "name";
+        description
+          "Configure a global segment list.";
+        leaf name {
+          type string {
+            length "1..31";
+            pattern '[^ \?]*';
+          }
+          description
+            "Global segment list name.";
+        }
+        container segments {
+          description
+            "List of segments in a global segment list.";
+          list segment {
+            key "index";
+            max-elements  "10";
+            description
+              "Configure a segment in a global segment list.";
+            leaf index {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "The segment index.";
+            }
+            choice type {
+              mandatory true;
+              description
+                  "The segment type.";
               case segment-type-2 {
                 description
                   "The segment is declared by SRv6 SID value.";
@@ -235,13 +382,14 @@ module huawei-srpolicy {
          "Configure attributes for all SR policies.";
       uses global-attributes;
       leaf locator {
+        ext:operation-exclude update;
         type leafref {
           path "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator/srv6:name";
         }
         description
           "Locator Name.";
       }
-      uses segment-lists;
+      uses srv6-segment-lists;
     }
   }
   grouping srv4-policy-attributes {
@@ -251,15 +399,100 @@ module huawei-srpolicy {
       description
          "Configure attributes for all SR policies.";
       uses global-attributes;
-      uses segment-lists;
+      uses srv4-segment-lists;
     }
   }
-  grouping policys {
+  grouping candidate-paths {
+    description
+      "Grouping containing candidate paths to all SR policies.";
+    container candidate-paths {
+      description
+        "List of candidate paths in an SR Policy.";
+      list candidate-path {
+        must "(discriminator=preference)";
+        key "protocol-origin originator discriminator";
+        max-elements  "64";
+        description
+          "Configure a candidate path.";
+          leaf protocol-origin  {
+          type protocol-origin-type;
+          must "(../protocol-origin='configuration')";
+          description
+            "Candidate path protocol origin.";
+        }
+        leaf originator {
+          type string {
+            length "1..60";
+          }
+          must "(../originator='0,0.0.0.0')";
+          description
+            "Candidate path originator.";
+        }
+        leaf discriminator {
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "Candidate path discriminator.";
+        }
+        leaf preference {
+          type uint32 {
+            range "1..65535";
+          }
+          mandatory true;
+          description
+            "Candidate path preference.";
+        }
+        choice type {
+          description
+            "Type of candidate paths.";
+          case explicit {
+            description "Candidate path with explicitly defined set/s of segment-lists.";
+            container segment-lists {
+              description
+                "List of segment lists in a candidate path.";
+              list segment-list {
+                key "name";
+                max-elements  "64";
+                description
+                  "Configure a segment list for a candidate path.";
+                leaf name {
+                  type leafref {
+                    path "../../../../../../../policy-attributes/segment-lists/segment-list/name";
+                  }
+                  description
+                    "Segment list name.";
+                }
+                leaf weight {
+                  type uint32 {
+                    range "1..4294967295";
+                  }
+                  default "1";
+                  description
+                    "Segment-list weighted loadshare.";
+                }
+                leaf path-mtu {
+                  type uint32 {
+                    range "1280..9600";
+                  }
+                  description
+                    "Segment-list path-mtu.";
+                }
+              }
+            }
+          }
+        }
+      }	
+    }
+  }
+  grouping srv4-policys {
     description "SR policy grouping.";
     container policys {
       description "List of SR Policies.";
       list policy {
         key "endpoint color";
+        unique "name";
+        unique "binding-sid/value";
         description
           "Configure an SR Policy.";
         leaf endpoint {
@@ -287,6 +520,7 @@ module huawei-srpolicy {
           description "Configure a binding SID.";
           leaf dataplane {
             type dataplane-type;
+            must "(../dataplane='mpls')";
             mandatory true;
             description 
               "Binding sid dataplane type.";
@@ -299,7 +533,7 @@ module huawei-srpolicy {
           }
         }
         leaf admin-state {
-          type state-type;
+          type admin-state-type;
           default "up";
           description
             "Close the function of SR Policy.";
@@ -352,75 +586,119 @@ module huawei-srpolicy {
               "Service color of SR Policy.";
           }
         }
-        container candidate-paths {
+        uses candidate-paths;
+      }
+    }
+  }
+  grouping srv6-policys {
+    description "SR policy grouping.";
+    container policys {
+      description "List of SR Policies.";
+      list policy {
+        key "endpoint color";
+        unique "name";
+        unique "binding-sid/value";
+        description
+          "Configure an SR Policy.";
+        leaf endpoint {
+          type inet:ip-address;
           description
-            "List of candidate paths in an SR Policy.";
-          list candidate-path {
-            key "protocol-origin originator discriminator";
-            max-elements  "64";
-            description
-              "Configure a candidate path.";
-              leaf protocol-origin  {
-              type protocol-origin-type;
-              description
-                "Candidate path protocol origin.";
-            }
-            leaf originator {
-              type string {
-                length "1..60";
-              }
-              description
-                "Candidate path originator.";
-            }
-            leaf discriminator {
-              type uint32 {
-                range "1..65535";
-              }
-              description
-                "Candidate path discriminator.";
-            }
-            leaf preference {
-              type uint32 {
-                range "1..65535";
-              }
-              mandatory true;
-              description
-                "Candidate path preference.";
-            }
-            choice type {
-              description
-                "Type of candidate paths.";
-              case explicit {
-                description "Candidate path with explicitly defined set/s of segment-lists.";
-                container segment-lists {
-                  description
-                    "List of segment lists in a candidate path.";
-                  list segment-list {
-                    key "name";
-                    max-elements  "64";
-                    description
-                      "Configure a segment list for a candidate path.";
-                    leaf name {
-                      type leafref {
-                        path "../../../../../../../policy-attributes/segment-lists/segment-list/name";
-                      }
-                      description
-                        "Segment list name.";
-                    }
-                    leaf weight {
-                      type uint32 {
-                        range "1..4294967295";
-                      }
-                      default "1";
-                      description
-                        "Segment-list weighted loadshare.";
-                    }
-                  }
-                }
-              }
-            }
+            "SR Policy endpoint address.";
+        }
+        leaf color {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "SR Policy color.";
+        }
+        leaf name {
+          type string {
+            length "1..31";
+            pattern '[^ \?]*';
+          }
+          mandatory true;
+          description
+            "SR Policy name.";
+        }
+        container binding-sid {
+          when "(../../../policy-attributes/locator and /ni:network-instance/ni:instances/ni:instance[ni:name='_public_']/srv6:srv6/srv6:locators/srv6:locator[srv6:name=/ni:network-instance/ni:instances/ni:instance[ni:name='_public_']/srv6:srv6/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:locator]/srv6:static-length>0)";
+          description "Configure a binding SID.";
+          leaf dataplane {
+            type dataplane-type;
+            must "(../dataplane='srv6')";
+            mandatory true;
+            description 
+              "Binding sid dataplane type.";
+          }
+          leaf value {
+            type sid-value-type;
+            mandatory true;
+            description 
+              "Binding sid value.";
           }
         }
+        leaf admin-state {
+          type admin-state-type;
+          default "up";
+          description
+            "Close the function of SR Policy.";
+        }
+        leaf mtu {
+          type uint32 {
+            range "512..9600";
+          }
+          description
+            "SR Policy mtu value.";
+        }
+        leaf hsb-enable {
+          type enable-3types;
+          default "not-configured";
+          description
+            "SR Policy hot standby.";
+        }
+        leaf bfd-enable {
+          type policy-bfd-enable-type;
+          default "not-configured";
+          description
+            "SR Policy BFD.";
+        }
+        leaf traffic-statistics-enable {
+          type enable-3types;
+          default "not-configured";
+          description
+            "SR Policy traffic statistics.";
+        }
+        leaf path-verification {
+          type enable-3types;
+          default "not-configured";
+          description
+            "SR Policy path verification.";
+        }
+        container diffserv-mode {
+          description
+            "Configure the DiffServ mode in an SR Policy.";
+          leaf pipe-mode {
+            type pipe-mode-type;
+            description
+              "Specifies the pipe mode of SR Policy.";
+          }
+          leaf service-class {
+            when "../pipe-mode='pipe'";
+            type serv-class-types;
+            mandatory true;
+            description
+              "Service class of SR Policy.";
+          }
+          leaf service-color {
+            when "../pipe-mode='pipe'";
+            type serv-color-types;
+            mandatory true;
+            description
+              "Service color of SR Policy.";
+          }
+        }
+        uses candidate-paths;
       }
     }
   }
@@ -860,7 +1138,7 @@ module huawei-srpolicy {
             "SR Policy state change time.";
         }
         leaf admin-state {
-          type state-type;
+          type admin-state-type;
           config false;
           description
             "SR Policy admin states.";
@@ -883,6 +1161,18 @@ module huawei-srpolicy {
           config false;
           description
             "SR Policy tunnel type.";
+        }
+        leaf bfd-enable {
+          type bfd-enable-type;
+          config false;
+          description
+            "SR Policy BFD enable flag.";
+        }
+        leaf hsb-enable {
+          type enable-type;
+          config false;
+          description
+            "SR Policy HSB enable flag.";
         }
         leaf traffic-statistics-enable {
           type enable-type;
@@ -979,8 +1269,14 @@ module huawei-srpolicy {
               description
                 "Candidate path policy name.";
             }
+            leaf path-verification {
+              type enable-type;
+              description
+                "SR Policy path verification enable flag.";
+            }
             leaf delay-timer-remain {
               type uint32;
+              units ms;
               config false;
               description
                 "Delay Timer Remain.";
@@ -1024,13 +1320,14 @@ module huawei-srpolicy {
                 }
                 leaf delay-timer-remain {
                   type uint32;
+                  units ms;
                   config false;
                   description
                     "Delay timer remain.";
                 }
                 leaf state {
                   type string {
-                    length "1..16";
+                    length "1..32";
                   }
                   config false;
                   description
@@ -1043,6 +1340,42 @@ module huawei-srpolicy {
                   config false;
                   description
                     "Segment-list weighted loadshare.";
+                }
+                leaf verification-state {
+                  type string {
+                    length "1..32";
+                  }
+                  description
+                    "Segment list state afer enable path verification.";
+                }
+                leaf suppress-time-remain {
+                  type uint32;
+                  description
+                    "The delay up time of segment list afer enable path verification.";
+                }
+                leaf path-mtu {
+                  type uint32 {
+                    range "1280..9600";
+                  }
+                  config false;
+                  description
+                    "Segment-list path mtu.";
+                }
+                leaf active-path-mtu {
+                  type uint32 {
+                    range "1280..9600";
+                  }
+                  config false;
+                  description
+                    "Segment-list active path mtu.";
+                }
+                leaf bfd-state {
+                  type string {
+                    length "1..32";
+                  }
+                  config false;
+                  description
+                    "Segment list BFD state.";
                 }
                 container sids {
                   when "../../../../../endpoint and ../../../../../color and ../../../preference and ../../../protocol-origin and ../../../asn and ../../../node-address and ../../../discriminator and ../id";
@@ -1113,13 +1446,15 @@ module huawei-srpolicy {
           ext:support-filter "true";
         }
         leaf state {
-          type state-type;
+          type string {
+            length "1..32";
+          }
           config false;
           description
             "SR Policy state.";
         }
         leaf admin-state {
-          type state-type;
+          type admin-state-type;
           config false;
           description
             "SR Policy admin state.";
@@ -1247,7 +1582,9 @@ module huawei-srpolicy {
                 "Candidate path preference.";
             }
             leaf path-state {
-              type path-state-type;
+              type string {
+                length "1..32";
+              }
               config false;
               description
                 "Candidate path state.";
@@ -1323,13 +1660,14 @@ module huawei-srpolicy {
                 }
                 leaf delay-time-remain {
                   type uint32;
+                  units ms;
                   config false;
                   description
                     "Delay delete timer remain.";
                 }
                 leaf state {
                   type string {
-                    length "1..16";
+                    length "1..32";
                   }
                   config false;
                   description
@@ -1411,19 +1749,166 @@ module huawei-srpolicy {
             "The template ID.";
         }
         leaf bfd-enable {
-          type enable-3types;
+          type template-enable-type;
           description
             "Enable/disable Seamless-BFD.";
         }
         leaf hsb-enable {
-          type enable-3types;
+          type template-enable-type;
           description
             "Enable/disable hot standby.";
         }
         leaf traffic-statistics-enable {
-          type enable-3types;
+          type template-enable-type;
           description
             "Enable/disable traffic statistics.";
+        }
+      }
+    }
+  }
+  grouping srv6-source-sids {
+    description
+      "SRv6 TE Policy SID informations.";
+    container source-sids {
+      config false;
+      description
+        "List of SRv6 TE Policy SID informations.";
+      list source-sid {
+        key "sid-value topology";
+        config false;
+        description
+          "Operational state of SRv6 TE Policy SID information.";
+        leaf sid-value {
+          type inet:ipv6-address-no-zone;
+          description
+            "The SRv6 TE Policy SID value.";
+        }
+        leaf topology {
+          type uint32 {
+            range "0..2";
+          }
+          description
+            "The SRv6 TE Policy SID topology.";
+        }
+        leaf func-type {
+          type function-type;
+          ext:support-filter "true";
+          description
+            "The SRv6 TE Policy SID type.";
+        }
+        container sources {
+          config false;
+          description
+            "List of SRv6 TE Policy SID source informations.";
+          list source {
+            key "protocol process sub-process";
+            config false;
+            description
+              "Operational state of SRv6 TE Policy SID source information.";
+            leaf protocol {
+              type protocol-type;
+              description
+                "The origin protocol.";
+            }
+            leaf process {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "The origin protocol process.";
+            }
+            leaf sub-process {
+              type sub-process-type;
+              description
+                "The origin protocol sub process.";
+            }
+            leaf node {
+              type string {
+                length "1..48";
+              }
+              description
+                "Node information.";
+            }
+            leaf local {
+              type string {
+                length "1..48";
+              }
+              description
+                "Local information.";
+            }
+            leaf peer {
+              type string {
+                length "1..48";
+              }
+              description
+                "Peer information.";
+            }
+          }
+        }
+      }
+    }
+  }
+  grouping srv6-sid-statistics {
+    description
+      "SRv6 Policy SID statistics infos.";
+    container sid-statistics {
+      config false;
+      description
+        "Operational state of SRv6 Policy SID statistics infos.";
+      leaf endx-total-num {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "SRv6 Policy End.X SID statistics.";
+      }
+      leaf end-total-num {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "SRv6 Policy End SID statistics.";
+      }
+      container sid-nums {
+        config false;
+        description
+          "List of SRv6 Policy SID num.";
+        list sid-num {
+          key "protocol process sub-process";
+          config false;
+          description
+            "Operational state of SRv6 Policy SID num.";
+          leaf protocol {
+            type protocol-type;
+            description
+              "The origin protocol.";
+          }
+          leaf process {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "The origin protocol process.";
+          }
+          leaf sub-process {
+            type sub-process-type;
+            description
+              "The origin protocol sub process.";
+          }
+          leaf endx-num {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "The End.X SID num.";
+          }
+          leaf end-num {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "The End SID num.";
+          }
         }
       }
     }
@@ -1456,6 +1941,295 @@ module huawei-srpolicy {
         "SR Policy binding sid.";
     }
   }
+  grouping policy-maps {
+    description "SR Policy mappings.";
+    container sr-policy-maps {
+      description
+        "List of SR Policy mappings.";
+      list sr-policy-map {
+        must "(../../srv6:type='sr-policy-dscp')";
+        key "color af-type flow-priority-type";
+        max-elements  "128";
+        description
+          "Configure an SR Policy mapping.";
+        leaf color {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Color of an SR Policy.";
+        }
+        leaf af-type {
+          type address-family-type;
+          description
+            "Address family type.";
+        }
+        leaf flow-priority-type {
+          type flow-priority-type;
+          description
+            "Traffic priority type.";
+        }
+        leaf dscp-value {
+          when "../flow-priority-type='dscp'"; 
+          type dscp-type;
+          mandatory true;
+          description
+            "DSCP list.";
+        }
+      }
+    }
+  }
+  grouping dynamic-policy-group {
+    description "Dynamic SR Policy groups.";
+    container dynamic-sr-policy-groups {
+      config false;
+      description
+        "List of dynamic SR Policy groups.";
+      list dynamic-sr-policy-group {
+        key "endpoint color";
+        description
+          "Operational state of a dynamic SR Policy group.";
+        leaf endpoint {
+          type inet:ip-address;
+          description
+            "Endpoint of a dynamic SR Policy group.";
+        }
+        leaf color {
+          type uint32;
+          description
+            "Color of a dynamic SR Policy group.";
+        }
+        leaf tunnel-id {
+          type uint32;
+          description
+            "Tunnel ID.";
+        }
+        leaf tunnel-type {
+          type tunnel-type;
+          description
+            "Tunnel type.";
+        }
+        leaf state {
+          type group-state-type;
+          description
+            "State of a dynamic SR Policy group.";
+        }
+        leaf state-change-time {
+          type yang:date-and-time;
+          description
+            "Date and time when the state of a dynamic SR Policy group changed.";
+        }
+        leaf delay-timer-remain {
+          type uint32;
+          units ms;
+          description
+            "Remaining time of the delay timer.";
+        }
+        leaf map-count {
+          type uint32;
+          description
+            "Number of mappings in a dynamic SR Policy group.";
+        }
+        leaf up-map-count {
+          type uint32;
+          description
+            "Number of mappings that are up in a dynamic SR Policy group.";
+        }
+        container maps {
+          description
+            "List of mappings in a dynamic SR Policy group.";
+          list map {
+            key "color af-type flow-priority-type";
+            max-elements "128";
+            description
+              "Operational state of a mapping in a dynamic SR Policy group.";
+            leaf color {
+              type uint32;
+              description
+                "Color of an SR Policy.";
+            }
+            leaf af-type {
+              type address-family-type;
+              description
+                "Address family type.";
+            }
+            leaf flow-priority-type {
+              type flow-priority-type;
+              description
+                "Traffic priority type.";
+            }
+            leaf flow-priority-list {
+              type string {
+                length "1..64";
+              }
+              description
+                "Priority list.";
+            }
+            leaf policy-tunnel-id {
+              type uint32;
+              description
+                "Tunnel ID of an SR Policy.";
+            }
+            leaf policy-tunnel-type {
+              type tunnel-type;
+              description
+                "Tunnel type of an SR Policy.";
+            }
+          }
+        }
+      }
+    }
+  }
+  grouping dynamic-policy-group-down-reason {
+    description "Dynamic SR Policy group down reason.";
+    container dynamic-policy-group-down-reasons {
+      config false;
+      description
+        "List of down records of dynamic SR Policy groups.";
+      list dynamic-policy-group-down-reason {
+        key "endpoint color up-time up-millisecond";
+        description
+          "Operational state of down record of a dynamic SR Policy group.";
+        leaf endpoint {
+          type inet:ip-address;
+          description
+            "Endpoint of an SR Policy group.";
+        }
+        leaf color {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Color of an SR Policy group.";
+        }
+        leaf up-time {
+          type yang:date-and-time;
+          description
+            "Date and time when a dynamic SR Policy group went up.";
+        }
+        leaf up-millisecond {
+          type uint32 {
+            range "0..1000";
+          }
+          description
+            "Millisecond value of the time when a dynamic SR Policy group went up.";
+        }
+        leaf tunnel-id {
+          type uint32;
+          description
+            "Tunnel ID.";
+        }
+        leaf tunnel-type {
+          type tunnel-type;
+          description
+            "Tunnel type.";
+        }
+        leaf create-time {
+          type yang:date-and-time;
+          description
+            "Date and time when a dynamic SR Policy group was created.";
+        }
+        leaf down-time {
+          type yang:date-and-time;
+          description
+            "Date and time when a dynamic SR Policy group went down.";
+        }
+        leaf down-reason {
+          type group-down-reason-type;
+          description
+            "Reason why a dynamic SR Policy group went down.";
+        }
+        container map-down-reasons {
+          config false;
+          description
+            "List of reason why mappings went down.";
+          list map-down-reason {
+            key "sr-policy-color af-type up-time up-millisecond";
+            max-elements  "64";
+            description
+              "Operational state of reason why a mapping went down.";
+            leaf sr-policy-color {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Color of an SR Policy.";
+            }
+            leaf af-type {
+              type address-family-type;
+              description
+                "Address family type.";
+            }
+            leaf up-time {
+              type yang:date-and-time;
+              description
+                "Date and time when a mapping went up.";
+            }
+            leaf up-millisecond {
+              type uint32 {
+                range "0..1000";
+              }
+              description
+                "Millisecond value of the time when a mapping went up.";
+            }
+            leaf down-time {
+              type yang:date-and-time;
+              description
+                "Date and time when a mapping went down.";
+            }
+            leaf down-reason {
+              type map-down-reason-type;
+              description
+                "Reason why a mapping went down.";
+            }
+          }
+        }
+      }
+    }
+  }
+  grouping policy-group-statistics {
+    description "SR Policy group statistics.";
+    container policy-group-statistic {
+      config false;
+      description
+        "Statistics of SR Policy groups.";
+      leaf mapping-policy {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of mapping policies.";
+      }
+      leaf sr-policy-group {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of SR Policy groups.";
+      }
+      leaf sr-policy-group-up {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of SR Policy groups that are up.";
+      }
+      leaf dscp-map {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of DSCP mappings.";
+      }
+      leaf dscp-map-up {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of DSCP mappings that are up.";
+      }
+    }
+  }
   rpc reset-srv6-te-policy-traffic-statistics {
     description
       "Reset SRv6 TE Policy traffic statistics.";
@@ -1477,9 +2251,15 @@ module huawei-srpolicy {
       description
         "Configure SR Policy parameters.";
       uses srv6-policy-attributes;
-      uses policys;
+      uses srv6-policys;
       uses traffic-statistics;
       uses srv6-policy-infos;
+      uses dynamic-policy-group;
+      uses dynamic-policy-group-down-reason;
+      uses policy-group-statistics;
+      uses sr-template-infos;
+      uses srv6-source-sids;
+      uses srv6-sid-statistics;
     }
   }
   augment /ni:network-instance/ni:instances/ni:instance/sr:segment-routing {
@@ -1489,11 +2269,15 @@ module huawei-srpolicy {
       description
         "Configure SR Policy parameters.";
       uses srv4-policy-attributes;
-      uses policys;
+      uses srv4-policys;
       uses srv4-policy-infos;
       uses policy-groups;
       uses traffic-statistics;
       uses sr-template-infos;
     }
+  }
+  augment /ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:mapping-policys/srv6:mapping-policy {
+    description "Augment for SR Policy mappings.";
+    uses policy-maps;
   }
 }

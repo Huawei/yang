@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-igp {
   namespace "urn:huawei:yang:huawei-igp";
@@ -28,6 +28,17 @@ module huawei-igp {
      Email: support@huawei.com";
   description
     "IGP management.";
+  revision 2020-03-13 {
+    description
+      "Modify the format specification.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-03 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -70,7 +81,7 @@ module huawei-igp {
         "Configure IGP attribute of tunnel interface.";
       leaf adv-enable {
         type boolean;
-        must "../adv-enable='false' or ../../mpls-te:common-attributes/mpls-te:signal-protocol!='segment-routing' and ../shortcut-type!='ospf' and ../shortcut-type!='isis'";
+        must "../adv-enable='false' or (../../mpls-te:common-attributes/mpls-te:signal-protocol!='segment-routing' and ../shortcut-type!='ospf' and ../shortcut-type!='isis')";
         default "false";
         description
           "Enable/disable tunnel interface forwarding adjacency based on tunnel interfaces. An MPLE TE tunnel can be advertised as a virtual link over an IGP network. The virtual link can participate in route calculation.";

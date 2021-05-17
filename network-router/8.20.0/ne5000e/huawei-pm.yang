@@ -25,7 +25,7 @@ module huawei-pm {
      Email: support@huawei.com";
   description
     "Performance management module.";
-  revision 2019-11-28 {
+  revision 2019-12-16 {
     description
       "Initial revision.";
     reference
@@ -222,6 +222,7 @@ module huawei-pm {
           "Configure performance statistics task.";
         leaf task-name {
           type pm-task-name-type;
+		  ext:case-sensitivity lower-only;
           description
             "Name of a statistics task.";
         }
@@ -279,8 +280,7 @@ module huawei-pm {
             "Protocol to upload files.";
         }
         leaf host-address {
-          type inet:ipv4-address-no-zone;
-          default "0.0.0.0";
+          type inet:ip-address-no-zone;
           description
             "IP address.";
         }

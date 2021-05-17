@@ -1,16 +1,19 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-file-operation {
   namespace "urn:huawei:yang:huawei-file-operation";
   prefix file-operation;
 
-  import huawei-extension {
-    prefix ext;
-  }
   import ietf-yang-types {
     prefix yang;
   }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  } 
 
   organization
     "Huawei Technologies Co., Ltd.";
@@ -23,8 +26,25 @@ module huawei-file-operation {
      Email: support@huawei.com";
   description
     "Indicate file system management.";
-
-  revision 2019-12-04 {
+  revision 2020-04-02 {
+    description
+      "YANG check.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-13 {
+    description
+      "Add leaf node of copy-file and delete-file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-20 {
+    description
+      "Modify node description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-09 {
     description
       "Initial revision.";
     reference
@@ -59,13 +79,24 @@ module huawei-file-operation {
     description
       "The overwrite strategy when there exists a file with same name as the destination file, should be overwrite or not-overwrite.";
   }
+  typedef reset-recycle-type {
+    type enumeration {
+      enum "all" {
+        value 0;
+        description
+          "Delete all files in the recycle bin.";
+      }
+    }
+    description
+      "Specify the action type of reseting the recycle bin.";
+  }
   container file-operation {
     config false;
     description
       "Indicate file system management.";
     container dirs {
       description
-        "List of Operational data of file information.";
+        "List of operational data of file information.";
       list dir {
         key "file-name dir-name";
         description
@@ -75,37 +106,92 @@ module huawei-file-operation {
             length "1..255";
           }
           description
-            "Specify the name of a folder or file.";
+            "Name of a folder or file.";
         }
         leaf dir-name {
           type string {
             length "1..255";
           }
           description
-            "Specifies the name of a folder or a file.";
+            "Name of a folder or a file.";
         }
         leaf attribute {
           type string {
             length "1..16";
           }
           description
-            "Specify attributes of a folder or file.";
+            "Attributes of a folder or file.";
         }
         leaf modify-time {
           type yang:date-and-time;
           description
-            "Specify the last time for modifying a folder or file.";
+            "Last modified time of a folder or file.";
         }
         leaf size {
           type int32;
+          units Byte;
+          description
+            "Size of a folder or file. Integer type and the size of a folder is expressed as 4096.";
+        }
+      }
+    }
+
+    container disk-usages {
+      description
+        "List of operational data of disk space information.";
+      list disk-usage {
+        key "name";
+        description
+          "Operational data of disk space information.";
+        leaf name {
+          type string {
+            length "1..64";
+          }
+          description
+            "Name of a file system partition.";
+        }
+        leaf path {
+          type string {
+            length "1..64";
+          }
+          description
+            "Directory of a file system partition.";
+        }
+        leaf total-size {
+          type string {
+            length "1..32";
+          }
           units kB;
           description
-            "Specify the size of a folder or file. Integer type and the size of a folder is expressed as 4096.";
+            "Total size of a file system partition.";
+        }
+        leaf free-size {
+          type string {
+            length "1..32";
+          }
+          units kB;
+          description
+            "Size of the free space in a file system partition.";
+        }
+        leaf usage {
+          type pub-type:percent;
+          description
+            "Usage of a file system partition.";
         }
       }
     }
   }
-
+  rpc reset-recycle-bin {
+    description
+      "Delete all files in the recycle bin.";
+    input {
+      leaf reset-type {
+        type reset-recycle-type;
+        description
+          "Delete all files in the recycle bin.";
+      }
+    }
+  }
   rpc copy-file {
     description
       "Copy a file. A folder, however, cannot be copied.";
@@ -127,8 +213,14 @@ module huawei-file-operation {
         description
           "Specify a destination file name that can be listed in a full path or a relative path.";
       }
+      leaf all {
+        type boolean;
+        description
+          "Copy a file to both of the main board and slave board. A folder, however, cannot be copied.";
+      }
     }
   }
+
   rpc delete-file {
     description
       "Delete file permanently. A folder, however, cannot be deleted.";
@@ -148,8 +240,14 @@ module huawei-file-operation {
         description
           "Specify the action of deleting file.";
       }
+      leaf all {
+        type boolean;
+        description
+          "Delete a file of the main board and slave board permanently. A folder, however, cannot be deleted.";
+      }
     }
   }
+
   rpc zip-file {
     description
       "Compress a file. A folder, however, cannot be compressed.";
@@ -179,6 +277,7 @@ module huawei-file-operation {
       }
     }
   }
+
   rpc unzip-file {
     description
       "Decompress a file. A folder, however, cannot be decompressed.";
@@ -208,6 +307,7 @@ module huawei-file-operation {
       }
     }
   }
+
   rpc move-file {
     description
       "Move a file. A folder, however, cannot be moved.";
@@ -231,6 +331,7 @@ module huawei-file-operation {
       }
     }
   }
+
   rpc rename {
     description
       "Rename a file or folder.";
@@ -254,6 +355,7 @@ module huawei-file-operation {
       }
     }
   }
+
   rpc make-dir {
     description
       "Create a folder.";
@@ -269,6 +371,7 @@ module huawei-file-operation {
       }
     }
   }
+
   rpc remove-dir {
     description
       "Remove a folder.";

@@ -95,4 +95,7 @@ module huawei-pim-deviations-NE5000E {
       must "(../type='ipv4unicast' and 32>=../hash-len) or (../type='ipv6unicast' and 128>=../hash-len)";
     }
   }
+  deviation "/ni:network-instance/ni:instances/ni:instance/pim:pim/pim:protocol/pim:instances/pim:instance/pim:fast-reroute" {
+    deviate not-supported;
+  }
 }

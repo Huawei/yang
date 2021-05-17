@@ -58,6 +58,7 @@ module huawei-routing-policy {
             "Name of an extended community SoO filter. The name is a string and cannot contain spaces.";
         }
         leaf filter-type {
+          ext:operation-exclude update;
           type community-filter-type;
           mandatory true;
           description
@@ -138,16 +139,18 @@ module huawei-routing-policy {
       description
         "List of community attribute filters. Routes are filtered based on the community attributes of routes.";
       list community-filter {
+        must "(string(number(name))='NaN' and filter-type) or (number(name)>=1 and number(name)<=99 and filter-type='basic') or (number(name)>= 100 and number(name)<=199 and filter-type='advanced')";
         key "name";
         max-elements 65535;
         description
-          "Configure a community attribute filter, which filters routes based on community attributes.";
+          "Configure a community attribute filter, which filters routes based on community attributes. Different nodes of a community filter cannot be configured with the same filtering rules.";
         leaf name {
           type community-filter-name-type;
           description
             "Name of a community filter, which can be a numeral or a string. The ID of a basic community attribute filter is an integer ranging from 1 to 99; the ID of an advanced community attribute filter is an integer ranging from 100 to 199. The name of a community attribute filter is a string of 1 to 51 characters. The string cannot contain only digits.";
         }
         leaf filter-type {
+          ext:operation-exclude update;
           type community-filter-type;
           mandatory true;
           description
@@ -239,6 +242,7 @@ module huawei-routing-policy {
       description
         "List of extended community filters. You can use the route-target extended community as a matching condition.";
       list ext-community-filter {
+        must "(string(number(name))='NaN' and filter-type) or (number(name)>=1 and number(name)<=199 and filter-type='basic') or (number(name)>= 200 and number(name)<=399 and filter-type='advanced')";
         key "name";
         max-elements 65535;
         description
@@ -249,6 +253,7 @@ module huawei-routing-policy {
             "Name of an extended community filter, which can be a numeral or a string. The ID of a basic extended community attribute filter is an integer ranging from 1 to 199; the ID of an advanced extended community attribute filter is an integer ranging from 200 to 399. The name of an extended community attribute filter is a string of 1 to 51 characters. The string cannot contain only digits.";
         }
         leaf filter-type {
+          ext:operation-exclude update;
           type community-filter-type;
           mandatory true;
           description
@@ -287,9 +292,7 @@ module huawei-routing-policy {
                 description
                   "Configure a node for an extended community filter.";
                 leaf value {
-                  type string {
-                    length "3..21";
-                  }
+                  type ext-community-type;
                   description
                     "Extended community attribute value. The format are as follows:
                     (1)as-number : nn ('as-number' ranges from 0 to 65535 and 'nn' ranges from 0 to 4294967295).
@@ -343,7 +346,7 @@ module huawei-routing-policy {
         key "name";
         max-elements 100000;
         description
-          "Configure an IPv4 prefix list, which contains a group of route filtering rules.";
+          "Configure an IPv4 prefix list, which contains a group of route filtering rules. Different nodes of an IPv4 prefix filter cannot be configured with the same filtering rules.";
         leaf name {
           type string {
             length "1..169";
@@ -384,7 +387,7 @@ module huawei-routing-policy {
             key "sequence";
             max-elements 100000;
             description
-              "Configure a node in an IPv4 prefix list. You can specify a prefix range and a mask length range in the node to match the destination network segment addresses or next-hop addresses in routes. There must be at least one node in a filter, min-elements 1.";
+              "Configure a node in an IPv4 prefix list. You can specify a prefix range and a mask length range in the node to match the destination network segment addresses or next-hop addresses in routes. There must be at least one node in a filter, min-elements 1. An IPv4 address and its mask must strictly match.";
             leaf sequence {
               type uint32 {
                 range "1..4294967295";
@@ -444,7 +447,7 @@ module huawei-routing-policy {
         key "name";
         max-elements 100000;
         description
-          "Configure an IPv6 prefix list, which contains a group of route filtering rules.";
+          "Configure an IPv6 prefix list, which contains a group of route filtering rules. Different nodes of an IPv6 prefix filter cannot be configured with the same filtering rules.";
         leaf name {
           type string {
             length "1..169";
@@ -485,7 +488,7 @@ module huawei-routing-policy {
             key "sequence";
             max-elements 100000;
             description
-              "Configure a node in an IPv6 prefix list. You can specify a prefix range and a mask length range in the node to match the destination network segment addresses or next-hop addresses in routes. There must be at least one node in a filter, min-elements 1.";
+              "Configure a node in an IPv6 prefix list. You can specify a prefix range and a mask length range in the node to match the destination network segment addresses or next-hop addresses in routes. There must be at least one node in a filter, min-elements 1. An IPv6 address and its mask must strictly match.";
             leaf sequence {
               type uint32 {
                 range "1..4294967295";
@@ -554,6 +557,7 @@ module huawei-routing-policy {
             "Name of a segmented next-hop extended community filter.";
         }
         leaf filter-type {
+          ext:operation-exclude update;
           type community-filter-type;
           mandatory true;
           description
@@ -646,7 +650,7 @@ module huawei-routing-policy {
         key "name";
         max-elements 65535;
         description
-          "Configure an AS_Path filter, which filters routes based on their AS_Path attributes.";
+          "Configure an AS_Path filter, which filters routes based on their AS_Path attributes. Different nodes of an AS_Path filter cannot be configured with the same filtering rules.";
         leaf name {
           type as-path-filter-name-type;
           description
@@ -716,7 +720,7 @@ module huawei-routing-policy {
         key "name";
         max-elements 65535;
         description
-          "Configure a list of nodes in an RD filter.";
+          "Configure a list of nodes in an RD filter. Different nodes of an RD filter cannot be configured with the same filtering rules.";
         leaf name {
           type rd-filter-name-type;
           description
@@ -879,6 +883,7 @@ module huawei-routing-policy {
             "Name of a large community filter.";
         }
         leaf filter-type {
+          ext:operation-exclude update;
           type community-filter-type;
           mandatory true;
           description
@@ -1414,7 +1419,7 @@ module huawei-routing-policy {
                       type uint32 {
                         range "0..2046";
                       }
-                      must "(../lower<=../upper and ../lower and ../upper) or (not(../lower) and not(../upper))";
+                      must "(../lower<../upper and ../lower and ../upper) or (not(../lower) and not(../upper))";
                       description
                         "Lower limit of AS path length range.";
                     }
@@ -1422,11 +1427,33 @@ module huawei-routing-policy {
                       type uint32 {
                         range "1..2047";
                       }
-                      must "(../lower<=../upper and ../lower and ../upper) or (not(../lower) and not(../upper))";
+                      must "(../lower<../upper and ../lower and ../upper) or (not(../lower) and not(../upper))";
                       description
                         "Upper limit of a AS path length range.";
                     }
                   }
+                }
+              }
+              container match-prefix-mod {
+                must "(mod-result<mod-value)";
+                presence "Create prefix mod attribute values.";
+                description
+                  "Configure a filtering rule that is based on the route prefix modulo operation result.";
+                leaf mod-value {
+                  type uint8 {
+                    range "1..128";
+                  }
+                  mandatory true;
+                  description
+                    "Specifies a route prefix modulus value.";
+                }
+                leaf mod-result {
+                  type uint8 {
+                    range "0..127";
+                  }
+                  mandatory true;
+                  description
+                    "Specifies the route prefix modulo operation result.";
                 }
               }
               choice match-ipv4-destination {
@@ -2224,18 +2251,18 @@ module huawei-routing-policy {
                     Delete-special: delete the specified AS value of a route.";
                 }
                 choice as-path-string {
+                  when "operation!='delete'";
+                  mandatory true;
                   description
                     "AS attribute values.";
                   case as-string {
                     description
                       "AS attribute values.";
                     leaf value {
-                      when "../operation!='delete'";
                       type string {
                         length "1..3071";
                         pattern '([0-9\. ]*)';
                       }
-                      mandatory true;
                       description
                         "The AS number in an AS_Path can be in asplain format ranging from 1 to 4294967295 or in asdot format, X.Y for example, in which X ranges from 1 to 65535, and Y ranges from 0 to 65535.";
                     }
@@ -2387,6 +2414,7 @@ module huawei-routing-policy {
                 type int32 {
                   range "1..65535";
                 }
+                must "../next-node-sequence>../../sequence";
                 description
                   "Matching node sequence number.";
               }

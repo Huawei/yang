@@ -228,6 +228,7 @@ module huawei-bgp-link-state {
     }
     leaf time {
       type uint32;
+      units "s";
       description
         "Time stamp of a route.";
     }
@@ -506,6 +507,7 @@ module huawei-bgp-link-state {
       type uint32 {
         range "0..16777215";
       }
+      units "us";
       description
         "Min Delay time.";
     }
@@ -513,6 +515,7 @@ module huawei-bgp-link-state {
       type uint32 {
         range "0..16777215";
       }
+      units "us";
       description
         "Max Delay time.";
     }

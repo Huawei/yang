@@ -34,7 +34,7 @@ module huawei-driver {
      Email: support@huawei.com";
   description
     "Configuration of the driver file.";
-  revision 2020-03-25 {
+  revision 2020-04-02 {
     description
       "Init revision.";
     reference
@@ -82,6 +82,7 @@ module huawei-driver {
         type uint32 {
           range "0..65535";
         }
+        units "min";
         default "0";
         description
           "Board Power-on-delay (0 stands for cancel operation).";
@@ -90,6 +91,7 @@ module huawei-driver {
         type uint32 {
           range "0..65535";
         }
+        units "min";
         default "0";
         description
           "Pic Power-on-delay (0 stands for cancel operation).";
@@ -201,7 +203,7 @@ module huawei-driver {
         type trap-type;
         default "base-trap";
         description
-          "Switch trapType between base-trap and dc-trap.";
+          "Switch trapType between base-trap and entity-trap.";
       }
       leaf temp-query-mode {
         type mib-query-mode-type;
@@ -536,7 +538,7 @@ module huawei-driver {
             "Index of a board.";
         }
         leaf state {
-          type driver-temp-volt-state;
+          type driver-sensor-state;
           config false;
           description
             "Sensor status of a board.";
@@ -664,7 +666,7 @@ module huawei-driver {
             "Index of a board.";
         }
         leaf state {
-          type driver-temp-volt-state;
+          type driver-sensor-state;
           config false;
           description
             "Voltage sensor status of a board.";
@@ -727,7 +729,101 @@ module huawei-driver {
         }
       }
     }
-    
+
+    container electric-current-infos {
+      config false;
+      description
+        "List of current information about a board.";
+      list electric-current-info {
+        key "position i2c address channel";
+        description
+          "Statistics of current information about a board.";
+        leaf position {
+          type string {
+            length "1..32";
+          }
+          description
+            "Board position. The position is expressed in the format of slot ID. For example, 1. Here 1 is an example. The value may vary with devices.";
+        }        
+        leaf i2c {
+          type uint32;
+          description
+            "I2C bus number of a board.";
+        }
+        leaf address {
+          type string {
+            length "1..50";
+          }
+          description
+            "Sensor address of a board. The address is expressed in the format of a number. For example, 0. Here 0 is an example. The value may vary with devices.";
+        }
+        leaf channel {
+          type uint32;
+          description
+            "ID of the sensor channel of a board.";
+        }
+        leaf pcb-name {
+          type string {
+            length "1..50";
+          }
+          description
+            "Type of a board.";
+        }
+        leaf state {
+          type driver-sensor-state;
+          description
+            "Sensor status of a board.";
+        }
+        leaf current {
+          type string {
+            length "1..50";
+          }
+          units "A";
+          description
+            "Current value of the sensor.";
+        }
+        leaf required-current {
+          type string {
+            length "1..50";
+          }
+          units "A";
+          description
+            "Basic current required for the sensor.";
+        }
+        leaf fatal-low-threshold {
+          type string {
+            length "1..50";
+          }
+          units "A";
+          description
+            "Lower threshold of a critical current alarm.";
+        }
+        leaf fatal-high-threshold {
+          type string {
+            length "1..50";
+          }
+          units "A";
+          description
+            "Upper threshold of a critical current alarm.";
+        }
+        leaf major-low-threshold {
+          type string {
+            length "1..50";
+          }
+          units "A";
+          description
+            "Lower threshold of a major current alarm.";
+        }
+        leaf major-high-threshold {
+          type string {
+            length "1..50";
+          }
+          units "A";
+          description
+            "Upper threshold of a major current alarm.";
+        }
+      }
+    }    
     container interface-match-check-states {
       config false;
       description
@@ -889,6 +985,79 @@ module huawei-driver {
         }
       }
     }
+
+    container board-powers {
+      config false;
+      description
+        "List of power information about a board.";
+      list board-power {
+        key "position";
+        description
+          "Statistics of power information about a board.";
+        leaf position {
+          type string {
+            length "1..32";
+          }
+          description
+            "Board position. The position is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
+        }
+        leaf entity-index {
+          type uint32;
+          description
+            "Board index.";
+        }
+        leaf pcb-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Board type.";
+        }
+        leaf voltage-value {
+          type string {
+            length "1..255";
+          }
+          description
+            "Current voltage value.";
+        }
+        leaf electrical-value {
+          type string {
+            length "1..255";
+          }
+          description
+            "Current electrical value.";
+        }
+        leaf current-power {
+          type string {
+            length "1..255";
+          }
+          description
+            "Current power value.";
+        }
+        leaf rated-power {
+          type string {
+            length "1..255";
+          }
+          description
+            "Rated power value.";
+        }
+        leaf power-threshold {
+          type string {
+            length "1..255";
+          }
+          description
+            "Power threshold value.";
+        }
+        leaf efficiency {
+          type string {
+            length "1..255";
+          }
+          description
+            "Efficiency value.";
+        }
+      }
+    }
+
     container electronic-labels {
       config false;
       description
@@ -1220,7 +1389,7 @@ module huawei-driver {
             "Boot Status.";
         }
       }
-    }	
+    }
     
     container multi-chassis-attributes {
       config false;
@@ -1801,39 +1970,7 @@ module huawei-driver {
       }
     }
   }
-    rpc power-on-ecu {
-    description
-      "Power On Ecu.";
-    input {
-      leaf board-position {
-        type string {
-          length "1..32";
-        }
-        mandatory true;
-        description
-          "Board Position. The board-position is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
-      }
-    }
-  }
-    rpc power-off-ecu {
-    description
-      "Power Off Ecu.";
-    input {
-      leaf board-position {
-        type string {
-          length "1..32";
-        }
-        mandatory true;
-        description
-          "Board Position. The board-position is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
-      }
-      leaf auto-power-on {
-        type empty;
-        description
-          "Auto power on.";
-      }
-    }
-  } 
+
     rpc power-on-icu {
     description
       "Power On Icu.";
@@ -1867,32 +2004,7 @@ module huawei-driver {
       }
     }
   }
-    rpc reset-lcd {
-    description
-      "Reset Lcd.";
-    input {
-      leaf board-position {
-        type string {
-          length "1..32";
-        }
-        description
-          "Board Position. The board-position is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
-      }
-    }
-  }
-    rpc reset-ecu-board {
-    description
-      "Reset ECU Board.";
-    input {
-      leaf board-position {
-        type string {
-          length "1..32";
-        }
-        description
-          "Board Position. The board-position is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
-      }
-    }
-  }
+
     rpc reset-icu-board {
     description
       "Reset ICU Board.";
@@ -1969,12 +2081,30 @@ module huawei-driver {
         description
           "Chassis ID. The chassis-id is expressed in the format of chassisID. For example, 1. Here 1 is an example. The value may vary with devices.";
       }
-      leaf slave-default {
-        type string {
-          length "1..64";
+      choice set-slave-board {
+        mandatory true;
+          description
+            "Set the default slave board.";
+        case slave-default {
+          description
+            "Set the default slave board.";
+          leaf slave-default {
+            type string {
+              length "1..64";
+            }
+            description
+              "Slave Default. The slave-default is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
+          }
         }
-        description
-          "Slave Default. The slave-default is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
+        case clear-slave-default {
+          description
+            "Clear the configuration of the default slave board.";
+          leaf clear-slave-board {
+            type empty;
+            description
+              "Clear the configuration of the default slave board.";
+          }
+        }
       }
     }
   }
@@ -2043,6 +2173,7 @@ module huawei-driver {
         type string {
           length "1..31";
         }
+        mandatory true;
         description
           "Slot ID. The slot-id is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
       }
@@ -2057,6 +2188,7 @@ module huawei-driver {
         type pub-type:password-extend {
           length "1..255";
         }
+        mandatory true;
         description
           "NewPassword.";
       }	
@@ -2315,6 +2447,159 @@ module huawei-driver {
             }
             description
               "Detail.";
+          }
+        }
+      }
+    }
+  }
+
+  rpc check-system-software {
+    description
+      "Check system software.";
+    input {
+      choice startup-file {
+        mandatory true;
+        description
+          "Choose startup or file.";
+        case startup {
+          description
+            "Startup file.";
+          leaf startup {
+            type empty;
+            description
+              "The startup file.";
+          }
+        }
+        case file {
+          description
+            "Packet file.";
+          leaf file-name {
+            type string {
+              length "4..127";
+            }
+            description
+              "Packet file name in master MPU cfcard, for example:cfcard:/B02D.cc.";
+          }
+        }
+      }
+    }
+    output {
+      leaf sha256-hash-value {
+        type string {
+          length "1..255";
+        }
+        description
+          "SHA256 hash value of the system software.";
+      }
+      leaf signature-result {
+        type driver-check-result-type;
+        description
+          "Result of system software signature check.";
+      }
+      leaf crc-result {
+        type driver-check-result-type;
+        description
+          "Result of system software CRC check.";
+      }
+      leaf match-result {
+        type driver-check-result-type;
+        description
+          "Result of system software match check.";
+      }
+    }
+  }
+
+  rpc check-hardware-version {
+    description
+      "Check whether the system software package version matches the software versions, such as the EPLD and CANBUS version, running on the hardware.";
+    input {
+      leaf chassis-id {
+        type string {
+          length "1..32";
+        }
+        description
+          "Chassis ID of device.";
+      }
+      choice check-type {
+        mandatory true;
+        description
+          "Choose startup or file.";
+        case startup-package {
+          description
+            "Startup.";
+          leaf startup {
+            type empty;
+            description
+              "The startup file.";
+          }
+        }
+        case package-file {
+          description
+            "Packet file name.";
+          leaf file-name {
+            type string {
+              length "4..127";
+            }
+            description
+              "Packet file name in master MPU.";
+          }
+        }
+      }
+    }
+    output {
+      leaf signature-result {
+        type driver-check-result-type;
+          description
+            "Result of system software signature check.";
+      }
+      leaf match-result {
+        type driver-check-result-type;
+          description
+            "Result of system software version check.";
+      }
+      container version-infos {
+        description
+          "List of version information.";
+        list version-info {
+          key "slot";
+          description
+            "Information of version.";
+          leaf slot {
+            type string {
+              length "1..32";
+            }
+            description
+              "Slot ID of device.";
+          }
+          leaf hardware-type {
+            type driver-slot-infos-type;
+            description
+              "Hardware type.";
+          }
+          leaf content {
+            type driver-hardware-version-type;
+            description
+              "Content of system software.";
+          }
+          leaf current-version {
+            type uint32;
+            description
+              "Current version.";
+          }
+          leaf package-version {
+            type uint32;
+            description
+              "Package version.";
+          }
+          leaf compatibility-state {
+            type driver-compatibility-state-type;
+            description
+              "Compatibility state of system software.";
+          }
+          leaf upgrade-suggestion {
+            type driver-upgrade-suggestion-type;
+            description
+              "Upgrade suggestion.";
           }
         }
       }
@@ -2600,6 +2885,87 @@ module huawei-driver {
     }
   }
   
+  rpc sysmac-load {
+    description
+      "Loads MAC addresses assigned to multiple VSs.";
+    input {
+      leaf sysmac-file {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "The MAC address file for loading. For example, sysmac.txt.";
+      }
+      leaf slot-id {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Slot ID. The slot ID is expressed in the format of slot ID. For example, 1. Here 1 is an example. The value may vary with devices.";
+      }
+      leaf chassis-id {
+        type uint32 {
+          range "1..2";
+        }
+        description
+          "Chassis ID. The chassis ID is expressed in the format of chassis ID. For example, 1. Here 1 is an example. The value may vary with devices.";
+      }
+    }
+  }
+  
+  rpc set-next-system-mode {
+    description
+      "Set next system mode.";
+    input {
+      leaf next-system-mode {
+        type driver-system-mode-type;
+        description
+          "Set next system mode.";
+        }
+    }
+  }
+  rpc set-next-run-mode {
+    description
+      "Set chassis run mode, set a chassis operating mode to be used at the next startup (warning:system will restart after success, and then take effect).";
+    input {
+      leaf chassis-id {
+        type string {
+          length "1..31";
+        }
+        description
+          "Chassis ID.";
+      }
+      leaf next-run-mode {
+        type driver-run-mode-type;
+        description
+          "Next run mode.";
+      }
+    }
+  }
+  
+    rpc set-next-chassis-id {
+    description
+      "Set next chassis ID, set a chassis ID to be used at the next startup (warning:system will restart after success, and then take effect).";
+    input {
+      leaf chassis-id {
+        type string {
+          length "1..31";
+        }
+        description
+          "Chassis ID.";
+      }
+      leaf next-chassis-id {
+        type uint32 {
+          range "1..8";
+        }
+        description
+          "Next chassis ID.";
+      }
+    }
+  }
+
     augment "/devm:devm/devm:chassiss/devm:chassis" {
       description
         "Adds driver configuration to devm model.";
@@ -2631,6 +2997,7 @@ module huawei-driver {
           type uint32 {
             range "0..4294967295";
           }
+          units "W";
           default "0";
           description
             "PM output limited value. The value range of this parameter is dynamically determined by the rated power, used power, and number of PMs.";
@@ -2639,7 +3006,7 @@ module huawei-driver {
           type driver-bool;
           default "no";
           description
-            "Set pm input voltage 110V.The input voltage 110V mode of the PM can be set only when the power supply type is PHD-3000W or PAC-2700W or PAH-3000W.";
+            "Set pm input voltage 110V. The input voltage 110V mode of the PM can be set only when the power supply type is PHD-3000W or PAC-2700W or PAH-3000W.";
         }
         leaf power-supply-mode {
           type pwr-supply-mode-type;
@@ -2652,7 +3019,7 @@ module huawei-driver {
           type uint32 {
             range "0..11200";
           }
-          default "0";
+          units "W";
           description
             "Power supply input power. The value range of this parameter is dynamically determined by the rated power, used power, and number of power supply partitions.";
         }
@@ -2667,12 +3034,23 @@ module huawei-driver {
           type uint32 {
             range "1..4294967295";
           }
+          units "W";
           config false;
           description
             "Limit Power.";
         }
+        leaf power-supply-alarm-limit {
+          type uint32 {
+            range "1..4294967295";
+          }
+          units "W";
+          config false;
+          description
+            "Alarm Limit Power.";
+        }
         leaf power-supply-assigned {
           type uint32;
+          units "W";
           default "0";
           config false;
           description
@@ -2689,6 +3067,7 @@ module huawei-driver {
         }
         leaf power-supply-left {
           type int32;
+          units "W";
           default "0";
           config false;
           description
@@ -2696,6 +3075,7 @@ module huawei-driver {
         }
         leaf power-supply-real {
           type uint32;
+          units "W";
           config false;
           description
             "Real Power.";
@@ -2719,8 +3099,51 @@ module huawei-driver {
           description
               "The state of checking dustproof gate.";
         }
+        leaf dustproof-delay-time {
+          type uint32{
+            range "0..480";
+          }
+          units "min";
+          default "30";
+          description
+              "The alarm delay time of checking dustproof gate.";
+        }
       }
-    }     
+	  container chassis-id {
+        config false;
+        description
+          "Statistics of chassis ID.";
+        leaf current-id {
+          type uint32 {
+            range "1..8";
+          }	  
+          description
+            "Current chassis ID.";
+        }
+        leaf next-id {
+          type uint32 {
+            range "1..8";
+          }
+          description
+            "Chassis ID to be used at the next startup.";
+        }
+      }  
+      container chassis-run-mode {
+        config false;
+        description
+          "Statistics of chassis run mode.";
+        leaf current-run-mode {
+          type driver-run-mode-type;
+          description
+            "Current chassis operating mode.";
+        }
+        leaf next-run-mode {
+          type driver-run-mode-type;
+          description
+            "Chassis operating mode to be used at the next startup.";
+        }
+      }
+    }   	
   
     augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
       description
@@ -3214,71 +3637,6 @@ module huawei-driver {
       }
     }
     
-    container ecus {
-      config false;
-      description
-        "List of ECU boards.";
-      list ecu {
-        key "position";
-        config false;
-        description
-          "Statistics of ECU board.";
-        leaf position {
-          type string {
-            length "1..32";
-          }
-          config false;
-          description
-            "The position is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
-        }
-        leaf entity-index {
-          type uint32;
-          config false;
-          description
-            "ECU index.";
-        }
-        leaf board-type {
-          type hardware-type:hardware-board-type;
-          config false;
-          mandatory true;
-          description
-            "ECU type.";
-        }
-        leaf sdram-size {
-          type uint32;
-          units "MB";
-          config false;
-          description
-            "SDRAM size.";
-        }
-        leaf flash-size {
-          type uint32;
-          units "MB";
-          config false;
-          description
-            "Flash size.";
-        }
-        leaf up-time {
-          type pub-type:time-tick;
-          config false;
-          description
-            "Up time of an ECU, the unit is timetick.";
-        }
-        leaf ofc-card-number {
-          type uint32;
-          config false;
-          description
-            "Number of OFC cards.";
-        }
-        leaf subcard-slot-number {
-          type uint32;
-          config false;
-          description
-            "Number of slots on a subcard.";
-        }
-      }
-    }
-    
     container fans {
       config false;
       description
@@ -3418,39 +3776,7 @@ module huawei-driver {
         }
       }
     } 
-
-    container lcds {
-      config false;
-      description
-        "List of LCDs.";
-      list lcd {
-        key "position";
-        config false;
-        description
-          "Statistics of LCD.";
-        leaf position {
-          type string {
-            length "1..32";
-          }
-          config false;
-          description
-            "Lcd position. The position is expressed in the format of slotID. For example, 1. Here 1 is an example. The value may vary with devices.";
-        }
-        leaf entity-index {
-          type uint32;
-          config false;
-          description
-            "Lcd supply index.";
-        }
-        leaf board-type {
-          type hardware-type:hardware-board-type;
-          config false;
-          description
-            "Type of a LCD board.";
-        }
-      }
-    }
-    
+   
     container pmus {
       config false;
       description
@@ -3595,6 +3921,7 @@ module huawei-driver {
               type string {
                 length "1..255";
               }
+              units "V";
               config false;
               description
                 "Voltage of an existing device.";
@@ -3603,6 +3930,7 @@ module huawei-driver {
               type string {
                 length "1..255";
               }
+              units "A";
               config false;
               description
                 "Current value of an existing device.";
@@ -3619,9 +3947,37 @@ module huawei-driver {
               type string {
                 length "1..255";
               }
+              units "W";
               config false;
               description
                 "Query the current power.";
+            }
+            leaf out-voltage-value {
+              type string {
+                length "1..255";
+              }
+              units "V";
+              config false;
+              description
+                "Current output voltage value of an existing device.";
+            }
+            leaf out-electrical-value {
+              type string {
+                length "1..255";
+              }
+              units "A";
+              config false;
+              description
+                "Current output electrical value of an existing device.";
+            }
+            leaf out-power-value {
+              type string {
+                length "1..255";
+              }
+              units "W";
+              config false;
+              description
+                "Current output power value of an existing device.";
             }
           }
         }

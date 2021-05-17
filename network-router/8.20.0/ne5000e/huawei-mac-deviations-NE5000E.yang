@@ -40,6 +40,28 @@ module huawei-mac-deviations-NE5000E {
     reference "Huawei private.";
   }
 
+  typedef mac-type-deviations {
+    type enumeration {
+      enum dynamic {
+        value 2;
+        description
+          "Dynamic type.";
+      }
+      enum dynamic-black-hole {
+        value 15;
+        description
+          "Dynamic blackhole MAC.";
+      }
+    }
+    description
+      "MAC type.";
+  }
+
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:type" {
+    deviate replace {
+      type mac-devs-NE5000E:mac-type-deviations;
+    }
+  }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:uni-suppressions" {
     deviate not-supported;
   }
@@ -58,5 +80,17 @@ module huawei-mac-deviations-NE5000E {
     deviate add {
       must "../alarm='disable'";
     }
+  }
+  deviation "/mac:mac/mac:bd-mac-total-numbers" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:learned-period" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:vsi-name" {
+    deviate not-supported;
   }
 }

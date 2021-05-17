@@ -65,4 +65,40 @@ module huawei-routing-nqa {
       }
     }
   }
+  augment /ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:static-routing/rt:ipv4-routes/rt:ipv4-route {
+    description
+      "Static route track NQA.";
+    leaf nqa-admin-name {
+      type leafref {
+        path "/nqa:nqa/nqa:instances/nqa:instance/nqa:admin-name";
+      }
+      description
+        "Name of an NQA administer instance.";
+    }
+    leaf nqa-test-name {
+      type leafref {
+        path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+      }
+      description
+        "Name of an NQA test instance.";
+    }
+  }
+  augment /ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:static-routing/rt:ipv6-routes/rt:ipv6-route {
+    description
+      "Static route track NQA.";
+    leaf nqa-admin-name {
+      type leafref {
+        path "/nqa:nqa/nqa:instances/nqa:instance/nqa:admin-name";
+      }
+      description
+        "Name of an NQA administer instance.";
+    }
+    leaf nqa-test-name {
+      type leafref {
+        path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+      }
+      description
+        "Name of an NQA test instance.";
+    }
+  }
 }

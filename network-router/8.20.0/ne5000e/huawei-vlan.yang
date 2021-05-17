@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-vlan {
   namespace "urn:huawei:yang:huawei-vlan";
@@ -24,6 +24,12 @@ module huawei-vlan {
      Email: support@huawei.com";
   description
     "VLAN management.";
+  revision 2020-02-07 {
+    description
+      "Add leaf band-width-kbps.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-29 {
     description
       "Initial revision.";
@@ -132,6 +138,22 @@ module huawei-vlan {
     }
     description
       "VLAN access type.";
+  }
+  typedef tag-mode {
+    type enumeration {
+      enum "untag" {
+        value 0;
+        description
+          "VLAN tag mode is untagged.";
+      }
+      enum "tag" {
+        value 1;
+        description
+          "VLAN tag mode is tagged.";
+      }
+    }
+    description
+      "VLAN tag mode.";
   }
   container vlan {
     description
@@ -259,7 +281,6 @@ module huawei-vlan {
           }
         }
         container member-ports {
-          when "not(../type='super')";
           config false;
           description
             "List of ports in a VLAN.";
@@ -283,6 +304,11 @@ module huawei-vlan {
               type oper-status;
               description
                 "Port state.";
+            }
+            leaf tag-mode {
+              type tag-mode;
+              description
+                "Port tag mode.";
             }
           }
         }

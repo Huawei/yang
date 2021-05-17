@@ -12,6 +12,9 @@ module huawei-soc {
   import huawei-devm {
     prefix devm;
   }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
 
   organization
     "Huawei Technologies Co., Ltd.";
@@ -24,7 +27,7 @@ module huawei-soc {
     Email: support@huawei.com";
   description
     "Security operation center.";
-  revision 2020-03-18 {
+  revision 2020-05-08 {
     description
       "Initial revision.";
     reference
@@ -634,7 +637,7 @@ module huawei-soc {
           "Web-auth-serverv6 packet.";
       }
       enum "ipv6-ndh-miss" {
-        value 115;
+        value 114;
         description
           "IPv6-ndh-miss packet.";
       }
@@ -849,6 +852,260 @@ module huawei-soc {
     description
       "Interface type.";
   }
+  typedef l2-loop-level {
+    type enumeration {
+      enum "notification" {
+        value 1;
+        description
+          "Indicates that there is a relatively low possibility that there is a loop on the interface.";
+      }
+      enum "suspect" {
+        value 2;
+        description
+          "Indicates that there is a relatively high possibility that there is a loop on the interface.";
+      }
+      enum "determined" {
+        value 3;
+        description
+          "Indicates an existing loop on an interface.";
+      }
+    }
+    description
+      "Layer 2 loop detection level.";
+  }
+  typedef interface-state {
+    type enumeration {
+      enum "up" {
+        value 1;
+        description
+          "Status of an interface is up.";
+      }
+      enum "down" {
+        value 2;
+        description
+          "Status of an interface is down.";
+      }
+    }
+    description
+      "Status of an interface.";
+  }
+  typedef mac-address-type {
+    type enumeration {
+      enum "broadcast" {
+        value 1;
+        description
+          "Broadcast MAC address.";
+      }
+      enum "multicast" {
+        value 2;
+        description
+          "Multicast MAC address.";
+      }
+      enum "unicast" {
+        value 3;
+        description
+          "Unicast MAC address.";
+      }
+    }
+    description
+      "MAC adddress type.";
+  }
+  grouping application-statistics {
+    description
+      "Statistics about invalid packets and sessions collected by SOC-monitored protocol modules.";
+    leaf total-packet {
+      type uint64;
+      description
+        "Total number of received packets.";
+    }
+    leaf illegal-packet {
+      type uint64;
+      description
+        "Total number of received invalid packets.";
+    }
+    leaf illegal-packet-percent {
+      type uint8;
+      units "%";
+      description
+        "Percentage of the number of invalid packets to the total number of packets.";
+    }
+    leaf total-session {
+      type uint64;
+      units "pps";
+      description
+        "Average rate of sessions received within 5 minutes.";
+    }
+    leaf illegal-session {
+      type uint64;
+      units "pps";
+      description
+        "Average rate of invalid sessions received within 5 minutes.";
+    }
+    leaf illegal-session-percent {
+      type uint8;
+      units "%";
+      description
+        "Percentage of the number of invalid sessions to the total number of sessions received within 5 minutes.";
+    }
+  }
+  grouping application-statistics-history {
+    description
+      "Historical statistics about invalid packets and sessions collected by SOC-monitored protocol modules.";
+    leaf slot {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot number.";
+    }
+    leaf protocol {
+      type protocol-name;
+      description
+        "Protocol name.";
+    }
+    leaf time-number {
+      type uint32;
+      description
+        "Time sequence number. In this example, the system collects statistics about invalid packets and sessions every 5 minutes. The smaller the time sequence number, the closer to the current time. For example, time sequence number 3 indicates the third 5 minutes from the current time.";
+    }
+    leaf total-packet-rate {
+      type uint32;
+      description
+        "Total rate of received packets.";
+    }
+    leaf illegal-packet-rate {
+      type uint32;
+      units "pps";
+      description
+        "Total rate of received invalid packets.";
+    }
+    leaf illegal-packet-percent {
+      type uint8;
+      units "%";
+      description
+        "Percentage of the number of invalid packets to the total number of packets.";
+    }
+    leaf total-session-rate {
+      type uint32;
+      units "pps";
+      description
+        "Average rate of sessions received within 5 minutes.";
+    }
+    leaf illegal-session-rate {
+      type uint32;
+      units "pps";
+      description
+        "Average rate of invalid sessions received within 5 minutes.";
+    }
+    leaf illegal-session-percent {
+      type uint8;
+      units "%";
+      description
+        "Percentage of the number of invalid sessions to the total number of sessions received within 5 minutes.";
+    }
+    leaf cpu-usage {
+      type uint32;
+      units "%";
+      description
+        "Average CPU usage within 5 minutes.";
+    }
+  }
+  grouping car-statistics {
+    description
+      "Statistics about protocol packets sent to the CPU.";
+    leaf passed-packets {
+      type uint64;
+      units "packet";
+      description
+        "The number of passed packets.";
+    }
+    leaf dropped-packets {
+      type uint64;
+      units "packet";
+      description
+        "The number of discarded packets.";
+    }
+    leaf passed-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "The number of passed packet bytes.";
+    }
+    leaf dropped-bytes {
+      type uint64;
+      units "Byte";
+      description
+        "The number of discarded packet bytes.";
+    }
+  }
+  grouping car-statistics-history {
+    description
+      "Historical statistics about protocol packets sent to the CPU.";
+    leaf slot {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot number.";
+    }
+    leaf protocol {
+      type protocol-name;
+      description
+        "Protocol name.";
+    }
+    leaf car-name {
+      type string {
+        length "0..50";
+      }
+      description
+        "The type of protocol packet (to be sent to the CPU) on which a CAR action is performed.";
+    }
+    leaf time-number {
+      type uint32;
+      description
+        "Time sequence number. In this example, the system collects statistics about packets every 5 minutes. The smaller the time sequence number, the closer to the current time. For example, time sequence number 3 indicates the third 5 minutes from the current time.";
+    }
+    leaf total-packet-rate {
+      type uint32;
+      units "pps";
+      description
+        "Total packet rate.";
+    }
+    leaf dropped-packet-rate {
+      type uint32;
+      units "pps";
+      description
+        "Dropped packet rate.";
+    }
+    leaf dropped-packet-percent {
+      type uint8;
+      units "%";
+      description
+        "The percentage of packets dropped.";
+    }
+  }
+  grouping cpu-usage-history {
+    description
+      "Historical statistics about CPU usage collected by SOC-monitored protocol modules.";
+    leaf slot {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot number.";
+    }
+    leaf time-number {
+      type uint32;
+      description
+        "Time sequence number. In this example, the system collects statistics about invalid packets and sessions every 5 minutes. The smaller the time sequence number, the closer to the current time. For example, time sequence number 3 indicates the third 5 minutes from the current time.";
+    }
+    leaf cpu-usage {
+      type uint32;
+      units "%";
+      description
+        "Average CPU usage within 5 minutes.";
+    }
+  }
   ext:task-name "soc";
   container soc {
     description
@@ -910,9 +1167,10 @@ module huawei-soc {
               type uint32 {
                 range "1..99";
               }
+              units "%";
               default "15";
               description
-                "The CPU usage threshold for attack detection. The value is an integer ranging from 1 to 99, in percentage.";
+                "The CPU usage threshold for attack detection.";
             }
           }
           container protocol-cars {
@@ -920,7 +1178,7 @@ module huawei-soc {
               "List of set the rate threshold for sending protocol packets to the CPU and the packet loss percentage threshold for attack detection.";
             list protocol-car {
               ext:generated-by system;
-              ext:operation-exclude "create|delete";
+              ext:operation-exclude "create";
               key "protocol-name";
               description
                 "Configure the rate threshold for sending protocol packets to the CPU and the packet loss percentage threshold for attack detection.";
@@ -933,6 +1191,7 @@ module huawei-soc {
                 type uint32 {
                   range "20..4000";
                 }
+                units "pps";
                 ext:dynamic-default {
                   ext:default-value "300" {
                     when "../protocol-name = 'icmp'";
@@ -943,12 +1202,13 @@ module huawei-soc {
                   }
                 }
                 description
-                  "A rate threshold for CP-CAR. The value is an integer ranging from 20 to 4000, in pps.";
+                  "A rate threshold for CP-CAR.";
               }
               leaf drop-packet-percent {
                 type uint32 {
                   range "0..99";
                 }
+                units "%";
                 ext:dynamic-default {
                   ext:default-value "20" {
                     when "../protocol-name = 'dhcp'";
@@ -963,7 +1223,7 @@ module huawei-soc {
                   }
                 }
                 description
-                  "The packet loss percentage threshold for CP-CAR. The value is an integer ranging from 0 to 99, in percentage.";
+                  "The packet loss percentage threshold for CP-CAR.";
               }
             }
           }
@@ -979,6 +1239,7 @@ module huawei-soc {
             type uint8 {
               range "30..80";
             }
+            units "%";
             default "50";
             description
               "Specifys the threshold for the percentage of broadcast packets to the total number of sampled packets.";
@@ -987,6 +1248,7 @@ module huawei-soc {
             type uint8 {
               range "2..10";
             }
+            units "%";
             default "5";
             description
               "Specifys the threshold for the percentage of packets with varied source addresses to the total number of sampled packets.";
@@ -995,6 +1257,7 @@ module huawei-soc {
             type uint8 {
               range "20..80";
             }
+            units "%";
             default "30";
             description
               "Specifys the threshold for the percentage of the specified protocol packets to the total number of sampled packets.";
@@ -1007,14 +1270,16 @@ module huawei-soc {
             type uint8 {
               range "15..99";
             }
+            units "%";
             default "20";
             description
-              "Specifys the threshold for the percentage of the number of packets received on a physical interface to the total number of sampled packets..";
+              "Specifys the threshold for the percentage of the number of packets received on a physical interface to the total number of sampled packets.";
           }
           leaf sub-interface-percent {
             type uint8 {
               range "10..99";
             }
+            units "%";
             default "10";
             description
               "Specifys the threshold for the percentage of the number of packets received on a logical interface to the total number of sampled packets.";
@@ -1023,6 +1288,7 @@ module huawei-soc {
             type uint8 {
               range "15..50";
             }
+            units "%";
             default "20";
             description
               "Specifys the threshold for the percentage of the number of single-tagged VLAN packets with a specified VLAN ID to the total number of sampled packets.";
@@ -1031,6 +1297,7 @@ module huawei-soc {
             type uint8 {
               range "5..50";
             }
+            units "%";
             default "10";
             description
               "Specifys the threshold for the percentage of the number of packets with a specified source MAC address to the total number of sampled packets.";
@@ -1039,6 +1306,7 @@ module huawei-soc {
             type uint8 {
               range "5..50";
             }
+            units "%";
             default "10";
             description
               "Specifys the threshold for the percentage of the number of packets with a specified source IP address to the total number of sampled packets.";
@@ -1047,6 +1315,7 @@ module huawei-soc {
             type uint8 {
               range "3..15";
             }
+            units "%";
             default "10";
             description
               "Specifys the threshold for the percentage of the number of double-tagged VLAN packets with specified inner and outer VLAN IDs to the total number of sampled packets.";
@@ -1055,6 +1324,7 @@ module huawei-soc {
             type uint8 {
               range "15..50";
             }
+            units "%";
             default "20";
             description
               "Specifys the threshold for the percentage of the number of packets with a specified VNI to the total number of sampled packets.";
@@ -1065,7 +1335,7 @@ module huawei-soc {
             "List of Configure the threshold for determining the probability of an attack event.";
           list attack-probability {
             ext:generated-by system;
-            ext:operation-exclude "create|delete";
+            ext:operation-exclude "create";
             key "determine-object";
             description
               "Configure the threshold for determining the probability of an attack event.";
@@ -1134,7 +1404,292 @@ module huawei-soc {
           }
         }
       }
-   }
+      container attack-defend-statistics {
+        config false;
+        description
+          "Statistics of attack defense.";
+        container port-vlan-cars {
+          description
+            "List of CAR statistics on a specified board.";
+          list port-vlan-car {
+            key "number";
+            description
+              "Statistics of CAR on a specified board.";
+            leaf number {
+              type uint32;
+              description
+                "The ordinal number of statistics records.";
+            }
+            leaf slot {
+              ext:support-filter "true";
+              type string {
+                length "1..32";
+              }
+              description
+                "Slot number.";
+            }
+            leaf interface {
+              type pub-type:if-name;
+              description
+                "Interface name.";
+            }
+            leaf outer-vlan {
+              type uint16;
+              description
+                "Outer VLAN ID of an interface.";
+            }
+            leaf inner-vlan {
+              type uint16;
+              description
+                "Inner VLAN ID of an interface.";
+            }
+            leaf passed-packets {
+              type uint64;
+              description
+                "Number of passed packets.";
+            }
+            leaf dropped-packets {
+              type uint64;
+              description
+                "Number of dropped packets.";
+            }
+          }
+        }
+      }
+      container attack-detect-statistics {
+        config false;
+        description
+          "Statistics of attack detection.";
+        container application {
+          description
+            "Statistics of invalid packets and sessions collected by SOC-monitored protocol modules.";
+          container currents {
+            description
+              "List of current statistics about invalid packets and sessions collected by SOC-monitored protocol modules.";
+            list current {
+              key "slot protocol";
+              description
+                "Statistics of current invalid packets and sessions collected by SOC-monitored protocol modules.";
+              leaf slot {
+                type string {
+                  length "1..32";
+                }
+                description
+                  "Slot number.";
+              }
+              leaf protocol {
+                type protocol-name;
+                description
+                  "Protocol name.";
+              }
+              uses application-statistics;
+            }
+          }
+          container last-15-minutess {
+            description
+              "List of statistics about invalid packets and sessions collected by SOC-monitored protocol modules within the last 15 minutes.";
+            list last-15-minutes {
+              key "slot protocol time-number";
+              description
+                "Statistics of invalid packets and sessions collected by SOC-monitored protocol modules within the last 15 minutes.";
+              uses application-statistics-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about invalid packets and sessions every 1 minute.";
+                }
+                refine cpu-usage {
+                  description
+                    "Average CPU usage within 1 minute.";
+                }
+              }
+            }
+          }
+          container last-60-minutess {
+            description
+              "List of statistics about invalid packets and sessions collected by SOC-monitored protocol modules within the last 60 minutes.";
+            list last-60-minutes {
+              key "slot protocol time-number";
+              description
+                "Statistics of invalid packets and sessions collected by SOC-monitored protocol modules within the last 60 minutes.";
+              uses application-statistics-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about invalid packets and sessions every 5 minutes.";
+                }
+                refine cpu-usage {
+                  description
+                    "Average CPU usage within 5 minutes.";
+                }
+              }
+            }
+          }
+          container last-72-hourss {
+            description
+              "List of statistics about invalid packets and sessions collected by SOC-monitored protocol modules within the last 72 hours.";
+            list last-72-hours {
+              key "slot protocol time-number";
+              description
+                "Statistics of invalid packets and sessions collected by SOC-monitored protocol modules within the last 72 hours.";
+              uses application-statistics-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about invalid packets and sessions every 1 hour.";
+                }
+                refine cpu-usage {
+                  description
+                    "Average CPU usage within 1 hour.";
+                }
+              }
+            }
+          }
+        }
+        container car {
+          description
+            "Statistics of protocol packets sent to the CPU.";
+          container currents {
+            description
+              "List of current statistics about protocol packets sent to the CPU.";
+            list current {
+              key "slot protocol car-name";
+              description
+                "Statistics of current protocol packets sent to the CPU.";
+              leaf slot {
+                type string {
+                  length "1..32";
+                }
+                description
+                  "Slot number.";
+              }
+              leaf protocol {
+                type protocol-name;
+                description
+                  "Protocol name.";
+              }
+              leaf car-name {
+                type string {
+                  length "0..50";
+                }
+                description
+                  "The type of protocol packet (to be sent to the CPU) on which a CAR action is performed.";
+              }
+              uses car-statistics;
+            }
+          }
+          container last-15-minutess {
+            description
+              "List of statistics about protocol packets sent to the CPU within the last 15 minutes.";
+            list last-15-minutes {
+              key "slot protocol car-name time-number";
+              description
+                "Statistics of protocol packets sent to the CPU within the last 15 minutes.";
+              uses car-statistics-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about packets every 1 minute.";
+                }
+              }
+            }
+          }
+          container last-60-minutess {
+            description
+              "List of statistics about protocol packets sent to the CPU within the last 60 minutes.";
+            list last-60-minutes {
+              key "slot protocol car-name time-number";
+              description
+                "Statistics of protocol packets sent to the CPU within the last 60 minutes.";
+              uses car-statistics-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about packets every 5 minutes.";
+                }
+              }
+            }
+          }
+          container last-72-hourss {
+            description
+              "List of statistics about protocol packets sent to the CPU within the last 72 hours.";
+            list last-72-hours {
+              key "slot protocol car-name time-number";
+              description
+                "Statistics of protocol packets sent to the CPU within the last 72 hours.";
+              uses car-statistics-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about packets every 1 hour.";
+                }
+              }
+            }
+          }
+        }
+        container cpu-usage {
+          description
+            "Statistics of historical CPU usage.";
+          container last-15-minutess {
+            description
+              "List of statistics about the CPU usage within the last 15 minutes.";
+            list last-15-minutes {
+              key "slot time-number";
+              description
+                "Statistics of the CPU usage within the last 15 minutes.";
+              uses cpu-usage-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about cpu-usage every 1 minute.";
+                }
+                refine cpu-usage {
+                  description
+                    "Average CPU usage within 1 minute.";
+                }
+              }
+            }
+          }
+          container last-60-minutess {
+            description
+              "List of statistics about the CPU usage within the last 60 minutes.";
+            list last-60-minutes {
+              key "slot time-number";
+              description
+                "Statistics of the CPU usage within the last 60 minutes.";
+              uses cpu-usage-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about cpu-usage every 5 minutes.";
+                }
+                refine cpu-usage {
+                  description
+                    "Average CPU usage within 5 minutes.";
+                }
+              }
+            }
+          }
+          container last-72-hourss {
+            description
+              "List of statistics about the CPU usage within the last 72 hours.";
+            list last-72-hours {
+              key "slot time-number";
+              description
+                "Statistics of the CPU usage within the last 72 hours.";
+              uses cpu-usage-history {
+                refine time-number {
+                  description
+                    "Time sequence number. In this example, the system collects statistics about cpu-usage every 1 hour.";
+                }
+                refine cpu-usage {
+                  description
+                    "Average CPU usage within 1 hour.";
+                }
+              }
+              leaf peak-cpu-usage {
+                type uint32;
+                units "%";
+                description
+                  "Peak CPU usage within 1 hour.";
+              }
+            }
+          }
+        }
+      }
+    }
     container loop-detect {
       description
         "Configure loop detection.";
@@ -1147,6 +1702,117 @@ module huawei-soc {
           description
             "Enable/disable layer 3 loop detection.";
         }
+      }
+      container l2-loop-detect {
+        config false;
+        description
+          "Statistics of configure Layer 2 loop detection.";
+        container loop-statuss {
+          description
+            "List of displays statistics for Layer 2 loop detection.";
+          list loop-status {
+            key "slot interface vlan-id";
+            description
+              "Displays statistics for Layer 2 loop detection.";
+            leaf slot {
+              type string {
+                length "1..32";
+              }
+              description
+                "Slot number.";
+            }
+            leaf interface {
+              type pub-type:if-name;
+              description
+                "Interface name.";
+            }
+            leaf vlan-id {
+              type uint16;
+              description
+                "VLAN ID for VLANif interface.";
+            }
+            leaf loop-level {
+              type l2-loop-level;
+              description
+                "Loop level.";
+            }
+            leaf interface-state {
+              type interface-state;
+              description
+                "Status of an interface: Up or Down.";
+            }
+          }
+        }
+        container packets {
+          description
+            "List of displays statistics for packets that cause Layer 2 loops.";
+          list packet {
+            key "slot interface packet-number";
+            description
+              "Displays statistics for packets that cause Layer 2 loops.";
+            leaf slot {
+              type string {
+                length "1..32";
+              }
+              description
+                "Slot number.";
+            }
+            leaf interface {
+              type pub-type:if-name;
+              description
+                "Interface name.";
+            }
+            leaf packet-number {
+              type uint16;
+              description
+                "Packet number.";
+            }
+            leaf logical-interface {
+              type pub-type:if-name;
+              description
+                "Logical interface name.";
+            }
+            leaf outer-vlan {
+              type uint16;
+              description
+                "External VLAN ID of a packet.";
+            }
+            leaf inner-vlan {
+              type uint16;
+              description
+                "Internal VLAN ID of a packet.";
+            }
+            leaf protocol-type {
+              type uint16;
+              description
+                "Protocol type of packets.";
+            }
+            leaf packet-type {
+              type mac-address-type;
+              description
+                "Packet type defined based on the destination MAC address of the packet.";
+            }
+            leaf source-mac {
+              type pub-type:mac-address;
+              description
+                "Source MAC address of a packet.";
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc reset-soc-attack-defend-statistics {
+    description
+      "Reset soc attack defend statistics.";
+    input  {
+      leaf slot {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Slot number.";
       }
     }
   }
@@ -1217,7 +1883,8 @@ module huawei-soc {
             "List of configure the loop level threshold on a detected main interface or sub-interface.";
           list loop-level-threshold {
             ext:generated-by system;
-            ext:operation-exclude "create|delete";
+            ext:operation-exclude "create";
+            must "((./determined>./suspect) and (./suspect>./notification))";
             key "interface-type";
             description
               "Configure the loop level threshold on a detected main interface or sub-interface.";
@@ -1228,7 +1895,7 @@ module huawei-soc {
             }
             leaf determined {
               type uint32 {
-                range "1..6000";
+                range "3..6000";
               }
               units "packet";
               ext:dynamic-default {
@@ -1241,13 +1908,12 @@ module huawei-soc {
                   description "The default value is 300 when interface-type is sub-interface.";
                 }
               }
-              must "(../determined>../suspect)";
               description
                 "The determined loop threshold.";
             }
             leaf suspect {
               type uint32 {
-                range "1..6000";
+                range "2..5999";
               }
               units "packet";
               ext:dynamic-default {
@@ -1260,13 +1926,12 @@ module huawei-soc {
                   description "The default value is 200 when interface-type is sub-interface.";
                 }
               }
-              must "((../determined>../suspect) and (../suspect>../notification))";
               description
                 "The suspect loop threshold.";
             }
             leaf notification {
               type uint32 {
-                range "1..6000";
+                range "1..5998";
               }
               units "packet";
               ext:dynamic-default {
@@ -1279,7 +1944,6 @@ module huawei-soc {
                   description "The default value is 100 when interface-type is sub-interface.";
                 }
               }
-              must "(../suspect>../notification)";
               description
                 "The notification loop threshold.";
             }
@@ -1355,7 +2019,8 @@ module huawei-soc {
             "List of configure the loop level threshold on a detected main interface or sub-interface.";
           list loop-level-threshold {
             ext:generated-by system;
-            ext:operation-exclude "create|delete";
+            ext:operation-exclude "create";
+            must "((./determined>./suspect) and (./suspect>./notification))";
             key "interface-type";
             description
               "Configure the loop level threshold on a detected main interface or sub-interface.";
@@ -1366,7 +2031,7 @@ module huawei-soc {
             }
             leaf determined {
               type uint32 {
-                range "1..6000";
+                range "3..6000";
               }
               units "packet";
               ext:dynamic-default {
@@ -1379,13 +2044,12 @@ module huawei-soc {
                   description "The default value is 300 when interface-type is sub-interface.";
                 }
               }
-              must "(../determined>../suspect)";
               description
                 "The determined loop threshold.";
             }
             leaf suspect {
               type uint32 {
-                range "1..6000";
+                range "2..5999";
               }
               units "packet";
               ext:dynamic-default {
@@ -1398,13 +2062,12 @@ module huawei-soc {
                   description "The default value is 200 when interface-type is sub-interface.";
                 }
               }
-              must "((../determined>../suspect) and (../suspect>../notification))";
               description
                 "The suspect loop threshold.";
             }
             leaf notification {
               type uint32 {
-                range "1..6000";
+                range "1..5998";
               }
               units "packet";
               ext:dynamic-default {
@@ -1417,7 +2080,6 @@ module huawei-soc {
                   description "The default value is 100 when interface-type is sub-interface.";
                 }
               }
-              must "(../suspect>../notification)";
               description
                 "The notification loop threshold.";
             }

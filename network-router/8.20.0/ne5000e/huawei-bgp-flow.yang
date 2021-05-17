@@ -226,7 +226,6 @@ module huawei-bgp-flow {
             "Enable large-community attribute advertisement. The Link-state address family and the RPD address family do not support this element.";
         }
         leaf route-update-interval {
-          when "../../../../../../../../ni:name='_public_'";
           type uint16 {
             range "0..600";
           }

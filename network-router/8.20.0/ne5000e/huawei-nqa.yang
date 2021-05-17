@@ -12,6 +12,9 @@ module huawei-nqa {
   import huawei-extension {
     prefix ext;
   }
+  import huawei-ifm {
+    prefix ifm;
+  }
   
   include huawei-nqa-global;
   include huawei-nqa-server;
@@ -31,7 +34,7 @@ module huawei-nqa {
   description
     "Network quality analysis.";
 
-  revision 2020-01-13 {
+  revision 2020-06-30 {
     description
       "Add rpc for nqa execution policy.";
     reference
@@ -39,19 +42,22 @@ module huawei-nqa {
   }
   revision 2019-10-25 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
   ext:task-name "sla";
-
   container nqa {
     description
       "Network quality analysis (NQA) service.";
     container global {
       description
         "Configure NQA global configuration.";
-      uses nqa:global-type;
+      uses nqa:global-type {
+	    refine vxlan-echo-v4/source-ip-if-name {
+		  must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'LoopBack'";
+		}
+	  }
     }
     
     container server {
@@ -62,23 +68,141 @@ module huawei-nqa {
     container reflectors {
       description
         "Configure reflector list.";
-      uses nqa:reflectors-type;
+      uses nqa:reflectors-type {
+	    refine reflector/if-name {
+		  must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'Ethernet' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'Eth-Trunk' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'Ip-Trunk' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'Virtual-Ethernet' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'Pos' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '100GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '200GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '40GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '10GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'GEBrief' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'GigabitEthernet' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '25GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '4x10GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'XGigabitEthernet' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '50GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '50|100GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'FlexE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = '400GE' or " + 
+               "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'Global-VE'";
+		}
+	  }
     }
     container instances {
       description
         "Configure NQA test instance list.";
-      uses nqa:instances-type;
+      uses nqa:instances-type {
+        refine instance/type/lsp-jitter/lsp-jitter-input/lsp-protocol/te/te-lsp-jitter/tunnel-name {
+		  must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'Tunnel'";
+		}
+	    refine instance/type/icmp/icmp-input/out-if-name {
+		  must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'NULL' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Cpos' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'E1' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Fabric-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Stack-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Atm-Bundle' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Ima-group' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Cpos-Trunk' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Global-Ima-Group' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FCoE-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FC' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Remote-Ap' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'ServiceIf' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'ATM' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-200GE' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-50G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-100G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-50|100G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Virtual-if'";
+		}
+		refine instance/type/icmp/icmp-input/fwd-if-name {
+		  must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Atm-Bundle' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Virtual-Ethernet' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'MTunnel' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Tunnel' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'LoopBack' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Vbdif' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Serial' and " +  
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Mp-group' and " +  
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Global-Mp-Group' and " +  
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Trunk-Serial' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Fabric-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Stack-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Cpos-Trunk' and " +  
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'NULL' and " +
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Ima-group' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Global-Ima-Group' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FCoE-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FC' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Remote-Ap' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'ServiceIf' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'ATM' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-200GE' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-50G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-100G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-50|100G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Global-VE' and " +
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Virtual-if'";
+		}
+		refine instance/type/jitter/jitter-input/out-if-name {
+		  must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'NULL' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Cpos' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'E1' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Fabric-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Stack-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Atm-Bundle' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Ima-group' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Cpos-Trunk' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Global-Ima-Group' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FCoE-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FC' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Remote-Ap' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'ServiceIf' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'ATM' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-200GE' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-50G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-100G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-50|100G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Virtual-if'";
+		}
+		refine instance/type/icmp-jitter/icmp-jitter-input/out-if-name {
+		  must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'NULL' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Cpos' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'E1' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Fabric-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Stack-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Atm-Bundle' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Ima-group' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Cpos-Trunk' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Global-Ima-Group' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FCoE-Port' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FC' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Remote-Ap' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'ServiceIf' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'ATM' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-200GE' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-50G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-100G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'FlexE-50|100G' and " + 
+		       "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type != 'Virtual-if'";
+		}	  
+	  }
     }
     container record {
       config false;
       description
-        "Operational state of NQA test instance test record table.";
+        "Statistics of NQA test instance test record table.";
       uses nqa:record-type;
     }
   }
   rpc test-instance-execution {
     description
-      "The test intance execution.";
+      "The test instance execution.";
     ext:node-ref "/nqa:nqa/nqa:instances/nqa:instance";
     input {
       leaf admin-name {
@@ -99,13 +223,13 @@ module huawei-nqa {
       }
       choice execution-policy {
         description
-          "The test intance start policy.";
+          "The test instance start policy.";
         case start {
           description
             "Start the test.";
           choice start-type {
             description
-              "The test intance start type.";
+              "The test instance start type.";
             case start-now {
               description
                 "Start the test now.";
@@ -117,7 +241,7 @@ module huawei-nqa {
               }
               choice start-now-end-type {
                 description
-                  "Test intance end type.";
+                  "Test instance end type.";
                 case at {
                   description
                     "Stop the test at the specified time.";
@@ -125,12 +249,12 @@ module huawei-nqa {
                     type pub-type:time;
                     mandatory true;
                     description
-                      "The test intance end time.";
+                      "The test instance end time.";
                   }
                   leaf start-now-end-date {
                     type pub-type:date;
                     description
-                      "The test intance end date.";
+                      "The test instance end date.";
                   }
                 }
                 case delay {
@@ -139,25 +263,26 @@ module huawei-nqa {
                   choice start-now-end-delay-type {
                     mandatory true;
                     description
-                      "The test intance end delay type.";
+                      "The test instance end delay type.";
                     case end-delay-time {
                       description
-                        "The test intance end delay time.";
+                        "The test instance end delay time.";
                       leaf start-now-end-delay-time {
                         type pub-type:time;
                         description
-                          "The test intance end delay time.";
+                          "The test instance end delay time.";
                       }
                     }
                     case end-delay-seconds {
                       description
-                        "The test intance end delay seconds.";
+                        "The test instance end delay seconds.";
                       leaf start-now-end-delay-seconds {
                         type uint32 {
                           range "6..86399";
                         }
+                        units "s";
                         description
-                          "The test intance end delay seconds.";
+                          "The test instance end delay seconds.";
                       }
                     }
                   }
@@ -168,25 +293,26 @@ module huawei-nqa {
                   choice start-now-end-lifetime-type {
                     mandatory true;
                     description
-                      "The test intance end lifetime type.";
+                      "The test instance end lifetime type.";
                     case lifetime-time {
                       description
-                        "The test intance end lifetime time.";
+                        "The test instance end lifetime time.";
                       leaf start-now-end-lifetime-time {
                         type pub-type:time;
                         description
-                          "The test intance end lifetime time.";
+                          "The test instance end lifetime time.";
                       }
                     }
                     case lifetime-seconds {
                       description
-                        "The test intance end lifetime seconds.";
+                        "The test instance end lifetime seconds.";
                       leaf start-now-end-lifetime-seconds {
                         type uint32 {
                           range "6..86399";
                         }
+                        units "s";
                         description
-                          "The test intance end lifetime seconds.";
+                          "The test instance end lifetime seconds.";
                       }
                     }
                   }
@@ -200,16 +326,16 @@ module huawei-nqa {
                 type pub-type:time;
                 mandatory true;
                 description
-                  "The test intance start time.";
+                  "The test instance start time.";
               }
               leaf start-date {
                 type pub-type:date;
                 description
-                  "The test intance start date.";
+                  "The test instance start date.";
               }
               choice start-at-end-type {
                 description
-                  "Test intance end type.";
+                  "Test instance end type.";
                 case at {
                   description
                     "Stop the test at the specified time.";
@@ -217,12 +343,12 @@ module huawei-nqa {
                     type pub-type:time;
                     mandatory true;
                     description
-                      "The test intance end time.";
+                      "The test instance end time.";
                   }
                   leaf start-at-end-date {
                     type pub-type:date;
                     description
-                      "The test intance end date.";
+                      "The test instance end date.";
                   }
                 }
                 case delay {
@@ -231,25 +357,26 @@ module huawei-nqa {
                   choice start-at-end-delay-type {
                     mandatory true;
                     description
-                      "The test intance end delay type.";
+                      "The test instance end delay type.";
                     case end-delay-time {
                       description
-                        "The test intance end delay time.";
+                        "The test instance end delay time.";
                       leaf start-at-end-delay-time {
                         type pub-type:time;
                         description
-                          "The test intance end delay time.";
+                          "The test instance end delay time.";
                       }
                     }
                     case end-delay-seconds {
                       description
-                        "The test intance end delay seconds.";
+                        "The test instance end delay seconds.";
                       leaf start-at-end-delay-seconds {
                         type uint32 {
                           range "6..86399";
                         }
+                        units "s";
                         description
-                          "The test intance end delay seconds.";
+                          "The test instance end delay seconds.";
                       }
                     }
                   }
@@ -260,25 +387,26 @@ module huawei-nqa {
                   choice start-at-end-lifetime-type {
                     mandatory true;
                     description
-                      "The test intance end lifetime type.";
+                      "The test instance end lifetime type.";
                     case lifetime-time {
                       description
-                        "The test intance end lifetime time.";
+                        "The test instance end lifetime time.";
                       leaf start-at-end-lifetime-time {
                         type pub-type:time;
                         description
-                          "The test intance end lifetime time.";
+                          "The test instance end lifetime time.";
                       }
                     }
                     case lifetime-seconds {
                       description
-                        "The test intance end lifetime seconds.";
+                        "The test instance end lifetime seconds.";
                       leaf start-at-end-lifetime-seconds {
                         type uint32 {
                           range "6..86399";
                         }
+                        units "s";
                         description
-                          "The test intance end lifetime seconds.";
+                          "The test instance end lifetime seconds.";
                       }
                     }
                   }
@@ -291,31 +419,32 @@ module huawei-nqa {
               choice start-delay-type {
                 mandatory true;
                 description
-                  "The test intance start delay time.";
+                  "The test instance start delay time.";
                 case start-delay-time {
                   description
                     "Execute at the specified time.";
                   leaf start-delay-time {
                     type pub-type:time;
                     description
-                      "The test intance start delay time.";
+                      "The test instance start delay time.";
                   }
                 }
                 case start-delay-seconds {
                   description
-                    "The test intance start delay seconds.";
+                    "The test instance start delay seconds.";
                   leaf start-delay-seconds {
                     type uint32 {
                       range "1..86399";
                     }
+                    units "s";
                     description
-                      "The test intance start delay seconds.";
+                      "The test instance start delay seconds.";
                   }
                 }
               }
               choice start-delay-end-type {
                 description
-                  "Test intance end type.";
+                  "Test instance end type.";
                 case at {
                   description
                     "Stop the test at the specified time.";
@@ -323,12 +452,12 @@ module huawei-nqa {
                     type pub-type:time;
                     mandatory true;
                     description
-                      "The test intance end time.";
+                      "The test instance end time.";
                   }
                   leaf start-delay-end-date {
                     type pub-type:date;
                     description
-                      "The test intance end date.";
+                      "The test instance end date.";
                   }
                 }
                 case delay {
@@ -337,25 +466,26 @@ module huawei-nqa {
                   choice start-delay-end-delay-type {
                     mandatory true;
                     description
-                      "The test intance end delay type.";
+                      "The test instance end delay type.";
                     case end-delay-time {
                       description
-                        "The test intance end delay time.";
+                        "The test instance end delay time.";
                       leaf start-delay-end-delay-time {
                         type pub-type:time;
                         description
-                          "The test intance end delay time.";
+                          "The test instance end delay time.";
                       }
                     }
                     case end-delay-seconds {
                       description
-                        "The test intance end delay seconds.";
+                        "The test instance end delay seconds.";
                       leaf start-delay-end-delay-seconds {
                         type uint32 {
                           range "6..86399";
                         }
+                        units "s";
                         description
-                          "The test intance end delay seconds.";
+                          "The test instance end delay seconds.";
                       }
                     }
                   }
@@ -366,25 +496,26 @@ module huawei-nqa {
                   choice start-delay-end-lifetime-type {
                     mandatory true;
                     description
-                      "The test intance end lifetime type.";
+                      "The test instance end lifetime type.";
                     case lifetime-time {
                       description
-                        "The test intance end lifetime time.";
+                        "The test instance end lifetime time.";
                       leaf start-delay-end-lifetime-time {
                         type pub-type:time;
                         description
-                          "The test intance end lifetime time.";
+                          "The test instance end lifetime time.";
                       }
                     }
                     case lifetime-seconds {
                       description
-                        "The test intance end lifetime seconds.";
+                        "The test instance end lifetime seconds.";
                       leaf start-delay-end-lifetime-seconds {
                         type uint32 {
                           range "6..86399";
                         }
+                        units "s";
                         description
-                          "The test intance end lifetime seconds.";
+                          "The test instance end lifetime seconds.";
                       }
                     }
                   }
@@ -393,7 +524,7 @@ module huawei-nqa {
             }
             case start-daily {
               description
-                "Execute the test intance daily.";
+                "Execute the test instance daily.";
               leaf daily-start-time {
                 type pub-type:time;
                 mandatory true;

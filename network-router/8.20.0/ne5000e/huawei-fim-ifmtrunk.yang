@@ -101,13 +101,6 @@ module huawei-fim-ifmtrunk {
         description
           "Enable the backup-dual-receiving function of the Eth-trunk interface.";
       }
-      leaf ignore-lacp-state-enable {
-        when "../../ifm-trunk:type='eth-trunk' and ../../ifm-trunk:work-mode='static'";
-        type enable-type;
-        default "disable";
-        description
-          "Enable port ignore-lacp-state function of the Eth-trunk interface.";
-      }
     }
   }
   augment "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/ifm-trunk:members/ifm-trunk:member" {
@@ -115,7 +108,7 @@ module huawei-fim-ifmtrunk {
       "FIM configuration to the ifm module.";
     container fim-ifmtrunk-member {
       description
-        "Configure the FIM configuration to trunk member interface.";
+        "Configure the FIM configuration to trunk member interface.";  
       leaf hash-index {
         when "../../../../ifm-trunk:hash-type='symmetric' or ../../../../ifm-trunk:hash-type ='symmetric-complement'";
         type uint16 {

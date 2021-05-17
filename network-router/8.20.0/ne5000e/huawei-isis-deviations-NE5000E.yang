@@ -11,6 +11,12 @@ module huawei-isis-deviations-NE5000E {
   import huawei-network-instance {
     prefix ni;
   }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
   import huawei-l3vpn {
     prefix l3vpn;
   }
@@ -129,6 +135,11 @@ module huawei-isis-deviations-NE5000E {
   }
   deviation "/isis:isis/isis:global-stat" {
     deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:mpls-ldp-global/isis:auto-flag" {
+    deviate add {
+      must "../auto-flag='false' or (../../../../../../../ni:name='_public_' and /mpls:mpls/mpls-ldp:ldp/mpls-ldp:enable='true')";
+    }
   }
   deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/isis:isis-import-rts/isis:isis-import-rt/isis:src-vrf" {
     deviate add {

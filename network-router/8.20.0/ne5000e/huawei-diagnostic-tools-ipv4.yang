@@ -35,9 +35,9 @@ submodule huawei-diagnostic-tools-ipv4 {
      Email: support@huawei.com";
 description
      "IPv4 diagnosis tool.";
-  revision 2019-04-09 {
+  revision 2019-10-29 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -82,6 +82,7 @@ description
           type pub-type:percent {
             range "0..100";
           }
+		  units "%";
           config false;
           description
             "Packet loss ratio of a test.";
@@ -290,6 +291,11 @@ description
         description
           "Destination address of the string type. You can click this node to set different types of addresses and deploy the configurations together with the configuration of the destination address type node. If the destination address type is set to IPv4, this parameter is set to IPv4. If the destination address type is set to IPv6, this parameter is set to IPv6.";
       }
+      leaf source-address {
+        type inet:ipv4-address-no-zone;
+        description
+          "Source address of the string type. You can click this node to set different types of addresses and deploy the configurations together with the configuration of the source address type node. If the source address type is set to IPv4, this parameter is set to IPv4. If the source address type is set to IPv6, this parameter is set to IPv6.";
+      }
       leaf vrf-name {
         type leafref {
           path "/ni:network-instance/ni:instances/ni:instance/ni:name";
@@ -304,6 +310,24 @@ description
         default "5";
         description
           "Number of sent test packets.";
+      }
+      leaf interval {
+        type uint32 {
+          range "1..10000";
+        }
+        units "ms";
+        default "500";
+        description
+          "Interval for sending test packets.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time to wait for a response packet after a test packet is sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
       }
     }
   }

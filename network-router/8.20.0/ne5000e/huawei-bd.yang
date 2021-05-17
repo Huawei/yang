@@ -1,11 +1,14 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-bd {
   namespace "urn:huawei:yang:huawei-bd";
   prefix bd;
   import huawei-extension {
     prefix ext;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
   }
   import huawei-ifm {
     prefix ifm;
@@ -21,7 +24,25 @@ module huawei-bd {
      Email: support@huawei.com";
   description
     "Definition of bridge domain in the EVC model.";
-  revision 2019-04-29 {
+  revision 2020-03-13 {
+    description
+      "Add leaf encapsulation.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-07 {
+    description
+      "Add leaf band-width-kbps.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-06 {
+    description
+      "Modify the value definition of oper-status.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-09-09 {
     description
       "Initial revision.";
     reference
@@ -173,6 +194,29 @@ module huawei-bd {
           default "disable";
           description
             "Enable split horizon.";
+        }
+        leaf encapsulation {
+          type enumeration {
+            enum "raw" {
+              value 1;
+              description "Indicates the frame type in the bridge-domain is EthernetII.";
+            }
+            enum "tagged" {
+              value 2;
+              description "Indicates the frame type in the bridge-domain is IEEE802.1Q.";
+            }
+          }
+          default "raw";
+          description "The bridge-domain encapsulation type.";
+        }
+        container bind-vlan {
+          description
+            "Configure VLANs bound by BD.";
+          leaf vlan-list {
+            type pub-type:vlan-range;
+            description
+              "VLAN list. Currently, the node supports only one VLAN, and the VLAN is already created globally.";
+          }
         }
         container service-points {
           description

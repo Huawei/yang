@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-ipv6-nd {
   yang-version 1;
@@ -26,6 +26,9 @@ module huawei-ipv6-nd {
   import huawei-ethernet {
     prefix ethernet;
   }
+  import huawei-bd {
+    prefix bd;
+  }
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -37,7 +40,31 @@ module huawei-ipv6-nd {
      Email: support@huawei.com";
   description
     "ND management.";
-  revision 2019-11-20 {
+  revision 2020-04-17 {
+    description
+      "ND rate limit and drop statistics are added.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-26 {
+    description
+      "Leaf ns-send-rate-limit is added.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-29 {
+    description
+      "Default value of stale-time is deleted.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-26 {
+    description
+      "Default value.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-30 {
     description
       "Init revision.";
     reference
@@ -101,11 +128,11 @@ module huawei-ipv6-nd {
       enum "probe" {
         value 4;
         description
-          "The neighbor is no longer known to be reachable, and unicast Neighbor Solicitation probes are being sent to verify reachability.";
+          "The neighbor is no longer known to be reachable, and unicast neighbor solicitation probes are being sent to verify reachability.";
       }
     }
     description
-        "The Neighbor Unreachability Detection state.";
+        "The neighbor unreachability detection state.";
     reference
         "RFC 4861: Neighbor Discovery for IP version 6 (IPv6) Section 7.3.2";
   }
@@ -151,6 +178,95 @@ module huawei-ipv6-nd {
     description
       "The origin of neighbor entry.";
   }
+  typedef nd-pkt-type {
+    type enumeration {
+      enum "RS" {
+        value 0;
+        description
+          "Router solicitation packet.";
+      }
+      enum "RA" {
+        value 1;
+        description
+          "Router advertisement packet.";
+      }
+      enum "NS" {
+        value 2;
+        description
+          "Neighbor solicitation packet.";
+      }
+      enum "NA" {
+        value 3;
+        description
+          "Neighbor advertisement packet.";
+      }
+    }
+    description
+      "The ND packet type value.";
+  }
+  typedef nd-pkt-evt-type {
+    type enumeration {
+      enum "RS" {
+        value 0;
+        description
+          "Router solicitation packet.";
+      }
+      enum "RA" {
+        value 1;
+        description
+          "Router advertisement packet.";
+      }
+      enum "NS" {
+        value 2;
+        description
+          "Neighbor solicitation packet.";
+      }
+      enum "NA" {
+        value 3;
+        description
+          "Neighbor advertisement packet.";
+      }
+      enum "NDMISS" {
+        value 4;
+        description
+          "ND miss.";
+      }
+    }
+    description
+      "The ND packet type or event value.";
+  }
+  grouping nd-ip-rate-limits-type {
+    description
+      "Rate limits for receiving ND packets based on specified source IP address.";
+    container ip-rate-limits {
+      description
+        "List of rate limits for receiving ND packets based on specified source IP address.";
+      list ip-rate-limit {
+        key "packet-type ipv6-addr";
+        description
+          "Configure the rate limit for receiving ND packets based on specified source IP address.";
+        leaf packet-type {
+          type nd-pkt-type;
+          description
+            "ND packet type.";
+        }
+        leaf ipv6-addr {
+          type inet:ipv6-address-no-zone;
+          description
+            "Source IPv6 address, the address cannot be a multicast address, that is, cannot start with FFXX or ffXX, X represents hexadecimal character.";
+        }
+        leaf value {
+          type uint16 {
+            range "0..5000";
+          }
+          units "pps";
+          mandatory true;
+          description
+            "Rate limit of receiving ND packet.";
+        }
+      }
+    }
+  }
   container ipv6-nd {
     description
       "ND management.";
@@ -195,7 +311,7 @@ module huawei-ipv6-nd {
       }
       leaf dad-detect {
         type nd-flag;
-      default "true";
+        default "true";
         description
           "The switch of DAD enhanced detection.";
       }
@@ -215,7 +331,7 @@ module huawei-ipv6-nd {
         type nd-switch-state;
         default "on";
         description
-          "ND Prefix learning strict.";
+          "ND prefix learning strict.";
       }
       leaf pre-detect-flag {
         type nd-switch-state;
@@ -253,7 +369,73 @@ module huawei-ipv6-nd {
         description
           "Rate limit for RSA option calculation.";
       }
+      leaf log-trap-time {
+        type uint32 {
+          range "60..3600";
+        }
+        units "s";
+        default "600";
+        description
+          "The interval for sending speed-limit logs and alarms.";
+      }
+      leaf rs-receive-rate-limit {
+        type uint16 {
+          range "1..5000";
+        }
+        units "pps";
+        ext:dynamic-default;
+        description
+          "Rate limit of receiving RS packet.";
+      }
+      leaf ra-receive-rate-limit {
+        type uint16 {
+          range "1..5000";
+        }
+        units "pps";
+        ext:dynamic-default;
+        description
+          "Rate limit of receiving RA packet.";
+      }
+      leaf ns-receive-rate-limit {
+        type uint16 {
+          range "1..5000";
+        }
+        units "pps";
+        ext:dynamic-default;
+        description
+          "Rate limit of receiving NS packet.";
+      }
+      leaf na-receive-rate-limit {
+        type uint16 {
+          range "1..5000";
+        }
+        units "pps";
+        ext:dynamic-default;
+        description
+          "Rate limit of receiving NA packet.";
+      }
+      leaf miss-receive-rate-limit {
+        type uint16 {
+          range "1..5000";
+        }
+        units "pps";
+        ext:dynamic-default;
+        description
+          "Rate limit of receiving ND miss.";
+      }
     }    
+    container m-lag-global {
+      description
+      "Configure M-LAG global configuration of ND.";
+      leaf ipv6-neighbor-backup-rate {
+        type uint32 {
+          range "1..2000";
+        }
+        description
+          "Specifies the number of IPv6 neighbor entries synchronized per second through M-LAG.";
+        ext:dynamic-default;
+      }
+    }
     container ipv6-neighbors {
       config false;
       description
@@ -274,9 +456,16 @@ module huawei-ipv6-nd {
           description
             "IPv6 address of a neighbor entry.";
         }
+        leaf slot-id {
+          type string {
+            length "1..24";
+          }
+          description
+            "Slot ID.";
+          ext:support-filter "true";
+        }
         leaf mac-addr {
           type pub-type:mac-address;
-          mandatory true;
           description
             "MAC address.";
         }
@@ -317,7 +506,7 @@ module huawei-ipv6-nd {
         leaf is-router {
           type nd-flag;
           description
-            "Is a Router.";
+            "Is a router.";
         }
         leaf cevid {
           type uint32 {
@@ -329,7 +518,7 @@ module huawei-ipv6-nd {
         leaf strict-flag {
           type boolean;
           description
-            "Strict security mode.";
+            "Enable/disable strict security mode.";
         }
         leaf nickname {
           type uint32 {
@@ -535,7 +724,37 @@ module huawei-ipv6-nd {
             units "packet";
             description
               "Number of NS packets discarded due to source MAC address attacks.";
-          }        
+          }
+          leaf drop-src-mac-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NS packets discarded due to source MAC rate limit.";
+          }
+          leaf drop-src-ip-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NS packets discarded due to source IP rate limit.";
+          }
+          leaf drop-if-src-ip-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NS packets discarded due to interface source IP rate limit.";
+          }
+          leaf drop-if-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NS packets discarded due to interface rate limit.";
+          }
+          leaf drop-lr-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NS packets discarded due to LR rate limit.";
+          }
         }
         container ns-slots {
           config false;
@@ -713,6 +932,36 @@ module huawei-ipv6-nd {
               units "packet";
               description
                 "Number of NS packets discarded due to source MAC address attacks.";
+            }
+            leaf drop-src-mac-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to source MAC rate limit.";
+            }
+            leaf drop-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to source IP rate limit.";
+            }
+            leaf drop-if-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to interface source IP rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to LR rate limit.";
             }
           }        
         }
@@ -893,12 +1142,42 @@ module huawei-ipv6-nd {
               description
                 "Number of NS packets discarded due to source MAC address attacks.";
             }
+            leaf drop-src-mac-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to source MAC rate limit.";
+            }
+            leaf drop-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to source IP rate limit.";
+            }
+            leaf drop-if-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to interface source IP rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NS packets discarded due to LR rate limit.";
+            }
           }        
         }
       }
       container na-stats {
         description
-          "Statistics of NA packets.";      
+          "Statistics of NA packets.";
         container na-global {
           description
             "Statistics of global NA packets.";
@@ -906,31 +1185,31 @@ module huawei-ipv6-nd {
             type uint32;
             units "packet";
             description
-              "Number of send NA packets.";
+              "Number of sent NA packets.";
           }
           leaf send-dip-ucast {
             type uint32;
             units "packet";
             description
-              "Number of send NA packets with the destination address as a unicast address.";
+              "Number of sent NA packets with the destination address as a unicast address.";
           }
           leaf send-dip-mcast {
             type uint32;
             units "packet";
             description
-              "Number of send NA packets with the destination address as a multicast address.";
+              "Number of sent NA packets with the destination address as a multicast address.";
           }
           leaf send-target-linklocal {
             type uint32;
             units "packet";
             description
-              "Number of send NA packets with the target address as a link-local address.";
+              "Number of sent NA packets with the target address as a link-local address.";
           }
           leaf send-target-global {
             type uint32;
             units "packet";
             description
-              "Number of send NA packets with the target address as a global address.";
+              "Number of sent NA packets with the target address as a global address.";
           }
           leaf recv-total {
             type uint32;
@@ -1063,7 +1342,37 @@ module huawei-ipv6-nd {
             units "packet";
             description
               "Number of NA packets discarded due to source MAC address attacks.";
-          }        
+          }
+          leaf drop-src-mac-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NA packets discarded due to source MAC rate limit.";
+          }
+          leaf drop-src-ip-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NA packets discarded due to source IP rate limit.";
+          }
+          leaf drop-if-src-ip-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NA packets discarded due to interface source IP rate limit.";
+          }
+          leaf drop-if-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NA packets discarded due to interface rate limit.";
+          }
+          leaf drop-lr-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of NA packets discarded due to LR rate limit.";
+          }
         }
         container na-slots {
           description
@@ -1240,6 +1549,36 @@ module huawei-ipv6-nd {
               units "packet";
               description
                 "Number of NA packets discarded due to source MAC address attacks.";
+            }
+            leaf drop-src-mac-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to source MAC rate limit.";
+            }
+            leaf drop-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to source IP rate limit.";
+            }
+            leaf drop-if-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to interface source IP rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to LR rate limit.";
             }
           }        
         }
@@ -1419,12 +1758,42 @@ module huawei-ipv6-nd {
               description
                 "Number of NA packets discarded due to source MAC address attacks.";
             }
+            leaf drop-src-mac-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to source MAC rate limit.";
+            }
+            leaf drop-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to source IP rate limit.";
+            }
+            leaf drop-if-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to interface source IP rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of NA packets discarded due to LR rate limit.";
+            }
           }        
         }
       }
       container rs-stats {
         description
-          "Statistics of RS packets.";      
+          "Statistics of RS packets.";
         container rs-global {
           description
             "Statistics of global RS packets.";
@@ -1553,7 +1922,37 @@ module huawei-ipv6-nd {
             units "packet";
             description
               "Number of RS packets discarded due to source MAC address attacks.";
-          }        
+          }
+          leaf drop-src-mac-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RS packets discarded due to source MAC rate limit.";
+          }
+          leaf drop-src-ip-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RS packets discarded due to source IP rate limit.";
+          }
+          leaf drop-if-src-ip-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RS packets discarded due to interface source IP rate limit.";
+          }
+          leaf drop-if-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RS packets discarded due to interface rate limit.";
+          }
+          leaf drop-lr-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RS packets discarded due to LR rate limit.";
+          }
         }
         container rs-slots {
           description
@@ -1694,6 +2093,36 @@ module huawei-ipv6-nd {
               units "packet";
               description
                 "Number of RS packets discarded due to source MAC address attacks.";
+            }
+            leaf drop-src-mac-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to source MAC rate limit.";
+            }
+            leaf drop-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to source IP rate limit.";
+            }
+            leaf drop-if-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to interface source IP rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to LR rate limit.";
             }
           }        
         }
@@ -1837,12 +2266,42 @@ module huawei-ipv6-nd {
               description
                 "Number of RS packets discarded due to source MAC address attacks.";
             }
+            leaf drop-src-mac-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to source MAC rate limit.";
+            }
+            leaf drop-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to source IP rate limit.";
+            }
+            leaf drop-if-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to interface source IP rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RS packets discarded due to LR rate limit.";
+            }
           }        
         }
       }
       container ra-stats {
         description
-          "Statistics of RA packets.";      
+          "Statistics of RA packets.";
         container ra-global {
           description
             "Statistics of global RA packets.";
@@ -1977,7 +2436,37 @@ module huawei-ipv6-nd {
             units "packet";
             description
               "Number of RA packets discarded due to source MAC address attacks.";
-          }        
+          }
+          leaf drop-src-mac-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RA packets discarded due to source MAC rate limit.";
+          }
+          leaf drop-src-ip-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RA packets discarded due to source IP rate limit.";
+          }
+          leaf drop-if-src-ip-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RA packets discarded due to interface source IP rate limit.";
+          }
+          leaf drop-if-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RA packets discarded due to interface rate limit.";
+          }
+          leaf drop-lr-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of RA packets discarded due to LR rate limit.";
+          }
         }
         container ra-slots {
           description
@@ -2124,6 +2613,36 @@ module huawei-ipv6-nd {
               units "packet";
               description
                 "Number of RA packets discarded due to source MAC address attacks.";
+            }
+            leaf drop-src-mac-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to source MAC rate limit.";
+            }
+            leaf drop-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to source IP rate limit.";
+            }
+            leaf drop-if-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to interface source IP rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to LR rate limit.";
             }
           }        
         }
@@ -2272,48 +2791,90 @@ module huawei-ipv6-nd {
               units "packet";
               description
                 "Number of RA packets discarded due to source MAC address attacks.";
-            }        
+            }
+            leaf drop-src-mac-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to source MAC rate limit.";
+            }
+            leaf drop-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to source IP rate limit.";
+            }
+            leaf drop-if-src-ip-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to interface source IP rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of RA packets discarded due to LR rate limit.";
+            }
           }
         }
       }
       container ndmiss-stats {
         description
-          "Statistics of ND Miss packets.";      
+          "Statistics of ND miss packets.";
         container ndmiss-global {
           description
-            "Statistics of global ND Miss packets.";
+            "Statistics of global ND miss packets.";
           leaf recv-total {
             type uint32;
             units "packet";
             description
-              "Number of received ND Miss packets.";
+              "Number of received ND miss packets.";
           }
           leaf recv-valid-total {
             type uint32;
             units "packet";
             description
-              "Number of received valid ND Miss packets.";
+              "Number of received valid ND miss packets.";
           }
           leaf drop-total {
             type uint32;
             units "packet";
             description
-              "Number of discarded ND Miss packets.";
+              "Number of discarded ND miss packets.";
           }
           leaf drop-rate-limit {
             type uint32;
             units "packet";
             description
-              "Number of ND Miss packets discarded due to global rate limit.";
-          }        
+              "Number of ND miss packets discarded due to global rate limit.";
+          }
+          leaf drop-if-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of ND miss discarded due to interface rate limit.";
+          }
+          leaf drop-lr-rate-limit {
+            type uint32;
+            units "packet";
+            description
+              "Number of ND miss discarded due to LR rate limit.";
+          }
         }
         container ndmiss-slots {
           description
-            "List of ND Miss packets in these slots.";
+            "List of ND miss packets in these slots.";
           list ndmiss-slot {
             key "slot-id";
             description
-              "Statistics of ND Miss packets in the slot.";
+              "Statistics of ND miss packets in the slot.";
             leaf slot-id {
               type string {
                 length "1..24";
@@ -2327,35 +2888,47 @@ module huawei-ipv6-nd {
               units "packet";
 
               description
-                "Number of received ND Miss packets.";
+                "Number of received ND miss packets.";
             }
             leaf recv-valid-total {
               type uint32;
               units "packet";
               description
-                "Number of received valid ND Miss packets.";
+                "Number of received valid ND miss packets.";
             }
             leaf drop-total {
               type uint32;
               units "packet";
               description
-                "Number of discarded ND Miss packets.";
+                "Number of discarded ND miss packets.";
             }
             leaf drop-rate-limit {
               type uint32;
               units "packet";
               description
-                "Number of ND Miss packets discarded due to global rate limit.";
+                "Number of ND miss packets discarded due to global rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of ND miss discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of ND miss discarded due to LR rate limit.";
             }
           }        
         }
         container ndmiss-ifs {
           description
-            "List of ND Miss packets in these interfaces.";
+            "List of ND miss packets in these interfaces.";
           list ndmiss-if {
             key "if-name";
             description
-              "Statistics of ND Miss packets in the interface.";
+              "Statistics of ND miss packets in the interface.";
             leaf if-name {
               type leafref {
                 path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
@@ -2367,36 +2940,151 @@ module huawei-ipv6-nd {
               type uint32;
               units "packet";
               description
-                "Number of received ND Miss packets.";
+                "Number of received ND miss packets.";
             }
             leaf recv-valid-total {
               type uint32;
               units "packet";
               description
-                "Number of received valid ND Miss packets.";
+                "Number of received valid ND miss packets.";
             }
             leaf drop-total {
               type uint32;
               units "packet";
               description
-                "Number of discarded ND Miss packets.";
+                "Number of discarded ND miss packets.";
             }
             leaf drop-rate-limit {
               type uint32;
               units "packet";
               description
-                "Number of ND Miss packets discarded due to global rate limit.";
+                "Number of ND miss packets discarded due to global rate limit.";
+            }
+            leaf drop-if-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of ND miss discarded due to interface rate limit.";
+            }
+            leaf drop-lr-rate-limit {
+              type uint32;
+              units "packet";
+              description
+                "Number of ND miss discarded due to LR rate limit.";
             }
           }        
         }
       }      
-    }    
+    }
+    container anti-attack{
+      description
+            "Configure ND anti-attack for global.";
+      container source-mac-receive {
+        description
+          "Configure the ND anti-attack based on packet source MAC address.";
+        container every-mac-rate-limits {
+          description
+            "List of rate limits for receiving ND packets based on every source MAC address.";
+          list every-mac-rate-limit {
+            key "packet-type";
+            description
+              "Configure the rate limit for receiving ND packets based on every source MAC address.";
+            leaf packet-type {
+              type nd-pkt-type;
+              description
+                "ND packet type.";
+            }
+            leaf value {
+              type uint16 {
+                range "0..5000";
+              }
+              units "pps";
+              mandatory true;
+              description
+                "Rate limit of receiving ND packet.";
+            }
+          }
+        }
+        container mac-rate-limits {
+          description
+            "List of rate limits for receiving ND packets based on specified source MAC address.";
+          list mac-rate-limit {
+            key "packet-type mac-addr";
+            description
+              "Configure the rate limit for receiving ND packets based on specified source MAC address.";
+            leaf packet-type {
+              type nd-pkt-type;
+              description
+                "ND packet type.";
+            }
+            leaf mac-addr {
+              type pub-type:mac-address {
+                pattern '[0-9a-fA-F][0|2|4|6|8|aA|cC|eE][0-9a-fA-F]{2}(-[0-9a-fA-F]{4}){2}';
+              }
+              description
+                "Source MAC address.";
+            }
+            leaf value {
+              type uint16 {
+                range "0..5000";
+              }
+              units "pps";
+              mandatory true;
+              description
+                "Rate limit of receiving ND packet.";
+            }
+          }
+        }
+      }
+      container source-ip-receive {
+        description
+          "Configure the ND anti-attack based on packet source IP address.";
+        container every-ip-rate-limits {
+          description
+            "List of rate limits for receiving ND packets based on every source IP address.";
+          list every-ip-rate-limit {
+            key "packet-type";
+            description
+              "Configure the rate limit for receiving ND packets based on every source IP address.";
+            leaf packet-type {
+              type nd-pkt-type;
+              description
+                "ND packet type.";
+            }
+            leaf value {
+              type uint16 {
+                range "0..5000";
+              }
+              units "pps";
+              mandatory true;
+              description
+                "Rate limit of receiving ND packet.";
+            }
+          }
+        }
+        uses nd-ip-rate-limits-type;
+      }
+    }
   }
   rpc nd-pkt-clear-all {
     description
       "To clear all ND statistics.";
     ext:node-ref "/ipv6-nd/nd-pkt-stats";      
-  }  
+  }
+  augment "/bd:bd/bd:instances/bd:instance" {
+    description
+      "List of Bridge-Domain Neighbor Multicast-Suppress Information.";
+    container nd-bd-property {
+      description
+        "Configure Bridge-Domain neighbor multicast-suppress information.";
+      leaf unicast-forward {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable Bridge-Domain unicast forward.";
+      }
+    }
+  }
   augment "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6" {
     when "../ifm:type!='Tunnel' and ../ifm:type!='LoopBack' and ../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-if'";
     description
@@ -2408,6 +3096,7 @@ module huawei-ipv6-nd {
         description
           "Configure ND interface configurations.";
         leaf retrans-timer {
+          when "../../../../ifm:type!='Serial'";
           type uint32 {
             range "1000..4294967295";
           }
@@ -2417,7 +3106,7 @@ module huawei-ipv6-nd {
             "To set the retransmission timer of a router.";
         }
         leaf nud-reach-time {
-          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group'";
+          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group' and ../../../../ifm:type!='Serial'";
           type uint32 {
             range "1..3600000";
           }
@@ -2427,6 +3116,7 @@ module huawei-ipv6-nd {
             "To set the reachable time of a neighbor.";
         }
         leaf attempts-value {
+          when "../../../../ifm:type!='Serial'";
           type uint32 {
             range "0..600";
           }
@@ -2439,10 +3129,10 @@ module huawei-ipv6-nd {
           type nd-switch-state;
           default "off";
           description
-            "Flag of Enabling multicast.";
+            "Flag of enabling multicast.";
         }
         leaf max-dyn-nb-num {
-          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group'";
+          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group' and ../../../../ifm:type!='Serial'";
           type uint64 {
             range "0..65536";
           }
@@ -2461,7 +3151,7 @@ module huawei-ipv6-nd {
             "Timeout of DAD.";
         }
         leaf nud-attempts {
-          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group'";
+          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group' and ../../../../ifm:type!='Serial'";
           type uint8 {
             range "1..10";
           }
@@ -2470,25 +3160,25 @@ module huawei-ipv6-nd {
             "ND entries NUD attempts.";
         }
         leaf na-glean {
-          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group'";
+          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group' and ../../../../ifm:type!='Serial'";
           type nd-switch-state;
           default "off";
           description
-            "Flag of Generate NB when receiving NA packet.";
+            "Flag of generating NB when receiving NA packet.";
         }
         leaf ma-flag {
-          when "../../../../ifm:type!='MEth'";
+          when "../../../../ifm:type!='MEth' and ../../../../ifm:type!='Serial'";
           type nd-switch-state;
           default "off";
           description
             "Flag of obtaining the routable address through state-based automatic configuration.";
         }
         leaf o-flag {
-          when "../../../../ifm:type!='MEth'";
+          when "../../../../ifm:type!='MEth' and ../../../../ifm:type!='Serial'";
           type nd-switch-state;
           default "off";
           description
-            "Flag of set state-based automatic configuration.";
+            "Flag of setting state-based automatic configuration.";
         }
         leaf ra-halt-flag {
           when "../../../../ifm:type!='MEth'";
@@ -2513,7 +3203,7 @@ module huawei-ipv6-nd {
             range "0|4..9000";
           }
           units "s";
-          must "../ipv6-nd:ra-lifetime >= ../ipv6-nd:max-interval";
+          must "../ra-lifetime = 0 or (../ra-lifetime != 0 and ../ra-lifetime >= ../max-interval)";
           description
             "TTL of RA packets. If the value is 0, it implies that this node is not a router. And the value from 1 to 3 is invalid.";
         }
@@ -2536,15 +3226,17 @@ module huawei-ipv6-nd {
           type nd-switch-state;
           default "on";
           description
-            "Flag of RA Packet Carry MTU Option.";
+            "Flag of RA packet carry MTU option.";
         }
         leaf strict-flag {
+          when "../../../../ifm:type!='Mp-group' and ../../../../ifm:type!='Serial'";
           type boolean;
           default "false";
           description
             "Enable/disable strict security mode.";
         }
         leaf ts-fuzz-factor {
+          when "../../../../ifm:type!='Serial'";
           type uint16 {
             range "0..1000";
           }
@@ -2554,6 +3246,7 @@ module huawei-ipv6-nd {
             "Fuzz factor for timestamp option.";
         }
         leaf ts-clock-drift {
+          when "../../../../ifm:type!='Serial'";
           type uint8 {
             range "0..100";
           }
@@ -2562,6 +3255,7 @@ module huawei-ipv6-nd {
             "Drift for timestamp option.";
         }
         leaf ts-delta {
+          when "../../../../ifm:type!='Serial'";
           type uint16 {
             range "0..1000";
           }
@@ -2571,6 +3265,7 @@ module huawei-ipv6-nd {
             "Delta for timestamp option.";
         }
         leaf rsa-min-key-len {
+          when "../../../../ifm:type!='Serial'";
           type uint16 {
             range "384..3072";
           }
@@ -2581,17 +3276,17 @@ module huawei-ipv6-nd {
             "The minimum length of acceptable RSA key pair.";
         }
         leaf rsa-max-key-len {
+          when "../../../../ifm:type!='Serial'";
           type uint16 {
             range "384..3072";
           }
           units "bit";
-          must "(../rsa-max-key-len>=../rsa-min-key-len)";
           default "2048";
           description
             "The maximum length of acceptable RSA key pair.";
         }
         leaf stale-time {
-          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group'";
+          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group' and ../../../../ifm:type!='Serial'";
           type uint32 {
             range "60..172800";
           }
@@ -2604,17 +3299,17 @@ module huawei-ipv6-nd {
           type nd-switch-state;
           default "off";
           description
-            "Flag of Collect Host Information.";
+            "Flag of collecting host Information.";
         }
         leaf generate-rd-enable {
           when "../../../../ifm:type='Vbdif'";
           type nd-switch-state;
           default "off";
           description
-            "Flag of Generate redirect ND table.";
+            "Flag of generating redirect ND table.";
         }
         leaf nud-interval {
-          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group'";
+          when "../../../../ifm:type!='Ip-Trunk' and ../../../../ifm:type!='Pos' and ../../../../ifm:type!='Mp-group' and ../../../../ifm:type!='Serial'";
           type uint32 {
             range "1000..4294967295";
           }
@@ -2624,36 +3319,68 @@ module huawei-ipv6-nd {
         }
       }
       container proxys {
-        when "../../../ifm:type!='MEth' and ../../../ifm:type!='Ip-Trunk' and ../../../ifm:type!='PW-VE'";
+        when "../../../ifm:type!='MEth' and ../../../ifm:type!='Ip-Trunk' and ../../../ifm:type!='PW-VE' and ../../../ifm:type!='Serial' and ../../../ifm:type!='Pos' and ../../../ifm:type!='Mp-group'";
         description
-          "Configure list of ND Proxy.";
+          "Configure list of ND proxy.";
         leaf route-proxy {
           type nd-switch-state;
           default "off";
           description
-            "Router Proxy.";
+            "Router proxy.";
         }
         leaf inner-vlan-proxy {
           when "../../../../ifm:class='sub-interface' or ../../../../ifm:type='Vlanif'";
           type nd-switch-state;
           default "off";
           description
-            "InnerVLAN Proxy.";
+            "InnerVLAN proxy.";
         }
         leaf inter-vlan-proxy {
           when "../../../../ifm:class='sub-interface' or ../../../../ifm:type='Vlanif'";
           type nd-switch-state;
           default "off";
           description
-            "InterVLAN Proxy.";
+            "InterVLAN proxy.";
         }
         leaf anyway-proxy {
           type nd-switch-state;
           default "off";
           description
-            "Anyway Proxy.";
+            "Anyway proxy.";
         }
-      }     
+      }
+      container anti-attack {
+        description
+          "Configure ND anti-attack for interface.";
+        container receive-rate-limits {
+          description
+            "List of rate limits for receiving ND packets.";
+          list receive-rate-limit {
+            key "type";
+            description
+              "Configure the rate limit for receiving ND packet or ND miss.";
+            leaf type {
+              type nd-pkt-evt-type;
+              description
+                "ND packet type or ND miss.";
+            }
+            leaf value {
+              type uint16 {
+                range "0..5000";
+              }
+              units "pps";
+              mandatory true;
+              description
+                "Rate limit of receiving ND packet or ND miss.";
+            }
+          }
+        }
+        container source-ip-receive {
+          description
+            "Configure the ND anti-attack based on packet source IP address.";
+          uses nd-ip-rate-limits-type;
+        }
+      }      
     }
   }
   ext:task-name "nd";

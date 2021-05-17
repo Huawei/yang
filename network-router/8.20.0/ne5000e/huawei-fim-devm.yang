@@ -33,7 +33,7 @@ module huawei-fim-devm {
     "Global configuration.";
   revision 2020-03-11 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -72,10 +72,10 @@ module huawei-fim-devm {
   }  
   augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
     description
-      "FIM configuration to the devm lpu-board module.";
+      "FIM configuration to the DEVM lpu-board module.";
     container fim {
       description
-        "Configure the forward configuration to the devm lpu-board module.";
+        "Configure the forward configuration to the DEVM lpu-board module.";
       leaf forward-mode {
         type forward-mode-type;
         default "loopback";
@@ -123,6 +123,7 @@ module huawei-fim-devm {
         type uint32 {
           range "10..100";
         }
+        units %;
         default "55";
         description
           "Restore dynamically adjusted CPU usage threshold.";
@@ -170,10 +171,10 @@ module huawei-fim-devm {
   }
   augment "/devm:devm/devm:mpu-boards/devm:mpu-board" {
     description
-      "FIM configuration to the devm mpu-board module.";
+      "FIM configuration to the DEVM mpu-board module.";
     container fim {
       description
-        "Configure the forward configuration to the devm mpu-board module.";
+        "Configure the forward configuration to the DEVM mpu-board module.";
       leaf forward-mode {
         type forward-mode-type;
         default "loopback";
@@ -221,6 +222,7 @@ module huawei-fim-devm {
         type uint32 {
           range "10..100";
         }
+        units %;
         default "55";
         description
           "Restore dynamically adjusted CPU usage threshold.";

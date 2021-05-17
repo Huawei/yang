@@ -202,7 +202,7 @@ module huawei-bgp-lsp {
         leaf min-tx-interval {
           when "/mpls:mpls/mpls:common/mpls:global/mpls:mpls-enable='true'";
           type uint32 {
-            range "3..1000";
+            range "3..20000";
           }
           units "ms";
           description
@@ -211,7 +211,7 @@ module huawei-bgp-lsp {
         leaf min-rx-interval {
           when "/mpls:mpls/mpls:common/mpls:global/mpls:mpls-enable='true'";
           type uint32 {
-            range "3..1000";
+            range "3..20000";
           }
           units "ms";
           description
@@ -333,6 +333,7 @@ module huawei-bgp-lsp {
           }
           leaf age {
             type uint32;
+            units "s";
             config false;
             description
               "Display the BFD session age of dynamic BFD for BGP LSP.";
@@ -355,7 +356,7 @@ module huawei-bgp-lsp {
           }
           config false;
           description
-            "Name of a BGP instance.";
+            "VPN name of a BGP instance.";
         }
         leaf af {
           type bgp:af-type;
@@ -435,6 +436,7 @@ module huawei-bgp-lsp {
         }
         leaf duration {
           type uint32;
+          units "s";
           config false;
           description
             "LSP duration.";

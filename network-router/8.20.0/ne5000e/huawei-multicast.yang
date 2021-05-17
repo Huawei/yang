@@ -223,7 +223,7 @@ module huawei-multicast {
                 range "0..128";
               }
               description
-                "Specify the mask length of a multicast group address. In IPv4, the value ranges from 4 to 32. In IPv6, the value ranges from 16 32 64 and 128.";
+                "Specify the mask length of a multicast group address. In IPv4, the value ranges from 4 to 32. In IPv6, the value is an integer, which can be 16, 32, 64, or 128.";
             }
             leaf source-address {
               type inet:ip-address-no-zone;

@@ -10,6 +10,9 @@ module huawei-hwtacacs {
   import ietf-inet-types {
     prefix inet;
   }
+  import huawei-network-instance {
+    prefix ni;
+  }
   import huawei-extension {
     prefix ext;
   }
@@ -25,7 +28,7 @@ module huawei-hwtacacs {
      Email: support@huawei.com";
   description
     "Huawei Terminal Access Controller Access-Control System.";
-  revision 2020-01-03 {
+  revision 2020-06-30 {
     description
       "Initial revision.";
     reference
@@ -200,11 +203,11 @@ module huawei-hwtacacs {
             leaf is-secondary-server {
               type boolean;
               description
-                "Enable/disable whether the server is secondary. By default, a server is a secondary server. A template does not support multiple primary servers of the same type.";
+                "Enable/disable the secondary server. By default, a server is a secondary server. A template does not support multiple primary servers of the same type.";
             }
             leaf vpn-name {
-              type string {
-                length "1..31";
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
               }
               must "not(../is-public-net='true') or (../is-public-net='true' and ../vpn-name='_public_')";
               description
@@ -378,7 +381,7 @@ module huawei-hwtacacs {
         container status {
           config false;
           description
-            "Statistics of HWTACACS template status.";
+            "Operational state of HWTACACS template.";
           leaf pri-authen-server {
             type string {
               length "1..255";

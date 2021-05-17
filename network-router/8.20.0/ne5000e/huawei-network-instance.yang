@@ -23,18 +23,12 @@ module huawei-network-instance {
      Email: support@huawei.com";
   description
     "Layer 3 Virtual Private Network (L3VPN). An L3VPN is a virtual private network set up over public networks by Internet Service Providers (ISPs) and Network Service Providers (NSPs).";
-  revision 2020-02-25 {
+  revision 2020-03-10 {
     description
       "The YANG descriptions are modified according to new standards.";
     reference "Huawei private.";
   }
   revision 2019-04-28 {
-    description
-      "Modify descriptions of the YANG file.";
-    reference
-      "Huawei private.";
-  }
-  revision 2019-04-27 {
     description
       "Initial revision.";
     reference
@@ -61,7 +55,7 @@ module huawei-network-instance {
       leaf route-distinguisher-auto-ip {
         type inet:ipv4-address-no-zone;
         description
-          "Set the display format of the BGP 4 byte as to be unformatted integer type.";
+          "Configure IP address to automatic route-distinguisher.";
       }
     }
     container instances {

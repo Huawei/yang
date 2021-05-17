@@ -16,10 +16,15 @@ module huawei-bgp-evpn {
   import huawei-bgp-routing-table {
     prefix bgp-rt;
   }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
   import huawei-extension {
     prefix ext;
   }
-
+  import huawei-pub-type {
+    prefix pub-type;
+  }
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -228,6 +233,33 @@ module huawei-bgp-evpn {
     description
       "BGP EVPN apply label type.";
   }
+  typedef path-attr-treat-type {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description
+          "Processing mode of normal path attribute.";
+      }
+    }
+    description
+      "Processing mode of path attribute.";
+  }
+  typedef select-depend-type {
+    type enumeration {
+      enum "depend-tunnel" {
+        value 1;
+        description
+          "Routing-dependent tunnel iteration.";
+      }
+      enum "depend-ip" {
+        value 2;
+        description
+          "Routing-dependent IP iteration.";
+      }
+    }
+    description
+      "The type of nexthop select depend.";
+  }
   augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af" {
     description "Augment for an L2VPN instance and EVPN association.";
     container l2vpn-evpn {
@@ -236,14 +268,17 @@ module huawei-bgp-evpn {
       description
         "Configure peer EVPN.";
       leaf group-name {
+        ext:operation-exclude update;
         type leafref {
           path "../../../../../../bgp:peer-groups/bgp:peer-group/bgp:name";
         }
-        must "../../../../../../bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af[bgp:type='evpn']";
+        must "(../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name=current()]/bgp:type = 'ibgp' and ../../../../bgp:remote-as = /bgp:bgp/bgp:base-process/bgp:as) or (../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name=current()]/bgp:type = 'ebgp' and ../../../../bgp:remote-as != /bgp:bgp/bgp:base-process/bgp:as)";
+        must "../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name=current()]/bgp:afs/bgp:af[bgp:type='evpn']";
         description
           "Configure a name for a peer group. By default, BGP peers join no peer group. BGP peers distinguish the peer group type when joining a peer group. IBGP peers cannot join an EBGP peer group. After a peer is deleted from the peer group, the peer is disabled from the address family. The object cannot be modified.";
       }
       leaf reflect-client {
+        when "../../../../bgp:remote-as = /bgp:bgp/bgp:base-process/bgp:as";
         type boolean;
         default "false";
         description
@@ -399,10 +434,10 @@ module huawei-bgp-evpn {
         units "s";
         ext:dynamic-default {
           ext:default-value 15 {
-          when "../../../../../../bgp:peer-groups/bgp:peer-group/bgp:type = 'ibgp'";
+          when "../../../../bgp:remote-as = /bgp:bgp/bgp:base-process/bgp:as";
 		  }
           ext:default-value 30 {
-          when "../../../../../../bgp:peer-groups/bgp:peer-group/bgp:type = 'ebgp'";
+          when "../../../../bgp:remote-as != /bgp:bgp/bgp:base-process/bgp:as";
 		  }
         }			
         description
@@ -515,6 +550,45 @@ module huawei-bgp-evpn {
         default "0";
         description
           "Assign a preferred value for the routes learned from a specified peer. The value is an integer. After a preferred value is configured for the routes learned from a specified peer, all the routes that learnt from this peer will use this preferred value. When multiple routes reach the same address prefix, the route with the largest preferred value will be selected.";
+      }
+      container path-attribute-treats {
+        description
+          "List of modes in which specified path attributes are processed.";
+        list path-attribute-treat {
+          must "discard-id-map or withdraw-id-map or unknown-id-map";
+          key "treat-type";
+          description
+            "Configure mode in which specified path attributes are processed.";
+          leaf treat-type {
+            type path-attr-treat-type;
+            description
+              "Mode in which specified path attributes are processed.";
+          }
+          leaf discard-id-map {
+            type pub-type:id-range {
+              pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+              ext:value-range 0..255;
+            }
+            description
+              "Specify a discard attribute ID list. The attribute ids which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+          }
+          leaf withdraw-id-map {
+            type pub-type:id-range {
+              pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+              ext:value-range 0..255;
+            }
+            description
+              "Specify a withdraw attribute ID list. The attribute ids which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+          }
+          leaf unknown-id-map {
+            type pub-type:id-range {
+              pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+              ext:value-range 0..255;
+            }
+            description
+              "Specify an unknown attribute ID list. The attribute ids which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+          }
+        }
       }
     }
   } 
@@ -721,6 +795,12 @@ module huawei-bgp-evpn {
         description
           "Enable/disable route regeneration.";
       }
+      leaf reoriginated-mac-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MAC route regeneration and advertisement.";
+      }
       leaf reoriginated-mac-ip-route {
         type boolean;
         default "false";
@@ -811,7 +891,7 @@ module huawei-bgp-evpn {
           "Route selection delay.";
       }
       leaf exclusive-eviad-enable {
-        when "../route-select-delay";
+        when "../route-select-delay!=0";
         type boolean;
         default "false";
         description
@@ -858,6 +938,116 @@ module huawei-bgp-evpn {
         description
           "Enable/disable VPN-ORF capability.";
       }
+      leaf nexthop-select-depend-type {
+        type select-depend-type;
+        default "depend-ip";
+        description
+          "Specify the route iteration mode: IP or tunnel. In tunnel mode, the labeled EVPN route can participate in route selection only after its next hop is iterated to an LSP. In IP 
+          mode, the labeled EVPN route can participate in route selection only after its next hop is iterated to an IP address. By default, the labeled EVPN route can participate in route selection 
+          if its next hop can be iterated to an IP address, regardless of whether the LSP of the next hop exists. This allows the RR that is not enabled with MPLS to forward labeled routes. In non-RR 
+          networking or RR networking where the BGP next hop is changed, BGP needs to check whether there is an LSP destined for the next hop. If such an LSP is not found, BGP needs to establish an LSP in 
+          advance. If the default setting is adopted, a labeled EVPN route may be selected prior to LSP establishment. As a result, services are incorrectly switched before LSP establishment and 
+          service stability is affected. Therefore, allow route selection only after the labeled EVPN route is iterated to an LSP.";
+      }
+      leaf reflect-change-path {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable an RR to use an export policy to change route AS_Path.";
+      }
+      leaf rr-ext-community-filter {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ext-community-filters/rtp:ext-community-filter/rtp:name";
+        }
+        description
+          "Set the name of the extended community filter supported by an RR group. For the purpose of load balancing, only the IBGP route whose route-target extended community attribute meets the matching rules can be reflected.";
+      }
+      leaf time-df-delay {
+        type uint16 {
+          range "0..1200";
+        }
+        units s;
+        default "60";
+        description
+          "Specifies forwarder election delay-timer value. In seconds.";
+      }
+      container nexthop-recursive-lookup {
+       description
+        "Configure next hop iteration.";
+        container common {
+        description
+          "Configure next hop iteration common options.";
+          leaf restrain {
+            type boolean;
+            default "true";
+            description
+            "Enable/disable the function to restrain next hop iteration in case of next hop flapping.";
+          }
+          leaf default-route {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable default route.";
+          }
+        }
+        container delay {
+          description
+            "Configure time of next hop change responding delay.";
+          leaf time {
+            type uint8 {
+            range "1..100";
+            }
+            units "s";
+            must "(not(../no-critical-event-time) or (../no-critical-event-time >= ../time))";
+            description
+            "Specify the delay in responding to the next hop change.";
+          }
+          leaf no-critical-event-time {
+            type uint8 {
+            range "1..100";
+            }
+            units "s";
+            must "(not(../time) or (../no-critical-event-time >= ../time))";
+            description
+            "Specify the delay in responding to the next hop change on non critical relay change event.";
+          }
+        }
+        container bit-error-detection {
+          description
+              "Configure EVPN bit-error detection parameters.";
+          leaf enable {
+            type boolean;
+            must "(../enable='false') or (../enable='true' and (../med or ../local-preference))";
+            default "false";
+            description
+              "Enable/disable association between bit error events and the adjustment of route attributes.";
+          }
+          leaf med {
+            when "../enable='true'";
+            type uint32 {
+                range "1..4294967295";
+            }
+            description
+                "Specify the MED adjustment for EVPN routes used when a bit error event occurs.";
+          }
+          leaf local-preference {
+            when "../enable='true'";
+            type uint32 {
+                range "1..4294967295";
+            }
+            description
+                "Specify the local preference adjustment for routes used when a bit error event occurs.";
+          }
+          leaf route-policy {
+            when "../enable='true'";
+            type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+                "Specify the name of route-policy for bit-error-triggered protection switching. The MED or local preference of only the routes that match the route-policy is adjusted.";
+          }
+        }
+      }
     }
   }
   augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast" {
@@ -871,6 +1061,7 @@ module huawei-bgp-evpn {
           "Configure segment-routing IPv6 for EVPN.";
         leaf mode {
           type srv6-mode;
+          must "not (../../../../../../../../nvo3:nvo3/nvo3:vni-list)";
           description
             "SRv6 iteration mode.";
         }
@@ -892,6 +1083,35 @@ module huawei-bgp-evpn {
           description
             "Enable/disable reoriginate capability.";
 	    }
+      }
+      container irb-asymmetric {
+        when "../../../../../../../ni:name!='_public_'";
+        description
+          "Configure IRB Asymmetric mode.";
+        choice irb-asymmetric-mode {
+          description
+            "Configure IRB Asymmetric mode.";
+          case irb-asymmetric {
+            description
+              "Enable IRB Asymmetric.";
+            leaf irb-asymmetric {
+            type empty;
+              description
+                "Enable IRB Asymmetric.";
+            }
+          }
+          case irb-asymmetric-policy-name {
+            description
+              "Specify IRB Asymmetric route policy.";
+            leaf irb-asymmetric-policy-name {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "The name of specify IRB Asymmetric route policy.";
+            }
+          }
+        }
       }
     }
   }
@@ -906,6 +1126,7 @@ module huawei-bgp-evpn {
           "Configure segment-routing IPv6 for EVPN.";
         leaf mode {
           type srv6-mode;
+          must "not (../../../../../../../../nvo3:nvo3/nvo3:vni-list)";
           description
             "SRv6 iteration mode.";
         }
@@ -928,17 +1149,46 @@ module huawei-bgp-evpn {
             "Enable/disable reoriginate capability.";
 	    }
       }
+      container irb-asymmetric {
+        when "../../../../../../../ni:name!='_public_'";
+        description
+          "Configure IRB Asymmetric mode.";
+        choice irb-asymmetric-mode {
+          description
+            "Configure IRB Asymmetric mode.";
+          case irb-asymmetric {
+            description
+              "Enable IRB Asymmetric.";
+            leaf irb-asymmetric {
+            type empty;
+              description
+                "Enable IRB Asymmetric.";
+            }
+          }
+          case irb-asymmetric-policy-name {
+            description
+              "Specify IRB Asymmetric route policy.";
+            leaf irb-asymmetric-policy-name {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "The name of specify IRB Asymmetric route policy.";
+            }
+          }
+        }
+      }
     }
   }
   augment "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route" {
-    description "BGP routes informtion of EVPN address family.";
+    description "BGP routes information of EVPN address family.";
     container l2vpn-evpn {
       config false;
       description
-        "Statistics of BGP routes informtion of EVPN address family.";
+        "Statistics of BGP routes information of EVPN address family.";
       container statistics {
         description
-          "List of BGP routes informtion of EVPN address family.";
+          "List of BGP routes information of EVPN address family.";
         list statistic {
           must "./vpn-name = '_public_'";
           key "vpn-name";

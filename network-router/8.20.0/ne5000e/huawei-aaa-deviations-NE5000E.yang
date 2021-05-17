@@ -29,7 +29,7 @@ module huawei-aaa-deviations-NE5000E {
 
   revision 2019-04-23 {
     description
-      "Initial revision.";
+      "Init revision.";
     reference "Huawei private.";
   }
 
@@ -217,6 +217,21 @@ module huawei-aaa-deviations-NE5000E {
   deviation "/aaa:aaa/aaa:alive-user-qrys/aaa:alive-user-qry/aaa:access-type" {
     deviate replace {
       type aaa-devs-NE5000E:aaa-user-access-type-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:authen-scheme-name" {
+    deviate replace {
+      default "default";
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:author-scheme-name" {
+    deviate add {
+      default "default";
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:acct-scheme-name" {
+    deviate replace {
+      default "default";
     }
   }
   ext:deviation-ext "/aaa:aaa/aaa:task-groups" {

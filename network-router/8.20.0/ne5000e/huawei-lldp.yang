@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-lldp {
   namespace "urn:huawei:yang:huawei-lldp";
@@ -20,6 +20,9 @@ module huawei-lldp {
   import ietf-yang-types {
     prefix yang;
   }
+  import huawei-ip {
+    prefix ip;
+  }
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -31,6 +34,18 @@ module huawei-lldp {
      Email: support@huawei.com";
   description
     "Link layer discovery protocol.";
+  revision 2020-03-13 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-27 {
+    description
+      "LLDP module YANG file.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-23 {
     description
       "Initial revision.";
@@ -622,6 +637,22 @@ module huawei-lldp {
     description
       "Enable status.";
   }
+  typedef mdn-global-status {
+    type enumeration {
+      enum "rx-only" {
+	    value 2;
+        description
+          "MDN status is rx-only.";
+      }
+      enum "disabled" {
+	    value 4;
+        description
+          "MDN status is disabled.";
+      }
+    }
+    description
+      "MDN global status.";
+  }
   container lldp {
     presence "Enables LLDP";
     description
@@ -684,9 +715,17 @@ module huawei-lldp {
           "Number of rapidly transmitted LLDP messages.";
       }
       leaf managment-address {
-        type inet:ipv4-address-no-zone;
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/ip:addresses/ip:address/ip:ip";
+        }
         description
           "IP address for network management, which must exist in the device.";
+      }
+      leaf mdn-status {
+        type mdn-global-status;
+        default "disabled";
+        description
+          "MDN status.";
       }
       leaf trap-enable {
         type global-status;
@@ -749,21 +788,21 @@ module huawei-lldp {
               "Enable/disable the device to send the system name TLV.";
           }			
           leaf port-vlan-id  {
-            when "../../../../ifm:type !='Pos'";
+            when "(../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type boolean;
             default "true";
             description
               "Enable/disable the device to send the interface VLAN ID TLV.";
           }
           leaf protocol-vlan-id-enable {
-            when "../../../../ifm:type !='Pos'";
+            when "(../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type boolean;
             default "true";
             description
               "Enable/disable the device to send the protocol VLAN ID TLV.";
           }
           leaf protocol-vlan-id {
-            when "(not(../protocol-vlan-id-enable='false')) and (../../../../ifm:type !='Pos')";
+            when "(not(../protocol-vlan-id-enable='false')) and (../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type int32 {
               range "1..4094";
             }
@@ -771,14 +810,14 @@ module huawei-lldp {
               "The protocol VLAN ID is sent.";
           }
           leaf vlan-name-enable {
-            when "../../../../ifm:type !='Pos'";
+            when "(../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type boolean;
             default "true";
             description
               "Enable/disable the device to send the VLAN name TLV.";
           }
           leaf vlan-name-id {
-            when "(not(../vlan-name-enable='false')) and (../../../../ifm:type !='Pos')";
+            when "(not(../vlan-name-enable='false')) and (../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type int32 {
               range "1..4094";
             }
@@ -786,28 +825,28 @@ module huawei-lldp {
               "The VLAN ID of the VLAN name TLV is sent.";
           }
           leaf protocol-identity {
-            when "../../../../ifm:type !='Pos'";
+            when "(../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type boolean;
             default "false";
             description
               "Enable/disable the device to send the protocol identity TLV.";
           }			  			
           leaf mac-physic {
-            when "../../../../ifm:type !='Pos'";
+            when "(../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type boolean;
             default "true";
             description
               "Enable/disable the device to send the MAC/PHY TLV.";
           }
           leaf link-aggregation {
-            when "../../../../ifm:type !='Pos'";
+            when "(../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type boolean;
             default "true";
             description
               "Enable/disable the device to send the link aggregation TLV.";
           }
           leaf max-frame-size {
-            when "../../../../ifm:type !='Pos'";
+            when "(../../../../ifm:type !='Pos') and (../../../../ifm:type !='FlexE-50G') and (../../../../ifm:type !='FlexE-100G') and (../../../../ifm:type !='FlexE-200GE') and (../../../../ifm:type !='FlexE-50|100G')";
             type boolean;
             default "true";
             description
@@ -818,6 +857,12 @@ module huawei-lldp {
             default "false";
             description
               "Enable/disable the device to send the DDP TLV.";
+          }
+          leaf identity {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable the device to send the identity TLV.";
           }
         }  
         container neighbors {
@@ -1152,6 +1197,18 @@ module huawei-lldp {
                 }
                 description
                   "Neighbor system MAC.";
+              }
+            }
+            container identity-tlv {
+              config false;
+	          description
+                  "Statistics of information about the neighbor identity TLV.";
+              leaf identity {
+                type string {
+                  length "1..508";
+                }
+                description
+                  "Neighbor identity.";
               }
             }
           }

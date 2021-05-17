@@ -196,11 +196,6 @@ module huawei-l2vpn-deviations-NE5000E {
         description
           "The instance type is VPWS LDP.";
       }
-      enum vpws-switch {
-        value 5;
-        description
-          "The instance type is VPWS switching.";
-      }
       enum vpls {
         value 6;
         description
@@ -210,11 +205,6 @@ module huawei-l2vpn-deviations-NE5000E {
         value 8;
         description
           "The instance type is VPWS BGP.";
-      }
-      enum vpws-single-ccc {
-        value 9;
-        description
-          "The instance type is VPWS single CCC.";
       }
     }
     description
@@ -398,6 +388,9 @@ module huawei-l2vpn-deviations-NE5000E {
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/l2vpn:token-exceed" {
     deviate not-supported;
   }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-remote-ccc" {
+    deviate not-supported;
+  }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:mac-withdraw-disable" {
     deviate not-supported;
   }
@@ -412,6 +405,11 @@ module huawei-l2vpn-deviations-NE5000E {
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:acs/l2vpn:ac/l2vpn:performance-statistics" {
     deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw" {
+    deviate delete {
+      must "((../../../type='vpws-ldp' or ../../../type='vpws-single-ccc') and pw-id) or (../../../type='vpws-svc' and transmit-label and receive-label)";
+    }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:transmit-label" {
     deviate not-supported;
@@ -435,6 +433,12 @@ module huawei-l2vpn-deviations-NE5000E {
     deviate not-supported;
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:ignore-ac-state" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:tdm-parameter" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:atm-parameter" {
     deviate not-supported;
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:track-vrrp" {
@@ -655,10 +659,34 @@ module huawei-l2vpn-deviations-NE5000E {
     deviate delete {
       must "(shutdown='false') or (not (admin-vsi)) or (shutdown='true' and admin-vsi='false')";
     }
+    deviate delete {
+      must 'not(ldp-signaling and bgp-multi-homing-signaling)';
+    }
+    deviate delete {
+      must 'not(bgp-signaling and bgp-multi-homing-signaling)';
+    }
+    deviate delete {
+      must 'not(bgp-multi-homing-signaling and bgpad-signaling)';
+    }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:mac-learn" {
     deviate delete {
-      must "../mac-learn='false' or (../mac-learn='true' and ../p2p-vsi='false')";
+      must ".='false' or (.='true' and ../p2p-vsi='false')";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:vsi-id" {
+    deviate delete {
+      must 'count(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-switch/l2vpn:pws/l2vpn:pw/l2vpn:pw-id[.=current()])=0';
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bgp-signaling" {
+    deviate delete {
+      must "../admin-vsi!='true'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bgpad-signaling" {
+    deviate delete {
+      must "../admin-vsi!='true'";
     }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bgp-multi-homing-signaling" {
@@ -704,32 +732,32 @@ module huawei-l2vpn-deviations-NE5000E {
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bgpad-signaling/l2vpn:traffic-statistics-collection" {
     deviate delete {
-      must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and ../../traffic-statistics-collection='false' and ../../ldp-signaling/traffic-statistics-collection='false')";
+      must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and (not(../../traffic-statistics-collection) or ../../traffic-statistics-collection='false') and (not(../../ldp-signaling/traffic-statistics-collection) or ../../ldp-signaling/traffic-statistics-collection='false'))";
     }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bgpad-signaling/l2vpn:traffic-statistics-collection" {
     deviate add {
-      must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and ../../ldp-signaling/traffic-statistics-collection='false')";
+      must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and (not(../../ldp-signaling/traffic-statistics-collection) or ../../ldp-signaling/traffic-statistics-collection='false'))";
     }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/l2vpn:traffic-statistics-collection" {
     deviate delete {
-      must "../traffic-statistics-collection='default'or (../traffic-statistics-collection!='default' and ../../../../traffic-statistics-collection='false' and ../../../../bgpad-signaling/traffic-statistics-collection='false')";
+      must "../traffic-statistics-collection='default'or (../traffic-statistics-collection!='default' and (not(../../../../traffic-statistics-collection) or ../../../../traffic-statistics-collection='false') and (not(../../../../bgpad-signaling/traffic-statistics-collection) or ../../../../bgpad-signaling/traffic-statistics-collection='false'))";
     }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/l2vpn:traffic-statistics-collection" {
     deviate add {
-      must "../traffic-statistics-collection='default'or (../traffic-statistics-collection!='default' and ../../../../bgpad-signaling/traffic-statistics-collection='false' and ../../../../ldp-signaling/traffic-statistics-collection='false')";
+      must "../traffic-statistics-collection='default'or (../traffic-statistics-collection!='default' and (not(../../../../bgpad-signaling/traffic-statistics-collection) or ../../../../bgpad-signaling/traffic-statistics-collection='false'))";
     }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:traffic-statistics-collection" {
     deviate delete {
-      must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and ../../traffic-statistics-collection='false' and ../../bgpad-signaling/traffic-statistics-collection='false')";
+      must ".='false'or (.='true' and (not(../../traffic-statistics-collection) or ../../traffic-statistics-collection='false') and (not(../../bgpad-signaling/traffic-statistics-collection) or ../../bgpad-signaling/traffic-statistics-collection='false'))";
     }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:traffic-statistics-collection" {
     deviate add {
-      must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and ../../bgpad-signaling/traffic-statistics-collection='false')";
+      must ".='false'or (.='true' and (not(../../bgpad-signaling/traffic-statistics-collection) or ../../bgpad-signaling/traffic-statistics-collection='false'))";
     }
   }
   deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:admin-pw" {

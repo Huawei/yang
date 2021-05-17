@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 
 /*
@@ -82,6 +82,9 @@ module huawei-netconf-sync {
   import ietf-netconf {
     prefix nc;
   }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
   import huawei-extension {
     prefix ext;
   }  
@@ -101,11 +104,11 @@ module huawei-netconf-sync {
     "Netconf synchronization operation to get the complete config and state data and the difference,
      Private features sync-full and sync-increment supported by the schema are added to the YANG file to follow the standard method.";
   
-  revision 2019-05-25 {
+  revision 2020-07-02 {
     description
       "Initial revision.";
     reference
-      "Huawei private.";	  
+      "Huawei private.";
   }
   ext:task-name "netconf";
   typedef synchronization-status {
@@ -235,7 +238,7 @@ module huawei-netconf-sync {
         description
           "Cipher DES.";
       }
-      enum "3des" {
+      enum "des3" {
         value 1;
         description
           "Cipher TripleDES.";
@@ -371,7 +374,7 @@ module huawei-netconf-sync {
   container synchronization {
     config false;
     description
-      "CANNOT_FIND_CONTAINER_NAME:synchronization in config file.";
+      "Data nodes for sync operation progress query.";
       container query-statuss {
         description
           "List of data nodes for query the progress status of sync-full operation.";
@@ -386,19 +389,19 @@ module huawei-netconf-sync {
           }
           leaf app-num {
             type uint32;
-            ext:support-filter "true";				
+            ext:support-filter "true";
             description
               "Total number of applications queried in the sync-full request.";
           }
           leaf status {
             type synchronization-status;
-            ext:support-filter "true";				
+            ext:support-filter "true";
               description
                 "Sync-full operation query status.";
           }
           leaf progress {
             type percent;
-            ext:support-filter "true";				
+            ext:support-filter "true";
             description
               "Progress percentage of the sync-full operation query.";
           }
@@ -406,7 +409,7 @@ module huawei-netconf-sync {
             type string {
               length "1..63";
             }
-            ext:support-filter "true";				
+            ext:support-filter "true";
             description
               "Name of application which is being queried.";
           }
@@ -414,13 +417,13 @@ module huawei-netconf-sync {
             type string {
               length "1..32";
             }
-            ext:support-filter "true";				
+            ext:support-filter "true";
             description
               "Name of virtual system which is being queried.";
           }
           leaf in-progress-vs-id {
             type uint32;
-            ext:support-filter "true";				
+            ext:support-filter "true";
             description
               "Identifier of virtual system which is being queried.";
           }
@@ -447,7 +450,7 @@ module huawei-netconf-sync {
               }
               leaf vs-id {
                 type uint32;
-                ext:support-filter "true";					
+                ext:support-filter "true";
                   description
                     "Identifier of virtual system in which application query is success.";
               }
@@ -484,7 +487,7 @@ module huawei-netconf-sync {
                 type string {
                   length "1..512";
                 }
-                ext:support-filter "true";					
+                ext:support-filter "true";
                 description
                   "Query failure error message.";
               }
@@ -506,13 +509,13 @@ module huawei-netconf-sync {
           }
           leaf status {
             type synchronization-status;
-            ext:support-filter "true";				
+            ext:support-filter "true";
             description
               "Sync-full operation file transfer status.";
           }
           leaf progress {
             type percent;
-            ext:support-filter "true";				
+            ext:support-filter "true";
             description
               "Progress percentage of the sync-full file transfer.";
           }
@@ -520,7 +523,7 @@ module huawei-netconf-sync {
             type string {
               length "1..512";
             }
-            ext:support-filter "true";				
+            ext:support-filter "true";
             description
               "Query failure error message.";
           }
@@ -539,102 +542,104 @@ module huawei-netconf-sync {
           type string {
             length "1..253";
           }
-          mandatory true;	  
+          mandatory true;
           description
             "File transfer user name.";
         }
         leaf password {
-          type password;
-          mandatory true;		  
+          type pub-type:password;
+          mandatory true; 
           description
             "File transfer password.";
         }
         leaf target-addr {
           type inet:ip-address;
-          mandatory true;		  
+          mandatory true;
           description
             "File transfer target ip address.";
         }
         leaf path {
           type string {
             length "1..255";
-          }		  
+          }
           description
             "File transfer destination path.";
         }
         leaf port-number {
-          type inet:port-number;			  
+          type inet:port-number;
           description
             "File transfer port number.";
         }
         leaf vpn-instance-name {
           type string {
             length "1..31";
-          }		  
+          }
           description
             "File transfer vpn instance name.";
         }
       }
       leaf transfer-protocol {
         type sync-file-transfer-protocol;
-        default "ftp";		
+        default "ftp";
         description
           "Sync-full zip file transfer protocol.";
       }
       leaf transfer-method {
         type sync-file-transfer-method;
-        default "auto";		
+        default "auto";
         description
           "Sync-full zip file transfer method, it will auto, manual.";
       }
       leaf file-save-time {
+        when "(../transfer-method = 'manual')";
         type uint32 {
           range "1..20";
         }
-        units min;		
+        units min;
         description
           "Sync-full file save time in minutues.";
       }
       container secure-transfer-options {
+        when "(../transfer-protocol = 'sftp')";
         description
           "Configure transfer options for secure target.";
         leaf prefer-kex {
-          type sync-sftp-key-ex-alg;			  
+          type sync-sftp-key-ex-alg;
           description
             "Prefer-kex.";
         }
         leaf prefer-stoc-cipher {
-          type sync-sftp-cipher-alg;			  
+          type sync-sftp-cipher-alg;
           description
             "Prefer-stoc-cipher.";
         }
         leaf prefer-ctos-cipher {
-          type sync-sftp-cipher-alg;			  
+          type sync-sftp-cipher-alg;
           description
             "Prefer-ctos-cipher.";
         }
         leaf prefer-stoc-hmac {
-          type sync-sftp-hmac-alg;			  
+          type sync-sftp-hmac-alg;
           description
             "Prefer-stoc-hmac.";
         }
         leaf prefer-ctos-hmac {
-          type sync-sftp-hmac-alg;		  
+          type sync-sftp-hmac-alg;
           description
             "Prefer-ctos-hmac.";
         }
         leaf compression-type-ctos {
-          type sync-sftp-compress-alg;		  
+          type sync-sftp-compress-alg;
           description
             "Compression-type-ctos.";
         }
         leaf compression-type-stoc {
-          type sync-sftp-compress-alg;			  
+          type sync-sftp-compress-alg;
           description
             "Compression-type-stoc.";
         }
         leaf force-receive-pubkey {
-          type sync-force-pubkey;		  
+          type sync-force-pubkey;
           description
             "Force-receive-pubkey.";
         }
@@ -643,12 +648,12 @@ module huawei-netconf-sync {
         type string {
           length "1..32";
         }
-        mandatory true;		
+        mandatory true;
         description
           "Sync-full zip file name prefix.";
       }
       leaf app-err-operation {
-        type sync-error-option;		
+        type sync-error-option;
         description
           "Sync-full app error operation, To continue or stop if any app query results in error.";
       }
@@ -684,7 +689,7 @@ module huawei-netconf-sync {
           range "1..5";
         }
         units min;
-        default "5";		
+        default "5";
         description
           "Sync-full operation file transfer result saved time in minutes.";
       }
@@ -712,7 +717,9 @@ module huawei-netconf-sync {
         description
           "Configure target information to transfer the sync-increment file.";
         leaf flow-id {
-          type uint32;
+          type uint32 {
+            range "1..max";
+          }
           mandatory true;
           description
             "Target flow id.";
@@ -722,7 +729,12 @@ module huawei-netconf-sync {
         description
           "Configure source information to transfer the sync-increment file.";
         leaf flow-id {
-          type uint32;
+          type uint32 {
+            range "1..max";
+          }
+          must "not(../../target/flow-id) or (../../target/flow-id and ../flow-id<../../target/flow-id)" {
+            error-message "The source flow-id must be less than the target flow-id.";
+          }
           mandatory true;
           description
             "Source flow id.";

@@ -27,11 +27,11 @@ module huawei-netconf-proxy {
     reference
       "Huawei private.";
   }
-  ext:task-name "netconf";
+     
   container proxy {
     config false;
       description
-        "CANNOT_FIND_CONTAINER_NAME:proxy in config file.";
+        "Container for NETCONF Proxy.";
       
     list target-list {
       key "target";
@@ -65,4 +65,5 @@ module huawei-netconf-proxy {
       }           
     }
   }
+  ext:task-name "netconf";
 }

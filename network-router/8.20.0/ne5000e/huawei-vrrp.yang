@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-vrrp {
   namespace "urn:huawei:yang:huawei-vrrp";
@@ -45,6 +45,12 @@ module huawei-vrrp {
     "Global VRRP configuration.";
   revision 2020-02-15 {
     description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-27 {
+    description
       "Initial revision.";
     reference
       "Huawei private.";
@@ -70,22 +76,22 @@ module huawei-vrrp {
       enum "lbrg" {
         value 3;
         description
-          "LBRG VRRP.";
+          "Load-balance redundancy group VRRP.";
       }
       enum "lbrg-mem" {
         value 4;
         description
-          "LBRG member VRRP.";
+          "Load-balance redundancy group member VRRP.";
       }
       enum "mem-lbrg" {
         value 5;
         description
-          "Member LBRG VRRP.";
+          "Member of load-balance redundancy group VRRP.";
       }
       enum "mem-lbrg-mem" {
         value 6;
         description
-          "Member LBRG Member VRRP.";
+          "Member of load-balance redundancy group Member VRRP.";
       }
       enum "unicast" {
         value 7;
@@ -94,7 +100,7 @@ module huawei-vrrp {
       }
     }
     description
-      "VRRP type is like normal/admin/member.";
+      "VRRP group type.";
   }
   typedef vrrp-bfd-type {
     type enumeration {
@@ -115,7 +121,7 @@ module huawei-vrrp {
       }
     }
     description
-      "VRRP bfd type is like normal/link/peer.";
+      "The type of VRRP track BFD.";
   }
   typedef vrrp-track-mode {
     type enumeration {
@@ -138,22 +144,22 @@ module huawei-vrrp {
       enum "down" {
         value 0;
         description
-          "Bfd state down.";
+          "BFD state down.";
       }
       enum "up" {
         value 1;
         description
-          "Bfd state up.";
+          "BFD state up.";
       }
       enum "admin-down" {
         value 2;
         description
-          "Bfd state admindown.";
+          "BFD state admindown.";
       }
       enum "unknow" {
         value 3;
         description
-          "Bfd state unknow.";
+          "BFD state unknow.";
       }
     }
     description
@@ -178,7 +184,7 @@ module huawei-vrrp {
       }
     }
     description
-      "VRRP oper state is like initialize/backup/master.";
+      "VRRP operation state is like initialize/backup/master.";
   }
   typedef vrrp6cksm-mode {
     type enumeration {
@@ -201,22 +207,22 @@ module huawei-vrrp {
       enum "none" {
         value 0;
         description
-          "None.";
+          "No authentication mode.";
       }
       enum "simple" {
         value 1;
         description
-          "Simple.";
+          "Simple authentication mode.";
       }
       enum "md5" {
         value 2;
         description
-          "MD5.";
+          "MD5 authentication mode.";
       }
       enum "hmac-sha256" {
         value 3;
         description
-          "SHA256.";
+          "SHA256 authentication mode.";
       }
     }
     description
@@ -227,17 +233,17 @@ module huawei-vrrp {
       enum "v3-only" {
         value 0;
         description
-          "Only VRRPv3 Advertisement packets are sent.";
+          "Only VRRPv3 advertisement packets are sent.";
       }
       enum "v2v3-both" {
         value 1;
         description
-          "Both VRRPv2 and VRRPv3 Advertisement packets are sent.";
+          "Both VRRPv2 and VRRPv3 advertisement packets are sent.";
       }
       enum "v2-only" {
         value 2;
         description
-          "Only VRRPv2 Advertisement packets are sent.";
+          "Only VRRPv2 advertisement packets are sent.";
       }
     }
     description
@@ -402,21 +408,25 @@ module huawei-vrrp {
   }
   augment "/ni:network-instance/ni:instances/ni:instance" {
     description
-      "VRRP configurations on l3vpn.";
+      "VRRP configurations on L3VPN.";
     container vrrp {
+      status deprecated;
       description
         "Configure VRRP backup groups under network-instance.";
       container groups {
+        status deprecated;
         description
-          "List of VRRP backup groups.";
+          "List of all VRRP backup groups.";
         list group {
           key "id if-name";
+          status deprecated;
           description
             "Configure VRRP operations on a device. It lists a series of VRRP operation entries. You can use this table to query the VRRP configuration on the device. In addition, you can create virtual router instances and modify the configuration.";
           leaf id {
             type uint8 {
               range "1..255";
             }
+            status deprecated;
             description
               "VRRP backup group ID.";
           }
@@ -425,6 +435,7 @@ module huawei-vrrp {
                 path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
               }
               must "../../../../ni:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name";
+              status deprecated;
               description
                 "Name of the outbound interface of a BFD session. This parameter is available only when the type of the detected link is IP or LDP LSP. If only the destination IP address is specified, multi-hop routes are detected. If both the destination IP address and outbound interface name are specified, single-hop links are detected. That is, a fixed route is detected, with the interface where the BFD session resides as the outbound interface and the destination IP address as the next hop address.";
           }
@@ -433,22 +444,25 @@ module huawei-vrrp {
               range "1..254";
             }
             default "100";
+            status deprecated;
             description
-              "Configured VRRP priority. The value ranges from 1 to 254. A larger value indicates a higher priority.";
+              "Configured VRRP priority. A larger value indicates a higher priority.";
           }
           leaf preempt-mode {
             type boolean;
             default "true";
+            status deprecated;
             description
-              "Enable/disable whether a high-priority router can preempt the Master state. By default, a high-priority router can preempt the Master state.";
+              "Enable/disable whether a high-priority router can preempt the master state.";
           }
           leaf delay-time {
             when "../preempt-mode='true'";
             type uint16 {
-              range "0..3600";
+              range "0..10800";
             }
             units s;
             default "0";
+            status deprecated;
             description
               "Preemption delay.";
           }
@@ -458,6 +472,7 @@ module huawei-vrrp {
             }
             units "ms";
             default "1000";
+            status deprecated;
             description
               "Configure an interval (in milliseconds) at which the master sends VRRP advertisement packets. This interval must be a multiple of 1000. If the device supports fast advertisement sending, this interval can be set to 100ms 200ms or 500ms.";
           }
@@ -466,6 +481,7 @@ module huawei-vrrp {
             type boolean;
             must "../authentication-mode='simple' and ../authentication-key";
             default "false";
+            status deprecated;
             description
               "Enable/disable selecting the display mode of an authentication key.";
           }
@@ -476,13 +492,15 @@ module huawei-vrrp {
               pattern '(\S+.*\S+|\S*)';
             }
             must "(../authentication-mode='none' and not(../authentication-key)) or (not(../authentication-mode='none') and ../authentication-key)";
+            status deprecated;
             description
-              "Authentication key, which is set based on the authentication type. Value description: If non-authentication is specified, the value is empty. If simple authentication, MD5 authentication, or HMAC-SHA256 authentication is specified, the value is a plaintext password with the length ranging from 1 to 8 bytes or a ciphertext password with the corresponding length.";
+              "Authentication key, which is set based on the authentication type. Value description: If non-authentication is specified, the value is empty. If simple authentication, MD5 authentication, or HMAC-SHA256 authentication is specified, the value is a string with the length ranging from 1 to 8 bytes or a ciphertext password with the corresponding length.";
           }
           leaf authentication-mode {
             type vrrpauthen-mode;
             must "((not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../if-name]/ifm:type='LoopBack') and not(../authentication-mode='hmac-sha256')) or ((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../if-name]/ifm:type='LoopBack') and not(../authentication-mode='simple'))) and ((../authentication-mode='none' and not(../authentication-key)) or (not(../authentication-mode='none') and ../authentication-key))";
             default "none";
+            status deprecated;
             description
               "Authentication type used for VRRP packet exchanges between virtual routers. The values are as follows: noAuthentication, simpleTextPassword, md5Authentication. The default value is noAuthentication.";
           }
@@ -491,12 +509,14 @@ module huawei-vrrp {
               range "3..10";
             }
             default "3";
+            status deprecated;
             description
-              "Set the hello packet sending interval multiplier. The value ranges from 3 to 10.The default value is 3.";
+              "Set the hello packet sending interval multiplier.";
           }
           leaf backup-forward {
             type boolean;
             default "false";
+            status deprecated;
             description
               "Enable/disable VRRP backup forward mode.";
           }
@@ -504,6 +524,7 @@ module huawei-vrrp {
             when "../admin-flag";
             type boolean;
             default "false";
+            status deprecated;
             description
               "Enable/disable VRRP fast resume mode.";
           }
@@ -511,13 +532,16 @@ module huawei-vrrp {
             when "not(/vrrp:vrrp/vrrp:global/vrrp:version='v2')";
             type vrrp-v3-sendmode;
             default "v3-only";
+            status deprecated;
             description
               "VRRP advertisement packet mode on the interface.";
           }
           choice vrrp-type {
+            status deprecated;
             description
               "Type of VRRP.";
             case member-vrrp {
+              status deprecated;
               description
                 "Member VRRP.";
               leaf admin-id {
@@ -525,23 +549,27 @@ module huawei-vrrp {
                   range "1..255";
                 }
                 must "../admin-if-name";
+                status deprecated;
                 description
-                  "Tracked mVRRP ID.";
+                  "Tracked MVRRP ID.";
               }
               leaf admin-if-name {
                 type leafref {
                   path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
                 }
                 must "../admin-id";
+                status deprecated;
                 description
-                  "Tracked mVRRP interface name.";
+                  "Tracked MVRRP interface name.";
               }
             }
             case admin-vrrp {
+              status deprecated;
               description
                 "Admin VRRP.";
               leaf admin-flag {
                 type empty;
+                status deprecated;
                 description
                   "Management VRRP.";
               }
@@ -549,6 +577,7 @@ module huawei-vrrp {
                 when "../admin-flag";
                 type boolean;
                 default "false";
+                status deprecated;
                 description
                   "Enable/disable ignoring an interface down event.";
               }
@@ -558,14 +587,16 @@ module huawei-vrrp {
             type vrrp-type;
             default "normal";
             config false;
+            status deprecated;
             description
               "Type of a VRRP backup group.";
           }
           leaf state {
             type vrrp-oper-state;
             config false;
+            status deprecated;
             description
-              "Running status of the virtual router. This object has three defined values:
+              "Running status of the virtual router. This object has three defined values.
 Initialize: The virtual router is waiting for a startup event.
 Backup: The virtual router is monitoring the availability of the master router.
 Master: The virtual router is forwarding packets for IP addresses that are associated with this router.";
@@ -573,25 +604,30 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
           leaf create-time {
             type yang:date-and-time;
             config false;
+            status deprecated;
             description
               "Time when the VRRP backup group was created.";
           }
           leaf last-change-time {
             type yang:date-and-time;
             config false;
+            status deprecated;
             description
               "Time when the status of the VRRP backup group last changed.";
           }
           container virtual-ips {
+            status deprecated;
             description
               "List of IP address table related to virtual routers. A VRRP backup group can have 0 to 16 extended virtual IP addresses.";
             list virtual-ip {
               key "address";
               max-elements  "16";
+              status deprecated;
               description
                 "Configure virtual IP address configuration. A VRRP backup group can have 0 to 16 extended virtual IP addresses.";
               leaf address {
                 type inet:ipv4-address-no-zone;
+                status deprecated;
                 description
                   "Virtual IP address.";
               }
@@ -599,23 +635,27 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
           }
           container track-interfaces {
             when "not(../admin-id)";
+            status deprecated;
             description
               "List of interfaces tracked by a VRRP backup group. A VRRP backup group can track a maximum of 16 interfaces.";
             list track-interface {
               key "ifname";
               max-elements  "16";
+              status deprecated;
               description
                 "Configure VRRP backup group tracking interface.";
               leaf ifname {
                 type leafref {
                   path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
                 }
+                status deprecated;
                 description
                   "Name of the interface tracked by the VRRP backup group.";
               }
               leaf track-mode {
                 type vrrptrack-mode;
                 default "reduce";
+                status deprecated;
                 description
                   "Mode in which the VRRP backup group tracks the interface.";
               }
@@ -624,6 +664,7 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
                   range "1..255";
                 }
                 default "10";
+                status deprecated;
                 description
                   "Value by which the priority increases or reduces when the VRRP backup group tracks the interface.";
               }
@@ -631,22 +672,26 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
           }
           container track-bfds {
             when "not(../admin-id)";
+            status deprecated;
             description
               "List of BFD sessions tracked by the VRRP backup group.";
             list track-bfd {
               key "session-name session-type";
               max-elements  "17";
+              status deprecated;
               description
                 "Configure VRRP backup group tracking BFD session.";
               leaf session-name {
                 type leafref {
                   path "/bfd:bfd/bfd:sessions/bfd:session/bfd:name";
                 }
+                status deprecated;
                 description
                   "Name of the BFD session tracked by the VRRP backup group.";
               }
               leaf session-type {
                 type vrrp-bfd-type;
+                status deprecated;
                 description
                   "Type of the BFD session tracked by the VRRP backup group.";
               }
@@ -654,6 +699,7 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
                 when "../session-type='normal'";
                 type vrrp-track-mode;
                 default "reduce";
+                status deprecated;
                 description
                   "Mode in which the VRRP backup group tracks the BFD session.";
               }
@@ -663,20 +709,23 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
                   range "1..255";
                 }
                 default "10";
+                status deprecated;
                 description
-                  "Value by which the priority increases or reduces when the VRRP backup group tracks the common BFD session. The default value is 10.";
+                  "Value by which the priority increases or reduces when the VRRP backup group tracks the common BFD session.";
               }
               leaf session-id {
                 type uint32 {
                   range "1..32768";
                 }
                 config false;
+                status deprecated;
                 description
                   "ID of the BFD session tracked by the VRRP backup group.";
               }
               leaf session-state {
                 type vrrp-track-bfd-state;
                 config false;
+                status deprecated;
                 description
                   "State of the BFD session tracked by the VRRP backup group.";
               }
@@ -693,13 +742,14 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
       description
         "Configure virtual router redundancy protocol.";
       container backup-groups {
+        when "../../ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:id";
         description
           "Configure VRRP backup groups under interface. The configured attributes apply to all backup groups on the interface.";
         leaf ttlcheck-flag {
           type boolean;
           default "true";
           description
-            "Enable/disable TTL check which is performed for a received VRRP Advertisement packet. The check is successful only when the TTL value is 255. By default, a TTL check is performed.";
+            "Enable/disable TTL check which is performed for a received VRRP advertisement packet. The check is successful only when the TTL value is 255. By default, a TTL check is performed.";
         }
         leaf recover-delay {
           type uint16 {
@@ -746,6 +796,7 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
           "List of service interfaces.";
         list track-admin{
           key "id if-name";
+          max-elements "1";
           description
             "Configure service interface.";
           leaf id {
@@ -753,14 +804,14 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
               range "1..255";
             }
             description
-              "Tracked mVRRP ID.";
+              "Tracked MVRRP ID.";
           }
           leaf if-name {
             type leafref {
               path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
             }
             description
-              "Tracked mVRRP interface name.";
+              "Tracked MVRRP interface name.";
           }
         }
       }
@@ -806,7 +857,7 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
             leaf delay-time {
               when "../preempt-enable='true'";
               type uint16 {
-                range "0..3600";
+                range "0..10800";
               }
               units s;
               default "0";
@@ -846,14 +897,14 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
             }
             must "(../authentication-mode='none' and not(../authentication-key)) or (not(../authentication-mode='none') and ../authentication-key)";
             description
-              "Authentication key, which is set based on the authentication type. Value description: If non-authentication is specified, the value is empty. If simple authentication, MD5 authentication, or HMAC-SHA256 authentication is specified, the value is a plaintext password with the length ranging from 1 to 8 bytes or a ciphertext password with the corresponding length.";
+              "Authentication key, which is set based on the authentication type. Value description: If non-authentication is specified, the value is empty. If simple authentication, MD5 authentication, or HMAC-SHA256 authentication is specified, the value is a string with the length ranging from 1 to 8 bytes or a ciphertext password with the corresponding length.";
           }
           leaf link-bfddown-num {
             type uint8 {
               range "1..8";
             }
             description
-              "Specify the threshold for the number of link BFD sessions in the Down state tracked by the mVRRP backup group.";
+              "Specify the threshold for the number of link BFD sessions in the Down state tracked by the MVRRP backup group.";
           }
           leaf hold-multiper {
             type uint8 {
@@ -895,7 +946,7 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
                 }
                 must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../vrrp:admin-if-name]/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group[vrrp:id=current()]/vrrp:admin-flag";
                 description
-                  "Tracked mVRRP ID.";
+                  "Tracked MVRRP ID.";
               }
               leaf admin-if-name {
                 type leafref {
@@ -903,7 +954,7 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
                 }
                 must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group[vrrp:id=current()/../vrrp:admin-id]/vrrp:admin-flag";
                 description
-                  "Tracked mVRRP interface name.";
+                  "Tracked MVRRP interface name.";
               }
               leaf unflowdown {
                 type boolean;
@@ -949,7 +1000,7 @@ Master: The virtual router is forwarding packets for IP addresses that are assoc
             type vrrp-oper-state;
             config false;
             description
-              "Running status of the virtual router. This object has three defined values:
+              "Running status of the virtual router. This object has three defined values.
 Initialize: The virtual router is waiting for a startup event.
 Backup: The virtual router is monitoring the availability of the master router.
 Master: The virtual router is forwarding packets for IP addresses that are associated with this router.";

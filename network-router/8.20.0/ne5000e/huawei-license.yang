@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-license {
   namespace "urn:huawei:yang:huawei-license";
@@ -14,6 +14,9 @@ module huawei-license {
   import huawei-extension {
     prefix ext;
   }
+  import ietf-inet-types {
+    prefix inet;
+  }
 
   organization
     "Huawei Technologies Co., Ltd.";
@@ -26,7 +29,7 @@ module huawei-license {
      Email: support@huawei.com";
   description
     "Proof of permission granted.";
-  revision 2019-06-11 {
+  revision 2020-03-07 {
     description
       "Init revision.";
     reference
@@ -111,6 +114,111 @@ module huawei-license {
     description
       "Type of license state.";
   }
+  typedef item-status-type {
+    type enumeration {
+      enum "default" {
+        value 0;
+        description
+          "To indicate the license item status, the value is 'default'.";
+      }
+      enum "trial" {
+        value 1;
+        description
+          "To indicate the license item status, the value is 'trial'.";
+      }
+      enum "normal" {
+        value 2;
+        description
+          "To indicate the license item status, the value is 'normal'.";
+      }
+      enum "emergency" {
+        value 3;
+        description
+          "To indicate the license item status, the value is 'emergency'.";
+      }
+      enum "demo" {
+        value 4;
+        description
+          "To indicate the license item status, the value is 'demo'.";
+      }
+      enum "inactive" {
+        value 5;
+        description
+          "To indicate the license item status, the value is 'inactive'.";
+      }
+    }
+    description
+      "Type of license item status.";
+  }
+  typedef item-type {
+    type enumeration {
+      enum "resource" {
+        value 0;
+        description
+          "The resource of license item.";
+      }
+      enum "function" {
+        value 1;
+        description
+          "The function of license item.";
+      }
+    }
+    description
+      "Type of license item.";
+  } 
+  typedef enable-status {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "The disable status.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "The enable status.";
+      }
+      enum "not-supported" {
+        value 2;
+        description
+          "The not supported status.";
+      }
+    }
+    description
+      "Type of enable status.";
+  } 
+  typedef mode-type {
+    type enumeration {
+      enum "common" {
+        value 1;
+        description
+          "Common type.";
+      }
+      enum "cloud" {
+        value 2;
+        description
+          "Cloud type.";
+      }
+    }
+    description
+      "Type of license mode.";
+  }
+  typedef register-state {
+    type enumeration {
+      enum "register" {
+        value 1;
+        description
+          "Register state.";
+      }
+      enum "unregister" {
+        value 2;
+        description
+          "Unregister state.";
+      }
+    }
+    description
+      "The register state.";
+  }
   container license {
     description
       "Proof of permission granted.";
@@ -140,9 +248,7 @@ module huawei-license {
             "The name of a license file.";
         }
         leaf active-state {
-          type string {
-            length "1..49";
-          }
+          type state-type;
           config false;
           description
             "To indicate the license activating state of the system, the value can be 'normal' or 'default'.";
@@ -162,6 +268,12 @@ module huawei-license {
           config false;
           description
             "The License ESN.";
+        }
+        leaf license-mode {
+          type mode-type;
+          config false;
+          description
+            "License mode.";
         }
       }
     }
@@ -213,9 +325,7 @@ module huawei-license {
             "The usage value of a license item.";
         }
         leaf status {
-          type string {
-            length "1..49";
-          }
+          type item-status-type;
           config false;
           description
             "The status of a license item.";
@@ -229,17 +339,13 @@ module huawei-license {
             "The expired date of a license item.";
         }
         leaf type {
-          type string {
-            length "1..49";
-          } 
+          type item-type;
           config false;
           description
             "The type of a license item.";
         }         
         leaf trial-state {
-          type string {
-            length "1..15";
-          }
+          type enable-status;
           config false;
           description
             "Trial status of a control item.";
@@ -256,8 +362,8 @@ module huawei-license {
           description
             "Remaining trial times of a license control item.";
         }
-	    }
-	  }
+      }
+    }
     container license-sale-items {
       config false;
       description
@@ -336,9 +442,7 @@ module huawei-license {
                 "The usage value of a license item.";
             }
             leaf status {
-              type string {
-                length "1..49";
-              }
+              type item-status-type;
               config false;
               description
                 "The status of a license item.";
@@ -352,17 +456,13 @@ module huawei-license {
                 "The expired date of a license item.";
             }
             leaf type {
-              type string {
-                length "1..49";
-              } 
+              type item-type;
               config false;
               description
                 "The type of a license item.";
             }         
             leaf trial-state {
-              type string {
-                length "1..15";
-              }
+              type enable-status;
               config false;
               description
               "Trial status of a control item.";
@@ -478,9 +578,7 @@ module huawei-license {
                     "The usage value of a license item.";
                 }
                 leaf status {
-                  type string {
-                    length "1..49";
-                  }
+              type item-status-type;
                   config false;
                   description
                     "The status of a license item.";
@@ -494,17 +592,13 @@ module huawei-license {
                     "The expired date of a license item.";
                 }
                 leaf type {
-                  type string {
-                    length "1..49";
-                  } 
+              type item-type;
                   config false;
                   description
                     "The type of a license item.";
                 }         
                 leaf trial-state {
-                  type string {
-                    length "1..15";
-                  }
+              type enable-status;
                   config false;
                   description
                   "Trial status of a control item.";
@@ -839,6 +933,40 @@ module huawei-license {
         }
       }
     }
+    container cloud-servers {
+      description
+        "List of cloud license servers.";
+      list cloud-server {
+        key "server-ip server-port";
+        max-elements  "1";
+        description
+          "Configure cloud license server.";
+        leaf server-ip {
+		  type inet:ipv4-address-no-zone;
+          description
+            "The IP address of cloud license server.";
+        }
+        leaf server-port {
+          type uint32;
+          description
+            "The port of cloud license server.";
+        }
+        leaf register-state {
+          type register-state;
+          config false;
+          description
+            "The register state with cloud license server.";
+        }
+        leaf policy-name {
+          type string {
+            length "1..255";
+          }
+          config false;
+          description
+            "The policy name.";
+        }
+    }
+  }
   }
   rpc license-active {
     description
@@ -924,7 +1052,7 @@ module huawei-license {
   }
   rpc startup-paf {
     description
-      "Configure an existing paf file as the startup paf file.";
+      "Configure an existing PAF file as the startup PAF file.";
     input {
       leaf filename {
         type string {
@@ -932,12 +1060,41 @@ module huawei-license {
         }
         mandatory true;
         description
-          "Name of a paf file.";
+          "Name of a PAF file.";
       }
     }
   }
   rpc license-emergency {
     description
       "To activate license emergency mode.";
+  }
+  rpc license-assign {
+    description
+      "Assign cloud license.";
+    input {
+      leaf item-name {
+        type string {
+          length "1..31";
+        }
+        description
+          "License item.";
+      }
+      leaf item-num {
+        type uint32;
+        description
+          "License number.";
+      }
+    }
+  }
+  rpc license-switch-mode {
+    description
+      "Switch license mode.";
+    input {
+      leaf license-mode {
+        type mode-type;
+        description
+          "License mode.";
+      }
+    }
   }
 }

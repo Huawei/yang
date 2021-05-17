@@ -34,7 +34,7 @@ module huawei-clocksync-1588v2-deviations-NE5000E {
   deviation /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-send-delay {
     deviate replace {
        type int32{
-       range 0..1000;
+       range 0..10000;
        }
     }
   }
@@ -47,6 +47,10 @@ module huawei-clocksync-1588v2-deviations-NE5000E {
     }
   }
 
+  deviation /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:uhpc-enable {
+    deviate not-supported;
+  }
+  
   deviation /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-active-lic-slots {
     deviate not-supported;
   }
@@ -57,7 +61,7 @@ module huawei-clocksync-1588v2-deviations-NE5000E {
 
   deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-port-advance/clocksync-1588v2:port-cfg-state {
     deviate add{
-      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:set-port-state-enable='true') and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='none' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='bc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='oc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='tcandbc')) or (../clocksync-1588v2:port-cfg-state='initializing')";
+      must "((not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') and not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106')) and (../clocksync-1588v2:port-cfg-state!='initializing') and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:set-port-state-enable='true' and not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='e2etc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='p2ptc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='e2etcoc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='p2ptcoc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc'))) or (../clocksync-1588v2:port-cfg-state='initializing')";            
     }
 
     deviate add{
@@ -82,6 +86,13 @@ module huawei-clocksync-1588v2-deviations-NE5000E {
       type leafref{
         path "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-name";
       }
+    }
+  }
+  
+  deviation /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-signal {
+    deviate add{
+      must "((../bits-signal='1pps' or ../bits-signal='dcls') and (../bits-direction='in' or ../bits-direction='out')) or ((../bits-signal='dcls' or ../bits-signal='2mbps') and (../bits-direction='both'))";
+      must "not(../bits-name='bits2' and ../bits-signal='dcls')";
     }
   }
 

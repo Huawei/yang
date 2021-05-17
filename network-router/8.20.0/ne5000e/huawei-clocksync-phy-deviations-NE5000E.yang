@@ -29,30 +29,30 @@ module huawei-clocksync-phy-deviations-NE5000E {
       "Huawei private.";
   }
 
-typedef input-ssm-level-deviations {
+  typedef input-ssm-level-deviations {
     type enumeration {
       enum "prc" {
-	     value 2;
+        value 2;
         description
           "SSM level of the G.811 clock (PRC).";
       }
       enum "ssua" {
-	    value 4;
+        value 4;
         description
           "G.812 transit clock (SSUA).";
       }
       enum "ssub" {
-	    value 8;
+        value 8;
         description
           "G.812 local clock (SSUB).";
       }
       enum "sec" {
-	    value 11;
+        value 11;
         description
           "SDH (sec).";
       }
       enum "dnu" {
-	    value 15;
+        value 15;
         description
           "The quality level of the clock source is unavailable (DNU).";
       }
@@ -60,30 +60,31 @@ typedef input-ssm-level-deviations {
     description
       "SSM level type.";
   }
-typedef ssm-level-deviations{
+  
+  typedef ssm-level-deviations{
     type enumeration {
       enum "none" {
-	    value 16;
+        value 16;
         description
           "Invalid SSM level.";
       }
       enum "prc" {
-	     value 2;
+        value 2;
         description
           "SSM level of the G.811 clock (PRC).";
       }
       enum "ssua" {
-	    value 4;
+        value 4;
         description
           "G.812 transit clock (SSUA).";
       }
       enum "ssub" {
-	    value 8;
+        value 8;
         description
           "G.812 local clock (SSUB).";
       }
       enum "sec" {
-	    value 11;
+        value 11;
         description
           "SDH (sec).";
       }
@@ -91,6 +92,7 @@ typedef ssm-level-deviations{
     description
       "SSM level type.";
   }
+  
   deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:ssm-control-on {
     deviate replace {
       default "false";
@@ -102,44 +104,62 @@ typedef ssm-level-deviations{
       default "true";
     }
   }
-deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:max-out-ssm-2m1{
-  deviate replace {
-    type clocksync-phy-devs-NE5000E:ssm-level-deviations;
+  
+  deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:max-out-ssm-2m1{
+    deviate replace {
+      type clocksync-phy-devs-NE5000E:ssm-level-deviations;
+    }
   }
-}
-deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:max-out-ssm-system{
-  deviate replace {
-    type clocksync-phy-devs-NE5000E:ssm-level-deviations;
+  
+  deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:max-out-ssm-system{
+    deviate replace {
+      type clocksync-phy-devs-NE5000E:ssm-level-deviations;
+    }
   }
-}
-deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:min-out-ssm-bits{
-  deviate replace {
-    type clocksync-phy-devs-NE5000E:input-ssm-level-deviations;
+  
+  deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:min-out-ssm-bits{
+    deviate replace {
+      type clocksync-phy-devs-NE5000E:input-ssm-level-deviations;
+    }
   }
-}
-deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:ssm-unk-map{
-  deviate replace {
-    type clocksync-phy-devs-NE5000E:input-ssm-level-deviations;
+  
+  deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:ssm-unk-map{
+    deviate replace {
+      type clocksync-phy-devs-NE5000E:input-ssm-level-deviations;
+    }
   }
-}
 
-deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:cpos-ais-enable{
-  deviate not-supported;
-}
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:cpos-ais-enable{
+    deviate not-supported;
+  }
 
-deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:cpos-exc-enable{
-  deviate not-supported;
-}
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:cpos-exc-enable{
+    deviate not-supported;
+  }
 
-deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:e1-ais-enable{
-  deviate not-supported;
-}
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:e1-ais-enable{
+    deviate not-supported;
+  }
 
-deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:e1-sabit{
-  deviate not-supported;
-}
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:e1-sabit{
+    deviate not-supported;
+  }
 
-deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:internal-clock-ssm{
-  deviate not-supported;
-}
+  deviation /clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:internal-clock-ssm{
+    deviate not-supported;
+  }
+  
+  deviation /clocksync-phy:clocksync-phy/clocksync-phy:selection-sources/clocksync-phy:selection/clocksync-phy:source-name {
+    deviate add {
+      must "(((../mode='manual') or (../mode='force')) and ../source-type='sync2m-1' and not(/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source[clocksync-phy:name=current()])) or (((../mode='manual') or (../mode='force')) and ../source-type='sync2m-2' and not(/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source[clocksync-phy:name=current()])) or ((../source-type='sync2m-1') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:priority/clocksync-phy:sync2m1=0)) or ((../source-type='sync2m-2') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:priority/clocksync-phy:sync2m2=0))";
+    }
+  }
+  
+  deviation /clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source/clocksync-phy:bits-sources/clocksync-phy:signal-type{
+    deviate add{
+      must "(../signal-type='2mhz' or ../signal-type='2mbps' or ../signal-type='1pps' or ../signal-type='dcls')";
+    }
+  }
+  
+  
 }

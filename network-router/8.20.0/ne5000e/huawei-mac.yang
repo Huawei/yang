@@ -1,9 +1,15 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-mac {
   namespace "urn:huawei:yang:huawei-mac";
   prefix mac;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
   import huawei-ifm {
     prefix ifm;
   }
@@ -13,20 +19,17 @@ module huawei-mac {
   import huawei-bd {
     prefix bd;
   }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
   import huawei-l2vpn {
     prefix l2vpn;
   }
-  import huawei-ethernet {
-    prefix ethernet;
-  }  
+  import ietf-yang-types {
+    prefix yang;
+  }
   import huawei-extension {
     prefix ext;
-  }  
-  import huawei-pub-type {
-    prefix pub-type;
-  }
-  import ietf-inet-types {
-    prefix inet;
   }
   organization
     "Huawei Technologies Co., Ltd.";
@@ -39,13 +42,118 @@ module huawei-mac {
      Email: support@huawei.com";
   description
     "MAC address forwarding.";
-  revision 2019-04-23 {
+  revision 2020-08-07 {
+    description
+      "Modify uni-suppressions condition.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-04-16 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-13 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-07-08 {
     description
       "Initial revision.";
     reference
       "Huawei private.";
   }
-  ext:task-name  "mac";    
+  ext:task-name "mac";
+  typedef mac-type {
+    type enumeration {
+      enum "static" {
+        value 0;
+        description
+          "Static type.";
+      }
+      enum "black-hole" {
+        value 1;
+        description
+          "Blackhole type.";
+      }
+      enum "dynamic" {
+        value 2;
+        description
+          "Dynamic type.";
+      }
+      enum "sticky" {
+        value 3;
+        description
+          "Sticky type.";
+      }
+      enum "mux" {
+        value 4;
+        description
+          "Mux type.";
+      }
+      enum "security" {
+        value 5;
+        description
+          "Security type.";
+      }
+      enum "snooping" {
+        value 6;
+        description
+          "Snooping type.";
+      }
+      enum "tunnel" {
+        value 7;
+        description
+          "Tunnel type.";
+      }
+      enum "evn" {
+        value 9;
+        description
+          "EVN MAC address entry.";
+      }
+      enum "authen" {
+        value 10;
+        description
+          "Authen MAC address entry.";
+      }
+      enum "dynamic-black-hole" {
+        value 15;
+        description
+          "Dynamic blackhole MAC.";
+      }
+      enum "ovsdb" {
+        value 14;
+        description
+          "Ovsdb MAC address entry.";
+      }
+    }
+    description
+      "MAC type.";
+  }
+  typedef pw-role-type {
+    type enumeration {
+      enum "master" {
+        value 1;
+        description
+          "Master type.";
+      }
+      enum "slave" {
+        value 2;
+        description
+          "Slave type.";
+      }
+      enum "null" {
+        value 0;
+        description
+          "Null type.";
+      }
+    }
+    description
+      "PW role type.";
+  }
   typedef suppress-type {
     type enumeration {
       enum "broadcast" {
@@ -200,6 +308,266 @@ module huawei-mac {
         }
       }
     }	
+    container bd-dynamic-macs {
+      config false;
+      description
+        "List of displayed BD forwarding table. The query result of dynamic MAC addresses is disordered.";
+      list bd-dynamic-mac {
+        key "slot-id address bd-id pw-role";
+        description
+          "Statistics of displayed BD forwarding entry.";
+        leaf slot-id {
+          type string {
+            length "1..50";
+          }
+          description
+            "Slot number.";
+        }
+        leaf address {
+          type pub-type:mac-address {
+            length "0..255";
+          }
+          description
+            "MAC address.";
+        }
+        leaf bd-id {
+          type uint32 {
+            range "1..16777215";
+          }
+          description
+            "ID of a bridge domain.";
+        }
+        leaf pw-role {
+          type pw-role-type;
+          description
+            "PW role type.";
+        }
+        leaf type {
+          type mac-type;
+          description
+            "MAC address type of a bridge domain.";
+        }
+        leaf out-interface-name {
+          type pub-type:if-name;
+          description
+            "Outbound interface name.";
+        }
+        leaf untag {
+          type boolean;
+          description
+            "Packets without VLAN tags.";
+        }
+        leaf pe-default {
+          type boolean;
+          description
+            "PE default VLAN.";
+        }
+        leaf ce-default {
+          type boolean;
+          description
+            "CE default VLAN.";
+        }
+        leaf vid {
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Outer VLAN tag.";
+        }
+        leaf ce-vid {
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Inner VLAN tag.";
+        }
+        leaf learned-period {
+          type uint32 {
+            range "0..4294967294";
+          }
+          description
+            "Dynamic MAC holding time.";
+        }
+        leaf peer-ip {
+          type inet:ipv4-address-no-zone;
+		  ext:support-filter true;
+          description
+            "Peer IP.";
+        }
+        leaf last-change-time {
+          type yang:date-and-time;
+          description
+            "Dynamic MAC last change time.";
+        }
+        leaf peer-ipv6 {
+          type inet:ipv6-address-no-zone;
+		  ext:support-filter true;
+          description
+            "Peer IPv6 address.";
+        }
+        leaf vsi-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "VSI name.";
+        }
+        leaf account-enable {
+          type boolean;
+          description
+            "MAC acounting state.";
+        }
+        leaf destination-packet-count {
+          type uint64;
+          description
+            "Destination packet counts.";
+        }
+        leaf destination-byte-count {
+          type uint64;
+          description
+            "Destination byte counts.";
+        }
+        leaf source-packet-count {
+          type uint64;
+          description
+            "Source packet counts.";
+        }
+        leaf source-byte-count {
+          type uint64;
+          description
+            "Source byte counts.";
+        }
+      }
+    }
+    container bd-mac-total-numbers {
+      config false;
+      description
+        "List of MAC total number of bridge domain.";
+      list bd-mac-total-number {
+        key "bd-id";
+        description
+          "Statistics of MAC total number of bridge domain.";
+        leaf bd-id {
+          type uint32 {
+            range "1..16777215";
+          }
+          description
+            "ID of a bridge domain.";
+        }
+        leaf number {
+          type uint32;
+          description
+            "Total MAC address number.";
+        }
+      }
+    }
+    container mac-statistics {
+      config false;
+      description
+        "List of MAC summary.";
+      list mac-statistic {
+        key "slot-id";
+        description
+          "Statistics of MAC summary.";
+        leaf slot-id {
+          type string {
+            length "1..24";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf total {
+          type uint32;
+          description
+            "Number of total MAC addresses.";
+        }
+        leaf black-hole {
+          type uint32;
+          description
+            "Number of blackhole MAC addresses.";
+        }
+        leaf static {
+          type uint32;
+          description
+            "Number of static MAC addresses.";
+        }
+        leaf dynamic {
+          type uint32;
+          description
+            "Number of dynamic MAC addresses.";
+        }
+        leaf dynamic-local {
+          type uint32;
+          description
+            "Number of dynamic local MAC addresses.";
+        }
+        leaf dynamic-remote {
+          type uint32;
+          description
+            "Number of dynamic remote MAC addresses.";
+        }
+        leaf dynamic-trunk {
+          type uint32;
+          description
+            "Number of dynamic trunk MAC addresses.";
+        }
+        leaf oam {
+          type uint32;
+          description
+            "Number of OAM MAC addresses.";
+        }
+        leaf sticky {
+          type uint32;
+          description
+            "Number of sticky MAC addresses.";
+        }
+        leaf security {
+          type uint32;
+          description
+            "Number of security MAC addresses.";
+        }
+        leaf authen {
+          type uint32;
+          description
+            "Number of authen MAC addresses.";
+        }
+        leaf guest {
+          type uint32;
+          description
+            "Number of guest MAC addresses.";
+        }
+        leaf mux {
+          type uint32;
+          description
+            "Number of MUX MAC addresses.";
+        }
+        leaf tunnel {
+          type uint32;
+          description
+            "Number of tunnel MAC addresses.";
+        }
+        leaf snooping {
+          type uint32;
+          description
+            "Number of snooping MAC addresses.";
+        }
+        leaf evn {
+          type uint32;
+          description
+            "Number of EVN MAC addresses.";
+        }
+        leaf ovsdb {
+          type uint32;
+          description
+            "Number of ovsdb MAC addresses.";
+        }
+        leaf capacity {
+          type uint32;
+          description
+            "The capacity of MAC addresses.";
+        }
+      }
+    }
   }
   augment "/vlan:vlan/vlan:vlans/vlan:vlan" {
     description
@@ -261,7 +629,7 @@ module huawei-mac {
   }
   augment "/bd:bd/bd:instances/bd:instance" {
     description
-      "VLAN mac attribute.";
+      "MAC attribute of a BD.";
     container mac-addresss {
       description
         "List of BD forwarding entries.";
@@ -429,15 +797,30 @@ module huawei-mac {
   }
   augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls" {
     description
-      "MAC parameters on VSI.";
+      "MAC attribute on VSI.";
     container mac {
       description
-        "Configure MAC parameters on VSI.";	
+        "Configure MAC parameters on VSI.";
+      container suppression {
+        must "../../l2vpn:work-mode='normal' or ../../l2vpn:work-mode='i-vsi-b-evpn-interworking'";
+        description
+          "Configure VSI traffic suppression list.";
+        leaf inbound {
+          type empty;
+          description
+            "Inbound suppression.";
+        }
+        leaf outbound {
+          type empty;
+          description
+            "Outbound suppression.";
+        }
+      }
       container uni-suppressions {
         description
           "List of VSI traffic suppression.";
         list uni-suppression {
-          must "cir<=cbs";
+          must "../../../l2vpn:work-mode='normal'";
           key "type direction";
           description
             "Configure VSI traffic suppression.";
@@ -468,11 +851,11 @@ module huawei-mac {
             ext:dynamic-default {
               ext:default-value "../cir*(1500/8)"{
                 when "../cir<100000";
-                description "When cir less then 100000kbit/s,the default value is cir-value * (1500/8)Byte.";
+                description "When cir less than 100000kbit/s,the default value is cir-value * (1500/8)Byte.";
                 }
               ext:default-value 18750000{
                 when "../cir>=100000";
-                description "When cir more then 100000kbit/s,the default value is 100000 * (1500/8)Byte.";
+                description "When cir more than 100000kbit/s,the default value is 100000 * (1500/8)Byte.";
                 }
             }
             description
@@ -481,6 +864,7 @@ module huawei-mac {
         }
       }
       container mac-limit {
+        must "../../l2vpn:work-mode='normal' or ../../l2vpn:work-mode='i-vsi-b-evpn-interworking'";
         presence "VSI MAC address limit.";
         description
           "Enable/disable to limit VSI MAC address.";
@@ -634,11 +1018,11 @@ module huawei-mac {
             ext:dynamic-default {
               ext:default-value "../cir*(1500/8)"{
                 when "../cir<100000";
-                description "When cir less then 100000kbit/s,the default value is cir-value * (1500/8)Byte.";
+                description "When cir less than 100000kbit/s,the default value is cir-value * (1500/8)Byte.";
                 }
               ext:default-value 18750000{
                 when "../cir>=100000";
-                description "When cir more then 100000kbit/s,the default value is 100000 * (1500/8)Byte.";
+                description "When cir more than 100000kbit/s,the default value is 100000 * (1500/8)Byte.";
                 }
             }
             description

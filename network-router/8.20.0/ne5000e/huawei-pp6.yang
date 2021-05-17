@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-pp6 {
   yang-version 1;
@@ -28,7 +28,13 @@ module huawei-pp6 {
     Email: support@huawei.com";
   description
     "IPv6 related configurations.";
-  revision 2019-04-01 {
+  revision 2020-03-16 {
+    description
+      "Modify Icmp6Source.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-30 {
     description
       "Init revision.";
     reference
@@ -90,14 +96,19 @@ module huawei-pp6 {
   typedef icmp-pkt-type {
     type enumeration {
       enum "port-unreachable" {
-	    value 1;
+      value 1;
         description
           "Indicates that the packet type is port unreachable error packet.";
       }
       enum "hoplimit-exceeded" {
-	    value 2;
+      value 2;
         description
           "Indicates that the packet type is hoplimit exceeded error packet.";
+      }
+      enum "all-tracert" {
+      value 3;
+        description
+          "Indicates that the packet type is hoplimit exceeded and port unreachable error packet.";
       }
     }
     description
@@ -340,13 +351,13 @@ module huawei-pp6 {
         type switch-type;
         default "allow";
         description
-          "Switchs for all famous send types. But, the configuration in each-type-switch will be used first, if it exists. Refer to the definition in icmp6-name-type for the scope of all-famous send types.";
+          "Switches for all famous send types. But, the configuration in node each-type-switch will be used first, if it exists. Refer to the definition in type icmp6-name-type for the scope of all-famous send types.";
       }
       leaf all-famous-receive-switch {
         type switch-type;
         default "allow";
         description
-          "Switchs for all famous receive types. But, the configuration in each-type-switch will be used first, if it exists. Refer to the definition in icmp6-name-type for the scope of all-famous receive types.";
+          "Switches for all famous receive types. But, the configuration in node each-type-switch will be used first, if it exists. Refer to the definition in type icmp6-name-type for the scope of all-famous receive types.";
       }
       container each-type-switchs {
         description
@@ -389,7 +400,7 @@ module huawei-pp6 {
         }
       }
     }
-    container extension-header-filter-globals {		
+    container extension-header-filter-globals {
       description
         "Configure global IPv6 extension header filter configurations.";
       container hop-by-hop-switch {
@@ -402,7 +413,7 @@ module huawei-pp6 {
         }
         container options {
           description
-            "List of some options of IPv6 extension header switchs.";				
+            "List of some options of IPv6 extension header switch.";				
           list option {
             key "option-code";
             description
@@ -434,7 +445,7 @@ module huawei-pp6 {
         }
         container options {
           description
-            "List of some options of IPv6 extension header switchs.";		
+            "List of some options of IPv6 extension header switch.";		
           list option {
             key "option-code";
             description
@@ -466,7 +477,7 @@ module huawei-pp6 {
         }
         container options {
           description
-            "List of some options of IPv6 extension header switchs.";		
+            "List of some options of IPv6 extension header switch.";		
           list option {
             key "option-code";
             description
@@ -490,11 +501,11 @@ module huawei-pp6 {
       }
       container no-option-exh-switchs {
         description
-          "List of the IPv6 packet with no options extension header switchs.";	  
+          "List of the IPv6 packet with no options extension header switches.";	  
         list no-option-exh-switch {
           key "exh-type";		  
           description
-            "Configure the IPv6 packet with no options extension header switch.";
+            "Configure the IPv6 packet with no options extension header switches.";
           leaf exh-type {
             type extension-header-type;
             description
@@ -793,7 +804,7 @@ module huawei-pp6 {
         type uint32;
         config false;
         description
-          "Count of sent Parameter error packets.";
+          "Count of sent parameter error packets.";
       }
       leaf too-big-sent {
         type uint32;
@@ -1086,7 +1097,7 @@ module huawei-pp6 {
     }
   }
   augment "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6" {
-    when "../ifm:type!='Tunnel' and ../ifm:type!='LoopBack' and ../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-if'";  	  
+    when "../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-if'";
     description
       "All configurations of the PP6 under the interface.";
     container pp6-collection {
@@ -1099,7 +1110,10 @@ module huawei-pp6 {
       }
     }
     container extension-header-filter {
-      when "../../ifm:type!='NULL' and ../../ifm:type!='Tunnel' and ../../ifm:type!='LoopBack' and ../../ifm:type!='ServiceIf' and ../../ifm:type!='Virtual-if' and ../../ifm:type!='Cpos' and ../../ifm:type!='Cpos-Trunk' and ../../ifm:type!='Atm-Bundle' and ../../ifm:type!='Serial' and ../../ifm:type!='Trunk-Serial' and ../../ifm:type!='Global-Mp-Group' and ../../ifm:type!='Gmpls-Uni'";
+      when "../../ifm:type!='NULL' and ../../ifm:type!='ServiceIf' and ../../ifm:type!='Virtual-if' and " + 
+           "../../ifm:type!='Cpos' and ../../ifm:type!='Cpos-Trunk' and ../../ifm:type!='Atm-Bundle' and " + 
+           "../../ifm:type!='Serial' and ../../ifm:type!='Trunk-Serial' and ../../ifm:type!='Global-Mp-Group' and " + 
+           "../../ifm:type!='Gmpls-Uni'";
       description
         "Configure interface IPv6 extension header filter configurations."; 		  
       container hop-by-hop-switch {		  
@@ -1136,7 +1150,7 @@ module huawei-pp6 {
       }
       container routing-switch {
         description
-          "Configure the IPv6 packet with routing options extension header switchs.";	
+          "Configure the IPv6 packet with routing options extension header switches.";	
         leaf all-options {
           type filter-rule-type;
           description
@@ -1168,7 +1182,7 @@ module huawei-pp6 {
       }
       container destination-switch {
         description
-          "Configure the IPv6 packet with destination options extension header switchs.";
+          "Configure the IPv6 packet with destination options extension header switches.";
         leaf all-options {
           type filter-rule-type;
           description
@@ -1200,7 +1214,7 @@ module huawei-pp6 {
       }
       container no-option-exh-switchs {
         description
-          "List of the IPv6 packet with no options extension header switchs.";	  
+          "List of the IPv6 packet with no options extension header switches.";	  
         list no-option-exh-switch {
           key "exh-type";
           description
@@ -1225,7 +1239,7 @@ module huawei-pp6 {
     description
       "All configurations of the PP6 under the network instance.";
     container icmp6-source-address {
-      must "(./pkt-type and ./if-name) or (not(./pkt-type) and not(./if-name))";
+      presence "Configure a loopback interface address as a source IP address for an ICMP6 error packet.";
       description
         "Configure a loopback interface address as a source IP address for an ICMP6 error packet.";
       leaf if-name {
@@ -1235,11 +1249,13 @@ module huawei-pp6 {
         must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='LoopBack'";
         must "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6";
         must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name = ../../ni:name";
+        mandatory true;
         description
           "Interface name.";
       }
       leaf pkt-type {
-        type icmp-pkt-type;	  
+        type icmp-pkt-type;
+        mandatory true;
         description
           "Packet type of ICMPv6.";
       }

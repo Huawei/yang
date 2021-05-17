@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-dhcp-snooping {
   yang-version 1;
@@ -18,7 +18,7 @@ submodule huawei-dhcp-snooping {
      Email: support@huawei.com";
   description
     "This module contains a collection of YANG definitions for managing DHCP snooping.";
-  revision 2019-04-29 {
+  revision 2020-02-25 {
     description
       "Initial revision.";
     reference
@@ -26,7 +26,7 @@ submodule huawei-dhcp-snooping {
   }
   grouping dhcp-snooping-type {
     description
-      "DHCP snooping.";
+      "Configure DHCP snooping attributes.";
     container global {
       must "(not (user-bind-auto-save-enable='true') and not (user-bind-file-name)) or (user-bind-auto-save-enable='true' and user-bind-file-name)";
       description

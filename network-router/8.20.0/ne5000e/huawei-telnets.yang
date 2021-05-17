@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-telnets {
   namespace "urn:huawei:yang:huawei-telnets";
@@ -16,7 +16,6 @@ module huawei-telnets {
   import huawei-acl {
     prefix acl;
   }
-  include huawei-telnets-type;
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -27,25 +26,47 @@ module huawei-telnets {
      Website: http://www.huawei.com
      Email: support@huawei.com";
   description
-    "Telnet Server component.";
-  revision 2019-05-01 {
+    "Telnet server component.";
+  revision 2020-03-04 {
+    description
+      "Modify bugs.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-05-05 {
     description
       "Initial revision.";
     reference
       "Huawei private.";
   }
   ext:task-name "telnet-server";
+  typedef telnets-bool {
+    type enumeration {
+      enum "enable" {
+        value 1;
+        description
+          "Telnet server/service enable.";
+      }
+      enum "disable" {
+        value 0;
+        description
+          "Telnet server/service disable.";
+      }
+    }
+    description
+      "TELNET server bool switch.";
+  }
   container telnets {
     description
-      "Telnet Server component.";
+      "Telnet server component.";
     container telnet {
       description
-        "Configure Telnet Server configuration statistics.";
+        "Configure telnet server configuration statistics.";
       leaf server-enable {
-        type telnetsbool;
+        type telnets-bool;
         default "disable";
         description
-          "User can start the Telnet service. By default, Telnet service is disabled.";
+          "User can start the telnet service.";
       }
       leaf port-num {
         type uint32 {
@@ -53,13 +74,13 @@ module huawei-telnets {
         }
         default "23";
         description
-          "User can set the listen port for Telnet server. The default port number for Telnet Server is 23.";
+          "User can set the listen port for telnet server.";
       }
       leaf ipv6-server-enble {
-        type telnetsbool;
+        type telnets-bool;
         default "disable";
         description
-          "User can start the Telnet IPv6 service. By default, Telnet IPv6 service is disabled.";
+          "User can start the telnet IPv6 service.";
       }
       leaf ipv6-port-num {
         type uint32 {
@@ -67,7 +88,7 @@ module huawei-telnets {
         }
         default "23";
         description
-          "User can set the IPv6 listen port for Telnet IPv6 server. The default port number for Telnet IPv6 Server is 23.";
+          "User can set the IPv6 listen port for Telnet IPv6 server.";
       }
       leaf src-interf-name {
         type string {
@@ -137,7 +158,7 @@ module huawei-telnets {
     }
     container login-fail-alarm {
       description
-        "Configure Alarm when manager login failed frequently.";
+        "Configure alarm when manager login failed frequently.";
       leaf upper-limit {
         type uint32 {
           range "0..100";
@@ -145,7 +166,7 @@ module huawei-telnets {
         must "../upper-limit >= ../lower-limit";
         default "30";
         description
-          "Login Alarm report times, default is 30 times.";
+          "Login alarm report times.";
       }
       leaf lower-limit {
         type uint32 {
@@ -154,7 +175,7 @@ module huawei-telnets {
         must "../upper-limit >= ../lower-limit";
         default "20";
         description
-          "Login Alarm resume times, default is 20 times.";
+          "Login alarm resume times.";
       }
       leaf period {
         type uint32 {
@@ -163,16 +184,17 @@ module huawei-telnets {
         units min;
         default "5";
         description
-          "Login Alarm period, default is 5 minutes.";
+          "Login alarm period.";
       }
     }
     container ipv4-server-sources {
       description
-        "List of Specify the source interface list.";
+        "List of Specify the source interface.";
       list ipv4-server-source {
         key "src-interface";
+        max-elements "5";
         description
-          "Configure Specify the source interface policy.";
+          "Configure Specify the source interface.";
         leaf src-interface {
           type pub-type:if-name;
           description
@@ -182,11 +204,12 @@ module huawei-telnets {
     }
     container ipv6-server-sources {
       description
-        "List of Telnet IPv6 server source address list.";
+        "List of telnet IPv6 server source address.";
       list ipv6-server-source {
         key "src-ipv6-addr";
+        max-elements "5";
         description
-          "Configure Telnet IPv6 server source address policy.";
+          "Configure telnet IPv6 server source address.";
         leaf src-ipv6-addr {
           type inet:ipv6-address-no-zone ;
           description
@@ -215,6 +238,54 @@ module huawei-telnets {
         default "false";
         description
           "Enable/disable Specify all IPv6 interfaces.";
+      }
+    }
+    container session-car {
+      must 'cir-interval<=pir-interval';
+      must 'cbs-interval<=pbs-interval';
+      description
+        "Configure telnet server session CAR.";
+      leaf enable{
+        type boolean;
+        default "true";
+        description
+          "Enable/disable session CAR.";
+      }
+      leaf cir-interval {
+        type uint32 {
+          range "1..1000000";
+        }
+        units "kbit/s";
+        default "4";
+        description
+          "Specify the session CAR CIR interval.";
+      }
+      leaf cbs-interval {
+        type uint32 {
+          range "1..1000000";
+        }
+        units "bit/s";
+        default "640";
+        description
+          "Specify the session CAR CBS interval.";
+      }
+      leaf pir-interval {
+        type uint32 {
+          range "1..1000000";
+        }
+        units "kbit/s";
+        default "64";
+        description
+          "Specify the session CAR PIR interval.";
+      }
+      leaf pbs-interval {
+        type uint32 {
+          range "1..1000000";
+        }
+        units "bit/s";
+        default "10000";
+        description
+          "Specify the session CAR PBS interval.";
       }
     }
   }

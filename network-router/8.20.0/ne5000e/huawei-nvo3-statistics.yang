@@ -251,8 +251,9 @@ module huawei-nvo3-statistics {
           "Configure VTEP statistics collection.";
         leaf vni {
           type uint32 {
-            range "1..16777215";
+            range "0..16777215";
           }
+          must "(../vni = 0 and ../mode = 'l3' and ../direction = 'outbound' and not(../../nvo3-statistics:nvo3-vtep-statistic[nvo3-statistics:vni != 0][nvo3-statistics:peer = current()/../peer][nvo3-statistics:mode = current()/../mode][nvo3-statistics:direction = current()/../direction])) or (../vni != 0)";
           description
             "VXLAN network identifier.";
         }
@@ -263,6 +264,7 @@ module huawei-nvo3-statistics {
         }
         leaf mode {
           type vxlan-mode;
+          must "(../mode = 'l2' and not((../../nvo3-statistics:nvo3-vtep-statistic[nvo3-statistics:vni = current()/../vni][nvo3-statistics:peer = current()/../peer][nvo3-statistics:direction = 'inbound'] or ../../nvo3-statistics:nvo3-vtep-statistic[nvo3-statistics:vni = current()/../vni][nvo3-statistics:peer = current()/../peer][nvo3-statistics:direction = 'outbound']) and ../../nvo3-statistics:nvo3-vtep-statistic[nvo3-statistics:vni = current()/../vni][nvo3-statistics:peer = current()/../peer][nvo3-statistics:direction = 'bidirection'])) or (../mode != 'l2')";
           description
             "The type of VXLAN tunnel traffic statistics.";
         }

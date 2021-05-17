@@ -37,7 +37,7 @@ module huawei-nvo3 {
      Email: support@huawei.com";
   description
     "Management for data center network virtualization over Layer 3.";
-  revision 2020-03-30 {
+  revision 2020-03-06 {
     description
       "The modifications in the schema file are synchronized to the YANG file.";
     reference
@@ -112,6 +112,48 @@ module huawei-nvo3 {
     description
       "The type of peers Learning via BGP.";
   }
+  typedef nqa-state-type {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "The NQA state is unknown.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "The NQA state is down.";
+      }
+      enum "up" {
+        value 2;
+        description
+          "The NQA state is up.";
+      }
+    }
+    description
+      "The NQA state.";
+  }
+  typedef preference-type {
+    type enumeration {
+      enum "primary" {
+        value 1;
+        description
+          "Primary enable.";
+      }
+      enum "secondary" {
+        value 2;
+        description
+          "Secondary enable.";
+      }
+      enum "bypass" {
+        value 4;
+        description
+          "Bypass enable.";
+      }
+    }
+    description
+      "Preference type.";
+  }
 
 /*****************************************************************
 * data
@@ -181,6 +223,13 @@ module huawei-nvo3 {
               description
                 "The address of VTEP.";
             }
+            leaf preference {
+              ext:operation-exclude update|delete;
+              type preference-type;
+              default "primary";
+              description
+                "The preference of VXLAN tunnel.";
+            }
           }
         }
       }
@@ -247,6 +296,58 @@ module huawei-nvo3 {
             config false;
             description
               "VXLAN network identifier for mapping.";
+          }
+        }
+      }
+      container cu-peers {
+        config false;
+        description
+          "List of VNI Peers Table of CU Mode.";
+        list cu-peer {
+          key "vni source destination";
+          description
+            "Operational data of VNI Peer Table of CU Mode.";
+          leaf vni {
+            type uint32 {
+              range "1..16777215";
+            }
+            description
+              "The identification of VXLAN tunnel.";
+          }
+          leaf source {
+            type inet:ip-address-no-zone;
+            description
+              "The address of VXLAN tunnel source point.";
+          }
+          leaf destination {
+            type inet:ip-address-no-zone;
+            description
+              "The address of VTEP.";
+          }
+          leaf type {
+            type tunnel-type;
+            description
+              "VXLAN tunnel type.";
+          }
+          leaf out-vni {
+            type uint32 {
+              range "1..16777215";
+            }
+            description
+              "VXLAN network identifier for mapping.";
+          }
+          leaf nqa-state {
+            type nqa-state-type;
+            description
+              "The NQA state:unknown, down or up.";
+          }
+          leaf packet-loss-ratio {
+            type uint8 {
+              range "0..100";
+            }
+            units "%";
+            description
+              "The NQA packet loss ratio.";
           }
         }
       }
@@ -390,12 +491,18 @@ module huawei-nvo3 {
         "Configure NVO3 for interface NVE.";
       container attribute {
         must "(./source-vtep-ip and ./bypass-vtep-ip and ./source-vtep-ip != ./bypass-vtep-ip) or not(./source-vtep-ip) or not(./bypass-vtep-ip) ";
+        must "(./source-vtep-ipv6 and ./bypass-vtep-ipv6 and ./source-vtep-ipv6 != ./bypass-vtep-ipv6) or not(./source-vtep-ipv6) or not(./bypass-vtep-ipv6) ";
         description
           "Configure VTEPs for interface NVE.";
         leaf source-vtep-ip {
           type inet:ipv4-address-no-zone;
           description
             "The address of interface NVE, as VXLAN tunnel source point.";
+        }
+        leaf source-vtep-ipv6 {
+          type inet:ipv6-address-no-zone;
+          description
+            "The IPv6 address of interface NVE, as VXLAN tunnel source point.";
         }
         leaf phys-address {
           type pub-type:mac-address {
@@ -407,6 +514,30 @@ module huawei-nvo3 {
           type inet:ipv4-address-no-zone;
           description
             "The address of interface NVE, as source point in bypass VXLAN tunnel.";
+        }
+        leaf bypass-vtep-ipv6 {
+          type inet:ipv6-address-no-zone;
+          description
+            "The IPv6 address of interface NVE, as source point in bypass VXLAN tunnel.";
+        }
+      }
+      container pip {
+        must "((./source-ip and ./peer-ip) and (./source-ip != ./peer-ip)) or (not(./source-ip) and not(./peer-ip))";
+        description
+          "Configure primary IP address as bypass VXLAN tunnel.";
+        leaf source-ip {
+          type inet:ipv4-address-no-zone;
+          must "not (../../attribute[source-vtep-ip != current()])";
+          description
+            "The address of interface NVE, as VXLAN tunnel source point.";
+          ext:operation-exclude delete;
+        }
+        leaf peer-ip {		
+          type inet:ipv4-address-no-zone;
+          must "not (../../attribute[source-vtep-ip != current()])";
+          description
+            "The address of interface NVE, as VXLAN tunnel peer point.";
+          ext:operation-exclude delete;
         }
       }
     }

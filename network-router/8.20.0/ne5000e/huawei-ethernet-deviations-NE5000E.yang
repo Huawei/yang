@@ -57,6 +57,12 @@ module huawei-ethernet-deviations-NE5000E {
       type ethernet-devs-NE5000E:tag-type-deviations;
     }
   }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:vlan-swap" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute" {
+    deviate not-supported;
+  }
   deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-stacking" {
     deviate not-supported;
   }
@@ -80,10 +86,13 @@ module huawei-ethernet-deviations-NE5000E {
       must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:parent-name]/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/ethernet:vlan-stackings/ethernet:vlan-stacking/ethernet:ce-default)';
     }
   }
-  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:vlan-swap" {
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:flow-type/ethernet:qinq/ethernet:qinqs/ethernet:qinq-with-pe-segments" {
     deviate not-supported;
   }
-  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute" {
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:dot1q-termination/ethernet:dot1q-termination/ethernet:pwtag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-termination/ethernet:qinq-termination/ethernet:pwtag" {
     deviate not-supported;
   }
 }

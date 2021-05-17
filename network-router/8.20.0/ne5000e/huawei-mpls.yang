@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-mpls {
   namespace "urn:huawei:yang:huawei-mpls";
@@ -31,7 +31,49 @@ module huawei-mpls {
      Email: support@huawei.com";
   description
     "Specifies the multi-protocol label switching protocol.";
-  revision 2019-03-27 {
+  revision 2020-07-02 {
+    description
+      "Modified the must condition of nine containers.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-04-13 {
+    description
+      "Add TE Session Car nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-24 {
+    description
+      "Added Session Car nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-17 {
+    description
+      "Modified some description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-29 {
+    description
+      "Modified the value range of one node, and some description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-27 {
+    description
+      "Modify the description of fragmented-packet-count node.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-12 {
+    description
+      "Added the sr-exp-mode node.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-04-02 {
     description
       "Initial revision.";
     reference
@@ -75,6 +117,13 @@ module huawei-mpls {
           description
             "Specifies the diffserv mode for MPLS.";
         }
+        leaf sr-exp-mode {
+          when "../mpls-enable='true'";
+          type sr-exp-mode-type;
+          default "pipe";
+          description
+            "Specifies the EXP mode for SR. The value can be pipe or uniform.";
+        }
         leaf te-ttl-mode {
           when "../mpls-enable='true'";
           type mpls-ttl-mode-type;
@@ -95,22 +144,6 @@ module huawei-mpls {
           default "uniform";
           description
             "SR TTL mode.";
-        }
-        leaf mpls-min-label {
-          when "../mpls-enable='true'";
-          type mpls-min-label-type;
-          default "0";
-          description
-            "Specifies the minimum start label.";
-        }
-        leaf mpls-label-begin {
-          when "../mpls-enable='true'";
-          type uint32 {
-            range "0..1048575";
-          }
-          default "0";
-          description
-            "Specifies the label begin.";
         }
         leaf ftn-delay-time {
           when "../mpls-enable='true'";
@@ -136,19 +169,13 @@ module huawei-mpls {
           description
             "Enable/disable of entropy label capability.";
         }
-        leaf mpls-label-space {
-          type uint32;
-          config false;
-          description
-            "Specifies the label space.";
-        }
       }
       container threshold-alarm {
         when "/mpls:mpls/mpls:common/mpls:global/mpls:mpls-enable='true'";
         description
           "Configure threshold alarm.";
         container autobypass-tunnel-number {
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure TE bypass tunnel.";
           leaf upper-value {
@@ -169,7 +196,7 @@ module huawei-mpls {
           }
         }
         container autoprimary-tunnel-number {
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure TE primary tunnel.";
           leaf upper-value {
@@ -190,7 +217,7 @@ module huawei-mpls {
           }
         }
         container ldp-lsp-number {
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure LDP LSP.";
           leaf upper-value {
@@ -211,7 +238,7 @@ module huawei-mpls {
           }
         }
         container outsegment-number {
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure LDP outsegment.";
           leaf upper-value {
@@ -232,7 +259,7 @@ module huawei-mpls {
           }
         }
         container remote-adjacency-number {
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure LDP remote adjancency.";
           leaf upper-value {
@@ -253,7 +280,7 @@ module huawei-mpls {
           }
         }
         container mldp-tree-number{
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure MLDP P2MP tree.";
           leaf upper-value {
@@ -274,7 +301,7 @@ module huawei-mpls {
           }
         }
         container mldp-branch-number {
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure MLDP P2MP Branch.";
           leaf upper-value {
@@ -295,7 +322,7 @@ module huawei-mpls {
           }
         }
         container rsvp-lsp-number {
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure RSVP LSP.";
           leaf upper-value {
@@ -316,7 +343,7 @@ module huawei-mpls {
           }
         }
         container dynamic-label-number {
-          must "upper-value>lower-value";
+          must "(not(upper-value) and not(lower-value)) or upper-value>lower-value";
           description
             "Configure Dynamic label.";
           leaf upper-value {
@@ -532,16 +559,20 @@ module huawei-mpls {
           }
         }
       }
+      container session-car {
+        description
+          "Configure MPLS session CAR.";
+      }
     }
   }
   /*
    * augment-stmt
    */
   augment /ni:network-instance/ni:instances/ni:instance {
-    when "/mpls:mpls/mpls:common/mpls:global/mpls:mpls-enable='true'";
     description
       "MPLS Configuration information augment to network instance.";
     container mpls {
+      when "/mpls:mpls/mpls:common/mpls:global/mpls:mpls-enable='true'";
       description
         "Configure MPLS.";
       container common {
@@ -590,6 +621,18 @@ module huawei-mpls {
               config false;
               description
                 "MPLS RSVP TE capability on an interface.";
+            }
+            container statistics {
+              config false;
+              description
+                "Statistics of MPLS interface informations.";
+              leaf fragmented-packet-count {
+                type uint32 {
+                  range "0..4294967295";
+                }
+                description
+                "This object counts the number of outgoing MPLS packets that required fragmentation before transmission on this interface. This object MUST count on a per-interface basis regardless of which label space the interface participates in. When the dual-stack statistics collection is enabled, value 0 is returned, indicating that no packet is fragmented on the interface. If the dual-stack statistics collection is disabled, the default value 0 is returned, which is meaningless.";
+              }
             }
           }
         }

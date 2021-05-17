@@ -19,7 +19,7 @@ submodule huawei-evpn-type {
     "Evpn type.";
   revision 2019-12-30 {
     description
-      "Modify the tunne-type.";
+      "Modify the tunnel-type.";
     reference
       "Huawei private.";
   }
@@ -563,6 +563,11 @@ submodule huawei-evpn-type {
         description
           "SR-LSP tunnel.";
       }
+      enum "vxlan6-nvo3" {
+        value 42;
+        description
+          "VXLANV6-NVO3 tunnel.";
+      }
       enum "srv6" {
         value 43;
         description
@@ -773,10 +778,10 @@ submodule huawei-evpn-type {
         description
           "Multi-homed and all-active.";
       }
-      enum "IMCOMPLETE" {
+      enum "INCOMPLETE" {
         value 4;
         description
-          "Imcomplete.";
+          "Incomplete.";
       }
     }
     description

@@ -38,7 +38,7 @@ module huawei-ntp {
      Email: support@huawei.com";
   description
     "NTP component.";
-  revision 2019-04-12 {
+  revision 2019-04-19 {
     description
       "Initial revision.";
     reference
@@ -311,8 +311,9 @@ module huawei-ntp {
           type leafref {
             path "../../../authentications/authentication/key-id";
           }
+          must "((../key-id >= 1) and (../key-id <= 65535))";
           description
-            "Key ID used to transmit messages to a manycast group.";
+            "Key ID used to transmit messages to a manycast group. If a key-id is specified, the number ranges from 1 to 65535.";
         }
         leaf port-number {
           when "../type!='Server'";
@@ -369,6 +370,12 @@ module huawei-ntp {
         default "false";
         description
           "Enable/disable authentication.";
+      }
+      leaf is-auth-password-check {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable password strength check on identity authentication.";
       }
       leaf max-sess-count {
         type uint16 {

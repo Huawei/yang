@@ -29,6 +29,9 @@ module huawei-l2vpn {
   import huawei-mpls {
     prefix mpls;
   }
+  import huawei-bfd {
+    prefix bfd;
+  }
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -40,9 +43,9 @@ module huawei-l2vpn {
     Email: support@huawei.com";
   description
     "L2 virtual private network.";
-  revision 2020-03-19 {
+  revision 2020-05-14 {
     description
-      "Add nodes.";
+      "Add operation-exclude.";
     reference
       "Huawei private.";
   }
@@ -392,6 +395,11 @@ module huawei-l2vpn {
         value 1;
         description
           "The instance type is VPWS local CCC.";
+      }
+      enum "vpws-remote-ccc" {
+        value 2;
+        description
+          "The instance type is VPWS remote CCC.";
       }
       enum "vpws-svc" {
         value 3;
@@ -1461,11 +1469,6 @@ module huawei-l2vpn {
         description
           "The VSI work mode is P2P I-VSI.";
       }
-      enum "i-vsi-mp2mp" {
-        value 6;
-        description
-          "The VSI work mode is MP2MP I-VSI.";
-      }
       enum "i-vsi-b-evpn-interworking" {
         value 7;
         description
@@ -1878,6 +1881,7 @@ module huawei-l2vpn {
         range "0..65535";
       }
       units ms;
+      default "10";
       description
         "Minimum receive interval.";
     }
@@ -1886,6 +1890,7 @@ module huawei-l2vpn {
         range "0..65535";
       }
       units ms;
+      default "10";
       description
         "Minimum transmit interval.";
     }
@@ -2061,6 +2066,192 @@ module huawei-l2vpn {
       }
     }
   }
+  grouping vpws-remoteccc-instance-grp {
+    description
+      "VPWS remote CCC instance.";
+    leaf encapsulation-type {
+      ext:operation-exclude update;
+      ext:support-filter "true";
+      type encapsulation-type;
+      must "../encapsulation-type='vlan' or
+        ../encapsulation-type='ethernet' or
+        ../encapsulation-type='hdlc' or
+        ../encapsulation-type='ppp' or
+        ../encapsulation-type='atm-nto1-vcc' or
+        ../encapsulation-type='atm-nto1-vpc' or
+        ../encapsulation-type='atm-1to1-vcc' or
+        ../encapsulation-type='atm-1to1-vpc' or
+        ../encapsulation-type='cep' or
+        ../encapsulation-type='satop-e1' or
+        ../encapsulation-type='cesopsn-basic' or
+        ../encapsulation-type='ip-interworking' or
+        ../encapsulation-type='unsupport'";
+      mandatory true;
+      description
+        "Encapsulation type of a VPWS instance.";
+      }
+    container acs {
+      description
+        "List of information about all ACs.";
+      list ac {
+        ext:operation-exclude update|delete;
+        key "interface-name";
+        min-elements 1;
+        max-elements 1;
+        description
+          "Configure information about an AC.";
+        leaf interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Name of an AC interface.";
+        }
+        leaf tagged {
+          ext:operation-exclude update|delete;
+          when "../../../encapsulation-type='ethernet' or
+            ../../../encapsulation-type='vlan'";
+          type boolean;
+          ext:dynamic-default {
+            ext:default-value "false" {
+              when "../../../encapsulation-type='ethernet'";
+               description "The default value is false when encapsulation-type is ethernet.";
+            }
+            ext:default-value "true" {
+              when "../../../encapsulation-type='vlan'";
+              description "The default value is true when encapsulation-type is VLAN.";
+             }
+          }
+          must "(../../../encapsulation-type='ethernet' and ../tagged='false') or
+                (../../../encapsulation-type='vlan' and ../tagged='true')";
+          description
+            "Enable/disable the VLAN tag setting.";
+        }
+        leaf state {
+          type l2vpn-state;
+          config false;
+          description
+            "Status of an AC.";
+        }
+        leaf token-exceed {
+          type boolean;
+          default "false";
+          config false;
+          description
+            "Indicates whether the number of AC tokens exceeds the maximum limit.";
+        }
+        container arp-entry {
+          description
+            "Configure the ARP entry attribute used for IP interworking between PEs.";
+          leaf local-ce-mac {
+            type pub-type:mac-address;
+            description
+              "MAC address of the Ethernet interface or sub-interface on a CE connected to the local AC interface. If MAC, IP, and broadcast addresses are all configured, these addresses take effect in the sequence of MAC address, IP address, and broadcast address.";
+          }
+          leaf local-ce-ip {
+            type inet:ipv4-address-no-zone;
+            description
+              "IP address of the Ethernet interface or sub-interface on a CE connected to the local AC interface.";
+          }
+          leaf local-ce-broadcast {
+            type boolean;
+            must "((../local-ce-broadcast='false' and (../local-ce-mac or ../local-ce-ip or ../remote-ce-ip)) or (../local-ce-broadcast='true'))";
+            default "false";
+            description
+              "Enable/disable broadcast on a PE Ethernet interface connected to a CE.";
+          }
+          leaf remote-ce-ip {
+            type inet:ipv4-address-no-zone;
+            description
+              "IP address of the remote CE connected to the local AC interface.";
+          }
+        }
+        container ac-arps {
+          config false;
+          description
+            "List of ARP information about all ACs.";
+          list ac-arp {
+            key "mac-type";
+            max-elements 3;
+            description
+              "Operational data of ARP information about an AC.";
+            leaf mac-type {
+              type l2vpn-mac-type;
+              description
+                "MAC address learning type.";
+            }
+            leaf mac-address {
+              type pub-type:mac-address;
+              description
+                "MAC address of the local CE.";
+            }
+            leaf expire-time {
+              type uint32;
+              units min;
+              description
+                "Aging time.";
+            }
+            leaf vlan-id {
+              type uint32;
+              description
+                "VLAN ID corresponding to a MAC address.";
+            }
+            leaf ip-address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Dynamically learned IP address of the local CE.";
+            }
+          }
+        }
+      }
+    }
+    container pw {
+      ext:operation-exclude update|delete;
+      must "(out-interface-name and not(next-hop)) or (not(out-interface-name) and next-hop)";
+      description
+        "Configure a VPWS remote CCC PW.";
+      leaf out-label {
+        ext:operation-exclude update;
+        type uint32 {
+          range "0..1048575";
+        }
+        mandatory true;
+        description
+          "Label for sending packets.";
+      }
+      leaf in-label {
+        ext:operation-exclude update;
+        type uint32 {
+          range "16..1048575";
+        }
+        mandatory true;
+        description
+          "Label for receiving packets.";
+      }
+      leaf control-word {
+        ext:operation-exclude update|delete;
+        type l2vpn-control-word;
+        must ".!='prefer'";
+        default "default";
+        description
+          "Enable the control word function. The control word is usually used for TDM, ATM, and FR PWs.";
+      }
+      leaf out-interface-name {
+        ext:operation-exclude update|delete;
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Outbound interface.";
+      }
+      leaf next-hop {
+        ext:operation-exclude update|delete;
+        type inet:ipv4-address-no-zone;
+        description
+          "Next hop.";
+      }
+    }
+  }
   grouping vpws-swtich-instance-grp {
     description
       "VPWS switch instance.";
@@ -2105,6 +2296,7 @@ module huawei-l2vpn {
     leaf control-word {
       when "not(../switch-type='ldp-ldp' or ../switch-type='ldp-ldp-bak')";
       type l2vpn-control-word;
+      must ".!='prefer'";
       default "default";
       description
         "Enable the control word function. The control word function is usually used for TDM, ATM, and FR PWs.";
@@ -2154,6 +2346,8 @@ module huawei-l2vpn {
         "List of VPWS PWs.";
       list pw {
         ext:operation-exclude update|delete;
+        must "pw-id and peer-ip";
+        must "(((../../switch-type='ldp-svc' and role='right-primary') or ../../switch-type='svc-svc') and transmit-label and receive-label) or not((../../switch-type='ldp-svc' and role='right-primary') or ../../switch-type='svc-svc')";
         key "role";
         min-elements 2;
         max-elements 3;
@@ -2349,9 +2543,12 @@ module huawei-l2vpn {
             "VPWS BGP VPN instance connection attachment circuit interface name. The encapsulation type of this interface must be the same as that of the VPN instance. Otherwise, the PW cannot go Up.";
         }
         leaf tagged {
+          when "/l2vpn:l2vpn/l2vpn:common/l2vpn:vpws-bgp-vpns/l2vpn:vpws-bgp-vpn[l2vpn:name=current()/../../../l2vpn:vpn-instance]/l2vpn:encapsulation-type !='ip-interworking' and /l2vpn:l2vpn/l2vpn:common/l2vpn:vpws-bgp-vpns/l2vpn:vpws-bgp-vpn[l2vpn:name=current()/../../../l2vpn:vpn-instance]/l2vpn:encapsulation-type !='ip-layer2'";
+          ext:operation-exclude update|delete;
           type boolean;
           description
-            "Enable/disable the attachment circuit tag of the VPWS BGP VPN instance.";
+            "Enable/disable the attachment circuit tag of the VPWS BGP instance.";
+          ext:dynamic-default;
         }
         leaf trigger-interface-down {
           type boolean;
@@ -2381,7 +2578,7 @@ module huawei-l2vpn {
         leaf role {
           ext:operation-exclude update|delete;
           type pw-role-type;
-          must "../role='primary' or ../role='backup'";
+          must "(.='primary') or (.='backup' and ../../pw[role='primary'])";
           default "primary";
           description
             "VPWS BGP VPN instance connection pseudo wire role. Configure a primary PW first. The PW role canot be changed.";
@@ -2503,6 +2700,7 @@ module huawei-l2vpn {
         "VPLS member discovery mode for a specified VSI.";
     }
     leaf work-mode {
+      ext:operation-exclude update;
       type vsi-work-mode;
       default "normal";
       description
@@ -2564,7 +2762,7 @@ module huawei-l2vpn {
     }
     leaf admin-vsi {
       type boolean;
-      must "(../admin-vsi='false') or (../admin-vsi='true' and ../isolate-spoken='false')";
+      must "(.='false') or (.='true' and ../isolate-spoken='false')";
       default "false";
       description
         "Enable/disable the function for the current service VSI to be configured as the mVSI.";
@@ -2589,7 +2787,7 @@ module huawei-l2vpn {
     leaf unknown-multicast-action {
       when "not(../work-mode='bd-mode')";
       type l2vpn-vpls-unknow-frame-act;
-      must "((../unknown-multicast-action='broadcast' or ../unknown-multicast-action='drop'))";
+      must "((.='broadcast' or .='drop'))";
       default "broadcast";
       description
         "Action taken to process unknown multicast frames.";
@@ -2604,7 +2802,7 @@ module huawei-l2vpn {
     leaf p2p-vsi {
       when "../work-mode='normal'";
       type boolean;
-      must "../p2p-vsi='false' or (../p2p-vsi='true' and ../admin-vsi='false' and ../mac-learn='false' and not(../mac-learn-style='qualify'))";
+      must ".='false' or (.='true' and ../admin-vsi='false' and ../mac-learn='false' and not(../mac-learn-style='qualify'))";
       default "false";
       description
         "Enable/disable the P2P VSI.";
@@ -2612,14 +2810,14 @@ module huawei-l2vpn {
     leaf traffic-statistics-collection {
       when "../work-mode='normal' or ../work-mode='bd-mode'";
       type boolean;
-      must "../traffic-statistics-collection='false' or (../traffic-statistics-collection='true' and ../ldp-signaling/traffic-statistics-collection='false' and ../bgpad-signaling/traffic-statistics-collection='false')";
+      must ".='false' or (.='true' and (not(../ldp-signaling/traffic-statistics-collection) or ../ldp-signaling/traffic-statistics-collection='false') and (not(../bgpad-signaling/traffic-statistics-collection) or ../bgpad-signaling/traffic-statistics-collection='false'))";
       default "false";
       description
         "Enable/disable VSI QoS traffic statistics collection.";
     }
     leaf mac-remove-mode {
       type mac-remove-type;
-      must "((not(../mac-remove-mode='all-from-me')) or ((../mac-remove-mode='all-from-me') and (not(../work-mode='bd-mode')) and (not(../work-mode='b-vsi')) and (not(../work-mode='i-vsi')) and (not(../work-mode='i-vsi-p2p')) and (not(../work-mode='i-vsi-mp2mp'))))";
+      must "((not(.='all-from-me')) or ((.='all-from-me') and (not(../work-mode='bd-mode')) and (not(../work-mode='b-vsi')) and (not(../work-mode='i-vsi')) and (not(../work-mode='i-vsi-p2p')) and (not(../work-mode='i-vsi-b-evpn-interworking'))))";
       default "invalid";
       description
         "Local MAC remove mode.";
@@ -2627,13 +2825,13 @@ module huawei-l2vpn {
     leaf mac-learn {
       when "not(../work-mode='bd-mode')";
       type boolean;
-      must "../mac-learn='false' or (../mac-learn='true' and ../p2p-vsi='false')";
+      must ".='false' or (.='true' and ../p2p-vsi='false')";
       default "true";
       description
         "Enable/disable the function for a VSI to learn MAC addresses.";
     }
     leaf mac-learn-style {
-      when "../work-mode='normal' or ../work-mode='i-vsi-mp2mp'";
+      when "../work-mode='normal'";
       type l2vpn-mac-learn-style;
       default "unqualify";
       description
@@ -2642,7 +2840,7 @@ module huawei-l2vpn {
     leaf mac-age-time {
       when "not(../work-mode='bd-mode')";
       type uint32 {
-        range "0..1000000";
+        range "0 | 60..1000000";
       }
       units s;
       description
@@ -2651,7 +2849,7 @@ module huawei-l2vpn {
     leaf local-mac-age-time {
       when "../work-mode='normal'";
       type uint32 {
-        range "0..1000000";
+        range "0 | 60..1000000";
       }
       units s;
       description
@@ -2660,7 +2858,7 @@ module huawei-l2vpn {
     leaf remote-mac-age-time {
       when "../work-mode='normal'";
       type uint32 {
-        range "0..1000000";
+        range "0 | 60..1000000";
       }
       units s;
       description
@@ -2668,7 +2866,6 @@ module huawei-l2vpn {
     }
     leaf mac-withdraw {
       type boolean;
-      must "../mac-withdraw='false' or ../ldp-signaling/mac-withdraw='false'";
       default "false";
       description
         "Enable/disable the function for a VSI to delete the local MAC address and notifies all remote peers of the deletion when an AC or a UPE fault occurs and the VSI remains up.";
@@ -2682,7 +2879,7 @@ module huawei-l2vpn {
     }
     leaf interface-change-mac-withdraw-type {
       type interface-change-withdraw-type;
-      must "../interface-change-mac-withdraw-type='all' or ../interface-change-mac-withdraw='true'";
+      must ".='all' or ../interface-change-mac-withdraw='true'";
       default "all";
       description
         "Specify the status change type for a VSI AC interface.";
@@ -2728,71 +2925,76 @@ module huawei-l2vpn {
       description
         "Enable/disable Label Distribution Protocol (LDP) signaling.";
       leaf vsi-id {
-        ext:operation-exclude update|delete;
+        ext:operation-exclude update;
         type uint64 {
           range "1..4294967295";
         }
+        must "count(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:vsi-id[.=current()])<=1";
+        must "count(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:pw-id[.=current()])=0";
+        must "count(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-switch/l2vpn:pws/l2vpn:pw/l2vpn:pw-id[.=current()])=0";
         description
           "VPLS LDP VSI ID. Can not be modified after configuration.";
       }
       leaf traffic-statistics-collection {
         when "../vsi-id";
         type boolean;
-        must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and ../../traffic-statistics-collection='false' and ../../bgpad-signaling/traffic-statistics-collection='false')";
+        must ".='false'or (.='true' and (not(../../traffic-statistics-collection) or ../../traffic-statistics-collection='false') and (not(../../bgpad-signaling/traffic-statistics-collection) or ../../bgpad-signaling/traffic-statistics-collection='false'))";
         default "false";
         description
           "Enable/disable traffic statistics collection.";
       }
       leaf control-word {
         type l2vpn-control-word;
-        must "../control-word='disable' or ../control-word='enable'";
+        must ".='disable' or .='enable'";
         default "disable";
         description
           "Enable the control word feature. The control word feature is usually used for TDM, ATM, and FR PWs.";
       }
       leaf hard-pipe {
         type boolean;
+        must ".='false' or (../../work-mode='normal' and not(../../bgp-signaling) and not(../../bgpad-signaling))";
         default "false";
         description
           "Enable/disable hard pipe.";
       }
       leaf mac-withdraw {
         type boolean;
-        must "../mac-withdraw='false' or ../../mac-withdraw='false'";
+        must ".='false' or (../../mac-withdraw='false' and ../../propagate-mac-withdraw='false' and ../../interface-change-mac-withdraw='false')";
         default "false";
         description
           "Enable/disable the function for a VSI to delete the local MAC address and notify all remote peers of the deletion when an AC or a UPE fault occurs and the VSI remains up.";
       }
       leaf interface-change-mac-withdraw {
         type boolean;
+        must ".='false' or  (.='true' and ../../mac-withdraw='false' and ../../interface-change-mac-withdraw='false' and ../../work-mode!='i-vsi-b-evpn-interworking')";
         default "false";
         description
           "Enable/disable the function for PEs to send LDP MAC withdraw messages to all peers when the status of the AC interface bound to the VSI changes.";
       }
       leaf interface-change-mac-withdraw-type {
         type interface-change-withdraw-type;
-        must "../interface-change-mac-withdraw-type='all' or ../interface-change-mac-withdraw='true'";
+        must ".='all' or ../interface-change-mac-withdraw='true'";
         default "all";
         description
           "Specify the status change type for a VSI AC interface.";
       }
       leaf upe-upe-mac-withdraw {
         type boolean;
-        must "../upe-upe-mac-withdraw='false' or (../../mac-withdraw='false' and ../../work-mode!='i-vsi')";
+        must ".='false' or (../../mac-withdraw='false' and ../../propagate-mac-withdraw='false' and ../../interface-change-mac-withdraw='false' and ../../work-mode!='i-vsi')";
         default "false";
         description
           "Enable/disable the function for an NPE to forward the LDP MAC withdraw messages received from a UPE to other UPEs.";
       }
       leaf upe-npe-mac-withdraw {
         type boolean;
-        must "../upe-npe-mac-withdraw='false' or (../../mac-withdraw='false' and ../../work-mode!='i-vsi')";
+        must ".='false' or (../../mac-withdraw='false' and ../../propagate-mac-withdraw='false' and ../../interface-change-mac-withdraw='false' and ../../work-mode!='i-vsi')";
         default "false";
         description
           "Enable/disable the function for an NPE to forward the LDP MAC withdraw messages received from a UPE to other NPEs.";
       }
       leaf npe-upe-mac-withdraw {
         type boolean;
-        must "../npe-upe-mac-withdraw='false' or (../../mac-withdraw='false' and ../../work-mode!='i-vsi')";
+        must ".='false' or (../../mac-withdraw='false' and ../../propagate-mac-withdraw='false' and ../../interface-change-mac-withdraw='false' and ../../work-mode!='i-vsi')";
         default "false";
         description
           "Enable/disable the function for an NPE to forward the LDP MAC withdraw messages received from another NPE to UPEs.";
@@ -2893,6 +3095,7 @@ module huawei-l2vpn {
               "Enable the control word function.";
           }
           leaf vccv {
+            when "../name";
             type boolean;
             default "true";
             description
@@ -2921,12 +3124,13 @@ module huawei-l2vpn {
           }
           leaf traffic-statistics-collection {
             type l2vpn-vpls-traffic-statistics-enable-type;
-            must "../traffic-statistics-collection='default'or (../traffic-statistics-collection!='default' and ../../../../traffic-statistics-collection='false' and ../../../../bgpad-signaling/traffic-statistics-collection='false')";
+            must "../traffic-statistics-collection='default'or (../traffic-statistics-collection!='default' and (not(../../../../traffic-statistics-collection) or ../../../../traffic-statistics-collection='false') and (not(../../../../bgpad-signaling/traffic-statistics-collection) or ../../../../bgpad-signaling/traffic-statistics-collection='false'))";
             default "default";
             description
               "Enable the function to collect traffic statistics.";
           }
           leaf track-hub-pw {
+            when "../name";
             type boolean;
             must "../track-hub-pw='false' or (../track-hub-pw='true' and ../upe='true' and ../../../../work-mode!='i-vsi-b-evpn-interworking')";
             default "false";
@@ -2961,6 +3165,7 @@ module huawei-l2vpn {
               "Burst time.";
           }
           leaf status-code-change-flush-mac-disable {
+            when "../name";
             type boolean;
             default "false";
             description
@@ -2996,7 +3201,7 @@ module huawei-l2vpn {
             }
           }
           container bfd {
-            when "../name";
+            when "../name and /bfd:bfd";
             presence "enable vpls ldp pw bfd.";
             description
               "Enable/disable BFD.";
@@ -3005,6 +3210,7 @@ module huawei-l2vpn {
                 range "0..65535";
               }
               units ms;
+              default "10";
               description
                 "Minimum receive interval.";
             }
@@ -3013,6 +3219,7 @@ module huawei-l2vpn {
                 range "0..65535";
               }
               units ms;
+              default "10";
               description
                 "Minimum transmit interval.";
             }
@@ -3128,6 +3335,7 @@ module huawei-l2vpn {
     }
     container bgp-signaling {
       when "../work-mode='normal' or ../work-mode='bd-mode'";
+      must "../admin-vsi!='true'";
       presence "Container for bgp protocol vpls instance.";
       description
         "Enable/disable BGP VSIs.";
@@ -3684,7 +3892,8 @@ module huawei-l2vpn {
       }
     }
     container bgp-multi-homing-signaling {
-      when "../work-mode='normal' or ../work-mode='bd-mode'";
+      when "../work-mode='normal'";
+      must "../admin-vsi!='true'";
       presence "Container for bgp protocol vpls instance.";
       description
         "Configure BGP VSIs.";
@@ -4141,6 +4350,7 @@ module huawei-l2vpn {
     }
     container bgpad-signaling {
       when "(../work-mode='normal' or ../work-mode='bd-mode')";
+      must "../admin-vsi!='true'";
       presence "Container for bgpad protocol vpls instance.";
       description
         "Enable/disable BGP AD VSI.";
@@ -4165,7 +4375,7 @@ module huawei-l2vpn {
       leaf traffic-statistics-collection {
         when "../vpls-id";
         type boolean;
-        must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and ../../traffic-statistics-collection='false' and ../../ldp-signaling/traffic-statistics-collection='false')";
+        must "../traffic-statistics-collection='false'or (../traffic-statistics-collection='true' and (not(../../traffic-statistics-collection) or ../../traffic-statistics-collection='false') and (not(../../ldp-signaling/traffic-statistics-collection) or ../../ldp-signaling/traffic-statistics-collection='false'))";
         default "false";
         description
           "Enable/disable traffic statistics collection.";
@@ -4380,6 +4590,7 @@ module huawei-l2vpn {
             "P2MP template name.";
         }
         leaf bfd-track-if-name {
+          when "../../../acs/ac";
           type leafref {
             path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
           }
@@ -4583,6 +4794,7 @@ module huawei-l2vpn {
               type uint32 {
                 range "1..40";
               }
+              ext:dynamic-default;
               description
                 "Number of TDM frames encapsulated in a CESoPSN or SAToP packet in the TDMoPSN application.";
             }
@@ -4591,7 +4803,7 @@ module huawei-l2vpn {
                 range "1..64000";
               }
               units us;
-              default "4000";
+              ext:dynamic-default;
               description
                 "Depth of the jitter buffer in the application of TDMoPSN.";
             }
@@ -4661,7 +4873,8 @@ module huawei-l2vpn {
             }
           }
           container bfd-parameter {
-            when "../control-word='enable'";
+            when "/bfd:bfd";
+            must "../control-word='enable'";
             presence "enable bfd-parameter for pw";
             description
               "Enable/disable BFD.";
@@ -4670,6 +4883,7 @@ module huawei-l2vpn {
                 range "0..65535";
               }
               units ms;
+              default "10";
               description
                 "Minimum receive interval.";
             }
@@ -4678,6 +4892,7 @@ module huawei-l2vpn {
                 range "0..65535";
               }
               units ms;
+              default "10";
               description
                 "Minimum transmit interval.";
             }
@@ -4947,6 +5162,7 @@ module huawei-l2vpn {
         description
           "List of BFD CV standard peers.";
         list peer-bfd-cv-std {
+          must "(enable='disable' and type='cv-bfd') or enable='enable'";
           key "peer-ip";
           description
             "Configure BFD CV standard peers.";
@@ -4957,14 +5173,12 @@ module huawei-l2vpn {
           }
           leaf enable {
             type l2vpn-common-enable-type;
-            must "(../enable='disable' and ../type='cv-bfd') or ../enable='enable'";
             default "enable";
             description
               "Enable BFDCV.";
           }
           leaf type {
             type bfd-vccv-cv-type;
-            must "../type='cv-bfd' or (../type!='cv-bfd' and ../enable='enable')";
             default "cv-bfd";
             description
               "The BFDCV type of the peer.";
@@ -4992,8 +5206,18 @@ module huawei-l2vpn {
               "VPWS BGP VPN instance encapsulation type.";
           }
           leaf control-word {
-            type l2vpn-control-word;
-            must "../control-word='disable' or ../control-word='enable'";
+            type enumeration {
+              enum "disable" {
+                value 1;
+                description
+                  "The control word mode is disable.";
+              }
+              enum "enable" {
+                value 2;
+                description
+                  "The control word mode is enable.";
+              }
+            }
             default "disable";
             description
               "Control word of the VPWS BGP VPN instance. If the encapsulation type is low speed, disabling the control word causes the VPWS BGP instance to fail.";
@@ -5063,6 +5287,7 @@ module huawei-l2vpn {
                   "Local site name.";
               }
               leaf id {
+                ext:operation-exclude update;
                 type uint16 {
                   range "0..65534";
                 }
@@ -5651,12 +5876,16 @@ module huawei-l2vpn {
             "Configure VPWS local CCC instance.";
           uses vpws-localccc-instance-grp;
         }
+        container vpws-remote-ccc {
+          ext:operation-exclude delete;
+          when "../type='vpws-remote-ccc'";
+          description
+            "Configure a VPWS remote CCC instance.";
+          uses vpws-remoteccc-instance-grp;
+        }
         container vpws-ldp {
           ext:operation-exclude delete;
           when "../type='vpws-ldp' or ../type='vpws-svc' or ../type='vpws-single-ccc'";
-          must "(../type='vpws-ldp' and count(pws/pw)>=1 and count(pws/pw)<=3) or
-                (../type='vpws-svc' and count(pws/pw)>=1 and count(pws/pw)<=2) or
-                (../type='vpws-single-ccc' and count(pws/pw)<=1 and count(out-acs/out-ac)=1)";
           description
             "Configure VPWS LDP instance.";
           leaf encapsulation-type {
@@ -5825,6 +6054,7 @@ module huawei-l2vpn {
                 }
                 leaf local-ce-broadcast {
                   type boolean;
+                  default "false";
                   description
                     "Enable/disable the broadcast function on a PE Ethernet interface connected to a CE.";
                 }
@@ -5877,21 +6107,23 @@ module huawei-l2vpn {
             description
               "List of all VPWS PWs.";
             list pw {
-              must "peer-ip or pw-template";
+              must "peer-ip or (pw-template and /l2vpn:l2vpn/l2vpn:common/l2vpn:pw-templates/l2vpn:pw-template[l2vpn:name=current()/pw-template]/l2vpn:peer-address)";
+              must "((../../../type='vpws-ldp' or ../../../type='vpws-single-ccc') and pw-id) or (../../../type='vpws-svc' and transmit-label and receive-label)";
               key "role";
               max-elements 3;
               description
                 "Configure a VPWS PW.";
               leaf role {
                 type pw-role-type;
-                must "(../role='primary' or ../role='backup' or ../role='bypass') or ../../../../type!='vpws-svc'" {
-                  error-message
-                    "The SVC instance dose not support AC-bypass or PW-bypass role.";
-                }
-                must "../role='backup' or ../../../../type!='vpws-single-ccc'" {
-                  error-message
-                    "The PW role must be backup in VPWS single CCC instance.";
-                }
+                must "((../../../../type='vpws-ldp' and .='primary')
+                    or (../../../../type='vpws-ldp' and .='backup' and ../../pw[role='primary'] and not(../../pw[role='bypass']))
+                    or (../../../../type='vpws-ldp' and .='bypass' and ../../pw[role='primary'] and not(../../pw[role='backup']) and not(../../pw[role='ac-bypass']) and not(../../pw[role='pw-bypass']))
+                    or (../../../../type='vpws-ldp' and .='ac-bypass' and ../../pw[role='primary'] and not(../../pw[role='bypass']))
+                    or (../../../../type='vpws-ldp' and .='pw-bypass' and ../../pw[role='ac-bypass']))
+                  or ((../../../../type='vpws-svc' and .='primary')
+                    or (../../../../type='vpws-svc' and .='backup' and ../../pw[role='primary'] and not(../../pw[role='bypass']))
+                    or (../../../../type='vpws-svc' and .='bypass' and ../../pw[role='primary'] and not(../../pw[role='backup'])))
+                  or (../../../../type='vpws-single-ccc' and .='backup' and ../../../out-acs/out-ac)";
                 description
                   "Role of a PW. Configure a primary PW first.";
               }
@@ -6018,6 +6250,104 @@ module huawei-l2vpn {
                 default "false";
                 description
                   "Enable/disable the function of the VPWS PW status not to be affected by changes in the AC status.";
+              }
+              container tdm-parameter {
+                when "../role!='pw-bypass' and ../admin-pw='false' and
+                (../../../encapsulation-type='cep' or
+                ../../../encapsulation-type='cesopsn-basic' or
+                ../../../encapsulation-type='satop-e1')";
+                description
+                "Configure TDM parameters.";
+                leaf tdm-encapsulate-number {
+                  ext:dynamic-default;
+                  type uint32 {
+                    range "1..5000";
+                  }
+                description
+                  "Number of TDM frames encapsulated in a CESoPSN or SAToP packet in the TDMoPSN application.";
+                }
+                leaf jitter-buffer {
+                  ext:dynamic-default;
+                  type uint32 {
+                    range "1..64000";
+                  }
+                units ms;
+                description
+                  "Depth of the jitter buffer in the application of TDMoPSN.";
+                }
+                leaf sequence-number {
+                  type boolean;
+                  default "false";
+                  description
+                    "Enable/disable the TDM sequence number function.";
+                }
+                leaf rtp-header {
+                  type l2vpn-rtp-header-type;
+                  default "false";
+                  description
+                    "Add the RTP header to transparently transmitted TDM frames.";
+                }
+                leaf idle-code {
+                  ext:dynamic-default;
+                  type string {
+                    length "1..2";
+                    pattern '[a-fA-F0-9]{1,2}';
+                  }
+                  description
+                    "Idle code that is filled when the jitter buffer underflow occurs.";
+                }
+                leaf payload-compression {
+                  type l2vpn-payload-comp;
+                  must "(../payload-compression!='disable' and ../../../../encapsulation-type='cep') or (../payload-compression='disable')";
+                  default "disable";
+                  description
+                    "Payload compression mode.";
+                }
+              }
+              container atm-parameter {
+                when "../role!='pw-bypass' and ../admin-pw='false' and
+                (../../../encapsulation-type='atm-1to1-vcc' or
+                ../../../encapsulation-type='atm-1to1-vpc' or
+                ../../../encapsulation-type='atm-aal5-pdu' or
+                ../../../encapsulation-type='atm-aal5-sdu' or
+                ../../../encapsulation-type='atm-nto1-vcc' or
+                ../../../encapsulation-type='atm-nto1-vpc' or
+                ../../../encapsulation-type='atm-trans-cell')";
+                description
+                "Configure ATM parameters.";
+                leaf max-atm-cells {
+                  ext:dynamic-default;
+                  type uint32 {
+                    range "1..28";
+                  }
+                  description
+                    "Maximum number of ATM cells to be encapsulated into a packet that can be received by a device.";
+                }
+                leaf atm-pack-overtime {
+                  ext:dynamic-default;
+                  type uint32 {
+                    range "100..10000";
+                  }
+                  units ms;
+                  description
+                    "Delay in encapsulating ATM cells into a packet.";
+                }
+                leaf atm-transmit-cell {
+                  when "../../../../../type!='vpws-svc'";
+                  ext:dynamic-default;
+                  type uint32 {
+                    range "1..28";
+                  }
+                  description
+                    "Maximum number of ATM cells to be encapsulated into a packet that can be sent by a device.";
+                }
+                leaf sequence-number {
+                  type boolean;
+                  must "(../sequence-number='true' and ../../control-word='enable') or (../sequence-number='false')";
+                  default "false";
+                  description
+                    "Enable/disable the control-word-based ATM packet sequencing feature. Performance statistics can then be collected based on this feature.";
+                }
               }
               container track-vrrp {
                 when "../../../../type='vpws-ldp' and
@@ -6930,7 +7260,7 @@ module huawei-l2vpn {
         container vpws-switch {
           ext:operation-exclude delete;
           when "../type='vpws-switch'";
-          must "count(pws/pw)=2 or (switch-type='ldp-ldp-bak' and count(pws/pw)=3)";
+          must "(switch-type!='ldp-ldp-bak' and count(pws/pw)=2 and pws/pw[role='left-primary'] and pws/pw[role='right-primary']) or (switch-type='ldp-ldp-bak' and count(pws/pw)=3)";
           description
             "Configure a VPWS switch instance.";
           uses vpws-swtich-instance-grp;
@@ -6946,6 +7276,10 @@ module huawei-l2vpn {
           ext:operation-exclude delete;
           when "../type='vpls'";
           must "(shutdown='false') or (not (admin-vsi)) or (shutdown='true' and admin-vsi='false')";
+          must "not(ldp-signaling and bgp-multi-homing-signaling)";
+          must "not(bgp-signaling and bgp-multi-homing-signaling)";
+          must "not(bgp-signaling and bgpad-signaling)";
+          must "not(bgp-multi-homing-signaling and bgpad-signaling)";
           description
             "Configure a VPLS instance.";
           uses vpls-instance-grp;

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-twamp-responder {
   namespace "urn:huawei:yang:huawei-twamp-responder";
@@ -30,7 +30,12 @@ module huawei-twamp-responder {
      Email: support@huawei.com";
   description
     "Two Way Active Measurement Protocol.";
-
+  revision 2020-03-14 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-12-27 {
     description
       "Solve some errors.";
@@ -101,7 +106,42 @@ module huawei-twamp-responder {
               "VPN instance name.";
           }
         }
-      }  
+      }
+      container mode {
+        description
+          "Configure listening range of TWAMP.";
+        choice mode {
+          description
+            "Listening range of TWAMP.";
+          case listening-all {
+            description
+              "All-zero listening.";
+            leaf listening-all {
+              type empty;
+              description
+                "All-zero listening.";
+            }
+          }
+          case listening-address {
+            description
+              "Listen for the specified address.";
+            container server-addresses {
+              description
+                "List of server IP addresses.";
+              list server-address {
+                key "address";
+                description
+                  "Configure server IP address.";
+                leaf address {
+                type inet:ipv4-address-no-zone;
+                description
+                  "Server IP address.";
+                }
+              }
+            }
+          }
+        }
+      }
     }
     container reflector {
       presence "Reflector Enable.";
@@ -126,7 +166,7 @@ module huawei-twamp-responder {
           "List of TWAMP light responder test session.";
         list test-session {
           key "session-id";
-          unique "source-ip dest-ip source-port dest-port";
+          unique "source-ip dest-ip source-port dest-port vrf-name";
           description
             "Configure TWAMP light test session.";
           leaf session-id {

@@ -41,9 +41,9 @@ module huawei-mpls-te-bfd {
      Email: support@huawei.com";
   description
     "Specifies the multi-protocol label switching protocol.";
-  revision 2020-04-02 {
+  revision 2020-07-04 {
     description
-      "Fixed bfd-for-lsp condition for SR-TE.";
+      "Fixed BFD for lsp condition for SR-TE, and add BFD initial down for SR-TE.";
     reference
       "Huawei private.";
   }
@@ -265,6 +265,17 @@ module huawei-mpls-te-bfd {
         default "3";
         description
           "Maximum number of BFD for tunnel loss times. When BFD for tunnel is enabled for a TE tunnel, a BFD session can be established. If the number of lost BFD messages exceeds the maximum number of BFD loss times, the TE tunnel is considered to be faulty.";
+      }
+    }
+    container static-bfd-for-lsp {
+      description
+        "Configure static BFD initial down for TE LSP parameter of SR-TE tunnel.";
+      leaf initial-down-enable {
+        when "/bfd:bfd";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable initial down for static BFD for LSP.";
       }
     }
   }

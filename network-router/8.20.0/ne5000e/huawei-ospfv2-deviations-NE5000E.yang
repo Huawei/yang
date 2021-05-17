@@ -14,6 +14,12 @@ module huawei-ospfv2-deviations-NE5000E {
   import huawei-l3vpn {
     prefix l3vpn;
   }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
 
   organization
     "Huawei Technologies Co., Ltd.";
@@ -78,9 +84,6 @@ module huawei-ospfv2-deviations-NE5000E {
       default "64";
     }
   }
-  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:route-preferences/ospfv2:route-preference/ospfv2:policy-type/ospfv2:route-filter-name/ospfv2:route-filter-name" {
-    deviate not-supported;
-  }
   deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:interfaces/ospfv2:interface/ospfv2:bfd/ospfv2:one-arm-echo-flag" {
     deviate not-supported;
   }
@@ -92,9 +95,6 @@ module huawei-ospfv2-deviations-NE5000E {
       type ospfv2-devs-NE5000E:import-rt-protocol-deviations;
     }
   }
-  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:filter-import/ospfv2:policy-type/ospfv2:route-filter/ospfv2:route-filter" {
-    deviate not-supported;
-  }
   deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:shutdown" {
     deviate not-supported;
   }
@@ -103,7 +103,18 @@ module huawei-ospfv2-deviations-NE5000E {
       must "(../../../l3vpn:type='ipv4-unicast' and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']) or (../../../l3vpn:type='ipv6-unicast' and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast'])";
     }
   }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:interfaces/ospfv2:interface/ospfv2:source-sub-ip-address" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:cost-bindings" {
+    deviate not-supported;
+  }
   deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:bier" {
     deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:mpls-ldp-auto-flag" {
+    deviate add {
+      must "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:enable='true' and ../../../../ni:name='_public_' or ../mpls-ldp-auto-flag='none'";
+    }
   }
 }

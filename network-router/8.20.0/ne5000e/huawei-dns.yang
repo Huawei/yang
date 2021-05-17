@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-dns {
   yang-version 1;
@@ -28,7 +28,7 @@ module huawei-dns {
      Email: support@huawei.com";
   description
     "DNS management.";
-  revision 2019-04-01 {
+  revision 2020-04-24 {
     description
       "Init revision.";
     reference
@@ -40,12 +40,12 @@ module huawei-dns {
       "DNS management.";
     container global {
       description
-        "Configure determine whether to enable dns.";
+        "Configure determine whether to enable DNS.";
       leaf enable {
         type boolean;
         default "false";
         description
-          "Enable/disable dns enable flag.";
+          "Enable/disable DNS enable flag.";
       }
     }
     container src-ips {
@@ -121,11 +121,11 @@ module huawei-dns {
     }
     container ipv4-servers {
       description
-        "List of dns IPv4 server.";
+        "List of DNS IPv4 server.";
       list ipv4-server {
         key "vpn address";
         description
-          "Configure dns IPv4 server.";
+          "Configure DNS IPv4 server.";
         leaf vpn {
           type leafref {
             path "/ni:network-instance/ni:instances/ni:instance/ni:name";
@@ -144,7 +144,7 @@ module huawei-dns {
     container dns-pkt-stats {
       config false;
       description
-        "Statistics of dns packets.";
+        "Statistics of DNS packets.";
         leaf input-total {
           type uint32;
           config false;
@@ -191,7 +191,7 @@ module huawei-dns {
           type uint32;
           config false;
           description
-            "Count of received unkown resource record types.";
+            "Count of received unknown resource record types.";
         }
         leaf standard {
           type uint32;

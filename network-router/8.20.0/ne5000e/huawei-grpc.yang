@@ -35,7 +35,7 @@ module huawei-grpc {
      Email: support@huawei.com";
   description
     "GRPC, which is short for Google Remote Procedure Call Protocol, is a high-performance general RPC framework running over HTTP/2 protocols at the transport layer.";
-  revision 2020-01-10 {
+  revision 2020-06-18 {
     description
       "Initial revision.";
     reference
@@ -197,6 +197,53 @@ module huawei-grpc {
         description
           "Enable/disable SSL two-way authentication.";
       }
+    }
+    container session-car {
+        ext:operation-exclude delete;
+        description
+            "Configure the GRPC session car.";
+        leaf enable{
+            type boolean;
+            default "true";
+            description
+                "Enable/disable session car.";
+        }
+        leaf cir-interval {
+            type uint32 {
+                range "1..1000000";
+            }
+            units "kbit/s";
+            default "30";
+            description
+                "Specify the session car cir interval.";
+        }
+        leaf cbs-interval {
+            type uint32 {
+                range "1..1000000";
+            }
+            units "Byte";
+            default "3750";
+            description
+                "Specify the session car cbs interval.";
+        }
+        leaf pir-interval {
+            type uint32 {
+                range "1..1000000";
+            }
+            units "kbit/s";
+            default "300";
+            description
+                "Specify the session car pir interval.";
+        }
+        leaf pbs-interval {
+            type uint32 {
+                range "1..1000000";
+            }
+            units "Byte";
+            default "37500";
+            description
+                "Specify the session car pbs interval.";
+        }
     }
   }
 }

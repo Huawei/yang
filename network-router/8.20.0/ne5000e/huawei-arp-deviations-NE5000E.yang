@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-arp-deviations-NE5000E {
   yang-version 1;
@@ -8,6 +8,12 @@ module huawei-arp-deviations-NE5000E {
 
   import huawei-arp {
     prefix arp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-bd {
+    prefix bd;
   }
 
   organization
@@ -22,16 +28,32 @@ module huawei-arp-deviations-NE5000E {
   description
     "Address Resolution Protocol (ARP) management, which includes static ARP configuration, dynamic ARP learning, ARP security configuration, ARP entry query, and packet statistics collection.";
 
-  revision 2019-06-12 {
+  revision 2020-05-11 {
     description
       "Initial revision.";
     reference "Huawei private.";
   }
 
+  deviation "/arp:arp/arp:global/arp:dfs-backup-rate" {
+    deviate not-supported;
+  }
   deviation "/arp:arp/arp:global/arp:l2topo-detect-enable" {
     deviate not-supported;
   }
   deviation "/arp:arp/arp:global/arp:topo-detect-disable" {
     deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/arp:arp-list/arp:l2proxy-gw-enable" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/arp:arp-list/arp:broadcast-suppress" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/arp:arp-port-security/arp:l2-sub-interface/arp:l2proxy-max-num" {
+    deviate replace {
+      type uint32 {
+        range "0..262144";
+      }
+    }
   }
 }

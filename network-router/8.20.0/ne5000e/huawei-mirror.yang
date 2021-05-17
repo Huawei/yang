@@ -39,6 +39,12 @@ module huawei-mirror {
      Email: support@huawei.com";
   description
     "Network monitor.";
+  revision 2020-07-11 {
+    description
+      "Optimization constraints.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-02-25 {
     description
       "Optimization constraints.";
@@ -104,7 +110,6 @@ module huawei-mirror {
     description
       "Direction.";
   }
-
   typedef without-filter {
     type enumeration {
       enum "true" {
@@ -137,7 +142,6 @@ module huawei-mirror {
     description
       "With linklayer header observe filter in observe port.";
   }
-
   typedef pop-label {
     type enumeration {
       enum "one" {
@@ -158,6 +162,43 @@ module huawei-mirror {
     }
     description
       "Specify POP MPLS label.";
+  }
+  typedef mirror-type {
+    type enumeration {
+      enum "port" {
+        value 0;
+        description
+          "Port.";
+      }
+      enum "policy" {
+        value 1;
+        description
+          "Traffic policy.";
+      }
+    }
+    description
+      "Mirror type.";
+  }
+  typedef query-direction-type {
+    type enumeration {
+      enum "in" {
+        value 0;
+        description
+          "In.";
+      }
+      enum "out" {
+        value 1;
+        description
+          "Out.";
+      }
+      enum "in-out" {
+        value 2;
+        description
+          "In-Out.";
+      }
+    }
+    description
+      "Direction type.";
   }
   typedef identifier-type {
     type enumeration {
@@ -185,8 +226,8 @@ module huawei-mirror {
     description
       "Identifier type.";
   }
-  container mirror { 
-     description
+  container mirror {
+    description
       "Mirror.";
     container statistic-enable {
       presence "create statistic-enable";
@@ -207,8 +248,23 @@ module huawei-mirror {
           description
             "Mirror instance name.";
         }
+        container instance-slice {
+          presence "create instance mirror slice-size";
+          description
+            "Enable/disable mirror instance slice.";
+          leaf slice-size {
+            type uint32 {
+              range "64..9600";
+            }
+            units "Byte";
+            mandatory true;
+            description
+              "Length of packet.";
+          }
+        }
         container instance-car {
-          must "(./pir and ./pbs) or (not(./pir) and not(./pbs) or (not(./pir) and ./pbs>=1))";
+          must "(not(./pir) and not(./pbs)) or (./pbs)";
+          must "not(./pir) or ./pir>=./cir";
           presence "create instance-car";
           description
             "Enable/disable mirror instance car.";
@@ -226,7 +282,6 @@ module huawei-mirror {
               range "1..4294967295";
             }
             units "kbit/s";
-            must "../pir>=../cir";
             description
               "Peak information rate.";
           }
@@ -254,6 +309,7 @@ module huawei-mirror {
       description
         "List of observe user-defined acl.";
       list observe-user-define-acl {
+        must "count(./offsets/offset)>0";
         key "filter-id";
         max-elements  "8";
         description
@@ -303,6 +359,149 @@ module huawei-mirror {
                 "Payload mask, Value range HEX[0,ffffffff].";
             }
           }
+        }
+      }
+    }
+    container query-ports {
+      config false;
+      description
+        "List of query port-mirror infos.";
+      list query-port {
+        key "if-name";
+        config false;
+        description
+          "Query port-mirror info state.";
+        leaf if-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          config false;
+          description
+            "Interface name.";
+        }
+        leaf type {
+          type mirror-type;
+          config false;
+          description
+            "The value 0 indicates port mirroring, and the value 1 indicates flow mirroring.";
+        }
+        leaf direction {
+          type query-direction-type;
+          config false;
+          description
+            "Direction.";
+        }
+        leaf in-packets {
+          type uint64;
+          units "packet";
+          config false;
+          description
+            "Inbound packets.";
+        }
+        leaf out-packets {
+          type uint64;
+          units "packet";
+          config false;
+          description
+            "Outbound packets.";
+        }
+        leaf in-drop-packets {
+          type uint64;
+          units "packet";
+          config false;
+          description
+            "Inbound Drop Packets.";
+        }
+        leaf out-drop-packets {
+          type uint64;
+          units "packet";
+          config false;
+          description
+            "Outbound Drop Packets.";
+        }
+        leaf in-bytes {
+          type uint64;
+          units "Byte";
+          config false;
+          description
+            "Inbound bytes.";
+        }
+        leaf out-bytes {
+          type uint64;
+          units "Byte";
+          config false;
+          description
+            "Outbound bytes.";
+        }
+        leaf in-drop-bytes {
+          type uint64;
+          units "Byte";
+          config false;
+          description
+            "Inbound Drop Bytes.";
+        }
+        leaf out-drop-bytes {
+          type uint64;
+          units "Byte";
+          config false;
+          description
+            "Outbound Drop Bytes.";
+        }
+        leaf in-pps {
+          type uint64;
+          units "pps";
+          config false;
+          description
+            "Inbound pps.";
+        }
+        leaf out-pps {
+          type uint64;
+          units "pps";
+          config false;
+          description
+            "Outbound pps.";
+        }
+        leaf in-drop-pps {
+          type uint64;
+          units "pps";
+          config false;
+          description
+            "Inbound Drop pps.";
+        }
+        leaf out-drop-pps {
+          type uint64;
+          units "pps";
+          config false;
+          description
+            "Outbound Drop pps.";
+        }
+        leaf in-bps {
+          type uint64;
+          units "Byte/s";
+          config false;
+          description
+            "Inbound bps.";
+        }
+        leaf out-bps {
+          type uint64;
+          units "Byte/s";
+          config false;
+          description
+            "Outbound bps.";
+        }
+        leaf in-drop-bps {
+          type uint64;
+          units "Byte/s";
+          config false;
+          description
+            "Inbound Drop bps.";
+        }
+        leaf out-drop-bps {
+          type uint64;
+          units "Byte/s";
+          config false;
+          description
+            "Outbound Drop bps.";
         }
       }
     }
@@ -459,6 +658,20 @@ module huawei-mirror {
             "Observing index.";
         }
       }
+      container rate-limit-percent {
+        presence "create rate-limit-percent";
+          description
+            "Enable/disable mirroring rate-value.";
+        leaf rate-value {
+              type uint8 {
+                range "1..100";
+              }
+          units "%";
+          mandatory true;
+          description
+            "Rate value.";
+        }
+      }
       container observe-filters {
         description
           "List of mirror filter rules.";
@@ -594,7 +807,6 @@ module huawei-mirror {
       }
     }
   }
-  
   augment "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior" {
     description
       "Mirror.";
@@ -606,8 +818,23 @@ module huawei-mirror {
         description
           "Enable/disable flow mirroring action.";
       }
+      container mirror-slice {
+        presence "create mirror-slice";
+        description
+          "Enable/disable flow mirroring slice action.";
+        leaf slice-size {
+          type uint32 {
+            range "64..9600";
+          }
+          units "Byte";
+          mandatory true;
+          description
+            "Length of packet.";
+        }
+      }
       container mirror-car {
-        must "(./pir and ./pbs) or (not(./pir) and not(./pbs) or (not(./pir) and ./pbs>=1))";
+        must "(not(./pir) and not(./pbs)) or (./pbs)";
+        must "not(./pir) or ./pir>=./cir";
         presence "create mirror-car";
         description
           "Enable/disable flow mirroring car action.";
@@ -625,7 +852,6 @@ module huawei-mirror {
             range "1..4294967295";
           }
           units "kbit/s";
-          must "../pir>=../cir";
           description
             "Peak information rate.";
         }
@@ -654,11 +880,11 @@ module huawei-mirror {
         leaf observe-index {
           type string {
             length "1..50";
-            pattern '((25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|[1-9]){1}((,(25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|[1-9])){0,4}))';
+            pattern '((25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|[1-9]){1}((,(25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|[1-9])){0,7}))';
           }
           mandatory true;
           description
-            "Observing index. Enter the observation index value, which is separated by a comma (,). For example, 1 or 1,3,5,7,9.";
+            "Observing index. Enter the observation index value, which is separated by a comma (,) and the index value must be unique. For example, 1 or 1,3,5,7,9.";
         }
       }
     }
@@ -700,8 +926,7 @@ module huawei-mirror {
               leaf cevlan {
                 type pub-type:vlan-range;
                 must "../../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute";
-                must "not(../cpu-packet='true' or ../../../port-observe or count(../../../evc-l2-port-mirrors/pubs/pub)>0 or
-                count(../../../evc-l2-port-mirrors/dot1q-types/dot1q-type)>0 or count(../../../evc-l2-port-mirrors/qinq-types/qinq-type)>0)";
+                must "not(../cpu-packet='true')";
                 description
                   "VLAN ID.";
               }
@@ -720,17 +945,32 @@ module huawei-mirror {
           }
         }
       }
+      container port-mirror-slice {
+        presence "create port-mirroring slice-size";
+        description
+          "Enable/disable grab fixed-length packet.";
+        leaf slice-size {
+          type uint32 {
+            range "64..9600";
+          }
+          units "Byte";
+          mandatory true;
+          description
+            "Length of packet.";
+        }
+      }
       container without-header {
-        must "../port-mirrors/port-mirror/direction";
-        must "not(../port-mirrors/port-mirror/cevlan or count(../integrateds/integrated)>0 or count(../evc-l2-port-mirrors/pubs/pub)>0 or
-        count(../evc-l2-port-mirrors/dot1q-types/dot1q-type)>0 or count(../evc-l2-port-mirrors/qinq-types/qinq-type)>0 or ../port-observe)";
+        when "../port-mirrors/port-mirror";
+        must "(../port-mirrors/port-mirror[direction='inbound'] and not(../port-mirrors/port-mirror[direction='inbound']/cevlan)) or
+        (../port-mirrors/port-mirror[direction='outbound'] and not(../port-mirrors/port-mirror[direction='outbound']/cevlan))";
         presence "create without-header";
         description
           "Enable/disable specify packet mirroring from layer 3."; 
       }
       container port-mirror-car {
         must "not(../port-observe)";
-        must "(./pir and ./pbs) or (not(./pir) and not(./pbs) or (not(./pir) and ./pbs>=1))";
+        must "(not(./pir) and not(./pbs)) or (./pbs)";
+        must "not(./pir) or ./pir>=./cir";
         presence "create port-mirror-car";
         description
           "Enable/disable flow mirroring car action.";
@@ -748,7 +988,6 @@ module huawei-mirror {
             range "1..4294967295";
           }
           units "kbit/s";
-          must "../pir>=../cir";
           description
             "Peak information rate.";
         }
@@ -778,14 +1017,15 @@ module huawei-mirror {
           leaf observe-index {
           type string {
             length "1..50";
-            pattern '(null0)|((25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|[1-9]){1}((,(25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|[1-9])){0,4}))';
+            pattern '(null0)|((25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|[1-9]){1}((,(25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|[1-9])){0,7}))';
           }
           mandatory true;
           description
-            "Observing index. Enter the observation index value, which is separated by a comma (,). For example, 1 or 1, 3, 5, 7, 9. If mirroring based on no observing port is required, enter null0.";
+            "Observing index. Enter the observation index value, which is separated by a comma (,) and the index value must be unique. For example, 1 or 1,3,5,7,9. If mirroring based on no observing port is required, enter null0.";
         }
       }
       container port-fragments {
+          when "../../ifm:type='Mp-group'";
           must "not(count(./port-fragment)>0 and (../port-mirrors/port-mirror/cevlan or ../port-observe or count(../integrateds/integrated)>0 or
           count(../evc-l2-port-mirrors/pubs/pub)>0 or count(../evc-l2-port-mirrors/dot1q-types/dot1q-type)>0 or count(../evc-l2-port-mirrors/qinq-types/qinq-type)>0))";
           description
@@ -817,6 +1057,7 @@ module huawei-mirror {
           leaf cpu-packet {
             type boolean;
             must "../direction!='outbound' or ../cpu-packet!='true'";
+            must "not(../../integrated[direction='inbound'][cpu-packet != current()])";
             description
               "Enable/disable a separate mirroring function for sending CPU packets.";
           }
@@ -831,47 +1072,49 @@ module huawei-mirror {
             mandatory true;
             description
               "Observe port.";
-              case port-null0 {
-                leaf null0 {
-                  type empty;
-                    description
-                        "Specify observing port null0.";
-                  }
-                  description
-                      "Specify observing port null0.";
-              }
-              case port-observe {
+            case port-null0 {
+              description
+                "Specify observing port null0.";
+              leaf null0 {
+                type empty;
                 description
-                    "Port observe.";
-                leaf if-name {
-                  type leafref {
-                      path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
-                  }
-                  must "../observe-index";
-                  description
-                      "Name of an observing interface.";
-                }
-                leaf observe-index {
-                  type uint8 {
-                      range "1..255";
-                  }
-                  must "../if-name";
-                  description
-                      "Observing index.";
-                }
+                  "Specify observing port null0.";
               }
+            }
+            case port-observe {
+              description
+                "Port observe.";
+              leaf if-name {
+                type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                }
+                must "../observe-index";
+                must "../../../../ifm:name != current()";
+                description
+                  "Name of an observing interface.";
+              }
+              leaf observe-index {
+                type uint8 {
+                  range "1..255";
+                }
+                must "../if-name";
+                description
+                  "Observing index. An index corresponds to only one observing port.";
+              }
+            }
           }
         }
       }
       container bas-port-mirrors {
-        must "not (count(./bas-port-mirror)>0 and (../port-observe or ../without-header or count(../integrateds/integrated)>0 or count(../evc-l2-port-mirrors/pubs/pub)>0
+        must "not (count(./bas-port-mirror)>0 and (../port-observe or count(../integrateds/integrated)>0 or count(../evc-l2-port-mirrors/pubs/pub)>0
         or count(../evc-l2-port-mirrors/dot1q-types/dot1q-type)>0 or count(../evc-l2-port-mirrors/qinq-types/qinq-type)>0))";
         description
           "List of QinQ match port mirrors.";
         list bas-port-mirror {
-          must "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:user-vlan-any or /ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:user-vlan-common/ethernet:user-vlan-qinqs";
+          must "../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:user-vlan-any or ../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:user-vlan-common/ethernet:user-vlan-qinqs";
           must "./pevlan-begin <= ./pevlan-end";
           must "./cevlan-begin <= ./cevlan-end";
+          must "(./pevlan-end - ./pevlan-begin + 1) * (./cevlan-end - ./cevlan-begin + 1) <= 4096";
           must "((./direction='inbound' and not(../../port-mirrors/port-mirror[direction='inbound'])) or (./direction='outbound' and not(../../port-mirrors/port-mirror[direction='outbound'])))";
           key "direction pevlan-begin pevlan-end cevlan-begin cevlan-end";
           description
@@ -921,13 +1164,15 @@ module huawei-mirror {
             description
              "EVC l2 untag port mirror.";
           container pubs {
-            must "not (count(./pub)>0 and (../../port-observe or ../../port-mirror-to or count(../../integrateds/integrated)>0))";
+            must "not(count(./pub)>0 and (../../port-observe))";
             description
                  "List of EVC l2 port mirror.";
               list pub {
-                  must "(../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:default or ../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:untag or ../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:dot1q/ethernet:vlans or ../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:qinqs)";
-                  must "((./direction='inbound' and not(../../../port-mirrors/port-mirror[direction='inbound'])) or
-                  (./direction='outbound' and not(../../../port-mirrors/port-mirror[direction='outbound'])))";
+                  must "(../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:default or ../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:untag or
+                  ../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:dot1q/ethernet:vlans or ../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:qinqs/ethernet:qinq-vids/ethernet:qinq-vid or
+                  ../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:qinqs/ethernet:qinq-vid-ce-default)";
+                  must "((./direction='inbound' and not(../../../port-mirrors/port-mirror[direction='inbound'] or ../../../integrateds/integrated[direction='inbound'])) or
+                  (./direction='outbound' and not(../../../port-mirrors/port-mirror[direction='outbound'] or ../../../integrateds/integrated[direction='outbound'])))";
                   key "direction";
                   description
                     "Configure EVC l2 port mirror.";
@@ -958,13 +1203,13 @@ module huawei-mirror {
             description
              "EVC l2 dot1q-terminal port mirror.";
             container dot1q-types { 
-               must "not (count(./dot1q-type)>0 and (../../port-observe or ../../port-mirror-to or count(../../integrateds/integrated)>0))";
+               must "not(count(./dot1q-type)>0 and (../../port-observe))";
                description
                  "List of EVC l2 port mirror.";
               list dot1q-type {
                   must "../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:dot1q/ethernet:vlans";
-                  must "((./direction='inbound' and not(../../../port-mirrors/port-mirror[direction='inbound'])) or
-                 (./direction='outbound' and not(../../../port-mirrors/port-mirror[direction='outbound'])))";
+                  must "((./direction='inbound' and not(../../../port-mirrors/port-mirror[direction='inbound'] or ../../../integrateds/integrated[direction='inbound'] or ../../pubs/pub[direction='inbound'])) or
+                 (./direction='outbound' and not(../../../port-mirrors/port-mirror[direction='outbound'] or ../../../integrateds/integrated[direction='outbound'] or ../../pubs/pub[direction='inbound'])))";
                   must "./vlan-begin <= ./vlan-end";
                   key "direction vlan-begin vlan-end";
                   description
@@ -1017,13 +1262,13 @@ module huawei-mirror {
             description
              "EVC l2 QinQ-terminal port mirror.";
             container qinq-types {
-               must "not (count(./qinq-type)>0 and (../../port-observe or ../../port-mirror-to or count(../../integrateds/integrated)>0))";
+               must "not(count(./qinq-type)>0 and (../../port-observe))";
                description
                  "List of EVC l2 port mirror.";
               list qinq-type {
-                  must "../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:qinqs";
-                  must "((./direction='inbound' and not(../../../port-mirrors/port-mirror[direction='inbound'])) or
-                  (./direction='outbound' and not(../../../port-mirrors/port-mirror[direction='outbound'])))";
+                  must "../../../../ethernet:ethernet/ethernet:l2-sub-interface/ethernet:qinqs/ethernet:qinq-vids/ethernet:qinq-vid";
+                  must "((./direction='inbound' and not(../../../port-mirrors/port-mirror[direction='inbound'] or ../../../integrateds/integrated[direction='inbound'] or ../../pubs/pub[direction='inbound'])) or
+                  (./direction='outbound' and not(../../../port-mirrors/port-mirror[direction='outbound'] or ../../../integrateds/integrated[direction='outbound'] or ../../pubs/pub[direction='outbound'])))";
                   must "./cevlan-begin <= ./cevlan-end";
                   key "direction pevlan cevlan-begin cevlan-end";
                   description
@@ -1090,7 +1335,7 @@ module huawei-mirror {
           }
           mandatory true;
           description
-            "Observing index.";
+            "Observing index. An index corresponds to only one observing port.";
         }
         leaf without-filter {
           type without-filter;
@@ -1105,7 +1350,7 @@ module huawei-mirror {
         }
          leaf pop-label {
           type pop-label;
-          must "../with-linklayer-header!='true'";           
+          must "not(../destination-mac) and ../../../ifm:class='main-interface'";           
           description
             "Type of POP MPLS label.";
         }
@@ -1118,7 +1363,6 @@ module huawei-mirror {
         leaf with-linklayer-header {
           type with-linklayer-header;
           must "../../../ifm:class='sub-interface' or ../with-linklayer-header='false'";
-          must "not(../pop-label) or ../with-linklayer-header='false'";    
           default "false";
           description
             "Specify packet mirroring from layer 3.";

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-nd {
   yang-version 1;
@@ -33,7 +33,13 @@ module huawei-nd {
      Website: http://www.huawei.com
      Email: support@huawei.com";
   description
-    "ND management. This yang file has been replaced by huawei-IPv6-nd.yang.";
+    "ND management. This yang file has been replaced by huawei-ipv6-nd.yang.";
+  revision 2020-03-05 {
+    description
+      "Modify description information.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-01 {
     description
       "Init revision.";
@@ -168,7 +174,7 @@ module huawei-nd {
 	container global {
       status deprecated;
       description
-        "Configure ND detect flag.";
+        "Configure global configuration of ND.";
 	  leaf na-send-rate-limit {
         type uint16 {
           range "1..10240";
@@ -176,7 +182,7 @@ module huawei-nd {
         default "5000";
         status deprecated;
         description
-          "Rate limit of sending NA packet (pps).";
+          "Rate limit of sending NA packet.";
       }
 	  leaf rs-send-rate-limit {
         type uint16 {
@@ -185,7 +191,7 @@ module huawei-nd {
         default "550";
         status deprecated;
         description
-          "Rate limit of sending RS packet (pps).";
+          "Rate limit of sending RS packet.";
       }
 	  leaf ra-send-rate-limit {
         type uint16 {
@@ -194,7 +200,7 @@ module huawei-nd {
         default "550";
         status deprecated;
         description
-          "Rate limit of sending RA packet (pps).";
+          "Rate limit of sending RA packet.";
       }
     }
     container ipv6-neighbors {
@@ -296,7 +302,7 @@ module huawei-nd {
           config false;
           status deprecated;
           description
-            "Strict security mode.";
+            "Enable/disable strict security mode.";
         }
         leaf nickname {
           type uint32 {
@@ -343,7 +349,7 @@ module huawei-nd {
     }
   }
   augment "/ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if" {
-    when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/if-ip:name]/ifm:type!='Tunnel' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/if-ip:name]/ifm:type!='LoopBack' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/if-ip:name]/ifm:type!='ServiceIf'";
+    when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/if-ip:name]/ifm:type!='Tunnel' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/if-ip:name]/ifm:type!='LoopBack' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/if-ip:name]/ifm:type!='ServiceIf'";
     status deprecated;
     description
       "All configurations of the ND under the interface.";
@@ -366,7 +372,7 @@ module huawei-nd {
             "To set the retransmission timer of a router.";
         }
         leaf nud-reach-time {
-          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
           type uint32 {
             range "1..3600000";
           }
@@ -392,7 +398,7 @@ module huawei-nd {
             "Flag of enabling multicast.";
         }
         leaf max-dyn-nb-num {
-          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
           type uint64 {
             range "0..65536";
           }
@@ -402,17 +408,18 @@ module huawei-nd {
             "The maximum of limitation of dynamic neighbor.";
         }
         leaf dad-timeout {
-          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
           type uint32 {
             range "1..60";
           }
+          units "s";
           default "1";
           status deprecated;
           description
             "Timeout of DAD.";
         }
         leaf nud-attempts {
-          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
           type uint8 {
             range "1..10";
           }
@@ -422,7 +429,7 @@ module huawei-nd {
             "ND entries NUD attempts.";
         }
         leaf na-glean {
-          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
+          when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Ip-Trunk' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Pos' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type!='Mp-group'";
           type nd-flag;
           default "false";
           status deprecated;
@@ -540,7 +547,6 @@ module huawei-nd {
             range "384..3072";
           }
           units "bit";
-          must "(../rsa-max-key-len>=../rsa-min-key-len)";
           default "2048";
           status deprecated;
           description
@@ -548,16 +554,16 @@ module huawei-nd {
         }
       }
       container proxys {
-        when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../if-ip:name]/ifm:type!='MEth' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../if-ip:name]/ifm:type!='Ip-Trunk' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../if-ip:name]/ifm:type!='PW-VE'";
+        when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../if-ip:name]/ifm:type!='MEth' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../if-ip:name]/ifm:type!='Ip-Trunk' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../if-ip:name]/ifm:type!='PW-VE'";
         status deprecated;
         description
-          "Configure list of ND Proxy.";
+          "Configure list of ND proxy.";
         leaf route-proxy {
           type nd-flag;
           default "false";
           status deprecated;
           description
-            "Router Proxy.";
+            "Configure list of ND proxy.";
         }
         leaf inner-vlan-proxy {
           when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:class='sub-interface' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type='Vlanif'";
@@ -565,7 +571,7 @@ module huawei-nd {
           default "false";
           status deprecated;
           description
-            "InnerVLAN Proxy.";
+            "InnerVLAN proxy.";
         }
         leaf inter-vlan-proxy {
           when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:class='sub-interface' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../if-ip:name]/ifm:type='Vlanif'";
@@ -573,14 +579,14 @@ module huawei-nd {
           default "false";
           status deprecated;
           description
-            "InterVLAN Proxy.";
+            "InterVLAN proxy.";
         }
         leaf anyway-proxy {
           type nd-flag;
           default "false";
           status deprecated;
           description
-            "Anyway Proxy.";
+            "Anyway proxy.";
         }
       }
     }

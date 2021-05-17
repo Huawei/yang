@@ -25,6 +25,12 @@ module huawei-l2vpn-vpls-ext {
      Email: support@huawei.com";
   description
     "L2VPN VPLS ext.";
+  revision 2020-03-24 {
+    description
+      "Add must condition.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-03-09 {
     description
       "Add pipe type.";
@@ -51,7 +57,7 @@ module huawei-l2vpn-vpls-ext {
   }
   revision 2019-04-23 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -207,7 +213,6 @@ module huawei-l2vpn-vpls-ext {
       }
       leaf convergence-separate-in-system {
         type boolean;
-        /* must "../../l2vpn:l2vpn-global/enable='true'"; */
         default "false";
         description
           "Enable/disable the flag of VPLS convergence separate in systerm.";
@@ -291,6 +296,17 @@ module huawei-l2vpn-vpls-ext {
           "VSI trust type.";
       }
     }
+    container reserve-if-switch {
+      when "../l2vpn:work-mode='normal'";
+      description
+          "Configure VSI separate broadcast fast switching.";
+      leaf enable {
+          type boolean;
+          default "false";
+          description
+              "Enable/disable the flag of VSI separate broadcast fast switching.";
+      }
+    }
     container vpls-ext {
       description
         "Configure VPLS common extension.";
@@ -308,12 +324,14 @@ module huawei-l2vpn-vpls-ext {
       }
       leaf convergence-separate {
         type boolean;
+        must "(../convergence-separate ='false') or ((../convergence-separate ='true') and (../../l2vpn:work-mode='normal' or ../../l2vpn:work-mode='bd-mode') and (../../l2vpn:ldp-signaling/l2vpn:hard-pipe='false') and (/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:convergence-separate-in-system='false'))";
         default "false";
         description
           "Enable/disable the flag of VPLS convergence separate in VSI.";
       }
     }
   }
+
   augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac" {
     description "VPLS AC.";
     container vpls-ac-suppression {

@@ -40,6 +40,12 @@ module huawei-igmp-mld {
     "The module defines the configuration and operational state for
      the Internet Group Management Protocol (IGMP) and Multicast
      Listener Discovery (MLD) protocols.";
+  revision 2020-06-21 {
+    description
+      "Modify must restrictions for static-group configurations.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-03-04 {
     description
       "Add units for some nodes.";
@@ -109,7 +115,7 @@ module huawei-igmp-mld {
           type boolean;
           default "false";
           description
-            "Enable/disable the router to process only the messages whose IP headers contain Router-Alert options globally.";
+            "Enable/disable the router to process the messages whose IP headers contain Router-Alert options globally.";
         }
         leaf send-router-alert {
           type boolean;
@@ -231,7 +237,7 @@ module huawei-igmp-mld {
             units "s";
             default "10";
             description
-              "Specify the maximum response time for a query message. This time is used to control the deadline of mainframe feed back the relation-ship of group members.";
+              "Specify the maximum time for the response to a query message. This time is used to control the deadline of a host's group membership feedback.";
           }
           leaf robustness {
             type uint32 {
@@ -262,7 +268,7 @@ module huawei-igmp-mld {
             type boolean;
             default "false";
             description
-              "Enable/disable an interface to process only messages whose IP headers contain Router-Alert options.";
+              "Enable/disable an interface to process messages whose IP headers contain Router-Alert options.";
           }
           leaf send-router-alert {
             type boolean;
@@ -282,7 +288,7 @@ module huawei-igmp-mld {
             type boolean;
             default "false";
             description
-              "Enable/disable an interface that receives a Leave message of a certain group to immediately delete the corresponding group records, without sending a last-member query message.";
+              "Enable/disable an interface that receives a leave message of a certain group to immediately delete the corresponding group records, without sending a last-member query message.";
           }
           leaf immediately-leave-policy {
             when "../immediately-leave='true'";
@@ -295,6 +301,7 @@ module huawei-igmp-mld {
           }
           leaf on-demand-enable {
             type boolean;
+            must "../on-demand-enable='false' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../name]/ifm:type!='Virtual-Template'";
             default "false";
             description
               "Enable/disable records about the groups that the interface joins never to age. By default, the group records age periodically. 1. This command is applicable to IGMPv2, IGMPv3, and MLD only. 2. This command can be used on the querier only.";
@@ -349,7 +356,7 @@ module huawei-igmp-mld {
             type leafref {
               path "/acl:acl/acl:groups/acl:group/acl:identity";
             }
-            must "/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic'";			
+            must "/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic'";
             description
               "Configure an ACL that defines a host addresses range. The value is an integer ranging from 2000 to 2999, or a case-sensitive string.";
           }
@@ -379,7 +386,7 @@ module huawei-igmp-mld {
           }
           leaf is-source-address {
             type boolean;
-            must "../is-source-address='false' or ../is-source-dns-ssm-mapping='false'";
+            must "../is-source-address='false' or (../is-source-dns-ssm-mapping='false' and ../source-address!='0.0.0.0')";
             description
               "Enable/disable a device to configure an address for the multicast source.";
           }
@@ -391,7 +398,7 @@ module huawei-igmp-mld {
           }
           leaf is-inc-step-group-mask {
             type boolean;
-            must "../is-inc-step-group-mask='false' or ../is-source-dns-ssm-mapping='false'";
+            must "../is-inc-step-group-mask='false' or (../is-source-dns-ssm-mapping='false' and ../inc-step-group-mask!='0.0.0.0')";
             description
               "Enable/disable a device to specify the step mask in batch configuration mode.";
           }
@@ -399,7 +406,7 @@ module huawei-igmp-mld {
             type inet:ipv4-address-no-zone;
             must "../inc-step-group-mask='0.0.0.0' or ../is-inc-step-group-mask='true'";
             description
-              "Specify the step mask of a group address in batch configuration mode. The step mask refers to the distance between two multicast group addresses. The value is expressed in wildcard-mask mode and dotted decimal notation, and ranges from 0.0.0.1 to 15.255.255.255.";
+              "Specify the step mask of a group address in batch configuration mode. It refers to the step between two neighboring multicast group addresses. The value is expressed in wildcard-mask mode and in dotted decimal notation, ranging from 0.0.0.1 to 15.255.255.255.";
           }
           leaf is-source-dns-ssm-mapping {
             type boolean;
@@ -424,7 +431,7 @@ module huawei-igmp-mld {
         list dot1q-static-group {
           must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/interface]/ifm:vrf-name=current()/../../../ni:name";
           must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/interface]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination";
-          must "begin-vid<=end-vid";		  
+          must "begin-vid<=end-vid";
           key "interface group-address is-source-address source-address is-inc-step-group-mask inc-step-group-mask begin-vid end-vid";
           description
             "Configure a static multicast group in a dot1q-termination interface.";
@@ -450,6 +457,7 @@ module huawei-igmp-mld {
           leaf source-address {
             type inet:ipv4-address-no-zone;
             must "../source-address='0.0.0.0' or ../is-source-address='true'";
+            must "../source-address!='0.0.0.0' or ../is-source-address='false'";
             description
               "Specify the address of a multicast source. In the case of an IPv4 address, the value is in dotted decimal notation. In the case of an IPv6 address, the value is in hexadecimal notation.";
           }
@@ -462,7 +470,7 @@ module huawei-igmp-mld {
             type inet:ipv4-address-no-zone;
             must "(../is-inc-step-group-mask='true' and ../inc-step-group-mask!='0.0.0.0') or (../is-inc-step-group-mask='false' and ../inc-step-group-mask='0.0.0.0')";
             description
-              "Specify the step mask is set for multicast group addresses configured in a batch. The step mask refers to the distance between two multicast group addresses. The value is expressed in wildcard-mask mode and dotted decimal notation, and ranges from 0.0.0.1 to 15.255.255.255.";
+              "Specify the step mask of a group address in batch configuration mode. It refers to the step between two neighboring multicast group addresses. The value is expressed in wildcard-mask mode and in dotted decimal notation, ranging from 0.0.0.1 to 15.255.255.255.";
           }
           leaf begin-vid {
             type uint32 {
@@ -521,6 +529,7 @@ module huawei-igmp-mld {
           leaf source-address {
             type inet:ipv4-address-no-zone;
             must "../source-address='0.0.0.0' or ../is-source-address='true'";
+            must "../source-address!='0.0.0.0' or ../is-source-address='false'";
             description
               "Specify the address of a multicast source. In the case of an IPv4 address, the value is in dotted decimal notation. In the case of an IPv6 address, the value is in hexadecimal notation.";
           }
@@ -533,7 +542,7 @@ module huawei-igmp-mld {
             type inet:ipv4-address-no-zone;
             must "(../is-inc-step-group-mask='true' and ../inc-step-group-mask!='0.0.0.0')  or (../is-inc-step-group-mask='false' and ../inc-step-group-mask='0.0.0.0')";
             description
-              "Specify the step mask is set for multicast group addresses configured in a batch. The step mask refers to the distance between two multicast group addresses. The value is expressed in wildcard-mask mode and dotted decimal notation, and ranges from 0.0.0.1 to 15.255.255.255.";
+              "Specify the step mask of a group address in batch configuration mode. It refers to the step between two neighboring multicast group addresses. The value is expressed in wildcard-mask mode and in dotted decimal notation, ranging from 0.0.0.1 to 15.255.255.255.";
           }
           leaf pe-vid {
             type uint32 {
@@ -615,7 +624,7 @@ module huawei-igmp-mld {
           type boolean;
           default "false";
           description
-            "Enable/disable the router to process only the messages whose IP headers contain Router-Alert options globally.";
+            "Enable/disable the router to process the messages whose IP headers contain Router-Alert options globally.";
         }
         leaf send-router-alert {
           type boolean;
@@ -695,7 +704,7 @@ module huawei-igmp-mld {
             type leafref {
               path "/acl:acl/acl:group6s/acl:group6/acl:identity";
             }
-            must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic'";			
+            must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic'";
             description
               "Configure an ACL that defines a host addresses range. The value is an integer ranging from 2000 to 2999, or a case-sensitive string.";
           }
@@ -715,7 +724,7 @@ module huawei-igmp-mld {
             units "s";
             default "10";
             description
-              "Specify the maximum response time for a query message. This time is used to control the deadline of mainframe feed back the relation-ship of group members.";
+              "Specify the maximum time for the response to a query message. This time is used to control the deadline of a host's group membership feedback.";
           }
           leaf robustness {
             type uint32 {
@@ -746,7 +755,7 @@ module huawei-igmp-mld {
             type boolean;
             default "false";
             description
-              "Enable/disable an interface to process only messages whose IP headers contain Router-Alert options.";
+              "Enable/disable an interface to process messages whose IP headers contain Router-Alert options.";
           }
           leaf send-router-alert {
             type boolean;
@@ -766,7 +775,7 @@ module huawei-igmp-mld {
             type boolean;
             default "false";
             description
-              "Enable/disable an interface that receives a Leave message of a certain group to immediately delete the corresponding group records, without sending a last-member query message.";
+              "Enable/disable an interface that receives a leave message of a certain group to immediately delete the corresponding group records, without sending a last-member query message.";
           }
           leaf immediately-leave-policy {
             when "../immediately-leave='true'";
@@ -809,7 +818,7 @@ module huawei-igmp-mld {
             type leafref {
               path "/acl:acl/acl:group6s/acl:group6/acl:identity";
             }
-            must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic'";			
+            must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic'";
             description
               "Configure an ACL that defines a host addresses range. The value is an integer ranging from 2000 to 2999, or a case-sensitive string.";
           }
@@ -845,6 +854,7 @@ module huawei-igmp-mld {
           leaf source-address {
             type inet:ipv6-address-no-zone;
             must "../source-address='::' or ../is-source-address='true'";
+            must "../source-address!='::' or ../is-source-address='false'";
             description
               "Specify the address of a multicast source.";
           }
@@ -904,6 +914,7 @@ module huawei-igmp-mld {
           leaf source-address {
             type inet:ipv6-address-no-zone;
             must "../source-address='::' or ../is-source-address='true'";
+            must "../source-address!='::' or ../is-source-address='false'";
             description
               "Specify the address of a multicast source.";
           }
@@ -977,6 +988,7 @@ module huawei-igmp-mld {
           leaf source-address {
             type inet:ipv6-address-no-zone;
             must "../source-address='::' or ../is-source-address='true'";
+            must "../source-address!='::' or ../is-source-address='false'";
             description
               "Specify the address of a multicast source.";
           }

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-bfd-static-vpls {
   yang-version 1;
@@ -29,7 +29,13 @@ module huawei-bfd-static-vpls {
      Email: support@huawei.com";
   description
     "Bidirectional Forwarding Detection (BFD) is a detection mechanism used uniformly on the entire network. BFD is used to rapidly detect and monitor the connectivity of links or IP routes on a network.";
-  
+
+  revision 2020-03-13 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }	
   revision 2019-12-30 {
     description
       "Units correct.";
@@ -52,10 +58,10 @@ module huawei-bfd-static-vpls {
   ext:task-name "bfd";
   augment "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type" {
     description
-      "Configure bfd for vsi pw.";
+      "Configure BFD for VSI PW.";
     case vsi-pw {
       description
-        "List of BFD statistic session configurations for vsi-pw.";
+        "List of BFD statistic session configurations for VSI-PW.";
       leaf min-tx-interval-static-vsi-pw {
         type uint32 {
           range "3..20000";
@@ -146,7 +152,7 @@ module huawei-bfd-static-vpls {
         type boolean;
         default "false";
         description
-          "Enable/disable Session Group.";
+          "Enable/disable session group.";
       }
     }
   }

@@ -996,22 +996,6 @@ submodule huawei-bgp-type {
     description
       "State of the configuration on peer.";
   }
-  typedef nexthop-priority-address-type {
-    type enumeration {
-      enum "ipv4" {
-        value 1;
-        description
-          "IPv4 address.";
-      }
-      enum "ipv6" {
-        value 2;
-        description
-          "IPv6 address.";
-      }
-    }
-    description
-      "The address type of nexthop priority.";
-  }
   typedef exp-mode-type {
     type enumeration {
       enum "null" {
@@ -1033,6 +1017,33 @@ submodule huawei-bgp-type {
     description
       "The type of bgpcommExpMode.";
   }
+  typedef nexthop-priority-address-type {
+    type enumeration {
+      enum "ipv4" {
+        value 1;
+        description
+          "IPv4 address.";
+      }
+      enum "ipv6" {
+        value 2;
+        description
+          "IPv6 address.";
+      }
+    }
+    description
+      "The address type of nexthop priority.";
+  }
+  typedef path-attr-treat-type {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description
+          "Processing mode of normal path attribute.";
+      }
+    }
+    description
+      "Processing mode of path attribute.";
+  }
   typedef entropy-label-attribute-type {
     type enumeration {
       enum "elc" {
@@ -1043,5 +1054,98 @@ submodule huawei-bgp-type {
     }
     description
       "The attribute type of advertising entropy labels.";
+  }
+
+
+  typedef paf-control-feature-type {
+    type enumeration {
+      enum "route-num-all-peer" {
+        value 0;
+        description
+          "Disable PAF-based limiting on the maximum number of routes sent by peers in all address families.";
+      }
+    }
+    description
+      "The features controlled by PAF.";
+  }
+
+  typedef sid-type {
+    type enumeration {
+      enum "auto-sid" {
+        value 1;  
+        description
+          "Automatic SID.";
+      }
+      enum "static-sid" {
+        value 2;  
+        description
+          "Static SID.";
+      }
+    }
+    description
+      "SID types.";
+  }
+  typedef memory-priority {
+    type enumeration {
+      enum "low" {
+        value 0;
+        description
+          "Low priority that determines the disconnection order of a BGP peer relationship if memory overload occurs.";
+      }
+      enum "medium" {
+        value 1;
+        description
+          "Medium priority that determines the disconnection order of a BGP peer relationship if memory overload occurs.";
+      }
+      enum "high" {
+        value 2;
+        description
+          "High priority that determines the disconnection order of a BGP peer relationship if memory overload occurs.";
+      }
+    }
+    description
+      "The priority that determines the disconnection order of a BGP peer relationship if memory overload occurs.";
+  }
+  typedef peer-memory-priority {
+    type enumeration {
+      enum "low" {
+        value 0;
+        description
+          "Low priority that determines the disconnection order of a BGP peer relationship if memory overload occurs.";
+      }
+      enum "medium" {
+        value 1;
+        description
+          "Medium priority that determines the disconnection order of a BGP peer relationship if memory overload occurs.";
+      }
+      enum "high" {
+        value 2;
+        description
+          "High priority that determines the disconnection order of a BGP peer relationship if memory overload occurs.";
+      }
+      enum "default" {
+        value 3;
+        description
+          "Default priority (medium), or priority inherited from a peer group.";
+      }
+    }
+    description
+      "The priority that determines the disconnection order of a BGP peer relationship if memory overload occurs.";
+  }
+  typedef lsp-operation-type {
+    type enumeration {
+      enum "pop" {
+        value 0;
+        description
+          "Label operation mode is POP.";
+      }
+      enum "pop-go" {
+        value 1;
+        description
+          "Label operation mode is POPGO.";
+      }
+    }
+    description
+      "The label operation mode.";
   }
 }

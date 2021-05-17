@@ -30,6 +30,18 @@ module huawei-qos-board {
      Email: support@huawei.com";
   description
     "Quality of service for board.";
+  revision 2020-06-11 {
+    description
+      "Modify descriptions and add units.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-07 {
+    description
+      "Modify descriptions and add new nodes.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-02-28 {
     description
       "Modify descriptions and add new nodes.";
@@ -775,6 +787,30 @@ module huawei-qos-board {
             "Cos value.";
         }
       }
+      container user-queue-resource-8cos-enhances {
+        description
+          "List of 8queue CoS size configuration.";
+        list user-queue-resource-8cos-enhance {
+          key "direction";
+          max-elements "2";
+          description
+            "Configure 8queue CoS size.";
+          leaf direction {
+            type qos:qos-direction-type;
+            description
+              "Direction.";
+          }
+          leaf cos-value {
+            type uint32 {
+              range "4..7000";
+            }
+            must "../cos-value mod 4 = 0";
+            mandatory true;
+            description
+              "CoS value.";
+          }
+        }
+      }
     }//augment devm:mpu-board/devm:qos
   }//augment devm:mpu-board
   augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
@@ -1108,6 +1144,7 @@ module huawei-qos-board {
           type uint8 {
             range "0..100";
           }
+          units "%";
           default "50";
           description
             "Disable percent value.";
@@ -1116,6 +1153,7 @@ module huawei-qos-board {
           type uint8 {
             range "0..100";
           }
+          units "%";
           default "80";
           description
             "Enable percent value.";
@@ -1174,7 +1212,16 @@ module huawei-qos-board {
           description
             "Monitor number.";
         }
-      }   
+      }
+      container over-ride-enable-switch {
+        description
+          "Configure over ride switch.";
+        leaf outbound {
+          type empty;
+          description
+            "Direction outbound.";
+        }
+      }
       container multicast-shaping {
         description
           "Configure an upper rate limit for multicast traffic on a specified board.";
@@ -1268,8 +1315,8 @@ module huawei-qos-board {
               "Priority type.";
           }
           leaf shaping-value {
-            type uint16 {
-              range "1..40000";
+            type uint32 {
+              range "1..400000";
             }
             units "Mbit/s";
             mandatory true;
@@ -1492,6 +1539,30 @@ module huawei-qos-board {
             "Cos value.";
         }
       }
+      container user-queue-resource-8cos-enhances {
+        description
+          "List of 8queue CoS size configuration.";
+        list user-queue-resource-8cos-enhance {
+          key "direction";
+          max-elements "2";
+          description
+            "Configure 8queue CoS size.";
+          leaf direction {
+            type qos:qos-direction-type;
+            description
+              "Direction.";
+          }
+          leaf cos-value {
+            type uint32 {
+              range "4..7000";
+            }
+            must "../cos-value mod 4 = 0";
+            mandatory true;
+            description
+              "CoS value.";
+          }
+        }
+      }
     }//augment devm:lpu-board/devm:qos
   }//augment devm:lpu-board
   augment /lcs:license {
@@ -1556,4 +1627,3 @@ module huawei-qos-board {
     }
   }//augment /lcs:license
 }
-

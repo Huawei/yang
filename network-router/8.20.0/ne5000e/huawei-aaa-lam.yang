@@ -27,7 +27,7 @@ submodule huawei-aaa-lam {
   description
     "Description of lam submodule.";
     
-  revision 2020-01-09 {
+  revision 2020-03-02 {
     description
       "Init revision.";
     reference
@@ -542,6 +542,28 @@ submodule huawei-aaa-lam {
         }
         description
           "Specifies the minimum length for passwords configured for local users.";
+      }
+    }
+  }
+  rpc change-current-password {
+    description
+      "Modify password of current access-user.";
+    input {
+      leaf old-password {
+        type pub-type:one-input-password-extend {
+          length "1..128";
+        }
+        mandatory true;
+        description
+          "The old password of the local user.";
+      }
+      leaf new-password {
+        type pub-type:password-extend {
+          length "1..128";
+        }
+        mandatory true;
+        description
+          "New password to set.";
       }
     }
   }

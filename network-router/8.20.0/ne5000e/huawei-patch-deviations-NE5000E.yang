@@ -23,17 +23,29 @@ module huawei-patch-deviations-NE5000E {
 
   revision 2019-12-10 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference "Huawei private.";
   }
 
+  deviation "/patch:patch/patch:next-startup-patchs" {
+    deviate not-supported;
+  }
   deviation "/patch:patch/patch:operation-schedules/patch:operation-schedule/patch:name" {
+    deviate not-supported;
+  }
+  deviation "/patch:patch/patch:download-package-schedule" {
+    deviate not-supported;
+  }
+  deviation "/patch:patch/patch:download-package-load-path" {
     deviate not-supported;
   }
   deviation "/patch:delete-patch/patch:input/patch:name" {
     deviate not-supported;
   }
   deviation "/patch:reset-startup-patch/patch:input/patch:name" {
+    deviate not-supported;
+  }
+  deviation "/patch:download-patch-file" {
     deviate not-supported;
   }
 }

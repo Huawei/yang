@@ -17,9 +17,6 @@ module huawei-unicast-forward {
   import huawei-devm {
     prefix devm;
   }
-  import huawei-qos {
-    prefix qos;
-  }
   import huawei-license {
     prefix lcs;
   }
@@ -32,6 +29,7 @@ module huawei-unicast-forward {
   import huawei-said-frame {
     prefix sf;
   }
+
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -43,9 +41,9 @@ module huawei-unicast-forward {
     Email: support@huawei.com";
   description
     "Unicast forward.";
-  revision 2020-03-17 {
+  revision 2020-06-11 {
     description
-      "Update description.";
+      "Add ND-MAC linkage node.";
     reference
       "Huawei private.";
   }
@@ -71,27 +69,7 @@ module huawei-unicast-forward {
     description
       "GRE ttl mode type.";
   }
-  typedef vxlan-redirect-type {
-    type enumeration {
-      enum "vxlan" {
-        value 1;
-        description
-          "VXLAN.";
-      }
-      enum "bdif" {
-        value 2;
-        description
-          "BDIF.";
-      }
-      enum "vxlanbdif" {
-        value 3;
-        description
-          "VXLAN BDIF.";
-      }
-    }
-    description
-      "Information of enum type vxlanRedirectType.";
-  }
+
   typedef l3-lcs-service-type {
     type enumeration {
       enum "fib" {
@@ -145,6 +123,22 @@ module huawei-unicast-forward {
     description
       "License active status type.";
   }
+  typedef mpls-6pe-ttl-mode-type {
+    type enumeration {
+      enum "pipe" {
+        value 0;
+        description
+          "Pipe mode.";
+      }
+      enum "uniform" {
+        value 1;
+        description
+          "Uniform mode.";
+      }
+    }
+    description
+      "MPLS 6pe ttl-mode type.";
+  }
   ext:task-name "forwarding";
   container unicast-forward {
     description
@@ -178,9 +172,21 @@ module huawei-unicast-forward {
       }
       leaf mtu-force-frag {
         type boolean;
-        default "false";
+        default "true";
         description
           "Enable/disable IPv4 MTU force fragment.";
+      }
+      leaf trunk-nd-mode {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable Trunk ND global mode.";
+      }
+      leaf mpls-6pe-ttl-mode {
+        type mpls-6pe-ttl-mode-type;
+        default "pipe";
+        description
+          "Enable/disable MPLS 6pe ttl-mode.";
       }
     }
     container high-re-modes {
@@ -280,19 +286,19 @@ module huawei-unicast-forward {
       description
         "Configure unicast forward.";
       container poison-reverse {
-        when "../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'Ip-Trunk' or ../../ifm:type = 'Eth-Trunk' or ../../ifm:type = 'Ethernet' or ../../ifm:type = 'Pos' or ../../ifm:type = '100GE' or ../../ifm:type = '400GE' or ../../ifm:type = '40GE'";
+        when "../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'Ip-Trunk' or ../../ifm:type = 'Eth-Trunk' or ../../ifm:type = 'Ethernet' or ../../ifm:type = 'Pos' or ../../ifm:type = '100GE' or ../../ifm:type = '400GE' or ../../ifm:type = '40GE' or ../../ifm:type = '50|100GE' or ../../ifm:type = '50GE' or ../../ifm:type = '25GE' or ../../ifm:type = '200GE' or ../../ifm:type = '10GE' or ../../ifm:type = 'FlexE' or ../../ifm:type = '4x10GE' or ../../ifm:type = '10x10GE' or ../../ifm:type = '3x40GE' or ../../ifm:type = '4x25GE'";
         presence "Enable poison reverse on an interface";
         description
           "Enable/disable poison reverse.";
         }
       container ipv6-redirect {
-        when "../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'Ip-Trunk' or ../../ifm:type = 'Eth-Trunk' or ../../ifm:type = 'Ethernet' or ../../ifm:type = 'Pos' or ../../ifm:type = '100GE' or ../../ifm:type = '400GE' or ../../ifm:type = '40GE'";
+        when "../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'Ip-Trunk' or ../../ifm:type = 'Eth-Trunk' or ../../ifm:type = 'Ethernet' or ../../ifm:type = 'Pos' or ../../ifm:type = '100GE' or ../../ifm:type = '400GE' or ../../ifm:type = '40GE' or ../../ifm:type = '50|100GE' or ../../ifm:type = '50GE' or ../../ifm:type = '25GE' or ../../ifm:type = '200GE' or ../../ifm:type = '10GE' or ../../ifm:type = 'FlexE' or ../../ifm:type = '4x10GE' or ../../ifm:type = '10x10GE' or ../../ifm:type = '3x40GE' or ../../ifm:type = '4x25GE'";
         presence "Enable ipv6 redirect on an interface";
         description
           "Enable/disable IPv6 redirect.";
         }
       container ipv6-na-anti-attack {
-        when "../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'Ip-Trunk' or ../../ifm:type = 'Eth-Trunk' or ../../ifm:type = 'Ethernet' or ../../ifm:type = '100GE' or ../../ifm:type = '400GE' or ../../ifm:type = '40GE' or ../../ifm:type = 'Vlanif'";
+        when "../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'Ip-Trunk' or ../../ifm:type = 'Eth-Trunk' or ../../ifm:type = 'Ethernet' or ../../ifm:type = '100GE' or ../../ifm:type = '400GE' or ../../ifm:type = '40GE' or ../../ifm:type = 'Vlanif' or ../../ifm:type = '50|100GE' or ../../ifm:type = '50GE' or ../../ifm:type = '25GE' or ../../ifm:type = '200GE' or ../../ifm:type = '10GE' or ../../ifm:type = 'FlexE' or ../../ifm:type = '4x10GE' or ../../ifm:type = '10x10GE' or ../../ifm:type = '3x40GE' or ../../ifm:type = '4x25GE'";
         presence "Enable ipv6 nd na anti-attack on an interface";
         description
           "Enable/disable IPv6 ND NA anti-attack.";
@@ -306,7 +312,7 @@ module huawei-unicast-forward {
           type leafref {
             path "../../../ifm:name";
           }
-          must "../../../ifm:type = 'GigabitEthernet' or ../../../ifm:type = '50|100GE' or ../../../ifm:type = '50GE' or ../../../ifm:type = '400GE' or ../../../ifm:type = '25GE' or ../../../ifm:type = '100GE' or ../../../ifm:type = '200GE' or ../../../ifm:type = '10GE' or ../../../ifm:type = 'XGigabitEthernet' or ../../../ifm:type = 'Eth-Trunk' or ../../../ifm:type = 'FlexE' or ../../../ifm:type = 'FlexE-50G' or ../../../ifm:type = 'FlexE-200GE' or ../../../ifm:type = 'FlexE-100G' or ../../../ifm:type = 'FlexE-50|100G' or ../../../ifm:type = '4x10GE' or ../../../ifm:type = '10x10GE' or ../../../ifm:type = '3x40GE' or ../../../ifm:type = '4x25GE'";
+          must "../../../ifm:type = 'GigabitEthernet' or ../../../ifm:type = '50|100GE' or ../../../ifm:type = '50GE' or ../../../ifm:type = '400GE' or ../../../ifm:type = '25GE' or ../../../ifm:type = '100GE' or ../../../ifm:type = '200GE' or ../../../ifm:type = '10GE' or ../../../ifm:type = 'XGigabitEthernet' or ../../../ifm:type = 'Eth-Trunk' or ../../../ifm:type = 'FlexE' or ../../../ifm:type = 'FlexE-50G' or ../../../ifm:type = 'FlexE-200GE' or ../../../ifm:type = 'FlexE-100G' or ../../../ifm:type = 'FlexE-50|100G' or ../../../ifm:type = '4x10GE' or ../../../ifm:type = '10x10GE' or ../../../ifm:type = '3x40GE' or ../../../ifm:type = '4x25GE' or ../../../ifm:type = 'Ethernet' or ../../../ifm:type = '40GE'";
           description
             "Priority port.";
         }
@@ -322,6 +328,12 @@ module huawei-unicast-forward {
             "Enable/disable ARP-MAC association.";
         }
       }
+      container mac-change-notify-nd-disable {
+        when "../../ifm:type = 'Vlanif'";
+        presence "Disable ND-MAC association function";
+        description
+          "Enable/disable ND-MAC association function.";
+        }
     }
   }
   augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
@@ -344,42 +356,6 @@ module huawei-unicast-forward {
           default "true";
           description
             "Enable/disable slot ICMP replay fast.";
-        }
-      }
-      container vxlan-rdr-trunks {
-        status deprecated;
-        description
-          "List of VXLAN traffic diversion.";
-        list vxlan-rdr-trunk {
-          key "redirect-type";
-          status deprecated;
-          description
-            "Configure VXLAN traffic diversion.";
-          leaf redirect-type {
-            type vxlan-redirect-type;
-            status deprecated;
-            description
-              "Diversion type.";
-          }
-          leaf dest-slot-id1 {
-            type string {
-              length "0..50";
-            }
-            mandatory true;
-            status deprecated;
-            description
-              "Specifies the first board for VXLAN traffic diversion.";
-            ext:support-filter "true";
-          }
-          leaf dest-slot-id2 {
-            type string {
-              length "0..50";
-            }
-            status deprecated;
-            description
-              "Specifies the second board for VXLAN traffic diversion.";
-            ext:support-filter "true";
-          }
         }
       }
       container arp-fast-reply {
@@ -489,20 +465,6 @@ module huawei-unicast-forward {
       }
     }
   }
-  augment "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior" {
-    description
-      "Unicast forward configuration to the qos module.";
-    container act-redirect-vxlantnl {
-      description
-      "Configure traffic redirection to a VXLAN tunnel.";
-      leaf enable {
-        type boolean;
-        status deprecated;
-        description
-          "Enable/disable action for traffic redirection to a VXLAN tunnel.";
-      }
-    }
-  }
   augment "/lcs:license/lcs:license-items/lcs:license-item" {
     description
       "Unicast forward configuration to the license module.";
@@ -541,7 +503,7 @@ module huawei-unicast-forward {
       }
     }
     container port-service-enhances {
-      when "../lcs:name='LCR5S0M1SEN13' or ../lcs:name='LCX6S6M1SEN13' or ../lcs:name='LANNS0AVAND01' or ../lcs:name='LANNS0AVAND02' or ../lcs:name='LANNS0AVAND03' or ../lcs:name='LANNS0AVAND04'";
+      when "../lcs:name='LCR5S0M1SEN13' or ../lcs:name='LCX6S6M1SEN13' or ../lcs:name='LANNS0AVAND01' or ../lcs:name='LANNS0AVAND02' or ../lcs:name='LANNS0AVAND03' or ../lcs:name='LANNS0AVAND04' or ../lcs:name='LANHS00SADV50' or ../lcs:name='LANHS00SADV10'";
       description
         "List of port license entries in the service enhance scenario.";
       list port-service-enhance {
@@ -609,7 +571,7 @@ module huawei-unicast-forward {
       }
     }
     container port-srv6s {
-      when "../lcs:name='LCR9S9KKSR680' or ../lcs:name='LCR9S9KNSR680' or ../lcs:name='LCR9S9KXSR680' or ../lcs:name='LCR9S9KNSR68L' or ../lcs:name='LCR9S9KXSR68L' or ../lcs:name='LANNS00SRV621' or ../lcs:name='LANNS00SRV622' or ../lcs:name='LANNS00SRV623' or ../lcs:name='LANNS00SRV624' or ../lcs:name='LANNS00SRV625' or ../lcs:name='LCR5S40SRV601' or ../lcs:name='LCR5S40SRV602' or ../lcs:name='LCR5S40SRV603' or ../lcs:name='LCR5S40SRV604' or ../lcs:name='LCX6S00SRV601' or ../lcs:name='LCX6S00SRV602' or ../lcs:name='LCX6S00SRV603' or ../lcs:name='LCX6S00SRV604' or ../lcs:name='LTNRS69SRV601' or ../lcs:name='LTNRS69SRV602' or ../lcs:name='LTNRS69SRV603' or ../lcs:name='LTNRS69SRV604' or ../lcs:name='LCR5S42SRV611' or ../lcs:name='LCR5S42SRV612' or ../lcs:name='LCR5S42SRV613' or ../lcs:name='LCR5S42SRV614' or ../lcs:name='LCR5S0M1SR613' or ../lcs:name='LCR8SF0SRV6C1' or ../lcs:name='LCR8SF0SRV6C4' or ../lcs:name='LCR8S00SRV6C2' or ../lcs:name='LCR8S00SRV6C4' or ../lcs:name='LTNRS00SRV6C2' or ../lcs:name='LTNRS00SRV6C4' or ../lcs:name='LCR5S00SRV6C2' or ../lcs:name='LCR5S00SRV6C4' or ../lcs:name='LCR8S0VSRV6C3' or ../lcs:name='LCR8S0XSRV6C3' or ../lcs:name='LCR8S0VSRV6C0' or ../lcs:name='LCR8S0XSRV6C0'";
+      when "../lcs:name='LCR9S9KKSR680' or ../lcs:name='LCR9S9KNSR680' or ../lcs:name='LCR9S9KXSR680' or ../lcs:name='LCR9S9KNSR68L' or ../lcs:name='LCR9S9KXSR68L' or ../lcs:name='LANNS00SRV621' or ../lcs:name='LANNS00SRV622' or ../lcs:name='LANNS00SRV623' or ../lcs:name='LANNS00SRV624' or ../lcs:name='LANNS00SRV625' or ../lcs:name='LCR5S40SRV601' or ../lcs:name='LCR5S40SRV602' or ../lcs:name='LCR5S40SRV603' or ../lcs:name='LCR5S40SRV604' or ../lcs:name='LCX6S00SRV601' or ../lcs:name='LCX6S00SRV602' or ../lcs:name='LCX6S00SRV603' or ../lcs:name='LCX6S00SRV604' or ../lcs:name='LTNRS69SRV601' or ../lcs:name='LTNRS69SRV602' or ../lcs:name='LTNRS69SRV603' or ../lcs:name='LTNRS69SRV604' or ../lcs:name='LCR5S42SRV611' or ../lcs:name='LCR5S42SRV612' or ../lcs:name='LCR5S42SRV613' or ../lcs:name='LCR5S42SRV614' or ../lcs:name='LCR5S0M1SR613' or ../lcs:name='LCR8SF0SRV6C1' or ../lcs:name='LCR8SF0SRV6C4' or ../lcs:name='LCR8S00SRV6C2' or ../lcs:name='LCR8S00SRV6C4' or ../lcs:name='LTNRS00SRV6C2' or ../lcs:name='LTNRS00SRV6C4' or ../lcs:name='LCR5S00SRV6C2' or ../lcs:name='LCR5S00SRV6C4' or ../lcs:name='LCR8S0VSRV6C3' or ../lcs:name='LCR8S0XSRV6C3' or ../lcs:name='LCR8S0VSRV6C0' or ../lcs:name='LCR8S0XSRV6C0' or ../lcs:name='LANNS00SRV624' or ../lcs:name='LANNS00SRV622'";
       description
         "List of port license entries in the SRv6.";
       list port-srv6 {
@@ -676,7 +638,7 @@ module huawei-unicast-forward {
       }
     }
     container port-service-enhances {
-      when "../lcs:name='LCR5S0M1SEN13' or ../lcs:name='LCX6S6M1SEN13' or ../lcs:name='LANNS0AVAND01' or ../lcs:name='LANNS0AVAND02' or ../lcs:name='LANNS0AVAND03' or ../lcs:name='LANNS0AVAND04'";
+      when "../lcs:name='LCR5S0M1SEN13' or ../lcs:name='LCX6S6M1SEN13' or ../lcs:name='LANNS0AVAND01' or ../lcs:name='LANNS0AVAND02' or ../lcs:name='LANNS0AVAND03' or ../lcs:name='LANNS0AVAND04' or ../lcs:name='LANHS00SADV50' or ../lcs:name='LANHS00SADV10'";
       config false;
       description
         "List of port license resource usage in the service enhance scenario.";
@@ -768,7 +730,7 @@ module huawei-unicast-forward {
       }
     }
     container port-srv6s {
-      when "../lcs:name='LCR9S9KKSR680' or ../lcs:name='LCR9S9KNSR680' or ../lcs:name='LCR9S9KXSR680' or ../lcs:name='LCR9S9KNSR68L' or ../lcs:name='LCR9S9KXSR68L' or ../lcs:name='LANNS00SRV621' or ../lcs:name='LANNS00SRV622' or ../lcs:name='LANNS00SRV623' or ../lcs:name='LANNS00SRV624' or ../lcs:name='LANNS00SRV625' or ../lcs:name='LCR5S40SRV601' or ../lcs:name='LCR5S40SRV602' or ../lcs:name='LCR5S40SRV603' or ../lcs:name='LCR5S40SRV604' or ../lcs:name='LCX6S00SRV601' or ../lcs:name='LCX6S00SRV602' or ../lcs:name='LCX6S00SRV603' or ../lcs:name='LCX6S00SRV604' or ../lcs:name='LTNRS69SRV601' or ../lcs:name='LTNRS69SRV602' or ../lcs:name='LTNRS69SRV603' or ../lcs:name='LTNRS69SRV604' or ../lcs:name='LCR5S42SRV611' or ../lcs:name='LCR5S42SRV612' or ../lcs:name='LCR5S42SRV613' or ../lcs:name='LCR5S42SRV614' or ../lcs:name='LCR5S0M1SR613' or ../lcs:name='LCR8SF0SRV6C1' or ../lcs:name='LCR8SF0SRV6C4' or ../lcs:name='LCR8S00SRV6C2' or ../lcs:name='LCR8S00SRV6C4' or ../lcs:name='LTNRS00SRV6C2' or ../lcs:name='LTNRS00SRV6C4' or ../lcs:name='LCR5S00SRV6C2' or ../lcs:name='LCR5S00SRV6C4' or ../lcs:name='LCR8S0VSRV6C3' or ../lcs:name='LCR8S0XSRV6C3' or ../lcs:name='LCR8S0VSRV6C0' or ../lcs:name='LCR8S0XSRV6C0'";
+      when "../lcs:name='LCR9S9KKSR680' or ../lcs:name='LCR9S9KNSR680' or ../lcs:name='LCR9S9KXSR680' or ../lcs:name='LCR9S9KNSR68L' or ../lcs:name='LCR9S9KXSR68L' or ../lcs:name='LANNS00SRV621' or ../lcs:name='LANNS00SRV622' or ../lcs:name='LANNS00SRV623' or ../lcs:name='LANNS00SRV624' or ../lcs:name='LANNS00SRV625' or ../lcs:name='LCR5S40SRV601' or ../lcs:name='LCR5S40SRV602' or ../lcs:name='LCR5S40SRV603' or ../lcs:name='LCR5S40SRV604' or ../lcs:name='LCX6S00SRV601' or ../lcs:name='LCX6S00SRV602' or ../lcs:name='LCX6S00SRV603' or ../lcs:name='LCX6S00SRV604' or ../lcs:name='LTNRS69SRV601' or ../lcs:name='LTNRS69SRV602' or ../lcs:name='LTNRS69SRV603' or ../lcs:name='LTNRS69SRV604' or ../lcs:name='LCR5S42SRV611' or ../lcs:name='LCR5S42SRV612' or ../lcs:name='LCR5S42SRV613' or ../lcs:name='LCR5S42SRV614' or ../lcs:name='LCR5S0M1SR613' or ../lcs:name='LCR8SF0SRV6C1' or ../lcs:name='LCR8SF0SRV6C4' or ../lcs:name='LCR8S00SRV6C2' or ../lcs:name='LCR8S00SRV6C4' or ../lcs:name='LTNRS00SRV6C2' or ../lcs:name='LTNRS00SRV6C4' or ../lcs:name='LCR5S00SRV6C2' or ../lcs:name='LCR5S00SRV6C4' or ../lcs:name='LCR8S0VSRV6C3' or ../lcs:name='LCR8S0XSRV6C3' or ../lcs:name='LCR8S0VSRV6C0' or ../lcs:name='LCR8S0XSRV6C0' or ../lcs:name='LANNS00SRV624' or ../lcs:name='LANNS00SRV622'";
       config false;
       description
         "List of port license resource usage in the SRv6.";

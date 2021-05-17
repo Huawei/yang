@@ -1,12 +1,12 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
-module huawei-tm-deviations-NE5000E {
-  namespace "urn:huawei:yang:huawei-tm-deviations-NE5000E";
-  prefix tm-devs-NE5000E;
+module huawei-cfg-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-cfg-deviations-NE5000E";
+  prefix cfg-devs-NE5000E;
 
-  import huawei-tm {
-    prefix tm;
+  import huawei-cfg {
+    prefix cfg;
   }
 
   organization
@@ -19,15 +19,15 @@ module huawei-tm-deviations-NE5000E {
      Website: http://www.huawei.com
      Email: support@huawei.com";
   description
-    "Time management (TM) component.";
+    "Configuration management module.";
 
-  revision 2019-04-10 {
+  revision 2020-02-21 {
     description
       "Init revision.";
     reference "Huawei private.";
   }
 
-  deviation "/tm:tm/tm:dst-configuration-ias" {
+  deviation "/cfg:create-user-label-checkpoint" {
     deviate not-supported;
   }
 }

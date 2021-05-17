@@ -1,11 +1,11 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-rip-type {
   belongs-to huawei-rip {
     prefix rip;
   }
-  
+
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -17,6 +17,23 @@ submodule huawei-rip-type {
      Email: support@huawei.com";
   description
     "RIP type defined file.";
+  revision 2020-03-13 {
+    description
+      "Modify the format specification.";
+    reference "Huawei private.";
+  }
+  revision 2020-01-03 {
+    description
+      "Modify description format issues.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2019-12-16 {
+    description
+      "Add rip import protocol type and rip default route type.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";

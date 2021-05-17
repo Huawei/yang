@@ -125,7 +125,7 @@ module huawei-flowspec-forward {
          "Enable/disable flowspec after tunnel pop."; 
       }
       container disables {
-        when "not(../refluence)";
+        when "not(../refluence) and ../../ifm:class='main-interface'";
         description
           "List of flowspec disables.";
           list disable {

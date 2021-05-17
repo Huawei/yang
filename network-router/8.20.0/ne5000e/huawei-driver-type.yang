@@ -255,8 +255,8 @@ submodule huawei-driver-type {
     description
       "Information of enum type clock status.";
   }
-
-  typedef driver-temp-volt-state {
+  
+  typedef driver-sensor-state {
     type enumeration {
       enum "unknown" {
         value 4;
@@ -266,22 +266,22 @@ submodule huawei-driver-type {
       enum "normal" {
         value 0;
         description
-          "Normal state that maps 'normal' in the command line.";
+          "Normal state.";
       }
       enum "minor" {
         value 1;
         description
-          "Minor alarm that maps 'minor' in the command line.";
+          "Minor alarm.";
       }
       enum "major" {
         value 2;
         description
-          "Major alarm that maps 'fatal' in the command line.";
+          "Major alarm.";
       }
       enum "fatal" {
         value 3;
         description
-          "Fatal.";
+          "Fatal alarm.";
       }
       enum "unsupported" {
         value 5;
@@ -290,7 +290,7 @@ submodule huawei-driver-type {
       }
     }
     description
-      "Information of enum type driver-temp-volt-state.";
+      "Information of enum type driver-sensor-state.";
   }
   
   typedef driver-system-mode {
@@ -794,11 +794,6 @@ submodule huawei-driver-type {
         value 4111;
         description
           "ICU.";
-      }
-      enum "ECU" {
-        value 4110;
-        description
-          "ECU.";
       }
       enum "PMU" {
         value 5031;
@@ -1332,5 +1327,113 @@ submodule huawei-driver-type {
     }
     description
       "Information of enum type driver-lock-state-type.";
+  }
+
+  typedef driver-compatibility-state-type {
+    type enumeration {
+      enum "compatible" {
+        value 0;
+        description
+          "State of compatible.";
+      }
+      enum "incompatible" {
+        value 1;
+        description
+          "State of incompatible.";
+      }
+      enum "NA" {
+        value 2;
+        description
+          "NA.";
+      }
+    }
+    description
+      "Information of enum type driver-compatibility-state-type.";
+  }
+
+  typedef driver-upgrade-suggestion-type {
+    type enumeration {
+      enum "recommend" {
+        value 0;
+        description
+          "Recommend upgrade.";
+      }
+      enum "must" {
+        value 1;
+        description
+          "Must upgrade.";
+      }
+      enum "NA" {
+        value 2;
+        description
+          "NA.";
+      }
+    }
+    description
+      "Information of enum type driver-upgrade-suggestion-type.";
+  }
+
+  typedef driver-hardware-version-type {
+    type enumeration {
+      enum "EPLD" {
+        value 0;
+        description
+          "Erasable programmable logic device.";
+      }
+      enum "canbus-chip2-sdr" {
+        value 1;
+        description
+          "Sensor data record on a CANbus chip2.";
+      }
+      enum "canbus-sdr" {
+        value 2;
+        description
+          "Sensor data record on a CANbus.";
+      }
+      enum "monitor-bus-software2" {
+        value 3;
+        description
+          "Monitor BUS software2.";
+      }
+      enum "monitor-bus-software" {
+        value 4;
+        description
+          "Monitor BUS software.";
+      }
+      enum "pic-epld" {
+        value 5;
+        description
+          "Erasable programmable logic device on a PIC.";
+      }
+      enum "pic-sdr" {
+        value 6;
+        description
+          "Sensor data record on a PIC.";
+      }
+      enum "NA" {
+        value 7;
+        description
+          "NA.";
+      }
+    }
+    description
+      "Information of enum type driver-hardware-version-type.";
+  }
+
+  typedef driver-check-result-type {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "Check version result is successful.";
+      }
+      enum "fail" {
+        value 1;
+        description
+          "Check version result is failed.";
+      }
+    }
+    description
+      "Information of enum type driver-check-result-type.";
   }
 }

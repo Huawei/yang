@@ -43,6 +43,18 @@ module huawei-mpls-te {
      Email: support@huawei.com";
   description
     "Specifies the multi-protocol label switching protocol.";
+  revision 2020-07-11 {
+    description
+      "Add private syntax to the keychain name.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-08 {
+    description
+      "Modify some conditions.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-04-14 {
     description
       "Modify the type of the affinity attribute.";
@@ -93,7 +105,7 @@ module huawei-mpls-te {
   }
   revision 2020-01-14 {
     description
-      "Modify the value range of the node tunnel-id.";
+      "Modify the value range of the node tunnel-ID.";
     reference
       "Huawei private.";
   }
@@ -317,6 +329,21 @@ module huawei-mpls-te {
           default "false";
           description
           "Enable/disable SR LSP explicit path deletion down.";
+        }
+        leaf self-ping {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable self-ping capability.";
+        }
+        leaf self-ping-duration {
+          type uint32 {
+            range "60..65535";
+          }
+          units s;
+          default "1800";
+          description
+            "Global self-ping timeout period. Value 65535 indicates no limit on the detection time.";
         }
         leaf p2mp-enable {
           type boolean;
@@ -781,9 +808,10 @@ module huawei-mpls-te {
                 when "../enable='true' and ../type='keychain'";
                 type string {
                   length "1..47";
+                  pattern '[^A-Z]+';
                 }
                 mandatory true;
-                ext:case-sensitivity upper2lower;
+                ext:case-sensitivity lower-only;
                 description
                   "Keychain name. The name is case insensitive.";
               }
@@ -1677,7 +1705,7 @@ module huawei-mpls-te {
                   path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
                 }
                 must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Tunnel' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:egress-lsr-id and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:tunnel-id";
-                must "../../../backup-type='load-balance' or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='rsvp-te' )";
+                must "../../../backup-type='load-balance' or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='rsvp-te')";
                 description
                   "Original tunnel name.";
               }
@@ -1861,7 +1889,7 @@ module huawei-mpls-te {
               range "0..4000000000";
             }
             units "kbit/s";
-            must "../fast-reroute/bypass-attributes/frr-bandwidth and ../bandwidth>=../fast-reroute/bypass-attributes/frr-bandwidth or not(../fast-reroute/bypass-attributes/frr-bandwidth)";
+            must "(../fast-reroute/bypass-attributes/frr-bandwidth and ../bandwidth>=../fast-reroute/bypass-attributes/frr-bandwidth and ../class-type='ct0') or not(../fast-reroute/bypass-attributes/frr-bandwidth)";
             default "0";
             description
               "Specifies a tunnel bandwidth.";
@@ -2017,6 +2045,21 @@ module huawei-mpls-te {
             description
               "Enable/disable MPLS te rerouting function.";
           }
+          leaf self-ping {
+            type tunnel-self-ping-type;
+            default "disable";
+            description
+              "Self-ping enabling state of an RSVP-TE tunnel.";
+          }
+          leaf self-ping-duration {
+            type uint32 {
+              range "60..65535";
+            }
+            units s;
+            default "1800";
+            description
+              "Self-ping timeout period of an RSVP-TE tunnel. Value 65535 indicates no limit on the detection time.";
+          }
           container fast-reroute {
             must "(enable='true' and mode and mode='facility-backup') or (enable='false' and not(mode='facility-backup'))";
             must "not(../disable-reroute='true' and enable='true')";
@@ -2130,7 +2173,7 @@ module huawei-mpls-te {
             }
           }
           container hotstandby {
-            must "../record-route!='disable'";
+            must "../record-route!='disable' and ../ordinary-enable='false'";
             presence "Indicates hotstandby-enable a node is configured."; 
             description
               "Enable/disable hot standby for protecting TE tunnels. When an active LSP is set up successfully, a standby LSP that meets certain limits will be set up to protect the active LSP. When the active LSP fails, the traffic on the active LSP will be switched to the standby LSP.";
@@ -2595,7 +2638,7 @@ module huawei-mpls-te {
             }
           }
           container bit-error-detection {
-            must '(resume-threshold-pow-value>switch-threshold-pow-value or (switch-threshold-pow-value=resume-threshold-pow-value and not(resume-threshold-coe-value>switch-threshold-coe-value))) or not(switch-threshold-coe-value and switch-threshold-pow-value and resume-threshold-coe-value and resume-threshold-pow-value)';
+            must "(resume-threshold-pow-value>switch-threshold-pow-value or (switch-threshold-pow-value=resume-threshold-pow-value and not(resume-threshold-coe-value>switch-threshold-coe-value))) or not(switch-threshold-coe-value or switch-threshold-pow-value or resume-threshold-coe-value or resume-threshold-pow-value)";
             description
               "Configure bit error detection of LSP.";
             leaf bit-error-switch {
@@ -3305,5 +3348,105 @@ module huawei-mpls-te {
         }
       }
     }
+  }
+  augment /mpls:mpls/mpls:common/mpls:session-car {
+    description
+      "MPLS TE Session CAR Configuration information augment to module MPLS.";  
+	container rsvp-te {
+	  must 'cir<=pir';
+	  must 'cbs<=pbs';
+	  description
+		"Configure RSVP-TE session CAR.";
+	  leaf enable {
+		type boolean;
+		default "true";
+		description
+		"Enable/disable RSVP-TE session CAR.";
+	  }
+	  leaf cir {
+		type uint32 {
+		  range "1..1000000";
+		}
+		units "kbit/s";
+		default "75";
+		description
+		  "Specify the session CAR CIR value.";
+	  }
+	  leaf cbs {
+		type uint32 {
+		  range "1..9000000";
+		}
+		units "Byte";
+		default "15000";
+		description
+		  "Specify the session CAR CBS value.";
+	  }
+	  leaf pir {
+		type uint32 {
+		  range "1..1000000";
+		}
+		units "kbit/s";
+		default "4000";
+		description
+		  "Specify the session CAR PIR value.";
+	  }
+	  leaf pbs {
+		type uint32 {
+		  range "1..9000000";
+		}
+		units "Byte";
+		default "9000000";
+		description
+		  "Specify the session CAR PBS value.";
+	  }
+	}
+	container self-ping {
+	  must 'cir<=pir';
+	  must 'cbs<=pbs';
+	  description
+		"Configure SELF-PING session CAR.";
+	  leaf enable {
+		type boolean;
+		default "true";
+		description
+		"Enable/disable SELF-PING session CAR.";
+	  }
+	  leaf cir {
+		type uint32 {
+		  range "1..1000000";
+		}
+		units "kbit/s";
+		default "256";
+		description
+		  "Specify the session CAR CIR value.";
+	  }
+	  leaf cbs {
+		type uint32 {
+		  range "1..9000000";
+		}
+		units "Byte";
+		default "50000";
+		description
+		  "Specify the session CAR CBS value.";
+	  }
+	  leaf pir {
+		type uint32 {
+		  range "1..1000000";
+		}
+		units "kbit/s";
+		default "600";
+		description
+		  "Specify the session CAR PIR value.";
+	  }
+	  leaf pbs {
+		type uint32 {
+		  range "1..9000000";
+		}
+		units "Byte";
+		default "76800";
+		description
+		  "Specify the session CAR PBS value.";
+	  }
+	}   
   }
 }

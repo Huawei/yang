@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-software {
   namespace "urn:huawei:yang:huawei-software";
@@ -7,6 +7,9 @@ module huawei-software {
 
   import huawei-extension {
     prefix ext;
+  } 
+  import ietf-yang-types {
+    prefix yang;
   } 
 
   organization
@@ -20,7 +23,30 @@ module huawei-software {
      Email: support@huawei.com";
   description
     "Specify software package upgrade management.";
-
+  revision 2020-06-30 {
+    description
+      "Revert modification of software node's config attribute.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-29 {
+    description
+      "Modify node description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-27 {
+    description
+      "Add rpc refresh-startup-secure-version-configuration.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-02 {
+    description
+      "Add install-feature-software, uninstall-feature-software, upgrade-feature-software.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-12-02 {
     description
       "Initial revision.";
@@ -65,27 +91,56 @@ module huawei-software {
     description
       "Specify the type of a software package on the device.";
   }
-
+  typedef checkpoint-create-type {
+    type enumeration {
+      enum "manual" {
+        value 1;
+        description
+          "The type of a checkpoint created mode.";
+      }
+      enum "auto" {
+        value 2;
+        description
+          "The type of a checkpoint created mode.";
+      }
+    }
+    description
+      "Specify the type of a software package on the device.";
+  }
   container software {
-    config false;
     description
       "Specify software package upgrade management.";
+    container global {
+      description 
+        "Configure of auto save checkpoint switch.";
+      container auto-save {
+        description 
+          "Configure of enable auto save checkpoint.";
+        leaf enable {
+          type boolean;
+          default "true";
+          description 
+            "Enable/disable auto save checkpoint when upgrade software package.";    
+        }
+      }
+    }
     container versions {
+      config false;
       status deprecated;
       description
-        "List of operational state of software package versions. This container is not recommended for use.";
+        "List of operational state of software package versions. The node versions is deprecated. You are advised to use the node /system/system-info.";
       list version {
         key "base";
         status deprecated;
         description
-          "Operational state of a software package version.";
+          "Operational state of a software package version. The node version is deprecated. You are advised to use the node /system/system-info.";
         leaf base {
           type string {
             length "1..63";
           }
           status deprecated;
           description
-            "Current software package version.";
+            "Current software package version. The node base is deprecated. You are advised to use the node /system/system-info/product-version.";
         }
         leaf patch {
           type string {
@@ -93,11 +148,12 @@ module huawei-software {
           }
           status deprecated;
           description
-            "Current patch package version.";
+            "Current patch package version. The node patch is deprecated. You are advised to use the node /system/system-info/patch-version.";
         }
       }
     }
     container startup-packages {
+      config false;
       description
         "List of operational state of startup software packages.";
       list startup-package {
@@ -128,6 +184,7 @@ module huawei-software {
       }
     }
     container packages {
+      config false;
       description
         "List of operational state of software packages on the device.";
       list package {
@@ -149,6 +206,7 @@ module huawei-software {
       }
     }
     container upgrade-rollback-timer {
+      config false;
       description
         "Operational data of upgrade rollback timer.";
       leaf timer-enable {
@@ -157,11 +215,67 @@ module huawei-software {
           "When the rollback timer is closed, the time leaf will not be shown.";
       }
       leaf time {
-        when "../timer-enable != 'false'";
-        type uint32;
+        when "../timer-enable = 'true'";
+        type uint32 {
+          range "10..360";
+        }
         units min;
         description
           "Rollback time.";
+      }
+    }
+    container checkpoint-infos {
+      config false;
+      description 
+        "List of checkpoint base information.";
+      list checkpoint-info {
+        key "name";
+        description 
+          "Statistics of a checkpoint info.";
+        leaf name {
+          type string {
+            length "5..32";
+        }
+          description 
+            "Checkpoint name.";    
+        }
+        leaf create-time {
+          type yang:date-and-time;
+          description 
+            "Checkpoint create time.";
+        }
+        leaf create-mode {
+          type checkpoint-create-type;
+          description 
+            "Checkpoint create mode.";
+        }
+        leaf base-package {
+          type string {
+            length "0..255";
+          }
+          description 
+            "Checkpoint software package.";
+        }
+        leaf feature-package {
+          type string {
+            length "0..2047";
+          }
+                description 
+            "Checkpoint feature packages.";
+        }
+        leaf patch-package {
+          type string {
+            length "0..2047";
+          }
+          description 
+            "Checkpoint patch packages.";
+        }
+        leaf module-package {
+          type string {
+            length "0..2047";
+          }
+          description "Checkpoint mod patchs.";
+        }
       }
     }
   }
@@ -188,6 +302,7 @@ module huawei-software {
   rpc startup-by-slot-id {
     description
       "Specify the slot ID-based upgrade for software packages.";
+    ext:node-ref "/software/packages/package";
     input {
       leaf name {
         type string {
@@ -214,6 +329,7 @@ module huawei-software {
         type uint32 {
           range "10..360";
         }
+        units min;
         mandatory true;
         description
           "Specify the rollback time.";
@@ -221,8 +337,137 @@ module huawei-software {
     }
   }
   rpc undo-upgrade-rollback {
+    ext:node-ref "/software/upgrade-rollback-timer";
     description
       "Delete the rollback time when upgrade software package.";
   }
-
+  rpc install-feature-software {
+    description
+      "Install feature software.";
+    input  {
+      leaf name {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a feature software package.";
+      }
+    }
+  }
+  rpc uninstall-feature-software {
+    description
+      "Uninstall feature software.";
+    input  {
+      leaf name {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a feature software package.";
+      }
+    }
+  }
+  rpc upgrade-feature-software {
+    description
+      "Upgrade feature software on line.";
+    input  {
+      leaf name {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a feature software package.";
+      }
+    }
+  }
+  rpc startup-feature-software {
+    description
+      "Startup feature software.";
+    input  {
+      leaf feature-package-name {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a feature software package.";
+      }
+    }  
+}
+  rpc create-startup-checkpoint {
+    ext:node-ref "/software/checkpoint-infos/checkpoint-info";
+    description
+      "Create a specified startup checkpoint.";
+    input  {
+      leaf name {
+        type leafref {
+          path "/software/checkpoint-infos/checkpoint-info/name";
+        }
+        mandatory true;
+        description
+          "Specify the name of a checkpoint.";
+      }
+    }
+  }
+  rpc delete-startup-checkpoint {
+    ext:node-ref "/software/checkpoint-infos/checkpoint-info";
+    description
+      "Delete a specified startup checkpoint.";
+    input  {
+      leaf name {
+        type leafref {
+          path "/software/checkpoint-infos/checkpoint-info/name";
+        }
+        mandatory true;
+        description
+          "Specify the name of a checkpoint.";
+      }
+    }
+  }
+  rpc check-startup-checkpoint {
+    ext:node-ref "/software/checkpoint-infos/checkpoint-info";
+    description
+      "Check a specified startup checkpoint.";
+    input  {
+      leaf name {
+        type leafref {
+          path "/software/checkpoint-infos/checkpoint-info/name";
+        }
+        mandatory true;
+        description
+          "Specify the name of a checkpoint.";
+      }
+    }
+  }
+  rpc restore-startup-checkpoint {
+    ext:node-ref "/software/checkpoint-infos/checkpoint-info";
+    description
+      "Restore a specified checkpoint.";
+    input  {
+      leaf name {
+        type leafref {
+          path "/software/checkpoint-infos/checkpoint-info/name";
+        }
+        mandatory true;
+        description
+          "Specify the name of a checkpoint.";
+      }
+    }
+  }
+  rpc refresh-startup-secure-version-configuration {
+    description
+      "Update the eFUSE and version revocation list. If the slot parameter is not specified, information on all boards is updated.";
+    input {
+      leaf slot {
+        type string {
+          length "1..49";
+        }
+        description
+          "Specify the slot name.";
+      }
+    }
+  }
 }

@@ -51,7 +51,7 @@ module huawei-l3vpn {
   }
   revision 2019-07-05 {
     description
-      "Add container tunnel-infos and node default-color, modify descriptions of YANG module.";
+      "Modify descriptions of the YANG file.";
     reference
       "Huawei private.";
   }
@@ -102,6 +102,20 @@ module huawei-l3vpn {
       default "false";
       description
         "Enable/disable L3VPN traffic statistics.";
+    }
+    container parameter {
+      when "../ni:name!='_public_'";
+      description
+        "Configure L3VPN instances information.";
+      leaf identifier {
+        type string {
+          length "3..15";
+          pattern '[1-9a-f][0-9a-f]{0,5}:[1-9a-f][0-9a-f]{0,7}|0:[1-9a-f][0-9a-f]{0,7}|[1-9a-f][0-9a-f]{0,5}:0';
+        }
+        must "count(/ni:network-instance/ni:instances/ni:instance[l3vpn:parameter/l3vpn:identifier=current()])=1";
+        description
+          "Configures a globally unique identifier for a VPN instance. The format of a VPN identifier are follows:HEX<0-ffffffff>:HEX<0-ffffffff>, but not support 0:0.";
+      }
     }
     container afs {
       description
@@ -351,10 +365,10 @@ module huawei-l3vpn {
           leaf status {
             type vpn-status-type;
             description
-              "VPN instance status. A VPN instance is up when there
-               is at least one interface associated with the VRF
+              "VPN instance status. A VPN instance is up when there 
+               is at least one interface associated with the VRF 
                whose ifOperStatus is up. A VRF is down when:
-               a. There does not exist at least one interface whose
+               a. There does not exist at least one interface whose 
                   ifOperStatus is up.
                b. There are no interfaces associated with the VRF.";
           }
@@ -362,11 +376,11 @@ module huawei-l3vpn {
         container tunnel-infos {
           config false;
           description
-            "List of Tunnel Informations.";
+            "List of tunnel informations.";
           list tunnel-info {
             key "type peer-ip id";
             description
-              "Operational state of the tunnel.";
+              "Statistics of tunnel informations.";
             leaf type {
               type tnlm:tunnel-type;
               description

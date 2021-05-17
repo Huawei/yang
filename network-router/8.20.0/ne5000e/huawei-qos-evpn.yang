@@ -674,6 +674,9 @@ module huawei-qos-evpn {
             mandatory true;
             description
               "Policy name.";
+            ext:operation-exclude update {
+              description "After the configuration is created, the node cannot be modified.";
+            }
           }
         }
       }     

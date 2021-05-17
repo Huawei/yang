@@ -1122,7 +1122,7 @@ module huawei-clocksync-notification {
         "Id of the clock source type.";
     }
     leaf threshold {
-      type clocksync-1588v2:ssm-level;
+      type clocksync-phy:ssm-level;
       must "(../threshold='prc' or ../threshold='ssua' or ../threshold='ssub' or ../threshold='sec' or ../threshold='dnu')";
       description
         "Threshold of the external clock source input.";
@@ -1133,7 +1133,7 @@ module huawei-clocksync-notification {
         "Indicates the index of the chassis where the non-PTP clock source is located. In the case of a single chassis, the index is 1. For a chassis where a PTP clock source is located, the index is invalid.";
     }
     leaf ssm {
-      type clocksync-1588v2:ssm-level;
+      type clocksync-phy:ssm-level;
       description
         "SSM of the clock source.";
     }
@@ -1167,7 +1167,7 @@ module huawei-clocksync-notification {
         "Id of the clock source type..";
     }
     leaf threshold {
-      type clocksync-1588v2:ssm-level;
+      type clocksync-phy:ssm-level;
       must "(../threshold='prc' or ../threshold='ssua' or ../threshold='ssub' or ../threshold='sec' or ../threshold='dnu')";
       description
         "Threshold of the external clock source input.";
@@ -1178,7 +1178,7 @@ module huawei-clocksync-notification {
         "Indicates the index of the chassis where the non-PTP clock source is located. In the case of a single chassis, the index is 1. For a chassis where a PTP clock source is located, the index is invalid.";
     }
     leaf ssm {
-      type clocksync-1588v2:ssm-level;
+      type clocksync-phy:ssm-level;
       description
         "SSM of the clock source.";
     }
@@ -1217,13 +1217,13 @@ module huawei-clocksync-notification {
         "Id of the clock source type. values: System(1), system PLL. sync2M-1(2), 2M PLL-1. sync2M-2(3), 2M PLL-2.";
     }
     leaf threshold {
-      type clocksync-1588v2:ssm-level;
+      type clocksync-phy:ssm-level;
       must "(../threshold='prc' or ../threshold='ssua' or ../threshold='ssub' or ../threshold='sec' or ../threshold='dnu')";
       description
         "Threshold of the external Clock output.";
     }
     leaf value {
-      type clocksync-1588v2:ssm-level;
+      type clocksync-phy:ssm-level;
       must "(../value='prc' or ../value='ssua' or ../value='ssub' or ../value='sec' or ../value='dnu')";
       description
         "SSM of the external Clock output.";
@@ -1255,13 +1255,13 @@ module huawei-clocksync-notification {
         "Id of the clock source type. values: System(1), system PLL. sync2M-1(2), 2M PLL-1. sync2M-2(3), 2M PLL-2.";
     }
     leaf threshold {
-      type clocksync-1588v2:ssm-level;
+      type clocksync-phy:ssm-level;
       must "(../threshold='prc' or ../threshold='ssua' or ../threshold='ssub' or ../threshold='sec' or ../threshold='dnu')";
       description
         "Threshold of the external Clock output.";
     }
     leaf value {
-      type clocksync-1588v2:ssm-level;
+      type clocksync-phy:ssm-level;
       must "(../value='prc' or ../value='ssua' or ../value='ssub' or ../value='sec' or ../value='dnu')";
       description
         "SSM of the external Clock output.";

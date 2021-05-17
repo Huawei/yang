@@ -26,11 +26,6 @@ module huawei-ietf-hardware-deviations-NE5000E {
       "Initial revision.";
     reference "Huawei private.";
   }
-  revision 2019-04-01 {
-    description
-      "The modifications in the schema file are synchronized to the YANG file.";
-    reference "Huawei private.";
-  }
 
   deviation "/hw:hardware/hw:component" {
     deviate replace {
@@ -38,6 +33,11 @@ module huawei-ietf-hardware-deviations-NE5000E {
     }
   }
   deviation "/hw:hardware/hw:component/hw:name" {
+    deviate replace {
+      config false;
+    }
+  }
+  deviation "/hw:hardware/hw:component/hw:state" {
     deviate replace {
       config false;
     }

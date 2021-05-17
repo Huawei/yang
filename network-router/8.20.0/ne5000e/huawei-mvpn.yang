@@ -325,7 +325,7 @@ module huawei-mvpn {
   augment "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af" {
     when "../../ni:name!='_public_' and ((./l3vpn:type='ipv4-unicast' and ../../l3mc:multicast/l3mc:ipv4) or (./l3vpn:type='ipv6-unicast' and ../../l3mc:multicast/l3mc:ipv6))";
     description
-      "Adds MVPN configuration to the L3VPN module.";
+      "Add MVPN configuration to the L3VPN module.";
     container mvpn {
       description
         "Configure MVPN in the instance.";
@@ -647,7 +647,8 @@ module huawei-mvpn {
                     "Enable/disable (*, *) S-PMSI swicth policy.";
                   leaf tunnel-mode {
                     type tunnel-mode;
-                    must "../tunnel-mode='p2mp-mldp' or (../tunnel-mode='p2mp-te' and ../rsvp-te-p2mp-template) or (../tunnel-mode='bier' and ../sub-domain-id and ../bsl)";
+                    must "../tunnel-mode!='p2mp-te' or ../rsvp-te-p2mp-template";
+                    must "../tunnel-mode!='bier' or (../sub-domain-id and ../bsl)";
                     mandatory true;
                     description
                       "Tunnel mode.";
@@ -695,7 +696,8 @@ module huawei-mvpn {
                     "List of (*, G) S-PMSI switch policys.";
                   list star-grp {
                     must "not(../../star-star) and not(../../../../ipmsi-tunnel)";
-                    must "./tunnel-mode='p2mp-mldp' or (./tunnel-mode='p2mp-te' and ./rsvp-te-p2mp-template) or (./tunnel-mode='bier' and ./sub-domain-id and ./bsl)";
+                    must "./tunnel-mode!='p2mp-te' or ./rsvp-te-p2mp-template";
+                    must "./tunnel-mode!='bier' or (./sub-domain-id and ./bsl)";
                     key "group-addr group-mask-length";
                     description
                       "Apply (*, G) S-PMSI switch policy.";
@@ -779,7 +781,8 @@ module huawei-mvpn {
                     "List of (S, G) S-PMSI switch policys.";
                   list src-grp {
                     must "../../star-star or ../../../../ipmsi-tunnel";
-                    must "./tunnel-mode='p2mp-mldp' or (./tunnel-mode='p2mp-te' and ./rsvp-te-p2mp-template) or (./tunnel-mode='bier' and ./sub-domain-id and ./bsl)";
+                    must "./tunnel-mode!='p2mp-te' or ./rsvp-te-p2mp-template";
+                    must "./tunnel-mode!='bier' or (./sub-domain-id and ./bsl)";
                     key "group-addr group-mask-length source-addr source-mask-length";
                     description
                       "Apply (S, G) S-PMSI switch policy.";
@@ -957,6 +960,7 @@ module huawei-mvpn {
                 type uint32 {
                   range "0..4095";
                 }
+                must "(../ip-address and ../ip-mask-length) or not(../ip-address or ../ip-mask-length)";
                 mandatory true;
                 description
                   "MTI ID.";
@@ -971,6 +975,7 @@ module huawei-mvpn {
                     type leafref {
                       path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
                     }
+                    must "../../../../../../ni:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name";
                     description
                       "Interface whose IP address is used as the default IP address of an MTI.";
                   }

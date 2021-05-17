@@ -44,7 +44,31 @@ module huawei-bfd {
      Email: support@huawei.com";
   description
     "Bidirectional Forwarding Detection (BFD) is a detection mechanism used uniformly on the entire network. BFD is used to rapidly detect and monitor the connectivity of links or IP routes on a network.";
-  
+  revision 2020-05-30 {
+    description
+      "Add when restriction to pis-no-impact nodes, delete the enum type 3 and 4 of bundle-mode.";
+    reference
+      "Huawei private.";
+  }
+
+  revision 2020-05-25 {
+    description
+      "Add must restriction to pis-auto nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-16 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-26 {
+    description
+      "Add unit to link-bundle-init-time and link-bundle-max-time, correct unit of wtr-time.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-02-20 {
     description
       "Delete the default value of TOS-EXP in the BFD session.";
@@ -971,16 +995,6 @@ module huawei-bfd {
         value 2;
         description
           "Compatible mode.";
-      }
-      enum "cfg-remote-ap" {
-        value 3;
-        description
-          "None bundle session.";
-      }
-      enum "cfg-from-master" {
-        value 4;
-        description
-          "None bundle session.";
       }
       enum "bundle-std-unshare" {
         value 5;
@@ -2329,11 +2343,13 @@ module huawei-bfd {
                     leaf pis-auto-ipv4 {
                       when "../bundle-mode-auto-ipv4 != 'none'";
                       type boolean;
+                      must "../pis-auto-ipv4=../pis-no-impact-auto-ipv4";
                       default "false";
                       description
                         "Enable/disable update the PIS when the status of a BFD IPv4 auto session changes. On each interface, only one BFD session can be set for this parameter.";
                     }
                     leaf pis-no-impact-auto-ipv4 {
+                      when "../bundle-mode-auto-ipv4 != 'none'";
                       type boolean;
                       default "false";
                       description
@@ -2407,11 +2423,13 @@ module huawei-bfd {
                     leaf pis-auto-ipv6 {
                       when "../bundle-mode-auto-ipv6 != 'none'";
                       type boolean;
+                      must "../pis-auto-ipv6=../pis-no-impact-auto-ipv6";
                       default "false";
                       description
                         "Enable/disable update the PIS when the status of a BFD IPv6 auto session changes. On each interface, only one BFD session can be set for this parameter.";
                     }
                     leaf pis-no-impact-auto-ipv6 {
+                      when "../bundle-mode-auto-ipv6 != 'none'";
                       type boolean;
                       default "false";
                       description
@@ -2594,7 +2612,7 @@ module huawei-bfd {
       }
       container detect-multipliers {
         description
-          "List of BFD passive session Pass Dm.";
+          "List of BFD passive session Pass DM.";
         list detect-multiplier {
           key "peer-ip";
           description
@@ -2664,7 +2682,7 @@ module huawei-bfd {
           description
             "Configure matching relation between SBFD discriminator and IP.";
           leaf peer-ip {
-            type inet:ipv4-address-no-zone;
+            type inet:ip-address-no-zone;
             description
               "SBFD reflector IP.";
           }
@@ -2686,7 +2704,7 @@ module huawei-bfd {
             "Configure SBFD reflector integer type discriminator.";
           leaf discriminator-id {
             type uint32 {
-              range "16777216..3758096383";
+              range "16777216..2130706431 | 2147483648..3758096383";
             }
             description
               "SBFD reflector integer type discriminator.";
@@ -2760,8 +2778,9 @@ module huawei-bfd {
               path "/ni:network-instance/ni:instances/ni:instance/ni:name";
           }
           must "(contains(../peer-ip,':') and /ni:network-instance/ni:instances/ni:instance[ni:name = current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']) or (not(contains(../peer-ip,':')) and /ni:network-instance/ni:instances/ni:instance[ni:name = current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']) or (../vpn-name = '_public_')";
+          must "../session-type!='lsp-tunnel' and ../session-type!='mpls-passive'";
           description
-            "VPN name of BFD authentication configuration.";
+            "VPN Name of BFD authentication configuration.";
         }
         leaf session-type {
           type authentication-link-type;
@@ -2941,6 +2960,16 @@ module huawei-bfd {
         type uint32;
         description
           "Number of BFD sessions of the segment list type.";
+      }
+      leaf sbfd-ref-session-num {
+        type uint32;
+        description
+          "Number of S-BFD sessions established on a reflector.";
+      }
+      leaf p2mp-session-num {
+        type uint32;
+        description
+          "Number of BFD for P2MP sessions.";
       }
     }
     container all-sessions {

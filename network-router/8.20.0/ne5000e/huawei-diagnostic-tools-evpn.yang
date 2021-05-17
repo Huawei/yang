@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-diagnostic-tools-evpn {
   yang-version 1;
@@ -29,6 +29,18 @@ submodule huawei-diagnostic-tools-evpn {
   description
     "Evpn diagnosis tool.";
 
+  revision 2020-01-07 {
+    description
+      "Modify description of end-op.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-19 {
+    description
+      "Modify container ds-label-lists.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-12-14 {
     description
       "Container added for list.";
@@ -87,7 +99,10 @@ submodule huawei-diagnostic-tools-evpn {
             "Total number of received packets.";
         }
         leaf loss-ratio {
-          type pub-type:percent;
+		  type pub-type:percent {
+            range "0..100";
+          }
+		  units "%";
           config false;
           description
             "Packet loss ratio of a test.";

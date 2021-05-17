@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-tty {
   namespace "urn:huawei:yang:huawei-tty";
@@ -13,7 +13,6 @@ module huawei-tty {
   import huawei-acl {
     prefix acl;
   }
-  include huawei-tty-type;
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -25,13 +24,211 @@ module huawei-tty {
      Email: support@huawei.com";
   description
     "TTY Component.";
-  revision 2019-05-01 {
+  revision 2020-03-02 {
     description
       "Initial revision.";
     reference
       "Huawei private.";
   }
   ext:task-name "tty";
+  typedef tty-caml-line-type {
+    type enumeration {
+      enum "CON" {
+        value 1;
+        description
+          "Line type console.";
+      }
+      enum "AUX" {
+        value 2;
+        description
+          "Line type AUX.";
+      }
+      enum "TTY" {
+        value 3;
+        description
+          "Line type TTY.";
+      }
+      enum "VTY" {
+        value 4;
+        description
+          "Line type VTY.";
+      }
+      enum "LTT" {
+        value 5;
+        description
+          "Line type LTT.";
+      }
+      enum "NCA" {
+        value 6;
+        description
+          "Line type netconf.";
+      }
+      enum "RPC" {
+        value 8;
+        description
+          "Line type grpc.";
+      }
+    }
+    description
+      "TTY CAML line type list.";
+  }
+  typedef tty-caml-connstate {
+    type enumeration {
+      enum "YES" {
+        value 1;
+        description
+          "Terminal is connected.";
+      }
+      enum "NO" {
+        value 2;
+        description
+          "Terminal is not connected.";
+      }
+    }
+    description
+      "TTY CAML connection state list.";
+  }
+  typedef tty-flwcntrl-type {
+    type enumeration {
+      enum "none" {
+        value 1;
+        description
+          "Flow control as none.";
+      }
+      enum "software" {
+        value 2;
+        description
+          "Flow control as software.";
+      }
+      enum "hardware" {
+        value 3;
+        description
+          "Flow control as hardware.";
+      }
+    }
+    description
+      "TTY flow control type list.";
+  }
+  typedef tty-stop-bits-type {
+    type enumeration {
+      enum "1" {
+        value 1;
+        description
+          "Stopbit as 1.";
+      }
+      enum "1.5" {
+        value 2;
+        description
+          "Stop bit as 1.5.";
+      }
+      enum "2" {
+        value 3;
+        description
+          "Stop bit as 2.";
+      }
+    }
+    description
+      "TTY stop bits type list.";
+  }
+  typedef tty-data-bits-type {
+    type enumeration {
+      enum "5" {
+        value 1;
+        description
+          "Data bits as 5.";
+      }
+      enum "6" {
+        value 2;
+        description
+          "Data bits as 6.";
+      }
+      enum "7" {
+        value 3;
+        description
+          "Data bits as 7.";
+      }
+      enum "8" {
+        value 4;
+        description
+          "Databits as 8.";
+      }
+    }
+    description
+      "TTY data bits type list.";
+  }
+  typedef tty-parity-type {
+    type enumeration {
+      enum "none" {
+        value 1;
+        description
+          "Parity as None.";
+      }
+      enum "odd" {
+        value 2;
+        description
+          "Parity as odd.";
+      }
+      enum "even" {
+        value 3;
+        description
+          "Parity as even.";
+      }
+      enum "mark" {
+        value 4;
+        description
+          "Parity as mark.";
+      }
+      enum "space" {
+        value 5;
+        description
+          "Parity as space.";
+      }
+    }
+    description
+      "TTY parity type list.";
+  }
+  typedef tty-authmode-type {
+    type enumeration {
+      enum "none" {
+        value 1;
+        description
+          "Authentication mode none.";
+      }
+      enum "password" {
+        value 2;
+        description
+          "Authentication mode password.";
+      }
+      enum "aaa" {
+        value 3;
+        description
+          "Authentication mode aaa.";
+      }
+      enum "init" {
+        value 4;
+        description
+          "Undo authentication mode.";
+      }
+    }
+    description
+      "TTY authentication mode type list.";
+  }
+  typedef tty-bool-type {
+    type enumeration {
+      enum "false" {
+        value 0;
+        description
+          "VTY shell disable.";
+      }
+      enum "true" {
+        value 1;
+        description
+          "VTY shell enable.";
+      }
+    }
+    description
+      "VTY and TTY boolean type.";
+  }
   container tty {
     description
       "TTY Component.";
@@ -42,6 +239,7 @@ module huawei-tty {
           type uint16 {
             range "1..1440";
           }
+          units min;
           default "5";
           description
             "To set the idle timeout minute.";
@@ -50,12 +248,13 @@ module huawei-tty {
           type uint16 {
             range "0..59";
           }
+          units s;
           default "0";
           description
             "To set the idle timeout seconds.";
         }
         leaf auth-mode {
-          type ttyauthmodetype;
+          type tty-authmode-type;
           default "init";
           description
             "Sets the authentication mode.";
@@ -93,7 +292,7 @@ module huawei-tty {
             "Sets the screen length.";
         }
         leaf shell-enable {
-          type ttybooltype;
+          type tty-bool-type;
           default "true";
           config false;
           description
@@ -101,39 +300,39 @@ module huawei-tty {
         }
         leaf speed {
           type uint64 {
-            range "300..115200";
+            range "300 | 600 | 1200 | 2400 | 4800 | 9600 | 19200 | 38400 | 57600 | 115200";
           }
-          must "../speed = 300 or ../speed = 600 or ../speed = 1200 or ../speed = 2400 or ../speed = 4800 or ../speed = 9600 or ../speed = 19200 or ../speed = 38400 or ../speed = 57600 or ../speed = 115200";
+          units bit/s;
           default "9600";
           description
-            "Speed for the tty device. Supported speeds are 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600 and 115200.";
+            "Speed for the TTY device. Supported speeds are 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600 and 115200.";
         }
         leaf flow-control {
-          type ttyflwcntrltype;
+          type tty-flwcntrl-type;
           default "none";
           description
             "To set the flow control of the TTY device.";
         }
         leaf stop-bits {
-          type ttystpbitstype;
+          type tty-stop-bits-type;
           default "1";
           description
             "To set the stop bits of the TTY devices.";
         }
         leaf data-bits {
-          type ttydatabitstype;
+          type tty-data-bits-type;
           default "8";
           description
             "Set the databits of the TTY devices.";
         }
         leaf parity {
-          type ttyparitytype;
+          type tty-parity-type;
           default "none";
           description
             "Parity of the TTY devices.";
         }
         leaf shutdown-enble {
-          type ttybooltype;
+          type tty-bool-type;
           default "false";
           description
             "Shutdown the specified user-interface.";
@@ -146,6 +345,7 @@ module huawei-tty {
           type uint16 {
             range "1..1440";
           }
+          units min;
           default "5";
           description
             "To set the idle timeout minute.";
@@ -154,12 +354,13 @@ module huawei-tty {
           type uint16 {
             range "0..59";
           }
+          units s;
           default "0";
           description
             "To set the idle timeout seconds.";
         }
         leaf auth-mode {
-          type ttyauthmodetype;
+          type tty-authmode-type;
           default "init";
           description
             "Sets the authentication mode.";
@@ -197,40 +398,40 @@ module huawei-tty {
             "Sets the screen length.";
         }
         leaf shell-enable {
-          type ttybooltype;
+          type tty-bool-type;
           default "true";
           description
             "Whether to enable the shell function.";
         }
         leaf speed {
           type uint64 {
-            range "300..115200";
+            range "300 | 600 | 1200 | 2400 | 4800 | 9600 | 19200 | 38400 | 57600 | 115200";
           }
-          must "../speed = 300 or ../speed = 600 or ../speed = 1200 or ../speed = 2400 or ../speed = 4800 or ../speed = 9600 or ../speed = 19200 or ../speed = 38400 or ../speed = 57600 or ../speed = 115200";
+          units bit/s;
           default "9600";
           description
-            "Speed for the tty device. Supported speeds are 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600 and 115200.";
+            "Speed for the TTY device. Supported speeds are 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600 and 115200.";
         }
         leaf flow-control {
-          type ttyflwcntrltype;
+          type tty-flwcntrl-type;
           default "none";
           description
             "To set the flow control of the TTY device.";
         }
         leaf stop-bits {
-          type ttystpbitstype;
+          type tty-stop-bits-type;
           default "1";
           description
             "To set the stop bits of the TTY devices.";
         }
         leaf data-bits {
-          type ttydatabitstype;
+          type tty-data-bits-type;
           default "8";
           description
             "Set the databits of the TTY devices.";
         }
         leaf parity {
-          type ttyparitytype;
+          type tty-parity-type;
           default "none";
           description
             "Parity of the TTY devices.";
@@ -277,6 +478,7 @@ module huawei-tty {
       list user-interface {
         key "line-index";
         config false;
+        max-elements "165";
         description
           "Operational state of Terminal user interface status and configuration information.";
         leaf line-index {
@@ -288,7 +490,7 @@ module huawei-tty {
             "Absolute index of UIs.";
         }
         leaf line-type {
-          type ttycamllinetype;
+          type tty-caml-line-type;
           config false;
           ext:support-filter "true";
           description
@@ -308,7 +510,7 @@ module huawei-tty {
           description
             "The privilege of UIs.";
         }
-        leaf modemstatus {
+        leaf modem-status {
           type string {
             length "0..8";
           }
@@ -336,14 +538,14 @@ module huawei-tty {
             "Speed of the interface terminal.";
         }
         leaf connect-status {
-          type ttycamlconnstate;
+          type tty-caml-connstate;
           config false;
           ext:support-filter "true";
           description
             "Current UI is active.";
         }
         leaf auth-mode {
-          type ttyauthmodetype;
+          type tty-authmode-type;
           config false;
           ext:support-filter "true";
           description
