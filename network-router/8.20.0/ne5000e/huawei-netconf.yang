@@ -36,12 +36,12 @@ module huawei-netconf {
       "The NETCONF protocol defines a simple mechanism through which a network device can be managed, configuration data information can be retrieved, and new configuration data can be uploaded and manipulated.";
     container operation-log-switch {
       description
-        "Configure to get RPC oper log.";
+        "Configure to get RPC operation log.";
       leaf get {
         type boolean;
         default "false";
         description
-          "Enable/disable to get oper log.";
+          "Enable/disable to get operation log.";
       }
     }
 

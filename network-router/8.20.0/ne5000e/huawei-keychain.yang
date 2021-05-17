@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-keychain {
   yang-version 1;
@@ -22,7 +22,7 @@ module huawei-keychain {
      Email: support@huawei.com";
   description
     "Keychain.";
-  revision 2019-04-29 {
+  revision 2020-04-19 {
     description
       "Init revision.";
     reference
@@ -35,26 +35,6 @@ module huawei-keychain {
         value 5;
         description
           "Absolute time mode.";
-      }
-      enum "daily" {
-        value 1;
-        description
-          "Daily periodicity mode.";
-      }
-      enum "monthly" {
-        value 2;
-        description
-          "Monthly periodicity mode.";
-      }
-      enum "weekly" {
-        value 3;
-        description
-          "Weekly periodicity mode.";
-      }
-      enum "yearly" {
-        value 4;
-        description
-          "Yearly periodicity mode.";
       }
     }
     description

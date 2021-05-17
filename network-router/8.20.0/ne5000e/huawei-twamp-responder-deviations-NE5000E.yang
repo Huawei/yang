@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-twamp-responder-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-twamp-responder-deviations-NE5000E";
+  prefix "twamp-responder-devs-NE5000E";
+
+  import huawei-twamp-responder {
+    prefix twamp-responder;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-twamp-responder module.";
+  revision 2019-12-27 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation /twamp-responder:twamp-responder/twamp-responder:responder/twamp-responder:test-sessions/twamp-responder:test-session/twamp-responder:session-id {
+    deviate replace {
+       type uint32{
+         range 1..16384;
+      }
+    }
+  }
+}

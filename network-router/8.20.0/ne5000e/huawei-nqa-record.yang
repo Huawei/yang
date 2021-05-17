@@ -26,9 +26,9 @@ submodule huawei-nqa-record {
   description
     "Description of submodule nqa-record.";
 
-  revision 2019-10-25 {
+  revision 2019-10-30 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -482,12 +482,12 @@ submodule huawei-nqa-record {
     container results {
       config false;
       description
-        "List of NQA test instance test result record.";
+        "List of NQA test instance test result record table.";
       list result {
         key "admin-name test-name running-index";
         config false;
         description
-          "Statistics of NQA test instance test result record.";
+          "Statistics of NQA test instance test result record table.";
         leaf admin-name {
           type string {
             length "1..32";
@@ -506,7 +506,7 @@ submodule huawei-nqa-record {
         }
         leaf running-index {
           type uint32 {
-            range "0..100000";
+            range "1..100000";
           }
           config false;
           description
@@ -676,11 +676,11 @@ submodule huawei-nqa-record {
     }
     container trace-results {
       description
-        "List of NQA test instance test trace result record.";
+        "List of NQA test instance test trace result record table.";
       list trace-result {
         key "admin-name test-name running-index";
         description
-          "Statistics of NQA test instance test trace result record.";
+          "Statistics of NQA test instance test trace result record table.";
         leaf admin-name {
           type string {
             length "1..32";
@@ -697,7 +697,7 @@ submodule huawei-nqa-record {
         }
         leaf running-index {
           type uint32 {
-            range "0..100000";
+            range "1..100000";
           }
           description
             "Running index.";

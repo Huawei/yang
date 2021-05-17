@@ -45,10 +45,19 @@ module huawei-lldp-deviations-NE5000E {
   deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:vlan-name-id" {
     deviate not-supported;
   }
-  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:protocol-identity" {
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:protocol-vlan-id" {
     deviate not-supported;
   }
-  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:protocol-vlan-id" {
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:identity" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:identity-tlv" {
+    deviate not-supported;
+  }
+  deviation "/lldp:lldp/lldp:global-attribute/lldp:mdn-status" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:ddp-tlv" {
     deviate not-supported;
   }
 }

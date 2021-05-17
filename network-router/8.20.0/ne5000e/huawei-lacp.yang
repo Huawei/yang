@@ -17,12 +17,6 @@ module huawei-lacp {
   import huawei-pub-type {
     prefix pub-type;
   } 
-  import huawei-vrrp {
-    prefix vrrp;
-  }
-  import huawei-ip {
-    prefix ip;
-  } 
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -36,7 +30,7 @@ module huawei-lacp {
     "Link Aggregation Control Protocol (LACP) management, which includes static LACP configuration, dynamic LACP learning.";
   revision 2020-02-18 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -242,6 +236,26 @@ module huawei-lacp {
         description
           "The device with a higher system priority is selected as the actor, and then active member interfaces are selected based on the configuration of the Eth-Trunk interface on the actor. If the system priorities are the same, the actor is selected based on the system ID. The device with the smaller system ID becomes the actor.";
       }
+      container m-lag {
+        description
+          "Configure M-LAG global attributes.";
+        leaf sys-priority {
+          type uint16 {
+            range "0..65535";
+          }
+          default "32768";
+          description
+            "M-LAG global LACP system priority.";
+        }
+        leaf sys-mac {
+          type pub-type:mac-address {
+            length "0..255";
+          }
+          ext:dynamic-default;
+          description
+            "M-LAG global LACP system MAC address. By default, the LACP M-LAG system ID in the system is the MAC address of the Ethernet interface on the main control board.";
+        }
+      }
       leaf ignore-aggregation {
         type boolean;
         default "false";
@@ -251,7 +265,7 @@ module huawei-lacp {
     }
   }	
   augment "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk" {
-    when "ifm-trunk:work-mode='static' and ifm-trunk:type ='eth-trunk'";
+    when "(ifm-trunk:work-mode='static' or ifm-trunk:work-mode='dynamic') and ifm-trunk:type ='eth-trunk'";
     description
       "Configure LACP configurations on Eth-Trunk interface.";
     container lacp {
@@ -354,14 +368,31 @@ module huawei-lacp {
         description
           "Specify the LACP system priority of a trunk interface.";
       }
+      container m-lag {
+        description
+          "Configure M-LAG interface.";
+        leaf sys-priority {
+          type uint32 {
+            range "0..65535";
+          }
+          description
+            "LACP system priority of the M-LAG.";
+        }
+        leaf sys-mac {
+          type pub-type:mac-address {
+            length "0..255";
+          }
+          description
+            "LACP system MAC of the M-LAG.";
+        }
+      }
       container track-vrrp {
-        must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/if-name]/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group[vrrp:id=current()/vrrp-id]/vrrp:admin-flag";
         presence "track vrrp";
         description
           "Enable/disable Eth-Trunk interface binding VRRP.";
         leaf vrrp-id {
-          type leafref {
-            path "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:id";
+          type uint8 {
+            range "1..255";
           }
           mandatory true;
           description
@@ -431,7 +462,7 @@ module huawei-lacp {
       description
         "Configure interface LACP attribute.";	
       container port-attributes {
-        when "../../../../ifm-trunk:type='eth-trunk' and ../../../../ifm-trunk:work-mode='static'";  	  
+        when "../../../../ifm-trunk:type='eth-trunk' and (../../../../ifm-trunk:work-mode='static' or ../../../../ifm-trunk:work-mode='dynamic')";  	  
         description
           "Configure interface LACP configurable attributes.";
         leaf priority {		
@@ -451,7 +482,7 @@ module huawei-lacp {
         }		
       }
       container port-negotiate-parameter {
-        when "../../../../ifm-trunk:type='eth-trunk' and ../../../../ifm-trunk:work-mode='static'";
+        when "../../../../ifm-trunk:type='eth-trunk' and (../../../../ifm-trunk:work-mode='static' or ../../../../ifm-trunk:work-mode='dynamic')";
         config false;		
         description
           "Statistics of interface LACP negotiate information.";
@@ -547,6 +578,7 @@ module huawei-lacp {
         }
       }
       container pdu-statistic {
+        when "../../../../ifm-trunk:type='eth-trunk' and (../../../../ifm-trunk:work-mode='static' or ../../../../ifm-trunk:work-mode='dynamic')";
         config false;
         description
           "Statistics of LACP PDU information.";

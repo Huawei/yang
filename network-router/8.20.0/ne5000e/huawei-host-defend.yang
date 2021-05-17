@@ -1231,11 +1231,13 @@ module huawei-host-defend {
     description
       "All configurations of the host defend under the interface.";
     container if-8021p-priority {
-      when "../ifm:type!='MEth' and ../ifm:type!='IMEth' and ../ifm:type!='Vlanif' and ../ifm:type!='NULL' and ../ifm:type!='Cpos'
-            and ../ifm:type!='Atm-Bundle' and ../ifm:type!='E1' and ../ifm:type!='Cpos-Trunk' and ../ifm:type!='Virtual-Template'
-            and ../ifm:type!='Stack-Port' and ../ifm:type!='Sip' and ../ifm:type!='Global-VE' and ../ifm:type!='Nve' and ../ifm:type!='Global-Ima-Group'
-            and ../ifm:type!='ServiceIf' and ../ifm:type!='Global-Mp-Group' and ../ifm:type!='Gmpls-Uni' and ../ifm:type!='Ip-Trunk'
-            and ../ifm:type!='Pos-Trunk' and ../ifm:type!='Remote-Ap' and ../ifm:type!='Virtual-Ethernet'";
+      when "../ifm:type!='MEth' and ../ifm:type!='IMEth' and ../ifm:type!='Vlanif' and ../ifm:type!='NULL' and ../ifm:type!='Cpos' and
+      ../ifm:type!='Atm-Bundle' and ../ifm:type!='E1' and ../ifm:type!='Cpos-Trunk' and ../ifm:type!='Virtual-Template' and ../ifm:type!='Stack-Port'
+      and ../ifm:type!='Sip' and ../ifm:type!='Global-VE' and ../ifm:type!='Nve' and ../ifm:type!='Global-Ima-Group' and ../ifm:type!='ServiceIf' and
+      ../ifm:type!='Global-Mp-Group' and ../ifm:type!='Gmpls-Uni' and ../ifm:type!='Ip-Trunk'  and ../ifm:type!='Pos-Trunk' and
+      ../ifm:type!='Remote-Ap' and ../ifm:type!='Virtual-Ethernet' and ../ifm:type!='VBridge' and ../ifm:type!='Ima-group'
+      and ../ifm:type!='Mp-group' and ../ifm:type!='Trunk-Serial' and ../ifm:type!='Serial' and ../ifm:type!='Lmpif' and ../ifm:type!='Vbdif'
+      and ../ifm:type!='LoopBack'";
       presence "Present if 8021p priority function.";
       description
         "Configure 8021p priority under the interface.";
@@ -1249,6 +1251,7 @@ module huawei-host-defend {
       }
     }
     container management-plane-defend-if {
+       when "../ifm:type='Ethernet' or ../ifm:type='GigabitEthernet' or ../ifm:type='GEBrief' or ../ifm:type='10GE' or ../ifm:type='40GE' or ../ifm:type='100GE' or ../ifm:type='25GE' or ../ifm:type='400GE' or ../ifm:type='XGigabitEthernet' or ../ifm:type='200GE' or ../ifm:type='50GE' or ../ifm:type='50|100GE' or ../ifm:type='ATM' or ../ifm:type='Pos'";
       presence "Present if management plane defend function.";
       description
         "Configure applications of interface-level policies for management and service plane protection.";

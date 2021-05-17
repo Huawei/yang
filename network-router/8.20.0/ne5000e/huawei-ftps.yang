@@ -4,7 +4,6 @@ Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
 module huawei-ftps {
   namespace "urn:huawei:yang:huawei-ftps";
   prefix ftps;
-
   import huawei-pub-type {
     prefix pub-type;
   }
@@ -29,7 +28,7 @@ module huawei-ftps {
      Email: support@huawei.com";
   description
     "FTP server component.";
-  revision 2019-05-01 {
+  revision 2019-07-01 {
     description
       "Initial revision.";
     reference
@@ -57,18 +56,18 @@ module huawei-ftps {
       "FTP server component.";
     container server {
       description
-        "Configure FTP server configuration statistics.";
+        "Configure FTP server statistics.";
       leaf server-enable {
         type ftps-bool-type;
         default "disable";
         description
-          "Whether to enable the FTP server service. By default, the FTP server service is disabled.";
+          "Whether to enable the FTP server service.";
       }
       leaf ipv6-server-enable {
         type ftps-bool-type;
         default "disable";
         description
-          "Whether to enable the IPv6 FTP server service. By default, the IPv6 FTP server service is disabled.";
+          "Whether to enable the IPv6 FTP server service.";
       }
       leaf listen-port-number {
         type uint32 {
@@ -76,7 +75,7 @@ module huawei-ftps {
         }
         default "21";
         description
-          "Listening port of the FTP server. The default port number is 21.";
+          "Listening port of the FTP server.";
       }
       leaf ipv6-listen-port-number {
         type uint32 {
@@ -84,23 +83,25 @@ module huawei-ftps {
         }
         default "21";
         description
-          "Listening port of the IPv6 FTP server. The default port number is 21.";
+          "Listening port of the IPv6 FTP server.";
       }
       leaf idle-timeout {
         type uint32 {
           range "1..35791";
         }
+        units min;
         default "10";
         description
-          "Users can set the timeout period for an idle client to connect to the FTP server. The value is expressed in minutes. The default value is 10.";
+          "Users can set the timeout period for an idle client to connect to the FTP server.";
       }
       leaf ipv6-idle-timeout {
         type uint32 {
           range "1..35791";
         }
+        units min;
         default "10";
         description
-          "Users can set the timeout period for an idle client to connect to the IPv6 FTP server. The value is expressed in minutes. The default value is 10.";
+          "Users can set the timeout period for an idle client to connect to the IPv6 FTP server.";
       }
       leaf default-dir {
         type string {
@@ -129,12 +130,12 @@ module huawei-ftps {
     }
     container ip-block {
       description
-        "Configure FTP IP Block Configuration.";
+        "Configure FTP IP block.";
       leaf ip-block-enable {
         type ftps-bool-type;
         default "enable";
         description
-          "Whether to enable Ip Block function. By default, the Ip Block function is enabled by default.";
+          "Whether to enable IP block function.";
       }
       leaf ip-block-failed-times {
         type uint32 {
@@ -142,7 +143,7 @@ module huawei-ftps {
         }
         default "6";
         description
-          "Ip Block continuous authentication failures.";
+          "IP block continuous authentication failures.";
       }
       leaf ip-block-period {
         type uint32 {
@@ -151,7 +152,7 @@ module huawei-ftps {
         units min;
         default "5";
         description
-          "Ip Block continuous authentication failure time period (minutes).";
+          "IP block continuous authentication failure time period.";
       }
       leaf ip-block-react-period {
         type uint32 {
@@ -160,7 +161,7 @@ module huawei-ftps {
         units min;
         default "5";
         description
-          "Ip Block automatically unlock time (Minutes).";
+          "IP block automatically unlock time.";
       }
     }
     container login-fail-alarm {
@@ -173,7 +174,7 @@ module huawei-ftps {
         must "../upper-limit >= ../lower-limit";
         default "30";
         description
-          "Login failed Alarm report times.";
+          "Login failed alarm report times.";
       }
       leaf lower-limit {
         type uint32 {
@@ -182,7 +183,7 @@ module huawei-ftps {
         must "../upper-limit >= ../lower-limit";
         default "20";
         description
-          "Login failed Alarm resume times.";
+          "Login failed alarm resume times.";
       }
       leaf period {
         type uint32 {
@@ -191,14 +192,15 @@ module huawei-ftps {
         units min;
         default "5";
         description
-          "Login failed Alarm period.";
+          "Login failed alarm period.";
       }
     }
     container ipv4-addr-sources {
       description
-        "List of FTP IPv4 server source address list.";
+        "List of FTP IPv4 server source address.";
       list ipv4-addr-source {
         key "source-ipv4-address";
+        max-elements "5";
         description
           "Configure FTP IPv4 server source address.";
         leaf source-ipv4-address {
@@ -210,9 +212,10 @@ module huawei-ftps {
     }
     container ipv4-source-interfaces {
       description
-        "List of specify the source interface list.";
+        "List of specify the source interface.";
       list ipv4-source-interface {
         key "src-interface";
+        max-elements "5";
         description
           "Configure specify the source interface.";
         leaf src-interface {
@@ -224,9 +227,10 @@ module huawei-ftps {
     }
     container ipv6-server-sources {
       description
-        "List of FTP IPv6 server source address list.";
+        "List of FTP IPv6 server source address.";
       list ipv6-server-source {
         key "src-ipv6-addr";
+        max-elements "5";
         description
           "Configure FTP IPv6 server source address.";
         leaf src-ipv6-addr {
@@ -260,23 +264,71 @@ module huawei-ftps {
           "Enable/disable specify all IPv6 interfaces.";
       }
     }
+    container session-car {
+      must 'cir-interval<=pir-interval';
+      must 'cbs-interval<=pbs-interval';
+      description
+        "Configure FTP server session CAR.";
+      leaf enable{
+        type boolean;
+        default "true";
+        description
+          "Enable/disable session CAR.";
+      }
+      leaf cir-interval {
+        type uint32 {
+          range "1..1000000";
+        }
+        units "kbit/s";
+        default "100";
+        description
+          "Specify the session CAR CIR interval.";
+      }
+      leaf cbs-interval {
+        type uint32 {
+          range "1..10000000";
+        }
+        units "bit/s";
+        default "3000000";
+        description
+          "Specify the session CAR CBS interval.";
+      }
+      leaf pir-interval {
+        type uint32 {
+          range "1..1000000";
+        }
+        units "kbit/s";
+        default "4000";
+        description
+          "Specify the session CAR PIR interval.";
+      }
+      leaf pbs-interval {
+        type uint32 {
+          range "1..10000000";
+        }
+        units "bit/s";
+        default "9000000";
+        description
+          "Specify the session CAR PBS interval.";
+      }
+    }
   }
   rpc activate-ip {
     description
-      "Activate ip.";
+      "Activate IP.";
     input {
-      leaf ip-address {
-        type inet:ip-address-no-zone;
-        mandatory true;
-        description
-          "IP Address.";
-      }
-      leaf vpn-name {
-        type leafref {
-          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        leaf ip-address {
+          type inet:ip-address-no-zone;
+          mandatory true;
+          description
+            "IP address.";
         }
-        description
-          "VPN Name.";
+        leaf vpn-name {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          description
+            "VPN name.";
       }
     }
   }

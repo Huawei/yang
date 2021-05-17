@@ -23,7 +23,7 @@ module huawei-hardware-type {
     
   revision 2020-03-27 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -106,11 +106,6 @@ module huawei-hardware-type {
         description
           "SWF Module.";
       }
-      enum "ecu-module" {
-        value 4110;
-        description
-          "ECU.";
-      }
       enum "icu-module" {
         value 4111;
         description
@@ -125,11 +120,6 @@ module huawei-hardware-type {
         value 4170;
         description
           "CF card.";
-      }
-      enum "lcd" {
-        value 4181;
-        description
-          "LCD.";
       }
       enum "cmu-module" {
         value 5010;
@@ -293,11 +283,6 @@ module huawei-hardware-type {
         description
           "Unknown.";
       }
-      enum "fname8090Whole" {
-        value 23;
-        description
-          "NE5000E chassis.";
-      }
       enum "fname8090NE5000EX16" {
         value 24;
         description
@@ -322,11 +307,6 @@ module huawei-hardware-type {
         value 28;
         description
           "NE5000EX16B Chassis.";
-      }
-      enum "fname8090NE40E-X16B" {
-        value 29;
-        description
-          "NE40E-X16B Chassis.";
       }
       enum "fname8090NE5000ECCC-A" {
         value 30;
@@ -1398,6 +1378,111 @@ module huawei-hardware-type {
         description
           "NETENGINE-8000-M6-DC chassis.";
       }
+      enum "fname8090NE40E-X8AK-DC" {
+        value 244;
+        description
+          "NE40E-X8AK-DC chassis.";
+    }
+      enum "fname8090NE40E-X8AK-HVDC" {
+        value 245;
+    description
+          "NE40E-X8AK-HVDC chassis.";
+      }
+      enum "fname8090NE40E-X8AK" {
+        value 246;
+        description
+          "NE40E-X8AK chassis.";
+      }
+      enum "fnameNETENGINE-8000-M6K-AC" {
+        value 247;
+        description
+          "NETENGINE-8000-M6K-AC chassis.";
+    }
+      enum "fnameNETENGINE-8000-M6K-DC" {
+        value 248;
+    description
+          "NETENGINE-8000-M6K-DC chassis.";
+      }
+      enum "fnameNETENGINE-8000-M8K-AC" {
+        value 249;
+        description
+          "NETENGINE-8000-M8K-AC chassis.";
+      }
+      enum "fnameNETENGINE-8000-M8K-DC" {
+        value 250;
+        description
+          "NETENGINE-8000-M8K-DC chassis.";
+      }
+      enum "fnameNETENGINE-8000-M14K-AC" {
+        value 251;
+        description
+          "NETENGINE-8000-M14K-AC chassis.";
+      }
+      enum "fnameNETENGINE-8000-M14K-DC" {
+        value 252;
+        description
+          "NETENGINE-8000-M14K-DC chassis.";
+      }
+      enum "fnameNETENGINE-8000-M1D-DC" {
+        value 253;
+        description
+          "NETENGINE-8000-M1D-DC chassis.";
+      }
+      enum "fname8090NE40E-X4A" {
+        value 254;
+        description
+          "NE40E-X4A chassis.";
+      }
+      enum "ATN-950C" {
+        value 255;
+        description
+          "ATN-950C chassis.";
+      }
+      enum "ATN-950C-AC" {
+        value 256;
+        description
+          "ATN-950C-AC chassis.";
+      }
+      enum "ATN-950C-DC" {
+        value 257;
+        description
+          "ATN-950C-DC chassis.";
+      }
+      enum "fnameSIG9800-X8A" {
+        value 258;
+        description
+          "SIG9800-X8A chassis.";
+      }
+      enum "fnameSIG9800-X8A-DC" {
+        value 259;
+        description
+          "SIG9800-X8A-DC chassis.";
+      }
+      enum "fnameSIG9800-X8A-HVDC" {
+        value 260;
+        description
+          "SIG9800-X8A-HVDC chassis.";
+      }
+      enum "fnameSIG9800-X16A" {
+        value 261;
+        description
+          "SIG9800-X16A chassis.";
+      }
+      enum "fnameSIG9800-X16A-DC" {
+        value 262;
+        description
+          "SIG9800-X16A-DC chassis.";
+      }
+      enum "fnameSIG9800-X16A-HVDC" {
+        value 263;
+        description
+          "SIG9800-X16A-HVDC chassis.";
+      }
+      enum "NETENGINE-8000-M1D-AC" {
+        value 264;
+        description
+          "NETENGINE-8000-M1D-AC chassis.";
+      }
     }
     description
       "Hardware-chassis-type.";
@@ -1870,26 +1955,6 @@ module huawei-hardware-type {
         description
           "CR5D0E6MFA71.";
       }
-      enum "CR52MPUA" {
-        value 93;
-        description
-          "CR52MPUA.";
-      }
-      enum "CR52MPUB" {
-        value 94;
-        description
-          "CR52MPUB.";
-      }
-      enum "CR55MPUA" {
-        value 95;
-        description
-          "CR55MPUA.";
-      }
-      enum "CR55MPUAB" {
-        value 96;
-        description
-          "CR55MPUAB.";
-      }
       enum "CR56RPUA" {
         value 97;
         description
@@ -1960,36 +2025,6 @@ module huawei-hardware-type {
         description
           "CR52SPUC.";
       }
-      enum "CR56LPUF100A" {
-        value 111;
-        description
-          "CR56LPUF100A.";
-      }
-      enum "CR56LPUF100B" {
-        value 112;
-        description
-          "CR56LPUF100B.";
-      }
-      enum "CR56LPUI100A" {
-        value 113;
-        description
-          "CR56LPUI100A.";
-      }
-      enum "CR56LPUI100B" {
-        value 114;
-        description
-          "CR56LPUI100B.";
-      }
-      enum "CR56LPUI100C" {
-        value 115;
-        description
-          "CR56LPUI100C.";
-      }
-      enum "CR56LPUF200A" {
-        value 116;
-        description
-          "CR56LPUF200A.";
-      }
       enum "CR52SFUA" {
         value 117;
         description
@@ -2035,46 +2070,6 @@ module huawei-hardware-type {
         description
           "CR55SFUA.";
       }
-      enum "CR55ECUA" {
-        value 126;
-        description
-          "CR55ECUA.";
-      }
-      enum "CR55C-ECUA" {
-        value 127;
-        description
-          "CR55C-ECUA.";
-      }
-      enum "CR55ICUA" {
-        value 128;
-        description
-          "CR55ICUA.";
-      }
-      enum "CR56SFUF100B" {
-        value 129;
-        description
-          "CR56SFUF100B.";
-      }
-      enum "CR55SFUI100A" {
-        value 130;
-        description
-          "CR55SFUI100A.";
-      }
-      enum "CR55ECU100A" {
-        value 131;
-        description
-          "CR55ECU100A.";
-      }
-      enum "CR52SFEB" {
-        value 132;
-        description
-          "CR52SFEB.";
-      }
-      enum "CR56SFUF100C" {
-        value 133;
-        description
-          "CR56SFUF100C.";
-      }
       enum "CR56SFU200A" {
         value 134;
         description
@@ -2100,75 +2095,25 @@ module huawei-hardware-type {
         description
           "CR5D00W4XX60.";
       }
-      enum "CR5DLPUFA060" {
-        value 139;
-        description
-          "CR5DLPUFA060.";
-      }
       enum "CR5D00LEXF60" {
         value 140;
         description
           "CR5D00LEXF60.";
-      }
-      enum "CR5D00E2NC60" {
-        value 141;
-        description
-          "CR5D00E2NC60.";
       }
       enum "CR5DE1NLAX60" {
         value 142;
         description
           "CR5DE1NLAX60.";
       }
-      enum "CR5D00E1NC60" {
-        value 143;
-        description
-          "CR5D00E1NC60.";
-      }
-      enum "CR5D00LAXX60" {
-        value 144;
-        description
-          "CR5D00LAXX60.";
-      }
-      enum "CR5DSFEBA06B" {
-        value 145;
-        description
-          "CR5DSFEBA06B.";
-      }
       enum "CR5D0MPUB461" {
         value 146;
         description
           "CR5D0MPUB461.";
       }
-      enum "CR5DSFUFA06B" {
-        value 147;
-        description
-          "CR5DSFUFA06B.";
-      }
       enum "CR5DSFUIE060" {
         value 148;
         description
           "CR5DSFUIE060.";
-      }
-      enum "CR5DSFUFA06C" {
-        value 149;
-        description
-          "CR5DSFUFA06C.";
-      }
-      enum "CR5D0MPUA450" {
-        value 150;
-        description
-          "CR5D0MPUA450.";
-      }
-      enum "CR5DECUFA050" {
-        value 151;
-        description
-          "CR5DECUFA050.";
-      }
-      enum "CR5DSFUIA050" {
-        value 152;
-        description
-          "CR5DSFUIA050.";
       }
       enum "CX6D00MPUK70" {
         value 153;
@@ -2575,11 +2520,6 @@ module huawei-hardware-type {
         description
           "FAN.";
       }
-      enum "LCD" {
-        value 234;
-        description
-          "LCD.";
-      }
       enum "PMU" {
         value 235;
         description
@@ -2679,11 +2619,6 @@ module huawei-hardware-type {
         value 254;
         description
           "CR5D0MPUB660.";
-      }
-      enum "CR5D0MPUB680" {
-        value 255;
-        description
-          "CR5D0MPUB680.";
       }
       enum "CR5DSFUIK06B" {
         value 256;
@@ -2799,11 +2734,6 @@ module huawei-hardware-type {
         value 278;
         description
           "CR5D00LMXF61.";
-      }
-      enum "CR5D00LAXF60" {
-        value 279;
-        description
-          "CR5D00LAXF60.";
       }
       enum "CR5D0MPUB560" {
         value 280;
@@ -3450,11 +3380,6 @@ module huawei-hardware-type {
         description
           "CR5DSFUIT26A.";
       }
-      enum "CR5DSFUIT16E" {
-        value 409;
-        description
-          "CR5DSFUIT16E.";
-      }
       enum "CR5D00E8NC61" {
         value 410;
         description
@@ -3525,11 +3450,6 @@ module huawei-hardware-type {
         description
           "CR56FRA1TA.";
       }
-      enum "CR5D0MPUC061" {
-        value 424;
-        description
-          "CR5D0MPUC061.";
-      }
       enum "CR5DLPUFK062" {
         value 425;
         description
@@ -3559,11 +3479,6 @@ module huawei-hardware-type {
         value 430;
         description
           "CR5DL2NLEX60.";
-      }
-      enum "CR5DE2NLEX80" {
-        value 431;
-        description
-          "CR5DE2NLEX80.";
       }
       enum "CR5DNPU24070" {
         value 432;
@@ -5510,16 +5425,6 @@ module huawei-hardware-type {
         description
           "CR5D00E4KC60.";   
       }
-      enum "CR5D00LMXF62" {
-        value 821;
-        description
-          "CR5D00LMXF62.";   
-      }
-      enum "CR5D00E8NB62" {
-        value 822;
-        description
-          "CR5D00E8NB62.";   
-      }
       enum "CR5DLPUFT070" {
         value 823;
         description
@@ -6190,6 +6095,61 @@ module huawei-hardware-type {
         description
           "CR5D00ICUC52.";
     }
+    enum "CR5DLPUF5371" {
+        value 957;
+        description
+          "CR5DLPUF5371.";
+    }
+    enum "CR5DLPUF5370" {
+        value 958;
+    description
+          "CR5DLPUF5370.";
+          }
+    enum "CR5DLPUFF370" {
+        value 959;
+        description
+          "CR5DLPUFF370.";
+          }
+    enum "CR5DLPUFF371" {
+        value 960;
+        description
+          "CR5DLPUFF371.";
+          }
+    enum "CR5DLPUFM370" {
+        value 961;
+        description
+          "CR5DLPUFM370.";
+          }
+    enum "CR5DLPUFM371" {
+        value 962;
+        description
+          "CR5DLPUFM371.";
+    }
+    enum "CX6DISUF5310" {
+        value 963;
+        description
+          "CX6DISUF5310.";
+    }
+    enum "CX6DISUFF310" {
+        value 964;
+        description
+          "CX6DISUFF310.";
+    }
+    enum "CX6DISUFM310" {
+        value 965;
+        description
+          "CX6DISUFM310.";
+    }
+    enum "CR5DLPUFF570" {
+        value 966;
+        description
+          "CR5DLPUFF570.";
+    }
+    enum "CR5DLPUFM570" {
+        value 967;
+        description
+          "CR5DLPUFM570.";
+    }
     enum "ANRD00CXPA00" {
         value 968;
         description
@@ -6250,7 +6210,37 @@ module huawei-hardware-type {
         description
           "CR8DIPU240C2.";
     }
-      enum "CR9D0MPUR181" {
+    enum "CR5D0SRUADK1" {
+        value 980;
+        description
+          "CR5D0SRUADK1.";
+    }
+    enum "CR5DSFUIT2KN" {
+        value 981;
+        description
+          "CR5DSFUIT2KN.";
+    }
+    enum "CR5DLPUFF3K1" {
+        value 982;
+        description
+          "CR5DLPUFF3K1.";
+    }
+    enum "CR5DLPUF53K0" {
+        value 983;
+        description
+          "CR5DLPUF53K0.";
+    }
+    enum "CR5D00EENBK3" {
+        value 984;
+        description
+          "CR5D00EENBK3.";
+    }
+    enum "CR5DVSUFK0K2" {
+        value 985;
+        description
+          "CR5DVSUFK0K2.";
+    }
+    enum "CR9D0MPUR181" {
         value 986;
         description
           "CR9D0MPUR181.";
@@ -6269,6 +6259,31 @@ module huawei-hardware-type {
         value 989;
         description
           "CR5D00LRXF62.";
+    }
+     enum "CR8DCXP160K0" {
+      value 990;
+      description
+        "CR8DCXP160K0.";
+    }
+    enum "CR8DCXP160K1" {
+      value 991;
+      description
+        "CR8DCXP160K1.";
+    }
+    enum "CR8DIPU480K0" {
+      value 992;
+      description
+        "CR8DIPU480K0.";
+    }
+    enum "CR8DIPU1T2K0" {
+      value 993;
+      description
+        "CR8DIPU1T2K0.";
+    }
+    enum "CR8DIPU1T2K1" {
+      value 994;
+      description
+        "CR8DIPU1T2K1.";
     }
     enum "CR5DSFUIT076" {
         value 995;
@@ -6320,10 +6335,410 @@ module huawei-hardware-type {
         description
           "CX6DSFUIT21H.";
     }
+    enum "CR5DSFUIT252" {
+        value 1005;
+        description
+          "CR5DSFUIT252.";
+    }
+    enum "CR5DSFUIT253" {
+        value 1006;
+        description
+          "CR5DSFUIT253.";
+    }
+    enum "CR5DSFUIT2DH" {
+        value 1007;
+        description
+          "CR5DSFUIT2DH.";
+    }
+    enum "CR5DSFUIT2D0" {
+        value 1008;
+        description
+          "CR5DSFUIT2D0.";
+    }
+    enum "CR5DSFUIT2DJ" {
+        value 1009;
+        description
+          "CR5DSFUIT2DJ.";
+    }
+    enum "CR5DSFUIT2D1" {
+        value 1010;
+        description
+          "CR5DSFUIT2D1.";
+    }
     enum "CR5D0SRUAC76" {
       value 1011;
       description
         "CR5D0SRUAC76.";
+    }
+    enum "CR8PM1DBASC1" {
+      value 1012;
+      description
+        "CR8PM1DBASC1.";
+    }
+    enum "CR5DSFUIM17E" {
+      value 1013;
+      description
+        "CR5DSFUIM17E.";
+    }
+    enum "CR5DSFUIM07E" {
+      value 1014;
+      description
+        "CR5DSFUIM07E.";
+    }
+    enum "CR5DSFUIM17F" {
+      value 1015;
+      description
+        "CR5DSFUIM17F.";
+    }
+    enum "CR5D0SRUAB71" {
+      value 1016;
+      description
+        "CR5D0SRUAB71.";
+    }
+    enum "CR5DSFUIM07F" {
+      value 1017;
+      description
+        "CR5DSFUIM07F.";
+    }
+    enum "CR5D0SRUAB70" {
+      value 1018;
+      description
+        "CR5D0SRUAB70.";
+    }
+    enum "ANRD00CXPB01" {
+      value 1019;
+      description
+        "ANRD00CXPB01.";
+    }
+    enum "CR8DIPU1T2C5" {
+      value 1020;
+      description
+        "CR8DIPU1T2C5.";
+    }
+    enum "CR8DIPU1T2C6" {
+      value 1021;
+      description
+        "CR8DIPU1T2C6.";
+    }
+    enum "CR5DLPUFF571" {
+        value 1022;
+        description
+          "CR5DLPUFF571.";
+    }
+    enum "CR5DLPUFM571" {
+        value 1023;
+        description
+          "CR5DLPUFM571.";
+    }
+    enum "CR8DE8KE8NCP" {
+        value 1024;
+        description
+        "CR8DE8KE8NCP.";
+    }
+    enum "CR8DE8KE8NCQ" {
+        value 1025;
+        description
+        "CR8DE8KE8NCQ.";
+    }
+    enum "CR8DE8KE8NCR" {
+        value 1026;
+        description
+          "CR8DE8KE8NCR.";
+    }
+    enum "CR8DE8KE8NCS" {
+        value 1027;
+        description
+          "CR8DE8KE8NCS.";
+    }
+    enum "CR8D00EKNBC1" {
+        value 1028;
+        description
+        "CR8D00EKNBC1.";
+    }
+    enum "CR8D00EKNBC2" {
+        value 1029;
+        description
+        "CR8D00EKNBC2.";
+    }
+    enum "CR8D00EKNBC3" {
+        value 1030;
+        description
+          "CR8D00EKNBC3.";
+    }
+    enum "CR8D00EKNBC5" {
+        value 1031;
+        description
+          "CR8D00EKNBC5.";
+    }
+    enum "CR5DLPUFF372" {
+        value 1032;
+        description
+          "CR5DLPUFF372.";
+      }
+    enum "CR5DLPUFF373" {
+        value 1033;
+        description
+          "CR5DLPUFF373.";
+      }
+      enum "CR8PM1DBASC3" {
+      value 1034;
+      description
+        "CR8PM1DBASC3.";
+    }
+    enum "ANSD00CXPB00" {
+      value 1035;
+      description
+        "ANSD00CXPB00.";
+    }
+    enum "ANSD01CXPA00" {
+      value 1036;
+      description
+        "ANSD01CXPA00.";
+    }
+    enum "ANSD01CXPB00" {
+      value 1037;
+      description
+        "ANSD01CXPB00.";
+    }
+	enum "CR5DEDVE8N71" {
+      value 1038;
+      description
+      "CR5DEDVE8N71.";
+    }
+	enum "CR9D00EENB84" {
+      value 1039;
+      description
+      "CR9D00EENB84.";
+    }
+    enum "CR5D0MPUBA70" {
+      value 1040;
+      description
+        "CR5D0MPUBA70.";
+      }
+    enum "CR5D0MPUBA71" {
+      value 1041;
+      description
+        "CR5D0MPUBA71.";
+      }
+    enum "CR5D0SRUAB72" {
+      value 1042;
+      description
+        "CR5D0SRUAB72.";
+      }
+    enum "CR5D0SRUAB74" {
+      value 1043;
+      description
+        "CR5D0SRUAB74.";
+      }
+      enum "IG2D0MPUB902" {
+      value 1044;
+      description
+        "IG2D0MPUB902.";
+    }
+    enum "IG2DSFUIT202" {
+      value 1045;
+      description
+        "IG2DSFUIT202.";
+    }
+    enum "IG2D0SRUAD02" {
+      value 1046;
+      description
+        "IG2D0SRUAD02.";
+    }
+    enum "IG2DSFUIT212" {
+      value 1047;
+      description
+        "IG2DSFUIT212.";
+    }
+    enum "IG2DLPUFM302" {
+      value 1048;
+      description
+        "IG2DLPUFM302.";
+    }
+    enum "IG2DLPUFT002" {
+      value 1049;
+      description
+        "IG2DLPUFT002.";
+    }
+    enum "IG2D00EENB02" {
+      value 1050;
+      description
+        "IG2D00EENB02.";
+    }
+    enum "IG2D00SPUG02" {
+      value 1051;
+      description
+        "IG2D00SPUG02.";
+    }
+    enum "CR9D0MPUR180-VMPU" {
+        value 1056;
+        description
+          "CR9D0MPUR180-VMPU.";
+    }
+    enum "CR9D0MPUQ180-VMPU" {
+        value 1057;
+        description
+          "CR9D0MPUQ180-VMPU.";
+    }
+    enum "CR9D00EKNB8T" {
+      value 1058;
+      description
+        "CR9D00EKNB8T.";
+    }
+    enum "CR9D00EKNB8R" {
+      value 1059;
+      description
+      "CR9D00EKNB8R.";
+    }
+    enum "CR9D00EKNB81" {
+      value 1060;
+      description
+      "CR9D00EKNB81.";
+    }
+    enum "CR9DE8KE8N8U" {
+      value 1061;
+      description
+      "CR9DE8KE8N8U.";
+    }
+    enum "CR9DE8KE8N8T" {
+      value 1062;
+      description
+      "CR9DE8KE8N8T.";
+    }
+    enum "CR9D00EKNB8Q" {
+      value 1063;
+      description
+      "CR9D00EKNB8Q.";
+    }
+    enum "CR9DE8KE8N8S" {
+      value 1064;
+      description
+      "CR9DE8KE8N8S.";
+    }
+    enum "CR5DLPUFM07C" {
+      value 1065;
+      description
+        "CR5DLPUFM07C.";
+    }
+    enum "CX6DISUFM11C" {
+      value 1066;
+      description
+        "CX6DISUFM11C.";
+    }
+    enum "ME0DMSUFM073" {
+      value 1067;
+      description
+        "ME0DMSUFM073.";
+    }
+    enum "ME0DBSUFM074" {
+      value 1068;
+      description
+        "ME0DBSUFM074.";
+    }
+    enum "CR5D0EEXFF70" {
+      value 1069;
+      description
+        "CR5D0EEXFF70.";
+    }
+    enum "CR5D0E2NBF70" {
+      value 1070;
+      description
+        "CR5D0E2NBF70.";
+    }
+    enum "CR5D0EEXFF71" {
+      value 1071;
+      description
+        "CR5D0EEXFF71.";
+    }
+    enum "CR5D0E2NBF71" {
+      value 1072;
+      description
+        "CR5D0E2NBF71.";
+    }
+    enum "CX6D0EEXFF11" {
+      value 1073;
+      description
+        "CX6D0EEXFF11.";
+    }
+    enum "CX6D0E2NBF12" {
+      value 1074;
+      description
+        "CX6D0E2NBF12.";
+    }
+	enum "CR9D0MPUQ280" {
+        value 1075;
+        description
+          "CR9D0MPUQ280.";
+    }
+	enum "CR5D0MPUQ2D0" {
+        value 1076;
+        description
+          "CR5D0MPUQ2D0.";
+    }
+    enum "CR5D0MPUQ2D1" {
+        value 1077;
+        description
+          "CR5D0MPUQ2D1.";
+    }
+    enum "CR8D00EENBC1" {
+        value 1078;
+        description
+          "CR8D00EENBC1.";
+    }
+    enum "CR8D00EENBC2" {
+        value 1079;
+        description
+          "CR8D00EENBC2.";
+    }
+    enum "CR8D00EENBC3" {
+        value 1080;
+        description
+          "CR8D00EENBC3.";
+    }
+    enum "CR8D00EENBC4" {
+        value 1081;
+        description
+          "CR8D00EENBC4.";
+    }
+    enum "CR8D00EENBC5" {
+        value 1082;
+        description
+          "CR8D00EENBC5.";
+    }
+    enum "CR8D00LRXFC1" {
+        value 1083;
+        description
+          "CR8D00LRXFC1.";
+    }
+    enum "CR8D00LRXFCT" {
+        value 1084;
+        description
+          "CR8D00LRXFCT.";
+    }
+    enum "CR8D00LRXFCU" {
+        value 1085;
+        description
+          "CR8D00LRXFCU.";
+    }
+    enum "CR8D00LRXFCV" {
+        value 1086;
+        description
+          "CR8D00LRXFCV.";
+    }
+    enum "CR8PM1DBASCA" {
+        value 1087;
+        description
+          "CR8PM1DBASCA.";
+     }
+    enum "CR8PM1DBASCC" {
+        value 1088;
+        description
+          "CR8PM1DBASCC.";
+     }
+    enum "CR5D000CMU63" {
+        value 1089;
+        description
+          "CR5D000CMU63.";
     }
     }
     description
@@ -7027,11 +7442,6 @@ module huawei-hardware-type {
         description
           "CR57T6XF00.";
       }
-      enum "CR5D00T1MC60" {
-        value 140;
-        description
-          "CR5D00T1MC60.";
-      }
       enum "CR5D00TBXF70" {
         value 141;
         description
@@ -7672,11 +8082,6 @@ module huawei-hardware-type {
         description
           "ICU slot.";
       }
-      enum "ecuSlot" {
-        value 269;
-        description
-          "ECU slot.";
-      }
       enum "clkSlot" {
         value 270;
         description
@@ -7717,11 +8122,6 @@ module huawei-hardware-type {
         description
           "Ofc slot.";
       }
-      enum "lcdSlot" {
-        value 278;
-        description
-          "LCD slot.";
-      }
       enum "cfcardSlot" {
         value 279;
         description
@@ -7746,11 +8146,6 @@ module huawei-hardware-type {
         value 283;
         description
           "Unknown.";
-      }
-      enum "fname8090Whole" {
-        value 284;
-        description
-          "NE5000E chassis.";
       }
       enum "fname8090NE5000EX16" {
         value 285;
@@ -7777,11 +8172,6 @@ module huawei-hardware-type {
         description
           "NE5000EX16B Chassis.";
       }
-      enum "fname8090NE40E-X16B" {
-        value 290;
-        description
-          "NE40E-X16B Chassis.";
-      }
       enum "fname8090NE5000ECCC-A" {
         value 291;
         description
@@ -7801,26 +8191,6 @@ module huawei-hardware-type {
         value 294;
         description
           "CE685048T4QEI chassis.";
-      }
-      enum "CR52MPUA" {
-        value 295;
-        description
-          "CR52MPUA.";
-      }
-      enum "CR52MPUB" {
-        value 296;
-        description
-          "CR52MPUB.";
-      }
-      enum "CR55MPUA" {
-        value 297;
-        description
-          "CR55MPUA.";
-      }
-      enum "CR55MPUAB" {
-        value 298;
-        description
-          "CR55MPUAB.";
       }
       enum "CR56RPUA" {
         value 299;
@@ -7897,36 +8267,6 @@ module huawei-hardware-type {
         description
           "CR52SPUC.";
       }
-      enum "CR56LPUF100A" {
-        value 314;
-        description
-          "CR56LPUF100A.";
-      }
-      enum "CR56LPUF100B" {
-        value 315;
-        description
-          "CR56LPUF100B.";
-      }
-      enum "CR56LPUI100A" {
-        value 316;
-        description
-          "CR56LPUI100A.";
-      }
-      enum "CR56LPUI100B" {
-        value 317;
-        description
-          "CR56LPUI100B.";
-      }
-      enum "CR56LPUI100C" {
-        value 318;
-        description
-          "CR56LPUI100C.";
-      }
-      enum "CR56LPUF200A" {
-        value 319;
-        description
-          "CR56LPUF200A.";
-      }
       enum "RNRLPUB" {
         value 320;
         description
@@ -7997,36 +8337,6 @@ module huawei-hardware-type {
         description
           "CR55SFUA.";
       }
-      enum "CR55ECUA" {
-        value 334;
-        description
-          "CR55ECUA.";
-      }
-      enum "CR55C-ECUA" {
-        value 335;
-        description
-          "CR55C-ECUA.";
-      }
-      enum "CR55ICUA" {
-        value 336;
-        description
-          "CR55ICUA.";
-      }
-      enum "CR56SFUF100B" {
-        value 337;
-        description
-          "CR56SFUF100B.";
-      }
-      enum "CR55SFUI100A" {
-        value 338;
-        description
-          "CR55SFUI100A.";
-      }
-      enum "CR56SFUF100C" {
-        value 339;
-        description
-          "CR56SFUF100C.";
-      }
       enum "CR56SFU200A" {
         value 340;
         description
@@ -8062,16 +8372,6 @@ module huawei-hardware-type {
         description
           "CR55SFUI400C.";
       }
-      enum "CR55ECU100A" {
-        value 347;
-        description
-          "CR55ECU100A.";
-      }
-      enum "CR52SFEB" {
-        value 348;
-        description
-          "CR52SFEB.";
-      }
       enum "DE51SRU1A" {
         value 349;
         description
@@ -8086,11 +8386,6 @@ module huawei-hardware-type {
         value 351;
         description
           "DE51SRU1C.";
-      }
-      enum "CR5DSFUFA06C" {
-        value 352;
-        description
-          "CR5DSFUFA06C.";
       }
       enum "CR5DSFUIK06A" {
         value 353;
@@ -8241,11 +8536,6 @@ module huawei-hardware-type {
         value 382;
         description
           "CR5D0MPUB660.";
-      }
-      enum "CR5D0MPUB680" {
-        value 383;
-        description
-          "CR5D0MPUB680.";
       }
       enum "CR5DSFUIK06B" {
         value 384;
@@ -8832,11 +9122,6 @@ module huawei-hardware-type {
         description
           "FAN.";
       }
-      enum "LCD" {
-        value 501;
-        description
-          "LCD.";
-      }
       enum "CFCARD" {
         value 502;
         description
@@ -8867,90 +9152,25 @@ module huawei-hardware-type {
         description
           "CR5D00W4XX60.";
       }
-      enum "CR5DLPUFA060" {
-        value 508;
-        description
-          "CR5DLPUFA060.";
-      }
       enum "CR5D00LEXF60" {
         value 509;
         description
           "CR5D00LEXF60.";
-      }
-      enum "CR5D00E2NC60" {
-        value 510;
-        description
-          "CR5D00E2NC60.";
       }
       enum "CR5DE1NLAX60" {
         value 511;
         description
           "CR5DE1NLAX60.";
       }
-      enum "CR5DSFEBA06B" {
-        value 512;
-        description
-          "CR5DSFEBA06B.";
-      }
       enum "CR5D0MPUB461" {
         value 513;
         description
           "CR5D0MPUB461.";
       }
-      enum "CR5DSFUFA06B" {
-        value 514;
-        description
-          "CR5DSFUFA06B.";
-      }
       enum "CR5DSFUIE060" {
         value 515;
         description
           "CR5DSFUIE060.";
-      }
-      enum "CR5D0MPUA450" {
-        value 516;
-        description
-          "CR5D0MPUA450.";
-      }
-      enum "CR5DECUFA050" {
-        value 517;
-        description
-          "CR5DECUFA050.";
-      }
-      enum "CR5DSFUIA050" {
-        value 518;
-        description
-          "CR5DSFUIA050.";
-      }
-      enum "CR5D00L5XX60" {
-        value 519;
-        description
-          "CR5D00L5XX60.";
-      }
-      enum "CR5D00E5XX60" {
-        value 520;
-        description
-          "CR5D00E5XX60.";
-      }
-      enum "CR5D00L2XX60" {
-        value 521;
-        description
-          "CR5D00L2XX60.";
-      }
-      enum "CR5D00E2XX60" {
-        value 522;
-        description
-          "CR5D00E2XX60.";
-      }
-      enum "CR5D00EFGF60" {
-        value 523;
-        description
-          "CR5D00EFGF60.";
-      }
-      enum "CR5D00P1MZ60" {
-        value 524;
-        description
-          "CR5D00P1MZ60.";
       }
       enum "CR5D00P2XX60" {
         value 525;
@@ -8996,11 +9216,6 @@ module huawei-hardware-type {
         value 533;
         description
           "CR5D00L5XF60.";
-      }
-      enum "CR5D00E5XF60" {
-        value 534;
-        description
-          "CR5D00E5XF60.";
       }
       enum "CR5D00P8UF60" {
         value 535;
@@ -9986,11 +10201,6 @@ module huawei-hardware-type {
         value 731;
         description
           "CR5D0MPUB560.";
-      }
-      enum "CR5D0MPUC061" {
-        value 732;
-        description
-          "CR5D0MPUC061.";
       }
       enum "CR2D00P4CF11" {
         value 733;
@@ -11212,11 +11422,6 @@ module huawei-hardware-type {
         description
           "CR5DSFUIT26A.";
       }
-      enum "CR5DSFUIT16E" {
-        value 977;
-        description
-          "CR5DSFUIT16E.";
-      }
       enum "CR5DE8NEDX61" {
         value 978;
         description
@@ -11996,11 +12201,6 @@ module huawei-hardware-type {
         value 1133;
         description
           "CR5DL2NLEX60.";
-      }
-      enum "CR5DE2NLEX80" {
-        value 1134;
-        description
-          "CR5DE2NLEX80.";
       }
       enum "CX6B0BKP0371" {
         value 1135;
@@ -14422,11 +14622,6 @@ module huawei-hardware-type {
         description
           "ANKD001EY201.";
       }
-      enum "ANKD001EY100" {
-        value 1619;
-        description
-          "ANKD001EY100.";
-      }
       enum "CR5D0E5XMF91" {
         value 1620;
         description
@@ -15036,16 +15231,6 @@ module huawei-hardware-type {
         value 1741;
         description
           "CR5D00E4KC60.";
-      }
-      enum "CR5D00LMXF62" {
-        value 1742;
-        description
-          "CR5D00LMXF62.";
-      }
-      enum "CR5D00E8NB62" {
-        value 1743;
-        description
-          "CR5D00E8NB62.";
       }
       enum "CR5DLPUFT070" {
         value 1744;
@@ -16202,7 +16387,202 @@ module huawei-hardware-type {
         description
           "CR5D00ICUC52.";
     }
-    enum "ANRD00CXPA00" {
+    enum "CR5D0E4YFM70" {
+        value 1975;
+        description
+          "CR5D0E4YFM70.";
+    }
+    enum "CR5DE1NBFM70" {
+        value 1976;
+        description
+          "CR5DE1NBFM70.";
+    }
+    enum "CR5D0LFXFM70" {
+        value 1977;
+        description
+          "CR5D0LFXFM70.";
+    }
+    enum "CR5D0E8YFM70" {
+        value 1978;
+        description
+          "CR5D0E8YFM70.";
+    }
+    enum "CR5DE2NBFM70" {
+        value 1979;
+        description
+          "CR5DE2NBFM70.";
+    }
+    enum "CR5D0EFGFM70" {
+        value 1980;
+        description
+          "CR5D0EFGFM70.";
+    }
+    enum "CARD ATN 910D-A" {
+        value 1981;
+        description
+          "CARD ATN 910D-A.";
+      }  
+    enum "CR5D0LBXFM70" {
+        value 1982;
+        description
+          "CR5D0LBXFM70.";
+      }
+    enum "ME0D0EFGFM70" {
+        value 1983;
+        description
+          "ME0D0EFGFM70.";
+      }
+     enum "ME0D0LBXFM70" {
+        value 1984;
+        description
+          "ME0D0LBXFM70.";
+      }
+     enum "ME0D0E4YFM70" {
+        value 1985;
+        description
+          "ME0D0E4YFM70.";
+      }
+     enum "ME0DE1NBFM70" {
+        value 1986;
+        description
+          "ME0DE1NBFM70.";
+      }
+     enum "ME0D0LFXFM70" {
+        value 1987;
+        description
+          "ME0D0LFXFM70.";
+      }
+     enum "ME0D0E8YFM70" {
+        value 1988;
+        description
+          "ME0D0E8YFM70.";
+      }
+     enum "ME0DE2NBFM70" {
+        value 1989;
+        description
+          "ME0DE2NBFM70.";
+      }
+     enum "CX6D0EFGFM10" {
+        value 1990;
+        description
+          "CX6D0EFGFM10.";
+      }
+     enum "CX6D0LBXFM10" {
+        value 1991;
+        description
+          "CX6D0LBXFM10.";
+      }
+     enum "CX6D0E4YFM10" {
+        value 1992;
+        description
+          "CX6D0E4YFM10.";
+      }
+     enum "CX6DE1NBFM10" {
+        value 1993;
+        description
+          "CX6DE1NBFM10.";
+      }
+     enum "CX6D0LFXFM10" {
+        value 1994;
+        description
+          "CX6D0LFXFM10.";
+      }
+     enum "CX6D0E8YFM10" {
+        value 1995;
+        description
+          "CX6D0E8YFM10.";
+      }
+     enum "CX6DE2NBFM10" {
+        value 1996;
+        description
+          "CX6DE2NBFM10.";
+      }
+     enum "CR5D00E1KB70" {
+        value 1997;
+        description
+          "CR5D00E1KB70.";
+    }
+      enum "CR6D00E1KB10" {
+        value 1998;
+        description
+          "CR6D00E1KB10.";
+      }
+      enum "ANND001EV203" {
+        value 1999;
+        description
+          "ANND001EV203.";
+      }
+      enum "ANND001EV103" {
+        value 2000;
+        description
+          "ANND001EV103.";
+      }
+      enum "ANND001EV104" {
+        value 2001;
+        description
+          "ANND001EV104.";
+      }
+      enum "ANND00EX4S02" {
+        value 2002;
+        description
+          "ANND00EX4S02.";
+      }
+     enum "CR5DLPUF5371" {
+        value 2003;
+        description
+          "CR5DLPUF5371.";
+      }
+     enum "CR5DLPUF5370" {
+        value 2004;
+        description
+          "CR5DLPUF5370.";
+      }
+     enum "CR5DLPUFF370" {
+        value 2005;
+        description
+          "CR5DLPUFF370.";
+      }
+     enum "CR5DLPUFF371" {
+        value 2006;
+        description
+          "CR5DLPUFF371.";
+      }
+      enum "CR5DLPUFM370" {
+        value 2007;
+        description
+          "CR5DLPUFM370.";
+      }
+      enum "CR5DLPUFM371" {
+        value 2008;
+        description
+          "CR5DLPUFM371.";
+      }
+      enum "CX6DISUF5310" {
+        value 2009;
+        description
+          "CX6DISUF5310.";
+      }
+      enum "CX6DISUFF310" {
+        value 2010;
+        description
+          "CX6DISUFF310.";
+      }
+      enum "CX6DISUFM310" {
+        value 2011;
+        description
+          "CX6DISUFM310.";
+      }
+      enum "CR5DLPUFF570" {
+        value 2012;
+        description
+          "CR5DLPUFF570.";
+    }
+      enum "CR5DLPUFM570" {
+        value 2013;
+        description
+          "CR5DLPUFM570.";
+      }
+      enum "ANRD00CXPA00" {
         value 2014;
         description
           "ANRD00CXPA00.";
@@ -16246,8 +16626,68 @@ module huawei-hardware-type {
         value 2022;
         description
           "CR5D00EDNB64.";
-    }
-    enum "CR58EENBD1" {
+      }
+      enum "CR5D0EFGFMK0" {
+        value 2023;
+        description
+          "CR5D0EFGFMK0.";
+      }
+      enum "CR5D0LBXFMK0" {
+        value 2024;
+        description
+          "CR5D0LBXFMK0.";
+      }
+      enum "CR5DE1NBFMK0" {
+        value 2025;
+        description
+          "CR5DE1NBFMK0.";
+      }
+      enum "CR8D00LAXFK1" {
+        value 2026;
+        description
+          "CR8D00LAXFK1.";
+      }
+      enum "CR8D00E2VBK1" {
+        value 2027;
+        description
+          "CR8D00E2VBK1.";
+      }
+      enum "CR8D00EAGFK1" {
+        value 2028;
+        description
+          "CR8D00EAGFK1.";
+      }
+      enum "CR8D000DE1K1" {
+        value 2029;
+        description
+          "CR8D000DE1K1.";
+      }
+      enum "CR8D00P4CFK1" {
+        value 2030;
+        description
+          "CR8D00P4CFK1.";
+      }
+      enum "CR8D00C4CFK1" {
+        value 2031;
+        description
+          "CR8D00C4CFK1.";
+      }
+      enum "CR8D00L4XFK1" {
+        value 2032;
+        description
+          "CR8D00L4XFK1.";
+      }
+      enum "CR8D00EAGFK2" {
+        value 2033;
+        description
+          "CR8D00EAGFK2.";
+      }
+      enum "ANND001EH100" {
+        value 2034;
+        description
+          "ANND001EH100.";
+      }
+      enum "CR58EENBD1" {
         value 2035;
         description
           "CR58EENBD1.";
@@ -16301,7 +16741,52 @@ module huawei-hardware-type {
         value 2045;
         description
           "CR8D00E2NBC1.";
-      }
+    }
+    enum "CR5D0SRUADK1" {
+        value 2046;
+        description
+          "CR5D0SRUADK1.";
+    }
+    enum "CR5DSFUIT2KN" {
+        value 2047;
+        description
+          "CR5DSFUIT2KN.";
+    }
+    enum "CR5DLPUFF3K1" {
+        value 2048;
+        description
+          "CR5DLPUFF3K1.";
+    }
+    enum "CR5DLPUF53K0" {
+        value 2049;
+        description
+          "CR5DLPUF53K0.";
+    }
+    enum "CR5D00EENBK3" {
+        value 2050;
+        description
+          "CR5D00EENBK3.";
+    }
+    enum "CR5DVSUFK0K2" {
+        value 2051;
+        description
+          "CR5DVSUFK0K2.";
+    }
+    enum "fname8090NE40E-X8AK-DC" {
+        value 2052;
+        description
+          "NE40E-X8AK-DC chassis.";
+    }
+    enum "fname8090NE40E-X8AK-HVDC" {
+        value 2053;
+        description
+          "NE40E-X8AK-HVDC chassis.";
+    }
+    enum "fname8090NE40E-X8AK" {
+        value 2054;
+        description
+          "NE40E-X8AK chassis.";
+    }
     enum "CR9D0MPUR181" {
         value 2055;
         description
@@ -16311,7 +16796,37 @@ module huawei-hardware-type {
         value 2056;
         description
           "CR9D0SFUT48G.";
-      }
+      }	
+    enum "CR5D00CFE171" {
+        value 2057;
+        description
+          "CR5D00CFE171.";
+    }
+    enum "CR5D00P8E870" {
+        value 2058;
+        description
+          "CR5D00P8E870.";
+    }
+    enum "CR5D00P8E871" {
+        value 2059;
+        description
+          "CR5D00P8E871.";
+    }
+    enum "CR5D00P8E8K0" {
+        value 2060;
+        description
+          "CR5D00P8E8K0.";
+    }
+    enum "CR5D00P8E8K1" {
+        value 2061;
+        description
+          "CR5D00P8E8K1.";
+    }
+    enum "CR5D00CFE1K1" {
+        value 2062;
+        description
+          "CR5D00CFE1K1.";
+    }
     enum "CR5D00E4KB62" {
         value 2063;
         description
@@ -16322,60 +16837,865 @@ module huawei-hardware-type {
         description
           "CR5D00LRXF62.";
     }
+     enum "fnameNETENGINE-8000-M6K-AC" {
+        value 2065;
+        description
+          "NETENGINE-8000-M6K-AC chassis.";
+    }
+      enum "fnameNETENGINE-8000-M6K-DC" {
+        value 2066;
+		description
+          "NETENGINE-8000-M6K-DC chassis.";
+    }
+      enum "fnameNETENGINE-8000-M8K-AC" {
+        value 2067;
+        description
+          "NETENGINE-8000-M8K-AC chassis.";
+      }
+      enum "fnameNETENGINE-8000-M8K-DC" {
+        value 2068;
+        description
+          "NETENGINE-8000-M8K-DC chassis.";
+      }
+      enum "fnameNETENGINE-8000-M14K-AC" {
+        value 2069;
+        description
+          "NETENGINE-8000-M14K-AC chassis.";
+      }
+      enum "fnameNETENGINE-8000-M14K-DC" {
+        value 2070;
+        description
+          "NETENGINE-8000-M14K-DC chassis.";
+      }
+      enum "CR8DCXP160K0" {
+        value 2071;
+        description
+          "CR8DCXP160K0.";
+      }
+      enum "CR8DCXP160K1" {
+        value 2072;
+        description
+          "CR8DCXP160K1.";
+      }
+      enum "CR8DIPU480K0" {
+        value 2073;
+        description
+          "CR8DIPU480K0.";
+      }
+      enum "CR8DIPU1T2K0" {
+        value 2074;
+        description
+          "CR8DIPU1T2K0.";
+      }
+      enum "CR8DIPU1T2K1" {
+        value 2075;
+        description
+          "CR8DIPU1T2K1.";
+      }
+      enum "CR57C2CFE1A" {
+        value 2076;
+        description
+          "CR57C2CFE1A.";
+      }
+      enum "CR57C2CFE1A1" {
+        value 2077;
+        description
+          "CR57C2CFE1A1.";
+      }
+      enum "CR57E8GP4UA0" {
+        value 2078;
+        description
+          "CR57E8GP4UA0.";
+      }
+      enum "CR57E8GP8HA0" {
+        value 2079;
+        description
+          "CR57E8GP8HA0.";
+      }
+      enum "CR57E8GP4UA2" {
+        value 2080;
+        description
+          "CR57E8GP4UA2.";
+      }
+      enum "CR57E8GP8CA2" {
+        value 2081;
+        description
+          "CR57E8GP8CA2.";
+      }
+      enum "ANND001EV205" {
+        value 2082;
+        description
+          "ANND001EV205.";
+      }
+      enum "ANND001EV207" {
+        value 2083;
+        description
+          "ANND001EV207.";
+      }
+      enum "ANKD001EV207" {
+        value 2084;
+        description
+          "ANKD001EV207.";
+      }
+      enum "ANND00EM8T02" {
+        value 2085;
+        description
+          "ANND00EM8T02.";
+      }
+      enum "CR5D00CFE171-" {
+        value 2086;
+        description
+          "CR5D00CFE171-.";
+      }
+      enum "CR5D00P8E870-" {
+        value 2087;
+        description
+          "CR5D00P8E870-.";
+      }
+      enum "CR5D00P8E871-" {
+        value 2088;
+        description
+          "CR5D00P8E871-.";
+      }
+      enum "CR5D00P8E8K0-" {
+        value 2089;
+        description
+          "CR5D00P8E8K0-.";
+      }
+      enum "CR5D00P8E8K1-" {
+        value 2090;
+        description
+          "CR5D00P8E8K1-.";
+      }
+      enum "CR5D00CFE1K1-" {
+        value 2091;
+        description
+          "CR5D00CFE1K1-.";
+      }
+      enum "ANKD001EY101" {
+        value 2092;
+        description
+          "ANKD001EY101.";
+      }
+      enum "GPLI8KQ8CQE2" {
+        value 2093;
+        description
+          "GPLI8KQ8CQE2.";
+      }
+      enum "GPLI8KQ8CQES1" {
+        value 2094;
+        description
+          "GPLI8KQ8CQES1.";
+      }
     enum "CR5DSFUIT076" {
         value 2095;
         description
           "CR5DSFUIT076.";
-      }
+    }
     enum "CR5DSFUIT077" {
         value 2096;
         description
           "CR5DSFUIT077.";
-      }
+    }
     enum "CX6DSFUIT072" {
         value 2097;
         description
           "CX6DSFUIT072.";
-      }
+    }
     enum "TNRDSFUIT072" {
         value 2098;
         description
           "TNRDSFUIT072.";
-      }
+    }
     enum "CX6DSFUIT27J" {
         value 2099;
         description
           "CX6DSFUIT27J.";
-      }
+    }
     enum "CR5DSFUIT078" {
         value 2100;
         description
           "CR5DSFUIT078.";
-      }
+    }
     enum "CR5DSFUIT079" {
         value 2101;
         description
           "CR5DSFUIT079.";
-      }
+    }
     enum "CX6DSFUIT073" {
         value 2102;
         description
           "CX6DSFUIT073.";
-      }
+    }
     enum "TNRDSFUIT073" {
         value 2103;
         description
           "TNRDSFUIT073.";
-      }
+    }
     enum "CX6DSFUIT21H" {
         value 2104;
         description
           "CX6DSFUIT21H.";
     }
+    enum "CR8D00E8GEC1" {
+        value 2105;
+        description
+          "CR8D00E8GEC1.";
+    }
+    enum "CR5DSFUIT252" {
+        value 2106;
+        description
+          "CR5DSFUIT252.";
+    }
+    enum "CR55OFC3T2A" {
+        value 2107;
+        description
+          "CR55OFC3T2A.";
+    }
+    enum "CR55OFC3T2B" {
+        value 2108;
+        description
+          "CR55OFC3T2B.";
+    }
+    enum "CR5DSFUIT253" {
+        value 2109;
+        description
+          "CR5DSFUIT253.";
+    }
+    enum "CR5DSFUIT2DH" {
+        value 2110;
+        description
+          "CR5DSFUIT2DH.";
+    }
+    enum "CR5DSFUIT2D0" {
+        value 2111;
+        description
+          "CR5DSFUIT2D0.";
+    }
+    enum "CR5DSFUIT2DJ" {
+        value 2112;
+        description
+          "CR5DSFUIT2DJ.";
+    }
+    enum "CR5DSFUIT2D1" {
+        value 2113;
+        description
+          "CR5DSFUIT2D1.";
+    }
     enum "CR5D0SRUAC76" {
       value 2114;
       description
         "CR5D0SRUAC76.";
+    }
+    enum "CARD NetEngine 8000 M1D" {
+        value 2115;
+        description
+          "CARD NetEngine 8000 M1D.";
+    }
+    enum "CR8PM1DBASC1" {
+      value 2116;
+      description
+        "CR8PM1DBASC1.";
+    }
+    enum "fnameNETENGINE-8000-M1D-DC" {
+        value 2117;
+        description
+          "NETENGINE-8000-M1D-DC chassis.";
+      }
+    enum "CR5D00E8GF73" {
+        value 2118;
+        description
+          "CR5D00E8GF73.";
+    }
+    enum "CR5D00E8GF72" {
+        value 2119;
+        description
+          "CR5D00E8GF72.";
+    }
+    enum "CR5D00C2CF71" {
+        value 2120;
+        description
+          "CR5D00C2CF71.";
+    }
+    enum "CR5D00E8GF73-" {
+        value 2121;
+        description
+          "CR5D00E8GF73-.";
+    }
+    enum "CR5D00E8GF72-" {
+        value 2122;
+        description
+          "CR5D00E8GF72-.";
+    }
+    enum "CR5D00C2CF71-" {
+        value 2123;
+        description
+          "CR5D00C2CF71-.";
+    }
+    enum "fname8090NE40E-X4A" {
+        value 2124;
+        description
+          "NE40E-X4A chassis.";
+      }
+    enum "CR5DSFUIM17E" {
+        value 2125;
+        description
+          "CR5DSFUIM17E.";
+      }
+    enum "CR5DSFUIM07E" {
+        value 2126;
+        description
+          "CR5DSFUIM07E.";
+      }
+    enum "CR5DSFUIM17F" {
+        value 2127;
+        description
+          "CR5DSFUIM17F.";
+      }
+    enum "CR5D0SRUAB71" {
+        value 2128;
+        description
+          "CR5D0SRUAB71.";
+      }
+    enum "CR5DSFUIM07F" {
+        value 2129;
+        description
+          "CR5DSFUIM07F.";
+      }
+    enum "CR5D0SRUAB70" {
+        value 2130;
+        description
+          "CR5D0SRUAB70.";
+      }
+    enum "ANRD00CXPB01" {
+        value 2131;
+        description
+          "ANRD00CXPB01.";
+      }
+    enum "CR8DIPU1T2C5" {
+        value 2132;
+        description
+          "CR8DIPU1T2C5.";
+      }
+    enum "CR8DIPU1T2C6" {
+        value 2133;
+        description
+          "CR8DIPU1T2C6.";
+      }
+    enum "CR5DLPUFF571" {
+        value 2134;
+        description
+          "CR5DLPUFF571.";
+      }
+    enum "CR5DLPUFM571" {
+        value 2135;
+        description
+          "CR5DLPUFM571.";
+      }
+    enum "CR8DE8KE8NCP" {
+        value 2136;
+        description
+          "CR8DE8KE8NCP.";
+      }
+    enum "CR8DE8KE8NCQ" {
+        value 2137;
+        description
+          "CR8DE8KE8NCQ.";
+      }
+    enum "CR8DE8KE8NCR" {
+        value 2138;
+        description
+          "CR8DE8KE8NCR.";
+      }
+    enum "CR8DE8KE8NCS" {
+        value 2139;
+        description
+          "CR8DE8KE8NCS.";
+      }
+    enum "CR8D00EKNBC1" {
+        value 2140;
+        description
+          "CR8D00EKNBC1.";
+      }
+    enum "CR8D00EKNBC2" {
+        value 2141;
+        description
+          "CR8D00EKNBC2.";
+      }
+    enum "CR8D00EKNBC3" {
+        value 2142;
+        description
+          "CR8D00EKNBC3.";
+      }
+    enum "CR8D00EKNBC5" {
+        value 2143;
+        description
+          "CR8D00EKNBC5.";
+      }
+    enum "CR8D00E8GEC2" {
+        value 2144;
+        description
+          "CR8D00E8GEC2.";
+      }
+    enum "CR5DLPUFF372" {
+        value 2145;
+        description
+          "CR5DLPUFF372.";
+      }
+    enum "CR5DLPUFF373" {
+        value 2146;
+        description
+          "CR5DLPUFF373.";
+      }
+    enum "CR59LJXFE" {
+        value 2147;
+        description
+          "CR59LJXFE.";
+      }
+    enum "CR59E2KBC" {
+        value 2148;
+        description
+          "CR59E2KBC.";
+      }
+    enum "CR59E8NBG" {
+        value 2149;
+        description
+          "CR59E8NBG.";
+      }
+    enum "CR58EKNBB0" {
+        value 2150;
+        description
+          "CR58EKNBB0.";
+      }
+    enum "CR58E8KE8NC0" {
+        value 2151;
+        description
+          "CR58E8KE8NC0.";
+      }
+    enum "CR58EKNBBS0" {
+        value 2152;
+        description
+          "CR58EKNBBS0.";
+      }
+    enum "CR58E8KE8NCS0" {
+        value 2153;
+        description
+          "CR58E8KE8NCS0.";
+      }
+    enum "GPLI40CQES3" {
+        value 2154;
+        description
+          "GPLI40CQES3.";
+      }
+    enum "GPLI40CQE4" {
+        value 2155;
+        description
+          "GPLI40CQE4.";
+      }
+    enum "IG2D0EFGFM01" {
+        value 2156;
+        description
+          "IG2D0EFGFM01.";
+      }
+    enum "IG2D0LFXFM01" {
+        value 2157;
+        description
+          "IG2D0LFXFM01.";
+      }
+    enum "IG2D00E1KB01" {
+        value 2158;
+        description
+          "IG2D00E1KB01.";
+      }
+    enum "IG2DE4NE8V01" {
+        value 2159;
+        description
+          "IG2DE4NE8V01.";
+      }
+    enum "CX6D00E1KB10" {
+        value 2160;
+        description
+          "CX6D00E1KB10.";
+      }
+      enum "CR8PM1DBASC3" {
+      value 2161;
+      description
+        "CR8PM1DBASC3.";
+    }
+    enum "ANSD00CXPB00" {
+      value 2162;
+      description
+        "ANSD00CXPB00.";
+    }
+    enum "ANSD01CXPA00" {
+      value 2163;
+      description
+        "ANSD01CXPA00.";
+    }
+    enum "ANSD01CXPB00" {
+      value 2164;
+      description
+        "ANSD01CXPB00.";
+    }
+	enum "CR5DEDVE8N71" {
+      value 2165;
+      description
+      "CR5DEDVE8N71.";
+    }
+    enum "CR9D00EENB84" {
+      value 2166;
+      description
+      "CR9D00EENB84.";
+    }
+    enum "CR5D0MPUBA70" {
+      value 2167;
+      description
+        "CR5D0MPUBA70.";
+      }
+    enum "CR5D0MPUBA71" {
+      value 2168;
+      description
+        "CR5D0MPUBA71.";
+      }
+    enum "CR5D0SRUAB72" {
+      value 2169;
+      description
+        "CR5D0SRUAB72.";
+      }
+    enum "CR5D0SRUAB74" {
+      value 2170;
+      description
+        "CR5D0SRUAB74.";
+      }
+      enum "IG2D0MPUB902" {
+      value 2171;
+      description
+        "IG2D0MPUB902.";
+    }
+    enum "IG2DSFUIT202" {
+      value 2172;
+      description
+        "IG2DSFUIT202.";
+    }
+    enum "IG2D0SRUAD02" {
+      value 2173;
+      description
+        "IG2D0SRUAD02.";
+    }
+    enum "IG2DSFUIT212" {
+      value 2174;
+      description
+        "IG2DSFUIT212.";
+    }
+    enum "IG2DLPUFM302" {
+      value 2175;
+      description
+        "IG2DLPUFM302.";
+    }
+    enum "IG2DLPUFT002" {
+      value 2176;
+      description
+        "IG2DLPUFT002.";
+    }
+    enum "IG2D00EENB02" {
+      value 2177;
+      description
+        "IG2D00EENB02.";
+    }
+    enum "IG2D00SPUG02" {
+      value 2178;
+      description
+        "IG2D00SPUG02.";
+    }
+    enum "ATN-950C" {
+        value 2179;
+        description
+          "ATN-950C chassis.";
+      }
+      enum "ATN-950C-AC" {
+        value 2180;
+        description
+          "ATN-950C-AC chassis.";
+      }
+      enum "ATN-950C-DC" {
+        value 2181;
+        description
+          "ATN-950C-DC chassis.";
+      }
+    enum "fnameSIG9800-X8A" {
+        value 2182;
+        description
+          "SIG9800-X8A chassis.";
+      }
+      enum "fnameSIG9800-X8A-DC" {
+        value 2183;
+        description
+          "SIG9800-X8A-DC chassis.";
+      }
+      enum "fnameSIG9800-X8A-HVDC" {
+        value 2184;
+        description
+          "SIG9800-X8A-HVDC chassis.";
+      }
+    enum "CR9D0MPUR180-VMPU" {
+        value 2189;
+        description
+          "CR9D0MPUR180-VMPU.";
+    }
+    enum "CR9D0MPUQ180-VMPU" {
+        value 2190;
+        description
+          "CR9D0MPUQ180-VMPU.";
+    }
+    enum "CR9D00EKNB8T" {
+        value 2191;
+        description
+        "CR9D00EKNB8T.";
+    }
+    enum "CR9D00EKNB8R" {
+      value 2192;
+      description
+      "CR9D00EKNB8R.";
+    }
+    enum "CR9D00EKNB81" {
+      value 2193;
+      description
+      "CR9D00EKNB81.";
+    }
+    enum "CR9DE8KE8N8U" {
+      value 2194;
+      description
+      "CR9DE8KE8N8U.";
+    }
+    enum "CR9DE8KE8N8T" {
+      value 2195;
+      description
+      "CR9DE8KE8N8T.";
+    }
+    enum "CR9D00EKNB8Q" {
+      value 2196;
+      description
+      "CR9D00EKNB8Q.";
+    }
+    enum "CR9DE8KE8N8S" {
+      value 2197;
+      description
+      "CR9DE8KE8N8S.";
+    }
+    enum "fnameSIG9800-X16A" {
+      value 2198;
+      description
+      "SIG9800-X16A chassis.";
+    }
+    enum "fnameSIG9800-X16A-DC" {
+      value 2199;
+      description
+      "SIG9800-X16A-DC chassis.";
+    }
+    enum "fnameSIG9800-X16A-HVDC" {
+      value 2200;
+      description
+      "SIG9800-X16A-HVDC chassis.";
+    }
+    enum "CR57LEXFD0" {
+      value 2201;
+      description
+      "CR57LEXFD0.";
+    }
+    enum "CR57LEXFD1" {
+      value 2202;
+      description
+      "CR57LEXFD1.";
+    }
+    enum "CR57E2NBI0" {
+      value 2203;
+      description
+      "CR57E2NBI0.";
+    }
+    enum "CR57E2NBI1" {
+      value 2204;
+      description
+      "CR57E2NBI1.";
+    }
+    enum "CR8D00L4XFC2" {
+      value 2205;
+      description
+      "CR8D00L4XFC2.";
+    }
+    enum "CR8D00EAGFC2" {
+      value 2206;
+      description
+      "CR8D00EAGFC2.";
+    }
+    enum "CR8D00L4XFC1" {
+      value 2207;
+      description
+      "CR8D00L4XFC1.";
+    }
+    enum "CR8DE1NE2VC1" {
+      value 2208;
+      description
+      "CR8DE1NE2VC1.";
+    }
+    enum "CR8D00EAGFC1" {
+      value 2209;
+      description
+      "CR8D00EAGFC1.";
+    }
+    enum "CR8D00E4YBC1" {
+      value 2210;
+      description
+      "CR8D00E4YBC1.";
+    }
+    enum "CR8D00LAXFC1" {
+      value 2211;
+      description
+      "CR8D00LAXFC1.";
+    }
+   enum "CR5DLPUFM07C" {
+      value 2212;
+      description
+        "CR5DLPUFM07C.";
+    }
+    enum "CX6DISUFM11C" {
+      value 2213;
+      description
+        "CX6DISUFM11C.";
+    }
+    enum "ME0DMSUFM073" {
+      value 2214;
+      description
+        "ME0DMSUFM073.";
+    }
+    enum "ME0DBSUFM074" {
+      value 2215;
+      description
+        "ME0DBSUFM074.";
+    }
+    enum "CR5D0EEXFF70" {
+      value 2216;
+      description
+        "CR5D0EEXFF70.";
+    }
+    enum "CR5D0E2NBF70" {
+      value 2217;
+      description
+        "CR5D0E2NBF70.";
+    }
+    enum "CR5D0EEXFF71" {
+      value 2218;
+      description
+        "CR5D0EEXFF71.";
+    }
+    enum "CR5D0E2NBF71" {
+      value 2219;
+      description
+        "CR5D0E2NBF71.";
+    }
+    enum "CX6D0EEXFF11" {
+      value 2220;
+      description
+        "CX6D0EEXFF11.";
+    }
+    enum "CX6D0E2NBF12" {
+      value 2221;
+      description
+        "CX6D0E2NBF12.";
+    }
+	enum "CR9D0MPUQ280" {
+        value 2222;
+        description
+          "CR9D0MPUQ280.";
+    }
+	enum "CR5D0MPUQ2D0" {
+        value 2223;
+        description
+          "CR5D0MPUQ2D0.";
+    }
+    enum "CR5D0MPUQ2D1" {
+        value 2224;
+        description
+          "CR5D0MPUQ2D1.";
+    }
+    enum "VIRTUALPIC" {
+        value 2225;
+        description
+          "VIRTUALPIC.";
+    }
+    enum "CR8D00EENBC1" {
+        value 2230;
+        description
+          "CR8D00EENBC1.";
+    }
+    enum "CR8D00EENBC2" {
+        value 2231;
+        description
+          "CR8D00EENBC2.";
+    }
+    enum "CX6DE2NBFM11" {
+        value 2228;
+        description
+          "CX6DE2NBFM11.";
+    }
+    enum "CR5D0E1NBF70" {
+        value 2229;
+        description
+          "CR5D0E1NBF70.";
+    }
+    enum "CR8D00EENBC3" {
+        value 2232;
+        description
+          "CR8D00EENBC3.";
+    }
+    enum "CR8D00EENBC4" {
+        value 2233;
+        description
+          "CR8D00EENBC4.";
+    }
+    enum "CR8D00EENBC5" {
+        value 2234;
+        description
+          "CR8D00EENBC5.";
+    }
+    enum "CR8D00LRXFC1" {
+        value 2235;
+        description
+          "CR8D00LRXFC1.";
+    }
+    enum "CR8D00LRXFCT" {
+        value 2236;
+        description
+          "CR8D00LRXFCT.";
+    }
+    enum "CR8D00LRXFCU" {
+        value 2237;
+        description
+          "CR8D00LRXFCU.";
+    }
+    enum "CR8D00LRXFCV" {
+        value 2238;
+        description
+          "CR8D00LRXFCV.";
+    }
+    enum "NETENGINE-8000-M1D-AC" {
+        value 2239;
+        description
+          "NETENGINE-8000-M1D-AC chassis.";
+      }
+    enum "CR8PM1DBASCA" {
+        value 2240;
+        description
+          "CR8PM1DBASCA.";
+     }
+    enum "CR8PM1DBASCC" {
+        value 2241;
+        description
+          "CR8PM1DBASCC.";
+    }
+    enum "CR5D000CMU63" {
+        value 2251;
+        description
+          "CR5D000CMU63.";
     }
     }
     description
@@ -16447,11 +17767,6 @@ module huawei-hardware-type {
         value 12;
         description
           "ETH_4x10G_12GF_B_CARD.";
-      }
-      enum "OTN_1x40GC_CARD" {
-        value 13;
-        description
-          "OTN_1x40GC_CARD.";
       }
       enum "OTN_12x10GF_CARD" {
         value 14;
@@ -16728,11 +18043,6 @@ module huawei-hardware-type {
         description
           "LAN_WAN_2x10GX_CARD.";
       }
-      enum "ETH_2x10GX_CARD" {
-        value 69;
-        description
-          "ETH_2x10GX_CARD.";
-      }
       enum "OTN_2x10GX_CARD" {
         value 70;
         description
@@ -16742,16 +18052,6 @@ module huawei-hardware-type {
         value 71;
         description
           "LAN_WAN_5x10GX_CARD.";
-      }
-      enum "ETH_5x10GX_CARD" {
-        value 72;
-        description
-          "ETH_5x10GX_CARD.";
-      }
-      enum "POS_40GZ_CARD" {
-        value 73;
-        description
-          "POS_40GZ_CARD.";
       }
       enum "ETH_24xGF_CARD" {
         value 74;
@@ -17783,6 +19083,91 @@ module huawei-hardware-type {
         description
           "FLEX_24XCE1_CARD.";
       }
+      enum "ETH_4x100GE_16x25GE_8x10GE" {
+        value 280;
+        description
+          "ETH_4x100GE_16x25GE_8x10GE.";
+      }
+      enum "ETH_1x400GB_CARD" {
+        value 281;
+        description
+          "ETH_1x400GB_CARD.";
+      }
+      enum "LAN_WAN_12x10GF_CARD" {
+        value 282;
+        description
+          "LAN_WAN_12x10GF_CARD.";
+    }
+      enum "C2CFE1A_2XCPOS_CARD" {
+        value 283;
+        description
+          "C2CFE1A_2XCPOS_CARD.";
+    }
+      enum "C2CFE1A_24XCE1_CARD" {
+        value 284;
+    description
+          "C2CFE1A_24XCE1_CARD.";
+      }
+      enum "ETH_8x10GF_CARD" {
+        value 285;
+        description
+          "ETH_8x10GF_CARD.";
+      }
+      enum "POS_8x155MF_CARD" {
+        value 286;
+        description
+          "POS_8x155MF_CARD.";
+      }
+      enum "POS_8x622MF_CARD" {
+        value 287;
+        description
+          "POS_8x622MF_CARD.";
+      }
+      enum "E8GP8CA_8xGF_CARD" {
+        value 288;
+        description
+          "E8GP8CA_8xGF_CARD.";
+      }
+      enum "E8GP8CA_8x155MF_CARD" {
+        value 289;
+        description
+          "E8GP8CA_8x155MF_CARD.";
+      }
+      enum "E8GP8HA_8x622MF_CARD" {
+        value 290;
+        description
+          "E8GP8HA_8x622MF_CARD.";
+      }
+      enum "OTN_100GC_CARD" {
+        value 291;
+        description
+          "OTN_100GC_CARD.";
+      }
+      enum "OFC1T6B_CARD" {
+        value 292;
+        description
+          "OFC1T6B_CARD.";
+      }
+      enum "OFC1T6A_CARD" {
+        value 293;
+        description
+          "OFC1T6A_CARD.";
+      }
+      enum "ETH_4x10GE_CARD" { 
+        value 294; 
+        description 
+         "ETH_4x10GE_CARD."; 
+      } 
+      enum "FLEXE_VIRTUAL" { 
+        value 295; 
+        description 
+         "FLEXE_VIRTUAL."; 
+     } 
+     enum "FLEXE_VIRTUAL_CARD" { 
+        value 296; 
+        description 
+         "FLEXE_VIRTUAL_CARD."; 
+      }
     }
     description
       "Hardware-cardhard-type.";
@@ -17968,11 +19353,6 @@ module huawei-hardware-type {
         value 36;
         description
           "CR57T6XF00.";
-      }
-      enum "CR5D00T1MC60" {
-        value 37;
-        description
-          "CR5D00T1MC60.";
       }
       enum "CR5D00TBXF70" {
         value 38;
@@ -18899,36 +20279,6 @@ module huawei-hardware-type {
         description
           "CR56E5MB.";
       }
-      enum "CR5D00L5XX60" {
-        value 223;
-        description
-          "CR5D00L5XX60.";
-      }
-      enum "CR5D00E5XX60" {
-        value 224;
-        description
-          "CR5D00E5XX60.";
-      }
-      enum "CR5D00L2XX60" {
-        value 225;
-        description
-          "CR5D00L2XX60.";
-      }
-      enum "CR5D00E2XX60" {
-        value 226;
-        description
-          "CR5D00E2XX60.";
-      }
-      enum "CR5D00EFGF60" {
-        value 227;
-        description
-          "CR5D00EFGF60.";
-      }
-      enum "CR5D00P1MZ60" {
-        value 228;
-        description
-          "CR5D00P1MZ60.";
-      }
       enum "CR5D00P2XX60" {
         value 229;
         description
@@ -18983,11 +20333,6 @@ module huawei-hardware-type {
         value 239;
         description
           "CR5D00L5XF60.";
-      }
-      enum "CR5D00E5XF60" {
-        value 240;
-        description
-          "CR5D00E5XF60.";
       }
       enum "CR5D00P8UF60" {
         value 241;
@@ -21159,11 +22504,6 @@ module huawei-hardware-type {
         description
           "ANKD001EY201.";
       }
-      enum "ANKD001EY100" {
-        value 675;
-        description
-          "ANKD001EY100.";
-      }
       enum "CR5D0E5XMF91" {
         value 676;
         description
@@ -21499,6 +22839,46 @@ module huawei-hardware-type {
         description
           "CR5D00CFE170.";
       }
+    enum "CARD ATN 910D-A" {
+        value 743;
+        description
+          "CARD ATN 910D-A.";
+      }	
+     enum "CR5D0LBXFM70" {
+        value 744;
+        description
+          "CR5D0LBXFM70.";
+      }
+     enum "CR5D0E4YFM70" {
+        value 745;
+        description
+          "CR5D0E4YFM70.";
+      }
+     enum "CR5DE1NBFM70" {
+        value 746;
+        description
+          "CR5DE1NBFM70.";
+      }
+     enum "CR5D0LFXFM70" {
+        value 747;
+        description
+          "CR5D0LFXFM70.";
+      }
+     enum "CR5D0E8YFM70" {
+        value 748;
+        description
+          "CR5D0E8YFM70.";
+      }
+     enum "CR5DE2NBFM70" {
+        value 749;
+        description
+          "CR5DE2NBFM70.";
+      }
+     enum "CR5D0EFGFM70" {
+        value 750;
+        description
+          "CR5D0EFGFM70.";
+      }
       enum "CR8D00E1VBC0" {
         value 751;
         description
@@ -21529,6 +22909,166 @@ module huawei-hardware-type {
         description
           "CR8D00EEGFC0.";
       }
+     enum "ME0D0EFGFM70" {
+        value 757;
+        description
+          "ME0D0EFGFM70.";
+    }
+     enum "ME0D0LBXFM70" {
+        value 758;
+    description
+          "ME0D0LBXFM70.";
+      }
+     enum "ME0D0E4YFM70" {
+        value 759;
+        description
+          "ME0D0E4YFM70.";
+      }
+     enum "ME0DE1NBFM70" {
+        value 760;
+        description
+          "ME0DE1NBFM70.";
+      }
+     enum "ME0D0LFXFM70" {
+        value 761;
+        description
+          "ME0D0LFXFM70.";
+      }
+     enum "ME0D0E8YFM70" {
+        value 762;
+        description
+          "ME0D0E8YFM70.";
+      }
+     enum "ME0DE2NBFM70" {
+        value 763;
+        description
+          "ME0DE2NBFM70.";
+      }
+     enum "CX6D0EFGFM10" {
+        value 764;
+        description
+          "CX6D0EFGFM10.";
+      }
+     enum "CX6D0LBXFM10" {
+        value 765;
+        description
+          "CX6D0LBXFM10.";
+      }
+     enum "CX6D0E4YFM10" {
+        value 766;
+        description
+          "CX6D0E4YFM10.";
+      }
+     enum "CX6DE1NBFM10" {
+        value 767;
+        description
+          "CX6DE1NBFM10.";
+      }
+     enum "CX6D0LFXFM10" {
+        value 768;
+        description
+          "CX6D0LFXFM10.";
+      }
+     enum "CX6D0E8YFM10" {
+        value 769;
+        description
+          "CX6D0E8YFM10.";
+      }
+     enum "CX6DE2NBFM10" {
+        value 770;
+        description
+          "CX6DE2NBFM10.";
+      }
+     enum "CR5D00E1KB70" {
+        value 771;
+        description
+          "CR5D00E1KB70.";
+    }
+      enum "CR6D00E1KB10" {
+        value 772;
+    description
+          "CR6D00E1KB10.";
+      }
+      enum "ANND001EV203" {
+        value 773;
+        description
+          "ANND001EV203.";
+      }
+      enum "ANND001EV103" {
+        value 774;
+        description
+          "ANND001EV103.";
+      }
+      enum "ANND001EV104" {
+        value 775;
+        description
+          "ANND001EV104.";
+      }
+      enum "ANND00EX4S02" {
+        value 776;
+        description
+          "ANND00EX4S02.";
+      }
+      enum "CR5D0EFGFMK0" {
+        value 777;
+        description
+          "CR5D0EFGFMK0.";
+      }
+      enum "CR5D0LBXFMK0" {
+        value 778;
+        description
+          "CR5D0LBXFMK0.";
+      }
+      enum "CR5DE1NBFMK0" {
+        value 779;
+        description
+          "CR5DE1NBFMK0.";
+      }
+      enum "CR8D00LAXFK1" {
+        value 780;
+        description
+          "CR8D00LAXFK1.";
+      }
+      enum "CR8D00E2VBK1" {
+        value 781;
+        description
+          "CR8D00E2VBK1.";
+      }
+      enum "CR8D00EAGFK1" {
+        value 782;
+        description
+          "CR8D00EAGFK1.";
+      }
+      enum "CR8D000DE1K1" {
+        value 783;
+        description
+          "CR8D000DE1K1.";
+      }
+      enum "CR8D00P4CFK1" {
+        value 784;
+        description
+          "CR8D00P4CFK1.";
+      }
+      enum "CR8D00C4CFK1" {
+        value 785;
+        description
+          "CR8D00C4CFK1.";
+      }
+      enum "CR8D00L4XFK1" {
+        value 786;
+        description
+          "CR8D00L4XFK1.";
+      }
+      enum "CR8D00EAGFK2" {
+        value 787;
+        description
+          "CR8D00EAGFK2.";
+      }
+      enum "ANND001EH100" {
+        value 788;
+        description
+          "ANND001EH100.";
+      }
       enum "CR58EENBD1" {
         value 789;
         description
@@ -21549,6 +23089,321 @@ module huawei-hardware-type {
         description
           "CR8D00E2NBC1.";
       }
+      enum "CR5D00CFE171" {
+        value 793;
+        description
+          "CR5D00CFE171.";
+    }
+      enum "CR5D00P8E870" {
+        value 794;
+    description
+          "CR5D00P8E870.";
+    }
+      enum "CR5D00P8E871" {
+        value 795;
+        description
+          "CR5D00P8E871.";
+    }
+    enum "CR5D00P8E8K0" {
+        value 796;
+        description
+          "CR5D00P8E8K0.";
+    }
+    enum "CR5D00P8E8K1" {
+        value 797;
+        description
+          "CR5D00P8E8K1.";
+    }
+    enum "CR5D00CFE1K1" {
+        value 798;
+        description
+          "CR5D00CFE1K1.";
+    }
+    enum "CR57C2CFE1A" {
+        value 799;
+        description
+          "CR57C2CFE1A.";
+    }
+    enum "CR57C2CFE1A1" {
+        value 800;
+        description
+          "CR57C2CFE1A1.";
+    }
+    enum "CR57E8GP4UA0" {
+        value 801;
+        description
+          "CR57E8GP4UA0.";
+    }
+    enum "CR57E8GP8HA0" {
+        value 802;
+        description
+          "CR57E8GP8HA0.";
+    }
+    enum "CR57E8GP4UA2" {
+        value 803;
+        description
+          "CR57E8GP4UA2.";
+    }
+    enum "CR57E8GP8CA2" {
+        value 804;
+        description
+          "CR57E8GP8CA2.";
+    }
+    enum "ANND001EV205" {
+        value 805;
+        description
+          "ANND001EV205.";
+    }
+    enum "ANND001EV207" {
+        value 806;
+        description
+          "ANND001EV207.";
+    }
+    enum "ANKD001EV207" {
+        value 807;
+        description
+          "ANKD001EV207.";
+    }
+    enum "ANND00EM8T02" {
+         value 808;
+         description
+           "ANND00EM8T02.";
+    }
+    enum "CR5D00CFE171-" {
+        value 809;
+        description
+          "CR5D00CFE171-.";
+    }
+    enum "CR5D00P8E870-" {
+        value 810;
+        description
+          "CR5D00P8E870-.";
+    }
+    enum "CR5D00P8E871-" {
+        value 811;
+        description
+          "CR5D00P8E871-.";
+    }
+    enum "CR5D00P8E8K0-" {
+        value 812;
+        description
+          "CR5D00P8E8K0-.";
+    }
+    enum "CR5D00P8E8K1-" {
+        value 813;
+        description
+          "CR5D00P8E8K1-.";
+    }
+    enum "CR5D00CFE1K1-" {
+        value 814;
+        description
+          "CR5D00CFE1K1-.";
+    }
+    enum "ANKD001EY101" {
+        value 815;
+        description
+          "ANKD001EY101.";
+      }
+    enum "GPLI8KQ8CQE2" {
+        value 816;
+        description
+          "GPLI8KQ8CQE2.";
+    }
+    enum "GPLI8KQ8CQES1" {
+        value 817;
+        description
+          "GPLI8KQ8CQES1.";
+    }
+    enum "CR8D00E8GEC1" {
+        value 818;
+        description
+          "CR8D00E8GEC1.";
+    }
+    enum "CR55OFC3T2A" {
+        value 819;
+        description
+          "CR55OFC3T2A.";
+    }
+    enum "CR55OFC3T2B" {
+        value 820;
+        description
+          "CR55OFC3T2B.";
+    }
+    enum "CARD NetEngine 8000 M1D" {
+        value 821;
+        description
+          "CARD NetEngine 8000 M1D.";
+    }
+    enum "CR5D00E8GF73" {
+        value 822;
+        description
+          "CR5D00E8GF73.";
+    }
+    enum "CR5D00E8GF72" {
+        value 823;
+    description
+          "CR5D00E8GF72.";
+    }
+    enum "CR5D00C2CF71" {
+        value 824;
+        description
+          "CR5D00C2CF71.";
+    }
+    enum "CR5D00E8GF73-" {
+        value 825;
+        description
+          "CR5D00E8GF73-.";
+    }
+    enum "CR5D00E8GF72-" {
+        value 826;
+        description
+          "CR5D00E8GF72-.";
+    }
+    enum "CR5D00C2CF71-" {
+        value 827;
+        description
+          "CR5D00C2CF71-.";
+    }
+    enum "CR8D00E8GEC2" {
+        value 828;
+        description
+          "CR8D00E8GEC2.";
+    }
+    enum "CR59LJXFE" {
+        value 829;
+        description
+          "CR59LJXFE.";
+      }
+    enum "CR59E2KBC" {
+        value 830;
+        description
+          "CR59E2KBC.";
+      }
+    enum "CR59E8NBG" {
+        value 831;
+        description
+          "CR59E8NBG.";
+      }
+    enum "CR58EKNBB0" {
+        value 832;
+        description
+          "CR58EKNBB0.";
+      }
+    enum "CR58E8KE8NC0" {
+        value 833;
+        description
+          "CR58E8KE8NC0.";
+      }
+    enum "CR58EKNBBS0" {
+        value 834;
+        description
+          "CR58EKNBBS0.";
+      }
+    enum "CR58E8KE8NCS0" {
+        value 835;
+        description
+          "CR58E8KE8NCS0.";
+      }
+    enum "GPLI40CQES3" {
+        value 836;
+        description
+          "GPLI40CQES3.";
+      }
+    enum "GPLI40CQE4" {
+        value 837;
+        description
+          "GPLI40CQE4.";
+      }
+    enum "IG2D0EFGFM01" {
+        value 838;
+        description
+          "IG2D0EFGFM01.";
+      }
+    enum "IG2D0LFXFM01" {
+        value 839;
+        description
+          "IG2D0LFXFM01.";
+      }
+    enum "IG2D00E1KB01" {
+        value 840;
+        description
+          "IG2D00E1KB01.";
+      }
+    enum "IG2DE4NE8V01" {
+        value 841;
+        description
+          "IG2DE4NE8V01.";
+      }
+    enum "CX6D00E1KB10" {
+        value 842;
+        description
+          "CX6D00E1KB10.";
+      }
+    enum "CR57LEXFD0" {
+      value 843;
+      description
+      "CR57LEXFD0.";
+    }
+    enum "CR57LEXFD1" {
+      value 844;
+      description
+      "CR57LEXFD1.";
+    }
+    enum "CR57E2NBI0" {
+      value 845;
+      description
+      "CR57E2NBI0.";
+    }
+    enum "CR57E2NBI1" {
+      value 846;
+      description
+      "CR57E2NBI1.";
+    }
+    enum "CR8D00L4XFC2" {
+      value 847;
+      description
+      "CR8D00L4XFC2.";
+    }
+    enum "CR8D00EAGFC2" {
+      value 848;
+      description
+      "CR8D00EAGFC2.";
+    }
+    enum "CR8D00L4XFC1" {
+      value 849;
+      description
+      "CR8D00L4XFC1.";
+    }
+    enum "CR8DE1NE2VC1" {
+      value 850;
+      description
+      "CR8DE1NE2VC1.";
+    }
+    enum "CR8D00EAGFC1" {
+      value 851;
+      description
+      "CR8D00EAGFC1.";
+    }
+    enum "CR8D00E4YBC1" {
+      value 852;
+      description
+      "CR8D00E4YBC1.";
+    }
+    enum "CR8D00LAXFC1" {
+      value 853;
+      description
+      "CR8D00LAXFC1.";
+    }
+    enum "VIRTUALPIC" {
+        value 854;
+        description
+          "VIRTUALPIC.";
+    }
+    enum "CX6DE2NBFM11" {
+        value 857;
+        description
+          "CX6DE2NBFM11.";
+    }
     }
     description
       "Hardware-subcard-type.";

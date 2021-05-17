@@ -131,6 +131,34 @@ module huawei-qppb {
     description
       "QPPB mode.";
   }
+  rpc reset-local-policy-statistics {
+    description
+      "To clear local policy statistics.";
+    ext:node-ref "/qos:qos/qppb:qppb/qppb:query-statistics";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf direction {
+        type qppb-direction-type;
+        mandatory true;
+        description
+          "Direction.";
+      }
+      leaf local-id {
+        type uint32 {
+          range "1..255";
+        }
+        description
+          "Local ID.";
+      }
+    }
+  }
   augment "/qos:qos" {
     description
     "QPPB.";
@@ -288,531 +316,619 @@ module huawei-qppb {
         }
         leaf match-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "Match packets.";
         }
         leaf match-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "Match bytes.";
         }
         leaf match-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "Passed packets rate unit: packet/s.";
+            "Passed packets rate.";
         }
         leaf match-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "Passed bytes rate unit: Byte/s.";
+            "Passed bytes rate.";
         }
         leaf passed-car-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "Passed packets by CAR.";
         }
         leaf passed-car-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "Passed bytes by CAR.";
         }
         leaf dropped-car-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "Dropped packets by CAR.";
         }
         leaf dropped-car-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "Dropped bytes by CAR.";
         }
         leaf passed-car-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "Passed packets rate by CAR unit: packet/s.";
+            "Passed packets rate by CAR.";
         }
         leaf passed-car-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "Passed bytes rate by CAR unit: byte/s.";
+            "Passed bytes rate by CAR.";
         }
         leaf dropped-car-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "Dropped packets rate by CAR unit: packet/s.";
+            "Dropped packets rate by CAR.";
         }
         leaf dropped-car-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "Dropped bytes rate by CAR unit: byte/s.";
+            "Dropped bytes rate by CAR.";
         }
         leaf car-green-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "CAR green packets.";
         }
         leaf car-green-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "CAR green bytes.";
         }
         leaf car-green-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "CAR green packets rate unit: packet/s.";
+            "CAR green packets rate.";
         }
         leaf car-green-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "CAR green bytes rate unit: byte/s.";
+            "CAR green bytes rate.";
         }
         leaf car-yellow-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "CAR yellow packets.";
         }
         leaf car-yellow-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "CAR yellow bytes.";
         }
         leaf car-yellow-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "CAR yellow packets rate unit: packet/s.";
+            "CAR yellow packets rate.";
         }
         leaf car-yellow-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "CAR yellow bytes rate unit: byte/s.";
+            "CAR yellow bytes rate.";
         }
         leaf car-red-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "CAR red packets.";
         }
         leaf car-red-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "CAR red bytes.";
         }
         leaf car-red-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "CAR red packets rate unit: packet/s.";
+            "CAR red packets rate.";
         }
         leaf car-red-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "CAR red bytes rate unit: byte/s.";
+            "CAR red bytes rate.";
         }
         leaf passed-sq-be-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "BE Pass packets.";
         }
         leaf dropped-sq-be-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "BE Drop packets.";
         }
         leaf passed-sq-af1-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "AF1 Pass packets.";
         }
         leaf dropped-sq-af1-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "AF1 Drop packets.";
         }
         leaf passed-sq-af2-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "AF2 Pass packets.";
         }
         leaf dropped-sq-af2-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "AF2 Drop packets.";
         }
         leaf passed-sq-af3-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "AF3 Pass packets.";
         }
         leaf dropped-sq-af3-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "AF3 Drop packets.";
         }
         leaf passed-sq-af4-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "AF4 Pass packets.";
         }
         leaf dropped-sq-af4-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "AF4 Drop packets.";
         }
         leaf passed-sq-ef-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "EF Pass packets.";
         }
         leaf dropped-sq-ef-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "EF Drop packets.";
         }
         leaf passed-sq-cs6-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "CS6 Pass packets.";
         }
         leaf dropped-sq-cs6-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "CS6 Drop packets.";
         }
         leaf passed-sq-cs7-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "CS7 Pass packets.";
         }
         leaf dropped-sq-cs7-packets {
           type uint64;
+          units "packet";
           config false;
           description
             "CS7 Drop packets.";
         }
         leaf passed-sq-be-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "BE Pass Bytes.";
         }
         leaf dropped-sq-be-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "BE Drop Bytes.";
         }
         leaf passed-sq-af1-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "AF1 Pass Bytes.";
         }
         leaf dropped-sq-af1-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "AF1 Drop Bytes.";
         }
         leaf passed-sq-af2-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "AF2 Pass Bytes.";
         }
         leaf dropped-sq-af2-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "AF2 Drop Bytes.";
         }
         leaf passed-sq-af3-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "AF3 Pass Bytes.";
         }
         leaf dropped-sq-af3-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "AF3 Drop Bytes.";
         }
         leaf passed-sq-af4-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "AF4 Pass Bytes.";
         }
         leaf dropped-sq-af4-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "AF4 Drop Bytes.";
         }
         leaf passed-sq-ef-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "EF Pass Bytes.";
         }
         leaf dropped-sq-ef-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "EF Drop Bytes.";
         }
         leaf passed-sq-cs6-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "CS6 Pass Bytes.";
         }
         leaf dropped-sq-cs6-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "CS6 Drop Bytes.";
         }
         leaf passed-sq-cs7-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "CS7 Pass Bytes.";
         }
         leaf dropped-sq-cs7-bytes {
           type uint64;
+          units "Byte";
           config false;
           description
             "CS7 Drop Bytes.";
         }
         leaf passed-sq-be-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "BE Pass Bytes unit: Byte/s.";
+            "BE Pass Bytes.";
         }
         leaf dropped-sq-be-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "BE Drop Bytes unit: Byte/s.";
+            "BE Drop Bytes.";
         }
         leaf passed-sq-af1-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "AF1 Pass Bytes unit: Byte/s.";
+            "AF1 Pass Bytes.";
         }
         leaf dropped-sq-af1-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "AF1 Drop Bytes unit: Byte/s.";
+            "AF1 Drop Bytes.";
         }
         leaf passed-sq-af2-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "AF2 Pass Bytes unit: Byte/s.";
+            "AF2 Pass Bytes.";
         }
         leaf dropped-sq-af2-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "AF2 Drop Bytes unit: Byte/s.";
+            "AF2 Drop Bytes.";
         }
         leaf passed-sq-af3-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "AF3 Pass Bytes unit: Byte/s.";
+            "AF3 Pass Bytes.";
         }
         leaf dropped-sq-af3-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "AF3 Drop Bytes unit: Byte/s.";
+            "AF3 Drop Bytes.";
         }
         leaf passed-sq-af4-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "AF4 Pass Bytes unit: Byte/s.";
+            "AF4 Pass Bytes.";
         }
         leaf dropped-sq-af4-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "AF4 Drop Bytes unit: Byte/s.";
+            "AF4 Drop Bytes.";
         }
         leaf passed-sq-ef-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "EF Pass Bytes unit: Byte/s.";
+            "EF Pass Bytes.";
         }
         leaf dropped-sq-ef-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "EF Drop Bytes unit: Byte/s.";
+            "EF Drop Bytes.";
         }
         leaf passed-sq-cs6-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "CS6 Pass Bytes unit: Byte/s.";
+            "CS6 Pass Bytes.";
         }
         leaf dropped-sq-cs6-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "CS6 Drop Bytes unit: Byte/s.";
+            "CS6 Drop Bytes.";
         }
         leaf passed-sq-cs7-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "CS7 Pass Bytes unit: Byte/s.";
+            "CS7 Pass Bytes.";
         }
         leaf dropped-sq-cs7-bytes-rate {
           type uint64;
+          units "Byte/s";
           config false;
           description
-            "CS7 Drop Bytes unit: Byte/s.";
+            "CS7 Drop Bytes.";
         }
         leaf passed-sq-be-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "BE Pass packets unit: packet/s.";
+            "BE Pass packets.";
         }
         leaf dropped-sq-be-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "BE Drop packets unit: packet/s.";
+            "BE Drop packets.";
         }
         leaf passed-sq-af1-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "AF1 Pass packets unit: packet/s.";
+            "AF1 Pass packets.";
         }
         leaf dropped-sq-af1-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "AF1 Drop packets unit: packet/s.";
+            "AF1 Drop packets.";
         }
         leaf passed-sq-af2-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "AF2 Pass packets unit: packet/s.";
+            "AF2 Pass packets.";
         }
         leaf dropped-sq-af2-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "AF2 Drop packets unit: packet/s.";
+            "AF2 Drop packets.";
         }
         leaf passed-sq-af3-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "AF3 Pass packets unit: packet/s.";
+            "AF3 Pass packets.";
         }
         leaf dropped-sq-af3-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "AF3 Drop packets unit: packet/s.";
+            "AF3 Drop packets.";
         }
         leaf passed-sq-af4-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "AF4 Pass packets unit: packet/s.";
+            "AF4 Pass packets.";
         }
         leaf dropped-sq-af4-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "AF4 Drop packets unit: packet/s.";
+            "AF4 Drop packets.";
         }
         leaf passed-sq-ef-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "EF Pass packets unit: packet/s.";
+            "EF Pass packets.";
         }
         leaf dropped-sq-ef-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "EF Drop packets unit: packet/s.";
+            "EF Drop packets.";
         }
         leaf passed-sq-cs6-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "CS6 Pass packets unit: packet/s.";
+            "CS6 Pass packets.";
         }
         leaf dropped-sq-cs6-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "CS6 Drop packets unit: packet/s.";
+            "CS6 Drop packets.";
         }
         leaf passed-sq-cs7-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "CS7 Pass packets unit: packet/s.";
+            "CS7 Pass packets.";
         }
         leaf dropped-sq-cs7-packets-rate {
           type uint64;
+          units "pps";
           config false;
           description
-            "CS7 Drop packets unit: packet/s.";
+            "CS7 Drop packets.";
         }
       }
     }

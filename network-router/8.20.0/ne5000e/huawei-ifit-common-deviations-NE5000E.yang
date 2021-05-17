@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifit-common-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ifit-common-deviations-NE5000E";
+  prefix ifit-common-devs-NE5000E;
+
+  import huawei-ifit {
+    prefix ifit;
+  }
+  import huawei-ifit-common {
+    prefix ifit-common;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions IFIT feature.";
+
+  revision 2020-03-11 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  typedef flow-type-deviations {
+    type enumeration {
+      enum unidirection {
+        value 2;
+        description
+          "An unidirection IFIT flow.";
+      }
+    }
+    description
+      "Flow type.";
+  }
+
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:static-instances/ifit-common:static-instance/ifit-common:flow/ifit-common:flow-type" {
+    deviate replace {
+      type ifit-common-devs-NE5000E:flow-type-deviations;
+    }
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:dynamic-flow-hops/ifit-common:dynamic-flow-hop/ifit-common:disorder-measure-enable" {
+    deviate not-supported;
+  }
+}

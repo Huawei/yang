@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-mpls-type {
   belongs-to huawei-mpls {
@@ -16,7 +16,19 @@ submodule huawei-mpls-type {
      Email: support@huawei.com";
   description
     "Specifies the multi-protocol label switching protocol.";
-  revision 2019-03-27 {
+  revision 2020-03-17 {
+    description
+      "Modified some description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-12 {
+    description
+      "Added the sr-exp-mode-type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-03-30 {
     description
       "Initial revision.";
     reference
@@ -62,32 +74,6 @@ submodule huawei-mpls-type {
     description
       "MPLS TTL Mode Type.";
   }
-  typedef mpls-min-label-type {
-    type enumeration {
-      enum "0" {
-        value 0;
-        description
-          "Specifies the minimum start label.";
-      }
-      enum "256K" {
-        value 262144;
-        description
-          "Specifies the minimum start label.";
-      }
-      enum "512K" {
-        value 524288;
-        description
-          "Specifies the minimum start label.";
-      }
-      enum "768K" {
-        value 786432;
-        description
-          "Specifies the minimum start label.";
-      }
-    }
-    description
-      "MPLS Min Label Type.";
-  }
   typedef diff-serv-mode-type {
     type enumeration {
       enum "uniform" {
@@ -103,6 +89,22 @@ submodule huawei-mpls-type {
     }
     description
       "MPLS DiffServ Mode Type.";
+  }
+  typedef sr-exp-mode-type {
+    type enumeration {
+      enum "uniform" {
+        value 3;
+        description
+          "Uniform Mode.";
+      }
+      enum "pipe" {
+        value 1;
+        description
+          "Pipe Mode.";
+      }
+    }
+    description
+      "MPLS SR EXP Mode Type.";
   }
   typedef mpls-lsp-type {
     type enumeration {

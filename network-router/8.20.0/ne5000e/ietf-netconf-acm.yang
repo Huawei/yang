@@ -4,34 +4,47 @@ module ietf-netconf-acm {
   import ietf-yang-types {
     prefix yang;
   }
+
   organization
     "IETF NETCONF (Network Configuration) Working Group";
+
   contact
-    "WG Web:   <http://tools.ietf.org/wg/netconf/>
+    "WG Web:   <https://datatracker.ietf.org/wg/netconf/>
      WG List:  <mailto:netconf@ietf.org>
-     WG Chair: Mehmet Ersue
-               <mailto:mehmet.ersue@nsn.com>
-     WG Chair: Bert Wijnen
-               <mailto:bertietf@bwijnen.net>
-     Editor:   Andy Bierman
+
+     Author:   Andy Bierman
                <mailto:andy@yumaworks.com>
-     Editor:   Martin Bjorklund
+
+     Author:   Martin Bjorklund
                <mailto:mbj@tail-f.com>";
+
   description
-    "NETCONF Access Control Model.
-     Copyright (c) 2012 IETF Trust and the persons identified as
-     authors of the code.  All rights reserved.
+    "Network Configuration Access Control Model.
+
+     Copyright (c) 2012 - 2018 IETF Trust and the persons
+     identified as authors of the code.  All rights reserved.
+
      Redistribution and use in source and binary forms, with or
      without modification, is permitted pursuant to, and subject
      to the license terms contained in, the Simplified BSD
      License set forth in Section 4.c of the IETF Trust's
      Legal Provisions Relating to IETF Documents
-     (http://trustee.ietf.org/license-info).
-     This version of this YANG module is part of RFC 6536; see
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC 8341; see
      the RFC itself for full legal notices.";
+
+  revision "2018-02-14" {
+    description
+      "Added support for YANG 1.1 actions and notifications tied to
+       data nodes.  Clarified how NACM extensions can be used by
+       other data models.";
+    reference
+      "RFC 8341: Network Configuration Access Control Model";
+  }
   revision "2012-02-22" {
     description
-      "Initial version";
+      "Initial version.";
     reference
       "RFC 6536: Network Configuration Protocol (NETCONF)
                  Access Control Model";
@@ -288,8 +301,8 @@ module ietf-netconf-acm {
            Rules are processed in user-defined order until a match is
            found.  A rule matches if 'module-name', 'rule-type', and
            'access-operations' match the request.  If a rule
-           matches, the 'action' leaf determines if access is granted
-           or not.";
+           matches, the 'action' leaf determines whether or not
+           access is granted.";
         leaf name {
           type string {
             length "1..max";
@@ -342,12 +355,15 @@ module ietf-netconf-acm {
               type node-instance-identifier;
               mandatory true;
               description
-                "Data Node Instance Identifier associated with the
-                 data node controlled by this rule.
-                 Configuration data or state data instance
-                 identifiers start with a top-level data node.  A
-                 complete instance identifier is required for this
-                 type of path value.
+                "Data node instance-identifier associated with the
+                 data node, action, or notification controlled by
+                 this rule.
+
+                 Configuration data or state data
+                 instance-identifiers start with a top-level
+                 data node.  A complete instance-identifier is
+                 required for this type of path value.
+
                  The special value '/' refers to all possible
                  datastore contents.";
             }

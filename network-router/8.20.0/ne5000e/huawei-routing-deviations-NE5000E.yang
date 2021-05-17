@@ -232,6 +232,30 @@ module huawei-routing-deviations-NE5000E {
       type rt-devs-NE5000E:ipv6-statistic-protocol-type-deviations;
     }
   }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:routes/rt:ipv4-unicast-routes/rt:ipv4-unicast-route/rt:tunnel-id" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:routes/rt:ipv4-unicast-routes/rt:ipv4-unicast-route/rt:nexthop-vrf-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:routes/rt:ipv4-unicast-routes/rt:ipv4-unicast-route/rt:relay-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:routes/rt:ipv6-unicast-routes/rt:ipv6-unicast-route/rt:tunnel-type" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:routes/rt:ipv6-unicast-routes/rt:ipv6-unicast-route/rt:tunnel-id" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:routes/rt:ipv6-unicast-routes/rt:ipv6-unicast-route/rt:nexthop-vrf-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:routes/rt:ipv6-unicast-routes/rt:ipv6-unicast-route/rt:relay-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:routing-manage/rt:topologys/rt:topology/rt:routes/rt:ipv6-unicast-routes/rt:ipv6-unicast-route/rt:tunnel-types" {
+    deviate not-supported;
+  }
   deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:direct-routing/rt:interfaces" {
     deviate not-supported;
   }
@@ -249,6 +273,9 @@ module huawei-routing-deviations-NE5000E {
     }
   }
   deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:static-routing/rt:bfd-templates/rt:bfd-template/rt:dhcp-enable" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:static-routing/rt:unicast-routes/rt:unicast-route/rt:relay-arp-vlink-route" {
     deviate not-supported;
   }
 }

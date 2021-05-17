@@ -69,11 +69,10 @@ module huawei-fim-ethernet {
       leaf bandwidth {
         when "../mode-channel-enable='enable'";
         type uint32 {
-          range "100..1000000";
+          range "2..1000000";
         }
         units "Mbit/s";
-        default "100";
-      
+        default "2";
         description
           "Specify bandwidth of an mode channel sub-interface (Mbit/s).";
       }
@@ -84,7 +83,7 @@ module huawei-fim-ethernet {
       description
         "FIM configuration to the IFM module.";
     container fim-main {
-      when "not((../../../ifm:name) = (/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/ifm-trunk:members/ifm-trunk:member/ifm-trunk:name)) and ../../../ifm:type!='FlexE-200GE' and ../../../ifm:type!='FlexE-50G' and ../../../ifm:type!='FlexE-100G' and ../../../ifm:type!='FlexE-50|100G'";
+      when "not((../../../ifm:name) = (/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/ifm-trunk:members/ifm-trunk:member/ifm-trunk:name)) and ../../../ifm:type!='FlexE-200GE' and ../../../ifm:type!='FlexE-50G' and ../../../ifm:type!='FlexE-100G' and ../../../ifm:type!='FlexE-50|100G' and ../../../ifm:type!='Virtual-Ethernet' and ../../../ifm:type!='Tunnel' and ../../../ifm:type!='NULL' and ../../../ifm:type!='LoopBack' and ../../../ifm:type!='Global-VE' and ../../../ifm:type!='Nve' and ../../../ifm:type!='Vbdif' and ../../../ifm:type!='Vlanif' and ../../../ifm:type!='PW-VE'";
       description
         "Configure the FIM configuration to the main interface.";
       leaf outer-vlan-enable {

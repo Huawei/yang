@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-twamp-controller {
   namespace "urn:huawei:yang:huawei-twamp-controller";
@@ -29,6 +29,12 @@ module huawei-twamp-controller {
   description
     "TWAMP Controller.";
 
+  revision 2020-03-14 {
+  description
+    "Modify description.";
+  reference
+    "Huawei private.";
+  }
   revision 2019-12-27 {
     description
       "Solve some errors.";
@@ -313,6 +319,7 @@ module huawei-twamp-controller {
               "The session ID of regular sender session.";
           }
           leaf regular-time {
+            ext:operation-exclude update|delete;
             type uint16 {
               range "10..60";
             }
@@ -322,6 +329,7 @@ module huawei-twamp-controller {
               "The regular time of sender regular session.";
           }
           leaf packet-count {
+            ext:operation-exclude update|delete;
             type uint32 {
               range "10..1000";
             }
@@ -330,6 +338,7 @@ module huawei-twamp-controller {
               "The packet count of sender regular session.";
           }
           leaf timeout {
+            ext:operation-exclude update|delete;
             type uint8 {
               range "1..10";
             }

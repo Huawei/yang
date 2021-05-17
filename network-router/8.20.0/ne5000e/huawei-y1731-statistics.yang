@@ -46,6 +46,69 @@ module huawei-y1731-statistics {
 
   ext:task-name  "y1731"; 
 
+  rpc reset-ccm-send-statistics {
+    description
+      "Reset ccm send statistics.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md";
+    input {
+      leaf md {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+        }
+        description
+          "Specifies the name of a MD.";
+      }
+      leaf ma {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:name";
+        }
+        description
+          "Specifies the name of a MA.";
+      }
+      leaf mep-id {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:id";
+        }
+        description
+          "Specifies the ID of a MEP.";
+      }
+    }
+  }
+  rpc reset-ccm-receive-statistics {
+    description
+      "Reset ccm receive statistics.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md";
+    input {
+      leaf md {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+        }
+        description
+          "Specifies the name of a MD.";
+      }
+      leaf ma {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:name";
+        }
+        description
+          "Specifies the name of a MA.";
+      }
+      leaf mep-id {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:id";
+        }
+        description
+          "Specifies the ID of a MEP.";
+      }
+      leaf rmep-id {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:rmeps/y1731:rmep/y1731:id";
+        }
+        description
+          "Specifies the ID of a remote MEP.";
+      }
+    }
+  }
   augment "/y1731:y1731" {
     description
       "Configure y1731.";
@@ -54,6 +117,7 @@ module huawei-y1731-statistics {
         "Configure statistics about CCMs.";
       leaf cfm-statistic-enable {
         type boolean;
+        must "(../cfm-statistic-enable = 'true' and /y1731:y1731/y1731:global-enable) or ../cfm-statistic-enable = 'false'";
         default "false";
         description
           "Enable/disable the CCM statistics function.";
@@ -71,14 +135,14 @@ module huawei-y1731-statistics {
               length "1..43";
             }
             description
-              "Specifies the name of an MD.";
+              "Specifies the name of a MD.";
           }
           leaf ma {
             type string {
               length "1..43";
             }
             description
-              "Specifies the name of an MA.";
+              "Specifies the name of a MA.";
           }
           leaf mep-id {
             type uint32 {
@@ -107,14 +171,14 @@ module huawei-y1731-statistics {
               length "1..43";
             }
             description
-              "Specifies the name of an MD.";
+              "Specifies the name of a MD.";
           }
           leaf ma {
             type string {
               length "1..43";
             }
             description
-              "Specifies the name of an MA.";
+              "Specifies the name of a MA.";
           }
           leaf mep-id {
             type uint32 {

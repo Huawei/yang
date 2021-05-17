@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-mac-flapping {
   namespace "urn:huawei:yang:huawei-mac-flapping";
@@ -21,6 +21,12 @@ module huawei-mac-flapping {
      Email: support@huawei.com";
   description
     "MAC flapping-based loop detection.";
+  revision 2020-03-09 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-23 {
     description
       "Initial revision.";
@@ -42,7 +48,7 @@ module huawei-mac-flapping {
       }
     }
     description
-      "Alarm Enable.";
+      "Alarm enable.";
   } 
   typedef mflp-enable {
     type enumeration {
@@ -109,7 +115,7 @@ module huawei-mac-flapping {
       "MAC flapping patameters on VSI.";  
     container mac-flapping {
       description
-        "Configure MAC flapping VSI table.";
+        "Configure MAC flapping.";
       container loop-detect{
         presence "Loop detect configuration.";
         description

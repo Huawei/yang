@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-multicast-forward {
   yang-version 1;
@@ -26,7 +26,6 @@ module huawei-multicast-forward {
   import huawei-vlan {
     prefix vlan;
   }
-
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -37,7 +36,19 @@ module huawei-multicast-forward {
     Website: http://www.huawei.com
     Email: support@huawei.com";
   description
-    "Multicast forwarding table."; 
+    "Multicast forwarding table.";
+  revision 2020-06-12 {
+    description
+      "Add units.";
+    reference
+      "Huawei private.";
+  }    
+  revision 2020-03-12 {
+    description
+      "Modify node description.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-10-22 {
     description
       "Add new nodes.";
@@ -113,70 +124,6 @@ module huawei-multicast-forward {
     }
     description
       "Monitor cycle.";
-  }
-  typedef queue1 {
-    type enumeration {
-      enum "be" {
-      value 1;
-        description
-          "QoS queue BE.";
-      }
-      enum "af1" {
-        value 2;	  
-        description
-          "QoS queue AF1.";
-      }
-    }
-    description
-      "QoS queue1.";
-  }
-  typedef queue2 {
-    type enumeration {
-      enum "af2" {
-        value 3;	  
-        description
-          "QoS queue AF2.";
-      }
-      enum "af3" {
-        value 4;	  
-        description
-          "QoS queue AF3.";
-      }
-    }
-    description
-      "QoS queue2.";
-  }
-  typedef queue3 {
-    type enumeration {
-      enum "af4" {
-        value 5;	  
-        description
-          "QoS queue AF4.";
-      }
-      enum "cs6" {
-        value 6;	  
-        description
-          "QoS queue CS6.";
-      }
-    }
-    description
-      "QoS queue3.";
-  }
-  typedef queue4 {
-    type enumeration {
-      enum "ef" {
-        value 7;	  
-        description
-          "QoS queue EF.";
-      }
-      enum "cs7" {
-        value 8;	  
-        description
-          "QoS queue CS7.";
-      }
-    }
-    description
-      "QoS queue4.";
   }
   typedef status {
     type enumeration {
@@ -396,6 +343,64 @@ module huawei-multicast-forward {
     description
       "Service type.";
   }
+  typedef frr-status-type {
+    type enumeration {
+      enum "static" {
+        value 1;
+        description
+          "Static configuration.";
+      }
+      enum "dynamic" {
+        value 2;
+        description
+          "Dynamic learning.";
+      }
+    }
+    description
+      "Fast re-router mode.";
+  }
+  typedef receive-status-type {
+    type enumeration {
+      enum "backup" {
+        value 0;
+        description
+          "Backup status.";
+      }
+      enum "primary" {
+        value 1;
+        description
+          "Primary status.";
+      }
+    }
+    description
+      "Receive status type.";
+  }
+  typedef frr-type {
+    type enumeration {
+      enum "init" {
+        value 0;	  
+        description
+          "Init type.";
+      }	
+      enum "normal" {
+        value 1;
+        description
+          "Normal FRR type.";
+      }
+      enum "ngmvpn" {
+         value 2;  
+        description
+          "NGMVPN type.";
+      }
+      enum "clone" {
+        value 3;
+        description
+          "Clone type.";
+      }
+    }
+    description
+      "Fast re-router type.";
+  }
   container multicast-forward {
     description
       "Table of multicast-forward.";
@@ -432,30 +437,6 @@ module huawei-multicast-forward {
         default false;
         description
           "Enable/disable multicast reliability enhancement.";
-      }
-      leaf qos-queue1 {
-        type queue1;
-        default "be";
-        description
-          "Multicast QoS queue1.";
-      }
-      leaf qos-queue2 {
-        type queue2;
-        default "af2";
-        description
-          "Multicast QoS queue2.";
-      }
-      leaf qos-queue3 {
-        type queue3;
-        default "af4";
-        description
-          "Multicast QoS queue3.";
-      }
-      leaf qos-queue4 {
-        type queue4;
-        default "ef";
-        description
-          "Multicast QoS queue4.";
       }
       leaf fragment-enable {
         type boolean;
@@ -649,6 +630,7 @@ module huawei-multicast-forward {
         list outbound {
           key "interface-name outbound-id";
           unique "outbound-name";
+          unique "outbound-id";
           description
             "Configure multicast stream translation on an outbound interface and configures multicast stream translation parameters.";
           leaf interface-name {
@@ -931,7 +913,7 @@ module huawei-multicast-forward {
               description
                 "Name of a multicast NAT instance.";
             }
-            leaf switch-mode {
+            leaf switch-mode {              
               ext:operation-exclude update|delete {
                 when "../fast-mode-enable = 'true'";    
                 description "The current node cannot be modified, when fast-mode-enable node is 'true'.";
@@ -941,7 +923,7 @@ module huawei-multicast-forward {
               description
                 "Switch mode.";
             }
-            leaf switch-field-type {
+            leaf switch-field-type {              
               ext:operation-exclude update|delete {
                 when "../fast-mode-enable = 'true'";    
                 description "The current node cannot be modified, when fast-mode-enable node is 'true'.";
@@ -951,19 +933,6 @@ module huawei-multicast-forward {
               default "default-field";
               description
                 "Specify a switch field type.";
-            }
-            leaf switch-packet-offset {
-              ext:operation-exclude update|delete {
-                when "../fast-mode-enable = 'true'";    
-                description "The current node cannot be modified, when fast-mode-enable node is 'true'.";
-              }
-              when "../switch-mode='clean-switch'";
-              type uint32 {
-                range "0..65535";
-              }
-              default "0";
-              description
-                "Set the offset of the packet to be switched.";
             }
           }
         }
@@ -998,7 +967,7 @@ module huawei-multicast-forward {
             description
               "Output stream group name.";
             }
-            leaf instance-group-id {
+            leaf instance-group-id {              
               ext:operation-exclude update {
                 when "../fast-mode-enable = 'true'";    
                 description "The current node cannot be modified, when fast-mode-enable node is 'true'.";
@@ -1017,7 +986,7 @@ module huawei-multicast-forward {
             description
               "Name of a multicast NAT instance group.";
             }
-            leaf switch-mode {
+            leaf switch-mode {             
               ext:operation-exclude update|delete {
                 when "../fast-mode-enable = 'true'";    
                 description "The current node cannot be modified, when fast-mode-enable node is 'true'.";
@@ -1027,7 +996,7 @@ module huawei-multicast-forward {
               description
                 "Switch mode.";
             }
-            leaf switch-field-type {
+            leaf switch-field-type {            
               ext:operation-exclude update|delete {
                 when "../fast-mode-enable = 'true'";    
                 description "The current node cannot be modified, when fast-mode-enable node is 'true'.";
@@ -1037,19 +1006,6 @@ module huawei-multicast-forward {
               default "default-field";
               description
                 "Specify a switch field type.";
-            }
-            leaf switch-packet-offset {
-              ext:operation-exclude update|delete {
-                when "../fast-mode-enable = 'true'";    
-                description "The current node cannot be modified, when fast-mode-enable node is 'true'.";
-              }
-              when "../switch-mode='clean-switch'";
-              type uint32 {
-                range "0..65535";
-              }
-              default "0";
-              description
-                "Set the offset of the packet to be switched.";
             }
           }
         }      
@@ -1066,6 +1022,14 @@ module huawei-multicast-forward {
           description
             "Globally enable the configuration of switching downstream multicast traffic replication by NP to replication by TM. The configuration is performed based on a board.";
         }
+      }
+      leaf-list slot {
+        type string {
+          length "1..16";
+        }
+        must "not(../global)";
+        description
+          "Specify the slot ID of the board where the target port to which downstream multicast traffic is to be replicated on the TM resides.";
       }
     }
     container mcfwd-entrys {
@@ -1171,11 +1135,13 @@ module huawei-multicast-forward {
             }
             leaf forward-rate-pps {
               type uint64;
+              units pps;
               description
                 "Packet forwarding rate.";
             }
             leaf forward-rate-bps {
               type uint64;
+              units bit/s;
               description
                 "Bit forwarding rate.";
             }
@@ -1186,6 +1152,7 @@ module huawei-multicast-forward {
             }
             leaf match-byte {
               type uint64;
+              units Byte;
               description
                 "The statistics of matched bytes.";
             }
@@ -1201,6 +1168,7 @@ module huawei-multicast-forward {
             }
             leaf forward-byte {
               type uint64;
+              units Byte;
               description
                 "The statistics of multicast forwarding bytes.";
             }
@@ -1274,11 +1242,13 @@ module huawei-multicast-forward {
             "Multicast speed statistics.";
           leaf receive-byte {
             type uint64;
+            units  Byte;
             description
               "Bytes received in 2 sceconds.";
           }
           leaf receive-byte-rate {
             type uint64;
+            units  Byte/s;
             description
               "Byte-rate received in 2 sceconds.";
           }
@@ -1289,6 +1259,7 @@ module huawei-multicast-forward {
           }
           leaf receive-packet-rate {
             type uint64;
+            units pps;
             description
               "Packet-rate received in 2 sceconds.";
           }
@@ -1334,6 +1305,7 @@ module huawei-multicast-forward {
             type uint64 {
               range "1..62500000";
             }
+            units kbit/s;
             mandatory true;
             description
               "Bandwidth based on which load balancing is performed for IPv4 Layer 3 multicast flows.";
@@ -1375,6 +1347,7 @@ module huawei-multicast-forward {
             type uint64 {
               range "1..62500000";
             }
+            units kbit/s;
             mandatory true;
             description
               "Bandwidth based on which load balancing is performed for VLAN Layer 2 multicast flows.";
@@ -1416,6 +1389,7 @@ module huawei-multicast-forward {
             type uint64 {
               range "1..62500000";
             }
+            units kbit/s;
             mandatory true;
             description
               "Bandwidth based on which load balancing is performed for VSI Layer 2 multicast flows.";
@@ -1438,6 +1412,7 @@ module huawei-multicast-forward {
             type uint64 {
               range "1..62500000";
             }
+            units kbit/s;
             mandatory true;
             description
               "Bandwidth based on which load balancing is performed for P2MP TE or MLDP flows.";
@@ -1475,11 +1450,13 @@ module huawei-multicast-forward {
           }
           leaf bandwith-use {
             type uint64;
+            units kbit/s;
             description
               "Bandwidth consumed for multicast traffic replication in a channel, in kbit/s.";
           }
           leaf bandwith-free {
             type uint64;
+            units kbit/s;
             description
               "Bandwidth available for multicast traffic replication in a channel, in kbit/s.";
           }
@@ -1519,6 +1496,7 @@ module huawei-multicast-forward {
             type uint64 {
               range "1..62500000";
             }
+            units kbit/s;
             mandatory true;
             description
               "Bandwidth based on which load balancing is performed for VLAN Layer 2 multicast flows.";
@@ -1559,6 +1537,7 @@ module huawei-multicast-forward {
             type uint64 {
               range "1..62500000";
             }
+            units kbit/s;
             mandatory true;
             description
               "Bandwidth based on which load balancing is performed for VSI Layer 2 multicast flows.";
@@ -1599,6 +1578,7 @@ module huawei-multicast-forward {
             type uint64 {
               range "1..62500000";
             }
+            units kbit/s;
             mandatory true;
             description
               "Bandwidth based on which load balancing is performed for IPv4 Layer 3 multicast flows.";
@@ -1615,12 +1595,16 @@ module huawei-multicast-forward {
         description
           "Query whether the traffic of a specified multicast group is forwarded by the local device state.";
         leaf source-address {
-          type inet:ipv4-address-no-zone;
+          type inet:ipv4-address-no-zone {
+            pattern '(12[0-6]|1[0-1]\d|[1-9]\d|[1-9])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|(12[8-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|0(\.0){3}';
+          }
           description
             "Multicast source address.";
         }
         leaf group-address {
-          type inet:ipv4-address-no-zone;
+          type inet:ipv4-address-no-zone {
+            pattern '(22[4-9]|23\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+          }
           description
             "Multicast group address.";
         }
@@ -1821,11 +1805,13 @@ module huawei-multicast-forward {
 			  }
 			  leaf packet-rate {
 				type uint64;
+                units pps;
 				description
 				  "Packet forwarding rate.";
 			  }
 			  leaf bit-rate {
 				type uint64;
+                units bit/s;
 				description
 				  "Bit forwarding rate.";
 			  }
@@ -2024,11 +2010,13 @@ module huawei-multicast-forward {
           }
           leaf packet-rate {
             type uint64;
+            units pps;
             description
               "Packet forwarding rate.";
           }
           leaf bit-rate {
             type uint64;
+            units bit/s;
             description
               "Bit forwarding rate.";
           }
@@ -2096,11 +2084,13 @@ module huawei-multicast-forward {
           }
           leaf packet-rate {
             type uint64;
+            units pps;
             description
               "Packet forwarding rate.";
           }
           leaf bit-rate {
             type uint64;
+            units bit/s;
             description
               "Bit forwarding rate.";
           }
@@ -2168,17 +2158,246 @@ module huawei-multicast-forward {
           }
           leaf packet-rate {
             type uint64;
+            units pps;
             description
               "Packet forwarding rate.";
           }
           leaf bit-rate {
             type uint64;
+            units bit/s;
             description
               "Bit forwarding rate.";
           }
         }
       }
 	}
+    container random-detect {
+      description
+        "Configure multicast random detection.";
+      leaf enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable multicast random-detect IPv4 group.";
+      }     
+      container rules {
+        description
+          "List of multicast random detection rules.";
+        list rule {
+          key "source-address group-address vpn-name";
+          max-elements "40";
+          description
+            "Configure multicast random detection rule.";
+          leaf source-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(12[0-6]|1[0-1]\d|[1-9]\d|[1-9])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|(12[8-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|0(\.0){3}';
+            }
+            description
+              "Multicast source address.";
+          }
+          leaf group-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(22[4-9]|23\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            } 
+            description
+              "Multicast group address.";
+          }
+          leaf vpn-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "Name of a VPN instance.";
+          } 
+          leaf mask {
+            type inet:ipv4-address-no-zone {
+              pattern '(24\d|25[0-5])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            } 
+            default "255.255.255.255";
+            description
+              "Specifiy the mask of a multicast group address.";
+          }
+        }
+      }  
+      container select-results {
+        config false;
+        description
+          "List of multicast random detection selection results.";
+        list select-result {
+          key "slot source-address group-address vpn-name";
+          description
+            "Multicast random detection selection result state.";
+          leaf slot {
+            type string {
+              length "1..15";
+            }
+            description
+              "Slot ID.";
+          }
+          leaf source-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(12[0-6]|1[0-1]\d|[1-9]\d|[1-9])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|(12[8-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|0(\.0){3}';
+            }
+            description
+              "Multicast source address.";
+          }
+          leaf group-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(22[4-9]|23\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            } 
+            description
+              "Multicast group address.";
+          }
+          leaf vpn-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "Name of a VPN instance.";
+          }
+          leaf multicast-group-id {
+            type uint32;
+            description
+              "ID of the multicast source and group.";
+          }  
+        }
+      }
+    }
+    container static-frr {
+      description
+        "Configure multicast static fast re-router.";
+      container static-frr-enables {
+        description
+          "List of multicast static fast re-router enables.";
+        list static-frr-enable {
+          key "source-address group-address vpn-name";
+          description
+            "Configure multicast static fast re-router function.";
+          leaf source-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(12[0-6]|1[0-1]\d|[1-9]\d|[1-9])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|(12[8-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|0(\.0){3}';
+            }
+            description
+              "Multicast source address.";
+          }
+          leaf group-address {          
+            type inet:ipv4-address-no-zone {
+              pattern '(22[4-9]|23\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "Address of a multicast group. The start address of the group is the result of the bitwise AND operation of the configured groupaddr and mask. 
+              The end address of the multicast group is the start address of the multicast group plus the result of the bitwise NOT operation on the configured mask, and puls 1.
+              After the configuration takes effect, the group address used by services ranges from the start group address to the end group address.";
+          
+          }
+          leaf vpn-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "Name of a VPN instance.";
+          } 
+          leaf mask {
+            type inet:ipv4-address-no-zone;
+            default "255.255.255.255";
+            description
+              "Network mask. The length of the mask ranges from 1 to 32. A maximum of 2000 protected multicast source groups can be configured.";
+          }	  
+        }
+      }
+      container static-frr-statuss {
+        config false;
+        description
+          "List of configure multicast fast re-router status.";
+        list static-frr-status {
+          key "source-address group-address vpn-name";
+          description
+            "Multicast static fast re-router state.";
+          leaf source-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(12[0-6]|1[0-1]\d|[1-9]\d|[1-9])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|(12[8-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|0(\.0){3}';
+            }
+            description
+              "Multicast source address.";
+          }
+          leaf group-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(22[4-9]|23\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "Address of a multicast group. In IPv4, the value ranges from 224.0.1.0 to 239.255.255.255, in dotted decimal notation.";
+          }
+          leaf vpn-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "Name of a VPN instance.";
+          }
+          leaf status {
+            type frr-status-type;
+            description
+              "Status.";
+          }
+          leaf frr-type {
+            type frr-type;
+            description
+              "Fast re-router type.";
+          }
+          leaf master-id {
+            type uint32;
+            description
+              "ID of the master MDT.";
+          }
+          leaf backup-id {
+            type uint32;
+            description
+              "ID of the backup MDT.";
+          }
+          leaf primary-interface-name {
+            when "../frr-type='init' or ../frr-type='normal'";
+            type pub-type:if-name;            
+            description
+              "Master inbound interface.";
+          }
+          leaf backup-interface-name {
+            when "../frr-type='init' or ../frr-type='normal'";
+            type pub-type:if-name;
+            description
+              "Backup inbound interface.";
+          }
+          leaf primary-source-address {
+            when "../frr-type='clone'";
+            type inet:ipv4-address-no-zone;
+            description
+              "Multicast source of the primary link.";
+          }
+          leaf backup-source-address {
+            when "../frr-type='clone'";
+            type inet:ipv4-address-no-zone;
+            description
+              "Multicast source of the backup link.";
+          }
+          leaf primary-root-address {
+            when "../frr-type='ngmvpn'";
+            type inet:ipv4-address-no-zone;
+            description
+              "Multicast root of the primary link.";
+          }
+          leaf backup-root-address {
+            when "../frr-type='ngmvpn'";
+            type inet:ipv4-address-no-zone;
+            description
+              "Multicast root of the backup link.";
+          }
+          leaf receive-status {
+            type receive-status-type;
+            description
+              "Primary or backup.";
+          }
+        }
+      }
+    }
   }
   rpc reset-bas-multicast-rui-statics {
     description
@@ -2519,7 +2738,7 @@ module huawei-multicast-forward {
     description
       "Multicast forward configuration to the QoS module."; 
     container behavior-bind-multicast-nat-instance {
-      when "/multicast-forward/nat";
+      when "/multicast-forward:multicast-forward/multicast-forward:nat";
       description
         "Configure multicast NAT instances and bind them to the traffic behavior.";
       list behavior-bind-multicast-nat {
@@ -2527,15 +2746,15 @@ module huawei-multicast-forward {
         description
           "Configure a multicast NAT instance and bind it to the traffic behavior.";
         leaf instance-id {
-          type uint32 {
-            range "1..16000";
+          type leafref {
+            path "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance/multicast-forward:instance-id";
           }
           description
             "ID of a multicast NAT instance.";
         }
         leaf instance-name {
           type leafref {
-            path "/multicast-forward/nat/instances/instance/instance-name";
+            path "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance/multicast-forward:instance-name";
           }
           description
             "Name of a multicast NAT instance.";

@@ -430,7 +430,7 @@ module huawei-bgp-mvpn {
       }
       leaf nexthop-configure {
         type bgp:nexthop-configuration-type;
-        must "not(../nexthop-configure) or ../nexthop-configure='local'";
+        must "../nexthop-configure='local'";
         description
           "Both the next-hop-local mode and next-hop-invariable mode are available when the peer address family is the VPNv4/VPNV6/L2VPN AD address family. Only the next-hop-local mode is available when the peer address family is not VPNv4/VPNV6/L2VPN AD address family. In next-hop-local mode, you can configure a BGP speaker to set its IP address of as the next hop of the routes to be advertised to IBGP peers or IBGP peer groups. In next-hop-invariable mode, you can configure PEs in different ASs not to change the next hop of routes when the PEs advertise the routes to their EBGP peers and use the next hop addresses of IGP routes to advertise imported IGP routes to IBGP peers. By default, when a BGP speaker advertises routes to EBGP peers and imported IGP routes to IBGP peers, the BGP speaker changes the next hop to its interface address. If the value of nexthop-configure is set to local, the configuration does not take effect in the current address family.";
       }
@@ -494,7 +494,7 @@ module huawei-bgp-mvpn {
       }
       leaf nexthop-configure {
         type bgp:nexthop-configuration-type;
-        must "not(../nexthop-configure) or ../nexthop-configure='local'";
+        must "../nexthop-configure='local'";
         description
           "Both the next-hop-local mode and next-hop-invariable mode are available when the peer address family is the VPNv4/VPNV6/L2VPN AD address family. Only the next-hop-local mode is available when the peer address family is not VPNv4/VPNV6/L2VPN AD address family. In next-hop-local mode, you can configure a BGP speaker to set its IP address of as the next hop of the routes to be advertised to IBGP peers or IBGP peer groups. In next-hop-invariable mode, you can configure PEs in different ASs not to change the next hop of routes when the PEs advertise the routes to their EBGP peers and use the next hop addresses of IGP routes to advertise imported IGP routes to IBGP peers. By default, when a BGP speaker advertises routes to EBGP peers and imported IGP routes to IBGP peers, the BGP speaker changes the next hop to its interface address. If the value of nexthop-configure is set to local, the configuration does not take effect in the current address family.";
       }
@@ -573,7 +573,7 @@ module huawei-bgp-mvpn {
       }
       leaf nexthop-configure {
         type bgp:nexthop-configuration-type;
-        must "not(../nexthop-configure) or ../nexthop-configure='local'";
+        must "../nexthop-configure='local'";
         description
           "Both the next-hop-local mode and next-hop-invariable mode are available when the peer address family is the VPNv4/VPNV6/L2VPN AD address family. Only the next-hop-local mode is available when the peer address family is not VPNv4/VPNV6/L2VPN AD address family. In next-hop-local mode, you can configure a BGP speaker to set its IP address of as the next hop of the routes to be advertised to IBGP peers or IBGP peer groups. In next-hop-invariable mode, you can configure PEs in different ASs not to change the next hop of routes when the PEs advertise the routes to their EBGP peers and use the next hop addresses of IGP routes to advertise imported IGP routes to IBGP peers. By default, when a BGP speaker advertises routes to EBGP peers and imported IGP routes to IBGP peers, the BGP speaker changes the next hop to its interface address. If the value of nexthop-configure is set to local, the configuration does not take effect in the current address family.";
       }
@@ -647,7 +647,7 @@ module huawei-bgp-mvpn {
       }
       leaf nexthop-configure {
         type bgp:nexthop-configuration-type;
-        must "not(../nexthop-configure) or ../nexthop-configure='local'";
+        must "../nexthop-configure='local'";
         description
           "Both the next-hop-local mode and next-hop-invariable mode are available when the peer address family is the VPNv4/VPNV6/L2VPN AD address family. Only the next-hop-local mode is available when the peer address family is not VPNv4/VPNV6/L2VPN AD address family. In next-hop-local mode, you can configure a BGP speaker to set its IP address of as the next hop of the routes to be advertised to IBGP peers or IBGP peer groups. In next-hop-invariable mode, you can configure PEs in different ASs not to change the next hop of routes when the PEs advertise the routes to their EBGP peers and use the next hop addresses of IGP routes to advertise imported IGP routes to IBGP peers. By default, when a BGP speaker advertises routes to EBGP peers and imported IGP routes to IBGP peers, the BGP speaker changes the next hop to its interface address. If the value of nexthop-configure is set to local, the configuration does not take effect in the current address family.";
       }

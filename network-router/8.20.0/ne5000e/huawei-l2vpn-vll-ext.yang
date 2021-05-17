@@ -46,7 +46,7 @@ module huawei-l2vpn-vll-ext {
   }
   revision 2019-04-23 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -237,7 +237,20 @@ module huawei-l2vpn-vll-ext {
     description
       "PW loop check.";
     container vll-pw-loop-check {
-      when "../ifm:type='Ethernet' or ../ifm:type='GigabitEthernet' or ../ifm:type='Eth-Trunk' or ../ifm:type='400GE' or ../ifm:type='100GE' or ../ifm:type='50GE' or ../ifm:type='40GE' or ../ifm:type='25GE' or ../ifm:type='10GE' or ../ifm:type='XGigabitEthernet' or ../ifm:type='GEBrief'";
+      when
+        "../ifm:type='Ethernet' or
+         ../ifm:type='GigabitEthernet' or
+         ../ifm:type='Eth-Trunk' or
+         ../ifm:type='400GE' or
+         ../ifm:type='100GE' or
+         ../ifm:type='50GE' or
+         ../ifm:type='40GE' or
+         ../ifm:type='25GE' or
+         ../ifm:type='10GE' or
+         ../ifm:type='XGigabitEthernet' or
+         ../ifm:type='GEBrief' or
+         ../ifm:type='50|100GE' or
+         ../ifm:type='FlexE'";
       presence "Enable PW loop check.";
       description
         "Enable/disable PW loop check.";      
@@ -245,6 +258,7 @@ module huawei-l2vpn-vll-ext {
         type uint32 {
           range "1..65535";
         }
+        units s;
         default "300";
         description
           "PW loop check time.";

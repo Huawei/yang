@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-isis-sr {
   namespace "urn:huawei:yang:huawei-isis-sr";
@@ -34,6 +34,24 @@ module huawei-isis-sr {
      Email: support@huawei.com";
   description
     "ISIS segment routing management.";
+  revision 2020-03-09 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-03 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -187,10 +205,9 @@ module huawei-isis-sr {
     }
     leaf sr-new-update-delay {
       type uint16 {
-        range "1000..10000";
+        range "1000..60000";
       }
       units "ms";
-      must "../sr-new-update-delay=5000 or ../../isis:afs/isis:af[isis:type='afipv4']/isis-sr:segment-routing/isis-sr:enable='true'";
       default "5000";
       description
         "Set the route delivery delay for SR avoid microloop. Depend on segment routing MPLS.";

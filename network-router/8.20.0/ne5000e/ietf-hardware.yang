@@ -893,7 +893,6 @@ module ietf-hardware {
 
       container state {
         if-feature hardware-state;
-		config false;
         description
           "State-related nodes";
         reference
@@ -919,7 +918,6 @@ module ietf-hardware {
 
         leaf admin-state {
           type admin-state;
-	      config false;
           description
             "The administrative state for this component.
 

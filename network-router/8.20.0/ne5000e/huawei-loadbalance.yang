@@ -31,90 +31,17 @@ module huawei-loadbalance {
     Email: support@huawei.com";
   description
     "Load balancing.";
-  revision 2020-03-14 {
+  revision 2020-04-20 {
     description
-      "Update description.";
-    reference
-      "Huawei private.";
+	"Update Nodes.";
+    reference	 	 	 
+	"Huawei private.";	
   }
   revision 2019-04-01 {
     description
       "Initial revision.";
     reference
       "Huawei private.";
-  }
-  typedef forward-type {
-    type enumeration {
-      enum "ipv4" {
-        value 0;
-        description
-          "IPv4 two-level load balancing.";
-      }
-      enum "ipv6" {
-        value 1;
-        description
-          "IPv6 two-level load balancing.";
-      }
-      enum "mpls" {
-        value 2;
-        description
-          "MPLS packet two-level load balancing.";
-      }
-      enum "vll" {
-        value 3;
-        description
-          "VLL packet two-level load balancing.";
-      }
-    }
-    description
-      "Forward type.";
-  }
-  typedef hash-arithmetic {
-    type enumeration {
-      enum "arithmetic1" {
-        value 1;
-        description
-          "Arithmetic 1.";
-      }
-      enum "arithmetic2" {
-        value 2;
-        description
-          "Arithmetic 2.";
-      }
-      enum "arithmetic3" {
-        value 3;
-        description
-          "Arithmetic 3.";
-      }
-    }
-    description
-      "Load balancing arithmetic.";
-  }
-  typedef hash-type {
-    type enumeration {
-      enum "arithmetic" {
-        value 3;
-        description
-          "Set the hash algorithm.";
-      }
-      enum "box" {
-        value 1;
-        description
-          "Hash box.";
-      }
-      enum "fields" {
-        value 4;
-        description
-          "Hash fields.";
-      }
-      enum "seed" {
-        value 2;
-        description
-          "Hash seed random number.";
-      }
-    }
-    description
-      "Load balancing hash type.";
   }
   typedef trunk-ecmp {
     type enumeration {
@@ -362,41 +289,11 @@ module huawei-loadbalance {
         description
           "Enable/disable UCMP globally.";
       }
-      leaf avoid-ipv4-enable {
-        type boolean;
-        default "false";
-        description
-          "Enable/disable two-level load balancing for IPv4 packets.";
-      }
-      leaf avoid-ipv6-enable {
-        type boolean;
-        default "false";
-        description
-          "Enable/disable global IPv6 hash configuration.";
-      }
-      leaf avoid-mpls-enable {
-        type boolean;
-        default "false";
-        description
-          "Enable/disable global MPLS hash configuration.";
-      }
       leaf mpls-ucmp-enable {
         type boolean;
         default "false";
         description
           "Enable/disable MPLS UCMP.";
-      }
-      leaf mpls-sr-transit-enable {
-        type boolean;
-        default "false";
-        description
-          "Enable/disable MPLS transit node segment-routing enhance.";
-      }
-      leaf mpls-trunk-enhance-fwd {
-        type boolean;
-        default "false";
-        description
-          "Enable/disable MPLS trunk hash enhance forward.";
       }
       leaf vxlan-l2vni-enable {
         type boolean;
@@ -416,12 +313,6 @@ module huawei-loadbalance {
         description
           "Enable/disable L2VXLAN DEEP HASH load balancing.";
       }
-      leaf trunk-enhance-fwd {
-        type boolean;
-        default "false";
-        description
-          "Enable/disable trunk UCMP.";
-      }
       leaf trunk-multicast-enable {
         type boolean;
         default "false";
@@ -438,30 +329,16 @@ module huawei-loadbalance {
         type uint32 {
           range "0|5..60";
         }
+        units "s";
         default "0";
         description
-          "Set the global WTR for the ECMP switchback. The value can be 0 or an integer ranging from 5 to 60, in seconds.";
+          "Configures the delay time for MPLS equal-cost multiple path (ECMP) switchback.";
       }
-    }
-    container avoid-degradations {
-      description
-        "List of configurations of the two-level load balancing function on a board.";
-      list avoid-degradation {
-        key "position forward-type";
+      leaf tunnel-info-gtp-enable {
+        type boolean;
+        default "true";
         description
-          "Configure the two-level load balancing function on a board.";
-        leaf position {
-          type string {
-            length "1..16";
-          }
-          description
-            "Slot ID of an interface board. The value range varies according to router hardware.";
-        }
-        leaf forward-type {
-          type forward-type;
-          description
-            "Set packet type.";
-        }
+          "Enable/disable GTP deep hash load balancing. This configuration does not support the/5880/or VSUF.";
       }
     }
     container hash-key-ip {
@@ -542,12 +419,14 @@ module huawei-loadbalance {
     }
     container ecmp-stateful {
       must "maximum>minimum or not(maximum) or not(minimum)";
+      presence "Configure ECMP stateful load balancing.";
       description
         "Configure ECMP stateful load balancing.";
       leaf minimum {
         type uint32 {
           range "1..63";
         }
+        default "1";
         description
           "Minimum interface number.";
       }
@@ -555,6 +434,7 @@ module huawei-loadbalance {
         type uint32 {
           range "2..64";
         }
+        default "64";
         description
           "Maximum interface number.";
       }
@@ -562,6 +442,7 @@ module huawei-loadbalance {
         type uint32 {
           range "1..4";
         }
+        default "1";
         description
           "Accuracy of ECMP load balancing.";
       }
@@ -574,13 +455,13 @@ module huawei-loadbalance {
       description
         "Configure Load balancing.";
       container ucmp {
-        when "../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'Pos' or ../../ifm:type = '40GE' or ../../ifm:type = '100GE' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'ATM'";
+        when "../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'Pos' or ../../ifm:type = '40GE' or ../../ifm:type = '100GE' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'ATM' or ../../ifm:type = '50|100GE' or ../../ifm:type = '50GE' or ../../ifm:type = '400GE' or ../../ifm:type = '25GE' or ../../ifm:type = '200GE' or ../../ifm:type = '10GE' or ../../ifm:type = 'FlexE' or ../../ifm:type = '4x10GE' or ../../ifm:type = '10x10GE' or ../../ifm:type = '3x40GE' or ../../ifm:type = '4x25GE' or ../../ifm:type = 'Ethernet'";
         presence "Enable UCMP on the interface";
         description
           "Enable/disable UCMP on an interface. To implement UCMP on equal-cost links with different bandwidth values, you can configure this function on each interface. Enabling or disabling UCMP on a physical interface takes effect only after the interface is restarted. UCMP is only for equal-cost routes. UCMP applies only to equal-cost routes and is independent of routing protocols, such as an IGP or BGP.";
       }
       container packet {
-        when "../../ifm:type = 'Ethernet' or ../../ifm:type = '100GE' or ../../ifm:type = '400GE' or ../../ifm:type = '40GE' or ../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'Ip-Trunk' or ../../ifm:type = 'Eth-Trunk'";
+        when "../../ifm:type = 'Ethernet' or ../../ifm:type = '100GE' or ../../ifm:type = '400GE' or ../../ifm:type = '40GE' or ../../ifm:type = 'GigabitEthernet' or ../../ifm:type = 'XGigabitEthernet' or ../../ifm:type = 'Ip-Trunk' or ../../ifm:type = 'Eth-Trunk' or ../../ifm:type = '50|100GE' or ../../ifm:type = '50GE' or ../../ifm:type = '25GE' or ../../ifm:type = '200GE' or ../../ifm:type = '10GE' or ../../ifm:type = 'FlexE' or ../../ifm:type = '4x10GE' or ../../ifm:type = '10x10GE' or ../../ifm:type = '3x40GE' or ../../ifm:type = '4x25GE'";
         presence "Enable per-packet load balancing on an interface";
         description
           "Enable/disable per-packet load balancing on specified interfaces.";
@@ -593,78 +474,6 @@ module huawei-loadbalance {
     container loadbalance {
       description
         "Configure load balancing.";
-      container hashs {
-        description
-          "List of PE2 hash configuration on a specified board.";
-        list hash {
-          key "type trunk-ecmp";
-          description
-            "Configure PE2 hash load balancing.";
-          leaf type {
-            type hash-type;
-            description
-              "Set hash configuration type.";
-          }
-          leaf trunk-ecmp {
-            type trunk-ecmp;
-            must "(../type='arithmetic' and ../trunk-ecmp='invalid') or (../type='box' and (../trunk-ecmp='ecmp1' or ../trunk-ecmp='ecmp2' or ../trunk-ecmp='trunk') ) or (../type='fields' and (../trunk-ecmp='ip' or ../trunk-ecmp='mac' or ../trunk-ecmp='vll') ) or (../type='seed' and (../trunk-ecmp='ecmp' or ../trunk-ecmp='trunk') ) or not(../type='arithmetic' or ../type='box' or ../type='fields' or ../type='seed')";
-            description
-              "Set hash mode, that is, the box attribute, indicating which load balancing mode is applicable to the box.";
-          }
-          leaf arithmetic {
-            when "../type='arithmetic'";
-            type hash-arithmetic;
-            default "arithmetic2";
-            description
-              "Set hash algorithm.";
-          }
-          leaf box1 {
-            when "../type='box'";
-            type pub-type:hex-binary {
-              length "1..4";
-              pattern '(0x|0X)?[0-9a-fA-F]{1,2}';
-            }
-            default "0x0";
-            description
-              "Hash box 1.";
-          }
-          leaf box2 {
-            when "../type='box'";
-            type pub-type:hex-binary {
-              length "1..10";
-              pattern '(0x|0X)?[0-9a-fA-F]{1,8}';
-            }
-            default "0x0";
-            description
-              "Hash box 2.";
-          }
-          leaf material {
-            when "../type='fields'";
-            type hash-material;
-            must "(../material='l2' or ../material='l3' or ../material='l4') or not(../type='fields' or ../trunk-ecmp='ip' or ../trunk-ecmp='mac')";
-            default "l4";
-            description
-              "Set hash material.";
-          }
-          leaf random-flag {
-            when "../type='seed'";
-            type boolean;
-            default "false";
-            description
-              "Enable/disable random flag.";
-          }
-          leaf custom-seed {
-            when "../type='seed' and ../random-flag='false'";
-            type pub-type:hex-binary {
-              length "1..10";
-              pattern '(0x|0X)?[0-9a-fA-F]{1,8}';
-            }
-            default "0x0";
-            description
-              "User-defined hash seed random number.";
-          }
-        }
-      }
       container dynamic-adjust {
         description
           "Configure dynamic load balancing.";
@@ -725,7 +534,8 @@ module huawei-loadbalance {
                 description "The default value is enable when trunk-ecmp is tunnel-info or GTP.";
               }
             }
-            must "(../trunk-ecmp='ip' and (../material='l2' or ../material='l3' or ../material='l4') ) or (../trunk-ecmp='mac' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') ) or ( (../trunk-ecmp='tunnel-info'  or ../trunk-ecmp='tunnel-inner-ip' or ../trunk-ecmp='gtp') and (../material='undo-disable' or ../material='disable') ) or (../trunk-ecmp='vll' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') )";
+            must "(../trunk-ecmp='ip' and (../material='l2' or ../material='l3' or ../material='l4') ) or (../trunk-ecmp='mac' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') ) or ( (../trunk-ecmp='tunnel-info'  or ../trunk-ecmp='tunnel-inner-ip' or ../trunk-ecmp='gtp') and (../material='undo-disable' or ../material='disable') ) or (../trunk-ecmp='vll' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip' or ../material='label') )";
+
             description
               "Set hash material. Please query the hash-instructions/hash-instruction/tunnel-gtp-enable node to check load balancing among GTP tunnels.";
             ext:support-filter "true";
@@ -828,7 +638,8 @@ module huawei-loadbalance {
                 description "The default value is enable when trunk-ecmp is tunnel-info or GTP.";
               }
             }
-            must "(../trunk-ecmp='ip' and (../material='l2' or ../material='l3' or ../material='l4') ) or (../trunk-ecmp='mac' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') ) or ( (../trunk-ecmp='tunnel-info'  or ../trunk-ecmp='tunnel-inner-ip' or ../trunk-ecmp='gtp') and (../material='undo-disable' or ../material='disable') ) or (../trunk-ecmp='vll' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') )";
+            must "(../trunk-ecmp='ip' and (../material='l2' or ../material='l3' or ../material='l4') ) or (../trunk-ecmp='mac' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') ) or ( (../trunk-ecmp='tunnel-info'  or ../trunk-ecmp='tunnel-inner-ip' or ../trunk-ecmp='gtp') and (../material='undo-disable' or ../material='disable') ) or (../trunk-ecmp='vll' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip' or ../material='label') )";
+
             description
               "Set hash material. Please query the hash-instructions/hash-instruction/tunnel-gtp-enable node to check load balancing among GTP tunnels.";
             ext:support-filter "true";
@@ -870,7 +681,7 @@ module huawei-loadbalance {
       "Load balancing configuration to the devm module.";
     container loadbalance {
       description
-        "Configure Load balance.";
+        "Configure load balance.";
       container hash-arithmetic {
         description
           "Configure FE1 hash arithmetic on a specified board.";

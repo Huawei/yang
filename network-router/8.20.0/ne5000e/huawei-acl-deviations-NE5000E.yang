@@ -112,6 +112,18 @@ module huawei-acl-deviations-NE5000E {
   deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-advances/acl:rule-advance/acl:protocol-type/acl:zero" {
     deviate not-supported;
   }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-advances/acl:rule-advance/acl:log-enable" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-advances/acl:rule-advance/acl:log-enable" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-advances/acl:rule-advance/acl:source/acl:ip/acl:source-ipaddr-mask/acl:negative-mask" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-advances/acl:rule-advance/acl:dest/acl:ip/acl:dest-ipaddr-mask/acl:negative-mask" {
+    deviate not-supported;
+  }
   ext:deviation-ext "/acl:acl/acl:groups/acl:group/acl:match-order" {
     ext:deviate-ext "add" {
       ext:operation-exclude "update" {

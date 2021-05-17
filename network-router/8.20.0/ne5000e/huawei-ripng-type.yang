@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-ripng-type {
   belongs-to huawei-ripng {
@@ -17,7 +17,12 @@ submodule huawei-ripng-type {
      Email: support@huawei.com";
   description
     "RIPng type defined file.";
-
+  revision 2020-01-03 {
+    description
+      "Add import protocol type.";
+    reference 
+      "Huawei private.";
+  }
   revision 2019-11-25 {
     description
       "Initial revision.";

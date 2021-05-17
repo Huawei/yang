@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-debug {
   namespace "urn:huawei:yang:huawei-debug";
@@ -18,7 +18,7 @@ module huawei-debug {
     Email: support@huawei.com";
   description
     "Global configuration.";
-  revision 2019-04-10 {
+  revision 2020-05-29 {
     description
       "Init revision.";
     reference
@@ -32,8 +32,9 @@ module huawei-debug {
       description
         "List of CPU information of boards.";
       list cpu-info {
+	must "unoverload-threshold <= (overload-threshold - 3)";
         key "position";
-		ext:operation-exclude create|delete;
+	ext:operation-exclude create|delete;
         description
           "Configure CPU information of a board.";
         leaf position {
@@ -300,6 +301,19 @@ module huawei-debug {
             "Enable/disable memory reliability.";
         }
       }
+      container memory-reliability-switchover-threshold {
+        description
+          "Configure memory threshold for board switchover.";
+        leaf threshold  {
+          ext:dynamic-default;
+          type uint32 {
+            range "50..100";
+          }
+          units %;
+          description
+            "Memory threshold for board switchover.";
+          }
+        }
       container flow-control-message-reliability {
         description
           "Configure flow-control-message reliability info.";

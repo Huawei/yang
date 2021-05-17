@@ -46,15 +46,15 @@ submodule huawei-flowspec-type {
         description
           "Less than.";
       }
-      enum "greater-than" {
+      enum "equal" {
         value 2;
         description
-          "Greater than.";
+          "Equal.";
       }
-      enum "equal" {
+      enum "greater-than" {
         value 3;
         description
-          "Equal.";
+          "Greater than.";
       }
     }
     description
@@ -83,11 +83,6 @@ submodule huawei-flowspec-type {
   }
   typedef match-port-type {
     type enumeration {
-      enum "match-port" {
-        value 4;
-        description
-          "Match the port.";
-      }
       enum "match-dest-port" {
         value 5;
         description
@@ -133,8 +128,29 @@ submodule huawei-flowspec-type {
         description
           "Not operator.";
       }
+      enum "any-match" {
+        value 3;
+        description
+          "Any-match operator.";
+      }
     }
     description
       "Match-operator-type.";
+  }
+  typedef fragment-operator-type {
+    type enumeration {
+      enum "match" {
+        value 1;
+        description
+          "Match operator.";
+      }
+      enum "not" {
+        value 2;
+        description
+          "Not operator.";
+      }
+    }
+    description
+      "Fragment operator type.";
   }
 }

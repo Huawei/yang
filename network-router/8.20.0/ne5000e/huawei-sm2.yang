@@ -18,7 +18,7 @@ module huawei-sm2 {
      Website: http://www.huawei.com
      Email: support@huawei.com";
   description
-    "Ecc.";
+    "SM2.";
   revision 2019-05-01 {
     description
       "Initial revision.";
@@ -28,12 +28,13 @@ module huawei-sm2 {
   ext:task-name "ssh-server";
    container sm2 {
     description
-      "Sm2.";
+      "SM2.";
     container sm2-peer-keys {
       description
-        "List of SM2 peer key table.";
+        "List of SM2 peer key.";
       list sm2-peer-key {
         key "key-name";
+        max-elements "20";
         description
           "Configure SM2 peer key code. If the key code is bound, it cannot be deleted, you need to unbind and then delete.";
         leaf key-name {
@@ -50,7 +51,7 @@ module huawei-sm2 {
           mandatory true;
           ext:support-filter "true";
           description
-            "SM2 Key code conforming to DER format.";
+            "SM2 key code conforming to DER format.";
         }
       }
     }

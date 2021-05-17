@@ -50,12 +50,15 @@ module huawei-srpolicy-deviations-NE5000E {
       }
     }
   }
-  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:multi-num" {
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:min-tx" {
     deviate replace {
       type uint32 {
-        range "3..50";
+        range "10..1000";
       }
     }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:min-rx" {
+    deviate not-supported;
   }
   deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:switch-delay" {
     deviate not-supported;
@@ -63,22 +66,25 @@ module huawei-srpolicy-deviations-NE5000E {
   deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:candidate-paths/srpolicy:candidate-path/srpolicy:type/srpolicy:explicit/srpolicy:segment-lists/srpolicy:segment-list/srpolicy:weight" {
     deviate not-supported;
   }
-  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:hsb-enable" {
-    deviate not-supported;
-  }
-  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd" {
-    deviate not-supported;
-  }
-  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:hsb-enable" {
-    deviate not-supported;
-  }
-  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:bfd-enable" {
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:candidate-paths/srpolicy:candidate-path/srpolicy:type/srpolicy:explicit/srpolicy:segment-lists/srpolicy:segment-list/srpolicy:path-mtu" {
     deviate not-supported;
   }
   deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:diffserv-mode" {
     deviate not-supported;
   }
   deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:mtu" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:group-threshold-upper" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:group-threshold-lower" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:path-verification" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:suppress-flapping" {
     deviate not-supported;
   }
 }

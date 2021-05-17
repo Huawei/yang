@@ -31,6 +31,9 @@ module huawei-arp {
   import huawei-l3vpn {
     prefix l3vpn;
   }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -42,7 +45,19 @@ module huawei-arp {
      Email: support@huawei.com";
   description
     "Address resolution protocol (ARP) management, which includes static ARP configuration, dynamic ARP learning, ARP security configuration, ARP entry query, and packet statistics collection.";
-  revision 2020-02-18 {
+  revision 2020-03-13 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-04 {
+    description
+      "Add the leaf broadcast-max-num.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-01-13 {
     description
       "Initial revision.";
     reference
@@ -264,6 +279,15 @@ module huawei-arp {
         description
           "Broadcast send max number.";
       }
+      leaf dfs-backup-rate {
+        type uint32 {
+          range "1..65535";
+        }
+        units s;
+        default "2000";
+        description
+          "ARP backup rate limit.";
+      }
     }
     container speed-limits {
       description
@@ -367,6 +391,7 @@ module huawei-arp {
           type uint32 {
             range "1..1440";
           }
+          units s;
           description
             "Aging time of a dynamic ARP entry.";
         }
@@ -418,7 +443,7 @@ module huawei-arp {
       list current-speed-limit {
         key "slot-id suppress-type ip-type";
         description
-          "Statistics of current timestamp suppression rate at which an interface board suppresses ARP messages.";
+          "Operational state of current timestamp suppression rate at which an interface board suppresses ARP messages. When Slot ID refering MPU board, the value of slot-id is 0.";
         leaf slot-id {
           type string {
             length "1..24";
@@ -445,7 +470,7 @@ module huawei-arp {
         }
       }
     }
-  }	
+  }
   augment "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4" {
     description
       "List of ARP configurations under interface.";
@@ -496,6 +521,7 @@ module huawei-arp {
         type uint32 {
           range "60..86400";
         }
+        units s;
         default "1200";
         description
           "Aging time of a dynamic ARP entry.";
@@ -540,14 +566,14 @@ module huawei-arp {
         type boolean;
         default "false";
         description
-          "Enable/disable intra-VLAN proxy ARP. Some switches isolate hosts in the same VLAN. To allow hosts in the same VLAN to communicate, enable inner VLAN proxy ARP. Only sub interface, VLANif, vbridge and remote ap interfaces are supported.";
+          "Enable/disable intra-VLAN proxy ARP. Some switches isolate hosts in the same VLAN. To allow hosts in the same VLAN to communicate, enable inner VLAN proxy ARP. Only sub interface, VLANIF, vbridge and remote ap interfaces are supported.";
       }
       leaf inter-proxy-enable {
         when "../../ifm:type!='Vbdif'";
         type boolean;
         default "false";
         description
-          "Enable/disable inter VLAN proxy ARP. If hosts in different VLANs need to communicate at L2, enable inter VLAN proxy ARP on an interface. Hosts between sub VLANs in a super VLAN cannot communicate by default. To allow these hosts to communicate, enable inter VLAN proxy ARP on the VLAN interface of the super VLAN. Only sub interface, VLANif, vbridge and remote ap interfaces are supported.";
+          "Enable/disable inter VLAN proxy ARP. If hosts in different VLANs need to communicate at L2, enable inter VLAN proxy ARP on an interface. Hosts between sub VLANs in a super VLAN cannot communicate by default. To allow these hosts to communicate, enable inter VLAN proxy ARP on the VLAN interface of the super VLAN. Only sub interface, VLANIF, vbridge and remote ap interfaces are supported.";
       }
       leaf local-proxy-enable {
         when "../../ifm:type='Vbdif'";
@@ -569,32 +595,32 @@ module huawei-arp {
         type boolean;
         default "false";
         description
-          "Enable/disable send unicast ARP aging probe messages for a dynamic ARP entry.";
+          "Enable/disable to send unicast ARP aging probe messages for a dynamic ARP entry.";
       }
       leaf dest-mac-check {
         type boolean;
         default "false";
         description
-          "Enable/disable check destination MAC addresses in ARP messages.";
+          "Enable/disable to check destination MAC addresses in ARP messages.";
       }
       leaf src-mac-check {
         type boolean;
         default "false";
         description
-          "Enable/disable check source MAC addresses in ARP messages.";
+          "Enable/disable to check source MAC addresses in ARP messages.";
       }
       leaf distribute-enable {
         when "../../ifm:type='Vbdif'";
         type boolean;
         default "false";
         description
-          "Enable/disable distribute gateway. Only VBD interfaces are supported.";
+          "Enable/disable to distribute gateway. Only VBD interfaces are supported.";
       }
       leaf gratuitous-send {
         type arpgratuitous-send;
         default "enable";
         description
-          "Enable or disable sending gratuitous ARP packet on interface.";
+          "Enable/disable to send gratuitous ARP packet on interface.";
       }
       leaf host-collect-enable {
         when "../../ifm:type='Vbdif'";
@@ -608,7 +634,7 @@ module huawei-arp {
         type boolean;
         default "false";
         description
-          "Enable/disable the configuration of generate rd table. Only VBD interfaces are supported.";
+          "Enable/disable the configuration of generate rd table. It's mutually exclusive with the configuration of enable L2 proxy under the corresponding BD instance.";
       }
       leaf broadcast-detect-interval {
         when "../../ifm:type='Vbdif'";
@@ -652,6 +678,16 @@ module huawei-arp {
         description
           "Enable/disable an interface to discard gratuitous ARP packets.";
       }
+      leaf broadcast-max-num {
+        when "(../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination) or (../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination)";
+        type uint16 {
+          range "0..500";
+        }
+        units "pps";
+        default "0";
+        description
+          "Maximum broadcast packet sending rate, expressed in the number of packets sent per second.";
+      }
     }
     container arp-status-detect {
       description
@@ -688,18 +724,70 @@ module huawei-arp {
           "Detect interval.";
       }
     }
+    container arp-port-security {
+      description
+        "Configure ARP port security.";
+           container l2-sub-interface {
+              when "../../ifm:l2-mode-enable='true'";
+              description
+                "Configure ARP security policy on Layer 2 sub-interface.";
+              leaf l2proxy-dyn-learn {
+                type boolean;
+                default "true";
+                description
+                  "Enable/disable dynamic ARP learning of L2 proxy ARP.";
+              }
+              leaf l2proxy-max-num {
+                type uint32 {
+                  range "0..1048576";
+                }
+                default "0";
+                description
+                  "Maximum number of ARP entries allowed for L2 proxy ARP.";
+              }
+        }
+     }
   }
   augment "/bd:bd/bd:instances/bd:instance" {
     description
       "List of ARP configurations under bridge-domain interface.";
       container arp-list {
         description
-          "Configure ARP Bridge-domain.";
+        "Configure ARP bridge domain.";
         leaf l2proxy-enable {
           type boolean;
           default "false";
           description
-            "Enable/disable L2 proxy.";
+            "Enable/disable L2 proxy. It's mutually exclusive with the configuration of generating redirect ARP under the corresponding VBD interface.";
+        }
+        choice broadcast-suppress {
+          description
+            "ARP broadcast suppress function.";			
+          case enable {
+            description
+              "ARP broadcast suppress.";
+            leaf broadcast-suppress-enable {
+              type empty;
+              description
+                "Enable/disable ARP broadcast suppress.";
+            }
+          }
+          case mismatch-discard-enable {
+            description
+              "ARP broadcast suppress mismatch discard.";			  
+            leaf broadcast-suppress-discard {
+              type empty;
+              description
+                "Enable/disable ARP broadcast suppress mismatch discard.";
+            }
+          }			  
+        }
+        leaf l2proxy-gw-enable {
+          when "../broadcast-suppress-enable or ../broadcast-suppress-discard";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable L2 proxy gateway mac.";
         }
       }
     }

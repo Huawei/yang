@@ -30,6 +30,12 @@ module huawei-qos-bd {
      Email: support@huawei.com";
   description
     "Quality of service for BD management.";
+  revision 2020-06-11 {
+    description
+      "Modify descriptions and add units.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-04-01 {
     description
       "Add new nodes.";
@@ -167,13 +173,13 @@ module huawei-qos-bd {
             type uint64;
             units "pps";
             description
-              "Rate of matched packets (unit: packet/s).";
+              "Rate of matched packets.";
           }
           leaf match-byte-rate {
             type uint64;
             units "Byte/s";
             description
-              "Rate of matched bytes (unit: byte/s).";
+              "Rate of matched bytes.";
           }
           leaf miss-packets {
             type uint64;
@@ -215,37 +221,37 @@ module huawei-qos-bd {
             type uint64;
             units "pps";
             description
-              "Rate of the packets that do not match the policy (unit: packet/s).";
+              "Rate of the packets that do not match the policy.";
           }
           leaf miss-byte-rate {
             type uint64;
             units "Byte/s";
             description
-              "Rate of the bytes that do not match the policy (unit: byte/s).";
+              "Rate of the bytes that do not match the policy.";
           }
           leaf match-pass-packet-rate {
             type uint64;
             units "pps";
             description
-              "Rate of the packets that match the policy and passed (unit: packet/s).";
+              "Rate of the packets that match the policy and passed.";
           }
           leaf match-pass-byte-rate {
             type uint64;
             units "Byte/s";
             description
-              "Rate of the bytes that match the policy and passed (unit: byte/s).";
+              "Rate of the bytes that match the policy and passed.";
           }
           leaf match-drop-packet-rate {
             type uint64;
             units "pps";
             description
-              "Rate of the packets that match the policy but are discarded (unit: packet/s).";
+              "Rate of the packets that match the policy but are discarded.";
           }
           leaf match-drop-byte-rate {
             type uint64;
             units "Byte/s";
             description
-              "Rate of the bytes that match the policy but are discarded (unit: byte/s).";
+              "Rate of the bytes that match the policy but are discarded.";
           }
           container classifier-statisticss {
             description
@@ -277,13 +283,13 @@ module huawei-qos-bd {
                 type uint64;
                 units "pps";
                 description
-                  "Rate of matched packets (unit: packet/s).";
+                  "Rate of matched packets.";
               }
               leaf match-byte-rate {
                 type uint64;
                 units "Byte/s";
                 description
-                  "Rate of matched bytes (unit: byte/s).";
+                  "Rate of matched bytes.";
               }
               leaf match-pass-packets {
                 type uint64;
@@ -313,25 +319,25 @@ module huawei-qos-bd {
                 type uint64;
                 units "pps";
                 description
-                  "Rate of the packets that match the policy and passed (unit: packet/s).";
+                  "Rate of the packets that match the policy and passed.";
               }
               leaf match-pass-byte-rate {
                 type uint64;
-                config false;
+                units "Byte/s";
                 description
-                  "Rate of the bytes that match the policy and passed (unit: byte/s).";
+                  "Rate of the bytes that match the policy and passed.";
               }
               leaf match-drop-packet-rate {
                 type uint64;
                 units "pps";
                 description
-                  "Rate of the packets that match the policy but are discarded (unit: packet/s).";
+                  "Rate of the packets that match the policy but are discarded.";
               }
               leaf match-drop-byte-rate {
                 type uint64;
                 units "Byte/s";
                 description
-                  "Rate of the bytes that match the policy but are discarded (unit: byte/s).";
+                  "Rate of the bytes that match the policy but are discarded.";
               }
               leaf filter-packets {
                 type uint64;
@@ -1412,7 +1418,7 @@ module huawei-qos-bd {
         type leafref {
           path "/bd:bd/bd:instances/bd:instance/bd:id";
         }
-        mandatory true;
+         mandatory true;
         description
           "Bridge domain ID.";
       }
@@ -1450,6 +1456,7 @@ module huawei-qos-bd {
           "List of traffic policy applications.";
         list domain-policy-apply {
           key "direction policy-name layer";
+          unique "direction";
           max-elements  "2";
           description
             "Configure application of a traffic policy.";
@@ -1533,6 +1540,7 @@ module huawei-qos-bd {
             "Configure PHB operation.";
           leaf operate-type {
             type operate-type;
+            must "(../map-type!='none' and ../operate-type='disable') or (../map-type='none' and ../operate-type='enable')";
             description
               "To select enable or disable phb.";
           }
@@ -1605,8 +1613,8 @@ module huawei-qos-bd {
             type qos:policy-apply-vxlan-layer-type;
             description
               "Classification based on Layer 2 or Layer 3 information.";
-            ext:operation-exclude update {
-              description "After the configuration is created, the node cannot be modified.";
+            ext:operation-exclude create|delete {
+              description "The node cannot be created or deleted.";
             }
           }
         }

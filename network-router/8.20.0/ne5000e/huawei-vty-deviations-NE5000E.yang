@@ -27,7 +27,7 @@ module huawei-vty-deviations-NE5000E {
     reference "Huawei private.";
   }
 
-  typedef vtyauthmodetype-deviations {
+  typedef vty-authmode-type-deviations {
     type enumeration {
       enum password {
         value 2;
@@ -51,7 +51,7 @@ module huawei-vty-deviations-NE5000E {
 
   deviation "/vty:vty/vty:lines/vty:line/vty:auth-mode" {
     deviate replace {
-      type vty-devs-NE5000E:vtyauthmodetype-deviations;
+      type vty-devs-NE5000E:vty-authmode-type-deviations;
     }
   }
 }

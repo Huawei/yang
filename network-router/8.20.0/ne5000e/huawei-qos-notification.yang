@@ -723,4 +723,26 @@ module huawei-qos-notification {
         "Direction.";
     }
   }
+  notification xqos-mode-channel-over-portshap-alarm {
+    description
+      "The channelization bandwidth configured on the interface [interface-name] exceeds the port shaping value.";
+    leaf interface-name {
+      type string {
+        length "1..511";
+      }
+      description
+        "Mode channel interface name.";
+    }
+  }
+  notification xqos-mode-channel-over-portshap-alarm-resume {
+    description
+      "The channelization bandwidth configured on the interface [interface-name] exceeds the port shaping value has cleared.";
+    leaf interface-name {
+      type string {
+        length "1..511";
+      }
+      description
+        "Mode channel interface name.";
+    }
+  }
 }

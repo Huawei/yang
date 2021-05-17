@@ -33,6 +33,12 @@ module huawei-if-ip {
     "This module contains a collection of YANG definitions for
     configuring IP implementations.
     Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.";
+  revision 2020-06-30 {
+    description
+      "Add units attribute.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-02-07 {
     description
       "The modifications in the code are synchronized to the YANG file.";
@@ -236,6 +242,7 @@ module huawei-if-ip {
 				  description
 					 "Config IPv4 address.";
 				  container addresses {
+				     must "count(address)=0 or count(address[type='main'])=1";
 					 description
 					   "List of IPv4 addresses. The IPv4 address of the DCN interface cannot be created, modified, or deleted.";
 					 list address {
@@ -274,7 +281,7 @@ module huawei-if-ip {
 				    type leafref {
 				      path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
 			            }
-                                    must "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+                                    must "../../if-ip:name!=../name and /ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast'] and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../if-ip:name]/ifm:vrf-name";
 				    description
 				      "Name of an unnumbered interface.";
 				  }
@@ -350,6 +357,7 @@ module huawei-if-ip {
 			type uint32 {
 			  range "0..50000";
 			}
+			units "Byte";
             ext:dynamic-default;
 			description
 			  "IPv6 maximum transmission unit of an interface.

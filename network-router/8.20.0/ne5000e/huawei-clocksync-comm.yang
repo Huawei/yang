@@ -257,7 +257,7 @@ module huawei-clocksync-comm {
             type leafref {
                 path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
             }
-            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE-200GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE-50G' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE-100G' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE-50|100G'";
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE'";
             description
               "Logical FlexE interface name.";
           }

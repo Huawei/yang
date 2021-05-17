@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-mpls-notification {
   yang-version 1;
@@ -28,6 +28,18 @@ module huawei-mpls-notification {
     Email: support@huawei.com";
   description
     "Notification of MPLS.";
+  revision 2020-03-17 {
+    description
+      "Modified some description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-26 {
+    description
+      "Imported huawei-extension.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-07-08 {
     description
       "Initial revision.";
@@ -117,6 +129,7 @@ module huawei-mpls-notification {
     }
     leaf ssn-disco-time {
       type uint32;
+      units s;
       description
         "Session keepalive time.";
     }

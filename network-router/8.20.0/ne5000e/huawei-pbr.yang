@@ -354,6 +354,12 @@ module huawei-pbr {
                   description
                     "Name of a tunnel.";
                 }
+                leaf route-forward {
+                  type boolean;
+                  default "false";
+                  description
+                  "Enable/disable route forward, Support P2P (RSVP-TE, SR-TE) Tunnel.";
+                }
               
             }
           }
@@ -555,7 +561,7 @@ module huawei-pbr {
                     }
                     leaf nqa-instance {
                       type leafref {
-                        path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+                        path "/nqa:nqa/nqa:instances/nqa:instance[nqa:admin-name=current()/../nqa-admin-name]/nqa:test-name";
                       }
                       must "../nqa-admin-name";
                       description
@@ -592,7 +598,7 @@ module huawei-pbr {
                     }
                     leaf nqa-instance {
                     type leafref {
-                      path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+                      path "/nqa:nqa/nqa:instances/nqa:instance[nqa:admin-name=current()/../nqa-admin-name]/nqa:test-name";
                     }
                       mandatory true;
                       description
@@ -670,11 +676,12 @@ module huawei-pbr {
               }
               container multi-nhp-interfaces {
                 description
-                 "List of nexthop list, min-elements:2,max-elements:16.";
+                 "List of nexthop list.";
                 list multi-nhp-interface {
                   key "nexthop-address if-name";
+                  unique "nexthop-address";
                   min-elements 2;
-                  max-elements 16;
+                  max-elements 42;
                   description
                     "Configure nexthop.";
                   leaf nexthop-address {
@@ -697,10 +704,12 @@ module huawei-pbr {
            description
              "Redirect IPv4 multinhp.";              
             container ipv4-multinhp {
+              must "count(./multi-nhps/multi-nhp)>0";
               description
                "Configure redirect IPv4.";              
               leaf routing-filter {
               type routing-type;
+              default "false";
               description
                 "Routing filter default and blackhole route.";
               }
@@ -744,10 +753,12 @@ module huawei-pbr {
             description
                "Private VRF LSP.";           
             container ipv4-multinhp-vpn {
+               must "count(./multi-vpns/multi-vpn)>0";
                description
                "Configure private VRF LSP.";             
               leaf routing-filter {
-              type routing-type;               
+              type routing-type;
+              default "false";               
               description
                 "Routing filter default and blackhole route.";
               }
@@ -771,9 +782,10 @@ module huawei-pbr {
               } 
               container multi-vpns {
                 description
-                  "List of nexthop list, min-elements:2,max-elements:16.";
+                  "List of nexthop list.";
                 list multi-vpn {
                   key "nexthop-address vrf-name";
+                  unique "nexthop-address";
                   min-elements 2;
                   max-elements 16;
                   description
@@ -801,7 +813,7 @@ module huawei-pbr {
                   }
                   leaf nqa-instance {
                     type leafref {
-                      path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+                      path "/nqa:nqa/nqa:instances/nqa:instance[nqa:admin-name=current()/../nqa-admin-name]/nqa:test-name";
                     }
                     must "../nqa-admin-name";
                     description
@@ -842,9 +854,10 @@ module huawei-pbr {
               }
               container multi-nqas {
                 description
-                  "List of nexthop list, min-elements:2,max-elements:16.";
+                  "List of nexthop list.";
                 list multi-nqa {
                   key "nexthop-address nqa-admin-name nqa-instance";
+                  unique "nexthop-address";
                   min-elements 2;
                   max-elements 16;
                   description
@@ -863,7 +876,7 @@ module huawei-pbr {
                   }
                   leaf nqa-instance {
                     type leafref {
-                      path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+                      path "/nqa:nqa/nqa:instances/nqa:instance[nqa:admin-name=current()/../nqa-admin-name]/nqa:test-name";
                     }
                     description
                       "NQA instance.";
@@ -1005,7 +1018,7 @@ module huawei-pbr {
                     }
                     leaf nqa-instance {
                     type leafref {
-                      path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+                      path "/nqa:nqa/nqa:instances/nqa:instance[nqa:admin-name=current()/../nqa-admin-name]/nqa:test-name";
                     }
                       must "../nqa-admin-name";
                       description
@@ -1042,7 +1055,7 @@ module huawei-pbr {
                     }
                     leaf nqa-instance {
                     type leafref {
-                      path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+                      path "/nqa:nqa/nqa:instances/nqa:instance[nqa:admin-name=current()/../nqa-admin-name]/nqa:test-name";
                     }
                       mandatory true;
                       description
@@ -1098,9 +1111,10 @@ module huawei-pbr {
               }
               container multi-nhp-interfaces {
                 description
-                 "List of nexthop and interface list, min-elements:2,max-elements:16.";
+                 "List of IPv6 multi nexthop.";
                 list multi-nhp-interface {
                  key "nexthop-address if-name";
+                 unique "nexthop-address";
                  min-elements 2;
                  max-elements 16;
                  description
@@ -1125,10 +1139,12 @@ module huawei-pbr {
             description
               "Redirect IPv6 multinhp.";
             container ipv6-multinhp {
+              must "count(./multi-nhps/multi-nhp)>0";
               description
                "Configure Redirect IPv6 multinhp.";
               leaf routing-filter {
                 type routing-type;
+                default "false";
                 description
                   "Routing filter default and blackhole route.";
               }
@@ -1166,6 +1182,7 @@ module huawei-pbr {
             description
              "Private VRF LSP.";           
             container ipv6-multinhp-vpn {
+			  must "count(./multi-vpns/multi-vpn)>0";
               description
                 "Configure private VRF LSP.";
               leaf routing-filter {
@@ -1187,9 +1204,11 @@ module huawei-pbr {
               }                
               container multi-vpns {
                 description
-                  "List of nexthop list, min-elements:2,max-elements:16.";
+                  "List of nexthop list.";
                 list multi-vpn {                   
                   key "nexthop-address vrf-name";
+                  unique "nexthop-address";
+                  min-elements 2;
                   max-elements 16;
                   description
                     "Configure nexthop.";
@@ -1216,7 +1235,7 @@ module huawei-pbr {
                   }
                   leaf nqa-instance {
                     type leafref {
-                      path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+                      path "/nqa:nqa/nqa:instances/nqa:instance[nqa:admin-name=current()/../nqa-admin-name]/nqa:test-name";
                     }
                     must "../nqa-admin-name";
                     description
@@ -1251,9 +1270,10 @@ module huawei-pbr {
               }
               container multi-nqas {
                 description
-                  "List of nexthop list, min-elements:2,max-elements:16.";
+                  "List of nexthop list.";
                 list multi-nqa {
                   key "nexthop-address nqa-admin-name nqa-instance";
+                  unique "nexthop-address";
                   min-elements 2;
                   max-elements 16;
                   description
@@ -1272,7 +1292,7 @@ module huawei-pbr {
                   }
                   leaf nqa-instance {
                     type leafref {
-                      path "/nqa:nqa/nqa:instances/nqa:instance/nqa:test-name";
+                      path "/nqa:nqa/nqa:instances/nqa:instance[nqa:admin-name=current()/../nqa-admin-name]/nqa:test-name";
                     }
                     description
                       "NQA instance.";

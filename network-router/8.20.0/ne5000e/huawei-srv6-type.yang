@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-srv6-type {
   belongs-to huawei-srv6 {
@@ -17,6 +17,24 @@ submodule huawei-srv6-type {
      Email: support@huawei.com";
   description
     "SRv6 type defined file.";
+  revision 2020-03-03 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-24 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Add new type.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -65,82 +83,98 @@ submodule huawei-srv6-type {
       enum "be" {
         value 0;
         description
-          "BE.";
+          "Service name is BE.";
       }
       enum "af1" {
         value 1;
         description
-          "AF1.";
+          "Service name is AF1.";
       }
       enum "af2" {
         value 2;	  
         description
-          "AF2.";
+          "Service name is AF2.";
       }
       enum "af3" {
         value 3;	  
         description
-          "AF3.";
+          "Service name is AF3.";
       }
       enum "af4" {
         value 4;	  
         description
-          "AF4.";
+          "Service name is AF4.";
       }
       enum "ef" {
         value 5;	  
         description
-          "EF.";
+          "Service name is EF.";
       }
       enum "cs6" {
         value 6;	  
         description
-          "CS6.";
+          "Service name is CS6.";
       }
       enum "cs7" {
         value 7;	  
         description
-          "CS7.";
+          "Service name is CS7.";
       }
     }
     description
-      "Service type.";
+      "Service type for the packet.";
   }
   typedef color {
     type enumeration {
       enum "green" {
         value 0;	  
         description
-          "Green.";
+          "Green Color.";
       }
       enum "yellow" {
         value 1;	  
         description
-          "Yellow.";
+          "Yellow Color.";
       }
       enum "red" {
         value 2;	  
         description
-          "Red.";
+          "Red Color.";
       }	
     }
     description
-      "Color type.";
+      "Color type for the packet.";
   }
   typedef inner-type {
     type enumeration {
       enum "null" {
         value 0;	  
         description
-          "Green.";
+          "Indicates that the inner type is not configured.";
       }
       enum "ipv4" {
         value 1;	  
         description
-          "Yellow.";
+          "The inner type is IPv4.";
       }
     }
     description
       "Indicates the type of the original packet sent from the SFF to the SF.";
   }  
+  typedef match-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "The mapping policy type is none.";
+      }
+      enum "sr-policy-dscp" {
+        value 1;
+        description
+          "SR Policy DSCP.";
+      }			
+    }
+    description
+      "Mapping policy type.";
+  }    
 }

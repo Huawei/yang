@@ -39,12 +39,35 @@ module huawei-ietf-netconf-acm-deviations-NE5000E {
       "The modifications in the schema file are synchronized to the YANG file.";
     reference "Huawei private.";
   }
-  revision 2019-05-24 {
+  revision 2019-05-22 {
     description
       "Initial revision.";
     reference
       "RFC 6536: Network Configuration Protocol (NETCONF)
                  Access Control Model";
+  }
+
+  typedef node-instance-identifier-deviations {
+    type yang:xpath1.0;
+    description
+      "Path expression used to represent a special
+       data node instance identifier string.
+       A node-instance-identifier value is an
+       unrestricted YANG instance-identifier expression.
+       All the same rules as an instance-identifier apply
+       except predicates for keys are optional.
+       If a key predicate is missing, then the node-instance-identifier
+       represents all possible server instances for that key.
+       This XPath expression is evaluated in the following context:
+          The set of namespace declarations are those in scope on
+           the leaf element where this type is used.
+          The set of variable bindings contains one variable,
+           'USER', which contains the name of the user of the current
+            session.
+          The function library is the core function library, but
+           note that due to the syntax restrictions of an
+           instance-identifier, no functions are allowed.
+          The context node is the root node in the data tree.";
   }
 
   typedef group-name-type-deviations {
@@ -63,29 +86,6 @@ module huawei-ietf-netconf-acm-deviations-NE5000E {
     }
     description
       "General Purpose Username string.";
-  }
-
-  typedef node-instance-identifier-deviations {
-    type yang:xpath1.0;
-    description
-      "Path expression used to represent a special
-       data node instance identifier string.
-       A node-instance-identifier value is an
-       unrestricted YANG instance-identifier expression.
-       All the same rules as an instance-identifier apply
-       except predicates for keys are optional. If a key
-       predicate is missing, then the node-instance-identifier
-       represents all possible server instances for that key.
-       This XPath expression is evaluated in the following context:
-        o The set of namespace declarations are those in scope on
-           the leaf element where this type is used.
-        o The set of variable bindings contains one variable,
-           'USER', which contains the name of the user of the current
-            session.
-        o The function library is the core function library, but
-           note that due to the syntax restrictions of an
-           instance-identifier, no functions are allowed.
-        o The context node is the root node in the data tree.";
   }
 
   deviation "/nacm:nacm/nacm:enable-nacm" {

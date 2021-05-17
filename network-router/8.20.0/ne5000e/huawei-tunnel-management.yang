@@ -94,7 +94,12 @@ module huawei-tunnel-management {
       enum "srv6-te-policy" {
         value 52;
         description
-          "SRv6 TE policy, used to define the selection sequence of tunnel types.";
+          "SRv6 TE Policy, used to define the selection sequence of tunnel types.";
+      }
+      enum "srv6-te-policy-group" {
+        value 55;
+        description
+          "SRv6 TE Policy group, used to define the selection sequence of tunnel types.";
       }
     }
     description
@@ -212,6 +217,11 @@ module huawei-tunnel-management {
         description
           "SR-LSP tunnel.";
       }
+      enum "vxlan6-nvo3" {
+        value 42;
+        description
+          "VXLAN6_NVO3 tunnel.";
+      }
       enum "srv6" {
         value 43;
         description
@@ -255,7 +265,12 @@ module huawei-tunnel-management {
       enum "srv6-te-policy" {
         value 52;
         description
-          "SRv6 TE policy tunnel.";
+          "SRv6 TE Policy.";
+      }
+      enum "srv6-te-policy-group" {
+        value 55;
+        description
+          "SRv6 TE Policy group.";
       }
     }
     description
@@ -456,13 +471,20 @@ module huawei-tunnel-management {
                   description
                     "Specify the maximum number of tunnels for load balancing. The maximum value varies according to hardware. To query the value, you can perform a get operation.";
                 }
+                leaf unmix {
+                  type boolean;
+                  must "(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'] and ../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy-group'] and ../unmix = 'true') or (../unmix = 'false')";
+                  default "false";
+                  description
+                    "Enable/disable mixed selection.";
+                }
                 container select-tunnel-types {
                   description
                     "List of different types of tunnels that are selected in order of priority.";
                   list select-tunnel-type {
                     key "type";
                     min-elements 1;
-                    max-elements 1;
+                    max-elements 2;
                     ordered-by user;
                     description
                       "Configure a tunnel type.";

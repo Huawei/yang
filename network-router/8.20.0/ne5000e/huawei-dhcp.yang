@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-dhcp {
   yang-version 1;
@@ -26,6 +26,9 @@ module huawei-dhcp {
   import ietf-yang-types {
     prefix yang;
   }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
   include huawei-dhcp-relay;
   include huawei-dhcp-server;
   include huawei-dhcp-snooping;
@@ -41,7 +44,13 @@ module huawei-dhcp {
      Email: support@huawei.com";
   description
     "Dynamic Host Configuration Protocol.";
-  revision 2019-12-17 {
+  revision 2020-04-10 {
+    description
+      "Add session-car.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-03 {
     description
       "Initial revision.";
     reference
@@ -168,6 +177,113 @@ module huawei-dhcp {
           description
             "Enable/disable DHCP ignore hostname.";
         }
+        leaf rate-limit-enable {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable DHCP packets rate limit.";
+        }
+        leaf rate-limit {
+          type uint32 {
+            range "1..4000";
+          }
+          units "pps";
+          default "800";
+          description
+            "DHCP packets rate limit value.";
+        }
+        leaf aging-time {
+          type uint32 {
+            range "1..1440";
+          }
+          units "min";
+          default "30";
+          description
+            "DHCP session CAR aging time.";
+        }
+      }
+      container session-car {
+        must "pir-value >= cir-value and pbs-value >= cbs-value";
+        description
+          "Configure session CAR.";
+        leaf enable {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable session CAR.";
+        }
+        leaf cir-value {
+          type uint32 {
+            range "0..1000000";
+          }
+          units "kbit/s";
+          default "512";
+          description
+            "Specify the session CAR CIR value.";
+        }
+        leaf cbs-value {
+          type uint32 {
+            range "0..9000000";
+          }
+          units "Byte";
+          default "64000";
+          description
+            "Specify the session CAR CBS value.";
+        }
+        leaf pir-value {
+          type uint32 {
+            range "0..1000000";
+          }
+          units "kbit/s";
+          default "1200";
+          description
+          "Specify the session CAR PIR value.";
+        }
+        leaf pbs-value {
+          type uint32 {
+            range "0..9000000";
+          }
+          units "Byte";
+          default "150000";
+          description
+          "Specify the session CAR PBS value.";
+        }
+      }
+      container chasten {
+        description
+          "Configure DHCP user connection throttling.";
+        leaf enable {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable DHCP user connection throttling.";
+        }
+        leaf request-packets {
+          type uint32 {
+            range "1..10000";
+          }
+          default "10";
+          description
+            "Request packets.";
+        }
+        leaf check-period {
+          type uint32 {
+            range "1..3600";
+          }
+          units "s";
+          default "180";
+          description
+            "Check period.";
+        }
+        leaf restrain-period {
+          type uint32 {
+            range "1..3600";
+          }
+          units "s";
+          default "300";
+          description
+            "Restrain period.";
+        }
       }
     }
     container relay {
@@ -195,14 +311,16 @@ module huawei-dhcp {
     description "Extend interface attribute.";
     container dhcp-if {
       description
-        "Configure dhcp attributes on an interface.";
+        "Configure DHCP attributes on an interface.";
       container dhcp-packet-setting {
+        when "(not(../../ifm:l2-mode-enable='true'))";
         description
-          "Configure dhcp packets.";
+          "Configure DHCP packets.";
         leaf ip-ttl {
           type uint8 {
             range "1..255";
           }
+          must "not(../../../dhcp:dhcp-client-if/dhcp:address-allocation)";
           description
             "IP time to live.";
         }
@@ -210,6 +328,7 @@ module huawei-dhcp {
           type uint8 {
             range "0..63";
           }
+          must "not(../../../dhcp:dhcp-client-if/dhcp:address-allocation)";
           description
             "DSCP outbound.";
         }
@@ -445,12 +564,221 @@ module huawei-dhcp {
         }
       }
     }
+    container dhcp-snooping-if {
+      description
+        "Configure DHCP snooping interface attributes.";
+      container basic-attribute {
+        when "/dhcp:dhcp/dhcp:snooping/dhcp:global/dhcp:enable='true'";
+        description
+        "Configure Basic DHCP snooping attribute on the interface.";
+        leaf enable {
+          type boolean;
+          must "(../../../ifm:l2-mode-enable!='true') or (/bd:bd/bd:instances/bd:instance/bd:service-points/bd:service-point[bd:interface-name = current()/../../../ifm:name])";
+          default "false";
+          description
+            "Enable/disable DHCP snooping on an interface. DHCP snooping cannot be enabled on both a VLANIF interface and a VLAN, DHCP snooping cannot be enabled both on a VBDIF interface and in a BD, DHCP snooping cannot be enabled on both a VBDIF interface and a Layer 2 sub-interface.";
+        }
+        leaf trust-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable trusted interfaces.";
+        }
+        leaf check-arp-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable ARP check.";
+        }
+        leaf alarm-arp-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the ARP alarm function.";
+        }
+        leaf alarm-arp-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "ARP alarm threshold.";
+        }
+        leaf check-ip-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable IP check.";
+        }
+        leaf alarm-ip-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the IP alarm function.";
+        }
+        leaf alarm-ip-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "IP alarm threshold.";
+        }
+        leaf alarm-reply-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the alarm function for discarded untrusted packets.";
+        }
+        leaf alarm-reply-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "The alarm threshold is configured for discarded untrusted packets.";
+        }
+        leaf check-mac-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable consistency check on MAC addresses.";
+        }
+        leaf alarm-mac-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable consistency check on MAC addresses.";
+        }
+        leaf alarm-mac-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "The alarm threshold for the consistency check on MAC addresses.";
+        }
+        leaf check-user-bind-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the check on DHCP snooping binding table.";
+        }
+        leaf alarm-user-bind-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the alarm function for discarded packets that do not match entries in the DHCP snooping binding table.";
+        }
+        leaf alarm-user-bind-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "The alarm threshold is configured for the DHCP snooping binding table.";
+        }
+        leaf max-user-number {
+          type uint32 {
+            range "1..16384";
+          }
+          description
+            "Maximum number of users allowed on a DHCP snooping-enabled interface.";
+        }
+        leaf alarm-user-limit-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the alarm function for the maximum number of users.";
+        }
+        leaf alarm-user-limit-threshold {
+          type uint16 {
+            range "1..100";
+          }
+          default "100";
+          description
+            "Alarm threshold for the maximum number of users.";
+        }
+      }
+      container static-binds {
+        description
+        "List of static binding table on an interface.";
+        list static-bind {
+          key "ip-address vlan-id cevlan-id";
+          description
+            "Configure static binding table on an interface.";
+          leaf ip-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "IP address.";
+          }
+          leaf vlan-id {
+            type uint16 {
+              range "0..4094";
+            }
+            must "(../../../../ifm:class='main-interface' and ../vlan-id=0) or
+                  (../../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination/ethernet:dot1q-vlans/ethernet:dot1q-vlans/ethernet:vlan-list and ../vlan-id!=0) or
+                  (../../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination/ethernet:qinq-vids/ethernet:qinq-vid and ../vlan-id!=0) or
+                  (../../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q and ../vlan-id=../../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q/ethernet:vlan-type-vid)";
+            description
+              "VLAN ID, 0 means NULL.";
+          }
+          leaf cevlan-id {
+            type uint16 {
+              range "0..4094";
+            }
+            must "(../../../../ifm:class='main-interface' and ../cevlan-id=0) or
+                  (../../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination/ethernet:dot1q-vlans/ethernet:dot1q-vlans/ethernet:vlan-list and ../cevlan-id=0) or
+                  (../../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination/ethernet:qinq-vids/ethernet:qinq-vid and ../cevlan-id!=0) or
+                  (../../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q and ../cevlan-id=0)";
+            description
+              "CE VLAN ID, 0 means NULL.";
+          }
+          leaf mac-address {
+            type pub-type:mac-address {
+              length "0..255";
+              pattern '([0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}(-[0-9a-f]{4}){2})';
+            }
+            description
+              "MAC address.";
+          }
+        }
+      }
+    }
   }
   augment "/vlan:vlan/vlan:vlans/vlan:vlan" {
     description "Extend VLAN attribute.";
     container dhcp-vlan {
       description
         "Configure DHCP attributes in a VLAN.";
+      container interface-option82-formats {
+        description
+          "List of configuring the format of the Option 82 field for an interface in the specified VLAN.";
+        list interface-option82-format {
+          key "if-name";
+          description
+            "Configure the format of the Option 82 field for an interface in the specified VLAN.";
+          leaf if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute)";
+            description
+              "Interface name. The interface must be the member interface of this VLAN.";
+          }
+          leaf option82-format {
+            type option82-format;
+            mandatory true;
+            description
+              "DHCP option82 format.";
+          }
+          leaf user-define-text {
+            when "../option82-format='self-define'";
+            type string {
+              length "1..255";
+              pattern '([^\t]{0,})';
+            }
+            mandatory true;
+            description
+              "DHCP option82 user-defined string.";
+          }
+        }
+      }
       container interface-option82-insert-settings {
         description
           "List of configuring all interfaces in a VLAN to insert or forcibly insert DHCP Option82 to DHCP packets.";
@@ -462,6 +790,7 @@ module huawei-dhcp {
             type leafref {
               path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
             }
+            must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute)";
             description
               "Interface name. The interface must be the member interface of this VLAN.";
           }
@@ -517,6 +846,154 @@ module huawei-dhcp {
         }
       }
     }
+    container dhcp-snooping-vlan {
+      when "/dhcp:dhcp/dhcp:snooping/dhcp:global/dhcp:enable='true'";
+      description
+        "Configure DHCP snooping VLAN attributes.";
+      container basic-attribute {
+        description
+          "Configure basic attributes of DHCP snooping on a VLAN.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable DHCP snooping in a VLAN. DHCP snooping cannot be enabled on both a VLANIF interface and a VLAN, DHCP snooping cannot be enabled both on a VBDIF interface and in a BD, DHCP snooping cannot be enabled on both a VBDIF interface and a Layer 2 sub-interface.";
+        }
+        leaf trust-enable {
+          type boolean;
+          default "false";
+           description
+            "Enable/disable configuration information of a trusted VLAN.";
+        }
+        leaf check-arp-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable ARP check.";
+        }
+        leaf alarm-arp-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the ARP alarm function.";
+        }
+        leaf alarm-arp-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "ARP alarm threshold.";
+        }
+        leaf check-ip-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable IP check.";
+        }
+        leaf alarm-ip-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the IP alarm function.";
+        }
+        leaf alarm-ip-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "IP alarm threshold.";
+        }
+        leaf alarm-reply-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the alarm function when the number of discarded untrusted packets reaches the configured threshold.";
+        }
+        leaf alarm-reply-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "Untrusted packet discarding alarm threshold.";
+        }
+        leaf check-mac-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable consistency check on MAC address.";
+        }
+        leaf alarm-mac-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the consistency check alarm on MAC address.";
+        }
+        leaf alarm-mac-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "Consistency check alarm threshold on MAC address.";
+        }
+        leaf check-user-bind-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the check on DHCP snooping binding table.";
+        }
+        leaf alarm-user-bind-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the user binding table alarm.";
+        }
+        leaf alarm-user-bind-threshold {
+          type uint16 {
+            range "1..1000";
+          }
+          description
+            "User binding table alarm threshold.";
+        }
+        leaf max-user-number {
+          type uint16 {
+            range "1..16384";
+          }
+          description
+            "Maximum number of users allowed on all DHCP snooping-enabled interfaces in a VLAN.";
+        }
+        leaf alarm-user-limit-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the user limit alarm.";
+        }
+        leaf alarm-user-limit-threshold {
+          type uint16 {
+            range "1..100";
+          }
+          default "100";
+          description
+            "User limit alarm threshold.";
+        }
+      }
+      container vlan-trusts {
+        description
+          "List of configuring informations of trusted interfaces.";
+        list vlan-trust {
+          key "if-name";
+          description
+            "Configure a trusted interface in the specified VLAN.";
+          leaf if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute)";
+            description
+              "Names of trusted interface. The interface must be the member interface of this VLAN.";
+          }
+        }
+      }
+    }
   }
   augment "/bd:bd/bd:instances/bd:instance" {
     description "Extend BD attribute.";
@@ -546,6 +1023,180 @@ module huawei-dhcp {
               description
                 "Configure all interfaces in a BD to forcibly insert DHCP option82 to DHCP packets.";
             }
+          }
+        }
+      }
+    }
+    container dhcp-snooping-bd {
+      description
+        "Configure information of DHCP snooping on a bridge-domain.";
+      container basic-attribute {
+        when "/dhcp:dhcp/dhcp:snooping/dhcp:global/dhcp:enable='true'";
+        description
+          "Configure basic attributes of DHCP snooping on bridge-domain.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable DHCP snooping in a BD. DHCP snooping cannot be enabled on both a VLANIF interface and a VLAN, DHCP snooping cannot be enabled both on a VBDIF interface and in a BD, DHCP snooping cannot be enabled on both a VBDIF interface and a Layer 2 sub-interface.";
+        }
+        leaf trust-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable trusted informations on a BD.";
+        }
+        leaf nni-trust-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable trusted network node interface.";
+        }
+        leaf check-arp-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable ARP check.";
+        }
+        leaf alarm-arp-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the ARP alarm function.";
+        }
+        leaf alarm-arp-threshold {
+          type uint32 {
+            range "1..1000";
+          }
+          description
+            "ARP alarm threshold.";
+        }
+        leaf check-ip-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable IP check.";
+        }
+        leaf alarm-ip-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the IP alarm function.";
+        }
+        leaf alarm-ip-threshold {
+          type uint32 {
+            range "1..1000";
+          }
+          description
+            "IP alarm threshold.";
+        }
+        leaf alarm-reply-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable alarm of dropping untrusted packet.";
+        }
+        leaf alarm-reply-threshold {
+          type uint32 {
+            range "1..1000";
+          }
+          description
+            "Threshold of dropping untrusted packet alarm.";
+        }
+        leaf check-mac-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable MAC check.";
+        }
+        leaf alarm-mac-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable consistency check alarm on MAC addresses.";
+        }
+        leaf alarm-mac-threshold {
+          type uint32 {
+            range "1..1000";
+          }
+          description
+            "Consistency check alarm threshold on MAC addresses.";
+        }
+        leaf check-request-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the user binding table check.";
+        }
+        leaf alarm-request-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the user binding table alarm function.";
+        }
+        leaf alarm-request-threshold {
+          type uint32 {
+            range "1..1000";
+          }
+          description
+            "User bind table alarm threshold.";
+        }
+        leaf max-user-number {
+          type uint32 {
+            range "1..16384";
+          }
+          description
+            "Maximum number of DHCP snooping users in a BD.";
+        }
+        leaf alarm-user-limit-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the user limit alarm.";
+        }
+        leaf alarm-user-limit-threshold {
+          type uint32 {
+            range "1..100";
+          }
+          default "100";
+          description
+            "User limit alarm threshold.";
+        }
+      }
+      container static-binds {
+        description
+          "List of static binding tables on BDs.";
+        list static-bind {
+          must "(ce-vlan!=0 and pe-vlan!=0) or (ce-vlan=0)";
+          key "ip-address pe-vlan ce-vlan";
+          description
+            "Configure a static binding table of a BD.";
+          leaf ip-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "IP address.";
+          }
+          leaf pe-vlan {
+            type uint16 {
+              range "0..4094";
+            }
+            description
+              "PE VLAN ID, 0 means NULL.";
+          }
+          leaf ce-vlan {
+            type uint16 {
+              range "0..4094";
+            }
+            description
+              "CE VLAN ID, 0 means NULL.";
+          }
+          leaf mac-address {
+            type pub-type:mac-address {
+              length "0..255";
+              pattern '([0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}(-[0-9a-f]{4}){2})';
+            }
+            description
+              "MAC address.";
           }
         }
       }

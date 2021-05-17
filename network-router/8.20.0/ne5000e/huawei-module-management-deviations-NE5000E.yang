@@ -23,11 +23,20 @@ module huawei-module-management-deviations-NE5000E {
 
   revision 2019-12-10 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference "Huawei private.";
   }
 
   deviation "/module-management:module-management/module-management:operation-schedules/module-management:operation-schedule/module-management:name" {
+    deviate not-supported;
+  }
+  deviation "/module-management:module-management/module-management:download-package-schedule" {
+    deviate not-supported;
+  }
+  deviation "/module-management:module-management/module-management:download-package-load-path" {
+    deviate not-supported;
+  }
+  deviation "/module-management:download-module-file" {
     deviate not-supported;
   }
 }

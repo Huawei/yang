@@ -27,7 +27,7 @@ module huawei-tty-deviations-NE5000E {
     reference "Huawei private.";
   }
 
-  typedef ttyauthmodetype-deviations {
+  typedef tty-authmode-type-deviations {
     type enumeration {
       enum password {
         value 2;
@@ -54,7 +54,7 @@ module huawei-tty-deviations-NE5000E {
   }
   deviation "/tty:tty/tty:console/tty:auth-mode" {
     deviate replace {
-      type tty-devs-NE5000E:ttyauthmodetype-deviations;
+      type tty-devs-NE5000E:tty-authmode-type-deviations;
     }
   }
   deviation "/tty:tty/tty:aux" {

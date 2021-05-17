@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-snmp {
     namespace "urn:huawei:yang:huawei-snmp";
@@ -13,8 +13,8 @@ module huawei-snmp {
     import huawei-extension {
       prefix ext;
     }
-    include huawei-snmp-type;
-    
+    include huawei-snmp-type;  
+
     organization
       "Huawei Technologies Co., Ltd.";
     contact
@@ -26,24 +26,72 @@ module huawei-snmp {
        Email: support@huawei.com";
     description
       "SNMP.";
+  revision 2020-04-13 {
+    description
+      "YANG refactoring extension.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-27 {
+    description
+      "YANG refactoring extension.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-16 {
+    description
+      "Modify description syntax.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-10 {
+    description
+      "Modify description syntax.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-07 {
+    description
+      "Modify description engine ID.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-26 {
+    description
+      "Modify description syntax.";
+    reference
+      "Huawei private.";
+  }
+    revision 2019-11-29 {
+      description
+        "YANG refactoring extension.";
+      reference
+        "Huawei private.";
+}
+    revision 2019-10-26 {
+      description
+        "YANG refactoring extension.";
+      reference
+        "Huawei private.";
+    }
     revision 2019-04-23 {
       description
-        "Initial revision.";
+        "Init revision.";
       reference
         "Huawei private.";
     }
     ext:task-name "snmp";
     container snmp {
         description
-        "SNMP.";
+            "SNMP.";
         container agent-flag {
             description
-            "Configure SNMP agent parameters.";
+                "Configure SNMP agent parameters.";
             leaf agent-enable {
                 type boolean;
                 default "false";
                 description
-                "Enable/disable SNMP Agent Enable Switch.";
+                    "Enable/disable SNMP Agent Switch.";
             }
         }
         container engine {
@@ -53,13 +101,12 @@ module huawei-snmp {
                 type snmp-version;
                 default "v3";
                 description
-                    "Version Supported by SNMP Engine.";
+                    "Version supported by SNMP engine.";
             }
             leaf id {
                 type snmp-engine-id;
                 description
-                    "Engine ID of the SNMP, official unique identifier. By default, the VRP uses an internal algorithm to automatically generate an engine ID. 
-                     The engine ID consists of an enterprise number and device information. When the engine ID changes, all existing SNMP USM users will be deleted.";
+                    "Engine ID of the SNMP, official unique identifier. By default, the VRP uses an internal algorithm to automatically generate an engine ID. The engine ID consists of an enterprise number and device information. When the engine ID changes, all existing SNMP USM users will be deleted.";
             }
             leaf max-msg-size {
                 type int32 {
@@ -67,20 +114,19 @@ module huawei-snmp {
                 }
                 default "12000";
                 description
-                "Maximum Length of Packet Supported by SNMP Engine.";
+                    "Maximum length of packet supported by SNMP engine.";
             }
         }
         container system {
             description
-            "Configure SNMP parameters.";
+                "Configure SNMP parameters.";
             leaf trap-source-interface-name {
                 type pub-type:if-name;
                 description
-                    "The specified source interface must exist and an IP address must be configured on the interface.";
+                    "Name of the interface to send the trap message.";
             }
-            leaf source-ipv4-address {
+            leaf trap-source-ipv4-address {
                 type inet:ipv4-address-no-zone;
-                status deprecated;
                 description
                     "Source IP to send trap/notification message.";
             }
@@ -91,7 +137,7 @@ module huawei-snmp {
                 units s;
                 default "15";
                 description
-                    "Wait for the confirmation of the Sent Alarm till Timeout.";
+                    "Wait for the confirmation of the sent alarm till timeout.";
             }
             leaf inform-resend-times {
                 type uint32 {
@@ -99,7 +145,7 @@ module huawei-snmp {
                 }
                 default "3";
                 description
-                    "Maximum Number of Times the Trap Packet Should be Sent if Confirmation of Alarm is not Received.";
+                    "Maximum number of times the trap packet should be sent if confirmation of alarm is not received.";
             }
             leaf inform-pend-number {
                 type uint32 {
@@ -107,7 +153,7 @@ module huawei-snmp {
                 }
                 default "39";
                 description
-                    "Number of Alarms sent for Which Confirmation is Still Pending.";
+                    "Number of alarms sent for which confirmation is still pending.";
             }
             leaf packet-priority {
                 type uint32 {
@@ -145,43 +191,43 @@ module huawei-snmp {
                 length "1..32";
                 }
                 description
-                "Snmp protocol level ACL.";
+                    "SNMP protocol level ACL.";
             }
             leaf community-cmplx-check {
                 type boolean;
                 default "true";
                 description
-                    "Enable/disable Community complexity check disable switch.";
+                    "Enable/disable community complexity check switch.";
             }
             leaf usm-user-cmplx-check {
                 type boolean;
                 default "true";
                 description
-                    "Enable/disable Usm user password complexity check disable switch.";
+                    "Enable/disable USM user password complexity check switch.";
             }
             leaf ext-err-code-enable {
                 type boolean;
                 default "false";
                 description
-                    "Enable/disable Extend error code enable switch.";
+                    "Enable/disable extend error code switch.";
             }
             leaf set-cache-enable {
                 type boolean;
                 default "false";
                 description
-                    "Enable/disable Set-cache enable switch.";
+                    "Enable/disable set-cache switch.";
             }
             leaf local-user-cmplx-check {
                 type boolean;
                 default "true";
                 description
-                    "Enable/disable Local user password complexity check disable switch.";
+                    "Enable/disable local user password complexity check switch.";
             }
             leaf protocol-source-interface-name {
                 type pub-type:if-name;
                 status obsolete;
                 description
-                    "The node /snmp:snmp/snmp:system/snmp:protocol-source-interface-name is obsolete. You are advised to use the node /snmp:snmp/snmp:source-interfaces/snmp:source-interface/snmp:interface-name.";
+                    "SNMP protocol source interface. The node /snmp:snmp/snmp:system/snmp:protocol-source-interface-name is not supported currently. You are advised to use the node /snmp:snmp/snmp:source-interfaces/snmp:source-interface/snmp:interface-name.";
             }
             leaf password-min-length {
                 type uint32 {
@@ -204,7 +250,7 @@ module huawei-snmp {
                 type inet:ipv6-address-no-zone;
                 status obsolete;
                 description
-                    "The node /snmp:snmp/snmp:system/snmp:protocol-source-ipv6-address is obsolete. You are advised to use the node /snmp:snmp/snmp:ipv6-sources/snmp:ipv6-source/snmp:src-ipv6-address.";
+                    "SNMP protocol source IPv6 address. The node /snmp:snmp/snmp:system/snmp:protocol-source-ipv6-address is not supported currently. You are advised to use the node /snmp:snmp/snmp:ipv6-sources/snmp:ipv6-source/snmp:src-ipv6-address.";
             }
             leaf vpn-instance-name {
                 type string {
@@ -212,7 +258,7 @@ module huawei-snmp {
                 }
                 must "../vpn-instance-name='_public_' or ../is-public-net='false'";
                 description
-                "The specified VPN instance must exist and IPv4-family must be enabled in the VPN instance.";
+                    "VPN instance Name.";
             }
             leaf ipv6-vpn-instance-name {
                 type string {
@@ -220,62 +266,62 @@ module huawei-snmp {
                 }
                 must "../ipv6-vpn-instance-name='_public_' or ../is-ipv6-public-net='false'";
                 description
-                "The specified VPN instance must exist and IPv6-family must be enabled in the VPN instance.";
+                    "VPN instance Name.";
             }
             leaf is-public-net {
                 type boolean;
                 default "false";
                 description
-                    "Enable/disable Receive SNMP IPv4 message from public net.";
+                    "Enable/disable receive SNMP IPv4 message from public net.";
             }
             leaf is-ipv6-public-net {
                 type boolean;
                 default "false";
                 description
-                    "Enable/disable Receive SNMP IPv6 message from public net.";
+                    "Enable/disable receive SNMP IPv6 message from public net.";
             }
             leaf ctx-engineid-check-enable {
                 type boolean;
                 default "false";
                 description
-                    "Enable/disable Context engine id check enable switch.";
+                    "Enable/disable context engine id check switch.";
             }
             leaf ipv4-listen-disable {
                 type boolean;
                 default "false";
                 description
-                    "Enable/disable IPv4 listen function disable switch.";
+                    "Enable/disable IPv4 listen function switch.";
             }
             leaf ipv6-listen-disable {
                 type boolean;
                 default "false";
                 description
-                    "Enable/disable IPv6 listen function disable switch.";
+                    "Enable/disable IPv6 listen function switch.";
             }
         }
         container source-interfaces {
             description
-                "List of To configure source interfaces.";
+                "List of source interfaces.";
             list source-interface {
                 key "interface-name";
                 max-elements  "20";
                 description
-                    "Configure Source interface entry policy.";
+                    "Configure Source interface entry.";
                 leaf interface-name {
                     type pub-type:if-name;
                     description
-                        "The specified source interface must exist and an IP address must be configured on the interface.";
+                        "Source interface name.";
                 }
             }
         }
         container ipv6-sources {
             description
-                "List of To configure source IPv6 address.";
+                "List of source IPv6 address.";
             list ipv6-source {
                 key "src-ipv6-address";
                 max-elements "20";
                 description
-                    "Configure Source IPv6 address entry policy.";
+                    "Configure source IPv6 address entry.";
                 leaf src-ipv6-address {
                     type inet:ipv6-address-no-zone;
                     description
@@ -286,13 +332,13 @@ module huawei-snmp {
                         length "1..31";
                     }
                     description
-                        "The specified VPN instance must exist and IPv6-family must be enabled in the VPN instance.";
+                        "Source IPv6 VPN instance name.";
                 }
             }
         }
         container all-interface {
             description
-                "Configure bind all interface.";
+                "Configure all-interface.";
             leaf all-ipv4-interface {
                 type boolean;
                 default false;
@@ -308,12 +354,12 @@ module huawei-snmp {
         }
         container target-hosts {
             description
-                "List of To configure target host for traps and informs.";
+                "List of target host for traps and informs.";
             list target-host {
                 key "nms-name";
                 max-elements  "20";
                 description
-                "Configure Target host entry policy.";
+                    "Configure target host entry.";
                 leaf nms-name {
                     type string {
                         length "1..32";
@@ -325,13 +371,13 @@ module huawei-snmp {
                     type snmp-domain;
                     mandatory true;
                     description
-                        "Address Domain.";
+                        "Address domain.";
                 }
                 leaf address {
                     type inet:ip-address-no-zone;
                     mandatory true;
                     description
-                        "Network Address.";
+                        "Network address.";
                 }
                 leaf target-inform-timeout {
                     when "../notify-type = 'inform'";
@@ -364,7 +410,7 @@ module huawei-snmp {
                     }
                     must "../vpn-instance-name='_public_' or ../is-public-net='false'";
                     description
-                        "The specified VPN instance must exist and ip-family must be enabled in the VPN instance.";
+                        "VPN instance name.";
                 }
                 leaf port-number {
                     type uint32 {
@@ -372,7 +418,7 @@ module huawei-snmp {
                     }
                     default "162";
                     description
-                        "UDP Port number used by network management to receive alarm messages.";
+                        "UDP port number used by network management to receive alarm messages.";
                 }
                 choice params {
                     mandatory true;
@@ -426,7 +472,7 @@ module huawei-snmp {
                     type boolean;
                     default "false";
                     description
-                        "Enable/disable Private VB's for target Host.";
+                        "Enable/disable private VB's for target host.";
                 }
                 leaf is-public-net {
                     type boolean;
@@ -438,14 +484,14 @@ module huawei-snmp {
                     type boolean;
                     default "false";
                     description
-                        "Enable/disable Extended VB's for target Host.";
+                        "Enable/disable extended VB's for target host.";
                 }
                 leaf notify-fltr-profile-name {
                     type string {
                         length "1..32";
                     }
                     description
-                        "To configure notification filter profile for target Host.";
+                        "To configure notification filter profile for target host.";
                 }
                 leaf retries-num {
                     type uint32;
@@ -499,57 +545,57 @@ module huawei-snmp {
                     type uint32 {
                         range "1..48";
                     }
+                    units h;
                     default "24";
                     description
-                        "HeartBeatTime.";
+                        "Heart beat time.";
                 }
                 leaf status {
                     type boolean;
                     default "false";
                     config false;
                     description
-                        "IsTargetAlive.";
+                        "Is target alive.";
                 }
             }
         }
         container mib-views {
             description
-            "List of VACM to configure MIB subtree.";
+                "List of VACM view to configure MIB subtree.";
             list mib-view {
                 key "view-name sub-tree";
                 description
-                "Configure Name of MIB View entry policy.";
+                    "Configure name of MIB View entry.";
                 leaf view-name {
                     type string {
                         length "1..32";
                     }
                     description
-                        "Name of subtree's MIB View entry.";
+                        "Name of subtree's MIB view entry.";
                 }
                 leaf sub-tree {
                     type string {
                         length "1..255";
                     }
                     description
-                        "MIB Subtree.";
+                        "MIB subtree.";
                 }
                 leaf type {
                     type snmp-filter;
                     mandatory true;
                     description
-                        "Filter (include/exclude).";
-                     
+                        "Filter (include | exclude).";
                 }
             }
         }
         container v3-groups {
             description
-            "List of SNMPv3 groups.";
+                "List of SNMPv3 groups.";
             list v3-group {
                 key "group-name security-level";
                 max-elements  "20";
                 description
-                "Configure SNMPv3 group entry policy.";
+                    "Configure SNMPv3 group entry.";
                 leaf group-name {
                     type string {
                         length "1..32";
@@ -567,39 +613,39 @@ module huawei-snmp {
                         path "/snmp:snmp/snmp:mib-views/snmp:mib-view/snmp:view-name";
                     }
                     description
-                        "Mib name for read.";
+                        "MIB view name for read.";
                 }
                 leaf write-view-name {
                     type leafref {
                         path "/snmp:snmp/snmp:mib-views/snmp:mib-view/snmp:view-name";
                     }
                     description
-                        "Mib name for write.";
+                        "MIB view name for write.";
                 }
                 leaf notify-view-name {
                     type leafref {
                         path "/snmp:snmp/snmp:mib-views/snmp:mib-view/snmp:view-name";
                     }
                     description
-                        "Mib name for notification.";
+                        "MIB view name for notification.";
                 }
                 leaf acl-number {
                     type string {
                         length "1..32";
                     }
                     description
-                        "ACL, leafref path/acl/aclGroups/aclGroup/aclNumOrName or/acl/aclGroup6s/aclGroup6/aclNumOrName.";
+                        "ACL, leafref path /acl/aclGroups/aclGroup/aclNumOrName or /acl/aclGroup6s/aclGroup6/aclNumOrName.";
                 }
             }
         }
         container usm-users {
             description
-            "List of To configure USM users for SNMPv3.";
+                "List of USM users for SNMPv3.";
             list usm-user {
                 key "user-name";
                 max-elements  "20";
                 description
-                "Configure USM User entry policy.";
+                    "Configure USM user entry.";
                 leaf user-name {
                     type string {
                         length "1..32";
@@ -623,9 +669,10 @@ module huawei-snmp {
                 }
                 leaf auth-protocol {
                     type snmp-authenmode;
+                    must "(../auth-key and ../auth-protocol!='noAuth') or ../auth-protocol='noAuth'";
                     default "noAuth";
                     description
-                        "Authentication protocol (md5|sha).";
+                        "Authentication protocol.";
                 }
                 leaf auth-key {
                     when "../auth-protocol != 'noAuth'";
@@ -635,7 +682,7 @@ module huawei-snmp {
                     must "string-length(../auth-key)>=../../../system/password-min-length or ../../../system/usm-user-cmplx-check='false'";
                     mandatory true;
                     description
-                        "The Authentication Password. The value of a plaintext password is a string of 1 to 255 characters, and the value of a ciphertext password is a string of 32 to 432 characters.";
+                        "The authentication password.";
                 }
                 leaf is-priv-localized {
                     type boolean;
@@ -646,10 +693,10 @@ module huawei-snmp {
                 }
                 leaf priv-protocol {
                     type snmp-privacy;
-                    must "../priv-protocol='noPriv' or not(../auth-protocol='noAuth')";
+                    must "(not(../priv-protocol='noPriv') and not(../auth-protocol='noAuth') and ../priv-key) or (../priv-protocol='noPriv')";
                     default "noPriv";
                     description
-                        "Encryption Protocol.";
+                        "Encryption protocol.";
                 }
                 leaf priv-key {
                     when "../auth-protocol!='noAuth' and ../priv-protocol!='noPriv'";
@@ -659,14 +706,14 @@ module huawei-snmp {
                     must "string-length(../priv-key)>=../../../system/password-min-length or ../../../system/usm-user-cmplx-check='false'";
                     mandatory true;
                     description
-                        "The Encryption Password. The value of a plaintext password is a string of 1 to 255 characters, and the value of a ciphertext password is a string of 32 to 432 characters.";
+                        "The encryption password.";
                 }
                 leaf acl-number {
                     type string {
                         length "1..32";
                     }
                     description
-                        "ACL, leafref path/acl/aclGroups/aclGroup/aclNumOrName or/acl/aclGroup6s/aclGroup6/aclNumOrName.";
+                        "ACL, leafref path /acl/aclGroups/aclGroup/aclNumOrName or /acl/aclGroup6s/aclGroup6/aclNumOrName.";
                 }
                 leaf active-status {
                     type string {
@@ -687,42 +734,132 @@ module huawei-snmp {
                 }
             }
         }
-        container communitys {
+        container local-users {
             description
-            "List of To configure SNMP communtiy for SNMPv1 and SNMPv2.";
+                "List of local users for SNMPv3.";
+            list local-user {
+                key "name";
+                max-elements 1000;
+                description
+                    "Configure local User entry.";
+                leaf name {
+                    type string {
+                        length "1..32";
+                    }
+                    description
+                        "Unique name to identify the local user.";
+                }
+                leaf auth-protocol {
+                    type snmp-local-authenmode;
+                    mandatory true;
+                    description
+                        "Authentication protocol (md5 | sha | sha2-224 | sha2-256 | sha2-384 | sha2-512).";
+                }
+                leaf auth-key {
+                    type pub-type:password-extend {
+                        length "1..432";
+                    }
+                    must "((../../../system/local-user-cmplx-check='true') and (string-length(../auth-key)) >= ../../../system/password-min-length) or (../../../system/local-user-cmplx-check!='true')";
+                    mandatory true;
+                    description
+                        "The authentication password. The value of a plaintext password is a string of 1 to 255 characters, and the value of a ciphertext password is a string of 32 to 432 characters.";
+                }
+                leaf priv-protocol {
+                    type snmp-local-privacy;
+                    mandatory true;
+                    description
+                        "Encryption protocol.";
+                }
+                leaf priv-key {
+                    type pub-type:password-extend {
+                        length "1..432";
+                    }
+                    must "((../../../system/local-user-cmplx-check='true') and (string-length(../priv-key)) >= ../../../system/password-min-length) or (../../../system/local-user-cmplx-check!='true')";
+                    mandatory true;
+                    description
+                        "The encryption password. The value of a plaintext password is a string of 1 to 255 characters, and the value of a ciphertext password is a string of 32 to 432 characters.";
+                }
+                leaf active-status{
+                    type string {
+                        length "1..9";
+                    }
+                    config false;
+                    description
+                        "User block state.";
+                }
+                leaf left-lock-time {
+                    type uint32 {
+                        range "1..4294967295";
+                    }
+                    units s;
+                    config false;
+                    description
+                        "Left lock time of locked user.";
+                }
+            }
+        }
+        container communitys {
+            status deprecated;
+            description
+                "List of SNMP communtiy for SNMPv1 and SNMPv2. The node communitys is deprecated. You are advised to use the node standard-communitys.";
             list community {
                 key "name";
                 max-elements  "25";
+                status deprecated;
                 description
-                "Configure Community entry policy.";
+                    "Configure community entry.";
                 leaf name {
                     type pub-type:password-extend {
                         length "1..32 | 44 | 56 | 80 | 88..168";
                     }
                     must "string-length(../name)>=../../../system/password-min-length or ../../../system/community-cmplx-check='false'";
+                    status deprecated;
                     description
-                        "Unique name to identify the community, plain text is <1-32>, ciper text string is <32,44,56,80,88>/<88-168>.";
+                        "Unique name to identify the community.";
                 }
                 leaf access-right {
                     type snmp-access;
                     mandatory true;
+                    status deprecated;
                     description
-                        "Access right (read/write).";
+                        "Access right.";
                 }
                 leaf view-name {
                     type leafref {
                         path "/snmp:snmp/snmp:mib-views/snmp:mib-view/snmp:view-name";
                     }
+                    status deprecated;
                     description
-                        "Mib name.";
+                        "MIB name.";
                 }
                 leaf acl {
                     type string {
                         length "1..32";
                     }
+                    status deprecated;
                     description
-                        "ACL, leafref path/acl/aclGroups/aclGroup/aclNumOrName or/acl/aclGroup6s/aclGroup6/aclNumOrName.";
+                        "ACL, leafref path /acl/aclGroups/aclGroup/aclNumOrName or /acl/aclGroup6s/aclGroup6/aclNumOrName.";
                 }
+                leaf alias-name {
+                    type string {
+                        length "1..32";
+                    }
+                    must "(../alias-name!=../name)";
+                    status deprecated;
+                    description
+                        "Unique alias name to identify community.";
+                }
+            }
+        }
+        container standard-communitys {
+            description
+                "List of SNMP communtiy for SNMPv1 and SNMPv2.";
+            list standard-community {
+                key "alias-name";
+                unique "name";
+                max-elements "25";
+                description
+                    "Configure community entry.";
                 leaf alias-name {
                     type string {
                         length "1..32";
@@ -730,6 +867,35 @@ module huawei-snmp {
                     must "(../alias-name!=../name)";
                     description
                         "Unique alias name to identify community.";
+                }
+                leaf name {
+                    type pub-type:password-extend {
+                        length "1..32 | 44 | 56 | 80 | 88..168";
+                    }
+                    must "string-length(../name)>=../../../system/password-min-length or ../../../system/community-cmplx-check='false'";
+                    mandatory true;
+                    description
+                        "Unique name to identify the community.";
+                }
+                leaf access-right {
+                    type snmp-access;
+                    mandatory true;
+                    description
+                        "Access right.";
+                }
+                leaf view-name {
+                    type string {
+                        length "1..32";
+                    }
+                    description
+                        "MIB name.";
+                }
+                leaf acl {
+                    type string {
+                        length "1..32";
+                    }
+                    description
+                        "ACL, leafref path /acl:acl/acl:groups/acl:group/acl:identity or /acl:acl/acl:group6s/acl:group6/acl:identity.";
                 }
             }
         }
@@ -740,13 +906,13 @@ module huawei-snmp {
             type boolean;
             default "false";
             description
-              "Enable/disable IP Blocking.";
+              "Enable/disable IP blocker.";
           }
           leaf user-disable {
             type boolean;
             default "false";
             description
-              "Enable/disable User Blocking.";
+              "Enable/disable user blocker.";
           }
           leaf user-fail-count {
             type uint32 {
@@ -754,7 +920,7 @@ module huawei-snmp {
             }
             default "5";
             description
-              "User Failure Count.";
+              "User failure count.";
           }
           leaf user-period {
             type uint32 {
@@ -762,33 +928,35 @@ module huawei-snmp {
             }
             default "5";
             description
-              "User Blocked Period.";
+              "User blocked period.";
           }
           leaf user-reactive-time {
             type uint32 {
               range "0..1000";
             }
+            units min;
             default "5";
             description
-              "User Reactive Period.";
+              "User reactive period.";
           }
         }
         container notification {
           description
-            "Configure the notification Log Global Parameters.";
+            "Configure the notification log global parameters.";
           leaf notif-log-enable {
             type boolean;
             default "false";
             description
-              "Enable/disable Notification Log Enable Switch.";
+              "Enable/disable notification log switch.";
           }
           leaf notif-global-ageout {
             type uint32 {
               range "0 | 12..36";
             }
+            units h;
             default "24";
             description
-              "The notification aging time in hours.";
+              "The notification aging time.";
           }
           leaf notif-global-limit {
             type uint32 {
@@ -801,12 +969,12 @@ module huawei-snmp {
         }
         container ntfy-fltr-prfs {
           description
-            "List of To configure notify filter profiles.";
+            "List of notify filter profiles.";
           list ntfy-fltr-prf {
             key "name subtree";
             max-elements  "20";
             description
-              "Configure Notify Filter Profile entry policy.";
+              "Configure notify filter profile entry.";
             leaf name {
               type string {
                 length "1..32";
@@ -825,21 +993,21 @@ module huawei-snmp {
               type snmp-filter;
               default "included";
               description
-                "Filter (include/exclude).";
+                "Filter (include | exclude).";
             }
           }
         }
         container glbal-stats {
           config false;
           description
-            " SNMP statistics.";
+            "SNMP statistics.";
           leaf in-pkts {
             type uint32 {
               range "0..4294967295";
             }
             config false;
             description
-              "Number of Packets Received by the Equipment.";
+              "Number of packets received by the equipment.";
           }
           leaf out-pkts {
             type uint32 {
@@ -847,7 +1015,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Sent by the Equipment.";
+              "Number of packets sent by the equipment.";
           }
           leaf in-bad-versions {
             type uint32 {
@@ -855,7 +1023,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Received Received Version is not Supported by SNMP Engine for these Number of Packets.";
+              "Received received version is not Supported by SNMP engine for these number of packets.";
           }
           leaf in-bad-cmmty-names {
             type uint32 {
@@ -863,7 +1031,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets the Device Received with invalid group name.";
+              "Number of packets the device received with invalid group name.";
           }
           leaf in-bad-cmmty-users {
             type uint32 {
@@ -871,7 +1039,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Received by the Device with Group Name Corresponding to Permission Error.";
+              "Number of packets received by the device with group name corresponding to permission error.";
           }
           leaf in-asn-parse-errs {
             type uint32 {
@@ -879,7 +1047,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Received with ASN.1/BER Errors.";
+              "Number of packets received with ASN.1/BER errors.";
           }
           leaf in-too-bigs {
             type uint32 {
@@ -887,7 +1055,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Received by the SNMP Protocol Entities having error status field value 'inToBig'.";
+              "Number of packets received by the SNMP protocol entities having error status field value 'inToBig'.";
           }
           leaf in-nosuch-names {
             type uint32 {
@@ -895,7 +1063,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Received by the SNMP Protocol Entities having error status field value 'noSuchName'.";
+              "Number of packets received by the SNMP protocol entities having error status field value 'noSuchName'.";
           }
           leaf in-bad-values {
             type uint32 {
@@ -903,7 +1071,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Received by the SNMP Protocol Entities having error status field value 'badVaules'.";
+              "Number of packets received by the SNMP protocol entities having error status field value 'badVaules'.";
           }
           leaf in-read-onlys {
             type uint32 {
@@ -911,7 +1079,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Received by the SNMP Protocol Entities having error status field value 'readOnly'.";
+              "Number of packets received by the SNMP protocol entities having error status field value 'readOnly'.";
           }
           leaf in-gen-errs {
             type uint32 {
@@ -919,7 +1087,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Received by the SNMP Protocol Entities having error status field value 'genErrors'.";
+              "Number of packets received by the SNMP protocol entities having error status field value 'genErrors'.";
           }
           leaf in-total-req-vars {
             type uint32 {
@@ -927,7 +1095,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "This number indicates the Success of the SNMP Entities to obtain the value from the Nodes of MIB.";
+              "This number indicates the success of the SNMP entities to obtain the value from the nodes of MIB.";
           }
           leaf in-total-set-vars {
             type uint32 {
@@ -935,7 +1103,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "This number indicates the Success of the SNMP Entities to set the value of the Nodes of MIB.";
+              "This number indicates the success of the SNMP entities to set the value of the nodes of MIB.";
           }
           leaf in-get-reqs {
             type uint32 {
@@ -943,7 +1111,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Get' type Received and Processed by the Equipment.";
+              "Number of packets of 'Get' type received and processed by the equipment.";
           }
           leaf in-get-nexts {
             type uint32 {
@@ -951,7 +1119,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Get-Next' type Received and Processed by the Equipment.";
+              "Number of packets of 'Get-Next' type received and processed by the equipment.";
           }
           leaf in-set-reqs {
             type uint32 {
@@ -959,7 +1127,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Set' type Received and Processed by the Equipment.";
+              "Number of packets of 'Set' type received and processed by the equipment.";
           }
           leaf in-get-resps {
             type uint32 {
@@ -967,7 +1135,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Get-Response' type Received and Processed by the Equipment.";
+              "Number of packets of 'Get-Response' type received and processed by the equipment.";
           }
           leaf in-traps {
             type uint32 {
@@ -975,7 +1143,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Trap' type Received and Processed by the Equipment.";
+              "Number of packets of 'Trap' type received and processed by the equipment.";
           }
           leaf out-too-bigs {
             type uint32 {
@@ -983,7 +1151,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of PDU generated by the SNMP Protocol Entities having error status field value 'outTooBig'.";
+              "Number of PDU generated by the SNMP protocol entities having error status field value 'outTooBig'.";
           }
           leaf out-nosuch-names {
             type uint32 {
@@ -991,7 +1159,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of PDU generated by the SNMP Protocol Entities having error status field value 'NoSuchName'.";
+              "Number of PDU generated by the SNMP protocol entities having error status field value 'NoSuchName'.";
           }
           leaf out-bad-values {
             type uint32 {
@@ -999,7 +1167,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of PDU generated by the SNMP Protocol Entities having error status field value 'BadValue'.";
+              "Number of PDU generated by the SNMP protocol entities having error status field value 'BadValue'.";
           }
           leaf out-gen-errs {
             type uint32 {
@@ -1015,7 +1183,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Get' type Generated by the Equipment.";
+              "Number of packets of 'Get' type generated by the equipment.";
           }
           leaf out-get-nexts {
             type uint32 {
@@ -1023,7 +1191,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Get-Next' type Generated by the Equipment.";
+              "Number of packets of 'Get-Next' type generated by the equipment.";
           }
           leaf out-set-reqs {
             type uint32 {
@@ -1031,7 +1199,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'set' type Generated by the Equipment.";
+              "Number of packets of 'set' type generated by the equipment.";
           }
           leaf out-get-resps {
             type uint32 {
@@ -1039,7 +1207,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Get Response' type Generated by the Equipment.";
+              "Number of packets of 'Get Response' type generated by the equipment.";
           }
           leaf out-traps {
             type uint32 {
@@ -1047,7 +1215,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Trap' type Generated by the Equipment.";
+              "Number of packets of 'Trap' type generated by the equipment.";
           }
           leaf silent-drops {
             type uint32 {
@@ -1055,7 +1223,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Silent Drops.";
+              "Silent drops.";
           }
           leaf in-get-bulks {
             type uint32 {
@@ -1063,7 +1231,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Get-Bulk' type Received and Processed by the Equipment.";
+              "Number of packets of 'Get-Bulk' type received and processed by the equipment.";
           }
           leaf out-get-bulks {
             type uint32 {
@@ -1071,7 +1239,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Get-Bulk' type Generated by the Equipment.";
+              "Number of packets of 'Get-Bulk' type generated by the equipment.";
           }
           leaf in-informs {
             type uint32 {
@@ -1079,7 +1247,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets of 'Inform' type Received and Processed by the Equipment.";
+              "Number of packets of 'Inform' type received and processed by the equipment.";
           }
           leaf in-proxy-pkts {
             type uint32 {
@@ -1087,7 +1255,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Proxy Packets Received by the Equipment.";
+              "Number of proxy packets received by the equipment.";
           }
           leaf proxy-drops {
             type uint32 {
@@ -1095,7 +1263,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Proxy Drops.";
+              "Proxy drops.";
           }
         }
         container usm-stats {
@@ -1108,7 +1276,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets with unknown UserName received and discarded by the Equipment.";
+              "Number of packets with unknown userName received and discarded by the equipment.";
           }
           leaf wrong-digests {
             type uint32 {
@@ -1116,7 +1284,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Not having the Expected Digest value, received and dropped by the Equipment.";
+              "Number of packets not having the expected digest value, received and dropped by the equipment.";
           }
           leaf unsuppt-sec-levs {
             type uint32 {
@@ -1124,7 +1292,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets with invalid/unknown Security level received and discarded by the Equipment.";
+              "Number of packets with invalid/unknown security level received and discarded by the equipment.";
           }
           leaf out-tm-windows {
             type uint32 {
@@ -1132,7 +1300,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Authentication Packets Outside Window.";
+              "Authentication packets outside window.";
           }
           leaf unknown-engine-ids {
             type uint32 {
@@ -1140,7 +1308,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets Received from an Unknown Engine ID which are dropped by Equipment.";
+              "Number of packets received from an unknown engine ID which are dropped by equipment.";
           }
           leaf decryption-errs {
             type uint32 {
@@ -1148,7 +1316,7 @@ module huawei-snmp {
             }
             config false;
             description
-              "Number of Packets dropped by the Equipment due to the Failure of Decrypting the packet.";
+              "Number of packets dropped by the equipment due to the failure of decrypting the packet.";
           }
         }
         container mpd-stats {
@@ -1165,54 +1333,110 @@ module huawei-snmp {
             type uint32;
             config false;
             description
-              "Total Number of Packets Discarded because they contained illegal Information.";
+              "Total number of packets discarded because they contained illegal information.";
           }
           leaf unknown-pduhandle {
             type uint32;
             config false;
             description
-              "Total Number of Packets with unknown PDU Handle Discarded by the Equipment.";
+              "Total number of packets with unknown PDU handle discarded by the equipment.";
           }
         }
         container ntfcation-stats {
           config false;
           description
-            "Global Notification Log statistics.";
+            "Global notification log statistics.";
           leaf total-ntfs-logged {
             type uint32;
             config false;
             description
-              "Number of Notification Logs Saved.";
+              "Number of notification logs saved.";
           }
           leaf total-ntfs-bumped {
             type uint32;
             config false;
             description
-              "Number of Notification Logs Removed.";
+              "Number of notification logs removed.";
           }
           leaf total-log-entrs {
             type uint32;
             config false;
             description
-              "Current Number of Notification Log entries.";
+              "Current number of notification log entries.";
           }
         }
         container proxy {
           description
-            "Configure To configure SNMP proxy.";
+            "Configure SNMP proxy.";
           container communitys {
+            status deprecated;
             description
-              "List of To configure SNMP proxy communtiy for SNMPv1 and SNMPv2.";
+              "List of SNMP proxy communtiy for SNMPv1 and SNMPv2. The node communitys is deprecated. You are advised to use the node standard-communitys.";
             list community {
               key "name";
               max-elements  "20";
+              status deprecated;
               description
-                "Configure Community entry policy.";
+                "Configure community entry.";
               leaf name {
                 type pub-type:password-extend {
                   length "1..32 | 88..168";
                 }
                 must "string-length(../name)>=../../../../system/password-min-length or ../../../../system/community-cmplx-check='false'";
+                status deprecated;
+                description
+                  "Unique name to identify the community.";
+              }
+              leaf engine-id {
+                ext:support-filter true;
+                type snmp-engine-id;
+                mandatory true;
+                status deprecated;
+                description
+                  "Remote engine ID of the SNMP community.";
+              }
+              leaf acl {
+                type string {
+                length "1..32";
+                }
+                status deprecated;
+                description
+                  "ACL, leafref path /acl/aclGroups/aclGroup/aclNumOrName or /acl/aclGroup6s/aclGroup6/aclNumOrName.";
+              }
+              leaf alias-name {
+                type string {
+                  length "1..32";
+                }
+                must "(../alias-name!=../name)";
+                status deprecated;
+                description
+                  "Unique alias name to identify community.";
+              }
+            }
+          }
+          container standard-communitys {
+            description
+              "List of SNMP proxy communtiy for SNMPv1 and SNMPv2.";
+            list standard-community {
+              key "alias-name";
+              unique "name";
+              max-elements  "20";
+              description
+                "Configure community entry.";
+              leaf alias-name {
+                type string {
+                  length "1..32";
+                }
+                must "(../alias-name!=../name)";
+                description
+                  "Unique alias name to identify community.";
+              }
+              leaf name {
+                type pub-type:password-extend {
+                  length "1..32 | 88..168";
+                }
+                must "string-length(../name)>=../../../../system/password-min-length or ../../../../system/community-cmplx-check='false'";
+                mandatory true;
                 description
                   "Unique name to identify the community.";
               }
@@ -1221,32 +1445,25 @@ module huawei-snmp {
                 type snmp-engine-id;
                 mandatory true;
                 description
-                  "Remote Engine ID of the SNMP community.";
+                  "Remote engine ID of the SNMP community.";
               }
               leaf acl {
                 type string {
                 length "1..32";
                 }
                 description
-                  "ACL, leafref path:/acl/aclGroups/aclGroup/aclNumOrName or/acl/aclGroup6s/aclGroup6/aclNumOrName.";
-              }
-              leaf alias-name {
-                type string {
-                  length "1..32";
-                }
-                description
-                  "Unique alias name to identify community.";
+                  "ACL, leafref path /acl:acl/acl:groups/acl:group/acl:identity or /acl:acl/acl:group6s/acl:group6/acl:identity.";
               }
             }
           }
           container target-hosts {
             description
-              "List of The list of alarm hosts.";
+              "List of alarm hosts.";
             list target-host {
               key "name";
               max-elements  "20";
               description
-                "Configure Address and related params of target host entry which sends alarm policy.";
+                "Configure address and related params of target host entry which sends alarm.";
               leaf name {
                 type string {
                   length "1..32";
@@ -1259,13 +1476,13 @@ module huawei-snmp {
                 type snmp-domain;
                 mandatory true;
                 description
-                  "Address Domain of target host.";
+                  "Address domain of target host.";
               }
               leaf address {
                 type inet:ip-address-no-zone;
                 mandatory true;
                 description
-                  "Network Address of target host.";
+                  "Network address of target host.";
               }
               leaf timeout {
                 type int32 {
@@ -1282,7 +1499,7 @@ module huawei-snmp {
                 }
                 must "not(../public-net='true') or (../public-net='true' and ../vpn='_public_')";
                 description
-                  "The specified VPN instance must exist and ip-family must be enabled in the VPN instance.";
+                  "VPN instance name.";
               }
               leaf port-num {
                 type uint32 {
@@ -1290,7 +1507,7 @@ module huawei-snmp {
                 }
                 mandatory true;
                 description
-                  "UDP Port number used by network management to receive forwarded packets.";
+                  "UDP port number used by network management to receive forwarded packets.";
               }
               choice params {
                 mandatory true;
@@ -1342,24 +1559,24 @@ module huawei-snmp {
               leaf interface-name {
                 type pub-type:if-name;
                 description
-                  "The specified source interface must exist and an IP address must be configured on the interface.";
+                  "Name of the interface to send the forwarded packets.";
               }
               leaf public-net {
                 type boolean;
                 default "false";
                 description
-                  "Enable/disable Public Net-manager for target Host.";
+                  "Enable/disable public net-manager for target host.";
               }
             }
           }
           container rules {
             description
-              "List of To configure proxy rules.";
+              "List of proxy rules.";
             list rule {
               key "name";
               max-elements  "20";
               description
-                "Configure Proxy rule entry policy.";
+                "Configure proxy rule entry.";
               leaf name {
                 type string {
                   length "1..32";
@@ -1371,13 +1588,13 @@ module huawei-snmp {
                 type snmp-proxy-type;
                 mandatory true;
                 description
-                  "Proxy rule for message type.";
+                  "Proxy rule for message type (read | write | trap | inform).";
               }
               leaf engine-id {
                 type snmp-engine-id;
                 mandatory true;
                 description
-                  "Remote Engine ID for the Proxy rule.";
+                  "Remote engine ID for the proxy rule.";
               }
               leaf host-name {
                 type string {
@@ -1385,14 +1602,14 @@ module huawei-snmp {
                 }
                 mandatory true;
                 description
-                  "Proxy target host name to forward the packet, leafref path../../../targetHosts/targetHost/targetName.";
+                  "Proxy target host name to forward the packet, leafref path /snmp:snmp/snmp:proxy/snmp:target-hosts/snmp:target-host/snmp:name.";
               }
               leaf security-model {
                 type snmp-target-host-version;
                 must "(../type='inform' and (../security-model='v2c' or ../security-model='v3') ) or ((not(../type='inform') and (../security-model='v1' or ../security-model='v2c' or ../security-model='v3') ))";
                 mandatory true;
                 description
-                  "Security Model.";
+                  "Security model.";
               }
               leaf security-name {
                 when "../security-model != 'v3'";
@@ -1401,7 +1618,7 @@ module huawei-snmp {
                 }
                 mandatory true;
                 description
-                  "Security Name.";
+                  "Security name.";
               }
               leaf security-v3-name {
                 when "../security-model='v3'";
@@ -1410,7 +1627,7 @@ module huawei-snmp {
                 }
                 mandatory true;
                 description
-                  "Security Name V3.";
+                  "Security name v3.";
               }
 
               leaf security-level {
@@ -1425,17 +1642,17 @@ module huawei-snmp {
           list usm-users {
             key "engine-id";
             description
-              "Configure SNMP remote usm user list policy.";
+              "Configure SNMP remote usm user list.";
             leaf engine-id {
               type snmp-engine-id;
               description
-                "Remote Engine ID of the USM user.";
+                "Remote engine ID of the USM user.";
             }
             list usm-user {
                 key "user-name";
                 max-elements  "20";
                 description
-                "Configure SNMPv3 USM User entry policy.";
+                "Configure SNMPv3 USM user entry.";
                 leaf user-name {
                     type string {
                         length "1..32";
@@ -1459,9 +1676,10 @@ module huawei-snmp {
                 }
                 leaf auth-protocol {
                     type snmp-authenmode;
+                    must "(../auth-key and ../auth-protocol!='noAuth') or ../auth-protocol='noAuth'";
                     default "noAuth";
                     description
-                        "Authentication protocol (md5 | sha) of SNMPv3 user.";
+                        "Authentication protocol of SNMPv3 user.";
                 }
                 leaf auth-key {
                     when "../auth-protocol != 'noAuth'";
@@ -1471,7 +1689,7 @@ module huawei-snmp {
                     must "string-length(../auth-key)>=../../../../system/password-min-length or ../../../../system/usm-user-cmplx-check='false'";
                     mandatory true;
                     description
-                        "The Authentication Password.";
+                        "The authentication password.";
                 }
                 leaf is-priv-localized {
                     type boolean;
@@ -1482,10 +1700,10 @@ module huawei-snmp {
                 }
                 leaf priv-protocol {
                     type snmp-privacy;
-                    must "../priv-protocol='noPriv' or not(../auth-protocol='noAuth')";
+                    must "(not(../priv-protocol='noPriv') and not(../auth-protocol='noAuth') and ../priv-key) or (../priv-protocol='noPriv')";
                     default "noPriv";
                     description
-                        "Encryption Protocol of SNMPv3 user.";
+                        "Encryption protocol of SNMPv3 user.";
                 }
                 leaf priv-key {
                     when "../auth-protocol!='noAuth' and ../priv-protocol!='noPriv'";
@@ -1495,7 +1713,7 @@ module huawei-snmp {
                     must "string-length(../priv-key)>=../../../../system/password-min-length or ../../../../system/usm-user-cmplx-check='false'";
                     mandatory true;
                     description
-                        "The Encryption Password of SNMPv3 user.";
+                        "The encryption password of SNMPv3 user.";
                 }
                 leaf acl-number {
                     type string {
@@ -1510,7 +1728,7 @@ module huawei-snmp {
                     }
                     config false;
                     description
-                        "SNMPv3 User block state.";
+                        "SNMPv3 user block state.";
                 }
                 leaf left-lock-time {
                     type uint32 {
@@ -1525,27 +1743,27 @@ module huawei-snmp {
           }
           container source-interfaces {
               description
-                  "List of To configure source interfaces.";
+                  "List of source interfaces.";
               list source-interface {
                   key "interface-name";
                   max-elements  "20";
                   description
-                      "Configure Source interface entry policy.";
+                      "Configure source interface entry.";
                   leaf interface-name {
                       type pub-type:if-name;
                       description
-                        "The specified source interface must exist and an IP address must be configured on the interface.";
+                          "Specify the source interface name.";
                   }
               }
           }
           container ipv6-sources {
               description
-                  "List of To configure source IPv6 address.";
+                  "List of configure source IPv6 address.";
               list ipv6-source {
                   key "src-ipv6-address";
                   max-elements "20";
                   description
-                       "Configure Source IPv6 address entry policy.";
+                       "Configure source IPv6 address entry.";
                   leaf src-ipv6-address {
                       type inet:ipv6-address-no-zone;
                       description
@@ -1556,13 +1774,13 @@ module huawei-snmp {
                           length "1..31";
                       }
                       description
-                          "The specified VPN instance must exist and IPv6-family must be enabled in the VPN instance.";
+                          "Source IPv6 VPN instance name.";
                   }
               }
           }
           container all-interface {
               description
-                  "Configure To configure bind all interface.";
+                  "Configure bind all interface.";
               leaf all-ipv4-interface {
                   type boolean;
                   default false;
@@ -1576,6 +1794,37 @@ module huawei-snmp {
                       "Enable/disable bind all IPv6 interface.";
               }
           }
+        }
+    }
+    rpc activate-users {
+        description
+            "Activate the users blocked by authentication failure.";
+        input  {
+            container activate-users {
+                description
+                    "List of users blocked by authentication failure.";
+                list activate-user {
+                    key "name";
+                    description
+                        "Activate the user blocked by authentication failure.";
+                    leaf name {
+                        type string{
+                            length "1..32";
+                        }
+                    description
+                        "Unique name to identify the USM user.";
+                    }
+                    leaf engine-id {
+                        ext:support-filter "true";
+                        type string {
+                            length "10..64";
+                            pattern '(([0-9a-fA-F])*)';
+                        }
+                        description
+                            "Remote engine ID.";
+                    }
+                }
+            }
         }
     }
 }

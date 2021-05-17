@@ -49,13 +49,13 @@ module huawei-mac-fwd {
     "Forwarding MAC service.";
   revision 2020-01-22 {
     description
-      "Init revision.";
+      "Modify description.";
     reference
       "Huawei private.";
   }
   revision 2019-04-15 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -77,7 +77,7 @@ module huawei-mac-fwd {
   }
   rpc reset-bd-machop {
     description
-      "Reset MAC hop info by BD id.";
+      "Reset MAC hop info by BD ID.";
     ext:node-ref "/bd:bd/bd:instances/bd:instance/mac-fwd:mac-hops/mac-fwd:mac-hop";
     input {
       leaf bd-id {
@@ -86,7 +86,7 @@ module huawei-mac-fwd {
         }
         mandatory true;
         description
-          "BD id.";
+          "BD ID.";
       }
     }
   }
@@ -97,7 +97,7 @@ module huawei-mac-fwd {
   }
   rpc reset-vlan-machop {
     description
-      "Reset MAC hop info by VLAN id.";
+      "Reset MAC hop info by VLAN ID.";
     ext:node-ref "/vlan:vlan/vlan:vlans/vlan:vlan/mac-fwd:mac-hops/mac-fwd:mac-hop";
     input {
       leaf vlan-id {
@@ -106,7 +106,7 @@ module huawei-mac-fwd {
         }
         mandatory true;
         description
-          "VLAN id.";
+          "VLAN ID.";
       }
     }
   }
@@ -151,16 +151,16 @@ module huawei-mac-fwd {
   }
   augment "/bd:bd/bd:instances/bd:instance" {
     description
-      "BD mac hop info.";
+      "BD MAC hop info.";
     container mac-hops {
       config false;
       description
-        "List of the bridge domain mac hop info.";
+        "List of the bridge domain MAC hop info.";
       list mac-hop {
         key "mac-address interface-name peer-ip";
         config false;
         description
-          "Operational data of the bridge domain mac hop info.";
+          "Operational data of the bridge domain MAC hop info.";
         leaf mac-address {
           type pub-type:mac-address {
             length "0..255";
@@ -196,16 +196,16 @@ module huawei-mac-fwd {
   }
   augment "/vlan:vlan/vlan:vlans/vlan:vlan" {
     description
-      "VLAN mac hop info.";
+      "VLAN MAC hop info.";
     container mac-hops {
       config false;
       description
-        "List of the VLAN mac hop info.";
+        "List of the VLAN MAC hop info.";
       list mac-hop {
         key "mac-address interface-name";
         config false;
         description
-          "Operational data of VLAN mac hop info.";
+          "Operational data of VLAN MAC hop info.";
         leaf mac-address {
           type pub-type:mac-address {
             length "0..255";
@@ -278,16 +278,16 @@ module huawei-mac-fwd {
   }
   augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls" {
     description
-      "VPLS mac hop info.";
+      "VPLS MAC hop info.";
     container mac-hops {
       config false;
       description
-        "List of the vpls mac hop info.";
+        "List of the VPLS MAC hop info.";
       list mac-hop {
         key "mac-address interface-name peer-ip";
         config false;
         description
-          "Operational data of vpls mac hop info.";
+          "Operational data of VPLS MAC hop info.";
         leaf mac-address {
           type pub-type:mac-address {
             length "0..255";
@@ -329,7 +329,7 @@ module huawei-mac-fwd {
     container loop-detect-suppression {
       config false;
       description
-        "Statistics of the vsi suppression.";
+        "Statistics of the VSI suppression.";
       leaf interface-name {
         type leafref {
           path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
@@ -424,6 +424,7 @@ module huawei-mac-fwd {
           type uint16 {
             range "10..30";
           }
+          units s;
           default "10";
           description
             "Detection cycle.";

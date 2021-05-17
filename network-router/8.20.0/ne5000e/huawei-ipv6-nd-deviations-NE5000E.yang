@@ -14,6 +14,9 @@ module huawei-ipv6-nd-deviations-NE5000E {
   import huawei-ip {
     prefix ip;
   }
+  import huawei-bd {
+    prefix bd;
+  }
 
   organization
     "Huawei Technologies Co., Ltd.";
@@ -29,7 +32,7 @@ module huawei-ipv6-nd-deviations-NE5000E {
 
   revision 2019-11-24 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference "Huawei private.";
   }
 
@@ -46,6 +49,12 @@ module huawei-ipv6-nd-deviations-NE5000E {
     deviate not-supported;
   }
   deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:proxys/ipv6-nd:inter-vlan-proxy" {
+    deviate not-supported;
+  }
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:m-lag-global" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/ipv6-nd:nd-bd-property" {
     deviate not-supported;
   }
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-isis {
   namespace "urn:huawei:yang:huawei-isis";
@@ -24,12 +24,6 @@ module huawei-isis {
   }
   import huawei-xpl {
     prefix xpl;
-  }
-  import huawei-mpls {
-    prefix mpls;
-  }
-  import huawei-mpls-ldp {
-    prefix mpls-ldp;
   }
   import huawei-pub-type {
     prefix pub-type;
@@ -56,6 +50,91 @@ module huawei-isis {
      Email: support@huawei.com";
   description
     "ISIS management.";
+  revision 2020-08-03 {
+    description
+      "Modity container SPF.";
+    reference "Huawei private.";
+  }
+  revision 2020-07-01 {
+    description
+      "Add leaf learning-avoid-loop.";
+    reference "Huawei private.";
+  }
+  revision 2020-06-30 {
+    description
+      "Add keychain-name pattern lower-only.";
+    reference "Huawei private.";
+  }
+  revision 2020-06-03 {
+    description
+      "Add leaf ignore-level2-leak-level1 under container bgp-ls.";
+    reference "Huawei private.";
+  }
+  revision 2020-04-03 {
+    description
+      "Add leaf intf-limit-enable under container global.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-04 {
+    description
+      "Modity the description.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-03 {
+    description
+      "Modity the description.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-25 {
+    description
+      "Add node hold-max-cost-level1 and hold-max-cost-level2 under container tiebreaker.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-16 {
+    description
+      "Add IPv6 function incr-Cost.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Deprecated sr-enable and delay.";
+    reference "Huawei private.";
+  }
+  revision 2020-01-03 {
+    description
+      "Add container tiebreaker.";
+    reference "Huawei private.";
+  }
+  revision 2019-12-23 {
+    description
+      "Add container summary prefixs.";
+    reference "Huawei private.";
+  }
+  revision 2019-12-16 {
+    description
+      "Add container global stat etc.";
+    reference "Huawei private.";
+  }
+  revision 2019-11-22 {
+    description
+      "Add container isis import rts etc.";
+    reference "Huawei private.";
+  }
+  revision 2019-11-15 {
+    description
+      "Add container link group ports etc.";
+    reference "Huawei private.";
+  }
+  revision 2019-11-01 {
+    description
+      "Add container default route etc.";
+    reference "Huawei private.";
+  }
+  revision 2019-09-21 {
+    description
+      "Add container lsp lifetime etc.";
+    reference "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -279,6 +358,60 @@ module huawei-isis {
         default "false";
         description
           "Enable/disable the ISIS interface flapping suppression function.";
+      }
+      leaf intf-limit-enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable the limit of the number of ISIS interfaces.";
+      }
+	  container session-car {
+        must 'cir<=pir';
+        must 'cbs<=pbs';
+        description
+          "Configure global ISIS session CAR.";
+        leaf switch-flag {
+        type switch-type;
+        default "enable";
+        description
+          "Session CAR switch flag.";
+        }
+        leaf cir {
+        type uint32 {
+            range "0..1000000";
+        }
+        units "kbit/s";
+        default "8";
+        description
+          "Session CAR CIR value.";
+        }
+        leaf cbs {
+        type uint32 {
+            range "0..1000000";
+        }
+        units "Byte";
+        default "100000";
+        description
+          "Session CAR CBS value.";
+        }
+        leaf pir {
+        type uint32 {
+            range "0..1000000";
+        }
+        units "kbit/s";
+        default "20000";
+        description
+          "Session CAR PIR value.";
+        }
+        leaf pbs {
+        type uint32 {
+            range "0..10000000";
+        }
+        units "Byte";
+        default "9000000";
+        description
+          "Session CAR PBS value.";
+        }
       }
     }
     container global-stat {
@@ -733,6 +866,7 @@ module huawei-isis {
            type uint32 {
              range "0..65535";
            }
+           units "s";
            default "20";
            description
              "Set the delay time of routing calculation after receiving purge LSP.";
@@ -740,26 +874,47 @@ module huawei-isis {
          container spf {
           description
             "Configure time for route calculation.";
+          leaf spf-type {
+            type spf-type;
+            must "../spf-type='intelligent-timer' or (../spf-type='no-incr-timer' and ../max and ../init) or (../spf-type='one-trigger-timer'and ../max)";
+            default "intelligent-timer";
+            description
+              "Set the SPF timer type for route calculation. When SPF type is intelligent-timer, max, incr, and init can be configured. When SPF type is set to no-incr-timer, max and init can be configured. When SPF type is set to one-trigger-timer, only max can be configured.";
+          }
           leaf max {
             type uint32 {
               range "1..120";
             }
             units "s";
-            default "5";
+            ext:dynamic-default {
+              ext:default-value "5" {
+                when "../spf-type = 'intelligent-timer'";
+                description 
+                  "The default value is 5 when SPF type is intelligent-timer.";
+              }
+            }
             description
               "Set the maximum delay time for route calculation.";
           }
           leaf init {
+            when "../spf-type!='one-trigger-timer'";
             type uint32 {
               range "1..60000";
             }
             units "ms";
             must "(../init<../max*1000)";
-            default "50";
+            ext:dynamic-default {
+              ext:default-value "50" {
+                when "../spf-type = 'intelligent-timer'";
+                description 
+                  "The default value is 50 when SPF type is intelligent-timer.";
+              }
+            }
             description
               "Set the delay for the first route calculation.";
           }
           leaf incr {
+            when "../spf-type='intelligent-timer'";
             type uint32 {
               range "1..60000";
             }
@@ -855,60 +1010,6 @@ module huawei-isis {
             default "1497";
             description
               "Set the maximum size of the LSPs that can be received.";
-          }
-        }
-        container flash-flood {
-          description
-            "Configure immediate LSP flooding.";
-          leaf enable-level1 {
-            type boolean;
-            default "false";
-            description
-              "Enable/disable level 1 LSP flooding.";
-          }
-          leaf enable-level2 {
-            type boolean;
-            default "false";
-            description
-              "Enable/disable level 2 LSP flooding.";
-          }
-          leaf lsp-num-level1 {
-            when "../enable-level1='true'";
-            type uint32 {
-              range "1..15";
-            }
-            default "5";
-            description
-              "Set the maximum number of level 1 LSPs that can be flooded each time on each interface.";
-          }
-          leaf lsp-num-level2 {
-            when "../enable-level2='true'";
-            type uint32 {
-              range "1..15";
-            }
-            default "5";
-            description
-              "Set the maximum number of level 2 LSPs that can be flooded each time on each interface.";
-          }
-          leaf max-timer-level1 {
-            when "../enable-level1='true'";
-            type uint32 {
-              range "10..50000";
-            }
-            units "ms";
-            default "10";
-            description
-              "Set the maximum interval at which level 1 LSPs are flooded.";
-          }
-          leaf max-timer-level2 {
-            when "../enable-level2='true'";
-            type uint32 {
-              range "10..50000";
-            }
-            units "ms";
-            default "10";
-            description
-              "Set the maximum interval at which level 2 LSPs are flooded.";
           }
         }
         container set-overload {
@@ -1075,6 +1176,7 @@ module huawei-isis {
           }
           leaf enable-level2 {
             type boolean;
+            must "not(../ignore-level2-leak-level1='true' and ../enable-level2='true')";
             default "false";
             description
               "Enable/disable Level 2 BGP LS.";
@@ -1099,6 +1201,14 @@ module huawei-isis {
             }
             description
               "Set BGP LS identifier.";
+          }
+          leaf ignore-level2-leak-level1 {
+            when "../enable-level1='true'";
+            type boolean;
+            must "not(../enable-level2='true' and ../ignore-level2-leak-level1='true')";
+            default "false";
+            description
+              "Enable/disable the function of ignoring the routes that are leaked from the Level 2 to the Level 1 during IS-IS Level 1 topology information advertisement to BGP-LS.";
           }
         }
         container bier {
@@ -1136,14 +1246,14 @@ module huawei-isis {
           }
           leaf virtual-cluster {
             type boolean;
-            must "../virtual-cluster='false'  or (../../bgp-ls/enable-level1='false' and ../../bgp-ls/enable-level2='false') and not(../../afs/af/traffic-eng) and not(../../lsp-auths) and not(../../circuits/circuit/hello-auths)";
+            must "../virtual-cluster='false'  or ((../../bgp-ls/enable-level1='false' and ../../bgp-ls/enable-level2='false') and not(../../afs/af/traffic-eng) and not(../../lsp-auths) and not(../../circuits/circuit/hello-auths))";
             default "false";
             description
               "Enable/disable virtual cluster on the system. Conflict with segment routing MPLS and virtual access.";
           }
           leaf virtual-access {
             type boolean;
-            must "../virtual-access='false' or (../../cost-style='wide' or ../../cost-style='wtransition') and (../../bgp-ls/enable-level1='false' and ../../bgp-ls/enable-level2='false') and not(../../afs/af/traffic-eng) and not(../../lsp-auths) and not(../../circuits/circuit/hello-auths)";
+            must "../virtual-access='false' or ((../../cost-style='wide' or ../../cost-style='wtransition') and (../../bgp-ls/enable-level1='false' and ../../bgp-ls/enable-level2='false') and not(../../afs/af/traffic-eng) and not(../../lsp-auths) and not(../../circuits/circuit/hello-auths))";
             default "false";
             description
               "Enable/disable virtual access on the system. Conflict with segment routing MPLS and virtual cluster.";
@@ -1155,6 +1265,7 @@ module huawei-isis {
               "Configure a local multicast topology.";
             leaf enable {
               type boolean;
+              must "../enable='false' or ../../afs/af[type='afipv4']/traffic-eng/enable-level1='true' or ../../afs/af[type='afipv4']/traffic-eng/enable-level2='true'";
               default "false";
               description
                 "Enable/disable local multicast topology.";
@@ -1261,6 +1372,7 @@ module huawei-isis {
               when "../pw-type='keychain'";
               type string {
                 length "1..47";
+                pattern "[^A-Z]+";
               }
               ext:case-sensitivity lower-only;
               mandatory true;
@@ -1305,7 +1417,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
             leaf system-id {
               type string {
                 length "12..31";
-                pattern "((([0-9]|[a-f]|[A-F]){4}\\.){2}([0-9]|[a-f]|[A-F]){4}(\\.([0-9]|[a-f]|[A-F]){2})?)";
+                pattern "((([0-9]|[a-f]){4}\\.){2}([0-9]|[a-f]){4}(\\.([0-9]|[a-f]){2})?)";
               }
               ext:case-sensitivity lower-only;
               description
@@ -1359,6 +1471,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
               type uint32 {
                 range "100..1000000";
               }
+              units "ms";
               description
                 "Config peer hold max cost interval.";
             }
@@ -1540,18 +1653,18 @@ all-send-only: In this mode, the authentication information is encapsulated for 
               }
               leaf hello-timer-level1 {
                 type uint32 {
-                  range "3..255";
+                  range "1..255";
                 }
-		units "s";
+                units "s";
                 default "10";
                 description
                   "Set the interval at which level 1 hello packets are sent.";
               }
               leaf hello-timer-level2 {
                 type uint32 {
-                  range "3..255";
+                  range "1..255";
                 }
-		units "s";
+                units "s";
                 default "10";
                 description
                   "To set the interval for sending level 2 hello packets.";
@@ -1609,9 +1722,9 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                 }
                 leaf hello-timer {
                   type uint32 {
-                    range "3..255";
+                    range "1..255";
                   }
-		  units "s";
+                  units "s";
                   default "10";
                   description
                     "Set the interval at which P2P hello packets are sent.";
@@ -1676,6 +1789,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   when "../pw-type='keychain'";
                   type string {
                     length "1..47";
+                    pattern "[^A-Z]+";
                   }
                   ext:case-sensitivity lower-only;
                   mandatory true;
@@ -1767,7 +1881,6 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                     "Suppress the advertisement of direct route.";
                 }
                 leaf incr-cost {
-                  when "../type='afipv4'";
                   type uint32 {
                     range "1..16777214";
                   }
@@ -1958,21 +2071,22 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   description
                     "List of link-group interface.";
                   list link-group-port {
-                    key "name level-type";
+                    key "level-type";
                     description
                       "Configure link-group interface.";
-                    leaf name {
-                      type string {
-                        length "0..32";
-                        pattern ".*\\S.*";
-                      }
-                      description
-                        "To set link-group name.";
-                    }
                     leaf level-type {
                       type level-type-two;
                       description
                         "Level type.";
+                    }
+                    leaf name {
+                      type leafref {
+                        path "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:link-groups/isis:link-group/isis:name";
+                      }
+                      must "not(../../link-group-port[name!=current()])";
+                      mandatory "true";
+                      description
+                        "To set link-group name.";
                     }
                   }
                 }
@@ -2034,21 +2148,22 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                       description
                         "List of link-group interface.";
                       list link-group-port {
-                        key "name level-type";
+                        key "level-type";
                         description
                           "Configure link-group interface.";
-                        leaf name {
-                          type string {
-                            length "0..32";
-                            pattern ".*\\S.*";
-                          }
-                          description
-                            "To set link-group name.";
-                        }
                         leaf level-type {
                           type level-type-two;
                           description
                             "Level type.";
+                        }
+                        leaf name {
+                          type leafref {
+                            path "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:link-groups/isis:link-group/isis:name";
+                          }
+                          must "not(../../link-group-port[name!=current()])";
+                          mandatory "true";
+                          description
+                            "To set link-group name.";
                         }
                       }
                     }
@@ -2163,6 +2278,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
               }
               leaf peer-flap-remain-timer {
                 type uint32;
+                units "s";
                 description
                   "Display the remaining time of neighbor relationship flapping suppression.";
               }
@@ -2221,6 +2337,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
               type uint32 {
                 range "1..2147483648";
               }
+              units "Mbit/s";
               default "100";
               description
                 "Set the bandwidth reference used for the automatic cost calculation on an interface.";
@@ -2308,7 +2425,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                 "Configure the level 1 and level 2 routers to generate default routes.";
               leaf mode {
                 type default-mode;
-                must "../mode!='match-any' or ../mode='match-any' and (../route-policy-name)";
+                must "../mode!='match-any' or (../mode='match-any' and (../route-policy-name))";
                 default "always";
                 description
                   "Set the default routes mode. When the mode is not match any, route policy name and route filter name cannot be configured.";
@@ -2366,9 +2483,17 @@ all-send-only: In this mode, the authentication information is encapsulated for 
               }
               leaf avoid-learning {
                 type boolean;
+                must "(../avoid-learning='false' or ../learning-avoid-loop='false')";
                 default "false";
                 description
                   "Enable/disable to prevent ISIS processes from learning default routes and adding the default routes to the routing table. If the default routes that already exist in the routing table are active, the status of the route is set to inactive.";
+              }
+              leaf learning-avoid-loop {
+                type boolean;
+                must "(../learning-avoid-loop='false') or (../avoid-learning='false' and ../../type='afipv6')";
+                default "false";
+                description
+                  "Enable/disable to prevent learning of the default route into a loop.";
               }
             }
             container import-routes {
@@ -2380,7 +2505,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   "Configure import route of other routing protocols.";
                 leaf protocol {
                   type import-protocol;
-                  must "not(../protocol='ospfv3' or ../protocol='ripng') or ../../../type='afipv6' and (../protocol='ospfv3' or ../protocol='ripng')";
+                  must "(../../../type='afipv4' and not(../protocol='ospfv3' or ../protocol='ripng')) or (../../../type='afipv6' and not(../protocol='ospf' or ../protocol='rip'))";
                   description
                     "Set the routing protocol from which routes are imported.";
                 }
@@ -2388,7 +2513,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   type uint32 {
                     range "0..4294967295";
                   }
-                  must "../process-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp' or ../protocol='unr') or ../process-id>0 and (../protocol='ospf' or ../protocol='isis' or ../protocol='rip')";
+                  must "(../process-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp' or ../protocol='unr')) or (../process-id>0 and (../protocol='ospf' or ../protocol='isis' or ../protocol='rip'))";
                   description
                     "Set the process ID. The process ID is required when the routing protocol is RIP, OSPF, or ISIS.";
                 }
@@ -2485,6 +2610,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
               }
             }
             container leak-route-level2-to-level1 {
+                presence "Leak route level2 to level1.";
                 description
                   "Configure to control ISIS to perform route leaking from level 2 to level 1. This command needs to be set on the level 1 2 router connected to the external areas.";
                 leaf tag {
@@ -2752,6 +2878,13 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   description
                     "Set a cost for summarized routes. If the ISIS cost type is narrow, narrow-compatible, or compatible, the value ranges from 1 to 63. If the ISIS cost type is wide or wide-compatible, the value ranges from 1 to 16777215.";
                 }
+                leaf learning-avoid-loop {
+                  type boolean;
+                  must "(../learning-avoid-loop='false' or ../../../type='afipv6')";
+                  default "false";
+                  description
+                    "Enable/disable to prevent learning of the same summary route into a loop.";
+                }
               }
             }
             container traffic-eng {
@@ -2772,7 +2905,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   "Enable/disable traffic eng enable level 2.";
               }
               container metric-delay {
-                when "../../type='afipv4' and (../enable-level1='true' or ../enable-level2='true')";
+                when "(../enable-level1='true' or ../enable-level2='true')";
                 description
                   "Configure metric delay in a ISIS process.";
                 leaf adv-level1 {
@@ -2788,15 +2921,17 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                     "Enable/disable metric delay advertisement.";
                 }
                 leaf suppress-timer {
+                  when "../adv-level1='true' or ../adv-level2='true'";
                   type uint32 {
                     range "0..600";
-                  }
+                  }                  
                   units "s";
                   default "120";
                   description
                     "Metric delay suppress timer.";
                 }
                 leaf suppress-percent {
+                  when "../adv-level1='true' or ../adv-level2='true'";
                   type uint8 {
                     range "0..100";
                   }
@@ -2805,6 +2940,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                     "Metric delay suppress percent threshold.";
                 }
                 leaf suppress-absolute {
+                  when "../adv-level1='true' or ../adv-level2='true'";
                   type uint32 {
                     range "0..10000";
                   }
@@ -2912,7 +3048,6 @@ all-send-only: In this mode, the authentication information is encapsulated for 
               leaf auto-flag {
                 when "../../type='afipv4'";
                 type boolean;
-                must "../auto-flag='false' or (../../../../../../../ni:name='_public_' and /mpls:mpls/mpls-ldp:ldp/mpls-ldp:enable='true')";
                 default "false";
                 description
                   "Enable/disable auto MPLS LDP configuration on an interface.";
@@ -3181,8 +3316,27 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   description
                     "Set the value of level2 srlg-disjoint path prefer, the default vale is 5.";
                 }
+                leaf hold-max-cost-level1 {
+                  type uint8 {
+                    range "1..255";
+                  }
+                  must "../../lfa-level1='true' or ../hold-max-cost-level1=15";
+                  default "15";
+                  description
+                    "Set the value of level1 hold max cost link prefer.";
+                }
+                leaf hold-max-cost-level2 {
+                  type uint8 {
+                    range "1..255";
+                  }
+                  must "../../lfa-level2='true' or ../hold-max-cost-level2=15";
+                  default "15";
+                  description
+                    "Set the value of level2 hold max cost link prefer.";
+                }
               }
               container tilfa {
+                when "../../../../../../../ni:name='_public_'"; 
                 description
                   "Configure TILFA.";
                 leaf enable-level1 {
@@ -3292,7 +3446,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   "Configure filter outgoing routing update.";
                 leaf protocol {
                   type filter-export-type;
-                  must "not(../protocol='ospfv3' or ../protocol='ripng') or ../../../type='afipv6' and (../protocol='ospfv3' or ../protocol='ripng')";
+                  must "not(../protocol='ospfv3' or ../protocol='ripng') or (../../../type='afipv6' and (../protocol='ospfv3' or ../protocol='ripng'))";
                   description
                     "Protocol that advertises routes.";
                 }
@@ -3300,7 +3454,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   type uint32 {
                     range "0..4294967295";
                   }
-                  must "../protocol-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp' or ../protocol='all' or ../protocol='unr') or ../protocol-id>0 and (../protocol='ospf' or ../protocol='rip' or ../protocol='ospfv3' or ../protocol='ripng' or (../protocol='isis' and ../protocol-id!=../../../../../id))";
+                  must "(../protocol-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp' or ../protocol='all' or ../protocol='unr')) or (../protocol-id>0 and (../protocol='ospf' or ../protocol='rip' or ../protocol='ospfv3' or ../protocol='ripng' or (../protocol='isis' and ../protocol-id!=../../../../../id)))";
                   description
                     "Process ID when the advertised protocol is RIP, ISIS, or OSPF.";
                 }
@@ -3491,7 +3645,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                     "Configure the level 1 and level 2 routers to generate default routes.";
                   leaf mode {
                     type default-mode;
-                    must "../mode!='match-any' or ../mode='match-any' and (../route-policy-name)";
+                    must "../mode!='match-any' or (../mode='match-any' and (../route-policy-name))";
                     default "always";
                     description
                       "Set the default routes mode. When the mode is not match any, route policy name and route filter name cannot be configured.";
@@ -3622,6 +3776,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                   }
                 }
                 container leak-route-level2-to-level1 {
+                    presence "Leak route level2 to level1.";
                     description
                       "Configure to control ISIS to perform route leaking from level 2 to level 1. This command needs to be set on the level 1 2 router connected to the external areas.";
                     leaf tag {
@@ -3824,61 +3979,7 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                       description
                         "Enable/disable the name of a route policy which filters routes based on the tag or other protocol parameters.";
                   }
-                }
-                container summary-prefixs {
-                  description
-                    "List of summary routes.";
-                  list summary-prefix {
-                    key "prefix network-mask";
-                    description
-                      "Configure summary route.";
-                    leaf prefix {
-                      type inet:ip-address-no-zone;
-                      description
-                        "Set a summary address. Prefix is the address after mask.";
-                    }
-                    leaf network-mask {
-                      type uint8 {
-                        range "0..128";
-                      }
-                      description
-                        "Set the summary address mask. If summary address is the type of IPv4, the max value is 32. If summary address is the type of IPv6, the max value is 128.";
-                    }
-                    leaf level-type {
-                      type level-type;
-                      default "level-2";
-                      description
-                        "Set the level for summary routes.";
-                    }
-                    leaf tag {
-                      type uint32 {
-                        range "0..4294967295";
-                      }
-                      default "0";
-                      description
-                        "Set a tag for summary routes.";
-                    }
-                    leaf gen-null0-route {
-                      type boolean;
-                      default "false";
-                      description
-                        "Enable/disable generate a Null 0 route to prevent routing loops.";
-                    }
-                    leaf avoid-feadback {
-                      type boolean;
-                      default "false";
-                      description
-                        "Enable/disable avoid learning summary routes.";
-                    }
-                    leaf cost {
-                      type uint32 {
-                        range "1..16777215";
-                      }
-                      description
-                        "Set a cost for summarized routes. If the ISIS cost type is narrow, narrow-compatible, or compatible, the value ranges from 1 to 63. If the ISIS cost type is wide or wide-compatible, the value ranges from 1 to 16777215.";
-                    }
-                  }
-                }                
+                }    
                 container ipv4-import-routes {
                   when "../../../type='afipv4'";
                   config false;
@@ -3948,6 +4049,60 @@ all-send-only: In this mode, the authentication information is encapsulated for 
                       }
                       description
                         "Tag value of the imported routes.";
+                    }
+                  }
+                }
+                container summary-prefixs {
+                  description
+                    "List of summary routes.";
+                  list summary-prefix {
+                    key "prefix network-mask";
+                    description
+                      "Configure summary route.";
+                    leaf prefix {
+                      type inet:ip-address-no-zone;
+                      description
+                        "Set a summary address. Prefix is the address after mask.";
+                    }
+                    leaf network-mask {
+                      type uint8 {
+                        range "0..128";
+                      }
+                      description
+                        "Set the summary address mask. If summary address is the type of IPv4, the max value is 32. If summary address is the type of IPv6, the max value is 128.";
+                    }
+                    leaf level-type {
+                      type level-type;
+                      default "level-2";
+                      description
+                        "Set the level for summary routes.";
+                    }
+                    leaf tag {
+                      type uint32 {
+                        range "0..4294967295";
+                      }
+                      default "0";
+                      description
+                        "Set a tag for summary routes.";
+                    }
+                    leaf gen-null0-route {
+                      type boolean;
+                      default "false";
+                      description
+                        "Enable/disable generate a Null 0 route to prevent routing loops.";
+                    }
+                    leaf avoid-feadback {
+                      type boolean;
+                      default "false";
+                      description
+                        "Enable/disable avoid learning summary routes.";
+                    }
+                    leaf cost {
+                      type uint32 {
+                        range "1..16777215";
+                      }
+                      description
+                        "Set a cost for summarized routes. If the ISIS cost type is narrow, narrow-compatible, or compatible, the value ranges from 1 to 63. If the ISIS cost type is wide or wide-compatible, the value ranges from 1 to 16777215.";
                     }
                   }
                 }
@@ -4454,6 +4609,108 @@ all-send-only: In this mode, the authentication information is encapsulated for 
               description
                 "Level2 cost of IPv6.";
             }
+            container min-max-unidirectional-link-delays {
+              description
+                "List of min and max unidirectional link delay information.";
+              list min-max-unidirectional-link-delay {
+              key "af-type";
+              description
+                "Statistics of min and max unidirectional link delay information of IPv4 and IPv6.";
+              leaf af-type {
+                  type af-type;
+                  description
+                    "Address family type of the multi topology.";
+              }  
+              leaf level-1-status {
+                type boolean;
+                description
+                  "Level1 delay information advertisement status.";
+              }
+              leaf use-min-delay-level-1 {
+                type uint32;
+                units "us";
+                description
+                  "Level1 minimum delay data used on the current network.";
+              }
+              leaf use-max-delay-level-1 {
+                type uint32;
+                units "us";
+                description
+                  "Level1 maximum delay data used on the current network.";
+              }
+              leaf suppress-min-delay-level-1 {
+                type uint32;
+                units "us";
+                description
+                "Level1 minimum delay data under suppression.";
+              }
+              leaf suppress-max-delay-level-1 {
+                type uint32;
+                units "us";
+                description
+                  "Level1 maximum delay data under suppression.";
+              }
+              leaf remain-time-level-1 {
+                type uint32;
+                units "s";
+                description
+                  "Remaining time of Level1 delay information advertisement suppression.";
+              }
+              leaf level-2-status {
+                type boolean;
+                description
+                  "Level2 delay information advertisement status.";
+              }
+              leaf use-min-delay-level-2 {
+                type uint32;
+                units "us";
+                description
+                  "Level2 minimum delay data used on the current network.";
+              }
+              leaf use-max-delay-level-2 {
+                type uint32;
+                units "us";
+                description
+                  "Level2 maximum delay data used on the current network.";
+              }
+              leaf suppress-min-delay-level-2 {
+                type uint32;
+                units "us";
+                description
+                  "Level2 minimum delay data under suppression.";
+              }
+              leaf suppress-max-delay-level-2 {
+                type uint32;
+                units "us";
+                description
+                  "Level2 maximum delay data under suppression.";
+              }
+              leaf remain-time-level-2 {
+                type uint32;
+                units "s";
+                description
+                  "Remaining time of Level2 delay information advertisement suppression.";
+              }
+              leaf receive-min-delay {
+                type uint32;
+                units "us";
+                description
+                  "Minimum delay data received.";
+              }
+              leaf receive-max-delay {
+                type uint32;
+                units "us";
+                description
+                  "Maximum delay data received.";
+              }
+              leaf suppress-timer {
+                type uint32;
+                units "s";
+                description
+                  "The delay suppress timer.";
+              }
+            }
+          }
           }
         }
         container bfd-sessions {
@@ -4486,11 +4743,13 @@ all-send-only: In this mode, the authentication information is encapsulated for 
             }
             leaf min-tx {
               type uint32;
+              units "ms";
               description
                 "Minimum interval at which BFD packets are sent after negotiation.";
             }
             leaf min-rx {
               type uint32;
+              units "ms";
               description
                 "Minimum interval at which BFD packets are received after negotiation.";
             }

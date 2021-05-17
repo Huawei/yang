@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-rip {
   namespace "urn:huawei:yang:huawei-rip";
@@ -44,6 +44,48 @@ module huawei-rip {
      Email: support@huawei.com";
   description
     "RIP component.";
+  revision 2020-03-23 {
+    description
+      "Modity the description.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2020-03-03 {
+    description
+      "Modity the description.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2020-02-14 {
+    description
+      "Modify input output split-horizon poison-reverse data type.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Remove bfd detect-multiplier.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2020-01-14 {
+    description
+      "Add RPC reset RIP.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2020-01-03 {
+    description
+      "Add container networks.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2019-12-16 {
+    description
+      "Add container filter imports filter export and import route.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -519,6 +561,7 @@ The upper limit on the number of routes that RIP can handle is to ensure that RI
               type uint32 {
                 range "1..86400";
               }
+              units "s";
               default "120";
               description
                 "Specify the interval for the device to delete a route from the routing table after detecting that the route is unreachable.";
@@ -527,6 +570,7 @@ The upper limit on the number of routes that RIP can handle is to ensure that RI
               type uint32 {
                 range "1..86400";
               }
+              units "s";
               default "30";
               description
                 "Specify the periodic timer in seconds. RIP will send route updates periodically at this configured interval.";
@@ -535,6 +579,7 @@ The upper limit on the number of routes that RIP can handle is to ensure that RI
               type uint32 {
                 range "1..86400";
               }
+              units "s";
               default "180";
               description
                 "Specify the age timer. Routes will be considered unreachable after this interval. In most cases, the age timer is three times the update timer.";
@@ -543,6 +588,7 @@ The upper limit on the number of routes that RIP can handle is to ensure that RI
               type uint32 {
                 range "0..86400";
               }
+              units "s";
               default "0";
               description
               "A route is suppressed after it ages and becomes unreachable. During the suppression time, no route update is accepted to prevent route flapping. 
@@ -726,6 +772,7 @@ This configuration should be used carefully as any parameter change can cause ro
               type uint32 {
                 range "1..4294967295";
               }
+              units "ms";
               description
                 "Minimum interval for sending BFD packets to the neighbor. The value range and default value are controlled by the PAF.";
             }
@@ -733,6 +780,7 @@ This configuration should be used carefully as any parameter change can cause ro
               type uint32 {
                 range "1..4294967295";
               }
+              units "ms";
               description
                 "Minimum interval for receiving BFD packets from the neighbor. The value range and default value are controlled by the PAF.";
             }

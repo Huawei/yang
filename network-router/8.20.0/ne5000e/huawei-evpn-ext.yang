@@ -50,7 +50,7 @@ module huawei-evpn-ext {
   }
   revision 2019-04-23 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -308,6 +308,16 @@ module huawei-evpn-ext {
         default "outpri";
         description
           "Specify the trust type.";
+      }
+    }
+    container reserve-if-switch {
+      description
+        "Configure EVPN broadcast fast switching.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the flag of EVPN broadcast fast switching.";
       }
     }
   }

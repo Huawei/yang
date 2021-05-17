@@ -29,7 +29,13 @@ module huawei-ifm {
      Email: support@huawei.com";
   description
     "Common interface management, which includes the public configuration of interfaces.";
-  revision 2020-02-14 {
+  revision 2020-06-10 {
+    description
+      "Add units attribute.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-15 {
     description
       "Add must condition and revise description. Add leaf bandwidth-kbps.";
     reference
@@ -444,7 +450,7 @@ module huawei-ifm {
       enum 400GE {
         value 108;
         description
-          "400GE interface.";
+          "400 GigabitEthernet interface.";
       }
       enum VX-Tunnel {
         value 89;
@@ -1050,7 +1056,13 @@ module huawei-ifm {
         type boolean;
         default "false";
         description
-        "Enable/disable the function of ignoring primary/secondary of IPv4 address type. All secondary addresses must be deleted before this function is enabled.";
+          "Enable/disable the function of ignoring primary/secondary of IPv4 address type. All secondary addresses must be deleted before this function is enabled.";
+      }
+      leaf sub-interface-link-trap-enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable the trap function on all Sub-interface.";
       }
       container ipv4-conflict-enable {
         must "../ipv4-ignore-primary-sub='false'";
@@ -1186,7 +1198,7 @@ module huawei-ifm {
             "The textual name of the interface. It should be the name of the interface as assigned by the local device. It should be suitable for use in commands which entered at the device's 'console'. This might be a text name, such as 'NULL0', depending on the interface naming syntax of the device.";
         }
         leaf class {
-          ext:operation-exclude update;
+          ext:operation-exclude update|delete;
           type class-type;
           ext:dynamic-default;
           description
@@ -1194,15 +1206,15 @@ module huawei-ifm {
           ext:support-filter "true";
         }
         leaf type {
-          ext:operation-exclude update;
+          ext:operation-exclude update|delete;
           type port-type;
           ext:dynamic-default;
           description
-            "Type of an interface. Port types include physical ports and logical ports.";
+            "Type of an interface. Interfaces include physical and logical interfaces.";
           ext:support-filter "true";
         }
         leaf parent-name {
-          ext:operation-exclude update;
+          ext:operation-exclude update|delete;
           when "../class='sub-interface'";
           type leafref {
             path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
@@ -1212,7 +1224,7 @@ module huawei-ifm {
             "Name of the main interface. For example, Ethernet0/1/0.";
         }
         leaf number {
-          ext:operation-exclude update;
+          ext:operation-exclude update|delete;
           type string {
             length "1..63";
             pattern '(\d+/\d+/\d+/\d+)|(\d+/\d+/\d+)|(\d+/\d+)|(\d+)|(\d+/\d+/\d+[:]\d+)|(\d+/\d+/\d+[:]\d+[:]\d+[:]\d+)|(\d+/\d+/\d+/\d+[:]\d+)|(\d+/\d+/\d+/\d+[:]\d+[:]\d+[:]\d+)|(\d+/\d+/\d+/\d+/\d+[:]\d+)|(\d+/\d+[:]\d+)';
@@ -1241,7 +1253,7 @@ module huawei-ifm {
             "Link protocol. Capabilities supported by this node vary according to interface types.";
         }
         leaf router-type {
-          ext:operation-exclude update;
+          ext:operation-exclude update|delete;
           type router-type;
           ext:dynamic-default;
           description
@@ -1304,6 +1316,7 @@ module huawei-ifm {
           type uint32 {
             range "0..64000";
           }
+          units "Byte";
           ext:dynamic-default;
           description
             "Maximum transmission unit of an interface.
@@ -1335,7 +1348,7 @@ module huawei-ifm {
             "Name of a VPN instance. It uniquely identifies a VPN instance. The VRF name of the DCN interface cannot be created, modified, or deleted.";
         }
         leaf l2-mode-enable {
-          ext:operation-exclude update;
+          ext:operation-exclude update|delete;
           type boolean;
           default "false";
           description
@@ -1411,6 +1424,21 @@ module huawei-ifm {
           config false;
           description
             "Effective encapsulation type.";
+        }
+        leaf network-layer-status {
+          type network-layer-state;
+          default "ipv4-ipv6-up";
+          description
+            "Network-layer status of an interface.";
+        }
+        leaf protocol-up-delay-time {
+          type uint32 {
+            range "0..7200";
+          }
+          units "s";
+          ext:dynamic-default;
+          description
+            "Specify the protocol up-delay-time value in seconds.";
         }
         container control-flap {
           presence "Enable/disable flapping control on an interface.";
@@ -1688,6 +1716,7 @@ module huawei-ifm {
           }
           leaf mtu {
             type uint32;
+            units "Byte";
             description
               "Dynamic MTU of an interface.";
           }

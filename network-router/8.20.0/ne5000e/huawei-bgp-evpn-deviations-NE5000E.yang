@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-evpn-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-bgp-evpn-deviations-NE5000E";
+  prefix bgp-evpn-devs-NE5000E;
+
+  import huawei-bgp-evpn {
+    prefix bgp-evpn;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "BGP EVPN configuration.";
+
+  revision 2020-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-evpn:l2vpn-evpn/bgp-evpn:statistics/bgp-evpn:statistic/bgp-evpn:smet-route-number" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-evpn:l2vpn-evpn/bgp-evpn:statistics/bgp-evpn:statistic/bgp-evpn:igmp-join-route-number" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-evpn:l2vpn-evpn/bgp-evpn:statistics/bgp-evpn:statistic/bgp-evpn:igmp-leave-route-number" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp-evpn:evpn/bgp-evpn:irb-asymmetric/bgp-evpn:irb-asymmetric-mode/bgp-evpn:irb-asymmetric-policy-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp-evpn:evpn/bgp-evpn:irb-asymmetric/bgp-evpn:irb-asymmetric-mode/bgp-evpn:irb-asymmetric-policy-name" {
+    deviate not-supported;
+  }
+}

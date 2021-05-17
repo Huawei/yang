@@ -24,7 +24,7 @@ module huawei-wdm {
     "Configuration of WDM port.";
   revision 2019-07-20 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -354,28 +354,70 @@ module huawei-wdm {
           description
             "After prefec error rate power value.";
         }
-        container otn-port-alarm {
+container otn-port-alarm {
           description
             "Configure OTN port alarm information.";
           leaf prefec-trigger-coeff {
-            ext:dynamic-default ;
+            ext:dynamic-default  {
+              ext:default-value "1" {
+                when "../../fecmode = 'none' or ../../fecmode = 'standard'";
+                description
+                  "The default value is 1 when fecmode is none.";
+              }
+              ext:default-value "2" {
+                when "../../fecmode = 'lhaul-sd'";
+                description
+                  "The default value is 2 when type is lhaul-sd.";
+              }
+              ext:default-value "5" {
+                when "../../fecmode = 'enhanced-i-4' or ../../fecmode = 'enhanced-i-7'";
+                description
+                  "The default value is 5 when type is enhanced-i-4 or enhanced-i-7.";
+              }
+              ext:default-value "7" {
+                when "../../fecmode = 'enhanced'";
+                description
+                  "The default value is 7 when type is enhanced.";
+              }
+            }
             type uint32 {
               range "1..9";
             }
             must "../prefec-trigger-power and ../prefec-recover-coeff and ../prefec-recover-power and ((../prefec-trigger-power < ../prefec-recover-power) or 
               (../prefec-recover-coeff <= ../prefec-trigger-coeff and ../prefec-trigger-power = ../prefec-recover-power))";
             description
-              "Prefec-tca trigger-threshold coefficient, when fecmode is 'standard' or 'none', the default value is 1, when fecmode is equal to 'enhanced-i-4' or 'enhanced-i-7', the default value is 5.";
+              "Prefec-tca trigger-threshold coefficient.";
           }
           leaf prefec-trigger-power {
-            ext:dynamic-default ;
+            ext:dynamic-default  {
+              ext:default-value "6" {
+                when "../../fecmode = 'none' or ../../fecmode = 'standard'";
+                description
+                  "The default value is 1 when fecmode is none.";
+              }
+              ext:default-value "3" {
+                when "../../fecmode = 'lhaul-sd'";
+                description
+                  "The default value is 2 when type is lhaul-sd.";
+              }
+              ext:default-value "5" {
+                when "../../fecmode = 'enhanced-i-4' or ../../fecmode = 'enhanced-i-7'";
+                description
+                  "The default value is 5 when type is enhanced-i-4 or enhanced-i-7.";
+              }
+              ext:default-value "4" {
+                when "../../fecmode = 'enhanced'";
+                description
+                  "The default value is 7 when type is enhanced.";
+              }
+            }
             type uint32 {
               range "1..7";
             }
             must "../prefec-trigger-coeff and ../prefec-recover-coeff and ../prefec-recover-power and ((../prefec-trigger-power < ../prefec-recover-power) or 
               (../prefec-recover-coeff <= ../prefec-trigger-coeff and ../prefec-trigger-power = ../prefec-recover-power))";
             description
-              "Prefec-tca trigger-threshold power, when fecmode is 'standard' or 'none', the default value is 6, when fecmode is equal to 'enhanced-i-4' or 'enhanced-i-7', the default value is 5.";
+              "Prefec-tca trigger-threshold power.";
           }
           leaf prefec-trigger-interval {
             type uint32 {
@@ -386,24 +428,66 @@ module huawei-wdm {
               "Time interval for statistical prefec-tca to trigger prefec alarm.";
           }
           leaf prefec-recover-coeff {
-            ext:dynamic-default ;
+            ext:dynamic-default  {
+              ext:default-value "1" {
+                when "../../fecmode = 'none' or ../../fecmode = 'standard'";
+                description
+                  "The default value is 1 when fecmode is none.";
+              }
+              ext:default-value "2" {
+                when "../../fecmode = 'lhaul-sd'";
+                description
+                  "The default value is 2 when type is lhaul-sd.";
+              }
+              ext:default-value "5" {
+                when "../../fecmode = 'enhanced-i-4' or ../../fecmode = 'enhanced-i-7'";
+                description
+                  "The default value is 5 when type is enhanced-i-4 or enhanced-i-7.";
+              }
+              ext:default-value "7" {
+                when "../../fecmode = 'enhanced'";
+                description
+                  "The default value is 7 when type is enhanced.";
+              }
+            }
             type uint32 {
               range "1..9";
             }
             must "../prefec-trigger-power and ../prefec-trigger-coeff and ../prefec-recover-power and ((../prefec-trigger-power < ../prefec-recover-power) or 
               (../prefec-recover-coeff <= ../prefec-trigger-coeff and ../prefec-trigger-power = ../prefec-recover-power))";
             description
-              "Prefec-tca recover-threshold coefficient, when fecmode is 'standard' or 'none', the default value is 1, when fecmode is equal to 'enhanced-i-4' or 'enhanced-i-7', the default value is 5.";
+              "Prefec-tca recover-threshold coefficient.";
           }
           leaf prefec-recover-power {
-            ext:dynamic-default ;
+            ext:dynamic-default  {
+              ext:default-value "7" {
+                when "../../fecmode = 'none' or ../../fecmode = 'standard'";
+                description
+                  "The default value is 1 when fecmode is none.";
+              }
+              ext:default-value "4" {
+                when "../../fecmode = 'lhaul-sd'";
+                description
+                  "The default value is 2 when type is lhaul-sd.";
+              }
+              ext:default-value "6" {
+                when "../../fecmode = 'enhanced-i-4' or ../../fecmode = 'enhanced-i-7'";
+                description
+                  "The default value is 5 when type is enhanced-i-4 or enhanced-i-7.";
+              }
+              ext:default-value "4" {
+                when "../../fecmode = 'enhanced'";
+                description
+                  "The default value is 7 when type is enhanced.";
+              }
+            }
             type uint32 {
               range "1..8";
             }
             must "../prefec-trigger-power and ../prefec-recover-coeff and ../prefec-trigger-coeff and ((../prefec-trigger-power < ../prefec-recover-power) or 
               (../prefec-recover-coeff <= ../prefec-trigger-coeff and ../prefec-trigger-power = ../prefec-recover-power))";
             description
-              "Prefec-tca recover-threshold power, when fecmode is 'standard' or 'none', the default value is 5, when fecmode is equal to 'enhanced-i-4' or 'enhanced-i-7', the default value is 6.";
+              "Prefec-tca recover-threshold power.";
           }
           leaf prefec-recover-interval {
             type uint32 {
@@ -440,7 +524,7 @@ module huawei-wdm {
               range "2..19999";
             }
             must "((../damp-suppress and ../damp-reuse and ../damp-ceiling and ../damp-decayok and ../damp-decayng) and ../damp-suppress >= ../damp-reuse and ../damp-suppress <= ../damp-ceiling) or 
-              (not(../damp-suppress) and not(../damp-reuse) and not(../damp-ceiling) and not(../damp-decayok) and not(../damp-decayng))";
+              (not(../damp-suppress) and not(../damp-reuse) and not(../damp-ceiling) and not(../damp-decayok) and not(../damp-decayng))"; 
             description
               "TAD Alarm Suppress Value.";
           }

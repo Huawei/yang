@@ -853,13 +853,13 @@ module huawei-macsec {
             ../ifm:type='3x40GE' or 
             ../ifm:type='4x25GE' or 
             ../ifm:type='25GE' or 
-            ../ifm:type='40GE' or 
-            ../ifm:type='50GE' or 
-            ../ifm:type='50|100GE' or 
+            ../ifm:type='40GE' or
+            ../ifm:type='50GE' or
+            ../ifm:type='50|100GE' or
             ../ifm:type='XGigabitEthernet' or 
-            ../ifm:type='FlexE' or 
-            ../ifm:type='FlexE-50G' or 
-            ../ifm:type='FlexE-100G' or 
+            ../ifm:type='FlexE' or
+            ../ifm:type='FlexE-50G' or
+            ../ifm:type='FlexE-100G' or
             ../ifm:type='FlexE-50|100G'";
       description
         "Configure MACsec application. Before applying the macsec configuration, you need to activate the macsec port license and apply for sufficient license resources.";
@@ -1017,7 +1017,7 @@ module huawei-macsec {
     description
       "Add MACsec configuration to license model.";
     container port-macsecs {
-      when "../lcs:name='LCR9S9KMACS00' or ../lcs:name='LCR5MACSEC01' or ../lcs:name='LCR5MACSEC02' or ../lcs:name='LCX6S60NMSEAP' or ../lcs:name='LANKMACSEC011' or ../lcs:name='LANKMACSEC026' or ../lcs:name='LANKMACSEC051' or ../lcs:name='LCR9S9K0XMS80' or ../lcs:name='LCR9S9K0NMS80' or ../lcs:name='LTNRS00YMSC0P' or ../lcs:name='LTNRS00VMSC0P' or ../lcs:name='LTNRS00NMSC0P' or ../lcs:name='LCR5S40YMSC0P' or ../lcs:name='LCR5S40VMSC0P' or ../lcs:name='LCR5S40NMSC0P' or ../lcs:name='LCX6S00YMSC0P' or ../lcs:name='LCX6S00VMSC0P' or ../lcs:name='LCX6S00NMSC0P' or ../lcs:name='LCR5S40XMSC0P' or ../lcs:name='LCX6S40YMSC0P' or ../lcs:name='LTNRS40YMSC0P' or ../lcs:name='LCX6S00VMSC01' or ../lcs:name='LCX6S00YMSC01' or ../lcs:name='LCR5SMACSEC05' or ../lcs:name='LCR5SMACSEC06' or ../lcs:name='LCR8SMACSECC2' or ../lcs:name='LCR8SMACSECC4' or ../lcs:name='LTNRSMACSECC4'or ../lcs:name='LTNRSMACSECC2' or ../lcs:name='LCR5SMACSECC2' or ../lcs:name='LCR5SMACSECC4' or ../lcs:name='LCX6S00NMSC01' or ../lcs:name='LCX6S00XMSC01' or ../lcs:name='LCX6S00GMSC01' or ../lcs:name='LTNRS00GMSC0P' or ../lcs:name='LCR5S40GMSC0P' or ../lcs:name='LCX6S40GMSC0P' or ../lcs:name='LCR8S8KXMSCCP' or ../lcs:name='LCR8S8KXMSCCR' or ../lcs:name='LANKMACSEC101' or ../lcs:name='LCR8SM6MACSC1' or ../lcs:name='LCR8SM6MACSC0'";
+      when "../lcs:name='LCR9S9KMACS00' or ../lcs:name='LCR5MACSEC01' or ../lcs:name='LCR5MACSEC02' or ../lcs:name='LCX6S60NMSEAP' or ../lcs:name='LANKMACSEC011' or ../lcs:name='LANKMACSEC026' or ../lcs:name='LANKMACSEC051' or ../lcs:name='LCR9S9K0XMS80' or ../lcs:name='LCR9S9K0NMS80' or ../lcs:name='LCR9S9K0NMS85' or ../lcs:name='LTNRS00YMSC0P' or ../lcs:name='LTNRS00VMSC0P' or ../lcs:name='LTNRS00NMSC0P' or ../lcs:name='LCR5S40YMSC0P' or ../lcs:name='LCR5S40VMSC0P' or ../lcs:name='LCR5S40NMSC0P' or ../lcs:name='LCX6S00YMSC0P' or ../lcs:name='LCX6S00VMSC0P' or ../lcs:name='LCX6S00NMSC0P' or ../lcs:name='LCR5S40XMSC0P' or ../lcs:name='LCX6S40YMSC0P' or ../lcs:name='LTNRS40YMSC0P' or ../lcs:name='LCX6S00VMSC01' or ../lcs:name='LCX6S00YMSC01' or ../lcs:name='LCR5SMACSEC05' or ../lcs:name='LCR5SMACSEC06' or ../lcs:name='LCR8SMACSECC2' or ../lcs:name='LCR8SMACSECC4' or ../lcs:name='LTNRSMACSECC4'or ../lcs:name='LTNRSMACSECC2' or ../lcs:name='LCR5SMACSECC2' or ../lcs:name='LCR5SMACSECC4' or ../lcs:name='LCX6S00NMSC01' or ../lcs:name='LCX6S00XMSC01' or ../lcs:name='LCX6S00GMSC01' or ../lcs:name='LTNRS00GMSC0P' or ../lcs:name='LCR5S40GMSC0P' or ../lcs:name='LCX6S40GMSC0P' or ../lcs:name='LCR8S8KXMSCCP' or ../lcs:name='LCR8S8KXMSCCR' or ../lcs:name='LANKMACSEC101' or ../lcs:name='LCR8SM6MACSC1' or ../lcs:name='LCR8SM6MACSC0'";
       description
         "List of port MACsec license information.";
       list port-macsec {
@@ -1029,7 +1029,7 @@ module huawei-macsec {
             length "1..32";
           }
           description
-            "Port position.";
+            "Port position. The name is expressed in the format of WdmslotID/cardID/portID. For example, Wdm1/0/1. Here Wdm1/0/1 is an example. The value may vary with devices.";
         }
         leaf active-status {
           type lcs-active-status-type;

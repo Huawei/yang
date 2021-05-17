@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-etrunk {
   namespace "urn:huawei:yang:huawei-etrunk";
@@ -39,7 +39,19 @@ module huawei-etrunk {
      Email: support@huawei.com";
   description
     "Enhanced Trunk (E-Trunk) is a mechanism that controls and implements link aggregation among multiple devices. E-Trunk implements device-level not board-level link reliability.";
-  revision 2020-02-19 {
+  revision 2020-03-12 {
+    description
+      "Modify the default value of authen-mode leaf node, change the default value form hmac-sha1 to enhanced-hmac-sha256.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-09 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-07 {
     description
       "Initial revision.";
     reference

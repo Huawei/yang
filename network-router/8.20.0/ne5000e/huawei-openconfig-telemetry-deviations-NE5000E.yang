@@ -6,7 +6,7 @@ module huawei-openconfig-telemetry-deviations-NE5000E {
   prefix hw-telemetry-devs-NE5000E;
 
   import openconfig-telemetry {
-    prefix ot;
+    prefix oc-telemetry;
   }
   import openconfig-telemetry-types {
     prefix oc-telemetry-types;
@@ -34,57 +34,57 @@ module huawei-openconfig-telemetry-deviations-NE5000E {
     reference "Huawei private.";
   }
 
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:config/ot:encoding" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:config/oc-telemetry:encoding" {
     deviate add {
       default "oc-telemetry-types:ENC_PROTO3";
     }
     deviate add {
-      must "(../ot:encoding='oc-telemetry-types:ENC_PROTO3') or (../ot:encoding='oc-telemetry-types:ENC_JSON_IETF')";
+      must "(../oc-telemetry:encoding='oc-telemetry-types:ENC_PROTO3') or (../oc-telemetry:encoding='oc-telemetry-types:ENC_JSON_IETF')";
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:state/ot:encoding" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:state/oc-telemetry:encoding" {
     deviate add {
       default "oc-telemetry-types:ENC_PROTO3";
     }
     deviate add {
-      must "(../ot:encoding='oc-telemetry-types:ENC_PROTO3') or (../ot:encoding='oc-telemetry-types:ENC_JSON_IETF')";
+      must "(../oc-telemetry:encoding='oc-telemetry-types:ENC_PROTO3') or (../oc-telemetry:encoding='oc-telemetry-types:ENC_JSON_IETF')";
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:config/ot:protocol" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:config/oc-telemetry:protocol" {
     deviate add {
-      must "(../ot:protocol='oc-telemetry-types:STREAM_GRPC') or (../ot:protocol='hw-telemetry-ext:STREAM_UDP')";
+      must "(../oc-telemetry:protocol='oc-telemetry-types:STREAM_GRPC') or (../oc-telemetry:protocol='hw-telemetry-ext:STREAM_UDP')";
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:state/ot:protocol" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:state/oc-telemetry:protocol" {
     deviate add {
-      must "(../ot:protocol='oc-telemetry-types:STREAM_GRPC') or (../ot:protocol='hw-telemetry-ext:STREAM_UDP')";
+      must "(../oc-telemetry:protocol='oc-telemetry-types:STREAM_GRPC') or (../oc-telemetry:protocol='hw-telemetry-ext:STREAM_UDP')";
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:config/ot:sample-interval" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:config/oc-telemetry:sample-interval" {
     deviate replace {
       type uint64 {
         range "0|10|100|1000|5000|10000|30000|60000|180000|300000|900000|1800000";
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:state/ot:sample-interval" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:state/oc-telemetry:sample-interval" {
     deviate replace {
       type uint64 {
         range "0|10|100|1000|5000|10000|30000|60000|180000|300000|900000|1800000";
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:config/ot:sample-interval" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:config/oc-telemetry:sample-interval" {
     deviate add {
       default "60000";
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:state/ot:sample-interval" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:state/oc-telemetry:sample-interval" {
     deviate add {
       default "60000";
     }
   }
-  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/ot:config/ot:sensor-group-id" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:sensor-groups/oc-telemetry:sensor-group/oc-telemetry:config/oc-telemetry:sensor-group-id" {
     deviate replace {
       type string {
         length "1..64";
@@ -92,7 +92,7 @@ module huawei-openconfig-telemetry-deviations-NE5000E {
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/ot:state/ot:sensor-group-id" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:sensor-groups/oc-telemetry:sensor-group/oc-telemetry:state/oc-telemetry:sensor-group-id" {
     deviate replace {
       type string {
         length "1..64";
@@ -100,7 +100,7 @@ module huawei-openconfig-telemetry-deviations-NE5000E {
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/ot:config/ot:group-id" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:destination-groups/oc-telemetry:destination-group/oc-telemetry:config/oc-telemetry:group-id" {
     deviate replace {
       type string {
         length "1..64";
@@ -108,7 +108,7 @@ module huawei-openconfig-telemetry-deviations-NE5000E {
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/ot:state/ot:group-id" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:destination-groups/oc-telemetry:destination-group/oc-telemetry:state/oc-telemetry:group-id" {
     deviate replace {
       type string {
         length "1..64";
@@ -116,21 +116,21 @@ module huawei-openconfig-telemetry-deviations-NE5000E {
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/ot:destinations/ot:destination/ot:config/ot:destination-port" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:destination-groups/oc-telemetry:destination-group/oc-telemetry:destinations/oc-telemetry:destination/oc-telemetry:config/oc-telemetry:destination-port" {
     deviate replace {
       type uint16 {
         range "1..65535";
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/ot:destinations/ot:destination/ot:state/ot:destination-port" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:destination-groups/oc-telemetry:destination-group/oc-telemetry:destinations/oc-telemetry:destination/oc-telemetry:state/oc-telemetry:destination-port" {
     deviate replace {
       type uint16 {
         range "1..65535";
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:config/ot:subscription-name" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:config/oc-telemetry:subscription-name" {
     deviate replace {
       type string {
         length "1..64";
@@ -138,7 +138,7 @@ module huawei-openconfig-telemetry-deviations-NE5000E {
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:state/ot:subscription-name" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:state/oc-telemetry:subscription-name" {
     deviate replace {
       type string {
         length "1..64";
@@ -146,62 +146,62 @@ module huawei-openconfig-telemetry-deviations-NE5000E {
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:config/ot:heartbeat-interval" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:config/oc-telemetry:heartbeat-interval" {
     deviate replace {
       type uint64 {
         range "1..60";
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:state/ot:heartbeat-interval" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:state/oc-telemetry:heartbeat-interval" {
     deviate replace {
       type uint64 {
         range "1..60";
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:config/ot:originated-qos-marking" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:config/oc-telemetry:originated-qos-marking" {
     deviate add {
       default "0";
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:state/ot:originated-qos-marking" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:state/oc-telemetry:originated-qos-marking" {
     deviate add {
       default "0";
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:config/ot:suppress-redundant" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:config/oc-telemetry:suppress-redundant" {
     deviate add {
       default "false";
     }
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:state/ot:suppress-redundant" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:state/oc-telemetry:suppress-redundant" {
     deviate add {
       default "false";
     }
   }
-  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/ot:sensor-paths/ot:sensor-path/ot:config/ot:exclude-filter" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:sensor-groups/oc-telemetry:sensor-group/oc-telemetry:sensor-paths/oc-telemetry:sensor-path/oc-telemetry:config/oc-telemetry:exclude-filter" {
     deviate not-supported;
   }
-  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/ot:sensor-paths/ot:sensor-path/ot:state/ot:exclude-filter" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:sensor-groups/oc-telemetry:sensor-group/oc-telemetry:sensor-paths/oc-telemetry:sensor-path/oc-telemetry:state/oc-telemetry:exclude-filter" {
     deviate not-supported;
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:dynamic" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:dynamic" {
     deviate not-supported;
   }
-  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:sensor-profiles/ot:sensor-profile/ot:config" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:subscriptions/oc-telemetry:persistent/oc-telemetry:subscription/oc-telemetry:sensor-profiles/oc-telemetry:sensor-profile/oc-telemetry:config" {
     deviate add {
       must 'not(heartbeat-interval) or sample-interval=0 or ((heartbeat-interval*1000)mod(sample-interval)=0)';
     }
   }
-  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/ot:sensor-paths/ot:sensor-path/ot:config/ot:path" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:sensor-groups/oc-telemetry:sensor-group/oc-telemetry:sensor-paths/oc-telemetry:sensor-path/oc-telemetry:config/oc-telemetry:path" {
     deviate replace {
       type string {
         length "1..511";
       }
     }
   }
-  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/ot:sensor-paths/ot:sensor-path/ot:state/ot:path" {
+  deviation "/oc-telemetry:telemetry-system/oc-telemetry:sensor-groups/oc-telemetry:sensor-group/oc-telemetry:sensor-paths/oc-telemetry:sensor-path/oc-telemetry:state/oc-telemetry:path" {
     deviate replace {
       type string {
         length "1..511";

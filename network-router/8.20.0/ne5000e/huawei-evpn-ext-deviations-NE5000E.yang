@@ -3,17 +3,19 @@ Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-evpn-ext-deviations-NE5000E {
   namespace "urn:huawei:yang:huawei-evpn-ext-deviations-NE5000E";
-  prefix "evpn-ext-devs-NE5000E";
+  prefix evpn-ext-devs-NE5000E;
+
+  import huawei-evpn-ext {
+    prefix evpn-ext;
+  }
 
   import huawei-evpn {
     prefix evpn;
   }
-  import huawei-evpn-ext {
-    prefix "evpn-ext";
-  }
 
   organization
     "Huawei Technologies Co., Ltd.";
+
   contact
     "Huawei Industrial Base
      Bantian, Longgang
@@ -21,22 +23,28 @@ module huawei-evpn-ext-deviations-NE5000E {
      People's Republic of China
      Website: http://www.huawei.com
      Email: support@huawei.com";
+
   description
-    "Evpn ext devs.";
-  revision 2019-04-06 {
+    "This module defines deviation statements for huawei-evpn-ext module.";
+
+  revision 2019-11-06 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
-  
-  deviation /evpn:evpn/evpn-ext:system/evpn-ext:port-select {
+
+  deviation "/evpn:evpn/evpn-ext:system/evpn-ext:port-select" {
     deviate not-supported;
   }
-  deviation /evpn:evpn/evpn-ext:system/evpn-ext:self-board {
+  deviation "/evpn:evpn/evpn-ext:system/evpn-ext:self-board" {
     deviate not-supported;
   }
-  deviation /evpn:evpn/evpn-ext:system/evpn-ext:evpn-udp-port {
+  deviation "/evpn:evpn/evpn-ext:system/evpn-ext:evpn-udp-port" {
     deviate not-supported;
   }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn-ext:reserve-if-switch" {
+    deviate not-supported;
+  }
+
 }

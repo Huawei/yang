@@ -16,7 +16,7 @@ module huawei-fm {
   }
   import huawei-extension {
     prefix ext;
-  }
+  }  
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -28,6 +28,12 @@ module huawei-fm {
      Email: support@huawei.com";
   description
     "Fault management module.";
+  revision 2020-06-04 {
+    description
+      "Add rpc and modity information of fm containers.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-01-20 {
     description
       "Modity fm.";
@@ -67,11 +73,6 @@ module huawei-fm {
         value 4;
         description
           "Warning alarm.";
-      }
-      enum "default" {
-        value 8;
-        description
-          "Default value.";
       }
     }
     description
@@ -225,12 +226,12 @@ module huawei-fm {
       enum "false" {
         value 2;
         description
-          "Off.";
+          "Host status is off.";
       }
       enum "true" {
         value 1;
         description
-          "On.";
+          "Host status is on.";
       }
     }
     description
@@ -261,6 +262,22 @@ module huawei-fm {
     }
     description
       "The type of auxiliary.";
+  }
+  typedef address-family-type {
+    type enumeration {
+      enum "ipv4" {
+        value 1;
+        description
+          "The address type is IPv4.";
+      }
+      enum "ipv6" {
+        value 2;
+        description
+          "The address type is IPv6.";
+      }
+    }
+    description
+      "The type of IP address.";
   }
   ext:task-name  "fault-mgr";
   container fm {
@@ -331,7 +348,7 @@ module huawei-fm {
         key "trap-name feature-name";
         description
           "Configure the trap.";
-        ext:operation-exclude create|delete;
+        ext:operation-exclude create;
         leaf trap-name {
           type string {
             length "1..63";
@@ -362,7 +379,7 @@ module huawei-fm {
         key "alarm-name";
         description
           "Configure the alarm."; 
-        ext:operation-exclude create|delete;		  
+        ext:operation-exclude create;		  
         leaf alarm-name {
           type string {
             length "1..63";
@@ -375,7 +392,7 @@ module huawei-fm {
           description
             "Severity of an alarm.";
           ext:support-filter "true";
-	  ext:dynamic-default;
+          ext:dynamic-default;
         }
         leaf clear-suppress-time {
           type uint32 {
@@ -384,6 +401,7 @@ module huawei-fm {
           units s;
           description
             "Suppression period after which an alarm is cleared.";
+          ext:dynamic-default;
         }
         leaf cause-suppress-time {
           type uint32 {
@@ -392,10 +410,11 @@ module huawei-fm {
           units s;
           description
             "Suppression period after which an alarm is generated.";
+         ext:dynamic-default;
         }
         leaf module-name {
           type string {
-            length "1..32";
+            length "1..31";
           }
           config false;
           description
@@ -537,6 +556,47 @@ module huawei-fm {
         }
       }
     }
+  }
+  rpc clear-all-history-alarm {
+    description
+      "Clear all historical alarms."; 		
+  }
+  rpc clear-history-alarm {
+    description
+      "Clear historical alarms by sequence.";  
+    input {
+      leaf alarm-sequence {
+        type uint32 {
+          range "1..4294967295";
+        }
+        mandatory true;
+        description
+          "Sequence number of a historical alarm.";
+      }
+    }
+  }
+  
+  rpc clear-all-active-alarm {
+    description
+      "Clear all active alarms.";  
+  }
+  rpc clear-active-alarm {
+    description
+      "Clear active alarms by sequence.";  
+    input {
+      leaf alarm-sequence {
+        type uint32 {
+          range "1..4294967295";
+        }
+        mandatory true;
+        description
+          "Sequence number of an active alarm.";
+      }
+    }
+  }
+  rpc reset-all-alarm-statistic {
+    description
+      "Clear all alarm statistics.";
   }
   augment "/snmp:snmp/snmp:target-hosts/snmp:target-host" {
     description

@@ -24,6 +24,12 @@ module huawei-pcc {
      Email: support@huawei.com";
   description
     "Path Computation Client (PCC).";
+  revision 2020-07-15 {
+    description
+      "Add private syntax to the keychain name.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-03-24 {
     description
       "Fixed some problems.";
@@ -373,8 +379,9 @@ module huawei-pcc {
               leaf keychain-name {
                 type string {
                   length "1..47";
+                  pattern '[^A-Z]+';
                 }
-                ext:case-sensitivity upper2lower;
+                ext:case-sensitivity lower-only;
                 description
                   "Keychain name.";
               } 
@@ -489,21 +496,25 @@ module huawei-pcc {
         }
         leaf hold-time {
           type uint8;
+          units s;
           description
             "Hold time of PCE sessions.";
         }
         leaf keepalive-time {
           type uint8;
+          units s;
           description
             "Keepalive time of PCE sessions.";
         }
         leaf peer-hold-time {
           type uint8;
+          units s;
           description
             "Hold time of PCE sessions on peer.";
         }
         leaf peer-keepalive-time {
           type uint8;
+          units s;
           description
             "Keepalive time of PCE sessions on peer.";
         }

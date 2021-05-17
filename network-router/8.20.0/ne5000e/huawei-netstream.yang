@@ -266,6 +266,17 @@ module huawei-netstream {
     description
       "Description of flow type.";
   }
+  typedef nsm-srv6-aware {
+    type enumeration {
+      enum "inner-ipv4-header" {
+        value 1;
+        description
+          "Collect inner layer IPv4 header.";
+      }
+    }
+    description
+      "Description of SRv6 aware.";
+  }
   typedef nsm-destination-board {
     type enumeration {
       enum "self" {
@@ -351,7 +362,7 @@ module huawei-netstream {
         }
         leaf bgp-nexthop {
           type nsm-enable;
-          must "not(../export-version='5') or (../export-version='5' and ../bgp-nexthop='false')";
+          must "(../export-version and ../export-version != '5' and ../bgp-nexthop= 'true') or ../bgp-nexthop = 'false'";
           default "false";
           description
             "Whether exported statistics contain BGP next hop information. Version 5 does not support BGP next hop.";
@@ -360,6 +371,7 @@ module huawei-netstream {
           type uint16 {
             range "1..3600";
           }
+          units min;
           default "30";
           description
             "The interval for refreshing the template.";
@@ -368,6 +380,7 @@ module huawei-netstream {
           type uint16 {
             range "1..3600";
           }
+          units min;
           default "30";
           description
             "Interval for refreshing the Option template.";
@@ -376,6 +389,7 @@ module huawei-netstream {
           type uint16 {
             range "1..600";
           }
+          units packet;
           default "20";
           description
             "Packet-interval refreshing time of the option template.";
@@ -496,7 +510,7 @@ module huawei-netstream {
         }
         leaf ttl-flag {
           type nsm-enable;
-          must "(../export-version='5' and ../ttl-flag= 'false') or (not(../export-version='5') and (../ttl-flag))";
+          must "(../export-version and ../export-version != '5' and ../ttl-flag= 'true') or ../ttl-flag = 'false'";
           default "false";
           description
             "Whether exported statistics contain TTL information.";
@@ -506,6 +520,12 @@ module huawei-netstream {
           default "false";
           description
             "Whether the numbering mode of IPFIX version packet is fixed mode.";
+        }
+        leaf srv6-aware {
+          type nsm-srv6-aware;
+          must "../flow-type='ipv6-flow'";
+          description
+            "Whether collect inner layer IPv4 header of SRv6 packet.";
         }
         container sampler-rates {
           description
@@ -710,6 +730,7 @@ module huawei-netstream {
               path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
             }
             must "../../../../devm:position != ../dest-slot";
+            mandatory true;
             description
               "Destination slot name. For example, board 3 is input as 0/3.";
           }

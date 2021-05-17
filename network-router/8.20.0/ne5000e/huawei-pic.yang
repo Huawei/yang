@@ -724,11 +724,6 @@ module huawei-pic {
         description
           "OTN Mode.";
       }
-      enum "flexe-mode" {
-        value 3;
-        description
-          "FLEXE Mode.";
-      }
     }
     description
       "Port transmit mode type.";
@@ -1239,6 +1234,139 @@ module huawei-pic {
     description
       "Enum of wavelength and frequence.";
   }
+  typedef panel-split-ports-split-type {
+    type enumeration {
+      enum "4X10GE" {
+        value 1;
+        description
+          "Four 10G optical fiber ports.";
+      }
+      enum "1X40GE" {
+        value 2;
+        description
+          "One 40G optical fiber port.";
+      }
+      enum "1X100GE" {
+        value 3;
+        description
+          "One 100G optical fiber port.";
+      }
+      enum "10X10GE" {
+        value 4;
+        description
+          "Ten 10G optical fiber ports.";
+      }
+      enum "4X25GE-NULL" {
+        value 5;
+        description
+          "Four 25GE ports.";
+      }
+      enum "4X10GE-1X40GE" {
+        value 9;
+        description
+          "Four 10G optical fiber ports and one 40G optical fiber port.";
+      }
+      enum "4X10GE-4X10GE" {
+        value 10;
+        description
+          "Four 10G optical fiber ports and four 10G optical fiber ports.";
+      }
+      enum "NULL-1X100GE" {
+        value 12;
+        description
+          "One 100GE port.";
+      }
+      enum "NULL-2X25GE" {
+        value 15;
+        description
+          "Two 25GE port.";
+      }
+      enum "1X50GE-NULL" {
+        value 16;
+        description
+          "One 50GE port.";
+      }
+      enum "1X25GE-2X1GE" {
+        value 17;
+        description
+          "One 25G optical fiber port and two 1G optical fiber ports.";
+      }
+      enum "1X10GE-2X10GE" {
+        value 18;
+        description
+          "One 10G optical fiber port and two 10G optical fiber ports.";
+      }
+      enum "1X25GE-NULL" {
+        value 19;
+        description
+          "One 25GE port.";
+      }
+      enum "1X10GE-1X10GE" {
+        value 20;
+        description
+          "1*10GE-1*10GE.";
+      }
+      enum "ADAPT" {
+        value 21;
+        description
+          "Auto-adapt.";
+      }
+      enum "4X25GE" {
+        value 22;
+        description
+          "Four 25G optical fiber ports.";
+      }
+      enum "1X50GE" {
+        value 23;
+        description
+          "One 50G optical fiber port.";
+      }
+    }
+    description
+      "Enum of split type.";
+  }
+  typedef switch-speed-type {
+    type enumeration {
+      enum "1G" {
+        value 1;
+        description
+          "GE mode.";
+      }
+      enum "10G" {
+        value 10;
+        description
+          "10GE mode.";
+      }
+      enum "25G" {
+        value 25;
+        description
+          "25GE mode.";
+      }
+      enum "undo" {
+        value 0;
+        description
+          "Cancel sfetting.";
+      }
+    }
+    description
+      "Enum of switch-speed.";
+  }
+  typedef fault-process-mode-type {
+    type enumeration {
+      enum "reset" {
+        value 0;
+        description
+          "Reset.";
+      }
+      enum "isolate" {
+        value 1;
+        description
+          "Isolate.";
+      }
+    }
+    description
+      "Card fault process mode type.";
+  }
   grouping channel-sets {
     description
       "Channel sets.";
@@ -1259,10 +1387,10 @@ module huawei-pic {
         }
         leaf timeslot-list {
           type string {
-            length "1..61";
+            length "1..83";
           }
           description
-            "Timeslot list. Please enter a number from 1 to 31 with ',' or '-' in the middle.";
+            "Timeslot list. Please enter a number from 1 to 83 with ',' or '-' in the middle.";
         }
       }
     }
@@ -1288,83 +1416,7 @@ module huawei-pic {
         }
         leaf split-type {
           ext:dynamic-default ;
-          type enumeration {
-            enum "4X10GE" {
-              value 1;
-              description
-                "Four 10G optical fiber ports.";
-            }
-            enum "1X100GE" {
-              value 3;
-              description
-                "One 100G optical fiber port.";
-            }
-            enum "10X10GE" {
-              value 4;
-              description
-                "Ten 10G optical fiber ports.";
-            }
-            enum "1X40GE" {
-              value 2;
-              description
-                "One 40G optical fiber port.";
-            }
-            enum "4X25GE-NULL" {
-              value 5;
-              description
-                "4*25GE-null.";
-            }
-            enum "NULL-1X100GE" {
-              value 12;
-              description
-                "Null-1*100GE.";
-            }
-            enum "4X10GE-1X40GE" {
-              value 9;
-              description
-                "Four 10G optical fiber ports and one 40G optical fiber port.";
-            }
-            enum "4X10GE-4X10GE" {
-              value 10;
-              description
-                "Four 10G optical fiber ports and four 10G optical fiber ports.";
-            }
-            enum "1X50GE" {
-              value 23;
-              description
-                "One 50G optical fiber port.";
-            }
-            enum "4X25GE" {
-              value 22;
-              description
-                "Four 25G optical fiber ports.";
-            }
-            enum "1X25GE-2X1GE" {
-              value 17;
-              description
-                "One 25G optical fiber port and two 1G optical fiber ports.";
-            }
-            enum "1X10GE-2X10GE" {
-              value 18;
-              description
-                "One 10G optical fiber port and two 10G optical fiber ports.";
-            }
-            enum "NULL-2X25GE" {
-              value 15;
-              description
-                "Null-2*25GE.";
-            }
-            enum "1X50GE-NULL" {
-              value 16;
-              description
-                "1*50GE-null.";
-            }
-            enum "ADAPT" {
-              value 21;
-              description
-                "Auto-adapt.";
-            }
-          }
+          type panel-split-ports-split-type;
           must "not(../position) or (../position and (../split-type='4X10GE' or ../split-type='1X100GE' or ../split-type='10X10GE' or ../split-type='1X40GE' 
             or ../split-type='4X25GE-NULL' or ../split-type='NULL-1X100GE' or ../split-type='4X10GE-1X40GE' or ../split-type='4X10GE-4X10GE' or ../split-type='4X25GE' 
             or ../split-type='1X50GE' or ../split-type='1X25GE-2X1GE' or ../split-type='1X10GE-2X10GE' or ../split-type='NULL-2X25GE' or ../split-type='1X50GE-NULL' or ../split-type='ADAPT') )";
@@ -1411,6 +1463,11 @@ module huawei-pic {
               description
                 "Laser Close.";
             }
+            enum "physical-mode" {
+              value 14;
+              description
+                "Physical mode.";
+            }
           }
           description
             "Auto Clear Type.";
@@ -1418,12 +1475,12 @@ module huawei-pic {
         leaf status {
           type enumeration {
             enum "disabled" {
-              value 1;
+              value 0;
               description
                 "Disabled.";
             }
             enum "enabled" {
-              value 0;
+              value 1;
               description
                 "Enabled.";
             }
@@ -1433,10 +1490,21 @@ module huawei-pic {
             "Auto Clear Status.";
         }
         leaf time {
+          ext:dynamic-default  {
+            ext:default-value "5" {
+              when "../type = 'lsrclose'";
+              description
+                "The default value is 5 when type is lsrclose.";
+            }
+            ext:default-value "20" {
+              when "../type = 'physical-mode'";
+              description
+                "The default value is 20 when type is physical-mode.";
+            }
+          }
           type uint32 {
             range "1..2880";
           }
-          default "5";
           description
             "Auto Clear Time.";
         }
@@ -1617,7 +1685,6 @@ module huawei-pic {
         }
         leaf rdi {
           type boolean;
-          default "false";
           description
             "Enable/disable Peer Alarm Report RDI Enable.";
         }
@@ -1970,6 +2037,12 @@ module huawei-pic {
         description
           "Enable/disable the down function for an uncertified optical module.";
       }
+      leaf non-certified-optical-status-alarm {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the alarm function for the uncertified optical module status.";
+      }
       leaf optical-alarm-std-enable {
         type enumeration {
           enum "disabled" {
@@ -2155,6 +2228,7 @@ module huawei-pic {
       }
       leaf tx-power-cfg-type {
         ext:dynamic-default ;
+        when "../trans-mode='otn-mode'";
         type enumeration {
           enum "tx-power-target" {
             value 0;
@@ -2172,7 +2246,7 @@ module huawei-pic {
       }
       leaf tx-power-target-value {
         ext:dynamic-default ;
-        when "../tx-power-cfg-type = 'tx-power-target'";
+        when "../trans-mode='otn-mode' and ../tx-power-cfg-type = 'tx-power-target'";
         type int32 {
           range "-180..10";
         }
@@ -2243,36 +2317,36 @@ module huawei-pic {
         type uint32 {
           range "1..999";
         }
-        must "((../fec-pre-alm-thrp and ../fec-pre-rsum-thrc and ../fec-pre-rsum-thrp) and ((../fec-pre-alm-thrc > ../fec-pre-rsum-thrc and ../fec-pre-alm-thrp = ../fec-pre-rsum-thrp) or (../fec-pre-alm-thrp < ../fec-pre-rsum-thrp)))";
+        must "../fec-pre-alm-thrp";
         description
-          "PreFec error ratio coefficient (x of xE-y). FEC recover-threshold should be less than trigger-threshold. If the hardware does not support it, returning to the current interface does not support it.";
+          "PreFec error ratio coefficient. The configuration is delivered when the following condition is met: (fec-pre-alm-thrc *10^ fec-pre-rsum-thrp) > (fec-pre-rsum-thrc *10^ fec-pre-alm-thrp). If the hardware does not support it, returning to the current interface does not support it.";
       }
       leaf fec-pre-alm-thrp {
         ext:dynamic-default ;
         type uint32 {
           range "1..8";
         }
-        must "((../fec-pre-alm-thrc and ../fec-pre-rsum-thrc and ../fec-pre-rsum-thrp) and ((../fec-pre-alm-thrc > ../fec-pre-rsum-thrc and ../fec-pre-alm-thrp = ../fec-pre-rsum-thrp) or (../fec-pre-alm-thrp < ../fec-pre-rsum-thrp)))";
+        must "../fec-pre-alm-thrc";
         description
-          "PreFec error ratio exponent (y of xE-y). FEC recover-threshold should be less than trigger-threshold. If the hardware does not support it, returning to the current interface does not support it.";
+          "PreFec error ratio exponent. The configuration is delivered when the following condition is met: (fec-pre-alm-thrc *10^ fec-pre-rsum-thrp) > (fec-pre-rsum-thrc *10^ fec-pre-alm-thrp). If the hardware does not support it, returning to the current interface does not support it.";
       }
       leaf fec-pre-rsum-thrc {
         ext:dynamic-default ;
         type uint32 {
           range "1..999";
         }
-        must "((../fec-pre-alm-thrc and ../fec-pre-alm-thrp and ../fec-pre-rsum-thrp) and ((../fec-pre-alm-thrc > ../fec-pre-rsum-thrc and ../fec-pre-alm-thrp = ../fec-pre-rsum-thrp) or (../fec-pre-alm-thrp < ../fec-pre-rsum-thrp)))";
+        must "../fec-pre-rsum-thrp";
         description
-          "For resume-threshold: PreFec error ratio coefficient (x of xE-y). If the hardware does not support it, returning to the current interface does not support it.";
+          "For resume-threshold: PreFec error ratio coefficient. The configuration is delivered when the following condition is met: (fec-pre-alm-thrc *10^ fec-pre-rsum-thrp) > (fec-pre-rsum-thrc *10^ fec-pre-alm-thrp). If the hardware does not support it, returning to the current interface does not support it.";
       }
       leaf fec-pre-rsum-thrp {
         ext:dynamic-default ;
         type uint32 {
           range "1..9";
         }
-        must "((../fec-pre-alm-thrc and ../fec-pre-alm-thrp and ../fec-pre-rsum-thrc) and ((../fec-pre-alm-thrc > ../fec-pre-rsum-thrc and ../fec-pre-alm-thrp = ../fec-pre-rsum-thrp) or (../fec-pre-alm-thrp < ../fec-pre-rsum-thrp)))";
+        must "../fec-pre-rsum-thrc";
         description
-          "For resume-threshold: PreFec error ratio exponent (y of xE-y). If the hardware does not support it, returning to the current interface does not support it.";
+          "For resume-threshold: PreFec error ratio exponent. The configuration is delivered when the following condition is met: (fec-pre-alm-thrc *10^ fec-pre-rsum-thrp) > (fec-pre-rsum-thrc *10^ fec-pre-alm-thrp). If the hardware does not support it, returning to the current interface does not support it.";
       }
       leaf jumbo-frame {
         ext:dynamic-default ;
@@ -2376,10 +2450,10 @@ module huawei-pic {
           "Inter-packet Gap.";
       }
       leaf mru {
+        ext:dynamic-default ;
         type uint32 {
           range "1520..9700";
         }
-        default "9700";
         description
           "Maximum Receive Unit. The MRU value should be a multiple of 8.";
       }
@@ -2416,28 +2490,7 @@ module huawei-pic {
       }
       leaf switch-speed {
         ext:dynamic-default ;
-        type enumeration {
-          enum "1G" {
-            value 1;
-            description
-              "GE Mode.";
-          }
-          enum "10G" {
-            value 10;
-            description
-              "Configure 10GE Mode.";
-          }
-          enum "25G" {
-            value 25;
-            description
-              "Configure 25GE Mode.";
-          }
-          enum "undo" {
-            value 0;
-            description
-              "Cancel Setting.";
-          }
-        }
+        type switch-speed-type;
         description
           "Switch GE/10GE/25GE. If the hardware does not support it, returning to the current interface does not support it.";
       }
@@ -2477,12 +2530,30 @@ module huawei-pic {
       }
       leaf attenuation {
         ext:dynamic-default ;
+        when "../trans-mode='otn-mode' and ../tx-power-cfg-type = 'attenuation'";
         type uint32 {
           range "0..200";
         }
-	units "0.1 dB";
+	    units "0.1 dB";
         description
           "Optical attenuation(0.1dB). Default values are related to hardware types. If the hardware does not support it, returning to the current interface does not support it.";
+      }
+      leaf remote-fault {
+        ext:dynamic-default ;
+        type enumeration {
+          enum "disable" {
+            value 0;
+            description
+              "Disables the function of sending remote faults to the remote end.";
+          }
+          enum "enable" {
+            value 1;
+            description
+              "Enables the function of sending remote faults to the remote end.";
+          }
+        }
+        description
+          "Enables or disables the function of sending remote faults to the remote end.";
       }
       leaf local-fault-status {
         type enumeration {
@@ -3465,7 +3536,7 @@ module huawei-pic {
         }
         config false;
         description
-          "SN provided by the manufacturer.";
+          "GPON optical module serial number (SN) provided by the vendor.";
       }
       container channels {
         config false;
@@ -3499,6 +3570,14 @@ module huawei-pic {
             config false;
             description
               "Receive power (dbm).";
+          }
+          leaf wavelength {
+            type string {
+              length "0..64";
+            }
+            config false;
+            description
+              "Wavelength.";
           }
         }
       }
@@ -4289,7 +4368,7 @@ module huawei-pic {
               "Au-4.";
           }
         }
-        must "((../frame-format='sdh') and ((../multiplex='au-3')or(../multiplex='au-4'))) or (../multiplex='au-3')";
+        must "((../frame-format='sdh') and ((../multiplex='au-3') or (../multiplex='au-4'))) or (../multiplex='au-3')";
         description
           "Multiplex mode. If the hardware does not support it, returning to the current interface does not support it.";
       }
@@ -4545,7 +4624,7 @@ module huawei-pic {
                   "Unframed.";
               }
             }
-            must "((not(../channel-sets)) and ((../work-mode='framed')or(../work-mode='unframed'))) or (../work-mode='framed')";
+            must "((not(../channel-sets)) and ((../work-mode='framed') or (../work-mode='unframed'))) or (../work-mode='framed')";
             default "framed";
             description
               "E1T1 Work mode. Configuration is not allowed to join the APS group.";
@@ -4681,10 +4760,10 @@ module huawei-pic {
               }
               leaf timeslot-list {
                 type string {
-                  length "1..61";
+                  length "1..83";
                 }
                 description
-                  "Timeslot list. Please enter a number from 1 to 31 with ',' or '-' in the middle.";
+                  "Timeslot list. Please enter a number from 1 to 83 with ',' or '-' in the middle.";
               }
             }
           }
@@ -4695,80 +4774,80 @@ module huawei-pic {
       description
         "Configure port alarm information.";
       leaf crc-enabled-down {
+        ext:dynamic-default ;
         type boolean;
-        default "false";
         description
           "Enable/disable CRC error enable down.";
       }
       leaf input-enabled-down {
+        ext:dynamic-default ;
         type boolean;
-        default "false";
         description
           "Enable/disable input error enable down.";
       }
       leaf input-error-high-threshold {
+        ext:dynamic-default ;
         type uint32 {
           range "1..4294967295";
         }
         must "../input-error-high-threshold >= ../input-error-low-threshold";
-        default "1000";
         description
           "The high threshold of input error alarm threshold. The number of error packets counted in the time in interval exceeds this threshold will produce input-error alarm.";
       }
       leaf input-error-low-threshold {
+        ext:dynamic-default ;
         type uint32 {
           range "1..4294967295";
         }
         must "../input-error-high-threshold >= ../input-error-low-threshold";
-        default "100";
         description
           "The low threshold of input error alarm threshold. The number of error packets counted in the time in interval less than this threshold will recover input-error alarm.";
       }
       leaf input-error-interval {
+        ext:dynamic-default ;
         type uint32 {
           range "1..65535";
         }
         units "s";
-        default "10";
         description
           "Time interval for statistical input-error alarm.";
       }
       leaf output-enabled-down {
+        ext:dynamic-default ;
         type boolean;
-        default "false";
         description
           "Enable/disable output error enable down.";
       }
       leaf output-error-high-threshold {
+        ext:dynamic-default ;
         type uint32 {
           range "1..4294967295";
         }
         must "../output-error-high-threshold >= ../output-error-low-threshold";
-        default "1000";
         description
           "The high threshold of output error alarm threshold. The number of error packets counted in the time in interval exceeds this threshold will produce output-error alarm.";
       }
       leaf output-error-low-threshold {
+        ext:dynamic-default ;
         type uint32 {
           range "1..4294967295";
         }
         must "../output-error-high-threshold >= ../output-error-low-threshold";
-        default "100";
         description
           "The low threshold of output error alarm threshold. The number of error packets counted in the time in interval less than this threshold will recover output-error alarm.";
       }
       leaf output-error-interval {
+        ext:dynamic-default ;
         type uint32 {
           range "1..65535";
         }
         units "s";
-        default "10";
         description
           "Time interval for statistical input-error alarm.";
       }
       leaf phy-updown-en {
+        ext:dynamic-default ;
         type boolean;
-        default "true";
         description
           "Enable/disable phyUpDownEn.";
       }
@@ -4976,7 +5055,7 @@ module huawei-pic {
         }
       }
       container pdh-port-alarm {
-        must "trigger-thres > resume-thres";
+        must "trigger-thres > resume-thres or (not(trigger-thres) and not(resume-thres))";
         description
           "Configure PDH port alarm information.";
         leaf trigger-thres {
@@ -5057,7 +5136,7 @@ module huawei-pic {
             range "10..100";
           }
           description
-            "Sample window factor, default is 50.";
+            "Sample window factor.";
         }
         leaf crc-per-child-win-max-num {
           ext:dynamic-default ;
@@ -5065,7 +5144,7 @@ module huawei-pic {
             range "10..100";
           }
           description
-            "Maximum number of child windows, default is 50.";
+            "Maximum number of child windows.";
         }
         leaf crc-per-child-win-alarm-num {
           ext:dynamic-default ;
@@ -5073,7 +5152,7 @@ module huawei-pic {
             range "1..100";
           }
           description
-            "Minimal number of child windows for alarm generating, default is 5.";
+            "Minimal number of child windows for alarm generating.";
         }
         leaf crc-per-child-win-resume-num {
           ext:dynamic-default ;
@@ -5081,7 +5160,7 @@ module huawei-pic {
             range "1..100";
           }
           description
-            "Minimal number of child windows for alarm resuming, default is 30.";
+            "Minimal number of child windows for alarm resuming.";
         }
         leaf crc-alg-realtime-factor {
           ext:dynamic-default ;
@@ -5106,8 +5185,7 @@ module huawei-pic {
               type uint32 {
                 range "1..4294967295";
               }
-              must "../crc-error-high >= ../crc-error-low";
-              default "1000";
+              must "(../crc-error-high >= ../crc-error-low) and not(../crc-error-percent-alm-thr)";
               description
                 "The high threshold of CRC error alarm threshold. The number of error packets counted in the time in interval exceeds this threshold will produce crc-error alarm.";
             }
@@ -5115,8 +5193,7 @@ module huawei-pic {
               type uint32 {
                 range "1..4294967295";
               }
-              must "../crc-error-high >= ../crc-error-low";
-              default "100";
+              must "(../crc-error-high >= ../crc-error-low) and not(../crc-error-percent-alm-thr)";
               description
                 "The low threshold of CRC error alarm threshold. The number of error packets counted in the time in interval less than this threshold will recover crc-error alarm.";
             }
@@ -5124,7 +5201,6 @@ module huawei-pic {
               type uint32 {
                 range "1..65535";
               }
-              default "1000";
               description
                 "CRC error threshold.";
             }
@@ -5133,23 +5209,21 @@ module huawei-pic {
                 range "1..65535";
               }
               units "s";
-              default "10";
               description
                 "Time interval for statistical crc-error alarm.";
             }
             leaf crc-shutdown-en {
               type boolean;
-              default "false";
+              must "not(../crc-error-percent-alm-thr)";
               description
                 "Enable/disable crc shutdown. The port will shutdown when the number of error packets counted in the time in interval exceeds threshold.";
             }
             leaf crc-error-percent-alm-thr {
-              ext:dynamic-default ;
               type uint32 {
                 range "1..100";
               }
               units "%";
-              must "not(../crc-error-high) and not(../crc-error-low) and not(../crc-error-interval)";
+              must "not(../crc-error-high) and not(../crc-error-low) and not(../crc-error-interval) and not(../crc-shutdown-en)";
               description
                 "Crc-error alarm percent threshold, Higher than this threshold will produce crc-error alarm, lower than this threshold will recover crc-error alarm.";
             }
@@ -5342,7 +5416,7 @@ module huawei-pic {
             }
             leaf crc-mfs-alm-lsp-en {
               type boolean;
-	      mandatory true;
+              mandatory true;
               description
                 "Enable/disable configure MFS (mac fcs sd) of crc-error trigger LSP.";
             }
@@ -5449,7 +5523,7 @@ module huawei-pic {
       }
     }
     container phy-serial {
-      must "(port-mode = 'v-35' and physical-mode = 'sync') or ((port-mode = 'rs-422' or port-mode = 'rs-485' or port-mode = 'rs-232') and physical-mode = 'async') or ((port-mode = 'fxo' or port-mode = 'fxs' or port-mode = 'em' or port-mode = 'c3794' or port-mode = 'codir') and not(physical-mode)) or (port-mode = 'x-21' or port-mode = 'v-24')";
+      must "(port-mode = 'v-35' and physical-mode = 'sync') or ((port-mode = 'rs-422' or port-mode = 'rs-485' or port-mode = 'rs-232') and physical-mode = 'async') or ((port-mode = 'fxo' or port-mode = 'fxs' or port-mode = 'em' or port-mode = 'c3794' or port-mode = 'codir') and not(physical-mode)) or (port-mode = 'x-21' or port-mode = 'v-24') or (not(port-mode) and not(physical-mode))";
       description
         "Configure physical serial port.";
       leaf baudrate {
@@ -6354,7 +6428,7 @@ module huawei-pic {
               "Unframed.";
           }
         }
-        must "((not(../channel-sets))and((../work-mode='framed')or(../work-mode='unframed')))or(../work-mode='framed')";
+        must "((not(../channel-sets)) and ((../work-mode='framed') or (../work-mode='unframed'))) or (../work-mode='framed')";
         default "framed";
         description
           "E1T1 work mode.";
@@ -6390,9 +6464,10 @@ module huawei-pic {
               "Slave.";
           }
         }
+        must "(../clock='master' and (../../devm:loopback-mode ='localLoopback' or ../../devm:loopback-mode ='noLoopback')) or (../clock='slave' and (../../devm:loopback-mode ='remoteLoopback' or ../../devm:loopback-mode ='noLoopback'))";
         default "master";
         description
-          "Clock mode. In remote loopback mode, the clock can not be master. In local loopback mode, the clock can not be slave.";
+          "Clock mode.";
       }
       leaf code {
         ext:dynamic-default ;
@@ -6461,10 +6536,10 @@ module huawei-pic {
           }
           leaf timeslot-list {
             type string {
-              length "1..61";
+              length "1..83";
             }
             description
-              "Timeslot list. Please enter a number from 1 to 31 with ',' or '-' in the middle.";
+              "Timeslot list. Please enter a number from 1 to 83 with ',' or '-' in the middle.";
           }
         }
       }
@@ -6795,25 +6870,26 @@ module huawei-pic {
       description
         "Configure card tdm param.";
       leaf idle-code {
+        ext:dynamic-default ;
         ext:case-sensitivity "lower-only";
         type string {
           length "1..2";
           pattern '\s*[a-f0-9]+';
         }
-        default "ff";
         description
           "Idle code.";
       }
       leaf idle-code-e1 {
+        ext:dynamic-default ;
         type string {
           length "1..2";
           pattern '\s*0|ff';
         }
-        default "0";
         description
           "E1 port idle code.";
       }
       leaf impedance {
+        ext:dynamic-default ;
         type enumeration {
           enum "75ohms" {
             value 75;
@@ -6821,12 +6897,11 @@ module huawei-pic {
               "Configure 75ohms.";
           }
           enum "120ohms" {
-            value 150;
+            value 120;
             description
               "Configure 120ohms.";
           }
         }
-        default "75ohms";
         description
           "ImpedanceMode.";
       }
@@ -6974,31 +7049,20 @@ module huawei-pic {
               "Synchronous Optical Network.";
           }
         }
-        must "../frame-format='SONET' or ../frame-format='SDH'";
         default "SDH";
         description
           "FrameFormat.";
       }
     }
     container process-mode {
+      must "(shield-mode = 'disabled' and process-mode = 'reset') or (shield-mode = 'enabled') or (shield-mode = 'disabled' and not(process-mode))";
       description
-        "Configure Subcard Fault Handling Mode.";
+        "Configure subcard fault process mode.";
       leaf process-mode {
-        type enumeration {
-          enum "reset" {
-            value 0;
-            description
-              "Reset.";
-          }
-          enum "isolate" {
-            value 1;
-            description
-              "Isolate.";
-          }
-        }
+        type fault-process-mode-type;
         default "reset";
         description
-          "Card-Fault Process-Mode.";
+          "Card fault process mode.";
       }
       leaf shield-mode {
         type enumeration {
@@ -7016,6 +7080,12 @@ module huawei-pic {
         default "disabled";
         description
           "Shield Card-Fault Process-Mode Global-Config.";
+      }
+      leaf fault-process-mode-status {
+        type fault-process-mode-type;
+        config false;
+        description
+          "Configure subcard fault process mode.";
       }
     }
     container em-set {

@@ -80,7 +80,7 @@ module huawei-emdi {
               key "channel-name";
               max-elements  "2100";
               description
-                "Configure channel information.";
+                "Configure channel information. The group-address and source-address combination of different instances cannot overlap.";
               leaf channel-name {
                 type string {
                   length 1..31;
@@ -245,7 +245,7 @@ module huawei-emdi {
                 }
                 max-elements "128";
                 description
-                  "Configure slot number."; 
+                  "Configure slot number.";
               }
             }
           }
@@ -404,12 +404,14 @@ module huawei-emdi {
         }
         leaf rate-pps {
           type uint64;
+          units pps;
           config false;
           description
             "Rate (pps) at which packets are received.";
         }
         leaf rate-bps {
           type uint64;
+          units bit/s;
           config false;
           description
             "Rate (bit/s) at which packets are received.";
@@ -428,12 +430,14 @@ module huawei-emdi {
         }
         leaf rtp-lr {
           type uint32;
+          units "0.001 %";
           config false;
           description
             "Packet loss rate of a channel.";
         }
         leaf rtp-ser {
           type uint32;
+          units "0.001 %";
           config false;
           description
             "Check the channel disorder rate.";
@@ -563,6 +567,7 @@ module huawei-emdi {
           type uint32 {
             range 0..65535;
           }
+          units s;
           config false;
           description
             "The EMDI statistics data report period.";
@@ -596,6 +601,7 @@ module huawei-emdi {
           type uint32 {
             range 0..65535;
           }
+          units s;
           config false;
           description
             "The EMDI statistics data monitor period.";
@@ -706,6 +712,7 @@ module huawei-emdi {
           type uint32 {
             range 0..65535;
           }
+          units s;
           config false;
           description
             "The EMDI statistics data report period.";
@@ -739,6 +746,7 @@ module huawei-emdi {
           type uint32 {
             range 0..65535;
           }
+          units s;
           config false;
           description
             "The EMDI statistics data monitor period.";
@@ -821,6 +829,7 @@ module huawei-emdi {
           type uint32 {
             range 0..65535;
           }
+          units s;
           config false;
           description
             "The EMDI statistics data report period.";
@@ -854,6 +863,7 @@ module huawei-emdi {
           type uint32 {
             range 0..65535;
           }
+          units s;
           config false;
           description
             "The EMDI statistics data monitor period.";
@@ -1073,11 +1083,13 @@ module huawei-emdi {
           }
           leaf rate-pps {
             type uint64;
+            units pps;
             description
               "Rate (pps) at which packets are received.";
           }
           leaf rate-bps {
             type uint64;
+            units bit/s;
             description
               "Rate (bit/s) at which packets are received.";
           }
@@ -1093,11 +1105,13 @@ module huawei-emdi {
           }
           leaf rtp-lr {
             type uint32;
+            units "0.001 %";
             description
               "Packet loss rate of a channel.";
           }
           leaf rtp-ser {
             type uint32;
+            units "0.001 %";
             description
               "Check the channel disorder rate.";
           }

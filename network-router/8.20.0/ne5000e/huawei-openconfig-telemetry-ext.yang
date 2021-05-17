@@ -432,7 +432,7 @@ module huawei-openconfig-telemetry-ext {
       type boolean;
       default "false";
       description 
-        "Whether to clear a field in the sampling path when a sampling sensor group is associated with subscription. The fields that can be cleared in different sampling paths are different. The value true indicates that the field is cleared, and the value false indicates that the field is not cleared. Currently, only the sampling path huawei-qos:qos/global-query/default-queue-statisticss/default-queue-statistics allows reset-when-start to be set to true.";
+        "Enable/disable clearing a field in the sampling path when a sampling sensor group is associated with subscription. The fields that can be cleared in different sampling paths are different. The value true indicates that the field is cleared, and the value false indicates that the field is not cleared. Currently, only the sampling path huawei-qos:qos/global-query/default-queue-statisticss/default-queue-statistics allows reset-when-start to be set to true.";
     }
     leaf depth{
       type uint8 {

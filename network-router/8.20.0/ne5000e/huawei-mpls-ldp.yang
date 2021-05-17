@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-mpls-ldp {
   namespace "urn:huawei:yang:huawei-mpls-ldp";
@@ -46,13 +46,85 @@ module huawei-mpls-ldp {
      Email: support@huawei.com";
   description
     "Specifies the multi-protocol label switching protocol.";
-  revision 2019-03-27 {
+  revision 2020-03-24 {
+    description
+      "Modified some descriptions.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-26 {
+    description
+      "Added the must condition and extension of some nodes and modified the value range of some nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-01-14 {
+    description
+      "Added the authen-exclude node.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-26 {
+    description
+      "Added the is-tilfa-lsp node and modified the descriptions of the is-rlfa-lsp and is-frr-lsp nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-30 {
+    description
+      "Add some nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-06 {
+    description
+      "Modify the when and must conditions of some nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-03-30 {
     description
       "Initial revision.";
     reference
       "Huawei private.";
   }
   ext:task-name "mpls-ldp";
+  grouping session-car-grp {
+    description
+      "Session CAR group.";
+    leaf cir {
+      type uint32 {
+        range "1..1000000";
+      }
+      units kbit/s;
+      description
+      "Session CAR CIR value.";
+    }
+    leaf cbs {
+      type uint32 {
+        range "1..9000000";
+      }
+      units Byte;
+      description
+      "Session CAR CBS value.";
+    }
+    leaf pir {
+      type uint32 {
+        range "1..1000000";
+      }
+      units kbit/s;
+      description
+      "Session CAR PIR value.";
+    }
+    leaf pbs {
+      type uint32 {
+        range "1..9000000";
+      }
+      units Byte;
+      description
+      "Session CAR PBS value.";
+    }
+  }
   rpc reset-ldp-session {
     description
       "Reset LDP Session.";
@@ -652,6 +724,7 @@ module huawei-mpls-ldp {
                       type uint32 {
                         range "0..65535";
                       }
+                      units Byte;
                       config false;
                       description
                         "LSP MTU.";
@@ -774,6 +847,7 @@ module huawei-mpls-ldp {
                       type uint32 {
                         range "0..4294967295";
                       }
+                      units s;
                       config false;
                       description
                         "Flow period.";
@@ -782,6 +856,7 @@ module huawei-mpls-ldp {
                       type uint64 {
                         range "0..18446744073709551615";
                       }
+                      units bit/s;
                       config false;
                       description
                         "Last period byte rate.";
@@ -790,6 +865,7 @@ module huawei-mpls-ldp {
                        type uint64 {
                         range "0..18446744073709551615";
                       }
+                      units pps;
                       config false;
                       description
                         "Last period Pkt rate.";
@@ -798,6 +874,7 @@ module huawei-mpls-ldp {
                       type uint32 {
                         range "0..4294967295";
                       }
+                      units s;
                       config false;
                       description
                         "Display interval.";
@@ -806,6 +883,7 @@ module huawei-mpls-ldp {
                       type uint64 {
                         range "0..18446744073709551615";
                       }
+                      units bit/s;
                       config false;
                       description
                         "Interval byte rate.";
@@ -814,6 +892,7 @@ module huawei-mpls-ldp {
                       type uint64 {
                         range "0..18446744073709551615";
                       }
+                      units pps;
                       config false;
                       description
                         "Interval Pkt rate.";
@@ -822,6 +901,7 @@ module huawei-mpls-ldp {
                       type uint64 {
                         range "0..18446744073709551615";
                       }
+                      units Byte;
                       config false;
                       description
                         "MLDP P2MP lsp traffic statistics total byte.";
@@ -830,6 +910,7 @@ module huawei-mpls-ldp {
                       type uint64 {
                         range "0..18446744073709551615";
                       }
+                      units packet;
                       config false;
                       description
                         "MLDP P2MP lsp traffic statistics total packet.";
@@ -1193,6 +1274,7 @@ module huawei-mpls-ldp {
             }
             leaf session-age {
               type uint32;
+              units s;
               config false;
               description
                 "Show the BFD session age of dynamic BFD for LDP LSP.";
@@ -1252,6 +1334,7 @@ module huawei-mpls-ldp {
             }
             leaf session-age {
               type uint32;
+              units s;
               config false;
               description
                 "Show the BFD session age of BFD For LDP Tunnel.";
@@ -1533,8 +1616,9 @@ module huawei-mpls-ldp {
             when "../auth-mode = 'keychain'";
             type string {
               length "1..47";
+              pattern '[^A-Z]+';
             }
-            ext:case-sensitivity upper2lower;
+            ext:case-sensitivity lower-only;
             mandatory true;
             description
               "Global LDP keychain name. The name is case-insensitive. If you want to clear the authentication, you can delete the presence container 'authentication'.";
@@ -1651,6 +1735,7 @@ module huawei-mpls-ldp {
                 type uint32 {
                   range "0..65535";
                 }
+                units Byte;
                 config false;
                 description
                   "Specifies a valid MTU configured on an interface.";
@@ -1861,8 +1946,9 @@ module huawei-mpls-ldp {
               when "../authen-mode='keychain'";
               type string {
                 length "1..47";
+                pattern '[^A-Z]+';
               }
-              ext:case-sensitivity upper2lower;
+              ext:case-sensitivity lower-only;
               mandatory true;
               description
                 "LDP peer keychain name. The name is case-insensitive.";
@@ -1924,8 +2010,9 @@ module huawei-mpls-ldp {
               when "../authen-mode='keychain'";
               type string {
                 length "1..47";
+                pattern '[^A-Z]+';
               }
-              ext:case-sensitivity upper2lower;
+              ext:case-sensitivity lower-only;
               mandatory true;
               description
                 "Authentication group keychain name. The name is case-insensitive.";
@@ -2773,6 +2860,7 @@ module huawei-mpls-ldp {
               type uint32 {
                 range "0..65535";
               }
+              units Byte;
               config false;
               description
                 "Specifies an LSP MTU.";
@@ -3050,6 +3138,7 @@ module huawei-mpls-ldp {
               type uint16 {
                 range "0..65535";
               }
+              units s;
               config false;
               description
                 "Specifies the length of a negotiated hello holding time on an interface.";
@@ -3130,6 +3219,77 @@ module huawei-mpls-ldp {
             config false;
             description
               "Specifies the number of FECs.";
+          }
+        }
+      }
+    }
+  }
+  augment /mpls:mpls/mpls:common/mpls:session-car {
+    description
+      "MPLS LDP Session CAR Configuration information augment to module MPLS.";  
+    container ldp {
+      description
+        "Configure LDP session CAR.";
+      leaf enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable session CAR.";
+      }
+      container tcp {
+        must "cir<=pir and cbs<=pbs";
+        description
+          "Configure LDP session CAR to limit TCP packets receive from peer.";
+        uses session-car-grp{
+          refine cir {
+            default 1;
+          }
+          refine cbs {
+            default 188;
+          }
+          refine pir {
+          default 4000;
+          }
+          refine pbs {
+          default 1600000;
+          }
+        }
+      }
+      container udp-local {
+        must "cir<=pir and cbs<=pbs";
+        description
+          "Configure LDP session CAR to limit UDP packets receive from local adjacency.";
+        uses session-car-grp{
+          refine cir {
+            default 1;
+          }
+          refine cbs {
+            default 188;
+          }
+          refine pir {
+          default 4;
+          }
+          refine pbs {
+          default 750;
+          }
+        }
+      }
+      container udp-remote {
+        must "cir<=pir and cbs<=pbs";
+        description
+          "Configure LDP session CAR to limit UDP packets receive from targeted adjacency.";
+        uses session-car-grp{
+          refine cir {
+            default 1;
+          }
+          refine cbs {
+            default 188;
+          }
+          refine pir {
+          default 4;
+          }
+          refine pbs {
+          default 750;
           }
         }
       }

@@ -9,6 +9,12 @@ module huawei-vrrp-deviations-NE5000E {
   import huawei-vrrp {
     prefix vrrp;
   }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
 
   organization
     "Huawei Technologies Co., Ltd.";
@@ -28,7 +34,27 @@ module huawei-vrrp-deviations-NE5000E {
     reference "Huawei private.";
   }
 
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:gratuitous-timeout" {
+    deviate replace {
+      default "120";
+    }
+  }
   deviation "/vrrp:vrrp/vrrp:global/vrrp:smooth-switch-time" {
+    deviate not-supported;
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:unicast-port" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:hold-multi" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/vrrp:vrrp/vrrp:backup-groups/vrrp:arpsend-simple" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/vrrp:vrrp/vrrp:backup-groups/vrrp:advertise-send-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/vrrp:vrrp/vrrp:track-admins" {
     deviate not-supported;
   }
 }

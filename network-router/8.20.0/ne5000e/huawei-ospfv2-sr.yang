@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-ospfv2-sr {
   namespace "urn:huawei:yang:huawei-ospfv2-sr";
@@ -34,6 +34,18 @@ module huawei-ospfv2-sr {
      Email: support@huawei.com";
   description
     "OSPF segment routing management.";
+  revision 2020-03-03 {
+    description
+      "Modity the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Modity the description.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -166,8 +178,9 @@ module huawei-ospfv2-sr {
       }
       leaf rib-update-delay {
         type uint32 {
-          range "1000..10000";
+          range "1000..60000";
         }
+        units "ms";
         default "5000";
         description
           "Set the route delivery delay for SR avoid microloop.";

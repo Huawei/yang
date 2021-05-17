@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-dhcp-relay {
   yang-version 1;
@@ -15,6 +15,9 @@ submodule huawei-dhcp-relay {
   import huawei-network-instance {
     prefix ni;
   }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -26,7 +29,19 @@ submodule huawei-dhcp-relay {
      Email: support@huawei.com";
     description
     "This module contains a collection of YANG definitions for managing DHCP relay.";
-  revision 2019-04-29 {
+  revision 2020-03-15 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-25 {
+    description
+      "Add the node of link-selection-address.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-25 {
     description
       "Initial revision.";
     reference
@@ -53,6 +68,17 @@ submodule huawei-dhcp-relay {
     }
     description
       "The type of DHCP option82 suboption6 format.";
+  }
+  typedef dhcp-opt82-vendor-sub-option-format {
+    type enumeration {
+      enum "source-ip-address" {
+        value 0;
+        description
+          "Source IP address.";
+      }
+    }
+    description
+      "The type of DHCP option82 vendor suboption format.";
   }
   grouping dhcp-relay-type {
     description
@@ -128,6 +154,7 @@ submodule huawei-dhcp-relay {
           type leafref {
             path "/ni:network-instance/ni:instances/ni:instance/ni:name";
           }
+          must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
           default "_public_";
           description
             "VPN name.";
@@ -138,7 +165,7 @@ submodule huawei-dhcp-relay {
   augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
     description "Extend interface attribute.";
       container dhcp-relay-attribute {
-        description
+      description
           "Configure DHCP relay attributes on an interface.";
           leaf enable {
             type boolean;
@@ -155,8 +182,19 @@ submodule huawei-dhcp-relay {
             must "(subscriber-id-enable='true' and subscriber-id-mode='self-define' and subscriber-id-self-define-text) or (subscriber-id-enable='false')";
             description
               "Configure DHCP relay option82 on an interface.";
+            leaf link-selection-enable {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable to insert link selection information.";
+            }
+            leaf link-selection-address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Link selection sub-option IP address.";
+            }
             leaf vendor-specific-enable {
-              when "../../../ifm:type='Vbdif'";
+              when "(../../../ifm:type='Vbdif') or (../../../ifm:type='Global-VE' and ../../../ifm:class='sub-interface') or (../../../ifm:type='Virtual-Ethernet' and ../../../ifm:class='sub-interface')";
               type boolean;
               default "false";
               description
@@ -220,6 +258,130 @@ submodule huawei-dhcp-relay {
               }
            }
         }
+        container gateway-addresses {
+          description
+            "List of configuring a gateway address list on an interface.";
+          list gateway-address {
+            must "(vendor='false' and vendor-class='-') or (vendor='true' and option-code=60)";
+            key "vendor option-code vendor-class";
+            description
+              "Configure a gateway address instance on an interface.";
+            leaf vendor {
+              type boolean;
+              description
+                "Enable/disable to carry vendor identifier.";
+            }
+            leaf option-code {
+              type uint8 {
+                range "0..254";
+              }
+              description
+                "Option code, 0 means NULL.";
+            }
+            leaf vendor-class {
+              type string {
+                length "1..128";
+                pattern '([^\t]{0,})';
+              }
+              description
+                "Vendor identifier.";
+            }
+            leaf ip-address {
+              type inet:ipv4-address-no-zone;
+              mandatory true;
+              description
+                "Gateway address.";
+            }
+          }
+        }
+        container relay-source-address {
+          must "not(../relay-source-option-addresses/relay-source-option-address)";
+          presence "Enable/disable the functions of DHCP relay source address.";
+          description
+            "Configure DHCP relay source address.";
+          leaf vpn-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+            mandatory true;
+            description
+              "VPN name specified in the source address of a relay interface, the '_public_' of vpn-name means public network.";
+          }
+          leaf source-address {
+            type inet:ipv4-address-no-zone;
+            mandatory true;
+            description
+              "Source address.";
+          }
+        }
+         container relay-source-option-addresses {
+            description
+              "List of configuring source IP addresses based on option.";
+            list relay-source-option-address {
+              must "not(../../relay-source-address)";
+              must "(vendor='false' and vendor-class='-') or (vendor='true' and option-code=60)";
+              key "vendor option-code vendor-class";
+              description
+                "Configure a source IP address based on option.";
+              leaf vendor {
+                type boolean;
+                description
+                  "Enable/disable to carry a vendor identifier.";
+              }
+              leaf option-code {
+                type uint8 {
+                  range "0..254";
+                }
+                description
+                  "Option code, 0 means NULL.";
+              }
+              leaf vendor-class {
+                type string {
+                  length "1..128";
+                  pattern '([^\t]{0,})';
+                }
+                description
+                  "Vendor identifier.";
+              }
+              leaf source-address {
+                type inet:ipv4-address-no-zone;
+                mandatory true;
+                description
+                  "Source address.";
+              }
+            }
+         }
+         container opt82-vendor-specifics {
+            when "(../../ifm:type='Vbdif') or (../../ifm:type='Global-VE' and ../../ifm:class='sub-interface') or (../../ifm:type='Virtual-Ethernet' and ../../ifm:class='sub-interface')";
+            description
+              "List of option82 vendor-specific instance.";
+            list opt82-vendor-specific {
+              key "sub-option-number";
+              max-elements  "1";
+              description
+                "Configure an option82 vendor-specific instance. Only one record can be configured.";
+              leaf sub-option-number {
+                type uint32 {
+                  range "1..255";
+                }
+                description
+                  "Suboption of option82.";
+              }
+              leaf sub-option-format {
+                type dhcp-opt82-vendor-sub-option-format;
+                mandatory true;
+                description
+                  "Suboption format.";
+              }
+              leaf ip-address {
+                type inet:ipv4-address-no-zone;
+                mandatory true;
+                description
+                  "Source IPv4 address of forward package.";
+              }
+            }
+         }
       }
       container dhcp-relay-if {
         presence "Enable/disable DHCP relay functions on an interface.";

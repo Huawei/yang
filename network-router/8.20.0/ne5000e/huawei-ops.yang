@@ -500,7 +500,7 @@ module huawei-ops {
     container python-version {
       config false;
       description
-        "Operational data of Python version.";
+        "Operational state of Python version.";
       leaf version {
         type ops-python-version-type;
         config false;
@@ -508,7 +508,6 @@ module huawei-ops {
           "Ops python version.";
       }
     }
-
     container assistant {
       description
         "Configure OPS assistant node.";
@@ -533,6 +532,115 @@ module huawei-ops {
 		    "Enable/disable assistant total switch.";
 	    }
 	  }
+     container script-assistants {
+       description
+         "List of script assistant.";
+       list script-assistant {
+        key "name";
+         max-elements  "100";
+        description
+            "Configure script assistant instance.";
+        leaf name {
+          type string {
+            length "4..64";
+            pattern '([^_].*\.py)';
+          }
+          description
+            "Script assistant name.";
+        }
+        leaf shutdown {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable script assistant.";
+		  }
+	    }
+	  }
+    }
+    container applications {
+      config false;
+      description
+        "List of the OPS application.";
+      list application {
+        key "file-name";
+        config false;
+        description
+          "Operational state of OPS application node.";
+        leaf file-name {
+          type string {
+            length "1..255";
+          }
+          config false;
+          description
+            "OPS application file name.";
+        }
+        leaf size {
+          type uint32;
+          default "0";
+          config false;
+          description
+            "The file size (unit:byte).";
+        }
+      }
+    }
+  }
+  rpc install-application {
+    description
+      "Install OPS application.";
+    ext:node-ref "/ops/applications/application";
+    input {
+      leaf file-name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "The install OPS applcation file name.";
+      }
+      leaf destination {
+        type string {
+          length "1..127";
+        }
+        description
+          "The install OPS applcation file destionation.";
+      }
+    }
+  }
+  rpc uninstall-application {
+    description
+      "Uninstall OPS application.";
+    ext:node-ref "/ops/applications/application";
+    input {
+      leaf file-name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "Uninstall OPS applcation file name.";
+      }
+    }
+  }
+  rpc run-python-script {
+    description
+      "Run python script.";
+    ext:node-ref "/ops/applications/application";
+    input {
+      leaf name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "Python script name.";
+      }
+      leaf argument {
+        type string {
+          length "1..383";
+        }
+        description
+          "Python script argument.";
+      }
     }
   }
 }

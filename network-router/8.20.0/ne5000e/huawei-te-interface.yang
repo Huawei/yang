@@ -37,6 +37,12 @@ module huawei-te-interface {
      Email: support@huawei.com";
   description
     "Specifies the traffic engineering configuration.";
+  revision 2020-07-06 {
+    description
+      "Add when condition for attribute container.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-04-09 {
     description
       "Modify the type of the affinity attribute.";
@@ -99,7 +105,7 @@ module huawei-te-interface {
             "Enable/disable P2MP-TE on the interface.";
         }
         container attribute {
-          when "../mpls-te-enable='true'";
+          when "../mpls-te-enable='true' or /te:te/te:global/te:te-attribute-enable='true'";
           must "not(admin-groups-name) or admin-groups='0x0'";
           description
             "Configure TE parameters.";
@@ -383,7 +389,6 @@ module huawei-te-interface {
                 range "0..4000000000";
               }
               units "kbit/s";
-              default "0";
               description
                 "TE link auto bypass tunnel bandwidth (kbits/s) requested by an active tunnel. The value cannot exceed the bandwidth of the active tunnel.";
             }
@@ -391,8 +396,7 @@ module huawei-te-interface {
               type uint32 {
                 range "0..7";
               }
-              must "(../setup-priority>=../hold-priority)";
-              default "7";
+              must "(../hold-priority and (../setup-priority>=../hold-priority)) or not(../hold-priority)";
               description
                 "TE link auto bypass tunnel setup priority.";
             }
@@ -400,8 +404,6 @@ module huawei-te-interface {
               type uint32 {
                 range "0..7";
               }
-              must "(../setup-priority>=../hold-priority)";
-              default "7";
               description
                 "TE link auto bypass tunnel hold priority.";
             }
@@ -409,21 +411,16 @@ module huawei-te-interface {
               type uint32 {
                 range "1..32";
               }
-              default "32";
               description
                 "TE link auto bypass tunnel hop limit.";
             }
             leaf include-any {
               type pub-type:hex-binary;
-              must "not(../include-any-affinity-name or ../exclude-any-affinity-name)";
-              default "0x0";
               description
                 "TE link auto bypass tunnel administrative group attribute (include any).";
             }
             leaf exclude-any {
               type pub-type:hex-binary;
-              must "not(../include-any-affinity-name or ../exclude-any-affinity-name)";
-              default "0x0";
               description
                 "TE link auto bypass tunnel administrative group attribute (exclude).";
             }

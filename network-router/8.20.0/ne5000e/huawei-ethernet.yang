@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-ethernet {
   namespace "urn:huawei:yang:huawei-ethernet";
@@ -28,6 +28,18 @@ module huawei-ethernet {
      Email: support@huawei.com";
   description
     "VLAN member interfaces and QinQ.";
+  revision 2020-05-14 {
+    description
+      "Modify leaf node qinq-vids's condition.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-09 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-23 {
     description
       "Initial revision.";
@@ -116,6 +128,32 @@ module huawei-ethernet {
     description
       "The type of group mode.";
   }
+  typedef pw-tag-mode {
+    type enumeration {
+      enum "null" {
+        value 0;
+        description
+          "Null type.";
+      }
+      enum "outer-vlan" {
+        value 1;
+        description
+          "Outer VLAN tag.";
+      }
+      enum "inner-vlan" {
+        value 2;
+        description
+          "Inner VLAN tag.";
+      }
+      enum "user-define" {
+        value 3;
+        description
+          "User definded.";
+      }
+    }
+    description
+      "The mode of pw tag.";
+  }
   typedef remark-type {
     type enumeration {
       enum "precedence" {
@@ -136,7 +174,7 @@ module huawei-ethernet {
     }
     description
       "Remark type.";
-  }    
+  }
   typedef symmetry-type {
     type enumeration {
       enum "asymmetry" {
@@ -234,6 +272,40 @@ typedef action-type {
         description
           "Specified VLAN ID.";
       }
+    }
+  }
+  grouping group-l3-sub-pwtag {
+    description
+      "Configuration of pwtag.";
+    leaf tag-vid-mode {
+      type pw-tag-mode;
+      mandatory true;
+      description
+        "Vid mode of pwtag.";
+    }
+    leaf tag-vid {
+      when "(../tag-vid-mode='user-define')";
+      type uint16 {
+        range "1..4094";
+      }
+      mandatory true;
+      description
+        "User-defined VLAN ID.";
+    }
+    leaf tag-8021p-mode {
+      type pw-tag-mode;
+      default "null";
+      description
+        "802.1p mode of pwtag.";
+    }
+    leaf tag-8021p-value {
+      when "(../tag-8021p-mode='user-define')";
+      type uint8 {
+        range "0..7";
+      }
+      mandatory true;
+      description
+        "User-defined 802.1p value.";
     }
   }
   rpc create-qinq-termination {
@@ -434,7 +506,7 @@ typedef action-type {
     description "Ethernet interface configuration.";
     container ethernet {
       description
-        "Configure ethernet Interface.";
+        "Configure ethernet interface.";
       container main-interface {
         when "../../ifm:class='main-interface'";
         description
@@ -453,7 +525,7 @@ typedef action-type {
           default "0x8100";
           description
             "Ethernet type.";
-        }		  
+        }
         container l2-attribute {
           presence "Enables portswitch";
           description
@@ -488,13 +560,13 @@ typedef action-type {
           container vlan-stackings {
             when "../link-type='trunk' or ../link-type='hybrid'";
             description
-              "List of VLAN stacking interface.";
+              "List of VLAN stacking.";
             list vlan-stacking {
-			  must "ce-default or trans-vlans";
+              must "ce-default or trans-vlans";
               key "stacking-vlan";
               unique "ce-default";
               description
-                "Configure VLAN stacking interface.";
+                "Configure VLAN stacking.";
               leaf stacking-vlan {
                 type leafref {
                   path "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:id";
@@ -505,7 +577,7 @@ typedef action-type {
               }
               leaf ce-default {
                 type empty;
-                must "not(../../../pvid)";	
+                must "not(../../../pvid)";
                 description
                   "Add a VLAN tag to received untagged packets.";
               }
@@ -524,11 +596,28 @@ typedef action-type {
               description
                 "VLAN list. The specified VLAN must have been added to an interface.";
             }
-          }		  
+          }
+          container port-isolate-groups {
+            description
+              "List of port isolate groups.";
+            list port-isolate-group {
+              key "group-id";
+              description
+                "Configure port isolate group.";
+              leaf group-id {
+                type int32 {
+                  range "1..64";
+                }
+                description
+                  "Group ID.";
+              }
+            }
+          }          
         }
       }
       container l3-sub-interface {
         when "../../ifm:class='sub-interface'";
+        must "../../ifm:l2-mode-enable='false'";
         description
           "Configure l3 sub-interface attribute.";
         container vlan-groups {
@@ -645,6 +734,19 @@ typedef action-type {
                   "Configure dot1q VRRP list. VLAN-id must existed in '../../dot1q-VLANs/dot1q-VLANs-group/VLAN-list' or '../../dot1q-VLANs/dot1q-VLANs-no-group/VLAN-list'.";
                 uses group-l3-dot1q-vrrp;
               }
+              container pwtag {
+                presence "PW tag configuration";
+                description
+                  "Configure the P-Tag of the packets in the PW with VLAN.";
+                uses group-l3-sub-pwtag {
+                  refine tag-vid-mode {
+                   must "(../tag-vid-mode='user-define' or ../tag-vid-mode='outer-vlan')";
+                  }
+                  refine tag-8021p-mode {
+                   must "(../tag-8021p-mode!='inner-vlan')";
+                  }
+                }
+              }
             }
           }
           case qinq-termination {
@@ -667,14 +769,14 @@ typedef action-type {
                 description
                   "Enable/disable ARP broadcast.";
               }
-              container remark-8021p {	
+              container remark-8021p {
                 when "../qinq-vids";
                 must "(remark-type='precedence' and precedence-value) or (remark-type!='precedence') or not(remark-type)";
                 description
                   "Configure 802.1p mapping.";
                 leaf remark-type {
-                  type remark-type;				  
-                  default "trust-pe-8021p";			  
+                  type remark-type;
+                  default "trust-pe-8021p";
                   description
                     "Trust the 802.1p in the outer VLAN tag, inner VLAN tag, or user-defined precedence.";
                 }
@@ -685,8 +787,8 @@ typedef action-type {
                   }
                   description
                     "User-defined 802.1p value.";
-                }				
-              }			  
+                }
+              }
               container symmetry-mode {
                 description
                   "Configure symmetry mode.";
@@ -695,9 +797,9 @@ typedef action-type {
                     when "../../qinq-vids/qinq-vid";
                     description
                       "Symmetry-type cannot be updated when qinq-vids is configured.";				  
-                  }				
+                  }
                   type symmetry-type;
-                  must "../../tag='none' or ../symmetry-type='asymmetry' or ../symmetry-type='symmetry'";				  
+                  must "../../tag='none' or ../symmetry-type='asymmetry' or ../symmetry-type='symmetry'";
                   default "asymmetry";
                   description
                     "Symmetry type.";
@@ -752,8 +854,19 @@ typedef action-type {
                     type leafref {
                       path "../../../../vlan-groups/vlan-group/id";
                     }
+                    ext:operation-exclude create|delete|update;
                     description
                       "Specified VLAN group ID. The group-id cannot be modified after the qinq-vid is created.";
+                  }
+                }
+              }
+              container pwtag {
+                presence "PW tag configuration";
+                description
+                  "Configure the P-Tag of the packets in the PW with VLAN.";
+                uses group-l3-sub-pwtag {
+                  refine tag-vid-mode {
+                   must "(../tag-vid-mode!='null')";
                   }
                 }
               }
@@ -967,10 +1080,10 @@ typedef action-type {
               description
                 "Configure QinQ encapsulation list.";
               container qinq-vids {
-                must "not(../qinq-vid-ce-default)";
                 description
                   "List of QinQ encapsulation.";
                 list qinq-vid {
+                  must "not(../../qinq-vid-ce-default/pe-vlan-list)";
                   key "pe-vlan-id";
                   description
                     "Configure QinQ encapsulation.";
@@ -990,13 +1103,51 @@ typedef action-type {
                 }
               }
               container qinq-vid-ce-default {
-                must "not(../qinq-vids)";
                 description
                   "Configure QinQ encapsulation. The CE VLAN ID is not specified.";
                   leaf pe-vlan-list {
                   type pub-type:vlan-range;
+                  must "not(../../qinq-vids/qinq-vid)";
                   description
                     "PE VLAN ID list.";
+                }
+              }
+              container qinq-with-pe-segments {
+                description
+                  "List of QinQ encapsulation with PE VLAN segment.";
+                list qinq-with-pe-segment {
+                  must "((pe-vlan-end>pe-vlan-begin) and (ce-vlan-end>=ce-vlan-begin))";
+                  key "pe-vlan-begin pe-vlan-end ce-vlan-begin ce-vlan-end";
+                  description
+                    "Configure QinQ encapsulation with PE VLAN segment.";
+                  leaf pe-vlan-begin {
+                    type uint16 {
+                      range "1..4094";
+                    }
+                    description
+                      "Start outer VLAN ID.";
+                  }
+                  leaf pe-vlan-end {
+                    type uint16 {
+                      range "1..4094";
+                    }
+                    description
+                      "End outer VLAN ID.";
+                  }
+                  leaf ce-vlan-begin {
+                    type uint16 {
+                      range "1..4094";
+                    }
+                    description
+                      "Start inner VLAN ID.";
+                  }
+                  leaf ce-vlan-end {
+                    type uint16 {
+                      range "1..4094";
+                    }
+                    description
+                      "End inner VLAN ID.";
+                  }
                 }
               }
             }

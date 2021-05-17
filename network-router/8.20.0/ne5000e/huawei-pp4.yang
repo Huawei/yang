@@ -14,6 +14,9 @@ module huawei-pp4 {
   import huawei-mpls {
     prefix mpls;
   }
+  import huawei-acl {
+    prefix acl;
+  }
   import huawei-network-instance {
     prefix ni;
   }
@@ -40,102 +43,102 @@ module huawei-pp4 {
       enum "echo" {
         value 1;
         description
-          "Type=8, Code=0.";
+          "Type=8, code=0.";
       }
       enum "echo-reply" {
         value 2;
         description
-          "Type=0, Code=0.";
+          "Type=0, code=0.";
       }
       enum "fragmentneed-dfset" {
-          value 3;
+        value 3;
         description
-          "Type=3, Code=4.";
+          "Type=3, code=4.";
       }
       enum "host-redirect" {
-          value 4;
+        value 4;
         description
-          "Type=5, Code=1.";
+          "Type=5, code=1.";
       }
       enum "host-tos-redirect" {
-          value 5;
+        value 5;
         description
-          "Type=5, Code=3.";
+          "Type=5, code=3.";
       }
       enum "host-unreachable" {
-          value 6;
+        value 6;
         description
-          "Type=3, Code=1.";
+          "Type=3, code=1.";
       }
       enum "information-reply" {
-          value 7;
+        value 7;
         description
-          "Type=16, Code=0.";
+          "Type=16, code=0.";
       }
       enum "information-request" {
-          value 8;
+        value 8;
         description
-          "Type=15, Code=0.";
+          "Type=15, code=0.";
       }
       enum "net-redirect" {
-          value 9;
+        value 9;
         description
-          "Type=5, Code=0.";
+          "Type=5, code=0.";
       }
       enum "net-tos-redirect" {
-          value 10;
+        value 10;
         description
-          "Type=5, Code=2.";
+          "Type=5, code=2.";
       }
       enum "net-unreachable" {
-          value 11;
+        value 11;
         description
-          "Type=3, Code=0.";
+          "Type=3, code=0.";
       }
       enum "parameter-problem" {
-          value 12;
+        value 12;
         description
-          "Type=12, Code=0.";
+          "Type=12, code=0.";
       }
       enum "port-unreachable" {
-          value 13;
+        value 13;
         description
-          "Type=3, Code=3.";
+          "Type=3, code=3.";
       }
       enum "protocol-unreachable" {
-          value 14;
+        value 14;
         description
-          "Type=3, Code=2.";
+          "Type=3, code=2.";
       }
       enum "reassembly-timeout" {
-          value 15;
+        value 15;
         description
-          "Type=11, Code=1.";
+          "Type=11, code=1.";
       }
       enum "source-quench" {
         value 16;
         description
-          "Type=4, Code=0.";
+          "Type=4, code=0.";
       }
       enum "source-route-failed" {
         value 17;
         description
-          "Type=3, Code=5.";
+          "Type=3, code=5.";
       }
       enum "timestamp-reply" {
         value 18;
         description
-          "Type=14, Code=0.";
+          "Type=14, code=0.";
       }
       enum "timestamp-request" {
         value 19;
         description
-          "Type=13, Code=0.";
+          "Type=13, code=0.";
       }
       enum "ttl-exceeded" {
         value 20;
         description
-          "Type=11, Code=0.";
+          "Type=11, code=0.";
       }
       enum "user-defined" {
         value 0;
@@ -183,22 +186,22 @@ module huawei-pp4 {
       enum "route-alert" {
         value 0;
         description
-          "Route-alert option.";
+          "Route alert option.";
       }
       enum "route-record" {
         value 1;
         description
-          "Route-record option.";
+          "Route record option.";
       }
       enum "source-route" {
         value 2;
         description
-          "Source-route option.";
+          "Source route option.";
       }
       enum "time-stamp" {
         value 3;
         description
-          "Time-stamp option.";
+          "Time stamp option.";
       }
     }
     description
@@ -252,17 +255,17 @@ module huawei-pp4 {
       enum "port-unreachable" {
         value 1;
         description
-          "Type=3, Code=3.";
+          "Type=3, code=3.";
       }
       enum "ttl-exceeded" {
         value 2;
         description
-          "Type=11, Code=0.";
+          "Type=11, code=0.";
       }
       enum "all-tracert" {
         value 3;
         description
-          "Type=11, Code=0 and Type=3, Code=3.";
+          "Type=11, code=0 and type=3, code=3.";
       }
     }
     description
@@ -410,27 +413,7 @@ module huawei-pp4 {
       description
         "List of global ICMP security configuration.";
       list icmp-security {
-        must "((((icmp-name='echo' and icmp-type='8' and icmp-code='0') or (icmp-name='echo-reply' and icmp-type='0' and icmp-code='0')
-        or (icmp-name='fragmentneed-dfset' and icmp-type='3' and icmp-code='4') or (icmp-name='host-redirect' and icmp-type='5' and icmp-code='1')
-        or (icmp-name='host-tos-redirect' and icmp-type='5' and icmp-code='3') or (icmp-name='host-unreachable' and icmp-type='3' and icmp-code='1')
-        or (icmp-name='information-reply' and icmp-type='16' and icmp-code='0') or (icmp-name='information-request' and icmp-type='15' and icmp-code='0')
-        or (icmp-name='net-redirect' and icmp-type='5' and icmp-code='0') or (icmp-name='net-tos-redirect' and icmp-type='5' and icmp-code='2')
-        or (icmp-name='net-unreachable' and icmp-type='3' and icmp-code='0') or (icmp-name='parameter-problem' and icmp-type='12' and icmp-code='0')
-        or (icmp-name='port-unreachable' and icmp-type='3' and icmp-code='3') or (icmp-name='protocol-unreachable' and icmp-type='3' and icmp-code='2')
-        or (icmp-name='reassembly-timeout' and icmp-type='11' and icmp-code='1') or (icmp-name='source-quench' and icmp-type='4' and icmp-code='0')
-        or (icmp-name='source-route-failed' and icmp-type='3' and icmp-code='5') or (icmp-name='timestamp-reply' and icmp-type='14' and icmp-code='0')
-        or (icmp-name='timestamp-request' and icmp-type='13' and icmp-code='0') or (icmp-name='ttl-exceeded' and icmp-type='11' and icmp-code='0')
-        or icmp-name='user-defined') and action ='receive-pkt') or ((((icmp-name='echo' or icmp-name='user-defined') and icmp-type='8' and icmp-code='0')
-        or ((icmp-name='echo-reply' or icmp-name='user-defined') and icmp-type='0' and icmp-code='0')
-        or ((icmp-name='fragmentneed-dfset' or icmp-name='user-defined') and icmp-type='3' and icmp-code='4')
-        or ((icmp-name='net-unreachable' or icmp-name='user-defined') and icmp-type='3' and icmp-code='0')
-        or ((icmp-name='parameter-problem' or icmp-name='user-defined') and icmp-type='12' and icmp-code='0')
-        or ((icmp-name='port-unreachable' or icmp-name='user-defined') and icmp-type='3' and icmp-code='3')
-        or ((icmp-name='reassembly-timeout' or icmp-name='user-defined') and icmp-type='11' and icmp-code='1')
-        or ((icmp-name='source-route-failed' or icmp-name='user-defined') and icmp-type='3' and icmp-code='5')
-        or ((icmp-name='timestamp-reply' or icmp-name='user-defined') and icmp-type='14' and icmp-code='0')
-        or ((icmp-name='timestamp-request' or icmp-name='user-defined') and icmp-type='13' and icmp-code='0')
-        or ((icmp-name='ttl-exceeded' or icmp-name='user-defined') and icmp-type='11' and icmp-code='0')) and action ='send-pkt'))";
+       must "((((icmp-name='echo' and icmp-type=8 and icmp-code=0) or (icmp-name='echo-reply' and icmp-type=0 and icmp-code=0) or (icmp-name='fragmentneed-dfset' and icmp-type=3 and icmp-code=4) or (icmp-name='host-redirect' and icmp-type=5 and icmp-code=1) or (icmp-name='host-tos-redirect' and icmp-type=5 and icmp-code=3) or (icmp-name='host-unreachable' and icmp-type=3 and icmp-code=1) or (icmp-name='information-reply' and icmp-type=16 and icmp-code=0) or (icmp-name='information-request' and icmp-type=15 and icmp-code=0) or (icmp-name='net-redirect' and icmp-type=5 and icmp-code=0) or (icmp-name='net-tos-redirect' and icmp-type=5 and icmp-code=2) or (icmp-name='net-unreachable' and icmp-type=3 and icmp-code=0) or (icmp-name='parameter-problem' and icmp-type=12 and icmp-code=0) or (icmp-name='port-unreachable' and icmp-type=3 and icmp-code=3) or (icmp-name='protocol-unreachable' and icmp-type=3 and icmp-code=2) or (icmp-name='reassembly-timeout' and icmp-type=11 and icmp-code=1) or (icmp-name='source-quench' and icmp-type=4 and icmp-code=0) or (icmp-name='source-route-failed' and icmp-type=3 and icmp-code=5) or (icmp-name='timestamp-reply' and icmp-type=14 and icmp-code=0) or (icmp-name='timestamp-request' and icmp-type=13 and icmp-code=0) or (icmp-name='ttl-exceeded' and icmp-type=11 and icmp-code=0) or icmp-name='user-defined') and action ='receive-pkt') or (((icmp-name='echo' and icmp-type=8 and icmp-code=0) or (icmp-name='echo-reply' and icmp-type=0 and icmp-code=0) or (icmp-name='fragmentneed-dfset' and icmp-type=3 and icmp-code=4) or (icmp-name='net-unreachable' and icmp-type=3 and icmp-code=0) or (icmp-name='parameter-problem' and icmp-type=12 and icmp-code=0) or (icmp-name='port-unreachable' and icmp-type=3 and icmp-code=3) or (icmp-name='reassembly-timeout' and icmp-type=11 and icmp-code=1) or (icmp-name='source-route-failed' and icmp-type=3 and icmp-code=5) or (icmp-name='timestamp-reply' and icmp-type=14 and icmp-code=0) or (icmp-name='timestamp-request' and icmp-type=13 and icmp-code=0) or (icmp-name='ttl-exceeded' and icmp-type=11 and icmp-code=0)) and action ='send-pkt'))";
         key "action icmp-name icmp-type icmp-code";
         description
           "Configure global ICMP security function.";
@@ -483,6 +466,7 @@ module huawei-pp4 {
           type uint32 {
             range "0..63";
           }
+          default "0";
           description
             "DSCP priority.";
         }
@@ -569,7 +553,7 @@ module huawei-pp4 {
       leaf in-echo {
         type uint32;
         description
-          "Count of received ICMP Echo Request packets.";
+          "Count of received ICMP echo request packets.";
       }
       leaf in-dst-unreach {
         type uint32;
@@ -589,7 +573,7 @@ module huawei-pp4 {
       leaf in-echo-reply {
         type uint32;
         description
-          "Count of received Echo Reply packets.";
+          "Count of received echo reply packets.";
       }
       leaf in-para-err {
         type uint32;
@@ -624,7 +608,7 @@ module huawei-pp4 {
       leaf out-echo {
         type uint32;
         description
-          "Count of sent Echo Request packets.";
+          "Count of sent echo request packets.";
       }
       leaf out-dst-unreach {
         type uint32;
@@ -644,7 +628,7 @@ module huawei-pp4 {
       leaf out-echo-reply {
         type uint32;
         description
-          "Count of sent Echo Reply packets.";
+          "Count of sent echo reply packets.";
       }
       leaf out-para-err {
         type uint32;
@@ -699,32 +683,32 @@ module huawei-pp4 {
       leaf in-mping-request {
         type uint32;
         description
-          "Count of received MPing Request packets.";
+          "Count of received mping request packets.";
       }
       leaf out-mping-request {
         type uint32;
         description
-          "Count of sent MPing Request packets.";
+          "Count of sent mping request packets.";
       }
       leaf in-mping-reply {
         type uint32;
         description
-          "Count of received MPing Reply packets.";
+          "Count of received mping reply packets.";
       }
       leaf out-mping-reply {
         type uint32;
         description
-          "Count of sent MPing Reply packets.";
+          "Count of sent mping reply packets.";
       }
       leaf in-time-stamp-rep {
         type uint32;
         description
-          "Count of received Timestamp Reply packets.";
+          "Count of received timestamp reply packets.";
       }
       leaf out-time-stamp-rep {
         type uint32;
         description
-          "Count of sent Timestamp Reply packets.";
+          "Count of sent timestamp reply packets.";
       }
     }
     container ip-stats {
@@ -867,31 +851,11 @@ module huawei-pp4 {
     description
       "All configurations of the PP4 under the interface.";
     container if-icmp-securitys {
-      when "../ifm:type!='NULL' and ../ifm:type!='Cpos' and ../ifm:type!='Atm-Bundle' and ../ifm:type!='E1' and ../ifm:type!='Cpos-Trunk' and ../ifm:type!='IMEth' and ../ifm:type!='Stack-Port' and ../ifm:type!='Sip' and ../ifm:type!='Global-Ima-Group' and ../ifm:type!='Global-VE' and ../ifm:type!='Nve' and ../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-Ethernet'";
+      when "../ifm:type!='NULL' and ../ifm:type!='Cpos' and ../ifm:type!='Atm-Bundle' and ../ifm:type!='E1' and ../ifm:type!='Cpos-Trunk' and ../ifm:type!='IMEth' and ../ifm:type!='Stack-Port' and ../ifm:type!='Sip' and ../ifm:type!='Global-Ima-Group' and ../ifm:type!='Global-VE' and ../ifm:type!='Nve' and ../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-Ethernet' and ../ifm:type!='PW-VE'";
       description
         "List of ICMP security configuration on interfaces.";
       list if-icmp-security {
-               must "((((icmp-name='echo' and icmp-type='8' and icmp-code='0') or (icmp-name='echo-reply' and icmp-type='0' and icmp-code='0')
-        or (icmp-name='fragmentneed-dfset' and icmp-type='3' and icmp-code='4') or (icmp-name='host-redirect' and icmp-type='5' and icmp-code='1')
-        or (icmp-name='host-tos-redirect' and icmp-type='5' and icmp-code='3') or (icmp-name='host-unreachable' and icmp-type='3' and icmp-code='1')
-        or (icmp-name='information-reply' and icmp-type='16' and icmp-code='0') or (icmp-name='information-request' and icmp-type='15' and icmp-code='0')
-        or (icmp-name='net-redirect' and icmp-type='5' and icmp-code='0') or (icmp-name='net-tos-redirect' and icmp-type='5' and icmp-code='2')
-        or (icmp-name='net-unreachable' and icmp-type='3' and icmp-code='0') or (icmp-name='parameter-problem' and icmp-type='12' and icmp-code='0')
-        or (icmp-name='port-unreachable' and icmp-type='3' and icmp-code='3') or (icmp-name='protocol-unreachable' and icmp-type='3' and icmp-code='2')
-        or (icmp-name='reassembly-timeout' and icmp-type='11' and icmp-code='1') or (icmp-name='source-quench' and icmp-type='4' and icmp-code='0')
-        or (icmp-name='source-route-failed' and icmp-type='3' and icmp-code='5') or (icmp-name='timestamp-reply' and icmp-type='14' and icmp-code='0')
-        or (icmp-name='timestamp-request' and icmp-type='13' and icmp-code='0') or (icmp-name='ttl-exceeded' and icmp-type='11' and icmp-code='0')
-        or icmp-name='user-defined') and action ='receive-pkt') or ((((icmp-name='echo' or icmp-name='user-defined') and icmp-type='8' and icmp-code='0')
-        or ((icmp-name='echo-reply' or icmp-name='user-defined') and icmp-type='0' and icmp-code='0')
-        or ((icmp-name='fragmentneed-dfset' or icmp-name='user-defined') and icmp-type='3' and icmp-code='4')
-        or ((icmp-name='net-unreachable' or icmp-name='user-defined') and icmp-type='3' and icmp-code='0')
-        or ((icmp-name='parameter-problem' or icmp-name='user-defined') and icmp-type='12' and icmp-code='0')
-        or ((icmp-name='port-unreachable' or icmp-name='user-defined') and icmp-type='3' and icmp-code='3')
-        or ((icmp-name='reassembly-timeout' or icmp-name='user-defined') and icmp-type='11' and icmp-code='1')
-        or ((icmp-name='source-route-failed' or icmp-name='user-defined') and icmp-type='3' and icmp-code='5')
-        or ((icmp-name='timestamp-reply' or icmp-name='user-defined') and icmp-type='14' and icmp-code='0')
-        or ((icmp-name='timestamp-request' or icmp-name='user-defined') and icmp-type='13' and icmp-code='0')
-        or ((icmp-name='ttl-exceeded' or icmp-name='user-defined') and icmp-type='11' and icmp-code='0')) and action ='send-pkt'))";
+       must "((((icmp-name='echo' and icmp-type=8 and icmp-code=0) or (icmp-name='echo-reply' and icmp-type=0 and icmp-code=0) or (icmp-name='fragmentneed-dfset' and icmp-type=3 and icmp-code=4) or (icmp-name='host-redirect' and icmp-type=5 and icmp-code=1) or (icmp-name='host-tos-redirect' and icmp-type=5 and icmp-code=3) or (icmp-name='host-unreachable' and icmp-type=3 and icmp-code=1) or (icmp-name='information-reply' and icmp-type=16 and icmp-code=0) or (icmp-name='information-request' and icmp-type=15 and icmp-code=0) or (icmp-name='net-redirect' and icmp-type=5 and icmp-code=0) or (icmp-name='net-tos-redirect' and icmp-type=5 and icmp-code=2) or (icmp-name='net-unreachable' and icmp-type=3 and icmp-code=0) or (icmp-name='parameter-problem' and icmp-type=12 and icmp-code=0) or (icmp-name='port-unreachable' and icmp-type=3 and icmp-code=3) or (icmp-name='protocol-unreachable' and icmp-type=3 and icmp-code=2) or (icmp-name='reassembly-timeout' and icmp-type=11 and icmp-code=1) or (icmp-name='source-quench' and icmp-type=4 and icmp-code=0) or (icmp-name='source-route-failed' and icmp-type=3 and icmp-code=5) or (icmp-name='timestamp-reply' and icmp-type=14 and icmp-code=0) or (icmp-name='timestamp-request' and icmp-type=13 and icmp-code=0) or (icmp-name='ttl-exceeded' and icmp-type=11 and icmp-code=0) or icmp-name='user-defined') and action ='receive-pkt') or (((icmp-name='echo' and icmp-type=8 and icmp-code=0) or (icmp-name='echo-reply' and icmp-type=0 and icmp-code=0) or (icmp-name='fragmentneed-dfset' and icmp-type=3 and icmp-code=4) or (icmp-name='net-unreachable' and icmp-type=3 and icmp-code=0) or (icmp-name='parameter-problem' and icmp-type=12 and icmp-code=0) or (icmp-name='port-unreachable' and icmp-type=3 and icmp-code=3) or (icmp-name='reassembly-timeout' and icmp-type=11 and icmp-code=1) or (icmp-name='source-route-failed' and icmp-type=3 and icmp-code=5) or (icmp-name='timestamp-reply' and icmp-type=14 and icmp-code=0) or (icmp-name='timestamp-request' and icmp-type=13 and icmp-code=0) or (icmp-name='ttl-exceeded' and icmp-type=11 and icmp-code=0)) and action ='send-pkt'))";
         key "action icmp-name icmp-type icmp-code";
         description
           "Configure ICMP security configuration on interfaces.";
@@ -928,7 +892,7 @@ module huawei-pp4 {
       }
     }
     container if-ip-opt-securitys {
-      when "../ifm:type!='NULL' and ../ifm:type!='Cpos' and ../ifm:type!='Atm-Bundle' and ../ifm:type!='E1' and ../ifm:type!='Cpos-Trunk' and ../ifm:type!='IMEth' and ../ifm:type!='Stack-Port' and ../ifm:type!='Sip' and ../ifm:type!='Global-Ima-Group' and ../ifm:type!='Global-VE' and ../ifm:type!='Nve' and ../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-Ethernet'";
+      when "../ifm:type!='NULL' and ../ifm:type!='Cpos' and ../ifm:type!='Atm-Bundle' and ../ifm:type!='E1' and ../ifm:type!='Cpos-Trunk' and ../ifm:type!='IMEth' and ../ifm:type!='Stack-Port' and ../ifm:type!='Sip' and ../ifm:type!='Global-Ima-Group' and ../ifm:type!='Global-VE' and ../ifm:type!='Nve' and ../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-Ethernet' and ../ifm:type!='PW-VE'";
       description
         "List of IP option configuration on interfaces.";
       list if-ip-opt-security {
@@ -949,19 +913,21 @@ module huawei-pp4 {
       }
     }
     container ip-verify-src-addr {
-      when "../ifm:type!='NULL' and ../ifm:type!='Cpos' and ../ifm:type!='Atm-Bundle' and ../ifm:type!='E1' and ../ifm:type!='Cpos-Trunk' and ../ifm:type!='IMEth' and ../ifm:type!='Stack-Port' and ../ifm:type!='Sip' and ../ifm:type!='Global-Ima-Group' and ../ifm:type!='Global-VE' and ../ifm:type!='Nve' and ../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-Ethernet'";
+      when "../ifm:type!='NULL' and ../ifm:type!='Cpos' and ../ifm:type!='Atm-Bundle' and ../ifm:type!='E1' and ../ifm:type!='Cpos-Trunk' and ../ifm:type!='IMEth' and ../ifm:type!='Stack-Port' and ../ifm:type!='Sip' and ../ifm:type!='Global-Ima-Group' and ../ifm:type!='Global-VE' and ../ifm:type!='Nve' and ../ifm:type!='ServiceIf' and ../ifm:type!='Virtual-Ethernet' and ../ifm:type!='PW-VE'";
       presence "Present if enabled IP verify source-address function.";
       description
         "Enable/disable IP verify source-address configuration on interface.";
     }
     container ip-fwd-broadcast {
+      when "../ifm:type='Ethernet' or ../ifm:type='GigabitEthernet' or ../ifm:type='GEBrief' or ../ifm:type='10GE' or ../ifm:type='40GE' or ../ifm:type='100GE' or ../ifm:type='Eth-Trunk' or ../ifm:type='Vlanif' or ../ifm:type='Vbdif' or ../ifm:type='25GE' or ../ifm:type='400GE' or ../ifm:type='XGigabitEthernet' or ../ifm:type='200GE' or ../ifm:type='FlexE' or ../ifm:type='50GE' or ../ifm:type='50|100GE'";
       presence "Present if enabled IP forward broadcast function.";
       description
         "Enable/disable IP forward broadcast configuration on interfaces.";
       leaf acl-name-or-num {
-        type string {
-          length "1..64";
+        type leafref {
+          path "/acl:acl/acl:groups/acl:group/acl:identity";
         }
+        must "not(../acl-name-or-num) or (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance')";
         description
           "ACL number or ACL name.";
       }
@@ -971,18 +937,21 @@ module huawei-pp4 {
     description
       "All configurations of the PP4 under the network instance.";
     container icmp-sourceaddr {
-      must "(type and if-name) or (not (type) and not(if-name))";
+      presence "Configure a loopback interface address as a source IP address for an ICMP error packet.";
       description
         "Configure a loopback interface address as a source IP address for an ICMP error packet.";
       leaf if-name {
         type leafref {
           path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
         }
+        must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='LoopBack' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name=../../ni:name";
+        mandatory true;
         description
           "Interface Name.";
       }
       leaf type {
         type pp4-icmp-src-type;
+        mandatory true;
         description
           "Source selection type.";
       }

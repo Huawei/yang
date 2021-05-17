@@ -45,22 +45,44 @@ module huawei-rbs-deviations-NE5000E {
       "RBP service type.";
   }
 
-  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:service-types/rbs:service-type/rbs:type" {
+  typedef batch-backup-rpc-type-deviations {
+    type enumeration {
+      enum all {
+        value 0;
+        description
+          "All services that can be batch backed up now.";
+      }
+      enum arp {
+        value 5;
+        description
+          "ARP services that can be batch backed up.";
+      }
+      enum nd {
+        value 32;
+        description
+          "ND services that can be batch backed up.";
+      }
+    }
+    description
+      "Service type batch backup.";
+  }
+
+  deviation "/rbs:batch-backup-now/rbs:input/rbs:service-type" {
     deviate replace {
-      type rbs-devs-NE5000E:service-type-deviations;
+      type rbs-devs-NE5000E:batch-backup-rpc-type-deviations;
     }
   }
   deviation "/rbs:rbs/rbs:services/rbs:service/rbs:batch-backups" {
     deviate not-supported;
   }
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:service-types/rbs:service-type/rbs:type" {
+    deviate replace {
+      type rbs-devs-NE5000E:service-type-deviations;
+    }
+  }
   deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:name" {
     deviate add {
       must "((../rbs:mode='warm' and not (../rbs:service-types/rbs:service-type[rbs:type='nd']) and not (../rbs:service-types/rbs:service-type[rbs:type='arp'])) or (../rbs:mode='hot'))";
-    }
-  }
-  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:service-types" {
-    deviate add {
-      must "((rbs:service-type[rbs:type='arp'] or rbs:service-type[rbs:type='nd']) and ../rbs:vrrps/rbs:vrrp[rbs:mac-type='none']) or not((rbs:service-type[rbs:type='arp'] or rbs:service-type[rbs:type='nd']))";
     }
   }
   deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:track-type/rbs:vrrp/rbs:vrrps" {

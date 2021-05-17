@@ -19,9 +19,27 @@ submodule huawei-snmp-type {
      Email: support@huawei.com";
   description
     "SNMP type.";
+  revision 2019-12-26 {
+    description
+      "Modify description syntax.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-29 {
+    description
+      "YANG refactoring extension.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-18 {
+    description
+      "YANG refactoring extension.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-23 {
     description
-      "Initial revision.";
+      "Init revision.";
     reference
       "Huawei private.";
   }
@@ -38,36 +56,67 @@ submodule huawei-snmp-type {
       enum "noPriv" {
         value 0;
         description
-          "No Privacy.";
+          "Without any encryption algorithm.";
       }
       enum "des56" {
         value 1;
         description
-          "DES56.";
+          "DES56 encryption algorithm.";
       }
       enum "3des168" {
         value 5;
         description
-          "3DES168.";
+          "3DES168 encryption algorithm.";
       }
       enum "aes128" {
         value 2;
         description
-          "AES128.";
+          "AES128 encryption algorithm.";
       }
       enum "aes192" {
         value 3;
         description
-          "AES192.";
+          "AES192 encryption algorithm.";
       }
       enum "aes256" {
         value 4;
         description
-          "AES256.";
+          "AES256 encryption algorithm.";
       }
     }
     description
       "SNMP privacy enum.";
+  }
+  typedef snmp-local-privacy {
+    type enumeration {
+      enum "des56" {
+        value 1;
+        description
+          "DES56 encryption algorithm.";
+      }
+      enum "3des168" {
+        value 5;
+        description
+          "3DES168 encryption algorithm.";
+      }
+      enum "aes128" {
+        value 2;
+        description
+          "AES128 encryption algorithm.";
+      }
+      enum "aes192" {
+        value 3;
+        description
+          "AES192 encryption algorithm.";
+      }
+      enum "aes256" {
+        value 4;
+        description
+          "AES256 encryption algorithm.";
+      }
+    }
+    description
+      "SNMP local-user privacy enum.";
   }
   typedef snmp-version {
     type enumeration {
@@ -189,41 +238,77 @@ submodule huawei-snmp-type {
       enum "noAuth" {
         value 0;
         description
-          "NoAuth.";
+          "Without any authentication algorithm.";
       }
       enum "md5" {
         value 1;
         description
-          "MD5.";
+          "MD5 authentication algorithm.";
       }
       enum "sha" {
         value 2;
         description
-          "SHA.";
+          "SHA authentication algorithm.";
       }
       enum "sha2-224" {
         value 5;
         description
-          "SHA2-224.";
+          "SHA2-224 authentication algorithm.";
       }
       enum "sha2-256" {
         value 6;
         description
-          "SHA2-256.";
+          "SHA2-256 authentication algorithm.";
       }
       enum "sha2-384" {
         value 7;
         description
-          "SHA2-384.";
+          "SHA2-384 authentication algorithm.";
       }
       enum "sha2-512" {
         value 8;
         description
-          "SHA2-512.";
+          "SHA2-512 authentication algorithm.";
       }
     }
     description
       "SNMP authentication protocol enum.";
+  }
+  typedef snmp-local-authenmode {
+    type enumeration {
+      enum "md5" {
+        value 1;
+        description
+          "MD5 authentication algorithm.";
+      }
+      enum "sha" {
+        value 2;
+        description
+          "SHA authentication algorithm.";
+      }
+      enum "sha2-224" {
+        value 5;
+        description
+          "SHA2-224 authentication algorithm.";
+      }
+      enum "sha2-256" {
+        value 6;
+        description
+          "SHA2-256 authentication algorithm.";
+      }
+      enum "sha2-384" {
+        value 7;
+        description
+          "SHA2-384 authentication algorithm.";
+      }
+      enum "sha2-512" {
+        value 8;
+        description
+          "SHA2-512 authentication algorithm.";
+      }
+    }
+    description
+      "SNMP local-user authentication protocol enum.";
   }
   typedef snmp-domain {
     type enumeration {

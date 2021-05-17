@@ -70,6 +70,9 @@ module huawei-dhcpv6-deviations-NE5000E {
   deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:access-limit-setting" {
     deviate not-supported;
   }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:pd-route-track-vrrp" {
+    deviate not-supported;
+  }
   deviation "/dhcpv6:dhcpv6/dhcpv6:relay/dhcpv6:pd-route" {
     deviate not-supported;
   }

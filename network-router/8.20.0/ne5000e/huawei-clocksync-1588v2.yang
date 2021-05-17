@@ -35,39 +35,9 @@ module huawei-clocksync-1588v2 {
     reference
       "Huawei private.";
   }
-  revision 2020-03-14 {
-    description
-      "Modify the node description and foxed some problems.";
-    reference
-      "Huawei private.";
-  }
-  revision 2020-03-10 {
-    description
-      "Delete uhpc-enable node.";
-    reference
-      "Huawei private.";
-  }
-  revision 2020-03-04 {
-    description
-      "Modify the node description.";
-    reference
-      "Huawei private.";
-  }
-  revision 2020-02-06 {
-    description
-      "Add ptsf-switch-enable one leaf node and recover-ptsf-switch rpc node.";
-    reference
-      "Huawei private.";
-  }
   revision 2020-01-21 {
     description
       "Add eth-std-time-port leaf node.";
-    reference
-      "Huawei private.";
-  }
-  revision 2020-01-02 {
-    description
-      "Add time-offset-monitor-cycle, time-stamp-monitor-cycle two leaf node and time-offset-cycle-type, time-stamp-cycle-type two enum type.";
     reference
       "Huawei private.";
   }
@@ -348,11 +318,6 @@ module huawei-clocksync-1588v2 {
         description
           "Both.";        
       }
-      enum "none" {
-        value 4;       
-        description
-          "Both.";         
-      }
     }
     description
       "Direction of ptp bits.";
@@ -421,12 +386,12 @@ module huawei-clocksync-1588v2 {
     description
       "Type of ptp port step.";
   }
-  typedef ptp-octet-string {
+  typedef ptp-hex-string {
     type string {
       length "1..255";
     }
     description
-      "Octet String.";
+      "Hex String.";
   }
   typedef ptp-tod-protocol {
     type enumeration {
@@ -509,11 +474,6 @@ module huawei-clocksync-1588v2 {
   }
   typedef ptp-leap-mode {
     type enumeration {
-      enum "none" {
-        value 0;       
-        description
-          "None.";         
-      }
       enum "leap59" {
         value 1;       
         description
@@ -565,47 +525,6 @@ module huawei-clocksync-1588v2 {
     }
     description
       "BITS TYPE.";
-  }
-  typedef ssm-level {
-    type enumeration {
-      enum "unk" {
-        value 0;
-        description
-          "Unknown SSM level (UNK).";
-      }
-      enum "prc" {
-        value 2;
-        description
-          "SSM level of the G.811 clock (PRC).";
-      }
-      enum "ssua" {
-        value 4;
-        description
-          "G.812 transit clock (SSUA).";
-      }
-      enum "ssub" {
-        value 8;
-        description
-          "G.812 local clock (SSUB).";
-      }
-      enum "sec" {
-        value 11;
-        description
-          "SDH (sec).";
-      }
-      enum "dnu" {
-        value 15;
-        description
-          "The quality level of the clock source is unavailable (DNU).";
-      }
-      enum "none" {
-        value 16;
-        description
-          "Invalid SSM level.";
-      }
-    }
-    description
-      "SSM level type.";
   }
   typedef support-1588-type {
     type enumeration {
@@ -680,13 +599,14 @@ module huawei-clocksync-1588v2 {
       }
       leaf profile {
         type ptp-profile-type;
+        must "((../profile='IEEE1588V2') and (../domain>=0 and ../domain<=255)) or ((../profile='SMPTE2059-2') and (../domain>=0 and ../domain<=127)) or ((../profile='G8275.1' or ../profile='CU106') and (../domain>=24 and ../domain<=43))";
         default "IEEE1588V2";
         description
           "Set PTP profile.";
       }
       leaf acr-enable {
+        when "(../profile!='G8275.1' and ../profile!='CU106')";
         type boolean;
-        must "((not(../profile!='IEEE1588V2' and ../profile!='SMPTE2059-2') and (../acr-enable='true')) or (../acr-enable='false'))";
         default "false";
         description
           "Enable/disable static PTP ACR.";
@@ -695,19 +615,20 @@ module huawei-clocksync-1588v2 {
         type uint32 {
           range "0..255";
         }
+        must "((../profile='IEEE1588V2') and (../domain>=0 and ../domain<=255)) or ((../profile='SMPTE2059-2') and (../domain>=0 and ../domain<=127)) or ((../profile='G8275.1' or ../profile='CU106') and (../domain>=24 and ../domain<=43))";
         ext:dynamic-default {
           ext:default-value "0" {
-            when "../profile = 'IEEE1588V2'";
+            when "../profile='IEEE1588V2'";
             description 
               "The default value is 0 when profile is IEEE1588V2.";
           }
           ext:default-value "127" {
-            when "../profile = 'SMPTE2059-2'";
+            when "../profile='SMPTE2059-2'";
             description 
               "The default value is 127 when profile is SMPTE2059-2.";
           }
           ext:default-value "24" {
-            when "../profile = 'G8275.1' or ../profile = 'CU106'";
+            when "../profile='G8275.1' or ../profile='CU106'";
             description
               "The default value is 24 when profile is G8275.1 or CU106.";
           }
@@ -717,21 +638,22 @@ module huawei-clocksync-1588v2 {
       }
       leaf device-type {
         type ptp-device-type;
-        must "(((../profile!='IEEE1588V2') and (../profile!='SMPTE2059-2') and (../device-type='none' or ../device-type='t-bc' or ../device-type='t-tc')) or ((../profile='IEEE1588V2' or ../profile='SMPTE2059-2') and (../device-type='none' or ../device-type='oc' or ../device-type='bc' or ../device-type='e2etc' or ../device-type='p2ptc' or ../device-type='e2etcoc' or ../device-type='p2ptcoc' or ../device-type='tcandbc'))) or (../device-type='none')";
+        must "(((../profile='G8275.1' or ../profile='CU106') and (../device-type='t-bc' or ../device-type='t-tc')) or ((../profile='IEEE1588V2' or ../profile='SMPTE2059-2') and (../device-type='oc' or ../device-type='bc' or ../device-type='e2etc' or ../device-type='p2ptc' or ../device-type='e2etcoc' or ../device-type='p2ptcoc' or ../device-type='tcandbc'))) or (../device-type='none')";
         default "none";
         description
           "Set PTP device type.";
       }
       leaf slave-only {
         type boolean;
-        must "((../device-type='oc' and (not(../profile!='IEEE1588V2' and ../profile!='SMPTE2059-2')) and (../slave-only ='true') ) or (../slave-only ='false'))";
+        must "((../device-type='oc') and (../slave-only ='true')) or (../slave-only ='false')";
         default "false";
         description
           "Enable/disable slave-only function. If a PTP device serves as an OC, the PTP device can only function as a slave clock.";
       }
-      leaf set-port-state-enable {        
+      leaf set-port-state-enable {
+        when "(../profile!='G8275.1' and ../profile!='CU106')";
         type boolean;
-        must "(((../profile='IEEE1588V2' or ../profile='SMPTE2059-2') and  (../dly-measure-enable!='true') and (../slave-only!='true') and (../set-port-state-enable='true')) or (../set-port-state-enable='false'))";
+        must "(((../dly-measure-enable!='true') and (../slave-only!='true') and (../set-port-state-enable='true')) or (../set-port-state-enable='false'))";
         default "false";
         description
           "Enable/disable static BMC selection. You can manually configure the interface status of a PTP interface clock source.";
@@ -743,15 +665,16 @@ module huawei-clocksync-1588v2 {
           "Enable/disable access control for BMC selection. Only clock sources in the list of permitted clock sources can participate in BMC selection.";
       }
       leaf dly-measure-enable {
-       type boolean;
-       must "(((../device-type='bc' or ../device-type='t-bc' or ../device-type='tcandbc') and (../enable='true' and ../set-port-state-enable!='true' and ../dly-measure-enable='true')) or (../dly-measure-enable='false'))";
+        when "../enable='true'";
+        type boolean;
+        must "(((../device-type='bc' or ../device-type='t-bc' or ../device-type='tcandbc') and (../set-port-state-enable!='true' and ../dly-measure-enable='true')) or (../dly-measure-enable='false'))";
         default "false";
         description
           "Enable/disable auto-measurement of ring-network asymmetry delay of optical fibers. The fiber length change will be tested as the interface connecting to the fiber goes from Down to Up after enabled.";
       }
       leaf passive-measure-enable {
+        when "../enable='true'";
         type boolean;
-        must "((../enable='true' and ../passive-measure-enable='true') or (../passive-measure-enable='false'))";
         default "false";
         description
           "Enable/disable performance monitor of a passive interface. If performance monitoring is enabled on passive interfaces and devices remain in a stable time synchronization state, devices will monitor the time offset values (between the master and slave devices) on passive interfaces every 1000s.";
@@ -760,6 +683,7 @@ module huawei-clocksync-1588v2 {
         type int32 {
           range "55..10000";
         }
+        units ns;
         default "200";
         description
           "Set passive alarm threshold. After performance monitoring is enabled on passive interfaces, if the time offset value between the master and slave devices exceeds the alarm threshold, an alarm indicating that the passive interface optical fiber length has changed will be reported to the NMS.";
@@ -775,7 +699,8 @@ module huawei-clocksync-1588v2 {
       leaf current-utc-offset {
         type int32 {
           range "0..255";
-        }  
+        }
+        units s;
         default "35";
         description
           "Current offset between the UTC and the TAI.";
@@ -783,7 +708,8 @@ module huawei-clocksync-1588v2 {
       leaf current-utc-offset-learn {
         type int32 {
           range "0..255";
-        }  
+        }
+        units s;
         default "35";
         config false;
         description
@@ -796,7 +722,10 @@ module huawei-clocksync-1588v2 {
           "Configure an external time interface as the standard time reference port.";
       }
       leaf eth-std-time-port {
-        type pub-type:if-name;
+        type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='GigabitEthernet' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='40GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='10GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='25GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='50GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='200GE' or  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='100GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='400GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='FlexE-50G' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='FlexE-100G' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='FlexE-50|100G' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='FlexE-200GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='4x25GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='3x40GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='10x10GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='4x10GE' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name='/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name']/ifm:type='50|100GE'";
         must "not(../std-time-port)";
         description
           "Configure an Ethernet interface as the absolute standard time interface.";
@@ -839,6 +768,12 @@ module huawei-clocksync-1588v2 {
         description
           "TOD format of 1PPS+TOD time signals.";
       }
+      leaf uhpc-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable ultra-high-precisionv PTP timestamping function.";
+      }
       leaf send-gm-wtr {
         type uint32 {
           range "0..720";
@@ -850,14 +785,12 @@ module huawei-clocksync-1588v2 {
       }
       leaf time-offset-monitor-cycle {
         type time-offset-cycle-type;
-        units min;
         default "15min";
         description
           "Configure the timeoffset performance monitoring cycle.";
       }
       leaf time-stamp-monitor-cycle {
         type time-stamp-cycle-type;
-        units min;
         default "15min";
         description
           "Configure the timestamp performance monitoring cycle.";
@@ -869,19 +802,38 @@ module huawei-clocksync-1588v2 {
           "Enable/disable ptsf source-switching function.";
       }
     }
+    container ptp-permit-clk-ids {
+      description
+        "List of configure clock sources that are allowed to participate in BMC selection.";
+      list ptp-permit-clk-id {
+        key "permit-clkid";
+        max-elements  "64";
+        description
+          "Configure clock sources that are allowed to participate in BMC selection.";
+        leaf permit-clkid {
+          type string {
+            length "16";
+            pattern "[0-9a-f]{16}";
+          }
+          description
+            "Number of a clock source. It is a 16-digit hexadecimal number, such as 286ed4fffe466c57.";
+        }
+      }
+    }
     container ptp-local-src {
       description
         "Configure local PTP clock source.";
       leaf virtual-clock-id {
         type string {
             length "8";
-          }
+            pattern "[0-9a-f]{8}";
+        }
         default "00000000";
         description
           "User can configure virtual-clock-id between 1 and 0xffffffff.";
       }
       leaf local-clock-id {
-        type ptp-octet-string;
+        type ptp-hex-string;
         default "0000000000000000";
         config false;
         description
@@ -892,12 +844,12 @@ module huawei-clocksync-1588v2 {
         default "internaloscillator";
         description
           "Type of the local PTP clock source.";
-        }
+      }
       leaf accuracy {
-       type uint32 {
+        type uint32 {
           range "0..255";
         }
-        must "((not(../../ptp-common/profile!='IEEE1588V2') or not(../../ptp-common/profile!='SMPTE2059-2'))  or (../../ptp-common/profile!='SMPTE2059-2' and ../../ptp-common/profile!='IEEE1588V2' and (../accuracy=49 or ../accuracy=254)))";
+        must "(../../ptp-common/profile='IEEE1588V2' or ../../ptp-common/profile='SMPTE2059-2') or ((../../ptp-common/profile='G8275.1' or ../../ptp-common/profile='CU106') and (../accuracy=254))";
         ext:dynamic-default {
           ext:default-value "49" {
             when "../../ptp-common/profile='IEEE1588V2' or ../../ptp-common/profile='SMPTE2059-2'";
@@ -914,10 +866,10 @@ module huawei-clocksync-1588v2 {
           "Accuracy of the local PTP clock source.";
       }
       leaf clk-class {
-         type uint32 {
+        type uint32 {
           range "0..255";
         }
-        must "((not(../../ptp-common/profile!='IEEE1588V2') or not(../../ptp-common/profile!='SMPTE2059-2'))  or (../../ptp-common/profile!='SMPTE2059-2' and ../../ptp-common/profile!='IEEE1588V2' and (../clk-class=187 or ../clk-class=248)))";
+        must "(../../ptp-common/profile='IEEE1588V2' or ../../ptp-common/profile='SMPTE2059-2') or ((../../ptp-common/profile='G8275.1' or ../../ptp-common/profile='CU106') and (../clk-class=248))";
         ext:dynamic-default {
           ext:default-value "187" {
             when "../../ptp-common/profile='IEEE1588V2' or ../../ptp-common/profile='SMPTE2059-2'";
@@ -937,7 +889,7 @@ module huawei-clocksync-1588v2 {
        type uint32 {
           range "0..255";
         }
-        must "((not(../../ptp-common/profile!='IEEE1588V2') or not(../../ptp-common/profile!='SMPTE2059-2'))  or ((../../ptp-common/profile!='IEEE1588V2') and (../../ptp-common/profile!='SMPTE2059-2') and (../priority1=128)))";
+        must "(../../ptp-common/profile='IEEE1588V2' or ../../ptp-common/profile='SMPTE2059-2') or ((../../ptp-common/profile='G8275.1' or ../../ptp-common/profile='CU106') and (../priority1=128))";
         default "128";
         description
           "Priority1 of the local PTP clock source.";
@@ -954,7 +906,7 @@ module huawei-clocksync-1588v2 {
         type uint32 {
           range "1..255";
         }
-        must "(((../../ptp-common/profile!='IEEE1588V2') and (../../ptp-common/profile!='SMPTE2059-2'))  or ((../../ptp-common/profile='IEEE1588V2' or ../../ptp-common/profile='SMPTE2059-2') and (../local-priority=128)))";
+        must "(../../ptp-common/profile='G8275.1' or ../../ptp-common/profile='CU106') or ((../../ptp-common/profile='IEEE1588V2' or ../../ptp-common/profile='SMPTE2059-2') and (../local-priority=128))";
         default "128";
         description
           "Local priority of the local PTP clock source.";
@@ -1020,12 +972,203 @@ module huawei-clocksync-1588v2 {
           "Priority2 of the ATR clock source, which is used for BMC algorithm.";
       }
     }
+    container ptp-bits-srcs {
+      description
+        "List of configure PTP BITS clock sources.";
+      list ptp-bits-src {
+        key "bits-name";
+        description
+          "Configure PTP BITS clock sources.";
+        ext:generated-by system;
+        ext:operation-exclude create|delete;
+        leaf bits-name {
+          type string {
+            length "5..8";
+          }
+          description
+            "Name of a BITS interface.";
+        }
+        leaf bits-switch {
+          type boolean;
+          must "(../bits-switch='true' and not(../../../ptp-common/std-time-port)) or (../bits-switch='false')";
+          default "false";
+          description
+            "Enable/disable BITS clock sources can participate in BMC selection. BITS clock sources can participate in BMC selection only when the status is on.";
+        }
+        leaf bits-signal {
+          type clock-bits-type;
+          default "1pps";
+          description
+            "BITS signal type.";
+        }
+        leaf bits-direction {
+          type ptp-bits-direction;
+          default "in";
+          description
+            "Transmission direction of BITS signals. If the signal type is 1PPS, you must specify the input and output directions of BITS signals.";
+        }
+        leaf bits-status {
+          type ptp-bits-status;
+          config false;
+          description
+            "Status of PTP BITS clock sources.";
+        }
+        leaf bits-recv-delay {
+          type int32 {
+            range "0..2000000";
+          }
+          default "0";
+          description
+            "Delay for receiving BITS time signals.";
+        }
+        leaf bits-send-delay {
+          type int32 {
+            range "0..10000";
+          }
+          default "0";
+          description
+            "Delay for sending BITS time signals.";
+        }
+        container ptp-bits-bmc-attrs{
+          description
+            "Configure BMC parameters for selecting PTP BITS clock sources.";
+          leaf local-priority {
+            type uint32 {
+              range "1..255";
+            }
+            default "128";
+            description
+              "Local Priority of the BITS clock source in G8275.1 profile.";
+          }
+          container ptp-bits-bmc-attr{
+            when "not(../../../../ptp-common/tod-protocol='g-8271')";
+            description
+              "Configure BMC parameters for selecting PTP BITS clock sources.";
+            leaf time-source {
+              type ptp-time-source;
+              must "(((../time-source='atomicclock' or ../time-source='gps' or ../time-source='terrestrialradio' or ../time-source='ptp' or ../time-source='ntp' or ../time-source='handset' or ../time-source='other' or ../time-source='internaloscillator')))";
+              description
+                "Type of the BITS clock source.";
+            }
+            leaf accuracy {
+              type uint32 {
+                range "0..255";
+              }
+              description
+                "Accuracy of the BITS clock source.";
+            }
+            leaf clk-class {
+              type uint32 {
+                range "0..255";
+              }
+              description
+                "Class of the BITS clock source.";
+            }
+            leaf priority1 {
+              type uint32 {
+                range "0..255";
+              }
+              must "(../../../../../ptp-common/profile='IEEE1588V2' or ../../../../../ptp-common/profile='SMPTE2059-2') or ((../../../../../ptp-common/profile='G8275.1' or ../../../../../ptp-common/profile='CU106') and (../priority1=128))";  
+              default "128";
+              description
+                "Priority1 of the BITS clock source in 1588v2 profile.";
+            }
+            leaf priority2 {
+              type uint32 {
+                range "0..255";
+               }
+              default "128";
+              description
+                "Priority2 of the BITS clock source.";
+            }
+            leaf gm-clockid {
+              type string {
+                length "16";
+                pattern "[0-9a-f]{16}";
+              }
+              default "0000000000000000";
+              description
+                "Grand master clock ID of BITS clock source. It is a 16-digit hexadecimal number which should be inputted by consumer.";
+            }
+            leaf offset-scaled {
+              type uint32 {
+                range "1..3";
+              }
+              default "1";
+              description
+                "Offset scaled log variance can be configured to be 1: 0xFFFF or 2: 0x4E5D or 3: 0x4B32.";
+            }
+          }
+
+          container ptp-bits-bmc-learn{
+            config false;
+            description
+            "Statistics of BMC parameters for selecting PTP BITS clock sources.";
+            leaf time-source{
+              type ptp-time-source;
+              default "gps";
+              description
+                "Type of the BITS clock source.";
+            }
+            leaf accuracy{
+              type uint32 {
+                range "0..255";
+              }
+              default "32";
+              description
+                "Accuracy of the BITS clock source.";
+            }
+            leaf clk-class {
+              type uint32 {
+                range "0..255";
+              }
+              default "6";
+              description
+                "Class of the BITS clock source.";
+            }
+            leaf priority1 {
+              type uint32 {
+                range "0..255";
+              }
+              default "128";
+              description
+                "Priority1 of the BITS clock source in 1588v2 profile.";
+            }
+            leaf priority2 {
+              type uint32 {
+                range "0..255";
+              }
+              default "128";
+              description
+                "Priority2 of the BITS clock source.";
+            }
+            leaf gm-clockid{
+              type string {
+                length "16";
+                pattern "[0-9a-f]{16}";
+              }
+              default "0000000000000000";
+              description
+                "Grand master clock ID of BITS clock source. It is a 16-digit hexadecimal number which should be inputted by consumer.";
+            }
+            leaf offset-scaled {
+              type uint32 {
+                range "1..3";
+              }
+              default "1";
+              description
+                "Offset scaled log variance can be configured to be 1: 0xFFFF or 2: 0x4E5D or 3: 0x4B32.";
+            }
+          }
+        }
+      }
+    }
     container ptp-grand-master-attr {
       config false;
       description
         "Statistics of the current master clock.";
       leaf master-clock-id {
-        type ptp-octet-string;
+        type ptp-hex-string;
         description
           "Number of the current master clock. It is a 16-digit hexadecimal number, such as 286ed4fffe42f7ca.";
       }
@@ -1109,7 +1252,6 @@ module huawei-clocksync-1588v2 {
       }
       leaf gm-leap {
         type ptp-leap-mode;
-        default "none";
         description
           "Leap value of the current master clock.";
       }
@@ -1132,210 +1274,6 @@ module huawei-clocksync-1588v2 {
         default "false";
         description
           "Enable/disable synchronization uncertain status of the current master clock.";
-      }
-    }
-    container ptp-permit-clk-ids {
-      description
-        "List of configure clock sources that are allowed to participate in BMC selection.";
-      list ptp-permit-clk-id {
-        key "permit-clkid";
-        max-elements  "64";
-        description
-          "Configure clock sources that are allowed to participate in BMC selection.";
-        leaf permit-clkid {
-          type string {
-            length "16";
-          }
-          description
-            "Number of a clock source. It is a 16-digit hexadecimal number, such as 286ed4fffe466c57.";
-        }
-      }
-    }
-    container ptp-bits-srcs {
-      description
-        "List of configure PTP BITS clock sources.";
-      list ptp-bits-src {
-        key "bits-name";
-        description
-          "Configure PTP BITS clock sources.";
-        ext:generated-by system;
-        leaf bits-name {
-          type pub-type:if-name;
-          description
-            "Name of a BITS interface.";
-        }
-        leaf bits-switch {
-          type boolean;
-          default "false";
-          description
-            "Enable/disable BITS clock sources can participate in BMC selection. BITS clock sources can participate in BMC selection only when the status is on.";
-        }
-        leaf bits-signal {
-          type clock-bits-type;
-          must "((../bits-signal='1pps' or ../bits-signal='dcls') and (../bits-direction='in' or ../bits-direction='out')) or ((../bits-signal='dcls') and (../bits-direction='both')) or (../bits-signal='none')";
-          default "1pps";
-          description
-            "BITS signal type.";
-        }
-        leaf bits-direction {
-          when "../bits-signal!='none'" ;
-          type ptp-bits-direction;
-          default "in";
-          description
-            "Transmission direction of BITS signals. If the signal type is 1PPS, you must specify the input and output directions of BITS signals.";
-        }
-        leaf bits-status {
-          type ptp-bits-status;
-          config false;
-          description
-            "Status of PTP BITS clock sources.";
-        }
-        leaf bits-recv-delay {
-          type int32 {
-            range "0..2000000";
-          }
-          default "0";
-          description
-            "Delay for receiving BITS time signals.";
-        }
-        leaf bits-send-delay {
-          type int32 {
-            range "0..1600";
-          }
-          default "0";
-          description
-            "Delay for sending BITS time signals.";
-        }
-        container ptp-bits-bmc-attrs{
-          description
-            "Configure BMC parameters for selecting PTP BITS clock sources.";
-          leaf local-priority {
-            type uint32 {
-              range "1..255";
-            }
-            default "128";
-            description
-              "Local Priority of the BITS clock source in G8275.1 profile.";
-          }
-          container ptp-bits-bmc-attr{
-            when "not(../../../../ptp-common/tod-protocol='g-8271')";
-            description
-              "Configure BMC parameters for selecting PTP BITS clock sources.";
-            leaf time-source {
-              type ptp-time-source;
-              must "(((../time-source='atomicclock' or ../time-source='gps' or ../time-source='terrestrialradio' or ../time-source='ptp' or ../time-source='ntp' or ../time-source='handset' or ../time-source='other' or ../time-source='internaloscillator')))";
-              description
-                "Type of the BITS clock source.";
-            }
-            leaf accuracy {
-              type uint32 {
-                range "0..255";
-              }
-              description
-                "Accuracy of the BITS clock source.";
-            }
-            leaf clk-class {
-              type uint32 {
-                range "0..255";
-              }
-              description
-                "Class of the BITS clock source.";
-            }
-            leaf priority1 {
-              type uint32 {
-                range "0..255";
-              }
-              must "((not(../../../../../ptp-common/profile!='IEEE1588V2' and ../../../../../ptp-common/profile!='SMPTE2059-2')) or ((((../../../../../ptp-common/profile!='IEEE1588V2') and (../../../../../ptp-common/profile!='SMPTE2059-2'))) and ../priority1=128))";  
-              default "128";
-              description
-                "Priority1 of the BITS clock source in 1588v2 profile.";
-            }
-            leaf priority2 {
-              type uint32 {
-                range "0..255";
-               }
-              default "128";
-              description
-                "Priority2 of the BITS clock source.";
-            }
-            leaf gm-clockid {
-              type string {
-                length "16";
-              }
-              default "0000000000000000";
-              description
-                "Grand master clock ID of BITS clock source. It is a 16-digit hexadecimal number which should be inputted by consumer.";
-            }
-            leaf offset-scaled {
-              type uint32 {
-                range "1..3";
-              }
-              default "1";
-              description
-                "Offset scaled log variance can be configured to be 1: 0xFFFF or 2: 0x4E5D or 3: 0x4B32.";
-            }
-          }
-
-          container ptp-bits-bmc-learn{
-            config false;
-            description
-            "Statistics of BMC parameters for selecting PTP BITS clock sources.";
-            leaf time-source{
-              type ptp-time-source;
-              default "gps";
-              description
-                "Type of the BITS clock source.";
-            }
-            leaf accuracy{
-              type uint32 {
-                range "0..255";
-              }
-              default "32";
-              description
-                "Accuracy of the BITS clock source.";
-            }
-            leaf clk-class {
-              type uint32 {
-                range "0..255";
-              }
-              default "6";
-              description
-                "Class of the BITS clock source.";
-            }
-            leaf priority1 {
-              type uint32 {
-                range "0..255";
-              }
-              default "128";
-              description
-                "Priority1 of the BITS clock source in 1588v2 profile.";
-            }
-            leaf priority2 {
-              type uint32 {
-                range "0..255";
-              }
-              default "128";
-              description
-                "Priority2 of the BITS clock source.";
-            }
-            leaf gm-clockid{
-              type string {
-                length "16";
-              }
-              default "0000000000000000";
-              description
-                "Grand master clock ID of BITS clock source. It is a 16-digit hexadecimal number which should be inputted by consumer.";
-            }
-            leaf offset-scaled {
-              type uint32 {
-                range "1..3";
-              }
-              default "1";
-              description
-                "Offset scaled log variance can be configured to be 1: 0xFFFF or 2: 0x4E5D or 3: 0x4B32.";
-            }
-          }
-        }
       }
     }
     container ptp-port-deviation-sigs {
@@ -1399,120 +1337,140 @@ module huawei-clocksync-1588v2 {
             "Statistics of PTP port packet.";
           leaf port-recv-announce {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Announce packets received on a PTP port.";
           }
           leaf port-recv-sync {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Sync packets received on a PTP port.";
           }
           leaf port-recv-req {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Request packets received on a PTP port.";
           }
           leaf port-recv-resp {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Response packets received on a PTP port.";
           }
           leaf port-recv-pdresp-followup {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Pdelay Response FollowUp packets received on a PTP port.";
           }
           leaf port-recv-followup {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of FollowUp packets received on a PTP port.";
           }
           leaf port-send-announce {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Announce packets sent on a PTP port.";
           }
           leaf port-send-sync {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Sync packets sent on a PTP port.";
           }
           leaf port-send-req {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Request packets sent on a PTP port.";
           }
           leaf port-send-resp {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Response packets sent on a PTP port.";
           }
           leaf port-send-followup {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of FollowUp packets sent on a PTP port.";
           }
           leaf port-send-pdresp-followup {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Pdelay Response FollowUp packets sent on a PTP port.";
           }
           leaf port-discard-announce {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Announce packets discarded on a PTP port.";
           }
           leaf port-discard-sync {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Sync packets discarded on a PTP port.";
           }
           leaf port-discard-delayreq {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Delay Req packets discarded on a PTP port.";
           }
           leaf port-discard-pdelayreq {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Pdelay Req packets discarded on a PTP port.";
           }
           leaf port-discard-resp {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Response packets discarded on a PTP port.";
           }
           leaf port-discard-pdelayresp {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Pdelay Response packets discarded on a PTP port.";
           }
           leaf port-discard-followup {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of FollowUp packets discarded on a PTP port.";
           }
           leaf port-discard-pdrespfollowup {
             type uint32;
+            units "packet";
             default "0";
             description
               "Number of Pdelay Response FollowUp packets discarded on a PTP port.";
@@ -1621,11 +1579,12 @@ module huawei-clocksync-1588v2 {
     description
       "Interface.";
     container ptp-port-srcs {
+      when "(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type and /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type!='none')";
       description
         "Configure PTP interface clock sources.";
       leaf port-enable {
         type boolean;
-        must "((../port-enable='true') and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type) and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type!='none') and not((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='tcandbc') and (../ptp-port-advance/port-type-set='none'))) or (../port-enable='false')";
+        must "((../port-enable='true') and not((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='tcandbc') and (../ptp-port-advance/port-type-set='none'))) or (../port-enable='false')";
         default "false";
         description
           "Enable/disable PTP for PTP interface clock sources.";
@@ -1653,17 +1612,35 @@ module huawei-clocksync-1588v2 {
         description
           "Configure advanced attributes of a PTP interface clock source.";
         leaf port-domain {
+          when "(../port-type-set='tc')";
           type uint32 {
             range "0..255";
           }
-          must "(((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='tcandbc') and (../port-type-set='tc')) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' and ../port-domain=0) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and ../port-domain=24) or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2' and ../port-domain=127)) or (../port-domain=0 and ../../port-enable='false'))";
-          default "0";
+          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') and (../port-domain>=0 and ../port-domain<=255)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile = 'SMPTE2059-2') and (../port-domain>=0 and ../port-domain<=127)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and ../port-domain=24)";
+          ext:dynamic-default {
+            ext:default-value "0" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2'";
+              description 
+                "The default value is 0 when profile is IEEE1588V2.";
+            }
+            ext:default-value "127" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2'";
+              description 
+                "The default value is 127 when profile is SMPTE2059-2.";
+            }
+            ext:default-value "24" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106'";
+              description
+                "The default value is 24 when profile is G8275.1 or CU106.";
+            }
+          }
           description
             "Clock domain of PTP interface clock sources. The clock domain can be configured only if the PTP device type is TCandBC and the PTP interface type is TC.";
         }
         leaf port-type-set {
+          when "(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='tcandbc')";
           type ptp-port-type;
-          must "(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='tcandbc') or (../port-type-set='none')";
+          must "(../port-type-set='bc' or ../port-type-set='tc') or (../port-type-set='none')";
           default "none";
           description
             "Type of the PTP interface clock source.";
@@ -1683,7 +1660,7 @@ module huawei-clocksync-1588v2 {
             "Delay measurement mechanism for PTP packets.";
         }
         leaf port-cfg-state {
-          type ptp-port-state; 
+          type ptp-port-state;
           default "initializing";
           description
             "In static BMC selection, the status of an interface clock source can be manually configured, such as master or slave.";
@@ -1696,19 +1673,19 @@ module huawei-clocksync-1588v2 {
         }
         leaf not-slave {
           type boolean;
-          must "(((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc')) or (((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type!='t-bc') and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type!='t-tc')) and ../not-slave='true') or (../not-slave='true'))";
+          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106')) or (../not-slave='true')";
           default "true";
           description
-            "Enable/disable local priority of a PTP interface in G8275.1 profile.";
+            "Enable/disable notslave attribute.";
         }
         leaf port-local-priority {
           type int32 {
             range "1..255";
           }
-          must "(((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc')) or (../port-local-priority='128'))";
+          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106')) or (../port-local-priority='128')";
           default "128";
           description
-            "Local priority of a PTP interface in G8275.1 profile.";
+            "Configure local-priority attribute.";
         }
       }
       container ptp-pkt-pack {
@@ -1716,19 +1693,43 @@ module huawei-clocksync-1588v2 {
           "Configure PTP packet encapsulation mode. A PTP packet can be encapsulated in a Layer 2 frame or in a Layer 3 UDP packet.";
         leaf pkt-pack-type {
           type ptp-pack-type;
-          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc') and  (../pkt-pack-type='mac')) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type and /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type!='t-bc' and /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type!='t-tc') and (../pkt-pack-type='mac' or ../pkt-pack-type='udp')) or (../pkt-pack-type='mac')";
-          default "mac";
+          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and (../pkt-pack-type='mac')) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../pkt-pack-type='udp' or ../pkt-pack-type='none'))";
+          ext:dynamic-default {
+            ext:default-value "mac" {
+              when "(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106')";
+              description 
+                "The default value is MAC when profile is IEEE1588V2 or G8275.1 or CU106.";
+            }
+            ext:default-value "none" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2'";
+              description 
+                "The default value is none when profile is SMPTE2059-2.";
+            }
+          }
           description
             "PTP packet encapsulation mode. A PTP packet can be encapsulated in a Layer 2 frame or in a Layer 3 UDP packet.";
         }
         container ptp-pkt-mac-pack {
-          when "../pkt-pack-type ='mac' and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile != 'SMPTE2059-2')";
+          when "../pkt-pack-type='mac'";
           description
             "Configure layer 2 MAC encapsulation for PTP packets.";
           leaf mac-egress-dest-mac {
-            type pub-type:mac-address;
-            must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and (../mac-egress-dest-mac='011b-1900-0000' or ../mac-egress-dest-mac='0180-c200-000e')) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2'))";
-            default "011b-1900-0000";
+            type pub-type:mac-address {
+              pattern "([0-9a-h][0|2|4|6|8|a|c|e][0-9a-h]{2}-[0-9a-h]{4}-[0-9a-h]{4})|(011b-1900-0000)|(0180-c200-000e)";
+            }
+            must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and (../mac-egress-dest-mac='011b-1900-0000' or ../mac-egress-dest-mac='0180-c200-000e')) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') and ((not(../mac-egress-dest-mac='0180-c200-000e') and ../../../ptp-port-advance/delay-mechanism='delay') or (not(../mac-egress-dest-mac='011b-1900-0000') and ../../../ptp-port-advance/delay-mechanism='pdelay')))";
+            ext:dynamic-default {
+              ext:default-value "011b-1900-0000" {
+                when "(../../../ptp-port-advance/delay-mechanism='delay')";
+                description 
+                  "The default value is 011b-1900-0000 when delay-mechanism is delay.";
+              }
+              ext:default-value "0180-c200-000e" {
+                when "(../../../ptp-port-advance/delay-mechanism='pdelay')";
+                description 
+                  "The default value is 0180-c200-000e when delay-mechanism is pdelay.";
+              }
+            }
             description
               "Destination MAC address for a PTP packet encapsulated in a Layer 2 frame.";
           }
@@ -1736,66 +1737,84 @@ module huawei-clocksync-1588v2 {
             type int32 {
               range "0..4094";
             }
+            must "(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') or (../mac-egress-vlan-id=0)";
             default "0";
             description
-              "VLAN ID for a PTP packet encapsulated in a Layer 2 frame.";
+              "VLAN ID for a PTP packet encapsulated in a Layer 2 frame. 0 means packet without VLAN-ID.";
           }
           leaf mac-egress-pkt-priority {
+            when "(../mac-egress-vlan-id and ../mac-egress-vlan-id!=0)";
             type int32 {
               range "0..7";
             }
-            must "(../mac-egress-vlan-id!=0) or ((../mac-egress-vlan-id=0) and (../mac-egress-pkt-priority=7))";
+            must "(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2')";
             default "7";
             description
               "Packet priority of a PTP packet encapsulated in a Layer 2 frame.";
           }
         }
         container ptp-pkt-udp-pack {
-          when "not(../pkt-pack-type='mac')";
+          when "../pkt-pack-type='udp'";
           description
             "Configure layer 3 UDP encapsulation for PTP packets.";
           leaf udp-egress-src-ip {
             type inet:ipv4-address-no-zone;
+            must "(../udp-egress-src-ip!='0.0.0.0')";
             description
               "Source IP address for a PTP packet encapsulated in a Layer 3 UDP packet.";
           }
           leaf udp-egress-dest-ip {
+            when "(../udp-egress-src-ip)";
             type inet:ipv4-address-no-zone;
-            must "../udp-egress-src-ip!='0.0.0.0' or (../udp-egress-src-ip='0.0.0.0' and ../udp-egress-dest-ip='0.0.0.0')";
+            must "(../udp-egress-dest-ip!='0.0.0.0')";
             description
               "Destination IP address for a PTP packet encapsulated in a Layer 3 UDP packet.";
           }
           leaf udp-egress-dscp {
+            when "(../udp-egress-src-ip)";
             type int32 {
               range "0..63";
             }
-            must "../udp-egress-src-ip!='0.0.0.0' or (../udp-egress-src-ip='0.0.0.0' and ../udp-egress-dscp=0)";
-            default "0";
+            default "56";
             description
               "DSCP value for a PTP packet encapsulated in a Layer 3 UDP packet.";
           }
           leaf udp-egress-vlan-id {
+            when "(../udp-egress-src-ip)";
             type int32 {
               range "0..4094";
             }
-            must "../udp-egress-src-ip!='0.0.0.0' or (../udp-egress-src-ip='0.0.0.0' and ../udp-egress-vlan-id=0)";
             default "0";
             description
-              "VLAN ID for a PTP packet encapsulated in a Layer 3 UDP packet.";
+              "VLAN ID for a PTP packet encapsulated in a Layer 3 UDP packet. 0 means packet without VLAN-ID.";
           }
           leaf udp-egress-pkt-priority {
+            when "(../udp-egress-vlan-id and ../udp-egress-vlan-id!=0)";
             type int32 {
               range "0..7";
             }
-            must "../udp-egress-vlan-id!=0 or (../udp-egress-vlan-id=0 and ../udp-egress-pkt-priority=7)";
             default "7";
             description
               "Priority of a PTP packet encapsulated in a Layer 3 UDP packet.";
           }
           leaf udp-egress-dest-mac {
-            type pub-type:mac-address;
-            must "../udp-egress-src-ip!='0.0.0.0' or (../udp-egress-src-ip='0.0.0.0' and ../udp-egress-dest-mac='0100-5e00-0181')"; 
-            default "0100-5e00-0181";
+            when "(../udp-egress-src-ip)";
+            type pub-type:mac-address {
+              pattern "([0-9a-h][0|2|4|6|8|a|c|e][0-9a-h]{2}-[0-9a-h]{4}-[0-9a-h]{4})|(0100-5e00-0181)|(0100-5e00-006b)";
+            }
+            must "((not(../udp-egress-dest-mac='0100-5e00-006b') and ../../../ptp-port-advance/delay-mechanism='delay') or (not(../udp-egress-dest-mac='0100-5e00-0181') and ../../../ptp-port-advance/delay-mechanism='pdelay'))";
+            ext:dynamic-default {
+              ext:default-value "0100-5e00-0181" {
+                when "(../../../ptp-port-advance/delay-mechanism='delay')";
+                description 
+                  "The default value is 0100-5e00-0181 when delay-mechanism is delay.";
+              }
+              ext:default-value "0100-5e00-006b" {
+                when "(../../../ptp-port-advance/delay-mechanism='pdelay')";
+                description 
+                  "The default value is 0100-5e00-006b when delay-mechanism is pdelay.";
+              }
+            }
             description
               "Destination MAC address for a PTP packet encapsulated in a Layer 3 UDP packet.";
           }
@@ -1832,8 +1851,8 @@ module huawei-clocksync-1588v2 {
         description
           "Configure PTP packet control. Including discarding the received Announce packets and setting packet transmission intervals.";
         leaf announce-drop {
-         type boolean;
-          must "((not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') and not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc')) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc') and ../announce-drop='false') or (../announce-drop='false'))";
+          type boolean;
+          must "(not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') and not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc')) or (../announce-drop='false')";
           default "false";
           description
             "Enable/disable an interface to discard the received Announce packets.";
@@ -1848,7 +1867,19 @@ module huawei-clocksync-1588v2 {
           type int32 {
             range "0..20";
           }
-          default "7";
+          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') and (../announce-interval>=0 and ../announce-interval<=20)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../announce-interval>=7 and ../announce-interval<=11))";
+          ext:dynamic-default {
+            ext:default-value "8" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2'";
+              description 
+                "The default value is 8 when profile is SMPTE2059-2.";
+            }
+            ext:default-value "7" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2'";
+              description
+                "The default value is 7 when profile is G8275.1 or CU106 or IEEE1588V2.";
+            }
+          }
           description
             "Set an interval at which Announce packets are sent on a PTP interface. the calculation formula for the interval in seconds is (2 to the power of interval/1024)s.";
         }
@@ -1856,6 +1887,7 @@ module huawei-clocksync-1588v2 {
           type int32 {
             range "2..255";
           }
+          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') and (../announce-receipt-timeout>=3 and ../announce-receipt-timeout<=255)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') and (../announce-receipt-timeout>=2 and ../announce-receipt-timeout<=255)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../announce-receipt-timeout>=2 and ../announce-receipt-timeout<=10))";
           default "3";
           description
             "Timeout occurrences of announce packet receiving on the PTP interface. If the number of timeouts exceeds the set value, the newly received Announce packets will enter the timeout processing procedure.";
@@ -1864,7 +1896,24 @@ module huawei-clocksync-1588v2 {
           type int32 {
             range "0..20";
           }
-          default "3";
+          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and (../sync-interval>=0 and ../sync-interval<=20)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../sync-interval>=3 and ../sync-interval<=9))";
+          ext:dynamic-default {
+            ext:default-value "3" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2'";
+              description 
+                "The default value is 3 when profile is IEEE1588V2.";
+            }
+            ext:default-value "7" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2'";
+              description 
+                "The default value is 7 when profile is SMPTE2059-2.";
+            }
+            ext:default-value "6" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106'";
+              description
+                "The default value is 6 when profile is G8275.1 or CU106.";
+            }
+          }
           description
             "Interval at which Sync packets are sent on a PTP interface.the calculation formula for the interval in seconds is (2 to the power of interval/1024)s.";
         }
@@ -1872,7 +1921,19 @@ module huawei-clocksync-1588v2 {
           type int32 {
             range "0..20";
           }
-          default "7";
+          must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') and (../min-delay-req-interval>=0 and ../min-delay-req-interval<=20)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../min-delay-req-interval>=3 and ../min-delay-req-interval<=14))";
+          ext:dynamic-default {
+            ext:default-value "7" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2'";
+              description 
+                "The default value is 7 when profile is SMPTE2059-2 or IEEE1588V2.";
+            }
+            ext:default-value "6" {
+              when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106'";
+              description
+                "The default value is 6 when profile is G8275.1 or CU106.";
+            }
+          }
           description
             "Set the minimum interval at which Delay_Req packets are sent on a PTP interface.the calculation formula for the interval in seconds is (2 to the power of interval/1024)s.";
         }
@@ -1880,7 +1941,7 @@ module huawei-clocksync-1588v2 {
           type int32 {
             range "0..20";
           }
-          must "((not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') and not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc')) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc') and ../min-pdelay-req-interval=7) or (../min-pdelay-req-interval=7))";
+          must "((not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') and not(/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-tc')) or (../min-pdelay-req-interval=7))";
           default "7";
           description
             "Set the minimum interval at which Pdelay_Req packets are sent on a PTP interface.the calculation formula for the interval in seconds is (2 to the power of interval/1024)s.";
@@ -1890,6 +1951,7 @@ module huawei-clocksync-1588v2 {
         description
           "Configure asymmetric delay correction for port fibers. Calculate the correction value after auto-measurement of ring-network asymmetry delay is enabled and asymmetry delay of optical fibers is tested, including positive and negative flags as well as the value to be corrected, and set the value on the interface.";
         leaf correction-flag {
+          when "not(../correction-value='0')";
           type ptp-sign-flag;
           default "positive";
           description
@@ -1910,6 +1972,7 @@ module huawei-clocksync-1588v2 {
         leaf tcoc-static-clk-id {
           type string {
             length "16";
+            pattern "[0-9a-f]{16}";
           }
           must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='p2ptcoc' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='e2etcoc') or (../tcoc-static-clk-id='0000000000000000'))";
           default "0000000000000000";
@@ -1920,7 +1983,7 @@ module huawei-clocksync-1588v2 {
           type int32 {
             range "0..65535";
           }
-          must "not(../tcoc-static-clk-id='0000000000000000') or (../tcoc-static-clk-id='0000000000000000' and ../tcoc-static-clk-port-num=0)";
+          must "(not(../tcoc-static-clk-id='0000000000000000') and (../tcoc-static-clk-id)) or (../tcoc-static-clk-port-num=0)";
           default "0";
           description
             "When the TCOC device type is used, TCOC static Clock ID and interface number can be specified for PTP interface clock sources, so that a local device can trace a specified upstream PTP device.";

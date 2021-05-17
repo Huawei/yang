@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-ospfv3 {
   namespace "urn:huawei:yang:huawei-ospfv3";
@@ -44,6 +44,64 @@ module huawei-ospfv3 {
      Email: support@huawei.com";
   description
     "OSPFv3.";
+  revision 2020-03-13 {
+    description
+      "Modify the format specification.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-27 {
+    description
+      "Modify session-car and case.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-17 {
+    description
+      "Add link-cost.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Add session-car and case.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-19 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-16 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-22 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-15 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-26 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-22 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -116,6 +174,54 @@ module huawei-ospfv3 {
         default "true";
         description
           "Enable/disable automatic modification of conflicted router IDs. If enable, check and resolve OSPF router ID conflict.";
+      }
+    }
+    container session-car {
+      must 'pir-interval>=cir-interval';
+      must 'pbs-interval>=cbs-interval';
+      description
+        "Configure OSPFv3 Session CAR.";
+      leaf enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable OSPFv3 Session CAR.";
+      }
+      leaf cir-interval {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "kbit/s";
+        default "8";
+        description
+          "Specify the Session CAR CIR interval.";
+      }
+      leaf cbs-interval {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "Byte";
+        default "100000";
+        description
+          "Specify the Session CAR CBS interval.";
+      }
+      leaf pir-interval {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "kbit/s";
+        default "16000";
+        description
+          "Specify the Session CAR PIR interval.";
+      }
+      leaf pbs-interval {
+        type uint32 {
+          range "0..10000000";
+        }
+        units "Byte";
+        default "9000000";
+        description
+          "Specify the Session CAR PBS interval.";
       }
     }
     container flush-source-trace {
@@ -784,6 +890,7 @@ module huawei-ospfv3 {
               type uint32 {
                 range "1..65535";
               }
+              units "s";
               description
                 "Distribute delay interval.";
             }
@@ -881,6 +988,9 @@ module huawei-ospfv3 {
           list route-preference {
             key "route-type";
             max-elements 4;
+            ext:generated-by system {
+              ext:filter "route-type='default' or route-type='ase'";
+            }
             description
               "Configure preference of an OSPF route.";
             leaf route-type {
@@ -891,6 +1001,18 @@ module huawei-ospfv3 {
             leaf preference {
               type uint32 {
                 range "1..255";
+              }
+              ext:dynamic-default {
+                ext:default-value "10" {
+                  when "../route-type = 'default'";
+                  description 
+                    "The default value is 10 when route type is default.";
+                }
+                ext:default-value "150" {
+                  when "../route-type = 'ase'";
+                  description 
+                    "The default value is 150 when route type is ase.";
+                }
               }
               description
                 "Preference of an OSPF route. The default of intra and inter area is 10.And The default of external is 150.";
@@ -1171,7 +1293,7 @@ module huawei-ospfv3 {
               type uint32 {
                 range "0..4294967295";
               }
-              must "../process-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp' or ../protocol='unr') or ../process-id>0 and (../protocol='ospfv3' or ../protocol='isis' or ../protocol='ripng')";
+              must "(../process-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp' or ../protocol='unr')) or (../process-id>0 and (../protocol='ospfv3' or ../protocol='isis' or ../protocol='ripng'))";
               description
                 "Process ID of the routing protocol whose routes are imported. It needs to be set only when the protocol is RIPng, OSPFv3, or ISIS.";
             }
@@ -1285,7 +1407,6 @@ module huawei-ospfv3 {
           }
           container route-policy {
             when "../enable='true'";
-            presence "Create frr route-policy.";
             description
               "Configure FRR route policy.";
             choice policy-type {
@@ -1366,6 +1487,27 @@ module huawei-ospfv3 {
             }
             description
               "Host name.";
+          }
+        }
+        container cost-bindings {
+          description
+            "List of cost-binding. Indicate cost of routing from indicated router source ID binding interface.";
+          list cost-binding {
+            key "router-id if-name";
+            description
+              "Configure cost-binding. Indicate cost of routing from indicated router source ID binding interface.";
+            leaf router-id {
+              type inet:ipv4-address-no-zone;
+              description
+                "Source router ID.";
+            }
+            leaf if-name {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              description
+                "Interface name.";
+            }
           }
         }
         container areas {
@@ -1484,7 +1626,6 @@ module huawei-ospfv3 {
                 }
               }
             container authentication {
-              must 'key-id and auth-text or not(key-id) and not(auth-text)';
               description
                 "Configure area authentication.";
               leaf mode {
@@ -1498,12 +1639,14 @@ module huawei-ospfv3 {
                 type uint32 {
                   range "1..65535";
                 }
+                mandatory "true";
                 description
                   "Authentication identifier.";
               }
               leaf auth-text {
                 when "../mode='hmac-sha256'";
                 type pub-type:password-extend;
+                mandatory "true";
                 description
                   "Encrypted Password.";
               }
@@ -1596,6 +1739,7 @@ module huawei-ospfv3 {
                 }
                 leaf network-type {
                   type network-type;
+                  ext:dynamic-default;
                   description
                     "Network type of an OSPFv3 interface. By default, the network type of an interface is determined by the physical interface.
                      In the same network segment, if only two routers run OSPFv3, you can change the network type of an interface to P2P.";
@@ -1638,6 +1782,13 @@ module huawei-ospfv3 {
                   }
                   description
                     "To set the cost of an interface.";
+                }
+                leaf link-cost {
+                  type uint32 {
+                   range "1..65535";
+                  }
+                  description
+                    "Link cost to be incremented when link quality is low.";
                 }
                 container frr {
                   description
@@ -1762,6 +1913,7 @@ module huawei-ospfv3 {
                     type uint32 {
                       range "3..20000";
                     }
+                    units "ms";
                     description
                       "Minimum interval for sending BFD packets to the peer end. The value range and default value are controlled by the PAF.";
                   }
@@ -1769,6 +1921,7 @@ module huawei-ospfv3 {
                     type uint32 {
                       range "3..20000";
                     }
+                    units "ms";
                     description
                       "Minimum interval for receiving BFD packets from the peer end. The value range and default value are controlled by the PAF.";
                   }
@@ -1818,7 +1971,6 @@ module huawei-ospfv3 {
                   }
                 }
                 container authentication {
-                  must 'key-id and auth-text or not(key-id) and not(auth-text)';
                   description
                     "Configure interface authentication.";
                   leaf mode {
@@ -1832,12 +1984,14 @@ module huawei-ospfv3 {
                     type uint32 {
                       range "1..65535";
                     }
+                    mandatory "true";
                     description
                       "Authentication identifier.";
                   }
                   leaf auth-text {
                     when "../mode='hmac-sha256'";
                     type pub-type:password-extend;
+                    mandatory "true";
                     description
                       "Encrypted Password.";
                   }
@@ -1881,7 +2035,7 @@ module huawei-ospfv3 {
                     }
                     leaf hold-down-interval {
                       type uint32 {
-                        range "1..600";
+                        range "1..86400";
                       }
                       description
                         "Hold down interval.";

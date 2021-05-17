@@ -22,7 +22,7 @@ submodule huawei-nqa-global {
     "Description of submodule nqa-global.";
   revision 2019-03-30 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -39,7 +39,7 @@ submodule huawei-nqa-global {
       type boolean;
       default "true";
       description
-        "Enable/disable Sr-prefix FEC validation.";
+        "Enable/disable sr-prefix FEC validation.";
     }
     leaf lspv-cpu-limit {
       type uint16 {
@@ -122,7 +122,7 @@ submodule huawei-nqa-global {
           path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
         }
         description
-          "Source IP interface of VXLANECHO.";
+          "Source ip interface of VXLANECHO.";
       }
     }
   }

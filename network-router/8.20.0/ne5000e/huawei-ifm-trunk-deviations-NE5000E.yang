@@ -37,6 +37,11 @@ module huawei-ifm-trunk-deviations-NE5000E {
         description
           "Specify the manual load balancing mode. It is a basic link aggregation mode. In this mode, you must manually create a trunk interface, add interfaces to the trunk interface, and specify active member interfaces. LACP is not involved.";
       }
+      enum dynamic {
+        value 2;
+        description
+          "Specify the dynamic LACP mode. In dynamic LACP mode, if the Eth-Trunk interface has not be configured on the other end and the physical interfaces on two ends are both Up, dynamic LACP mode will set Eth-Trunk member interfaces to Indep, indicating the physical interfaces of the server and of the device are independent. This ensures that physical interfaces of the device can forward data to the server.";
+      }
       enum static {
         value 3;
         description
@@ -141,5 +146,15 @@ module huawei-ifm-trunk-deviations-NE5000E {
   }
   deviation "/ifm-trunk:trunk-switch" {
     deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/ifm-trunk:work-mode" {
+    deviate add {
+      must "(../../ifm:type='Eth-Trunk' and (../work-mode='manual' or ../work-mode='static')) or (../../ifm:type='Ip-Trunk' and ../work-mode='manual') or (../../ifm:type!='Eth-Trunk' and ../../ifm:type!='Ip-Trunk') or (not (../../ifm:type))";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/ifm-trunk:hash-type" {
+    deviate add {
+      must "(../../ifm:type='Ip-Trunk' and (../hash-type='ip' or ../hash-type='packet-all')) or (../../ifm:type='Eth-Trunk' and (../work-mode='manual' or ../work-mode='static'))";
+    }
   }
 }

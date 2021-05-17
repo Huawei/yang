@@ -87,7 +87,7 @@ module huawei-bgp-deviations-NE5000E {
       enum ipv4labeluni {
         value 4;
         description
-          "IPv4 Labeled Address Family.";
+          "IPv4 labeled address family.";
       }
       enum ipv6uni {
         value 5;
@@ -102,12 +102,12 @@ module huawei-bgp-deviations-NE5000E {
       enum ipv4flow {
         value 7;
         description
-          "IPv4 Flow address family.";
+          "IPv4 flow address family.";
       }
       enum l2vpnad {
         value 8;
         description
-          "L2VPN-AD Address Family.";
+          "L2VPN-AD address family.";
       }
       enum evpn {
         value 9;
@@ -122,52 +122,52 @@ module huawei-bgp-deviations-NE5000E {
       enum vpntarget {
         value 11;
         description
-          "Vpn Target Address Family.";
+          "VPN target address family.";
       }
       enum ipv4vpnmcast {
         value 12;
         description
-          "IPv4 VPN Multicast Address Family.";
+          "IPv4 VPN multicast address family.";
       }
       enum ls {
         value 13;
         description
-          "Link-state Address Family.";
+          "Link-state address family.";
       }
       enum mdt {
         value 14;
         description
-          "IPv4 MDT Address Family.";
+          "IPv4 MDT address family.";
       }
       enum ipv6flow {
         value 15;
         description
-          "IPv6 Flow Address Family.";
+          "IPv6 flow address family.";
       }
       enum vpnv4flow {
         value 17;
         description
-          "Vpnv4 Flow Address Family.";
+          "VPNv4 flow address family.";
       }
       enum vpnv6flow {
         value 18;
         description
-          "Vpnv6 Flow Address Family.";
+          "VPNv6 flow address family.";
       }
       enum rpd {
         value 19;
         description
-          "RPD Address Family.";
+          "RPD address family.";
       }
       enum ipv4srpolicy {
         value 20;
         description
-          "IPv4-family Srpolicy Address Family.";
+          "IPv4-family SR-Policy address family.";
       }
       enum ipv6srpolicy {
         value 21;
         description
-          "IPv6-family Srpolicy Address Family.";
+          "IPv6-family SR-Policy address family.";
       }
     }
     description
@@ -194,7 +194,7 @@ module huawei-bgp-deviations-NE5000E {
       enum ipv4labeluni {
         value 4;
         description
-          "IPv4 Labeled Address Family.";
+          "IPv4 labeled address family.";
       }
       enum ipv6uni {
         value 5;
@@ -209,7 +209,7 @@ module huawei-bgp-deviations-NE5000E {
       enum l2vpnad {
         value 8;
         description
-          "L2VPN-AD Address Family.";
+          "L2VPN-AD address family.";
       }
       enum evpn {
         value 9;
@@ -224,22 +224,22 @@ module huawei-bgp-deviations-NE5000E {
       enum vpntarget {
         value 11;
         description
-          "Vpn Target Address Family.";
+          "VPN target address family.";
       }
       enum ipv4vpnmcast {
         value 12;
         description
-          "IPv4 VPN Multicast Address Family.";
+          "IPv4 VPN multicast address family.";
       }
       enum ls {
         value 13;
         description
-          "Link-state Address Family.";
+          "Link-state address family.";
       }
       enum mdt {
         value 14;
         description
-          "IPv4 MDT Address Family.";
+          "IPv4 MDT address family.";
       }
     }
     description
@@ -582,5 +582,17 @@ module huawei-bgp-deviations-NE5000E {
     deviate add {
       must "not(../bestroute-igp-metric-ignore='true' and ../bestroute-med-plus-igp='true')";
     }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:memory-priority" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:memory-priority" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:memory-priority-capability" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp:state/bgp:memory-priority" {
+    deviate not-supported;
   }
 }

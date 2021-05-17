@@ -121,6 +121,104 @@ module huawei-fim-ifm {
     description
       "Trunk Local Forward Type.";
   }
+  typedef reset-ipversion-type {
+    type enumeration {
+      enum "ipv4" {
+        value 1;
+        description
+          "IPv4 reset.";
+      }
+      enum "ipv6" {
+        value 2;
+        description
+          "IPv6 reset.";
+      }
+    }
+    description
+      "Reset IP vertion type.";
+  }
+
+  typedef reset-dispcard-type {
+    type enumeration {
+      enum "mac" {
+        value 1;
+        description
+          "MAC reset.";
+      }
+      enum "mtu" {
+        value 2;
+        description
+          "MTU reset.";
+      }
+    }
+    description
+      "Reset discard vertion type.";
+  }
+  rpc rst-macmtu-intf {
+    description
+      "Clear MAC and MTU error statistics.";
+    ext:node-ref "/ifm/interfaces/interface";
+    input {
+      leaf interface-name {
+        type string {
+          length "1..63";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf discard-type {
+        type reset-dispcard-type;
+        description
+          "Configure the discard type.";
+      }
+      leaf ip-version {
+        type reset-ipversion-type;
+        description
+          "Configure the discard IP version.";
+      }
+    }
+  }
+  rpc rst-macmtu-slot {
+    description
+      "Clear MAC&MTU error statistics.";
+    ext:node-ref "/ifm/interfaces/interface";
+    input {
+      leaf board-position {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Board position.";
+      }
+      leaf discard-type {
+        type reset-dispcard-type;
+        description
+          "Configure the discard type.";
+      }
+      leaf ip-version {
+        type reset-ipversion-type;
+        description
+          "Configure the discard IP version.";
+      }
+    }
+  }
+  rpc rst-mru-discard {
+    description
+      "Clear interface MRU discard statistics.";
+    ext:node-ref "/ifm/interfaces/interface";
+    input {
+      leaf interface-name {
+        type string {
+          length "1..63";
+        }
+        mandatory true;
+        description
+          "Interface name of clear interface MRU discard statistics.";
+      }
+    }
+  }
   augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
       description
         "Interface forward configuration to the interface management module.";
@@ -128,20 +226,21 @@ module huawei-fim-ifm {
       description
         "Configure the function of statistic to main interface.";
       leaf statistic-enable {
-        when "../../ifm:class='main-interface' and ../../ifm:type!='Virtual-Ethernet' and ../../ifm:type!='Tunnel' and ../../ifm:type!='NULL' and ../../ifm:type!='LoopBack' and ../../ifm:type!='Global-VE' and ../../ifm:type!='Nve'";
+        when "../../ifm:class='main-interface' and ../../ifm:type!='Virtual-Ethernet' and ../../ifm:type!='Tunnel' and ../../ifm:type!='NULL' and ../../ifm:type!='LoopBack' and ../../ifm:type!='Global-VE' and ../../ifm:type!='Nve' and ../../ifm:type!='Vlanif' and ../../ifm:type!='PW-VE'";
         type enable-type;
         default "disable";
         description
           "Enable the function of traffic statistics.";
       }
       leaf statistic-mode {
+        when "not(../../ifm:type='Virtual-Ethernet' or ../../ifm:type='Tunnel' or ../../ifm:type='NULL' or ../../ifm:type='LoopBack' or ../../ifm:type='Global-VE' or ../../ifm:type='Nve' or ../../ifm:type='Vlanif' or  ((../../ifm:type='PW-VE') and (../../ifm:class='main-interface')))";
         type statistic-mode-type;
         default "mac";
         description
           "Configure the traffic statistics mode.";
       }
       leaf mac-statistic-enable {
-        when "../../ifm:class='main-interface' and ../../ifm:type!='Virtual-Ethernet' and ../../ifm:type!='Tunnel' and ../../ifm:type!='NULL' and ../../ifm:type!='LoopBack' and ../../ifm:type!='Global-VE' and ../../ifm:type!='Nve' and ../../ifm:type!='Vbdif'";
+        when "../../ifm:class='main-interface' and ../../ifm:type!='Virtual-Ethernet' and ../../ifm:type!='Tunnel' and ../../ifm:type!='NULL' and ../../ifm:type!='LoopBack' and ../../ifm:type!='Global-VE' and ../../ifm:type!='Nve' and ../../ifm:type!='Vbdif' and ../../ifm:type!='Vlanif' and ../../ifm:type!='PW-VE'";
         type enable-type;
         default "disable";
         description
@@ -156,6 +255,7 @@ module huawei-fim-ifm {
         type uint16 {
           range "46..9600";
         }
+        units "Byte";
         must "not(/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp-mss/fim-ifm:tcp-mss)";
         description
           "Maximum receive unit of an interface.";
@@ -197,14 +297,14 @@ module huawei-fim-ifm {
       description
         "Configure Virtual-Ethernet interface information.";
       leaf ve-forward-mode {
-        when "(../../ifm:type='Virtual-Ethernet' and ../../ve-group) or (../../ifm:type='Global-VE' and ../../ve-group)";
+        when "(../../ifm:type='Virtual-Ethernet' and ../../fim-ifm:ve-group/fim-ifm:type='L2VE') or (../../ifm:type='Global-VE' and ../../fim-ifm:ve-group/fim-ifm:type='L2VE')";
         type ve-mode-type;
         default "loopback";
         description
           "Virtual-Ethernet forward mode type.";
       }
       leaf ve-slot-id {
-        when "../../ifm:type='Global-VE' and ../../ve-group";
+        when "../../ifm:type='Global-VE' and ../../fim-ifm:ve-group/fim-ifm:type='L2VE'";
         type string {
           length "1..512";
         }
@@ -250,6 +350,7 @@ module huawei-fim-ifm {
       }
       leaf byte {
         type uint64;
+        units "Byte";
         description
           "Display the bytes of discarded statistics of maximum receive unit of an interface.";
       }

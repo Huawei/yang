@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-srpolicy-type {
   belongs-to huawei-srpolicy {
@@ -19,9 +19,57 @@ submodule huawei-srpolicy-type {
      Email: support@huawei.com";
   description
     "Segment-routing type defined file.";
+  revision 2020-06-28 {
+    description
+      "Modify description information.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-20 {
+    description
+      "Increate the template-enable-type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-01 {
+    description
+      "Increate the path verification.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-25 {
+    description
+      "Increate the group-state-type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-20 {
+    description
+      "Increate the admin-state-type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-26 {
+    description
+      "Modify description by new rules.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-16 {
+    description
+      "Modify description by new rules.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-18 {
+    description
+      "Increate the SR-MPLS TE Policy group.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
-      "Initial revision.";
+      "Init revision.";
     reference
       "Huawei private.";
   }
@@ -422,6 +470,11 @@ submodule huawei-srpolicy-type {
   }
   typedef tunnel-type {
     type enumeration {
+      enum "SRV6-TE-POLICY-GROUP" {
+        value 55;
+        description
+          "SRv6 TE Policy group.";
+      }
       enum "SRV6-TE-POLICY" {
         value 52;
         description
@@ -437,9 +490,14 @@ submodule huawei-srpolicy-type {
         description
           "SR.";
       }
+      enum "INVALID" {
+        value 0;
+        description
+          "Invalid.";
+      }
     }
     description
-      "Policy tunnel types.";
+      "SR Policy tunnel types.";
   }
   typedef policy-state-type {
     type enumeration {
@@ -477,5 +535,189 @@ submodule huawei-srpolicy-type {
     }
     description
       "SR Policy state.";
+  }
+  typedef admin-state-type {
+    type enumeration {
+      enum "down" {
+        value 0;
+        description
+          "Administrative status is down.";
+      }
+      enum "up" {
+        value 1;
+        description
+          "Administrative status is up.";
+      }
+    }
+    description
+      "SR Policy admin state.";
+  }
+  typedef flow-priority-type {
+    type enumeration {
+      enum "dscp" {
+        value 0;
+        description
+          "DSCP.";
+      }
+    }
+    description
+      "Traffic priority types.";
+  }
+  typedef dscp-type {
+    type string {
+      length "1..64";
+      pattern '((6[0-3]|[1-5][0-9]|[0-9])(-(6[0-3]|[1-5][0-9]|[0-9]))?(,((6[0-3]|[1-5][0-9]|[0-9])(-(6[0-3]|[1-5][0-9]|[0-9]))?))*)|default';
+    }
+    description
+      "Type definition for DSCP value.";
+  }
+  typedef group-state-type {
+    type enumeration {
+      enum "down" {
+        value 0;
+        description
+          "Down.";
+      }
+      enum "up" {
+        value 1;
+        description
+          "Up.";
+      }
+      enum "delay-delete" {
+        value 2;
+        description
+          "Delay delete.";
+      }
+    }
+    description
+      "SR Policy group state.";
+  }
+  typedef group-down-reason-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None.";
+      }
+      enum "no-active-sr-policy" {
+        value 1;
+        description
+          "No active SR Policy exists.";
+      }
+      enum "subscribe-delete" {
+        value 2;
+        description
+          "SR Policy group subscription is deleted.";
+      }
+      enum "configuration-delete" {
+        value 3;
+        description
+          "Configuration delete.";
+      }
+      enum "unknown-reason" {
+        value 4;
+        description
+          "Unknown reason.";
+      }
+    }
+    description
+      "SR Policy group down reason types.";
+  }
+  typedef map-down-reason-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None.";
+      }
+      enum "sr-policy-down" {
+        value 1;
+        description
+          "SR Policy down.";
+      }
+      enum "configuration-delete" {
+        value 2;
+        description
+          "Mapping policy configuration is deleted.";
+      }
+      enum "sr-policy-group-delete" {
+        value 3;
+        description
+          "The SR Policy group is deleted.";
+      }
+      enum "unknown-reason" {
+        value 4;
+        description
+          "Unknown reason.";
+      }
+    }
+    description
+      "Mappings down reason types.";
+  }
+  typedef protocol-type {
+    type enumeration {
+      enum "isis" {
+        value 1;
+        description
+          "ISIS.";
+      }
+    }
+    description
+      "The protocol type.";
+  }
+  typedef function-type {
+    type enumeration {
+      enum "end" {
+        value 1;
+        description
+          "End type.";
+      }
+      enum "end-x" {
+        value 4;
+        description
+          "End.X type.";
+      }
+    }
+    description
+      "The sid type.";
+  }
+  typedef level-type {
+    type enumeration {
+      enum "level-1" {
+        value 1;
+        description
+          "Level 1.";
+      }
+      enum "level-2" {
+        value 2;
+        description
+          "Level 2.";
+      }
+    }
+    description
+      "The level type.";
+  }
+  typedef sub-process-type {
+    type union {
+      type level-type;
+    }
+    description
+      "The sub process type.";
+  }
+  typedef template-enable-type {
+    type enumeration {
+      enum "enable" {
+        value 1;
+        description
+          "Enable type.";
+      }
+      enum "disable" {
+        value 2;
+        description
+          "Disable type.";
+      }
+    }
+    description
+      "Template enable types.";
   }
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-ospfv2 {
   namespace "urn:huawei:yang:huawei-ospfv2";
@@ -16,12 +16,6 @@ module huawei-ospfv2 {
   }
   import huawei-routing-policy {
     prefix rtp;
-  }
-  import huawei-mpls {
-    prefix mpls;
-  }
-  import huawei-mpls-ldp {
-    prefix mpls-ldp;
   }
   import huawei-acl {
     prefix acl;
@@ -54,7 +48,71 @@ module huawei-ospfv2 {
      Email: support@huawei.com";
   description
     "OSPFv2.";
-
+  revision 2020-07-03 {
+    description
+      "Modify the must statement.";
+    reference "Huawei private.";
+  }
+  revision 2020-07-01 {
+    description
+      "Add keychain-name pattern lower-only.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-28 {
+    description
+      "Add cost-binding and case.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-04{
+    description
+      "Modity the description.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-03{
+    description
+      "Modity the description.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-27 {
+    description
+      "Modify session-car and case.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Add session-car and case.";
+    reference "Huawei private.";
+  }
+  revision 2019-12-26 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference "Huawei private.";
+  }
+  revision 2019-12-20 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference "Huawei private.";
+  }
+  revision 2019-12-16 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference "Huawei private.";
+  }
+  revision 2019-11-22 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference "Huawei private.";
+  }
+  revision 2019-11-15 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference "Huawei private.";
+  }
+  revision 2019-10-22 {
+    description
+      "Reconstructing Yang file by yin mechanism.";
+    reference "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -126,6 +184,54 @@ module huawei-ospfv2 {
         default "true";
         description
           "Enable/disable automatic modification of conflicted router IDs. If enable, check and resolve OSPF router ID conflict.";
+      }
+    }
+    container session-car {
+      must 'pir-interval>=cir-interval';
+      must 'pbs-interval>=cbs-interval';
+      description
+        "Configure OSPF Session CAR.";
+      leaf enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable OSPF Session CAR.";
+      }
+      leaf cir-interval {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "kbit/s";
+        default "8";
+        description
+          "Specify the Session CAR CIR interval.";
+      }
+      leaf cbs-interval {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "Byte";
+        default "100000";
+        description
+          "Specify the Session CAR CBS interval.";
+      }
+      leaf pir-interval {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "kbit/s";
+        default "16000";
+        description
+          "Specify the Session CAR PIR interval.";
+      }
+      leaf pbs-interval {
+        type uint32 {
+          range "0..10000000";
+        }
+        units "Byte";
+        default "9000000";
+        description
+          "Specify the Session CAR PBS interval.";
       }
     }
     container maxage-lsa-protect {
@@ -358,8 +464,9 @@ module huawei-ospfv2 {
               "Enable/disable traffic advertise info.";
           }
           leaf local-mt {
+            when "../../../../ni:name='_public_'";
             type boolean;
-            must "../local-mt='false' or (../../../../ni:name='_public_' and ../traffic-adj='true')";
+            must "../local-mt='false' or ../traffic-adj='true'";
             default "false";
             description
               "Enable/disable local multicast topology.";
@@ -394,7 +501,6 @@ module huawei-ospfv2 {
           }
           leaf mpls-ldp-auto-flag {
             type proc-auto-cfg-state;
-            must "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:enable='true' and ../../../../ni:name='_public_' or ../mpls-ldp-auto-flag='none'";
             default "none";
             description
               "Enable LDP automatically on OSPF enabled interfaces, but need to set MPLS first.";
@@ -797,6 +903,7 @@ module huawei-ospfv2 {
               type uint32 {
                 range "3..20000";
               }
+              units "ms";
               description
                 "Minimum interval for receiving BFD packets from the peer end. The range and default are based on PAF.";
             }
@@ -804,6 +911,7 @@ module huawei-ospfv2 {
               type uint32 {
                 range "3..20000";
               }
+              units "ms";
               description
                 "Minimum interval for sending BFD packets to the peer end. The range and default are based on PAF.";
             }
@@ -1053,6 +1161,7 @@ module huawei-ospfv2 {
               type uint32 {
                 range "100..5000";
               }
+              units "ms";
               default "100";
               description
                 "Set the maximum interval of delay timer.";
@@ -1067,6 +1176,7 @@ module huawei-ospfv2 {
               type uint32 {
                 range "100..30000";
               }
+              units "ms";
               default "1000";
               description
                 "Set the route delivery delay for TE shortcut tunnel.";
@@ -1100,6 +1210,7 @@ module huawei-ospfv2 {
                 type uint32 {
                   range "1..65535";
                 }
+                units "s";
                 description
                   "Distribute delay interval.";
               }
@@ -1253,6 +1364,18 @@ module huawei-ospfv2 {
               leaf preference {
                 type uint32 {
                   range "1..255";
+                }
+                ext:dynamic-default {
+                  ext:default-value "10" {
+                    when "../route-type != 'ase'";
+                    description 
+                      "The default value is 10 when route type is not ase.";
+                  }
+                  ext:default-value "150" {
+                    when "../route-type = 'ase'";
+                    description 
+                      "The default value is 150 when route type is ase.";
+                  }
                 }
                 description
                   "Preference of an OSPF route. The default of intra and inter area is 10.And The default of external is 150.";
@@ -1485,6 +1608,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                   type leafref {
                     path "/acl:acl/acl:groups/acl:group/acl:identity";
                   }
+                  must "/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic'";
                   description
                     "ACL name or ACL number. ACL name: specify the ACL name. ACL num: apply basic ACL.";
                 }    
@@ -1939,7 +2063,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                 type uint32 {
                   range "0..4294967295";
                 }
-                must "../process-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp' or ../protocol='unr') or ../process-id>0 and (../protocol='ospf' or ../protocol='isis' or ../protocol='rip')";
+                must "(../process-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp' or ../protocol='unr')) or (../process-id>0 and (../protocol='ospf' or ../protocol='isis' or ../protocol='rip'))";
                 description
                   "Process ID of the routing protocol whose routes are imported. It needs to be set only when the protocol is RIP, OSPF, or ISIS.";
               }
@@ -2011,6 +2135,27 @@ By default, the convergence priority of public OSPF host routes is medium, the c
               key "if-name";
               description
                 "Configure interface. Enables sending and receiving packet on this interface when true. This information is useful when sending and receiving packet is suppressed on all interface on process level and user want it to be enabled on certain interface.";
+              leaf if-name {
+                type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                }
+                description
+                  "Interface name.";
+              }
+            }
+          }
+          container cost-bindings {
+            description
+              "List of cost-binding. Indicate cost of routing from indicated router source ID binding interface.";
+            list cost-binding {
+              key "router-id if-name";
+              description
+                "Configure cost-binding. Indicate cost of routing from indicated router source ID binding interface.";
+              leaf router-id {
+                type inet:ipv4-address-no-zone;
+                description
+                  "Source router ID.";
+              }
               leaf if-name {
                 type leafref {
                   path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
@@ -2207,6 +2352,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                 }
               }
               container mpls-te {
+                when "../../../../../../ni:name!='__dcn_vpn__'";
                 description
                   "Configure OSPF processes enabled with the TE capability.";
                 leaf enable {
@@ -2225,7 +2371,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                 }
               }
               container authentication {
-                must 'key-id and auth-text-md5 or not(key-id) and not(auth-text-md5)';
+                must '(key-id and auth-text-md5) or (not(key-id) and not(auth-text-md5))';
                 description
                   "Configure authentication.";
                 leaf mode {
@@ -2258,6 +2404,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                   when "../mode='keychain'";
                   type string {
                     length "1..47";
+                    pattern "[^A-Z]+";
                   }
                   ext:case-sensitivity lower-only;
                   mandatory true;
@@ -2422,6 +2569,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       when "../mode='keychain'";
                       type string {
                         length "1..47";
+                        pattern "[^A-Z]+";
                       }
                       ext:case-sensitivity lower-only;
                       mandatory true;
@@ -2538,6 +2686,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       when "../mode='keychain'";
                       type string {
                         length "1..47";
+                        pattern "[^A-Z]+";
                       }
                       ext:case-sensitivity lower-only;
                       mandatory true;
@@ -2701,9 +2850,15 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                     type uint32 {
                       range "1..4294967295";
                     }
+                    units "Mbit/s";
                     mandatory true;
                     description
                       "Fallback bandwidth threshold.";
+                  }
+                  leaf source-sub-ip-address {
+                    type inet:ipv4-address-no-zone;
+                    description
+                      "Source address indicating a subordinate IP address.";
                   }
                   container frr {
                     description
@@ -2765,15 +2920,9 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       }
                       must '../hello-interval<../dead-interval';
                       ext:dynamic-default {
-                        ext:default-value "40" {
-                          when "../../network-type = 'p2p' or ../../network-type = 'broadcast'";
+                        ext:default-value "4*(../hello-interval)" {
                           description 
-                            "The default value is 40 when network-type is p2p or broadcast.";
-                        }
-                        ext:default-value "120" {
-                          when "../../network-type = 'p2mp' or ../../network-type = 'nbma'";
-                          description 
-                            "The default value is 120 when network-type is p2mp or nbma.";
+                            "The default value of dead interval is 4 times that of hello interval.";
                         }
                       }
                       description
@@ -2784,15 +2933,9 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                         range "1..235926000";
                       }
                       ext:dynamic-default {
-                        ext:default-value "40" {
-                          when "../../network-type = 'p2p' or ../../network-type = 'broadcast'";
+                        ext:default-value "../dead-interval" {
                           description 
-                            "The default value is 40 when network-type is p2p or broadcast.";
-                        }
-                        ext:default-value "120" {
-                          when "../../network-type = 'p2mp' or ../../network-type = 'nbma'";
-                          description 
-                            "The default value is 120 when network-type is p2mp or nbma.";
+                            "The default value of wait interval is equal to dead interval.";
                         }
                       }
                       description
@@ -2822,6 +2965,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       type uint16 {
                         range "0..65535";
                       }
+                      units "s";
                       default "10";
                       description
                         "Hold down interval.";
@@ -2836,6 +2980,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                           type uint16 {
                             range "0..65535";
                           }
+                          units "s";
                           description
                             "Max cost interval range.";
                         }
@@ -2880,6 +3025,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       type uint32 {
                         range "3..20000";
                       }
+                      units "ms";
                       description
                         "Minimum interval for sending BFD packets to the peer end. The ranges and the default value is determined by the PAF.";
                     }
@@ -2887,6 +3033,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       type uint32 {
                         range "3..20000";
                       }
+                      units "ms";
                       description
                         "Minimum interval for receiving BFD packets from the peer end. The ranges and the default value is determined by the PAF.";
                     }
@@ -2929,7 +3076,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                     }
                     leaf one-arm-echo-flag {
                       type boolean;
-                      must "../one-arm-echo-flag=../per-link-flag";
+                      must "../one-arm-echo-flag=../per-link-flag and (../one-arm-echo-flag='false' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../name]/ifm:type='Vlanif')";
                       default "false";
                       description
                         "Enable/disable echo detection mode, support only VLANif interface.";
@@ -2970,6 +3117,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       when "../mode='keychain'";
                       type string {
                         length "1..47";
+                        pattern "[^A-Z]+";
                       }
                       ext:case-sensitivity lower-only;
                       mandatory true;
@@ -3103,7 +3251,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       }
                       leaf hold-down-interval {
                         type uint32 {
-                          range "1..600";
+                          range "1..86400";
                         }
                         description
                           "Hold down interval.";
@@ -3190,7 +3338,9 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       description
                         "Configure the interface enabled with OSPF.";
                       leaf area-id {
-                        type inet:ipv4-address-no-zone;
+                        type leafref {
+                          path "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:area-id";
+                        }
                         must "../area-id!=../../../../../area-id";
                         description
                           "Multi area id.";
@@ -3251,6 +3401,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                         type uint32 {
                           range "1..4294967295";
                         }
+                        units "Mbit/s";
                         mandatory true;
                         description
                           "Fallback bandwidth threshold.";
@@ -3379,7 +3530,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                         }
                       }
                       container authentication {
-                        must "key-id and auth-text-md5 or not(key-id) and not(auth-text-md5)";
+                        must "(key-id and auth-text-md5) or (not(key-id) and not(auth-text-md5))";
                         description
                           "Configure authentication.";
                         leaf mode {
@@ -3392,7 +3543,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                           when "../mode='simple'";
                           type pub-type:password;
                           description
-                            "Simple authentication key.";
+                            "Simple authentication key. The password is a string ranging from 1 to 8 characters for a unencrypted password and 24 to 128 characters for a encrypted password.";
                         }
                         leaf key-id {
                           when "../mode='hmac-md5' or ../mode='hmac-sha256' or ../mode='md5'";
@@ -3412,7 +3563,9 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                           when "../mode='keychain'";
                           type string {
                             length "1..47";
+                            pattern "[^A-Z]+";
                           }
+                          ext:case-sensitivity lower-only;
                           mandatory true;
                           description
                             "Keychain Name.";
@@ -3543,7 +3696,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                           }
                           leaf hold-down-interval {
                             type uint32 {
-                              range "1..600";
+                              range "1..86400";
                             }
                             description
                               "Hold-down-interval.";
@@ -3653,6 +3806,7 @@ By default, the convergence priority of public OSPF host routes is medium, the c
                       type uint32 {
                         range "0..1000";
                       }
+                      units "s";
                       description
                         "Peer flapping suppress remain timer.";
                     }

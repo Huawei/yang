@@ -123,6 +123,7 @@ module huawei-rsa {
         "List of Peer key table.";
       list peer-key {
         key "key-name";
+        max-elements "20";
         description
           "Configure Peer key code. If the key code is bound, it cannot be deleted, you need to unbind and then delete.";
         leaf key-name {

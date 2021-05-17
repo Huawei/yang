@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-dhcpv6 {
   yang-version 1;
@@ -29,7 +29,13 @@ module huawei-dhcpv6 {
      Email: support@huawei.com";
   description
     "Dynamic Host Configuration Protocol for IPv6.";
-  revision 2019-04-29 {
+  revision 2020-03-09 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-25 {
     description
       "Initial revision.";
     reference
@@ -130,6 +136,15 @@ module huawei-dhcpv6 {
           description
             "Enable/disable DHCPv6 source-ip-address format adaptive.";
         }
+        leaf aging-time {
+          type uint32 {
+            range "1..1440";
+          }
+          units "min";
+          default "30";
+          description
+            "DHCPV6 session CAR aging time.";
+        }
         leaf active-duid {
           type string {
             length "8..28";
@@ -138,6 +153,53 @@ module huawei-dhcpv6 {
           config false;
           description
             "DUID string, in hexadecimal notation.";
+        }
+      }
+      container session-car {
+        must "pir-value >= cir-value and pbs-value >= cbs-value";
+        description
+          "Configure session CAR.";
+        leaf enable {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable session CAR.";
+        }
+        leaf cir-value {
+          type uint32 {
+            range "0..1000000";
+          }
+          units "kbit/s";
+          default "256";
+          description
+            "Specify the session CAR CIR value.";
+        }
+        leaf cbs-value {
+          type uint32 {
+            range "0..9000000";
+          }
+          units "Byte";
+          default "32000";
+          description
+            "Specify the session CAR CBS value.";
+        }
+        leaf pir-value {
+          type uint32 {
+            range "0..1000000";
+          }
+          units "kbit/s";
+          default "512";
+          description
+          "Specify the session CAR PIR value.";
+        }
+        leaf pbs-value {
+          type uint32 {
+            range "0..9000000";
+          }
+          units "Byte";
+          default "64000";
+          description
+          "Specify the session CAR PBS value.";
         }
       }
     }
@@ -202,6 +264,7 @@ module huawei-dhcpv6 {
             type leafref {
              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
             }
+            must "not(((../../../../ifm:type = 'Virtual-Ethernet') or (../../../../ifm:type = 'Global-VE')) and (../../../../ifm:class = 'main-interface'))";
             description
               "Destination interface name.";
           }
@@ -232,12 +295,23 @@ module huawei-dhcpv6 {
             "Maximum number of access users on an interface.";
         }
         leaf access-vlan-limit {
+          when "(../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination) or (../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination) or (../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q)";
           type uint32 {
             range "0..65536";
           }
-          must "(../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination) or (../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination) or (../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q)";
           description
             "Maximum number of access users in any VLAN.";
+        }
+      }
+      container pd-route-track-vrrp {
+        description
+          "Configure DHCPv6 relay PD routes track VRRP.";
+        leaf degrade-cost {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Cost value to be adjusted for DHCPv6 relay PD route.";
         }
       }
     }

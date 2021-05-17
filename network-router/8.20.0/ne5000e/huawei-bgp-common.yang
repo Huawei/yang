@@ -373,26 +373,45 @@ submodule huawei-bgp-common {
   }
   grouping path-attr-map-type {
     description
-      "Path attribute type configuration.";
-    leaf path-attr-discard-id-map {
-      type pub-type:id-range {
-        pattern '((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])?(-(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9]))?(,((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])(-(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9]))?))*)|((([\+|\-](2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9]))|([\+|\-]\((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])-(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])\)))?(,(([\+|\-](2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9]))|([\+|\-]\((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])-(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])\))))*)';
-        ext:value-range 1..255;
-      }
+      "Config bit map of path attribute treat ID.";
+    container path-attribute-treats {
       description
-        "Specify a discard attrId list. The format of a list is as follows: 20-30, 55. No support the attribute ids as follows:
-        IBGP peer or CONFEDERATION EBGP peer or CONFEDERATION IBGP peer: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCALPREF), 8 (COMMUNITY), 9 (ORIGINATOR), 10 (CLUSTER-ID), 14 (MP_NLRI), 15 (MP_UNLRI), 16 (EXTCOMMUNITY),
-        EBGP peer: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 8 (COMMUNITY), 14 (MP_NLRI), 15 (MP_UNLRI), 16 (EXTCOMMUNITY)";
-    }
-    leaf path-attr-withdraw-id-map {
-      type pub-type:id-range {
-        pattern '((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])?(-(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9]))?(,((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])(-(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9]))?))*)|((([\+|\-](2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9]))|([\+|\-]\((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])-(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])\)))?(,(([\+|\-](2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9]))|([\+|\-]\((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])-(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])\))))*)';
-        ext:value-range 1..255;
+        "List of modes in which specified path attributes are processed.";
+      list path-attribute-treat {
+        must "discard-id-map or withdraw-id-map or unknown-id-map";
+        key "treat-type";
+        description
+          "Configure mode in which specified path attributes are processed.";
+        leaf treat-type {
+          type bgp:path-attr-treat-type;
+          description
+            "Mode in which specified path attributes are processed.";
+        }
+        leaf discard-id-map {
+          type pub-type:id-range {
+            pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+            ext:value-range 0..255;
+          }
+          description
+            "Specify a discard attribute ID list. The attribute IDs which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+        }
+        leaf withdraw-id-map {
+          type pub-type:id-range {
+            pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+            ext:value-range 0..255;
+          }
+          description
+            "Specify a withdraw attribute ID list. The attribute IDs which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+        }
+        leaf unknown-id-map {
+          type pub-type:id-range {
+            pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+            ext:value-range 0..255;
+          }
+          description
+            "Specify an unknown attribute ID list. The attribute IDs which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+        }
       }
-      description
-        "Specify a withdraw attrId list. The format of a list is as follows: 20-30, 55. No support the attribute ids as follows:
-        IBGP peer or CONFEDERATION EBGP peer or CONFEDERATION IBGP peer: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCALPREF), 8 (COMMUNITY), 9 (ORIGINATOR), 10 (CLUSTER-ID), 14 (MP_NLRI), 15 (MP_UNLRI), 16 (EXTCOMMUNITY),
-        EBGP peer: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 8 (COMMUNITY), 14 (MP_NLRI), 15 (MP_UNLRI), 16 (EXTCOMMUNITY)";
     }
   }
   grouping authentication-attr-type {
@@ -416,10 +435,12 @@ submodule huawei-bgp-common {
     leaf key-chain-name {
       type string {
         length "1..47";
+        pattern '[^A-Z]+';
       }
       must "not(../password-type and ../password-type!='null' and ../key-chain-name)";
       description
         "Specify the Keychain authentication name used when BGP peers establish a TCP connection. The value is a string, spaces not supported. By default, the Keychain authentication is not configured. Keychain authentication mode and password authentication mode are mutually exclusive. Configuring Keychain authentication can enhance the security of the TCP connections between BGP peers. Keychain authentication using the same encryption algorithm and password must be configured on the two ends of BGP peers to establish a TCP connection and exchange BGP packets. Before configuring BGP Keychain authentication, you need to configure Keychain according to keychain name. Otherwise, the TCP connections between the BGP peers cannot be established.";
+      ext:case-sensitivity lower-only;
     }
   }
   grouping choice-policy-set {
@@ -466,50 +487,6 @@ submodule huawei-bgp-common {
       default "1";
       description
         "Maximum number of transit LSPs for load balancing. The default value is 1, indicating that this attribute is not configured.";
-    }
-  }
-  grouping import-ribs-type {
-    description
-      "Import RIBs configuration.";
-    container import-ribs {
-      description
-        "List of imported RIBs configuration.";
-      list import-rib {
-        key "source-vpn source-address-family";
-        description
-          "Configure imported RIBs.";
-        leaf source-vpn {
-          type leafref {
-            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
-          }
-          description
-            "Source VPN name.";
-        }
-        leaf source-address-family {
-          type bgp:import-rib-ipv4-safi-type;
-          description
-            "Source address family type.";
-        }
-        leaf valid-route {
-          type boolean;
-          default "false";
-          description
-            "Enable/disable imported valid route.";
-        }
-        leaf include-label-route {
-          when "../source-address-family='ipv4uni'";
-          type boolean;
-          default "false";
-          description
-            "Enable/disable imported include label route.";
-        }
-        uses choice-policy-set {
-          refine policy-type {
-            description
-              "Specify the route-policy or filter for imported RIBs.";
-          }
-        }
-      }
     }
   }
   grouping global-timer-para-type {
@@ -827,7 +804,7 @@ submodule huawei-bgp-common {
         "Number of RDs.";
     }
   }
-  grouping bit-error-detection-type {
+   grouping bit-error-detection-type {
     description
       "BGP bit-error detection parameters.";
     container bit-error-detection {      
@@ -863,7 +840,7 @@ submodule huawei-bgp-common {
         description
           "Route policy.";
         leaf route-policy {
-          when "../enable='true'";
+	  when "../enable='true'";
           type leafref {
             path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
           }
@@ -885,7 +862,7 @@ submodule huawei-bgp-common {
           range "1..100";
         }
         units "s";
-        must "(not(../no-critical-event-time) or (../no-critical-event-time > ../time))";
+		must "(not(../no-critical-event-time) or (../no-critical-event-time > ../time))";
         description
           "Specify the delay in responding to the next hop change.";
       }
@@ -893,8 +870,8 @@ submodule huawei-bgp-common {
         type uint8 {
           range "1..100";
         }
-        units "s";
-        must "(not(../time) or (../no-critical-event-time > ../time))";
+		units "s";
+		must "(not(../time) or (../no-critical-event-time > ../time))";
         description
           "Specify the delay in responding to the next hop change on non critical relay change event.";
       }
@@ -1212,6 +1189,114 @@ submodule huawei-bgp-common {
       default "false";
       description
         "Enable/disable BGP to compare originator before clusterlist in route selection.";
+    }
+  }
+  grouping routing-table-rib-only-type {
+    description
+      "Disable Route Delivery to the IP Routing Table configuration.";
+    container routing-table-rib-only {
+      description
+        "Configure disable route delivery to the IP routing table.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable prevent BGP routes from being added to the IP routing table.";
+      }
+	  choice policy-type {	
+	    description
+		  "Set route policy or filter.";
+	    case rtp-ref {
+		  description
+		    "Route policy.";
+		  leaf policy-name {
+		    when "../enable = 'true'";
+		    type leafref {
+			  path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+		    }
+		    description
+			  "When routes are imported from other routing protocols, the route-policy filter can be used to filter the routes and change route attributes.";
+		  }
+	    }
+	  }
+    }
+  }
+  grouping group-graceful-restart-type {
+    description
+      "Configure graceful restart.";
+    leaf enable {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable graceful restart capability.";
+    }
+    leaf time-wait-for-rib {
+      type uint32 {
+        range "3..3000";
+      }
+      units "s";
+      default "600";
+      description
+        "Period of waiting for the End-of-RIB flag. The value is an integer. When a BGP session is established or re-established, the router enabled with GR should receive the End-of-RIB flag in this period. If the router does not receive the End-of-RIB flag in this period, ensure that the router can exit from the GR process.";
+    }
+    leaf restart-time {
+      type uint16 {
+        range "3..3600";
+      }
+      units "s";
+      default "150";
+      description
+        "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+    }
+  }
+  grouping peer-graceful-restart-type {
+    description
+      "Configure graceful restart.";
+    leaf enable {
+      type peer-comm-config-type;
+      default "default";
+      description
+        "Enable/disable graceful restart capability.";
+    }
+    leaf time-wait-for-rib {
+      type uint32 {
+        range "3..3000";
+      }
+      units "s";
+      description
+        "Period of waiting for the End-of-RIB flag. The value is an integer. When a BGP session is established or re-established, the router enabled with GR should receive the End-of-RIB flag in this period. If the router does not receive the End-of-RIB flag in this period, ensure that the router can exit from the GR process.";
+    }
+    leaf restart-time {
+      type uint16 {
+        range "3..3600";
+      }
+      units "s";
+      description
+        "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+    }
+    leaf effect-restart-time {
+      type uint16 {
+        range "3..3600";
+      }
+      units "s";
+      config false;
+      description
+        "The maximum time during which a peer waits for a BGP session reestablishment.";
+    }
+    leaf effect-time-wait-for-rib {
+      type uint32 {
+        range "3..3000";
+      }
+      units "s";
+      config false;
+      description
+        "Period of waiting for the End-of-RIB flag.";
+    }
+    leaf effect-enable {
+      type boolean;
+      config false;
+      description
+        "Whether enable/disable graceful restart capability.";
     }
   }
 }

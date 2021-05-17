@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 submodule huawei-isis-type {
   belongs-to huawei-isis {
@@ -17,6 +17,53 @@ submodule huawei-isis-type {
      Email: support@huawei.com";
   description
     "ISIS type defined file.";
+  revision 2020-08-03 {
+    description
+      "Add isis SPF type.";
+    reference "Huawei private.";
+  }
+  revision 2020-03-04 {
+    description
+      "Add isis enable flag type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-03 {
+    description
+      "Add isis enable flag type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Delete isis rlfa ldp type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-01-03 {
+    description
+      "Add isis rlfa ldp type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-16 {
+    description
+      "Add filter export type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-01 {
+    description
+      "Add default mode type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-09-21 {
+    description
+      "Add import protocol etc.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -742,6 +789,22 @@ submodule huawei-isis-type {
     description
       "ISIS filter export protocol type.";
   }
+  typedef switch-type {
+      type enumeration {
+      enum "enable" {
+        value 0;
+        description
+          "The switch is enabled.";
+      }
+      enum "disable" {
+        value 1;
+        description
+          "The switch is disabled.";
+      }
+    }
+    description
+      "ISIS switch status.";
+  }
   typedef enable-flag {
     type enumeration {
       enum "disable" {
@@ -757,5 +820,26 @@ submodule huawei-isis-type {
     }
     description
       "ISIS enable flag.";
+  }
+  typedef spf-type {
+    type enumeration {
+      enum "intelligent-timer" {
+        value 0;
+        description
+          "Set SPF timer as a intelligent timer.";
+      }
+      enum "no-incr-timer" {
+        value 1;
+        description
+          "Set SPF timer as a no incremental timer.";
+      }
+      enum "one-trigger-timer" {
+        value 2;
+        description
+          "Set SPF timer as a one trigger timer.";
+      }
+    }
+    description
+      "ISIS SPF timer.";
   }
 }

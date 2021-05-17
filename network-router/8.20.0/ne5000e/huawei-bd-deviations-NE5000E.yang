@@ -27,7 +27,13 @@ module huawei-bd-deviations-NE5000E {
     reference "Huawei private.";
   }
 
+  deviation "/bd:bd/bd:instances/bd:instance/bd:encapsulation" {
+    deviate not-supported;
+  }
   deviation "/bd:bd/bd:instances/bd:instance/bd:bind-service/bd:vsi-name" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:bind-vlan" {
     deviate not-supported;
   }
 }

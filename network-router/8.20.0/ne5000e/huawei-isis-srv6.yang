@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-isis-srv6 {
   namespace "urn:huawei:yang:huawei-isis-srv6";
@@ -28,6 +28,18 @@ module huawei-isis-srv6 {
      Email: support@huawei.com";
   description
     "ISIS segment routing IPv6 management.";
+  revision 2020-03-03 {
+    description
+      "Modity the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Modity the description.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-04-04 {
     description
       "Initial revision.";
@@ -39,7 +51,7 @@ module huawei-isis-srv6 {
     description
       "ISIS segment routing IPv6 augment to ISIS.";
     container srv6 {
-      when "../../../../../../ni:name='_public_' and ../isis:type='afipv6'";
+      when "../../../../../../ni:name='_public_' and ../isis:type='afipv6' and (../../../isis:cost-style='wide' or ../../../isis:cost-style='transition'  or ../../../isis:cost-style='wtransition')";
       description
         "Configure ISIS segment routing IPv6.";
       container locators {

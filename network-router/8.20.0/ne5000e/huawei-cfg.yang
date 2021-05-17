@@ -33,7 +33,7 @@ module huawei-cfg {
     "Configuration management module.";
   revision 2020-02-21 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -316,6 +316,49 @@ typedef cfg-service-type {
           "Upper limit of the CPU usage for automatically saving configurations.";
       }
     }
+    container lock-by-users {
+      description
+        "List of lock configuration.";
+      list lock-by-user {
+        key "lock-username";
+        max-elements 1;
+        description
+          "Configure lock configuration.";
+        leaf lock-username {
+          type string {
+            length "1..253";
+          }
+          description
+            "Name of a user who locks the configuration.";
+        }
+        leaf lock-time {
+          type yang:date-and-time;
+          config false;
+          description
+            "Time when the configuration is locked.";
+        }
+        leaf identifier {
+          type uint32;
+          config false;
+          description
+            "Unique ID of a configuration lock.";
+        }
+        leaf unlock-username {
+          type string {
+            length "1..253";
+          }
+          config false;
+          description
+            "Name of a user who unlocks the configuration.";
+        }
+        leaf unlock-time {
+          type yang:date-and-time;
+          config false;
+          description
+            "Time when the configuration is unlocked.";
+        }
+      }
+    }
     container checkpoints {
       config false;
       description
@@ -395,7 +438,7 @@ typedef cfg-service-type {
             }
             leaf config-change {
               type string {
-                length "1..2080";
+                length "1..3200";
               }
               config false;
               description
@@ -420,7 +463,7 @@ typedef cfg-service-type {
             }
             leaf config-change {
               type string {
-                length "1..2080";
+                length "1..3200";
               }
               config false;
               description
@@ -750,7 +793,7 @@ typedef cfg-service-type {
             }
             leaf config-change {
               type string {
-                length "1..2080";
+                length "1..3200";
               }
               config false;
               description
@@ -1038,6 +1081,29 @@ typedef cfg-service-type {
         mandatory true;
         description
           "Label of a configuration checkpoint.";
+      }
+    }
+  }
+  rpc create-user-label-checkpoint {
+    description
+      "Create the checkpoint of a specified label.";
+    ext:node-ref "/cfg/checkpoints/checkpoint";
+    input  {
+      leaf user-label {
+        type string {
+          length "1..256";
+          pattern '.*[^\s]+.*';
+        }
+        mandatory true;
+        description
+          "Label of a configuration checkpoint.";
+      }
+      leaf description {
+        type string {
+          length "1..60";
+        }
+        description
+          "Description of a configuration checkpoint.";
       }
     }
   }

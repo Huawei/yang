@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
 */
 module huawei-masterkey {
   namespace "urn:huawei:yang:huawei-masterkey";
@@ -13,8 +13,6 @@ module huawei-masterkey {
   import huawei-extension {
     prefix ext;
   }
-
-  include huawei-masterkey-type;
   
   organization
     "Huawei Technologies Co., Ltd.";
@@ -27,23 +25,70 @@ module huawei-masterkey {
      Email: support@huawei.com";
   description
     "Master key.";
+  revision 2020-03-20 {
+    description
+      "Fixed units and description problems.";
+    reference
+      "Huawei private.";
+  }
   revision 2019-05-22 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
   ext:task-name "system";
+  typedef mk-config-type {
+    type enumeration {
+      enum "default" {
+        value 1;
+        description
+          "Default master key.";
+      }
+      enum "user-defined" {
+        value 2;
+        description
+          "User defined master key.";
+      }
+      enum "auto-update" {
+        value 3;
+        description
+          "Auto update master key.";
+      }
+    }
+    description
+      "The config type of master key.";
+  }
+  typedef mk-modify-result {
+    type enumeration {
+      enum "success" {
+        value 1;
+        description
+          "Success.";
+      }
+      enum "operating" {
+        value 2;
+        description
+          "Operating.";
+      }
+      enum "failure" {
+        value 3;
+        description
+          "Failure.";
+      }
+    }
+    description
+      "The status of operation.";
+  }
   container masterkey {
     description
       "Master key.";
     container current-type {
       config false;
       description
-        "Master key current type statistics.";
+        "Operational state of master key current type.";
       leaf type {
         type mk-config-type;
-        config false;
         description
           "Master key current type.";
       }
@@ -51,22 +96,19 @@ module huawei-masterkey {
     container modify-result {
       config false;
       description
-        "Master key modify statistics.";
+        "Operational state of master key modify information.";
       leaf modify-start-time {
         type yang:date-and-time;
-        config false;
         description
           "Start time.";
       }
       leaf modify-end-time {
         type yang:date-and-time;
-        config false;
         description
           "End time.";
       }
       leaf modify-result {
         type mk-modify-result;
-        config false;
         description
           "Modify result.";
       }
@@ -74,19 +116,18 @@ module huawei-masterkey {
         type string {
           length "1..128";
         }
-        config false;
         description
           "Modify error reason.";
       }
     }
   container auto-update {
       description
-        "Configure master key autoupdate information.";
+        "Configure master key auto update.";
       leaf interval {
          type uint32 {
           range "1..3650";
         }
-        units d;
+        units "d";
         description
           "Auto update interval.";
       }
@@ -98,7 +139,9 @@ module huawei-masterkey {
     ext:node-ref "/masterkey";
     input {
       leaf new-masterkey {
-        type pub-type:password-extend;
+        type pub-type:password-extend{
+            length "20..32";
+        }
         mandatory true;
         description
           "New master key.";
@@ -107,7 +150,7 @@ module huawei-masterkey {
   }
   rpc clear-masterkey {
     description
-      "Clear master key.";
+      "Delete historical master key.";
     ext:node-ref "/masterkey";
   }
 }

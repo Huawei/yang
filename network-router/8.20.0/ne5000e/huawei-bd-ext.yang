@@ -13,6 +13,9 @@ module huawei-bd-ext {
   import huawei-extension {
     prefix ext;
   }
+  import huawei-ifm {
+    prefix ifm;
+  }
   organization
     "Huawei Technologies Co., Ltd.";
   contact
@@ -24,6 +27,12 @@ module huawei-bd-ext {
      Email: support@huawei.com";
   description
     "BD ext.";
+  revision 2020-06-22 {
+    description
+      "Add reset-bd-ac-suppression-statistics.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-03-06 {
     description
       "Add pipe type.";
@@ -38,7 +47,7 @@ module huawei-bd-ext {
   }
   revision 2019-04-23 {
     description
-      "The modifications in the schema file are synchronized to the YANG file.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -52,7 +61,7 @@ module huawei-bd-ext {
       enum "shortpipe" {
         value 2;
         description
-          "BD Short Pipe mode.";
+          "BD short pipe mode.";
       }
       enum "uniform" {
         value 3;
@@ -151,6 +160,29 @@ module huawei-bd-ext {
     description
       "Description of trust type.";
   }
+  rpc reset-bd-ac-suppression-statistics {
+    description
+      "Reset AC suppression.";
+    ext:node-ref "/bd:bd/bd:instances/bd:instance/bd:service-points/bd:service-point";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf bd-id {
+        type uint32 {
+          range "1..16777215";
+        }
+        mandatory true;
+        description
+          "BD ID.";
+      }
+    }
+  }
   ext:task-name "forwarding";
   augment "/bd:bd/bd:instances/bd:instance" {
     description "BD configuration.";
@@ -221,6 +253,16 @@ module huawei-bd-ext {
         default "outpri";
         description
           "Trust type.";
+      }
+    }
+    container reserve-if-switch {
+      description
+        "Configure BD broadcast fast switching.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the flag of BD broadcast fast switching.";
       }
     }
   }

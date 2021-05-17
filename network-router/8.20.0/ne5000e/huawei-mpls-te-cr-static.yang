@@ -56,7 +56,7 @@ module huawei-mpls-te-cr-static {
   }
   revision 2020-01-14 {
     description
-      "Modify the value range of the node tunnel-id.";
+      "Modify the value range of the node tunnel-ID.";
     reference
       "Huawei private.";
   }
@@ -433,9 +433,8 @@ module huawei-mpls-te-cr-static {
                   "Configure the ingress forward function.";
                 leaf next-hop {
                   type inet:ipv4-address-no-zone;
-                  mandatory true;
                   description
-                    "The forward next-hop ip address.";
+                    "The forward next-hop IP address.";
                 }
                 leaf out-label {
                   type uint32 {
@@ -535,7 +534,7 @@ module huawei-mpls-te-cr-static {
                 leaf next-hop {
                   type inet:ipv4-address-no-zone;
                   description
-                    "The forward next-hop ip address.";
+                    "The forward next-hop IP address.";
                 }
                 leaf out-interface-name {
                   type leafref {
@@ -607,7 +606,7 @@ module huawei-mpls-te-cr-static {
                 leaf next-hop {
                   type inet:ipv4-address-no-zone;
                   description
-                    "The backward next-hop ip address.";
+                    "The backward next-hop IP address.";
                 }
                 leaf out-interface-name {
                   type leafref {
@@ -679,9 +678,8 @@ module huawei-mpls-te-cr-static {
                   "Configure the egress backward function.";
                 leaf next-hop {
                   type inet:ipv4-address-no-zone;
-                  mandatory true;
                   description
-                    "The backward next-hop ip address.";
+                    "The backward next-hop IP address.";
                 }
                 leaf out-label {
                   type uint32 {

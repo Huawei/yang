@@ -34,6 +34,12 @@ module huawei-ip {
     "This module contains a collection of YANG definitions for
      configuring IP implementations.
      Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.";
+  revision 2020-06-30 {
+    description
+      "Add units attribute.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-02-14 {
     description
       "Modify the description of nodes.";
@@ -48,7 +54,7 @@ module huawei-ip {
   }
   revision 2019-04-15 {
     description
-      "Init revision.";
+      "Initial revision.";
     reference
       "Huawei private.";
   }
@@ -243,6 +249,7 @@ module huawei-ip {
           description
             "Configure address.";
           container addresses {
+            must "count(address)=0 or count(address[type='main'])=1";
             description
               "List of common addresses. The IPv4 address of the DCN interface cannot be created, modified, or deleted.";
             list address {
@@ -280,6 +287,7 @@ module huawei-ip {
               type leafref {
                 path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
               }
+              must "../../../ifm:name!=../unnumbered-if-name";
               mandatory true;
               description
                 "Name of an unnumbered interface.";
@@ -291,7 +299,7 @@ module huawei-ip {
             "Negotiate address.";
           container negotiation-address {
             description
-              "Configure Negotiate address.";
+              "Configure negotiate address.";
             leaf negotiation-type {
               type negotiation-type;
               mandatory true;
@@ -359,6 +367,7 @@ module huawei-ip {
         type uint32 {
           range "0..50000";
         }
+        units "Byte";
         ext:dynamic-default;
         description
           "IPv6 maximum transmission unit of an interface.
@@ -485,6 +494,7 @@ module huawei-ip {
           type uint32 {
             range "0..50000";
           }
+          units "Byte";
           description
             "IPv6 maximum transmission unit of an interface.
              Special explanation:

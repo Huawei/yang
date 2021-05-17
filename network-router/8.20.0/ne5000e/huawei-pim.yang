@@ -41,6 +41,12 @@ module huawei-pim {
     reference
       "Huawei private.";
   }
+  revision 2020-03-03 {
+    description
+      "Modify the submodule huawei-pim-type.";
+    reference
+      "Huawei private.";
+  }
   revision 2020-02-11 {
     description
       "Modify units.";
@@ -874,6 +880,7 @@ module huawei-pim {
               type uint32 {
                 range "1..65535";
               }
+              units "s";
               default "30";
               description
                 "The state-refresh-rate-limit command sets the minimum period to wait before receiving the next PIM State-Refresh message.";

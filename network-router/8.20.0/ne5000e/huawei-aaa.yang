@@ -27,8 +27,19 @@ module huawei-aaa {
      
   description
     "Security management, which includes the management on authentication, authorization, accounting, domains, and users.";
-
-  revision 2020-01-09 {
+  revision 2020-07-01 {
+    description
+      "Add node constraint information.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-17 {
+    description
+      "Add management-user-qrys node.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-02 {
     description
       "Init revision.";
     reference
@@ -64,7 +75,7 @@ module huawei-aaa {
       list task-group {
         key "name";
         description
-          "Configure the collection of certain tasks. The default task groups are set in the system before the NE delivery and cannot be deleted.";
+          "Configure a collection of certain tasks. The default task groups are set in the system before the NE delivery and cannot be deleted.";
         leaf name {
           type string {
             length "1..32";
@@ -144,7 +155,7 @@ module huawei-aaa {
       list user-group {
         key "name";
         description
-          "Configure the collection of certain users. Certain default user groups are set before an NE is delivered and cannot be deleted.";
+          "Configure a collection of certain users. Certain default user groups are set before an NE is delivered and cannot be deleted.";
         leaf name {
           type string {
             length "1..32";
@@ -160,7 +171,7 @@ module huawei-aaa {
           list user-group-task-group-map {
             key "task-group-name";
             description
-              "Configure the task group in a user group.";
+              "Configure task group in a user group.";
             leaf task-group-name {
               type leafref {
                 path "../../../../../task-groups/task-group/name";
@@ -196,7 +207,7 @@ module huawei-aaa {
       list authentication-scheme {
         key "authen-scheme-name";
         description
-          "Configure the authentication scheme. The default authentication scheme cannot be deleted.";
+          "Configure authentication scheme. The default authentication scheme cannot be deleted.";
         leaf authen-scheme-name {
           type string {
             length "1..32";
@@ -250,7 +261,7 @@ module huawei-aaa {
       list authorization-scheme {
         key "author-scheme-name";
         description
-          "Configure the authorization scheme. The default authorization scheme cannot be deleted.";
+          "Configure authorization scheme. The default authorization scheme cannot be deleted.";
         leaf author-scheme-name {
           type string {
             length "1..32";
@@ -371,7 +382,7 @@ module huawei-aaa {
       list accounting-scheme {
         key "acct-scheme-name";
         description
-          "Configure the accounting scheme. The default accounting scheme cannot be deleted.";
+          "Configure accounting scheme. The default accounting scheme cannot be deleted.";
         leaf acct-scheme-name {
           type string {
             length "1..32";
@@ -396,7 +407,7 @@ module huawei-aaa {
       list domain {
         key "name";
         description
-          "Configure the same authentication/authorization scheme or server by users in a domain. The default domain cannot be deleted.";
+          "Configure in a domain, users apply the same authentication/authorization scheme or server. The default domain cannot be deleted.";
         leaf name {
           type string {
             length "1..64";
@@ -417,6 +428,7 @@ module huawei-aaa {
           type leafref {
             path "../../../authentication-schemes/authentication-scheme/authen-scheme-name";
           }
+          default "default1";
           description
             "Name of the authentication scheme used by the domain, it is not case sensitive. The default value varies according to domains. The default value is restored when the node is deleted.";
         }
@@ -431,6 +443,7 @@ module huawei-aaa {
           type leafref {
             path "../../../accounting-schemes/accounting-scheme/acct-scheme-name";
           }
+          default "default1";
           description
             "Name of the accounting scheme used by the domain, it is not case sensitive. The default value varies according to domains. The default value is restored when the node is deleted.";
         }
@@ -566,12 +579,12 @@ module huawei-aaa {
     container alive-user-qrys {
       config false;
       description
-        "List of alive user.";
+        "List of alive users.";
       list alive-user-qry {
         key "user-id";
         config false;
         description
-          "Operational state of alive user query to display all the current active users.";
+          "Statistics of active users.";
         leaf user-id {
           type uint32;
           config false;
@@ -662,7 +675,7 @@ module huawei-aaa {
     }
     container global-policy {
       description
-        "Configure global Policy.";
+        "Configure global policy.";
       leaf domain-location {
         type aaa-domain-location-type;
         default "after-delimiter";
@@ -679,6 +692,7 @@ module huawei-aaa {
         type leafref {
           path "../../domains/domain/name";
         }
+        default "default_admin";
         description
           "Admin user default domain.";
       }
@@ -686,6 +700,7 @@ module huawei-aaa {
         type leafref {
           path "../../domains/domain/name";
         }
+        default "default1";
         description
           "Access user default domain.";
       }
@@ -728,10 +743,10 @@ module huawei-aaa {
     }
     container recording {
       description
-        "Configure the recording configuration.";
+        "Configure recording function.";
       container function {
         description
-          "Configure the recording function.";
+          "Configure recording function.";
         leaf cmd-record-scheme {
           type leafref {
             path "../../schemes/scheme/name";
@@ -810,11 +825,11 @@ module huawei-aaa {
     }
     container abnormal-offline-hidens {
       description
-        "List of enables the function that replaces the abnormal offline reason with 'the user requests to go offline'.";
+        "List of the function that replaces the abnormal offline reason with 'the user requests to go offline'.";
       list abnormal-offline-hiden {
         key "hidden-id";
         description
-          "Configure enables the function that replaces the abnormal offline reason with 'the user requests to go offline'.";
+          "Configure the function that replaces the abnormal offline reason with 'the user requests to go offline'.";
         leaf hidden-id {
           type uint32 {
             range "2..18";
@@ -831,7 +846,7 @@ module huawei-aaa {
     }
     container local-server {
       description
-        "Configure indicates a local AAA server. You can perform access security configurations for local users.";
+        "Configure a local AAA server. You can perform access security configurations for local users.";
       uses aaa:aaa-local-server-type;
     }
   }

@@ -38,12 +38,12 @@ module huawei-efm {
       enum "disable" {
 	    value 0;
         description
-          "Indicate that EFM is disabled.";
+          "Indicates that EFM is disabled.";
       }
       enum "enable" {
 	    value 1;
         description
-          "Indicate that EFM is enabled.";
+          "Indicates that EFM is enabled.";
       }
     }
     description
@@ -54,12 +54,12 @@ module huawei-efm {
       enum "active" {
 	    value 1;
         description
-          "Indicate that EFM works in active mode.";
+          "Indicates that EFM works in active mode.";
       }
       enum "passive" {
 	    value 0;
         description
-          "Indicate that EFM works in passive mode.";
+          "Indicates that EFM works in passive mode.";
       }
     }
     description
@@ -70,22 +70,22 @@ module huawei-efm {
       enum "discovery" {
 	    value 2;
         description
-          "Indicate that the EFM session is in the discovery state.";
+          "Indicates that the EFM session is in the discovery state.";
       }
       enum "detect" {
 	    value 1;
         description
-          "Indicate that the EFM session is in the detect state.";
+          "Indicates that the EFM session is in the detect state.";
       }
       enum "loopback-be-controlled" {
 	    value 5;
         description
-          "Indicate that the EFM session is in the loopback state on the end that receives the session connection request.";
+          "Indicates that the EFM session is in the loopback state on the end that receives the session connection request.";
       }
       enum "loopback-control" {
 	    value 3;
         description
-          "Indicate that the EFM session is in the loopback state on the end that initiates the session connection request.";
+          "Indicates that the EFM session is in the loopback state on the end that initiates the session connection request.";
       }
       enum "loopback-control-forward" {
 	    value 4;
@@ -213,17 +213,17 @@ module huawei-efm {
       enum "none" {
 	    value 0;
         description
-          "Indicate that the EFM session is in the Loopback state (none).";
+          "Indicates that the EFM session is in the Loopback state (none).";
       }
       enum "loopback-be-controlled" {
 	    value 1;
         description
-          "Indicate that the EFM session is in the Loopback state on the end that receives the session connection request.";
+          "Indicates that the EFM session is in the Loopback state on the end that receives the session connection request.";
       }
       enum "loopback-control" {
 	    value 2;
         description
-          "Indicate that the EFM session is in the Loopback state on the end that initiates the session connection request.";
+          "Indicates that the EFM session is in the Loopback state on the end that initiates the session connection request.";
       }
     }
     description
@@ -271,7 +271,7 @@ module huawei-efm {
           type enable-state;
           default "disable";
           description
-            "Indicate whether EFM is enabled on an interface.";
+            "Indicates whether EFM is enabled on an interface.";
         }
         leaf mode {
           type work-mode;
@@ -313,14 +313,14 @@ module huawei-efm {
           must "(../state='disable' and ../ignore-loopback-request='disable') or (../state='enable')";
           default "disable";
           description
-            "Indicate that this interface will ignore the loopback request from the peer.";
+            "Indicates that this interface will ignore the loopback request from the peer.";
         }
         leaf trigger-if-down {
           type enable-state;
           must "(../state='disable' and ../trigger-if-down='disable') or (../state='enable')";
           default "disable";
           description
-            "Indicate that EFM blocks an interface after detecting a fault.";
+            "Indicates that EFM blocks an interface after detecting a fault.";
         }
         leaf hold-up-time {
           type uint16 {
@@ -346,7 +346,7 @@ module huawei-efm {
             type enable-state;
             default "disable";
             description
-              "Indicate whether notification of error frames is enabled.";
+              "Indicates whether notification of error frames is enabled.";
           }
           leaf period {
             type uint32 {
@@ -380,7 +380,7 @@ module huawei-efm {
             type enable-state;
             default "disable";
             description
-              "Indicate whether notification of error frame seconds is enabled.";
+              "Indicates whether notification of error frame seconds is enabled.";
           }
           leaf period {
             type uint32 {
@@ -436,7 +436,7 @@ module huawei-efm {
             type enable-state;
             default "disable";
             description
-              "Indicate whether notification of error frame periods is enabled.";
+              "Indicates whether notification of error frame periods is enabled.";
           }
           leaf period {
             type uint32 {

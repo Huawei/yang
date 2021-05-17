@@ -60,6 +60,7 @@ module huawei-routing-policy-ext {
     description
       "Augment the huawei-routing-policy model to add actions configuration.";
     container apply-stitch-pmsi {
+      must "(pmsi-type='incoming' and p2mp-template) or (pmsi-type='mldp' and not(p2mp-template)) or (pmsi-type='rsvp-te' and not(root-ip) and p2mp-template)";
       presence "Create parameters of apply stitch-pmsi.";
       description
         "Enable/disable the PMSI attribute.";
@@ -88,7 +89,7 @@ module huawei-routing-policy-ext {
       leaf root-ip {
         when "not(../pmsi-type='rsvp-te')";
         type inet:ipv4-address-no-zone;
-        must "../p2mp-template or not(../pmsi-type='incoming')";
+        must "(../pmsi-type='incoming' and ../p2mp-template) or (../pmsi-type='mldp' and not(../p2mp-template))";
         description
           "MLDP root ip address.";
       }
@@ -97,6 +98,7 @@ module huawei-routing-policy-ext {
         type leafref {
             path "/mpls:mpls/mpls-te:te/mpls-te:p2mp-templates/mpls-te:p2mp-template/mpls-te:name";
           }
+        must "../pmsi-type='incoming' or (../pmsi-type='rsvp-te' and not(../root-ip))";
         description
           "P2MP TE template.";
       }

@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fm-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-fm-deviations-NE5000E";
+  prefix fm-devs-NE5000E;
+
+  import huawei-fm {
+    prefix fm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviation of Fault management module.";
+
+  revision 2020-05-24 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/fm:clear-all-history-alarm" {
+    deviate not-supported;
+  }
+  deviation "/fm:clear-history-alarm" {
+    deviate not-supported;
+  }
+  deviation "/fm:clear-active-alarm" {
+    deviate not-supported;
+  }
+  deviation "/fm:clear-all-active-alarm" {
+    deviate not-supported;
+  }
+  deviation "/fm:reset-all-alarm-statistic" {
+    deviate not-supported;
+  }
+}
