@@ -1,0 +1,44 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-cups-extension {
+  namespace urn:huawei:yang:huawei-bras-cups-extension;
+  prefix cups-extension;
+  import huawei-bras-cu-agent {
+    prefix bras-cu-agent;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "CUPS extended attribute.";
+  
+  revision 2020-08-26 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bras-control";
+
+  ext:refine-ext "/ifm:ifm/ifm:interfaces/ifm:interface/bras-cu-agent:cu-agent/bras-cu-agent:cu-mode-interface/bras-cu-agent:cu-mode-enable"{
+   ext:operation-exclude "create|update|delete" {
+      description
+          "The cu-mode is created by CP, cannot be create, update or deleted.";
+      when "/bras-cu-agent:bras-cu-agent/bras-cu-agent:cu-agent";
+    }
+  }
+}

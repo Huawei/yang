@@ -1,0 +1,107 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-system-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-ietf-system-deviations-NE8000M8M14";
+  prefix system-devs-NE8000M8M14;
+
+  import ietf-system {
+    prefix sys;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions for the
+     configuration and identification of some common system
+     properties within a device containing a NETCONF server. This
+     includes data node definitions for system identification,
+     time-of-day management, user management, DNS resolver
+     configuration, and some protocol operations for system
+     management.";
+
+  revision 2020-03-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/sys:system/sys:radius" {
+    deviate not-supported;
+  }
+  deviation "/sys:system/sys:authentication" {
+    deviate not-supported;
+  }
+  deviation "/sys:system/sys:dns-resolver" {
+    deviate not-supported;
+  }
+  deviation "/sys:system-shutdown" {
+    deviate not-supported;
+  }
+  deviation "/sys:system-state/sys:platform" {
+    deviate not-supported;
+  }
+  deviation "/sys:system/sys:contact" {
+    deviate not-supported;
+  }
+  deviation "/sys:system/sys:hostname" {
+    deviate replace {
+      type string {
+        length "1..246";
+      }
+    }
+    deviate add {
+      default "HUAWEI";
+    }
+  }
+  deviation "/sys:system/sys:location" {
+    deviate not-supported;
+  }
+  deviation "/sys:system/sys:clock/sys:timezone/sys:timezone-name" {
+    deviate not-supported;
+  }
+  deviation "/sys:system/sys:clock/sys:timezone/sys:timezone-utc-offset/sys:timezone-utc-offset" {
+    deviate replace {
+      type int16 {
+        range "-1080..1080";
+      }
+    }
+    deviate add {
+      default "0";
+    }
+  }
+  deviation "/sys:system/sys:ntp/sys:server/sys:name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/sys:system/sys:ntp/sys:server/sys:association-type" {
+    deviate replace {
+      type enumeration {
+        enum server {
+          value 0;
+          description
+            "Use client association mode. This device
+             will not provide synchronization to the
+             configured NTP server.";
+        }
+        enum peer {
+          value 1;
+          description
+            "Use symmetric active association mode.
+             This device may provide synchronization
+             to the configured NTP server.";
+        }
+      }
+    }
+  }
+}

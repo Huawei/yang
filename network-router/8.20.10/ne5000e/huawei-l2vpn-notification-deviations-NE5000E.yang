@@ -1,0 +1,229 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2vpn-notification-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-l2vpn-notification-deviations-NE5000E";
+  prefix l2vpn-notification-devs-NE5000E;
+
+  import huawei-l2vpn-notification {
+    prefix l2vpn-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Notification of l2vpn-notification-deviations-ne5ke.";
+
+  revision 2019-07-08 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/l2vpn-notification:vpls-pw-redundancy-degraded" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpls-pw-redundancy-degraded-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-single-ccc-pw-down" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-single-ccc-pw-up" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-svc-pw-down" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-svc-pw-up" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-ais" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-ais-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-client-signal-failue" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-client-signal-failue-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-dbdi" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-dbdi-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-dloc" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-dloc-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-excess" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-excess-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-fail" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-fail-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-fdi" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-fdi-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-lock" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-lock-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-local-lock" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-local-lock-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-unexpected-meg" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-unexpected-meg-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-unexpected-mep" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-unexpected-mep-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-mismatch-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-mismerge" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-mismerge-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-unexpected-period" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-unexpected-period-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-rdi" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-rdi-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-sd1-far" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-sd1-far-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-sd2-far" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-sd2-far-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-sd2-near" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-sd2-near-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-unknown" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-unknown-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-bypass-pw-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-bypass-pw-mismatch-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-degraded" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-degraded-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-id-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-id-mismatch-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-lost" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-lost-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-out-age" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-out-age-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-patch-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-patch-mismatch-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-switch-fail" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-switch-fail-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-type-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-type-mismatch-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-pw-redundancy-degraded" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-pw-redundancy-degraded-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-bgp-pw-switch-protecting-to-working" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-bgp-pw-switch-working-to-protecting" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-ldp-pw-switch-working-to-protecting" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:vpws-ldp-pw-switch-protecting-to-working" {
+    deviate not-supported;
+  }
+}

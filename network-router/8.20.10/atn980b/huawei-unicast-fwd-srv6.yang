@@ -1,0 +1,211 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-unicast-fwd-srv6 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-unicast-fwd-srv6";
+  prefix unicast-fwd-srv6;
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+   import huawei-srv6 {
+    prefix srv6;
+  }
+  import huawei-license {
+    prefix lcs;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Unicast forward SRv6 configuration.";
+  revision 2021-04-17 {
+    description
+      "Add network slice license nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-19 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef srv6-ttl-mode-type {
+    type enumeration {
+      enum "pipe" {
+        value 1;
+        description
+          "Pipe mode.";
+      }
+      enum "uniform" {
+        value 3;
+        description
+          "Uniform mode.";
+      }
+    }
+    description
+      "SRv6 TTL mode type.";
+  }
+  typedef lcs-slice-rtu-type {
+    type enumeration {
+      enum "data-plane" {
+        value 1;
+        description
+          "License type for data-plane.";
+      }
+      enum "flex-channel" {
+        value 2;
+        description
+          "License type for flex-channel.";
+      }
+    }
+    description
+      "Network-slice license type.";
+  }
+  ext:task-name "forwarding";
+  augment "/ni:network-instance/ni:instances/ni:instance/srv6:srv6" {
+    description
+      "Unicast forward configuration to the SRv6 module.";
+    container global-ipv6uc-attribute {
+      when "../srv6:enable = 'true'";
+      description
+        "Configure global IPv6 unicast attributes.";
+      leaf forward-mode-through {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the forwarding mode of an SRv6 Tunnel to software loopback.";
+      }
+      leaf srv6-ttl-mode{
+        type srv6-ttl-mode-type;
+        default "pipe";
+        description
+          "Set SRv6 tunnel-encapsulated mode.";
+      }
+    }
+  }
+
+  augment /lcs:license {
+    description
+      "Network slice license.";
+    container lcs-network-slices {
+      description
+        "List of license information about all boards network-slice resources.";
+      list lcs-network-slice {
+        key "slot-id license-type";
+        description
+          "Configure license information about a board to active network-slice resources.";
+        leaf slot-id {
+          type leafref {
+            path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+          }
+          description
+            "Indicates the slot ID of a board.";
+        }
+        leaf license-type {
+          type lcs-slice-rtu-type;
+            description
+              "Network slice license type.";
+        }
+        leaf resource-size {
+          type uint32 {
+            range "1..65535";
+          }
+          mandatory true;
+          description
+            "The number of network-slice resources is related to a specific board.";
+        }
+      }
+    }
+    container lcs-usage-slice-items {
+      config false;
+      description
+        "List of network slice license resource usage information.";
+      list lcs-usage-slice-item {
+        key "feature-name";
+        description
+          "Statistics of network slice license resource usage information.";
+        leaf feature-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Name of the control item corresponding to the network license.";
+        }
+        leaf feature-description {
+          type string {
+            length "1..255";
+          }
+          description
+            "Description of the control item corresponding to the network license.";
+        }
+        leaf activated-total {
+          type uint32;
+          description
+            "Number of activated resources.";
+        }
+        leaf available-total {
+          type uint32;
+          description
+            "Number of remaining available resources.";
+        }
+        leaf total {
+          type uint32;
+          description
+            "Total number of resources.";
+        }
+        container lcs-info-boards {
+        description
+          "List of board network slice license information.";
+          list lcs-info-board {
+            key "position";
+            description
+              "Statistics of network slice license usage information on a board.";
+            leaf position {
+              type string {
+                length "1..32";
+              }
+              description
+                "Board position.";
+            }
+            leaf barcode {
+              type string {
+                length "1..128";
+              }
+              description
+                "Bar code in the electronic label of a board.";
+            }
+            leaf usage-on-board {
+              type uint32;
+              description
+              "Number of used resources on a board.";
+            }
+            leaf available-on-board {
+              type uint32;
+              description
+                "Number of remaining available resources on a board.";
+            }
+            leaf activated-on-board {
+              type uint32;
+              description
+                "Total number of resources on a board.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

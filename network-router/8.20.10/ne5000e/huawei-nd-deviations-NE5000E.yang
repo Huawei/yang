@@ -1,0 +1,58 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nd-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-nd-deviations-NE5000E";
+  prefix nd-devs-NE5000E;
+
+  import huawei-nd {
+    prefix nd;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-if-ip {
+    prefix if-ip;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "ND management.";
+
+  revision 2019-04-24 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/nd:nd/nd:ipv6-neighbors/nd:ipv6-neighbor/nd:nickname" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if/nd:nd-collection/nd:if-property/nd:na-glean" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if/nd:nd-collection/nd:proxys/nd:anyway-proxy" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if/nd:nd-collection/nd:proxys/nd:inner-vlan-proxy" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if/nd:nd-collection/nd:proxys/nd:inter-vlan-proxy" {
+    deviate not-supported;
+  }
+  deviation "/nd:nd/nd:ipv6-neighbors/nd:ipv6-neighbor/nd:bd-id" {
+    deviate replace {
+      type uint32 {
+        range "1..32768";
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-y1731-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-y1731-deviations-NE8000M8M14";
+  prefix y1731-devs-NE8000M8M14;
+
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-l2tpv3 {
+    prefix l2tpv3;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Y.1731 is developed by ITU-T for operations, administration and maintenance (OAM) of Ethernet, which providing fault management and performance management solutions for Ethernet.";
+
+  revision 2019-05-05 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef sslm-interval-deviations {
+    type enumeration {
+      enum 1000ms {
+        value 1000;
+        description
+          "Interval of 1000 ms.";
+      }
+      enum 10000ms {
+        value 10000;
+        description
+          "Interval of 10000 ms.";
+      }
+    }
+    description
+      "SSLM interval.";
+  }
+
+  typedef interval100and1000-deviations {
+    type enumeration {
+      enum 100ms {
+        value 100;
+        description
+          "Interval of 100ms.";
+      }
+      enum 1000ms {
+        value 1000;
+        description
+          "Interval of 1000ms.";
+      }
+    }
+    description
+      "SSLM message interval.";
+  }
+
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:unexpected-mep-alarm" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:synthetic-loss-send/y1731:interval" {
+    deviate replace {
+      type y1731-devs-NE8000M8M14:sslm-interval-deviations;
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:map-service/y1731:bind-l2tpv3-pw/y1731:tnl-name" {
+    deviate replace {
+      type leafref {
+        path "/l2tpv3:l2tpv3/l2tpv3:pws/l2tpv3:pw/l2tpv3:name";
+      }
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:map-service/y1731:bind-l2tpv3-ccc/y1731:l2tp-ccc-name" {
+    deviate replace {
+      type leafref {
+        path "/l2tpv3:l2tpv3/l2tpv3:instances/l2tpv3:instance/l2tpv3:name";
+      }
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:eth-bn-receive/y1731:mode" {
+    deviate not-supported;
+  }
+  deviation "/y1731:synthetic-on-demand-loss/y1731:input/y1731:interval" {
+    deviate replace {
+      type y1731-devs-NE8000M8M14:interval100and1000-deviations;
+    }
+  }
+}

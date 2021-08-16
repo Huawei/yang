@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cfg-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-cfg-deviations-ATN-980B";
+  prefix cfg-devs-ATN-980B;
+
+  import huawei-cfg {
+    prefix cfg;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configuration management module.";
+
+  revision 2020-02-21 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/cfg:create-user-label-checkpoint" {
+    deviate not-supported;
+  }
+  deviation "/cfg:cfg/cfg:configuration-backup-to-file" {
+    deviate not-supported;
+  }
+  deviation "/cfg:load-configuration-to-candidate" {
+    deviate not-supported;
+  }
+  deviation "/cfg:load-configuration-to-candidate-result" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,173 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-mpls-te-bfd-type {
+  belongs-to huawei-mpls-te-bfd {
+    prefix mpls-te-bfd;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+  revision 2020-09-24 {
+    description
+      "Added the signaling protocol and BFD status information.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-10 {
+    description
+      "Fixed some descriptions.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-03-27 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  /*
+   * typedef-stmt
+   */
+  typedef bfd-for-lsp-mode {
+    type enumeration {
+      enum "one-arm-echo" {
+        value 1;
+        description
+          "BFD One Arm Echo.";
+      }
+    }
+    description
+      "Bfd for lsp type.";
+  }
+  typedef bfd-for-tunnel-mode {
+    type enumeration {
+      enum "one-arm-echo" {
+        value 1;
+        description
+          "BFD One Arm Echo.";
+      }
+    }
+    description
+      "Bfd for tunnel type.";
+  }
+  typedef te-tunnel-bfd-for-lsp-mode {
+    type enumeration {
+      enum "one-arm-echo" {
+        value 1;
+        description
+          "BFD One Arm Echo.";
+      }
+      enum "seamless" {
+        value 2;
+        description
+          "BFD Seamless.";
+      }
+      enum "option-tlv" {
+        value 3;
+        description
+          "BFD detection with options.";
+      }
+    }
+    description
+      "Bfd all mode.";
+  }
+  typedef rsvp-te-tunnel-bfd-for-lsp-mode {
+    type enumeration {
+      enum "one-arm-echo" {
+        value 1;
+        description
+          "BFD One Arm Echo.";
+      }
+      enum "option-tlv" {
+        value 3;
+        description
+          "BFD detection with options.";
+      }
+    }
+    description
+      "Bfd all mode.";
+  }
+  typedef te-tunnel-bfd-for-tunnel-mode {
+    type enumeration {
+      enum "one-arm-echo" {
+        value 1;
+        description
+          "BFD One Arm Echo.";
+      }
+      enum "seamless" {
+        value 3;
+        description
+          "BFD Seamless.";
+      }
+    }
+    description
+      "Bfd for tunnel type.";
+  }
+  typedef bfd-ability-type {
+    type enumeration {
+      enum "enable" {
+        value 1;
+        description
+          "MPLS RSVP-TE BFD enable configuration.";
+      }
+      enum "block" {
+        value 2;
+        description
+          "MPLS RSVP-TE BFD block configuration.";
+      }
+    }
+    description
+      "TE BFD ability type.";
+  }
+  typedef signal-protocol-type {
+    type enumeration {
+      enum "rsvp-te" {
+        value 2;
+        description
+          "RSVP-TE.";
+      }
+      enum "segment-routing" {
+        value 6;
+        description
+          "SR-MPLS TE.";
+      }
+    }
+    description
+      "Bfd signal protocol type.";
+  }
+  typedef bfd-state-type {
+    type enumeration {
+      enum "admin-down" {
+        value 0;
+        description
+          "The TE BFD session is in the admin down state.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "The TE BFD session is in the down state.";
+      }
+      enum "init" {
+        value 2;
+        description
+          "The TE BFD session is in the initial state.";
+      }
+      enum "up" {
+        value 3;
+        description
+          "The TE BFD session is in the up state.";
+      }
+    }
+    description
+      "Bfd state type.";
+  }
+}

@@ -1,0 +1,150 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mac-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-mac-deviations-NE5000E";
+  prefix mac-devs-NE5000E;
+
+  import huawei-mac {
+    prefix mac;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "MAC address forwarding.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef mac-type-deviations {
+    type enumeration {
+      enum dynamic {
+        value 2;
+        description
+          "Dynamic type.";
+      }
+      enum dynamic-black-hole {
+        value 15;
+        description
+          "Dynamic blackhole MAC.";
+      }
+    }
+    description
+      "MAC type.";
+  }
+
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:type" {
+    deviate replace {
+      type mac-devs-NE5000E:mac-type-deviations;
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:uni-suppressions" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/mac:mac/mac:sub-interface-mac-limit/mac:limit-type/mac:limit-rule-ref" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/mac:mac-addresss" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/mac:mac-limit" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-limit/mac:up-threshold" {
+    deviate add {
+      must "../alarm='disable'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-limit/mac:down-threshold" {
+    deviate add {
+      must "../alarm='disable'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify" {
+    deviate delete {
+      must "../../../../l2vpn:mac-learn-style='unqualify'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify/mac:mac-type/mac:static/mac:out-bound-type/mac:ac/mac:out-if-name" {
+    deviate delete {
+      must '((../vlanif-name and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute) or (../../../../../l2vpn:acs/l2vpn:ac[l2vpn:interface-name=current()]))';
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify/mac:mac-type/mac:static/mac:out-bound-type/mac:ac/mac:out-if-name" {
+    deviate add {
+      must '../../../../../l2vpn:acs/l2vpn:ac[l2vpn:interface-name=current()]';
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify/mac:mac-type/mac:static/mac:out-bound-type/mac:ac/mac:pe-vid" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify/mac:mac-type/mac:static/mac:out-bound-type/mac:ac/mac:ce-vid" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify/mac:mac-type/mac:static/mac:out-bound-type/mac:ac/mac:vlanif-name" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bgp-multi-homing-signaling/l2vpn:pws/l2vpn:pw/mac:mac" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify/mac:mac-type/mac:static/mac:out-bound-type/mac:pw" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify/mac:mac-type/mac:static/mac:out-bound-type/mac:ac/mac:ce-any" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:qualifys" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bgpad-signaling/l2vpn:pws/l2vpn:pw/mac:mac" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-mac-total-numbers" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:learned-period" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:vsi-name" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/mac:mac-limit" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:vlan-dynamic-macs" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:vsi-dynamic-macs" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/mac:mac/mac:discards" {
+    deviate not-supported;
+  }
+}

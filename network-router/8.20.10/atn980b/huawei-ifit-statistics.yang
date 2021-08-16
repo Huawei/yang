@@ -1,0 +1,677 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifit-statistics {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ifit-statistics";
+  prefix ifit-statistics;
+  import huawei-ifit {
+    prefix ifit;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "IFIT statistics.";
+  revision 2021-02-25{
+    description
+      "Add new leafs of gtp measurement.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-08-28{
+    description
+      "Add new container:flow-vpws-statistics.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-08-10{
+    description
+      "Add new leaf:evpl-id.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-07-25{
+    description
+      "Modify description: add new leafs of perpacket delay.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-05{
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-28{
+    description
+      "Add new leaf: if-index.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-12{
+    description
+      "Add new containers: flow-peer-ip-statistics and flow-locator-statistics.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-05-17{
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef address-family {
+    type enumeration {
+      enum "ipv4" {
+        value 0;
+        description
+          "IPv4 address family.";
+      }
+      enum "ipv6" {
+        value 1;
+        description
+          "IPv6 address family.";
+      }
+    }
+    description
+      "The type of IP address family.";
+  }
+  typedef vpn-type {
+    type enumeration {
+      enum "vpn" {
+        value 0;
+        description
+          "L3VPN or L3EVPN.";
+      }
+      enum "evpn-vpws" {
+        value 1;
+        description
+          "EVPN VPWS.";
+      }
+    }
+    description
+      "Type of VPN.";
+  }
+  typedef flow-direction {
+    type enumeration {
+      enum "ingress" {
+        value 1;
+        description
+          "Ingress of an IFIT flow.";
+      }
+      enum "transit-input" {
+        value 2;
+        description
+          "TransitInput of an IFIT flow.";
+      }
+      enum "transit-output" {
+        value 3;
+        description
+          "TransitOutput of an IFIT flow.";
+      }
+      enum "egress" {
+        value 4;
+        description
+          "Egress of an IFIT flow.";
+      }
+    }
+    description
+      "Direction of an IFIT flow.";
+  }
+  typedef ifit-gtp-mode {
+    type enumeration {
+      enum "disabled" {
+        value 0;
+        description
+          "The IFIT GTP measurement is disabled.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "The IFIT GTP measurement is enabled.";
+      }
+      enum "sn-enable" {
+        value 2;
+        description
+          "The IFIT GTPU-SN measurement is enabled.";
+      }
+    }
+    description
+      "Mode of the IFIT GTP measurement.";
+  }
+  grouping statistics-data {
+    leaf period-id {
+      type uint64;
+      description
+        "Index of the statistics collection period of IFIT flows.";
+    }
+    leaf packet-count {
+      type uint64;
+      description
+        "Number of packets transmitted within this period.";
+    }
+    leaf byte-count {
+      type uint64;
+      description
+        "Number of bytes transmitted within this period.";
+    }
+    leaf timestamp-second {
+      type uint32;
+      description
+        "Integer part of the number of seconds starting at 00:00:00 UTC on January 1, 1970.";
+    }
+    leaf timestamp-nanosecond {
+      type uint32;
+      description
+        "Decimal part of the number of seconds starting at 00:00:00 UTC on January 1, 1970.";
+    }
+    description
+      "The result data of IFIT statistics.";
+  }
+  
+  ext:task-name "ifit";
+  
+  augment "/ifit:ifit" {
+    description
+      "IFIT augment.";
+    container flow-statistics {
+      config false;
+      description
+        "List of IFIT flow statistics.";
+      list flow-statistic {
+        key "flow-id direction";
+        unique "address-family source-ip destination-ip source-mask destination-mask source-port destination-port protocol vpn-name if-index";
+        description
+          "Statistics of IFIT flow.";
+        leaf flow-id {
+          type uint64;
+          description
+            "The index of an IFIT flow.";
+        }
+        leaf direction {
+          type flow-direction;
+          description
+            "Direction of an IFIT flow.";
+        }
+        leaf address-family {
+          type address-family;
+          description
+            "The IP address family.";
+        }
+        leaf source-ip {
+          type inet:ip-address-no-zone;
+          description
+            "Source IP address.";
+        }
+        leaf destination-ip {
+          type inet:ip-address-no-zone;
+          description
+            "Destination IP address.";
+        }
+        leaf source-mask {
+          type uint8;
+          description
+            "Mask of a source IP address.";
+        }
+        leaf destination-mask {
+          type uint8;
+          description
+            "Mask of a destination IP address.";
+        }
+        leaf source-port {
+          type uint16;
+          description
+            "Source port number.";
+        }
+        leaf destination-port {
+          type uint16;
+          description
+            "Destination port number.";
+        }
+        leaf protocol {
+          type uint8;
+          description
+            "Protocol number.";
+        }
+        leaf vpn-name {
+          type pub-type:vrf-name;
+          description
+            "Name of VPN.";
+        }
+        leaf if-index {
+          type uint32;
+          description
+            "Interface ID.";
+        }
+        leaf error-info {
+          type uint8;
+          description
+            "Information of error.";
+        }
+        leaf interval {
+          type uint16;
+          units "s";
+           description
+            "Interval of an IFIT flow.";
+        }
+        leaf period-id {
+          type uint64;
+          description
+           "Index of the statistics collection period of IFIT flows.";
+        }
+        leaf packet-count {
+          type uint64;
+          description
+            "Number of packets transmitted within this period.";
+        }
+        leaf byte-count {
+          type uint64;
+          description
+            "Number of bytes transmitted within this period.";
+        }
+        leaf timestamp-second {
+          type uint32;
+          description
+            "Integer part of the number of seconds starting at 00:00:00 UTC on January 1, 1970.";
+        }
+        leaf timestamp-nanosecond {
+          type uint32;
+          description
+            "Decimal part of the number of seconds starting at 00:00:00 UTC on January 1, 1970.";
+        }
+        leaf ttl {
+          type uint8 {
+            range "0..255";
+          }
+          description
+            "The forwarding hops of an IFIT flow.";
+        }
+        leaf tunnel-if-index {
+          type string {
+            length "1..144";
+          }
+          description
+            "The tunnel interface index of ECMP tunnel group.";
+        }
+        leaf dscp {
+          type uint8;
+          description
+            "DSCP value.";	    
+        }
+        leaf cfg-id {
+          type uint16;
+          description
+            "The CFG ID of LAG.";
+        }
+        leaf measure-mode {
+          type uint8;
+          description
+            "The IFIT measure mode.";
+        }
+        leaf gtp-mode {
+          type ifit-gtp-mode;
+          description
+            "The IFIT gtp measure mode.";
+        }
+        leaf gtp-te-id {
+          type uint32;
+          description
+            "GTP te-id value.";
+        }
+        leaf disorder-count {
+          type uint64;
+          description
+            "Number of disorder packets within all periods.";
+        }
+        leaf sn-packet-loss-count {
+          type uint64;
+          description
+            "Number of loss packets calculated by sn within all periods.";
+        }
+      }
+    }
+    
+    container flow-peer-ip-statistics {
+      config false;
+      description
+        "List of IFIT flow peer IP statistics.";
+      list flow-peer-ip-statistic {
+        key "flow-id direction";
+        description
+          "Statistics of IFIT flow peer IP.";
+        leaf flow-id {
+          type uint64;
+          description
+            "The index of an IFIT flow.";
+        }
+        leaf direction {
+          type flow-direction;
+          description
+            "Direction of an IFIT flow.";
+        }
+        leaf peer-ip {
+          type inet:ip-address-no-zone;
+          description
+            "Peer IP address bound to a VPN instance.";
+        }
+        leaf vpn-type {
+          type vpn-type;
+          description
+            "Type of VPN.";
+        }
+        leaf vpn-name {
+          type pub-type:vrf-name;
+          description
+            "Name of VPN.";
+        }
+        leaf evpl-id {
+          type uint32 {
+            range "1..16777215";
+          }
+          description
+            "The identification of the EVPL instance.";
+        }
+        leaf evpn-name {
+          type string {
+              length "1..31";
+            }
+          description
+            "Name of EVPN.";
+        }
+        leaf error-info {
+          type uint8;
+          description
+            "Information of error.";
+        }
+        leaf interval {
+          type uint16;
+          units "s";
+           description
+            "Interval of an IFIT flow.";
+        }
+        leaf if-index {
+          type uint32;
+          description
+            "Interface ID.";
+        }
+        uses statistics-data;
+        leaf ttl {
+          type uint8 {
+            range "0..255";
+          }
+          description
+            "The forwarding hops of an IFIT flow.";
+        }
+      }
+    }
+
+    container flow-locator-statistics {
+      config false;
+      description
+        "List of IFIT flow locator statistics.";
+      list flow-locator-statistic {
+        key "flow-id direction";
+        description
+          "Statistics of IFIT flow locator.";
+        leaf flow-id {
+          type uint64;
+          description
+            "The index of an IFIT flow.";
+        }
+        leaf direction {
+          type flow-direction;
+          description
+            "Direction of an IFIT flow.";
+        }
+        leaf locator-prefix {
+          type inet:ip-address-no-zone;
+          description
+            "The locator prefix.";
+        }
+        leaf prefix-length {
+          type uint8;
+          description
+            "Length of prefix.";
+        }
+        leaf vpn-type {
+          type vpn-type;
+          description
+            "Type of VPN.";
+        }
+        leaf vpn-name {
+          type pub-type:vrf-name;
+          description
+            "Name of VPN.";
+        }
+        leaf evpl-id {
+          type uint32 {
+            range "1..16777215";
+          }
+          description
+            "The identification of the EVPL instance.";
+        }
+        leaf evpn-name {
+          type string {
+              length "1..31";
+            }
+          description
+            "Name of EVPN.";
+        }
+        leaf error-info {
+          type uint8;
+          description
+            "Information of error.";
+        }
+        leaf interval {
+          type uint16;
+          units "s";
+           description
+            "Interval of an IFIT flow.";
+        }
+        leaf if-index {
+          type uint32;
+          description
+            "Interface ID.";
+        }
+        uses statistics-data;
+        leaf ttl {
+          type uint8 {
+            range "0..255";
+          }
+          description
+            "The forwarding hops of an IFIT flow.";
+        }
+      }
+    }
+    
+    container flow-hop-statistics {
+      config false;
+      description
+        "List of IFIT flow hop statistics.";
+      list flow-hop-statistic {
+        key "flow-id direction";
+        description
+          "Statistics of IFIT flow hop.";
+        leaf flow-id {
+          type uint64;
+          description
+            "The index of an IFIT flow.";
+        }
+        leaf direction {
+          type flow-direction;
+          description
+            "Direction of an IFIT flow.";
+        }
+        leaf if-index {
+          type uint32;
+          description
+            "Interface ID.";
+        }
+        leaf error-info {
+          type uint8;
+          description
+            "Information of error.";
+        }
+        leaf period-id {
+          type uint64;
+          description
+            "Index of the statistics collection period of IFIT flows.";
+        }
+        leaf packet-count {
+          type uint64;
+          description
+            "Number of packets transmitted within this period.";
+        }
+        leaf byte-count {
+          type uint64;
+          description
+            "Number of bytes transmitted within this period.";
+        }
+        leaf timestamp-second {
+          type uint32;
+          description
+            "Integer part of the number of seconds starting at 00:00:00 UTC on January 1, 1970.";
+        }
+        leaf timestamp-nanosecond {
+          type uint32;
+          description
+            "Decimal part of the number of seconds starting at 00:00:00 UTC on January 1, 1970.";
+        }
+        leaf ttl {
+          type uint8 {
+            range "0..255";
+          }
+          description
+            "The forwarding hops of an IFIT flow.";
+        }
+        leaf tunnel-if-index {
+          type string {
+            length "1..144";
+          }
+          description
+            "The tunnel interface index of ECMP tunnel group.";
+        }
+        leaf cfg-id {
+          type uint16;
+          description
+            "The CFG ID of LAG.";
+        }
+        leaf measure-mode {
+          type uint8;
+          description
+            "The IFIT measure mode.";
+        }
+        leaf maximum-delay {
+          type uint64;
+          units "us";
+          description
+            "Maximum delay.";
+        }
+        leaf minimum-delay {
+          type uint64;
+          units "us";
+          description
+            "Minimum delay.";
+        }
+        leaf total-delay {
+          type uint64;
+          units "us";
+          description
+            "Total delay.";
+        }
+        leaf total-count {
+          type uint64;
+          description
+            "The total count of packets.";
+        }
+        leaf disorder-count {
+          type uint64;
+          description
+            "Number of disorder packets within all periods.";
+        }
+        leaf sn-packet-loss-count {
+          type uint64;
+          description
+            "Number of loss packets calculated by sn within all periods.";
+        }
+      }
+    }
+	
+    container flow-vpws-statistics {
+      config false;
+      description
+        "List of IFIT vpws flow statistics.";
+      list flow-vpws-statistic {
+        key "flow-id direction";
+        unique "if-index";
+        description
+          "Statistics of IFIT vpws flow.";
+        leaf flow-id {
+          type uint64;
+          description
+            "The index of an IFIT flow.";
+        }
+        leaf direction {
+          type flow-direction;
+          description
+            "Direction of an IFIT flow.";
+        }
+        leaf if-index {
+          type uint32;
+          description
+            "Interface ID.";
+        }
+        leaf error-info {
+          type uint8;
+          description
+            "Information of error.";
+        }
+        leaf interval {
+          type uint16;
+          units "s";
+           description
+            "Interval of an IFIT flow.";
+        }
+        uses statistics-data;
+        leaf tunnel-if-index {
+          type string {
+            length "1..144";
+          }
+          description
+            "The tunnel interface index of ECMP tunnel group.";
+        }
+        leaf vpws-instance-id {
+          type uint32;
+          description
+            "The instance id of virtual private wire service.";
+        }
+        leaf cfg-id {
+          type uint16;
+          description
+            "The CFG ID of LAG.";
+        }
+        leaf measure-mode {
+          type uint8;
+          description
+            "The IFIT measure mode.";
+        }
+      }
+    }
+  }
+}

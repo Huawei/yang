@@ -1,0 +1,61 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2vpn-extension-deviations-CH-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-l2vpn-extension-deviations-CH-NE-X8X16";
+  prefix l2vpn-extension-devs-CH-NE-X8X16;
+
+  import huawei-qos {
+    prefix qos;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-l2vpn-extension {
+    prefix l2vpn-extension;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "L2VPN extension.";
+
+  revision 2020-04-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-extension:qos-parameter/l2vpn-extension:profile-name" {
+    deviate add {
+      must "(. and /qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile[qos:name=current()]/qos:mode != '8cos-enhance') or not(.)";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/l2vpn-extension:qos-parameter/l2vpn-extension:profile-name" {
+    deviate add {
+      must "(. and /qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile[qos:name=current()]/qos:mode != '8cos-enhance') or not(.)";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn-extension:qos-parameter/l2vpn-extension:profile-name" {
+    deviate add {
+      must "(. and /qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile[qos:name=current()]/qos:mode != '8cos-enhance') or not(.)";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-switch/l2vpn:pws/l2vpn:pw/l2vpn-extension:qos-parameter/l2vpn-extension:profile-name" {
+    deviate add {
+      must "(. and /qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile[qos:name=current()]/qos:mode != '8cos-enhance') or not(.)";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn:pw-templates/l2vpn:pw-template/l2vpn-extension:qos-parameter/l2vpn-extension:profile-name" {
+    deviate add {
+      must "(. and /qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile[qos:name=current()]/qos:mode != '8cos-enhance') or not(.)";
+    }
+  }
+}

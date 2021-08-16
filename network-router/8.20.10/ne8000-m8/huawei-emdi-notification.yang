@@ -1,0 +1,500 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-emdi-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-emdi-notification";
+  prefix emdi-notification;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of emdi.";
+  revision 2020-08-09 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "emdi";
+  notification bier-packet-disorder-rate-over-threshold {
+    description
+      "Channel packet disorder rate exceeds the threshold.";
+    leaf channel-source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel source address.";
+    }
+    leaf channel-group-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel group address.";
+    }
+    leaf vpn-label {
+      type uint32;
+      description
+        "Vpn label.";
+    }
+    leaf bit-forwarding-ingress-router-id {
+      type uint32;
+      description
+        "Bit forwarding ingress router id.";
+    }
+    leaf sub-domain {
+      type uint32;
+      description
+        "Sub domain.";
+    }
+    leaf bit-string-length {
+      type uint32;
+      description
+        "Bit string length.";
+    }
+    leaf set-identifier {
+      type uint32;
+      description
+        "Set identifier.";
+    }
+    leaf packet-disorder-rate-threshold {
+      type uint32;
+      description
+        "Current packet disorder rate threshold of a channel.";
+    }
+    leaf packet-disorder-rate-value {
+      type uint32;
+      description
+        "Current packet disorder rate value.";
+    }
+  }
+  notification bier-packet-disorder-rate-over-threshold-resume {
+    description
+      "Channel packet disorder rate drops below the threshold.";
+    leaf channel-source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel source address.";
+    }
+    leaf channel-group-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel group address.";
+    }
+    leaf vpn-label {
+      type uint32;
+      description
+        "Vpn label.";
+    }
+    leaf bit-forwarding-ingress-router-id {
+      type uint32;
+      description
+        "Bit forwarding ingress router id.";
+    }
+    leaf sub-domain {
+      type uint32;
+      description
+        "Sub domain.";
+    }
+    leaf bit-string-length {
+      type uint32;
+      description
+        "Bit string length.";
+    }
+    leaf set-identifier {
+      type uint32;
+      description
+        "Set identifier.";
+    }
+    leaf packet-disorder-rate-threshold {
+      type uint32;
+      description
+        "Current packet disorder rate threshold of a channel.";
+    }
+    leaf packet-disorder-rate-value {
+      type uint32;
+      description
+        "Current packet disorder rate value.";
+    }
+  }
+  notification bier-packet-loss-rate-over-threshold {
+    description
+      "Channel packet loss rate exceeds the threshold.";
+    leaf channel-source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel source address.";
+    }
+    leaf channel-group-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel group address.";
+    }
+    leaf vpn-label {
+      type uint32;
+      description
+        "Vpn label.";
+    }
+    leaf bit-forwarding-ingress-router-id {
+      type uint32;
+      description
+        "Bit forwarding ingress router id.";
+    }
+    leaf sub-domain {
+      type uint32;
+      description
+        "Sub domain.";
+    }
+    leaf bit-string-length {
+      type uint32;
+      description
+        "Bit string length.";
+    }
+    leaf set-identifier {
+      type uint32;
+      description
+        "Set identifier.";
+    }
+    leaf packet-loss-rate-threshold {
+      type uint32;
+      description
+        "Current packet loss rate threshold of a channel.";
+    }
+    leaf packet-loss-rate-value {
+      type uint32;
+      description
+        "Current packet loss rate value.";
+    }
+  }
+  notification bier-packet-loss-rate-over-threshold-resume {
+    description
+      "Channel packet loss rate drops below the threshold.";
+    leaf channel-source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel source address.";
+    }
+    leaf channel-group-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel group address.";
+    }
+    leaf vpn-label {
+      type uint32;
+      description
+        "Vpn label.";
+    }
+    leaf bit-forwarding-ingress-router-id {
+      type uint32;
+      description
+        "Bit forwarding ingress router id.";
+    }
+    leaf sub-domain {
+      type uint32;
+      description
+        "Sub domain.";
+    }
+    leaf bit-string-length {
+      type uint32;
+      description
+        "Bit string length.";
+    }
+    leaf set-identifier {
+      type uint32;
+      description
+        "Set identifier.";
+    }
+    leaf packet-loss-rate-threshold {
+      type uint32;
+      description
+        "Current packet loss rate threshold of a channel.";
+    }
+    leaf packet-loss-rate-value {
+      type uint32;
+      description
+        "Current packet loss rate value.";
+    }
+  }
+  notification bier-out-packet-disorder-rate-over-threshold {
+    description
+      "The outbound packet disorder rate of the channel exceeds the threshold.";
+    leaf channel-source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel source address.";
+    }
+    leaf channel-group-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel group address.";
+    }
+    leaf vpn-label {
+      type uint32;
+      description
+        "Vpn label.";
+    }
+    leaf bit-forwarding-ingress-router-id {
+      type uint32;
+      description
+        "Bit forwarding ingress router id.";
+    }
+    leaf sub-domain {
+      type uint32;
+      description
+        "Sub domain.";
+    }
+    leaf bit-string-length {
+      type uint32;
+      description
+        "Bit string length.";
+    }
+    leaf set-identifier {
+      type uint32;
+      description
+        "Set identifier.";
+    }
+    leaf packet-disorder-rate-threshold {
+      type uint32;
+      description
+        "Current packet disorder rate threshold of a channel.";
+    }
+    leaf packet-disorder-rate-value {
+      type uint32;
+      description
+        "Current packet disorder rate value.";
+    }
+    leaf channel-slot {
+      type string {
+        length 1..31;
+      }
+      description
+        "Slot ID.";
+    }
+    leaf channel-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Interface name.";
+    }
+    leaf token {
+      type uint32;
+      description
+        "Multicast leaf token.";
+    }
+  }
+  notification bier-out-packet-disorder-rate-over-threshold-resume {
+    description
+      "The outbound packet disorder rate of the channel drops below the threshold.";
+    leaf channel-source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel source address.";
+    }
+    leaf channel-group-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel group address.";
+    }
+    leaf vpn-label {
+      type uint32;
+      description
+        "Vpn label.";
+    }
+    leaf bit-forwarding-ingress-router-id {
+      type uint32;
+      description
+        "Bit forwarding ingress router id.";
+    }
+    leaf sub-domain {
+      type uint32;
+      description
+        "Sub domain.";
+    }
+    leaf bit-string-length {
+      type uint32;
+      description
+        "Bit string length.";
+    }
+    leaf set-identifier {
+      type uint32;
+      description
+        "Set identifier.";
+    }
+    leaf packet-disorder-rate-threshold {
+      type uint32;
+      description
+        "Current packet disorder rate threshold of a channel.";
+    }
+    leaf packet-disorder-rate-value {
+      type uint32;
+      description
+        "Current packet disorder rate value.";
+    }
+    leaf channel-slot {
+      type string {
+        length 1..31;
+      }
+      description
+        "Slot ID.";
+    }
+    leaf channel-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Interface name.";
+    }
+    leaf token {
+      type uint32;
+      description
+        "Multicast leaf token.";
+    }
+  }
+  notification bier-out-packet-loss-rate-over-threshold {
+    description
+      "The outbound packet loss rate of the channel exceeds the threshold.";
+    leaf channel-source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel source address.";
+    }
+    leaf channel-group-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel group address.";
+    }
+    leaf vpn-label {
+      type uint32;
+      description
+        "Vpn label.";
+    }
+    leaf bit-forwarding-ingress-router-id {
+      type uint32;
+      description
+        "Bit forwarding ingress router id.";
+    }
+    leaf sub-domain {
+      type uint32;
+      description
+        "Sub domain.";
+    }
+    leaf bit-string-length {
+      type uint32;
+      description
+        "Bit string length.";
+    }
+    leaf set-identifier {
+      type uint32;
+      description
+        "Set identifier.";
+    }
+    leaf packet-loss-rate-threshold {
+      type uint32;
+      description
+        "Current packet loss rate threshold of a channel.";
+    }
+    leaf packet-loss-rate-value {
+      type uint32;
+      description
+        "Current packet loss rate value.";
+    }
+    leaf channel-slot {
+      type string {
+        length 1..31;
+      }
+      description
+        "Slot ID.";
+    }
+    leaf channel-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Interface name.";
+    }
+    leaf token {
+      type uint32;
+      description
+        "Multicast leaf token.";
+    }
+  }
+  notification bier-out-packet-loss-rate-over-threshold-resume {
+    description
+      "The outbound packet loss rate of the channel drops below the threshold.";
+    leaf channel-source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel source address.";
+    }
+    leaf channel-group-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Channel group address.";
+    }
+    leaf vpn-label {
+      type uint32;
+      description
+        "Vpn label.";
+    }
+    leaf bit-forwarding-ingress-router-id {
+      type uint32;
+      description
+        "Bit forwarding ingress router id.";
+    }
+    leaf sub-domain {
+      type uint32;
+      description
+        "Sub domain.";
+    }
+    leaf bit-string-length {
+      type uint32;
+      description
+        "Bit string length.";
+    }
+    leaf set-identifier {
+      type uint32;
+      description
+        "Set identifier.";
+    }
+    leaf packet-loss-rate-threshold {
+      type uint32;
+      description
+        "Current packet loss rate threshold of a channel.";
+    }
+    leaf packet-loss-rate-value {
+      type uint32;
+      description
+        "Current packet loss rate value.";
+    }
+    leaf channel-slot {
+      type string {
+        length 1..31;
+      }
+      description
+        "Slot ID.";
+    }
+    leaf channel-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Interface name.";
+    }
+    leaf token {
+      type uint32;
+      description
+        "Multicast leaf token.";
+    }
+  }
+}

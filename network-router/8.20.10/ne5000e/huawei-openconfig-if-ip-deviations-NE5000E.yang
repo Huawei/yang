@@ -1,0 +1,82 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-if-ip-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-if-ip-deviations-NE5000E";
+  prefix of-if-ip-devs-NE5000E;
+
+  import openconfig-interfaces {
+    prefix oc-if;
+  }
+  import openconfig-if-ip {
+    prefix oc-ip;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Openconfig IP (IPv4 and IPv6) interfaces management.";
+
+  revision 2019-03-01 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:config/oc-ip:enabled" {
+    deviate add {
+      must "../enabled='true'";
+    }
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:addresses/oc-ip:address/oc-ip:config/oc-ip:prefix-length" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:config/oc-ip:mtu" {
+    deviate replace {
+      type uint16 {
+        range "46..9600";
+      }
+    }
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:state/oc-ip:mtu" {
+    deviate replace {
+      type uint16 {
+        range "46..9600";
+      }
+    }
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:unnumbered" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:neighbors" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:proxy-arp" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:addresses/oc-ip:address/oc-ip:vrrp" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:state/oc-ip:counters" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv6" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:config/oc-ip:dhcp-client" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-ip:ipv4/oc-ip:state/oc-ip:dhcp-client" {
+    deviate not-supported;
+  }
+}

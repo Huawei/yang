@@ -1,0 +1,536 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bgp-deviations-NE8000M8M14";
+  prefix bgp-devs-NE8000M8M14;
+
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ipv4-import-route-protocol-type-deviations {
+    type enumeration {
+      enum direct {
+        value 1;
+        description
+          "Import direct routes.";
+      }
+      enum ospf {
+        value 2;
+        description
+          "Import OSPF routes.";
+      }
+      enum isis {
+        value 3;
+        description
+          "Import IS-IS routes.";
+      }
+      enum static {
+        value 4;
+        description
+          "Import static routes.";
+      }
+      enum rip {
+        value 5;
+        description
+          "Import RIP routes.";
+      }
+      enum unr {
+        value 11;
+        description
+          "Import UNR routes.";
+      }
+    }
+    description
+      "The protocol of bgpcommonImRoute.";
+  }
+
+  typedef ipv4-export-filter-protocol-type-deviations {
+    type enumeration {
+      enum noprotocol {
+        value 0;
+        description
+          "Import routes of all protocols.";
+      }
+      enum direct {
+        value 1;
+        description
+          "Import direct routes.";
+      }
+      enum ospf {
+        value 2;
+        description
+          "Import OSPF routes.";
+      }
+      enum isis {
+        value 3;
+        description
+          "Import IS-IS routes.";
+      }
+      enum static {
+        value 4;
+        description
+          "Import static routes.";
+      }
+      enum rip {
+        value 5;
+        description
+          "Import RIP routes.";
+      }
+    }
+    description
+      "The protocol of bgpcommonImRoute.";
+  }
+
+  typedef af-type-deviations {
+    type enumeration {
+      enum ipv4uni {
+        value 1;
+        description
+          "IPv4 unicast address family.";
+      }
+      enum ipv4multi {
+        value 2;
+        description
+          "IPv4 multicast address family.";
+      }
+      enum ipv4vpn {
+        value 3;
+        description
+          "IPv4 VPN address family.";
+      }
+      enum ipv4labeluni {
+        value 4;
+        description
+          "IPv4 labeled address family.";
+      }
+      enum ipv6uni {
+        value 5;
+        description
+          "IPv6 unicast address family.";
+      }
+      enum ipv6vpn {
+        value 6;
+        description
+          "IPv6 VPN address family.";
+      }
+      enum ipv4flow {
+        value 7;
+        description
+          "IPv4 flow address family.";
+      }
+      enum l2vpnad {
+        value 8;
+        description
+          "L2VPN-AD address family.";
+      }
+      enum evpn {
+        value 9;
+        description
+          "EVPN address family.";
+      }
+      enum mvpn {
+        value 10;
+        description
+          "IPv4 MVPN address family.";
+      }
+      enum vpntarget {
+        value 11;
+        description
+          "VPN target address family.";
+      }
+      enum ipv4vpnmcast {
+        value 12;
+        description
+          "IPv4 VPN multicast address family.";
+      }
+      enum ls {
+        value 13;
+        description
+          "Link-state address family.";
+      }
+      enum mdt {
+        value 14;
+        description
+          "IPv4 MDT address family.";
+      }
+      enum ipv6flow {
+        value 15;
+        description
+          "IPv6 flow address family.";
+      }
+      enum mvpnv6 {
+        value 16;
+        description
+          "IPv6 MVPN address family.";
+      }
+      enum vpnv4flow {
+        value 17;
+        description
+          "VPNv4 flow address family.";
+      }
+      enum vpnv6flow {
+        value 18;
+        description
+          "VPNv6 flow address family.";
+      }
+      enum rpd {
+        value 19;
+        description
+          "RPD address family.";
+      }
+      enum ipv4srpolicy {
+        value 20;
+        description
+          "IPv4-family SR-Policy address family.";
+      }
+      enum ipv6srpolicy {
+        value 21;
+        description
+          "IPv6-family SR-Policy address family.";
+      }
+    }
+    description
+      "The type of bgpcommPrefix.";
+  }
+
+  typedef group-af-type-deviations {
+    type enumeration {
+      enum ipv4uni {
+        value 1;
+        description
+          "IPv4 unicast address family.";
+      }
+      enum ipv4multi {
+        value 2;
+        description
+          "IPv4 multicast address family.";
+      }
+      enum ipv4vpn {
+        value 3;
+        description
+          "IPv4 VPN address family.";
+      }
+      enum ipv4labeluni {
+        value 4;
+        description
+          "IPv4 Labeled Address Family.";
+      }
+      enum ipv6uni {
+        value 5;
+        description
+          "IPv6 unicast address family.";
+      }
+      enum ipv6vpn {
+        value 6;
+        description
+          "IPv6 VPN address family.";
+      }
+      enum l2vpnad {
+        value 8;
+        description
+          "L2VPN-AD Address Family.";
+      }
+      enum evpn {
+        value 9;
+        description
+          "EVPN address family.";
+      }
+      enum mvpn {
+        value 10;
+        description
+          "IPv4 MVPN address family.";
+      }
+      enum vpntarget {
+        value 11;
+        description
+          "Vpn Target Address Family.";
+      }
+      enum ipv4vpnmcast {
+        value 12;
+        description
+          "IPv4 VPN Multicast Address Family.";
+      }
+      enum ls {
+        value 13;
+        description
+          "Link-state Address Family.";
+      }
+      enum mdt {
+        value 14;
+        description
+          "IPv4 MDT Address Family.";
+      }
+      enum mvpnv6 {
+        value 16;
+        description
+          "IPv6 MVPN address family.";
+      }
+    }
+    description
+      "The type of bgpcommPrefix.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:type" {
+    deviate replace {
+      type bgp-devs-NE8000M8M14:af-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp:type" {
+    deviate replace {
+      type bgp-devs-NE8000M8M14:af-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af/bgp:type" {
+    deviate replace {
+      type bgp-devs-NE8000M8M14:group-af-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:import-routes/bgp:import-route/bgp:protocol" {
+    deviate replace {
+      type bgp-devs-NE8000M8M14:ipv4-import-route-protocol-type-deviations;
+    }
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp:peer-up-route-lowest-priority" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp:delay-time" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp:state/bgp:discard-attribute" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp:state/bgp:rely-interface-capability" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:common/bgp:maximum-load-balancing-ibgp" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:common/bgp:maximum-load-balancing-ebgp" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:common/bgp:maximum-load-balancing-ibgp" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:common/bgp:maximum-load-balancing-ebgp" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:lsp-options/bgp:maximum-load-balancing-ingress" {
+    deviate replace {
+      type uint16 {
+        range "1..16";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:lsp-options/bgp:maximum-load-balancing-transit" {
+    deviate replace {
+      type uint16 {
+        range "1..16";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-labeluni/bgp:lsp-options/bgp:maximum-load-balancing-ingress" {
+    deviate replace {
+      type uint16 {
+        range "1..16";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-labeluni/bgp:lsp-options/bgp:maximum-load-balancing-transit" {
+    deviate replace {
+      type uint16 {
+        range "1..16";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:common/bgp:maximum-load-balancing" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:common/bgp:maximum-load-balancing" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:common/bgp:maximum-load-balancing-eibgp" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:common/bgp:maximum-load-balancing-eibgp" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-multicast/bgp:common/bgp:maximum-load-balancing" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-multicast/bgp:common/bgp:maximum-load-balancing-ibgp" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-multicast/bgp:common/bgp:maximum-load-balancing-ebgp" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:common/bgp:maximum-load-balancing-ibgp" {
+    deviate add {
+      must "not (../maximum-load-balancing>1 or ../maximum-load-balancing-eibgp or ../load-balancing-eibgp-enable='true') or ../maximum-load-balancing-ibgp=1";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:common/bgp:maximum-load-balancing-ebgp" {
+    deviate add {
+      must "not (../maximum-load-balancing>1 or ../maximum-load-balancing-eibgp or ../load-balancing-eibgp-enable='true') or ../maximum-load-balancing-ebgp=1";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:common/bgp:maximum-load-balancing" {
+    deviate add {
+      must 'not (../maximum-load-balancing-ibgp>1 or ../maximum-load-balancing-ebgp>1 or ../maximum-load-balancing-eibgp) or ../maximum-load-balancing=1';
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:import-routes/bgp:import-route/bgp:process-id" {
+    deviate add {
+      must "((../protocol='ospf' or ../protocol='isis' or ../protocol='rip') and ../process-id!=0) or (../protocol!='ospf' and ../protocol!='isis' and ../protocol!='rip' and ../process-id=0)";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:export-filter-policys/bgp:export-filter-policy/bgp:protocol" {
+    deviate replace {
+      type bgp-devs-NE8000M8M14:ipv4-export-filter-protocol-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:export-filter-policys/bgp:export-filter-policy/bgp:process-id" {
+    deviate add {
+      must "((../protocol='ospf' or ../protocol='isis' or ../protocol='rip') and ../process-id!=0) or (../protocol!='ospf' and ../protocol!='isis' and ../protocol!='rip' and ../process-id=0)";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:import-routes/bgp:import-route/bgp:process-id" {
+    deviate add {
+      must "((../protocol='ospfv3' or ../protocol='isis' or ../protocol='ripng') and ../process-id!=0) or (../protocol!='ospfv3' and ../protocol!='isis' and ../protocol!='ripng' and ../process-id=0)";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-multicast/bgp:export-filter-policys/bgp:export-filter-policy/bgp:protocol" {
+    deviate replace {
+      type bgp-devs-NE8000M8M14:ipv4-export-filter-protocol-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:export-filter-policys/bgp:export-filter-policy/bgp:process-id" {
+    deviate add {
+      must "((../protocol='ospfv3' or ../protocol='ripng' or ../protocol='isis') and ../process-id!=0) or ((../protocol!='ospfv3' and ../protocol!='ripng' and ../protocol!='isis') and ../process-id=0)";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp:common/bgp:bestroute-igp-metric-ignore" {
+    deviate add {
+      must "not(../bestroute-igp-metric-ignore='true' and ../bestroute-med-plus-igp='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp:common/bgp:bestroute-igp-metric-ignore" {
+    deviate add {
+      must "not(../bestroute-igp-metric-ignore='true' and ../bestroute-med-plus-igp='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-vpn/bgp:bestroute-igp-metric-ignore" {
+    deviate add {
+      must "not(../bestroute-igp-metric-ignore='true' and ../bestroute-med-plus-igp='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-vpn/bgp:bestroute-igp-metric-ignore" {
+    deviate add {
+      must "not(../bestroute-igp-metric-ignore='true' and ../bestroute-med-plus-igp='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-labeluni/bgp:common/bgp:bestroute-igp-metric-ignore" {
+    deviate add {
+      must "not(../bestroute-igp-metric-ignore='true' and ../bestroute-med-plus-igp='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-multicast/bgp:common/bgp:bestroute-igp-metric-ignore" {
+    deviate add {
+      must "not(../bestroute-igp-metric-ignore='true' and ../bestroute-med-plus-igp='true')";
+    }
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp:dynamic-session-limit" {
+    deviate replace {
+      type uint32 {
+        range "1..16000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:bfd-parameter/bgp:valid-ttl-hops-operation" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:bfd-parameter/bgp:valid-ttl-hops" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:bfd-parameter-state" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:bfd-parameter/bgp:valid-ttl-hops" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:memory-limit" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:peer-up-route-lowest-priority" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:delay-time" {
+    deviate not-supported;
+  }
+}

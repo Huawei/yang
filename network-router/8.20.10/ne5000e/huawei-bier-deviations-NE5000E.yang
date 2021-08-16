@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bier-deviations-NE5000E";
+  prefix bier-devs-NE5000E;
+
+  import huawei-bier {
+    prefix bier;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Model for Bit Index Explicit Replication (BIER).";
+
+  revision 2019-09-06 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  typedef address-family-type-deviations {
+    type enumeration {
+      enum ipv6-unicast {
+        value 2;
+        description
+          "IPv6 address family.";
+      }
+    }
+    description
+      "Address family.";
+  }
+
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:address-family" {
+    deviate replace {
+      type bier-devs-NE5000E:address-family-type-deviations;
+    }
+  }
+}

@@ -1,0 +1,206 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-bgp-policy-deviations-CH-NE-X8X16 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-bgp-policy-deviations-CH-NE-X8X16";
+  prefix of-bgp-pol-devs-CH-NE-X8X16;
+
+  import openconfig-bgp-policy {
+    prefix oc-bgp-pol;
+  }
+  import openconfig-routing-policy {
+    prefix oc-rpol;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains data definitions for BGP routing policy.
+     It augments the base routing-policy module with BGP-specific
+     options for conditions and actions.";
+
+  revision 2020-10-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ext-community-filter-name-type-deviations {
+    type union {
+      type string {
+        length "1..51";
+        pattern '([^?\s0-9][^?\s]{0,50})|([\d][^?\s]*[^?\s0-9][^?\s]*)';
+      }
+      type uint16 {
+        range "1..399" {
+          description
+            "The ID of a basic extended community attribute filter is an integer ranging from 1 to 199; the ID of an advanced extended community attribute filter is an integer ranging from 200 to 399.";
+        }
+      }
+    }
+    description
+      "Type definition for ext-community filter name.";
+  }
+
+  typedef bgp-community-regexp-type-deviations {
+    type string {
+      length "1..1026";
+    }
+    description
+      "Type definition for communities specified as regular
+       expression patterns";
+  }
+
+  typedef bgp-ext-community-type-deviations {
+    type union {
+      type string {
+        pattern '(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9]):(429496729[0-5]|42949672[0-8][0-9]|4294967[0-1][0-9]{2}|429496[0-6][0-9]{3}|42949[0-5][0-9]{4}|4294[0-8][0-9]{5}|429[0-3][0-9]{6}|4[0-1][0-9]{7}|[1-3][0-9]{9}|[1-9][0-9]{1,8}|[0-9])';
+      }
+      type string {
+        pattern '(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]):(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])';
+      }
+      type string {
+        pattern '(429496729[0-5]|42949672[0-8][0-9]|4294967[0-1][0-9]{2}|429496[0-6][0-9]{3}|42949[0-5][0-9]{4}|4294[0-8][0-9]{5}|429[0-3][0-9]{6}|4[0-1][0-9]{7}|[1-3][0-9]{9}|[1-9][0-9]{1,8}|[0-9]):(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])';
+      }
+    }
+    description
+      "Type definition for extended community attributes. In the case that
+       common communities are utilised, they are represented as a string
+       of the form:
+        - <2b AS>:<4b value> per RFC4360 section 3.1
+        - <4b IPv4>:<2b value> per RFC4360 section 3.2
+        - <4b AS>:<2b value> per RFC5668 section 2.
+        - route-target:<2b AS>:<4b value> per RFC4360 section 4
+        - route-target:<4b IPv4>:<2b value> per RFC4360 section 4";
+    reference
+      "RFC 4360 - BGP Extended Communities Attribute
+       RFC 5668 - 4-Octet AS Specific BGP Extended Community
+       draft-ietf-idr-segment-routing-te-policy";
+  }
+
+  typedef match-set-options-type-deviations {
+    type enumeration {
+      enum ANY {
+        value 0;
+        description
+          "match is true if given value matches any member
+           of the defined set";
+      }
+    }
+    default "ANY";
+    description
+      "Options that govern the behavior of a match statement.  The
+       default behavior is ANY, i.e., the given value matches any
+       of the members of the defined set";
+  }
+
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:community-sets" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:as-path-sets" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-set-name" {
+    deviate replace {
+      type of-bgp-pol-devs-CH-NE-X8X16:ext-community-filter-name-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-member" {
+    deviate replace {
+      type union {
+        type of-bgp-pol-devs-CH-NE-X8X16:bgp-ext-community-type-deviations;
+        type of-bgp-pol-devs-CH-NE-X8X16:bgp-community-regexp-type-deviations;
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-member" {
+    deviate add {
+      min-elements 1;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:match-set-options" {
+    deviate replace {
+      type of-bgp-pol-devs-CH-NE-X8X16:match-set-options-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:state/oc-bgp-pol:ext-community-set-name" {
+    deviate replace {
+      type of-bgp-pol-devs-CH-NE-X8X16:ext-community-filter-name-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:state/oc-bgp-pol:ext-community-member" {
+    deviate replace {
+      type union {
+        type of-bgp-pol-devs-CH-NE-X8X16:bgp-ext-community-type-deviations;
+        type of-bgp-pol-devs-CH-NE-X8X16:bgp-community-regexp-type-deviations;
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:state/oc-bgp-pol:match-set-options" {
+    deviate replace {
+      type of-bgp-pol-devs-CH-NE-X8X16:match-set-options-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:med-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:origin-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:next-hop-in" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:afi-safi-in" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:local-pref-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:route-type" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:community-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:med-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:origin-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:next-hop-in" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:afi-safi-in" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:local-pref-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:route-type" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:community-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:community-count" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:as-path-length" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:match-as-path-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions" {
+    deviate not-supported;
+  }
+}

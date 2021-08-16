@@ -1,0 +1,100 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-cfm {
+  namespace "urn:huawei:yang:huawei-oam-cfm-cfm";
+  prefix oam-cfm-cfm;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+  revision 2020-09-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "oammgr";
+  typedef cfm-bind-cfm-type {
+    type enumeration {
+      enum "CFM1-CFM2" {
+        value 1;
+        description
+          "Type that CFM1 transfers fault information to CFM2.";
+      }
+      enum "CFM2-CFM1" {
+        value 2;
+        description
+          "Type that CFM2 transfers fault information to CFM1.";
+      }
+    }
+    description
+      "Binding type.";
+  }
+  augment "/oammgr:oammgr" {
+    description
+      "Configure the operation, administration and maintenance (OAM) association function.";
+    container cfm-bind-cfms {
+      description
+        "List of associations between CFM and CFM.";
+      list cfm-bind-cfm {
+        must "not((md-name1=md-name2) and (ma-name1=ma-name2))";
+        key "md-name1 ma-name1 md-name2 ma-name2 bind-type";
+        unique "md-name1 ma-name1 bind-type";
+        unique "md-name2 ma-name2 bind-type";
+        description
+          "Configure an instance of an association between CFM and CFM.";
+        leaf md-name1 {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+          }
+          description
+            "Configure the name of the first MD.";
+        }
+        leaf ma-name1 {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name1]/y1731:mas/y1731:ma/y1731:name";
+          }
+          description
+            "Configure the name of the first MA.";
+        }
+        leaf md-name2 {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+          }
+          description
+            "Configure the name of the second MD.";
+        }
+        leaf ma-name2 {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name2]/y1731:mas/y1731:ma/y1731:name";
+          }
+          description
+            "Configure the name of the second MA.";
+        }
+        leaf bind-type {
+          type cfm-bind-cfm-type;
+          description
+            "Configure a binding type.";
+        }
+      }
+    }
+  }
+}

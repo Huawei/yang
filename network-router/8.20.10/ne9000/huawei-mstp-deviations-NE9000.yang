@@ -1,0 +1,74 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mstp-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-mstp-deviations-NE9000";
+  prefix mstp-devs-NE9000;
+
+  import huawei-mstp {
+    prefix mstp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Multiple spanning tree protocol.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef stp-mode-deviations {
+    type enumeration {
+      enum stp {
+        value 0;
+        description
+          "Spanning tree protocol mode.";
+      }
+      enum rstp {
+        value 2;
+        description
+          "Rapid spanning tree protocol mode.";
+      }
+      enum mstp {
+        value 3;
+        description
+          "Multiple ppanning tree protocol mode.";
+      }
+    }
+    description
+      "STP mode.";
+  }
+
+  deviation "/mstp:mstp/mstp:global/mstp:bridge-address" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:global/mstp:vstp-enable" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:processs/mstp:process/mstp:mode" {
+    deviate replace {
+      type mstp-devs-NE9000:stp-mode-deviations;
+    }
+  }
+  deviation "/mstp:mstp/mstp:default-process/mstp:mode" {
+    deviate replace {
+      type mstp-devs-NE9000:stp-mode-deviations;
+    }
+  }
+  deviation "/mstp:mstp/mstp:default-process/mstp:flush-capability" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:processs/mstp:process/mstp:flush-capability" {
+    deviate not-supported;
+  }
+}

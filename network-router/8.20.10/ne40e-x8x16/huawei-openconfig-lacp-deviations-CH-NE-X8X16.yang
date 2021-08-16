@@ -1,0 +1,64 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-lacp-deviations-CH-NE-X8X16 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-lacp-deviations-CH-NE-X8X16";
+  prefix of-lacp-devs-CH-NE-X8X16;
+
+  import openconfig-lacp {
+    prefix oc-lacp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Link Aggregation Control Protocol (LACP) management, which includes static LACP configuration, dynamic LACP learning.";
+
+  revision 2020-02-18 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef lacp-activity-type-deviations {
+    type enumeration {
+      enum ACTIVE {
+        value 1;
+        description
+          "Interface is an active member, i.e., will detect and maintain aggregates.";
+      }
+    }
+    description
+      "Describes the LACP membership type, active or passive, of the interface in the aggregate.";
+    reference "IEEE 802.1AX-2008";
+  }
+
+  deviation "/oc-lacp:lacp/oc-lacp:interfaces/oc-lacp:interface/oc-lacp:config/oc-lacp:lacp-mode" {
+    deviate replace {
+      type of-lacp-devs-CH-NE-X8X16:lacp-activity-type-deviations;
+    }
+  }
+  deviation "/oc-lacp:lacp/oc-lacp:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-lacp:lacp/oc-lacp:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-lacp:lacp/oc-lacp:interfaces/oc-lacp:interface/oc-lacp:config/oc-lacp:system-id-mac" {
+    deviate not-supported;
+  }
+  deviation "/oc-lacp:lacp/oc-lacp:interfaces/oc-lacp:interface/oc-lacp:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-lacp:lacp/oc-lacp:interfaces/oc-lacp:interface/oc-lacp:members" {
+    deviate not-supported;
+  }
+}

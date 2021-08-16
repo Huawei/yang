@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-ethernet-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-fim-ethernet-deviations-ATN-980B";
+  prefix fim-ethernet-devs-ATN-980B;
+
+  import huawei-fim-ethernet {
+    prefix fim-ethernet;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fim-ethernet module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/fim-ethernet:fim-main" {
+    deviate not-supported;
+  }
+
+}

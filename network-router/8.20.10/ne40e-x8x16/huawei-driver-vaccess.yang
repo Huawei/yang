@@ -1,0 +1,88 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-driver-vaccess {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-driver-vaccess";
+  
+  prefix driver-vaccess;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+  import huawei-vaccess-master {
+    prefix vaccess-master;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Virtual Access Entity Management.";
+  revision 2020-09-03 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "device-mgr";
+  
+  container driver-vaccess {
+    description
+      "Configuration of the driver vaccess.";
+    container board-infos {
+      config false;
+      description
+        "List of AP board information.";
+      list board-info {
+        key "ap-id index";
+        description
+          "Operational state of AP board information.";
+        leaf ap-id {
+          type leafref {
+            path "/vaccess:vaccess/vaccess-master:master/vaccess-master:aps/vaccess-master:ap/vaccess-master:ap-id";
+          }
+          description
+            "AP ID.";
+        }
+        leaf index {
+          type uint32;
+          description
+            "Board index.";
+        }
+        leaf host-name {
+          type string {
+            length "1..246";
+          }
+          description
+            "The host name of the system.";
+        }
+        leaf chassis-id {
+          type uint32;
+          description
+            "Chassis ID.";
+        }
+        leaf slot-id {
+          type uint32;
+          description
+            "Slot ID.";
+        }
+        leaf board-type {
+          type string {
+            length "1..19";
+          }
+          description
+            "Board type.";
+        }
+      }
+    }
+  }
+}

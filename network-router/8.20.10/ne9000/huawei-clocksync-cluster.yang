@@ -1,0 +1,308 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-cluster {
+ namespace "urn:huawei:yang:huawei-clocksync-cluster";
+ prefix clocksync-cluster;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  } 
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Clock cluster management data model define.";
+
+  revision 2020-03-14 {
+    description
+      "Modify the node description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-04 {
+    description
+      "Modify the node description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-25 {
+    description
+      "Fixed some problems.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-05-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef cm-pull-in-state {
+    type enumeration {
+      enum "pull-in" {
+	    value 1;
+        description
+          "Pull-in.";
+      }
+      enum "pull-out" {
+	    value 0;
+        description
+          "Pull-out.";
+      }
+    }
+    description
+      "Cluster management pull in state type.";
+  }
+  typedef cm-src-state {
+    type enumeration {
+      enum "normal" {
+	    value 1;
+        description
+          "Normal.";
+      }
+      enum "abnormal" {
+	    value 0;
+        description
+          "Abnormal.";
+      }
+    }
+    description
+      "Cluster management source state type.";
+  }
+    typedef clock-trace-status {
+    type enumeration {
+      enum "freerun" {
+        value 0;
+        description
+          "Freerun.";
+      }
+      enum "fastlock" {
+	    value 1;
+        description
+          "Fastlock.";
+      }
+      enum "trace" {
+	    value 2;
+        description
+          "Trace.";
+      }
+      enum "hold" {
+	    value 3;
+        description
+          "Hold.";
+      }
+    }
+    description
+      "Clock trace status type.";
+  }
+  ext:task-name  "clksync";
+  container clocksync-cluster {
+    description
+      "Clock cluster management data model.";
+    container inter-links {
+      description
+        "List of configure internal communication interface information. Including the source names and internal communication interface.";
+      list inter-link {
+        key "src-name";
+        description
+          "Configure internal communication interface information.";
+        ext:generated-by system;
+        ext:operation-exclude create|delete;
+        leaf src-name {
+          type string {
+            length "1..51";
+          }
+          description
+            "Name of an internal communication interface.";
+        }
+        leaf switch {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable or disable internal communication.";
+        }
+      }
+    }
+    container freq-trace-topos {
+      config false;
+      description
+        "List of statistics of information about the frequency syncing topology in the cluster. Including the chassis ID, frequency locking status, syncing source name, syncing source status, and pull-in status.";
+      list freq-trace-topo {
+        key "chassis-id";
+        config false;
+        description
+          "Statistics of information about the frequency syncing topology in the cluster.";
+        leaf chassis-id {
+          type string {
+            length "1..21";
+          }
+          config false;
+          description
+            "Chassis ID of the frequency syncing topology.";
+        }
+        leaf trace-state {
+          type clock-trace-status;
+          config false;
+          description
+            "Sync status of the frequency topology.";
+        }
+        leaf pullin-state {
+          type cm-pull-in-state;
+          config false;
+          description
+            "Pull-in status of the frequency syncing topology.";
+        }
+        leaf trace-source {
+          type string {
+            length "1..51";
+          }
+          config false;
+          description
+            "Syncing source name of the frequency topology.";
+        }
+        leaf lock-state {
+          type boolean;
+          default "false";
+          config false;
+          description
+            "Frequency locking status of the cluster chassis.";
+        }
+      }
+    }
+    container time-trace-topos {
+      config false;
+      description
+        "List of statistics of cluster time syncing topology information. Including the chassis ID, time locking status, and PTP device clock IDs.";
+      list time-trace-topo {
+        key "chassis-id";
+        config false;
+        description
+          "Statistics of cluster time syncing topology information.";
+        leaf chassis-id {
+          type string {
+            length "1..21";
+          }
+          config false;
+          description
+            "Chassis ID of time syncing topology.";
+        }
+        leaf trace-source {
+          type string {
+            length "1..51";
+          }
+          config false;
+          description
+            "Source name of the time syncing topology.";
+        }
+        leaf lock-state {
+          type boolean;
+          default "false";
+          config false;
+          description
+            "Time locking status of time syncing topology.";
+        }
+        leaf ptp-clock-id {
+          type string {
+            length "16";
+          }
+          config false;
+          description
+            "PTP device clock ID of cluster time syncing topology.";
+        }
+      }
+    }
+    container freq-link-ports {
+      config false;
+      description
+        "List of statistics of internal communication interface used to perform frequency synchronization between chassis in the cluster.";
+      list freq-link-port {
+        key "src-name";
+        config false;
+        description
+          "Statistics of internal communication interface used to perform frequency synchronization between chassis in the cluster.";
+        leaf src-name {
+          type string {
+            length "1..51";
+          }
+          config false;
+          description
+            "Clock source name of the cluster chassis.";
+        }
+        leaf state {
+          type cm-src-state;
+          config false;
+          description
+            "Clock source status of the cluster chassis.";
+        }
+        leaf peer-src-name {
+          type string {
+            length "1..51";
+          }
+          config false;
+          description
+            "Name of the peer interface in the cluster chassis.";
+        }
+      }
+    }
+    container time-link-ports {
+      config false;
+      description
+        "List of statistics of internal communication interface of the time syncing topology.";
+      list time-link-port {
+        key "src-name";
+        config false;
+        description
+          "Statistics of internal communication interface of the time syncing topology.";
+        leaf src-name {
+          type string {
+            length "1..51";
+          }
+          config false;
+          description
+            "Source name of the time syncing topology.";
+        }
+        leaf state {
+          type cm-src-state;
+          config false;
+          description
+            "Source status of the time syncing topology.";
+        }
+        leaf peer-src-name {
+          type string {
+            length "1..51";
+          }
+          config false;
+          description
+            "Adjacent interface name of the time syncing topology.";
+        }
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "Interface."; 
+    container vinter-links {
+      description
+        "Configure internal communication interface in a virtual cluster.";
+        leaf src-name {
+          type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "../../ifm:type='GigabitEthernet' or ../../ifm:type='10GE' or ../../ifm:type='25GE' or ../../ifm:type='40GE' or ../../ifm:type='50GE' or ../../ifm:type='50|100GE' or ../../ifm:type='100GE' or ../../ifm:type='200GE' or ../../ifm:type='400GE'";
+          must "../../ifm:name=current()";
+          description
+            "Name of an internal communication interface.";
+        }
+    }
+  }
+}

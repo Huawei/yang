@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos-nvo3-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-qos-nvo3-deviations-NE5000E";
+  prefix qos-nvo3-devs-NE5000E;
+
+  import huawei-qos-nvo3 {
+    prefix qos-nvo3;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-qos-nvo3 module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/qos-nvo3:qos-nvo3/qos-nvo3:vni-profile-statistics/qos-nvo3:user-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos-nvo3:qos-nvo3/qos-nvo3:qos-profile-peer-statistics/qos-nvo3:user-queue-statisticss" {
+    deviate not-supported;
+  }
+
+}

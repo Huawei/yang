@@ -1,0 +1,78 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ipv6-nd-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-ipv6-nd-deviations-NE5000E";
+  prefix ipv6-nd-devs-NE5000E;
+
+  import huawei-ipv6-nd {
+    prefix ipv6-nd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "ND management.";
+
+  revision 2019-11-24 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:ipv6-neighbors/ipv6-nd:ipv6-neighbor/ipv6-nd:nickname" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:if-property/ipv6-nd:na-glean" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:proxys/ipv6-nd:anyway-proxy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:proxys/ipv6-nd:inner-vlan-proxy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:proxys/ipv6-nd:inter-vlan-proxy" {
+    deviate not-supported;
+  }
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:m-lag-global" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/ipv6-nd:nd-bd-property" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ipv6-nd:nd-dyn-nb-limit" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:if-property/ipv6-nd:link-down-trigger-del-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:proxys/ipv6-nd:local-proxy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:static-neighbor/ipv6-nd:vlan-ifs" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:ra-property/ipv6-nd:dns-server-addresses" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:ra-property/ipv6-nd:dns-search-suffixes" {
+    deviate not-supported;
+  }
+}

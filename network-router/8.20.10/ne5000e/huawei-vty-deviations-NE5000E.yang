@@ -1,0 +1,57 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vty-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-vty-deviations-NE5000E";
+  prefix vty-devs-NE5000E;
+
+  import huawei-vty {
+    prefix vty;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "VTY.";
+
+  revision 2019-05-01 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  typedef vty-authmode-type-deviations {
+    type enumeration {
+      enum password {
+        value 2;
+        description
+          "VTY authentication mode password.";
+      }
+      enum aaa {
+        value 3;
+        description
+          "VTY authentication mode aaa.";
+      }
+      enum init {
+        value 4;
+        description
+          "Undo authentication mode.";
+      }
+    }
+    description
+      "Vty and tty authentication mode type.";
+  }
+
+  deviation "/vty:vty/vty:lines/vty:line/vty:auth-mode" {
+    deviate replace {
+      type vty-devs-NE5000E:vty-authmode-type-deviations;
+    }
+  }
+}

@@ -1,0 +1,83 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-te-cr-static-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mpls-te-cr-static-deviations-NE5000E";
+  prefix mpls-te-cr-static-devs-NE5000E;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-te {
+    prefix te;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-te-interface {
+    prefix te-interface;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-mpls-te-cr-static {
+    prefix mpls-te-cr-static;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2019-12-17 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:ingress/mpls-te-cr-static:ingress" {
+    deviate delete {
+      must 'bandwidth<=pir';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:ingress/mpls-te-cr-static:ingress/mpls-te-cr-static:out-interface-name" {
+    deviate delete {
+      must "/ni:network-instance/ni:instances/ni:instance[ni:name='_public_']/te:te/te-interface:interfaces/te-interface:interface[te-interface:name=current()]/te-interface:attribute/te-interface:bandwidth/te-interface:bc0>=../pir";
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:ingress/mpls-te-cr-static:ingress/mpls-te-cr-static:pir" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:transit/mpls-te-cr-static:transit" {
+    deviate delete {
+      must 'bandwidth<=pir';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:transit/mpls-te-cr-static:transit/mpls-te-cr-static:out-interface-name" {
+    deviate delete {
+      must "/ni:network-instance/ni:instances/ni:instance[ni:name='_public_']/te:te/te-interface:interfaces/te-interface:interface[te-interface:name=current()]/te-interface:attribute/te-interface:bandwidth/te-interface:bc0>=../pir";
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:transit/mpls-te-cr-static:transit/mpls-te-cr-static:pir" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:bidirection-static-cr-lsps" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te-cr-static:cr-static" {
+    deviate not-supported;
+  }
+}

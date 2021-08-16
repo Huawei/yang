@@ -1,0 +1,147 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-pppox-access-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-bras-pppox-access-deviations-NE9000";
+  prefix bras-pppox-access-devs-NE9000;
+
+  import huawei-bras-pppox-access {
+    prefix bras-pppox-access;
+  }
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-pppox-access module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-pppox-access:bras-pppox-access" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-pppoe-user-login-failure-number" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-ppp-slot-statistic" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-pppoe-slot-statistic" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-ppp-interface-statistic" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-pppoe-interface-statistic" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-chasten-ppp-user-by-mac" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-chasten-ppp-user-by-option105" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-urpf-discard-statistic" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:reset-specified-urpf-statistic" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-pppox-access:bras-pppox" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-pppox-access:bras-pppox/bras-pppox-access:slot-access-limit" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-pppox-access:bras-pppox/bras-pppox-access:access-ip" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-pppox-access:bras-pppox/bras-pppox-access:access-ip-limit" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-pppox-access:bras-pppox/bras-pppox-access:max-sessions" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-pppox-access:bras-pppox/bras-pppox-access:pppoe-slot-statistic" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-pppox-access:bras-pppox/bras-pppox-access:ppp-slot-statistic" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-pppox-access:bras-pppox/bras-pppox-access:urpf-discard-statistics" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/bras-pppox-access:bras-pppox" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-pppox-access:pppoe-bind-vt" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-pppox-access:pppoe-vt" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-pppox-access:tcp-mss-value" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-pppox-access:ipv4-urpf" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-pppox-access:ipv6-urpf" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-pppox-access:roam-domain" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-pppox-access:pppoe-bas-statics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-pppox-access:ppp-bas-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-pppox-access:ppp" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-pppox-access:map-interface" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-pppox-access:pppox" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-upboards/bras-cu-controller:resource-upboard/bras-pppox-access:pppox" {
+    deviate not-supported;
+  }
+
+}

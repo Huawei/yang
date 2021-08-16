@@ -1,0 +1,264 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-rpc-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-bgp-rpc-deviations-NE9000";
+  prefix bgp-rpc-devs-NE9000;
+
+  import huawei-bgp-rpc {
+    prefix bgp-rpc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+
+  revision 2020-11-05 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef af-type-deviations {
+    type enumeration {
+      enum ipv4uni {
+        value 1;
+        description
+          "IPv4 unicast address family.";
+      }
+      enum ipv4multi {
+        value 2;
+        description
+          "IPv4 multicast address family.";
+      }
+      enum ipv4vpn {
+        value 3;
+        description
+          "IPv4 VPN address family.";
+      }
+      enum ipv4labeluni {
+        value 4;
+        description
+          "IPv4 labeled address family.";
+      }
+      enum ipv6uni {
+        value 5;
+        description
+          "IPv6 unicast address family.";
+      }
+      enum ipv6vpn {
+        value 6;
+        description
+          "IPv6 VPN address family.";
+      }
+      enum ipv4flow {
+        value 7;
+        description
+          "IPv4 flow address family.";
+      }
+      enum l2vpnad {
+        value 8;
+        description
+          "L2VPN-AD address family.";
+      }
+      enum evpn {
+        value 9;
+        description
+          "EVPN address family.";
+      }
+      enum mvpn {
+        value 10;
+        description
+          "IPv4 MVPN address family.";
+      }
+      enum vpntarget {
+        value 11;
+        description
+          "VPN target address family.";
+      }
+      enum ipv4vpnmcast {
+        value 12;
+        description
+          "IPv4 VPN multicast address family.";
+      }
+      enum ls {
+        value 13;
+        description
+          "Link-state address family.";
+      }
+      enum mdt {
+        value 14;
+        description
+          "IPv4 MDT address family.";
+      }
+      enum ipv6flow {
+        value 15;
+        description
+          "IPv6 flow address family.";
+      }
+      enum mvpnv6 {
+        value 16;
+        description
+          "IPv6 MVPN address family.";
+      }
+      enum vpnv4flow {
+        value 17;
+        description
+          "VPNv4 flow address family.";
+      }
+      enum vpnv6flow {
+        value 18;
+        description
+          "VPNv6 flow address family.";
+      }
+      enum rpd {
+        value 19;
+        description
+          "RPD address family.";
+      }
+      enum ipv4srpolicy {
+        value 20;
+        description
+          "IPv4-family SR-Policy address family.";
+      }
+      enum ipv6srpolicy {
+        value 21;
+        description
+          "IPv6-family SR-Policy address family.";
+      }
+    }
+    description
+      "The type of bgpcommPrefix.";
+  }
+
+  typedef group-af-type-deviations {
+    type enumeration {
+      enum ipv4uni {
+        value 1;
+        description
+          "IPv4 unicast address family.";
+      }
+      enum ipv4multi {
+        value 2;
+        description
+          "IPv4 multicast address family.";
+      }
+      enum ipv4vpn {
+        value 3;
+        description
+          "IPv4 VPN address family.";
+      }
+      enum ipv4labeluni {
+        value 4;
+        description
+          "IPv4 Labeled Address Family.";
+      }
+      enum ipv6uni {
+        value 5;
+        description
+          "IPv6 unicast address family.";
+      }
+      enum ipv6vpn {
+        value 6;
+        description
+          "IPv6 VPN address family.";
+      }
+      enum l2vpnad {
+        value 8;
+        description
+          "L2VPN-AD Address Family.";
+      }
+      enum evpn {
+        value 9;
+        description
+          "EVPN address family.";
+      }
+      enum mvpn {
+        value 10;
+        description
+          "IPv4 MVPN address family.";
+      }
+      enum vpntarget {
+        value 11;
+        description
+          "Vpn Target Address Family.";
+      }
+      enum ipv4vpnmcast {
+        value 12;
+        description
+          "IPv4 VPN Multicast Address Family.";
+      }
+      enum ls {
+        value 13;
+        description
+          "Link-state Address Family.";
+      }
+      enum mdt {
+        value 14;
+        description
+          "IPv4 MDT Address Family.";
+      }
+      enum mvpnv6 {
+        value 16;
+        description
+          "IPv6 MVPN address family.";
+      }
+    }
+    description
+      "The type of bgpcommPrefix.";
+  }
+
+  deviation "/bgp-rpc:reset-base-process-bgp-af/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:af-type-deviations;
+    }
+  }
+  deviation "/bgp-rpc:reset-base-process-bgp-peer-af/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:af-type-deviations;
+    }
+  }
+  deviation "/bgp-rpc:reset-base-process-bgp-peer-as/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:af-type-deviations;
+    }
+  }
+  deviation "/bgp-rpc:reset-base-process-bgp-peer-type/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:af-type-deviations;
+    }
+  }
+  deviation "/bgp-rpc:reset-base-process-bgp-group-af/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:group-af-type-deviations;
+    }
+  }
+  deviation "/bgp-rpc:refresh-base-process-bgp-af-direction/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:af-type-deviations;
+    }
+  }
+  deviation "/bgp-rpc:refresh-base-process-bgp-peer-af-direction/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:af-type-deviations;
+    }
+  }
+  deviation "/bgp-rpc:refresh-base-process-bgp-peer-type-direction/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:af-type-deviations;
+    }
+  }
+  deviation "/bgp-rpc:refresh-base-process-bgp-group-af/bgp-rpc:input/bgp-rpc:address-family" {
+    deviate replace {
+      type bgp-rpc-devs-NE9000:group-af-type-deviations;
+    }
+  }
+}

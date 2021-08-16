@@ -1,0 +1,43 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l3vpn-deviations-CH-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-l3vpn-deviations-CH-NE-X8X16";
+  prefix l3vpn-devs-CH-NE-X8X16;
+
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Layer 3 Virtual Private Network (L3VPN). An L3VPN is a virtual private network set up over public networks by Internet Service Providers (ISPs) and Network Service Providers (NSPs).";
+
+  revision 2020-08-06 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/l3vpn:static-label" {
+    deviate replace {
+      type uint32 {
+        range "16..32783";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:parameter/l3vpn:vn-id" {
+    deviate not-supported;
+  }
+}

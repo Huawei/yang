@@ -1,0 +1,344 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-gre {
+  namespace "urn:huawei:yang:huawei-gre";
+  prefix gre;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Generic Routing Encapsulation (GRE) is a tunneling protocol that can encapsulate a
+     wide variety of network layer protocols inside virtual point-to-point links or point-to-multipoint
+     links over an Internet Protocol network.";
+  revision 2020-05-18 {
+    description
+      "Add when/must condition.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-06 {
+    description
+      "Remove GRE group.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-26 {
+    description
+      "White-box errors are resolved.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-01-13 {
+    description
+      "Add a leaf node mtu-check-enable.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-10 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  
+  ext:task-name "gre";
+  rpc reset-keep-alive {
+    description
+      "Clear Keepalive packet statistics.";
+    input {
+      leaf tnl-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Tunnel name.";
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance" {
+    description
+      "GRE configuration on network instance.";
+    container gre {
+      description "Configure Generic Routing Encapsulation.";
+      leaf-list bind-src-interface-names {
+        type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        must "../../ni:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name";
+        max-elements 1024;
+        description
+          "Specify the interface bound to a GRE tunnel.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type" {
+    description
+      "GRE configuration on interface.";
+    case gre {
+      description
+        "Generic Routing Encapsulation.";
+      container gre-tunnel {
+        when "../../ifm:type='Tunnel'";
+        presence "Specifies tunnel-protocol GRE.";
+        description
+          "Configure GRE tunnel.";
+        choice source {
+          description
+            "Source configuration.";
+          case ip-info {
+            description
+              "Source IPv4 address configuration.";
+            leaf address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Source IPv4 address.";
+            }
+          }
+          case if-info {
+            description
+              "Source interface name configuration.";
+            leaf if-name {
+              type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "current()!=../../../ifm:name";
+              must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:l2-mode-enable='true')";
+              description
+                "Source interface name.";
+            }
+          }
+        }
+        container destination {
+          description
+            "Configure destination.";
+          leaf vpn-name {
+            when "../address";
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+            description
+              "Destination VPN name.";
+          }
+          leaf address {
+            type inet:ipv4-address-no-zone;
+            description
+              "Destination IPv4 address.";
+          }
+        }
+        leaf key {
+          type pub-type:password-extend {
+            length "1..128";
+          }
+          description
+            "GRE tunnel key, an integer ranging from 0 to 4294967295.";
+        }
+        container keep-alive-enable {
+          presence "Enable keep alive.";
+          description
+            "Enable/disable GRE keep alive.";
+          leaf period {
+            type uint32 {
+              range "1..32767";
+            }
+            units "s";
+            default "5";
+            description
+              "Interval at which Keepalive packets are sent.";
+          }
+          leaf retry-cnt {
+            type uint32 {
+              range "1..255";
+            }
+            default "3";
+            description
+              "Number of retry times for Keepalive packets.";
+          }
+        }
+        leaf path-mtu-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable tunnel PMTU learning.";
+        }
+        leaf statistic-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the GRE tunnel statistic.";
+        }
+        leaf checksum-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the GRE tunnel checksum.";
+        }
+        leaf mtu-check-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the GRE tunnel mtu check.";
+        }
+        container keep-alive {
+          config false;
+          description
+            "Statistics of Keepalive packets.";
+          leaf send-req-cnt {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of sent Keepalive packets.";
+          }
+          leaf recv-rsp-cnt {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of received Keepalive response packets.";
+          }
+          leaf recv-req-cnt {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of received Keepalive packets.";
+          }
+          leaf send-rsp-cnt {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of sent Keepalive response packets.";
+          }
+        }
+      }
+    }
+    case gre6 {
+      description
+        "Generic Routing Encapsulation on IPv6.";
+      container gre6-tunnel {
+        when "../../ifm:type='Tunnel'";
+        presence "Specifies tunnel-protocol GRE IPv6.";
+        description
+          "Configure GRE IPv6 tunnel.";
+        choice source {
+          description
+            "Source configuration.";
+          case ip-info {
+            description
+              "Source IPv6 address configuration.";
+            leaf address {
+              type inet:ipv6-address-no-zone;
+              description
+                "Source IPv6 address.";
+            }
+          }
+          case if-info {
+            description
+              "Source interface name configuration.";
+            leaf if-name {
+              type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "current()!=../../../ifm:name";
+              must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:l2-mode-enable='true')";
+              description
+                "Source interface name.";
+            }
+          }
+        }
+        container destination {
+          description
+            "Configure destination.";
+          leaf vpn-name {
+            when "../address";
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+            description
+              "Destination vpn name.";
+          }
+          leaf address {
+            type inet:ipv6-address-no-zone;
+            description
+              "Destination IPv6 address.";
+          }
+        }
+      }
+    }
+    case p2mp-gre {
+      description
+        "Multicast Generic Routing Encapsulation.";
+      container mgre-tunnel {
+        when "../../ifm:type='Tunnel'";
+        presence "Specifies tunnel-protocol GRE p2mp.";
+        description
+          "Configure mGRE tunnel.";
+        choice source {
+          description
+            "Source configuration.";
+          case ip-info {
+            description
+              "Source IPv4 address configuration.";
+            leaf address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Source IPv4 address.";
+            }
+          }
+          case if-info {
+            description
+              "Source interface name configuration.";
+            leaf if-name {
+              type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "current()!=../../../ifm:name";
+              must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:l2-mode-enable='true')";
+              description
+                "Source interface name.";
+            }
+          }
+        }
+        leaf key {
+          type pub-type:password-extend {
+            length "1..128";
+          }
+          description
+            "GRE tunnel key, an integer ranging from 0 to 4294967295.";
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,411 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-flowspec-forward {
+  namespace "urn:huawei:yang:huawei-flowspec-forward";
+  prefix flowspec-forward;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Flowspec-forward.";
+  revision 2020-03-12 {
+    description
+      "Descriptive optimization.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-25 {
+    description
+      "The modifications in the schema file are synchronized to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-31 {
+    description
+      "The modifications in the schema file are synchronized to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-18 {
+    description
+      "The modifications in the schema file are synchronized to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-24 {
+    description
+      "The modifications in the schema file are synchronized to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-04-20 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "qos";
+  container flowspec-forward {
+    description
+      "Configure flowspec forward.";    
+    leaf statistic-enable {
+        type boolean;
+        default "false";
+          description
+            "Enable/disable flowspec statistic.";
+    }
+    leaf vxlan-packet-enable {
+        type boolean;
+        default "false";
+          description
+            "Enable/disable flowspec only for the vxlan packet.";
+    }
+    leaf match-ip-layer {
+        type boolean;
+        default "false";
+          description
+            "Enable/disable flowspec only for the IP layer.";
+    }
+    container protocol-protect-disables {
+      description
+        "List of flowspec protocol-protect disable.";
+      list protocol-protect-disable {
+        key "flow-type";
+        description
+        "Configure protocol-protect disable instance.";
+        leaf flow-type {
+          type enumeration {
+            enum ipv4 {
+              value 0;
+              description
+                "Protocol-protect disable IPv4.";
+            }
+            enum ipv6 {
+              value 1;
+              description
+                "Protocol-protect disable IPv6.";
+            }
+          }
+          description
+            "BGP protocol-protect disable flowtype, The value all is mutually exclusive with IPv4 and IPv6.";
+        }
+      }
+    }
+
+    container flowspec-rules {
+      config false;
+      description
+        "List of flowspec rule.";
+      list flowspec-rule {
+        key "slot-id flow-route-index index";
+        description
+          "Operational data of flowspec rule.";
+        leaf slot-id {
+          type string {
+            length "1..16";
+            pattern "(c[cl]c\\d+/)?\\d+";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf flow-route-index {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Specify the flow-route Index.";
+        }
+        leaf index {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Logical index of combination rule.";
+        }
+        leaf source-ip {
+          type inet:ipv4-address-no-zone;
+          description
+            "Source IPv4 address.";
+        }
+        leaf source-ip-prefix {
+          type inet:ipv4-prefix;
+          description
+            "Source IPv4 prefix length.";
+        }
+        leaf destination-ip {
+          type inet:ipv4-address-no-zone;
+          description
+            "Destination IPv4 address.";
+        }
+        leaf destination-ip-prefix {
+          type inet:ipv4-prefix;
+          description
+            "Destination IPv4 prefix length.";
+        }
+        leaf protocol {
+          type uint16;
+          description
+            "Protocol number.";
+        }
+        leaf source-port {
+          type uint16;
+          description
+            "Source port.";
+        }
+        leaf destination-port {
+          type uint16;
+          description
+            "Destination port.";
+        }
+        leaf fragment-flag {
+          type uint8;
+          description
+            "Fragment flag: 0 indicates the non-fragment; 1 indicates the fragment; 2 indicates fragmentation is ignored.";
+        }
+        leaf first-fragment-flag {
+          type uint8;
+          description
+            "First fragment flag: 0 indicates the non-start fragment; 1 indicates the start fragment; 2 indicates whether the first fragment is received is ignored.";
+        }
+        leaf tcp-flag {
+          type uint8;
+          description
+            "Flag of a TCP header.";
+        }
+        leaf dscp {
+          type uint8;
+          description
+            "Identifier of packet priority.";
+        }
+        leaf icmp-type {
+          type uint8;
+          description
+            "ICMP type.";
+        }
+        leaf icmp-code {
+          type uint8;
+          description
+            "ICMP code.";
+        }
+        leaf as {
+          type uint8 {
+            range "1..63";
+          }
+          description
+            "Number to which an AS number is mapped.";
+        }
+      }
+    }
+
+    container flowspec-ipv6-rules {
+      config false;
+      description
+        "List of flowspec IPv6 rule.";
+      list flowspec-ipv6-rule {
+        key "slot-id flow-route-index index";
+        description
+          "Operational data of flowspec IPv6 rule.";
+        leaf slot-id {
+          type string {
+            length "1..16";
+            pattern "(c[cl]c\\d+/)?\\d+";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf flow-route-index {
+         type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Specify the flow-route Index.";
+        }
+        leaf index {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Logical index of combination rule.";
+        }
+        leaf source-ip {
+          type inet:ipv6-address-no-zone;
+          description
+            "Source IPv6 address.";
+        }
+        leaf source-ip-prefix {
+          type inet:ipv6-prefix;
+          description
+            "Source IPv6 prefix length.";
+        }
+        leaf destination-ip {
+          type inet:ipv6-address-no-zone;
+          description
+            "Destination IPv6 address.";
+        }
+        leaf destination-ip-prefix {
+          type inet:ipv6-prefix;
+          description
+            "Destination IPv6 prefix length.";
+        }
+        leaf protocol {
+          type uint16;
+          description
+            "Protocol number.";
+        }
+        leaf source-port {
+          type uint16;
+          description
+            "Source port.";
+        }
+        leaf destination-port {
+          type uint16;
+          description
+            "Destination port.";
+        }
+        leaf fragment-flag {
+          type uint8;
+          description
+            "Fragment flag: 0 indicates the non-fragment; 1 indicates the fragment; 2 indicates fragmentation is ignored.";
+        }
+        leaf first-fragment-flag {
+          type uint8;
+          description
+            "First fragment flag: 0 indicates the non-start fragment; 1 indicates the start fragment; 2 indicates whether the first fragment is received is ignored.";
+        }
+        leaf tcp-flag {
+          type uint8;
+          description
+            "Flag of a TCP header.";
+        }
+        leaf dscp {
+          type uint8;
+          description
+            "Identifier of packet priority.";
+        }
+        leaf icmp-type {
+          type uint8;
+          description
+            "ICMP type.";
+        }
+        leaf icmp-code {
+          type uint8;
+          description
+            "ICMP code.";
+        }
+      }
+    }
+
+    container flowspec-rule-statisticss {
+      config false;
+      description
+        "List of flowspec rule statistics.";
+      list flowspec-rule-statistics {
+        key "slot-id protocol";
+        description
+          "Flowspec rule statistics.";
+        leaf slot-id {
+          type string {
+            length "1..16";
+            pattern "(c[cl]c\\d+/)?\\d+";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf protocol {
+          type inet:ip-version;
+          description
+            "Ip family type.";
+        }
+        leaf rule-numbers {
+          type uint32;
+          description
+            "Rule numbers.";
+        }
+      }
+    }
+  }
+  
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+            "Flowspec forward.";
+    container flowspec-forward {
+      description
+        "Configure flowspec forward.";
+      container refluence {
+        presence "create flowspec refluence";
+        description
+          "Enable/disable flowspec refluence.";
+      }
+      container tunnel-pop {
+        presence "create tunnel-pop";
+        description
+         "Enable/disable flowspec after tunnel pop."; 
+      }
+      container disables {
+        when "not(../refluence) and ../../ifm:class='main-interface'";
+        description
+          "List of flowspec disables.";
+        list disable {
+          must "(./flow-type='all' and not(../disable[flow-type='ipv4']) and not(../disable[flow-type='ipv6'])) or (./flow-type!='all' and not(../disable[flow-type='all']))";
+          key "flow-type";
+          description
+          "Configure flowspec disable instance.";
+          leaf flow-type {
+            type enumeration {
+              enum all {
+                value 0;
+                description
+                  "Flowspec disable.";
+              }
+              enum ipv4 {
+                value 1;
+                description
+                  "Flowspec disable IPv4.";
+              }
+              enum ipv6 {
+                value 2;
+                description
+                  "Flowspec disable IPv6.";
+              }
+            }
+            description
+              "BGP flowspec disable flowtype, The value all is mutually exclusive with IPv4 and IPv6.";
+          }
+        }
+      }
+    }
+  }
+
+  augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
+    description
+      "Flowspec forward.";
+    container flowspec-forward {
+      description
+          "Configure flowspec forward.";
+      container ipv6-flowspec-enable {
+        presence "ipv6-flowspec-enable";
+        description
+          "Enable/disable IPv6-flowspec.";
+      }
+    }
+  }
+}

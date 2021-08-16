@@ -1,0 +1,215 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-bgp-common-multiprotocol {
+  yang-version 1;
+  belongs-to huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  include huawei-bgp-type;
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+  revision 2021-02-03 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+  grouping advertise-dependent-filter-type {
+    description
+      "The advertise-dependent-filter-type configuration.";
+    container advertise-dependent-filter {
+      presence "Enable peer advertising dependent filter.";
+      description
+        "Configure peer advertising dependent filter.";
+      leaf dependent-filter-switch {
+        type bgp:peer-attr-enable-type;
+        mandatory true; 
+        description
+          "Specify a switch type.";
+      }
+      leaf dependent-filter {
+        when "../dependent-filter-switch='enable'";
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        mandatory true; 
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        when "../dependent-filter-switch='enable'";
+        type bgp:dependent-prefix-filter-type;
+        mandatory true;       
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter {
+        when "../dependent-filter-switch='enable'";
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+    container advertise-dependent-filter-state {
+      config false; 
+      description
+        "Peer advertising dependent filter state.";
+      leaf dependent-filter {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        type bgp:dependent-prefix-filter-type;
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter {
+       type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+  }
+  grouping advertise-dependent-filter-group-type {
+    description
+      "The advertise-dependent-filter-group-type configuration.";
+    container advertise-dependent-filter {
+      presence "Enable peer group advertising dependent filter.";
+      description
+        "Configure peer group advertising dependent filter.";
+      leaf dependent-filter {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        mandatory true;
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        type bgp:dependent-prefix-filter-type;
+        mandatory true;       
+        description
+          "Specify a depentent route-filter mode.";
+      }
+      leaf condition-filter {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+  }
+  grouping advertise-dependent-filter6-type {
+    description
+      "The advertise-dependent-filter-type configuration.";
+    container advertise-dependent-filter6 {
+      presence "Enable peer advertising dependent filter.";
+      description
+        "Configure peer advertising dependent filter.";
+      leaf dependent-filter-switch {
+        type bgp:peer-attr-enable-type;
+        mandatory true; 
+        description
+          "Specify a switch type.";
+      }
+      leaf dependent-filter6 {
+        when "../dependent-filter-switch='enable'";
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        mandatory true; 
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        when "../dependent-filter-switch='enable'";
+        type bgp:dependent-prefix-filter-type;
+        mandatory true;       
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter6 {
+        when "../dependent-filter-switch='enable'";
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+    container advertise-dependent-filter6-state {
+      config false; 
+      description
+        "Peer advertising dependent filter state.";
+      leaf dependent-filter6 {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        type bgp:dependent-prefix-filter-type;
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter6 {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+  }
+  grouping advertise-dependent-filter6-group-type {
+    description
+      "The advertise-dependent-filter-group-type configuration.";
+    container advertise-dependent-filter6 {
+      presence "Enable peer group advertising dependent filter.";
+      description
+        "Configure peer group advertising dependent filter.";
+      leaf dependent-filter6 {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        mandatory true;
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        type bgp:dependent-prefix-filter-type;
+        mandatory true;
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter6 {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+  }
+}

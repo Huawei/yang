@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-vas-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bras-vas-deviations-NE8000M8M14";
+  prefix bras-vas-devs-NE8000M8M14;
+
+  import huawei-bras-vas {
+    prefix bras-vas;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-vas module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-vas:bras-vas/bras-vas:edsg-coexist-attribute/bras-vas:traffic-policy" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-basic-access:bras/bras-vas:vas" {
+    deviate not-supported;
+  }
+
+}

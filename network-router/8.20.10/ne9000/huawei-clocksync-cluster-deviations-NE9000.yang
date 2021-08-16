@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-cluster-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-clocksync-cluster-deviations-NE9000";
+  prefix clocksync-cluster-devs-NE9000;
+
+  import huawei-clocksync-cluster {
+    prefix clocksync-cluster;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-cluster module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/clocksync-cluster:clocksync-cluster/clocksync-cluster:inter-links" {
+    deviate not-supported;
+  }
+
+}

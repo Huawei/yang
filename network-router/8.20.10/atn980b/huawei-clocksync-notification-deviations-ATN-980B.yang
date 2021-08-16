@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-notification-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-clocksync-notification-deviations-ATN-980B";
+  prefix clocksync-notification-devs-ATN-980B;
+
+  import huawei-clocksync-notification {
+    prefix clocksync-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-notification module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/clocksync-notification:clock-ces-acr-lock-fail" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-ces-acr-lock-fail-resume" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-cluster-topo-fail" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-cluster-topo-fail-resume" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:ptp-acr-sync-bad" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:ptp-acr-sync-bad-resume" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-ces-acr-master-pw-change" {
+    deviate not-supported;
+  }
+
+}

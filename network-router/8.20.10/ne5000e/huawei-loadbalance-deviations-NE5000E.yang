@@ -1,0 +1,107 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-loadbalance-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-loadbalance-deviations-NE5000E";
+  prefix loadbalance-devs-NE5000E;
+
+  import huawei-loadbalance {
+    prefix loadbalance;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-loadbalance module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef cx-trunk-ecmp-deviations {
+    type enumeration {
+      enum "ip" {
+        value 5;
+        description 
+          "IP mode.";
+      }
+      enum "mac" {
+        value 6;
+        description 
+          "MAC mode.";
+      }
+      enum "vll" {
+        value 7;
+        description 
+          "VLL mode.";
+      }
+      enum "tunnel-info" {
+        value 8;
+        description 
+          "Tunnel information.";
+      }
+      enum "tunnel-inner-ip" {
+        value 9;
+        description 
+          "Tunnel inner IP information.";
+      }
+    }
+    description 
+      "CX load balancing trunk ecmp.";
+  }
+
+  deviation "/loadbalance:loadbalance/loadbalance:global-attribute/loadbalance:trunk-multicast-enable" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:global-attribute/loadbalance:tunnel-info-gtp-enable" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:hash-key-ip" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:hash-instructions" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:ecmp-stateful" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/loadbalance:loadbalance/loadbalance:packet" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/loadbalance:loadbalance" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/loadbalance:loadbalance" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/loadbalance:loadbalance/loadbalance:hash-fields/loadbalance:hash-field/loadbalance:trunk-ecmp" {
+    deviate replace {
+      type loadbalance-devs-NE5000E:cx-trunk-ecmp-deviations;
+    }
+  }
+
+}

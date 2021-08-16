@@ -1,0 +1,978 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifit-common {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ifit-common";
+  prefix ifit-common;
+  import huawei-ifit {
+    prefix ifit;
+  }
+  import huawei-extension {
+    prefix ext;
+  } 
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+
+  import huawei-evpl {
+    prefix evpl;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions IFIT feature.";
+  revision 2020-04-08 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "ifit";
+  typedef flow-type {
+    type enumeration {
+      enum "unidirection" {
+        value 2;
+        description
+          "An unidirection IFIT flow.";
+      }
+      enum "bidirection" {
+        value 1;
+        description
+          "A bidirection IFIT flow.";
+      }
+    }
+	description
+      "Flow type.";
+  }
+  typedef measure-mode {
+    type enumeration {
+      enum "e2e" {
+        value 1;
+        description
+          "E2E measure mode.";
+      }
+      enum "trace" {
+        value 2;
+        description
+          "Trace measure mode.";
+      }
+    }
+	description
+      "Measure mode.";
+  }
+   typedef addr-type {
+    type enumeration {
+      enum "ipv4" {
+        value 0;
+        description
+          "IPv4 address.";
+      }
+      enum "ipv6" {
+        value 1;
+        description
+          "IPv6 address.";
+      }
+    }
+	description
+      "Address type.";
+  }
+  typedef flow-direction {
+    type enumeration {
+      enum "ingress" {
+        value 1;
+        description
+          "Ingress of an IFIT flow.";
+      }
+      enum "transit-input" {
+        value 2;
+        description
+          "Transit input of an IFIT flow.";
+      }
+      enum "transit-output" {
+        value 3;
+        description
+          "Transit output of an IFIT flow.";
+      }
+      enum "egress" {
+        value 4;
+        description
+          "Egress of an IFIT flow.";
+      }
+    }
+	description
+      "Flow direction.";
+  }
+  typedef addr-family-type {
+    type enumeration {
+      enum "ipv4-unicast" {
+        value 1;
+        description
+          "IPv4 unicast.";
+      }
+      enum "ipv6-unicast" {
+        value 2;
+        description
+          "IPv6 unicast.";
+      }
+    }
+    description
+      "Address family.";
+  }
+  rpc reset-dynamic-flow-all {
+    description
+      "Clear all dynamic IFIT flow.";
+    ext:node-ref "/ifit:ifit/ifit-common:ifit-common/ifit-common:dynamic-flow-hops";
+    input {
+      leaf all-flow {
+        type boolean;
+        mandatory true;
+        description
+          "Clear all dynamic IFIT flow.";
+      }
+    }
+  }
+  rpc reset-dynamic-flowid {
+    description
+      "Clear specified dynamic IFIT ID.";
+    ext:node-ref "/ifit:ifit/ifit-common:ifit-common/ifit-common:dynamic-flow-hops/ifit-common:dynamic-flow-hop";
+    input {
+      leaf flow-id {
+        type uint64;
+        mandatory true;
+        description
+          "Clear specified dynamic IFIT ID.";
+      }
+    }
+  }
+  rpc set-dynamic-flow {
+    description
+      "Set IFIT Flow parameter.";
+    ext:node-ref "/ifit:ifit/ifit-common:ifit-common/ifit-common:dynamic-flows/ifit-common:dynamic-flow";
+    input { 
+      leaf source-ip {
+        type inet:ip-address-no-zone;
+        description
+          "Source IP address of an IFIT flow.";
+      }
+      leaf destination-ip {
+        type inet:ip-address-no-zone;
+        description
+          "Destination IP address of an IFIT flow.";
+      }
+      leaf source-mask {
+        when "../source-ip";
+        type uint8;
+        description
+          "Source IP address mask of an IFIT flow.";
+      }
+      leaf destination-mask {
+        when "../destination-ip";
+        type uint8;
+        description
+         "Destination IP address mask of an IFIT flow.";
+      }
+      leaf address-type {
+        type ifit-common:addr-type;
+        mandatory true;
+        description
+          "Address type of IFIT flow.";
+      }	
+      leaf if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name to which an IFIT flow binds.";
+      }  
+      leaf ni-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "Name of the VPN to which an IFIT flow belongs.";
+      }
+      leaf dscp {
+        type uint16 {
+          range "0..63";
+        }
+        description
+          "DSCP of an IFIT flow.";
+      }
+      leaf interval {
+        type uint16 {
+          range "10|30|60|300";
+        }
+        units "s";
+        default "30";
+        description
+          "Interval of an IFIT flow.";
+      }
+      leaf measure-mode {
+        type ifit-common:measure-mode;
+        default "e2e";
+        description
+          "Measure mode of an IFIT flow.";
+        }
+      leaf loss-measure-enable {
+        type boolean;
+        default "true";
+        description
+            "Enable/disable loss measure function of an IFIT flow.";
+      }
+      leaf delay-measure-enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable delay measure function of an IFIT flow.";
+      }
+      leaf disorder-measure-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable disorder measure function of an IFIT flow.";
+      }
+      leaf protocol {
+        type uint8 {
+          range "0..254";
+          ext:value-meaning {
+            ext:item  "6" {
+              ext:meaning "tcp";
+            }
+            ext:item  "17" {
+              ext:meaning "udp";
+            }
+            ext:item  "132" {
+              ext:meaning "sctp";
+            }
+          }
+        }
+        description
+          "Protocol of an IFIT flow.";
+      }
+      leaf source-port {
+        type uint16 {
+          range "1..65535";
+        }
+        description
+          "Source port of an IFIT flow.";
+      }
+      leaf destination-port {
+        type uint16 {
+          range "1..65535";
+        }
+        description
+          "Destination port of an IFIT flow.";
+      }
+    }
+  }
+  rpc reset-dynamic-flow {
+    description
+      "Clear specified dynamic flow.";
+    ext:node-ref "/ifit:ifit/ifit-common:ifit-common/ifit-common:dynamic-flows/ifit-common:dynamic-flow";
+    input { 
+      leaf address-type {
+        type ifit-common:addr-type;
+        mandatory true;
+        description
+          "Address type of IFIT flow.";
+      }
+      leaf source-ip {
+        type inet:ip-address-no-zone;
+        description
+          "Source IP address of an IFIT flow.";
+      }
+      leaf destination-ip {
+        type inet:ip-address-no-zone;
+        description
+          "Destination IP address of an IFIT flow.";
+      }
+      leaf source-mask {
+        when "../source-ip";
+        type uint8 {
+          range "1..128";
+        }
+        description
+          "Source IP address mask of an IFIT flow.";
+      }
+      leaf destination-mask {
+        when "../destination-ip";
+        type uint8 {
+          range "1..128";
+        }
+        description
+         "Destination IP address mask of an IFIT flow.";
+      }
+      leaf protocol {
+        type uint8 {
+          range "0..254";
+          ext:value-meaning {
+            ext:item  "6" {
+              ext:meaning "tcp";
+            }
+            ext:item  "17" {
+              ext:meaning "udp";
+            }
+            ext:item  "132" {
+              ext:meaning "sctp";
+            }
+          }
+        }
+        description
+          "Protocol of an IFIT flow.";
+      }
+      leaf source-port {
+        type uint16 {
+          range "1..65535";
+        }
+        description
+          "Source port of an IFIT flow.";
+      }
+      leaf destination-port {
+        type uint16 {
+          range "1..65535";
+        }
+        description
+          "Destination port of an IFIT flow.";
+      }
+      leaf ni-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "Name of the VPN to which an IFIT flow belongs.";
+      }
+      leaf if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name to which an IFIT flow binds.";
+      }
+      leaf dscp {
+        type uint16 {
+          range "0..63";
+        }
+        description
+          "DSCP of an IFIT flow.";
+      }
+    }
+  }
+  augment "/ifit:ifit" {
+    description
+      "IFIT augment.";
+    container ifit-common {
+      description
+        "Configure IFIT function.";
+      container global {
+        description
+          "Configure global parameter of IFIT.";
+        leaf node-id {
+          ext:operation-exclude update {
+            when "../../static-instances/static-instance";
+            description "The 'node-id' cannot be updated, when static-instance exists.";
+          }
+          type uint32 {
+            range "1..1048575";
+          }
+          description
+            "Node ID of IFIT.";
+        }
+        leaf dynamic-flow-aging-multiplier  {
+            type uint16 {
+              range "2..100";
+            }
+            description
+              "Multiplier of an dynamic IFIT flow age interval. If the instance interval calculation result is less than 10 minutes, the 10 minutes shall prevail.";
+        }
+      }
+      container next-hops {
+        description
+          "List of IFIT function for the next hop addresses.";
+        list next-hop {
+          key "address";
+          description
+            "Configure IFIT function for the next hop address.";
+          leaf address {
+            type inet:ip-address-no-zone;
+            description
+              "Next hop address.";
+          }
+        }
+      }
+      container peer-locators {
+        description
+          "List of IFIT function for the next locator addresses.";
+        list peer-locator {
+          key "prefix";
+          status obsolete;
+          description
+            "Configure IFIT function for the next locator address.";
+          leaf prefix {
+            type inet:ipv6-address-no-zone;
+            status obsolete;
+            description
+              "Next locator address.";
+          }
+          leaf prefix-mask-length {
+            ext:operation-exclude update;
+            type uint32 {
+              range "32..120";
+            }
+            mandatory true;
+            status obsolete;
+            description
+              "Mask length of a next locator address.";
+          }
+        }
+      }
+      container static-instances {
+        description
+          "List of static instances of IFIT.";
+        list static-instance {
+          must "gtpu-sn-measure-enable='false' or disorder-measure-enable = 'false'";
+          key "name";
+          unique "flow/flow-filter/filter-condition1/flow-address-type/ipv4-condition/source-ip flow/flow-filter/filter-condition1/flow-address-type/ipv4-condition/destination-ip flow/flow-filter/filter-condition1/flow-address-type/ipv4-condition/source-mask flow/flow-filter/filter-condition1/flow-address-type/ipv4-condition/destination-mask flow/flow-filter/filter-condition1/protocol flow/flow-filter/filter-condition1/source-port flow/flow-filter/filter-condition1/destination-port flow/flow-filter/filter-condition1/gtp-enable flow/flow-filter/filter-condition1/gtp-teid flow/flow-filter/filter-condition1/ni-name flow/flow-filter/filter-condition1/dscp";
+          unique "flow/flow-filter/filter-condition1/flow-address-type/ipv6-condition/source-ipv6 flow/flow-filter/filter-condition1/flow-address-type/ipv6-condition/destination-ipv6 flow/flow-filter/filter-condition1/flow-address-type/ipv6-condition/source-ipv6-mask flow/flow-filter/filter-condition1/flow-address-type/ipv6-condition/destination-ipv6-mask flow/flow-filter/filter-condition1/protocol flow/flow-filter/filter-condition1/source-port flow/flow-filter/filter-condition1/destination-port flow/flow-filter/filter-condition1/gtp-enable flow/flow-filter/filter-condition1/gtp-teid flow/flow-filter/filter-condition1/ni-name flow/flow-filter/filter-condition1/dscp";
+          unique "flow/flow-filter/filter-condition2/vpn-filter/ni-condition/address-type flow/flow-filter/filter-condition2/vpn-filter/ni-condition/peer-ni-name flow/flow-filter/filter-condition2/peer-filter/ip-condition/peer-ip";
+          unique "flow/flow-filter/filter-condition2/vpn-filter/evpl-condition/peer-evpl-id flow/flow-filter/filter-condition2/peer-filter/ip-condition/peer-ip";
+          description
+            "Configure static instance of IFIT.";
+          leaf name {
+            type string {
+              length "1..31";
+            }
+            must "(../../../global/node-id)";
+            description
+              "Instance name of IFIT.";
+          }
+          leaf interval {
+            type uint16 {
+              range "10|30|60|300";
+            }
+            units "s";
+            default "30";
+            description
+              "Interval of an IFIT flow.";
+          }
+          leaf measure-mode {
+            type ifit-common:measure-mode;
+            default "e2e";
+            description
+              "Measure mode of an IFIT flow.";
+          }
+          leaf loss-measure-enable {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable loss measure function of an IFIT flow.";
+          }
+          leaf delay-measure-enable {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable delay measure function of an IFIT flow.";
+          }
+          leaf disorder-measure-enable {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable disorder measure function of an IFIT flow.";
+          }
+          leaf gtpu-sn-measure-enable {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable gtpu sequence number measure function of an IFIT flow.";
+          }
+          container flow {
+            must "flow-type='bidirection' or (source-ip or source-ipv6 or address-type or peer-evpl-id)";
+            must "not (gtp-enable='true') or (not (protocol) or (protocol='17' and ((source-port=2152 and destination-port>=2152) or (destination-port=2152 and source-port>=2152))))";
+            presence "Enable flow";
+            description
+              "Configure IFIT flow.";
+            leaf flow-type {
+              ext:operation-exclude update;
+              type ifit-common:flow-type;
+              mandatory true;
+              description
+                "Flow type of an IFIT flow.";
+            }
+            choice flow-filter {
+              mandatory true;
+              description
+                "Configure the filter of a flow.";
+              case filter-condition1{
+                description
+                  "Filter condition 1.";
+                choice flow-address-type {
+                  mandatory true;
+                  description
+                    "Configure the address of a flow.";
+                    case ipv4-condition{
+                      description
+                      "IPv4 condition.";
+                      leaf source-ip {
+                        ext:operation-exclude update|delete;
+                        ext:support-filter "true";
+                        type inet:ipv4-address-no-zone;
+                        description
+                          "Source IPv4 address of an IFIT flow.";
+                      }
+                      leaf destination-ip {
+                        ext:operation-exclude update;
+                        ext:support-filter "true";
+                        type inet:ipv4-address-no-zone;
+                        must "../destination-ip != ../source-ip";
+                        mandatory true;
+                        description
+                          "Destination IPv4 address of an IFIT flow.";
+                      }
+                      leaf source-mask {
+                        when "../source-ip";
+                        ext:operation-exclude update|delete;
+                        type uint8 {
+                          range "1..32";
+                        }
+                        default "32";
+                        description
+                        "Source IPv4 address mask of an IFIT flow.";
+                      }
+                      leaf destination-mask {
+                        ext:operation-exclude update|delete;
+                        type uint8 {
+                          range "1..32";
+                        }
+                        default "32";
+                        description
+                          "Destination IPv4 address mask of an IFIT flow.";
+                      }
+                    }
+                    case ipv6-condition{
+                      description
+                      "IPv6 condition.";
+                      leaf source-ipv6 {
+                        ext:operation-exclude update;
+                        ext:support-filter "true";
+                        type inet:ipv6-address-no-zone;
+                        mandatory true;
+                        description
+                          "Source IPv6 address of an IFIT flow.";
+                      }
+                      leaf destination-ipv6 {
+                        ext:operation-exclude update;
+                        ext:support-filter "true";
+                        type inet:ipv6-address-no-zone;
+                        must "../destination-ipv6 != ../source-ipv6";
+                        mandatory true;
+                        description
+                          "Destination IPv6 address of an IFIT flow.";
+                      }
+                      leaf source-ipv6-mask {
+                        ext:operation-exclude update|delete;
+                        type uint8 {
+                          range "32..128";
+                        }
+                        default "128";
+                        description
+                        "Source IPv6 address mask of an IFIT flow.";
+                      }
+                      leaf destination-ipv6-mask {
+                        ext:operation-exclude update|delete;
+                        type uint8 {
+                          range "32..128";
+                        }
+                        default "128";
+                        description
+                          "Destination IPv6 address mask of an IFIT flow.";
+                      }
+                    }
+                }
+                leaf protocol {
+                  ext:operation-exclude update|delete;
+                  type uint8 {
+                    range "0..254";
+                    ext:value-meaning {
+                      ext:item  "6" {
+                        ext:meaning "tcp";
+                      }
+                      ext:item  "17" {
+                        ext:meaning "udp";
+                      }
+                      ext:item  "132" {
+                        ext:meaning "sctp";
+                      }
+                    }
+                  }
+                  description
+                    "Protocol of an IFIT flow.";
+                }
+                leaf source-port {
+                  ext:operation-exclude update|delete;
+                  type uint16 {
+                    range "1..65535";
+                  }
+                  must "../protocol=6 or ../protocol=17 or ../protocol=132";
+                  description
+                    "Source port of an IFIT flow.";
+                }
+                leaf destination-port {
+                  ext:operation-exclude update|delete;
+                  type uint16 {
+                    range "1..65535";
+                  }
+                  must "../protocol =6 or ../protocol=17 or ../protocol=132";
+                  description
+                    "Destination port of an IFIT flow.";
+                }
+                leaf gtp-enable {
+                  when "../flow-type='unidirection'";
+                  ext:operation-exclude update|delete;
+                  type boolean;
+                  default "false";
+                  description
+                    "Enable/disable GTP protocol measure for an IFIT flow.";
+                }
+                leaf gtp-teid {
+                  when "../flow-type='unidirection' and ../gtp-enable = 'true'";
+                  ext:operation-exclude update|delete;
+                  type uint32 {
+                    range "1..4294967295";
+                  }
+                  description
+                    "GTP TEID of an IFIT flow.";
+                }
+                leaf ni-name {
+                  ext:operation-exclude update|delete;
+                  type leafref {
+                    path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+                  }
+                  must "../ni-name!='_public_' and (((../destination-ip) and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']) or ((../destination-ipv6) and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']))";
+                  description
+                    "Name of the VPN to which an IFIT flow belongs.";
+                }
+                leaf dscp {
+                  ext:operation-exclude update|delete;
+                  type uint16 {
+                    range "0..63";
+                  }
+                  description
+                    "DSCP of an IFIT flow.";
+                }
+              }
+              case filter-condition2{
+                when "flow-type='unidirection' and ../gtpu-sn-measure-enable='false'";
+                description
+                  "Filter condition 2.";
+                choice vpn-filter {
+                  mandatory true;
+                  description
+                    "Configure the VPN filter of a flow.";
+                  case ni-condition {
+                    description
+                      "Peer netconf instance condition.";
+                    leaf address-type {
+                      ext:operation-exclude update;
+                      type addr-family-type;
+                      mandatory true;
+                      description
+                        "Address type of an IFIT flow peer.";
+                    }
+                    leaf peer-ni-name {
+                      ext:operation-exclude update;
+                      type leafref {
+                        path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+                      }
+                      must " ../peer-ni-name!='_public_' and /ni:network-instance/ni:instances/ni:instance[ni:name = current()]/l3vpn:afs/l3vpn:af[l3vpn:type=current()/../address-type]";
+                      mandatory true;
+                      description
+                        "Name of the VPN to which an IFIT flow peer belongs.";
+                    }
+                  }
+                  case evpl-condition {
+                    description
+                      "Peer EVPL condition.";
+                    leaf peer-evpl-id {
+                      ext:operation-exclude update;
+                      type leafref {
+                        path "/evpl:evpl/evpl:instances/evpl:instance/evpl:id";
+                      }
+                      must "((../peer-ip and /evpl:evpl/evpl:instances/evpl:instance[evpl:id=current()][evpl:mode='mpls-mode']) or (../peer-locator-prefix and /evpl:evpl/evpl:instances/evpl:instance[evpl:id=current()][evpl:mode='srv6-mode']))";
+                      mandatory true;
+                      description
+                        "ID of the EVPL instance to which an IFIT flow peer belongs.";
+                    }
+                  }
+                }
+                choice peer-filter {
+                  mandatory true;
+                  description
+                    "Configure the peer filter of a flow.";
+                  case ip-condition {
+                    description
+                      "Peer filter ip condition.";
+                    leaf peer-ip {
+                    ext:operation-exclude update;
+                    type inet:ipv4-address-no-zone;
+                    mandatory true;
+                    description
+                      "Peer IP address of an IFIT flow.";
+                    }
+                  }
+                  case locator-condition {
+                    description
+                      "Peer filter locatior condition.";
+                    leaf peer-locator-prefix {
+                      ext:operation-exclude update;
+                      type inet:ipv6-address-no-zone;
+                      mandatory true;
+                      description
+                        "Peer locator address.";
+                    }
+                    leaf peer-locator-prefix-mask-len {
+                      ext:operation-exclude update;
+                      type uint32 {
+                        range "32..120";
+                      }
+                      mandatory true;
+                      description
+                        "Mask length of a peer locator address.";
+                    }
+                  }
+                }
+              }
+            }
+            container bind-ifs {
+              description
+                "List of flow specified interfaces of IFIT.";
+              list bind-if {
+                key "if-name";
+                description
+                  "Configure flow specified interface of IFIT.";
+                leaf if-name {
+                  type leafref {
+                    path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                  }
+                  description
+                    "Interface name to which an IFIT flow binds.";
+                }
+                leaf flow-id {
+                  type uint64;
+                  config false;
+                  description
+                    "Flow ID of an IFIT flow.";
+                }
+              }
+            }
+          }
+        }
+      }
+      container dynamic-flow-hops {
+        config false;
+        description
+          "List of dynamic flow hops of IFIT.";
+        list dynamic-flow-hop {
+          key "flow-id";
+          description
+            "Operational data of dynamic flow hop of IFIT.";
+          leaf flow-id {
+            type uint64;
+            description
+              "Flow ID of an IFIT flow.";
+          }
+          leaf flow-type {
+            type ifit-common:flow-type;
+            description
+              "Flow type of an IFIT flow.";
+          }
+          leaf if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Interface name to which an IFIT flow passes.";
+          }
+          leaf interval {
+            type uint16 {
+              range "10|30|60|300";
+            }
+            units "s";
+            description
+              "Interval of an IFIT flow.";
+          }
+          leaf direction {
+            type ifit-common:flow-direction;
+            description
+              "Direction of an IFIT flow.";
+          }
+          leaf loss-measure-enable {
+            type boolean;
+            description
+              "Enable/disable loss measure function of an IFIT flow.";
+          }
+          leaf delay-measure-enable {
+            type boolean;
+            description
+              "Enable/disable delay measure function of an IFIT flow.";
+          }
+          leaf disorder-measure-enable {
+            type boolean;
+            description
+              "Enable/disable disorder measure function of an IFIT flow.";
+          }
+        }
+      }
+      container dynamic-flows {
+        config false;
+        description
+          "List of dynamic flows of IFIT.";
+        list dynamic-flow {
+          key "flow-id";
+          description
+            "Operational data of dynamic flow of IFIT.";
+          leaf flow-id {
+            type uint64;
+            description
+              "Flow ID of an IFIT flow.";
+          }
+          leaf flow-type {
+            type ifit-common:flow-type;
+            description
+              "Flow type of an IFIT flow.";
+          }
+          leaf address-type {
+              type addr-type;
+              description
+                "Address type of an IFIT flow.";
+          }
+          leaf source-ip {
+            ext:support-filter "true";
+            type inet:ip-address-no-zone;
+            description
+              "Source IP address of an IFIT flow.";
+          }
+          leaf destination-ip {
+            ext:support-filter "true";
+            type inet:ip-address-no-zone;
+            description
+              "Destination IP address of an IFIT flow.";
+          }
+          leaf source-mask {
+            type uint8 {
+              range "1..128";
+            }
+            description
+              "Source IP address mask of an IFIT flow.";
+          }
+          leaf destination-mask {
+            type uint8 {
+              range "1..128";
+            }
+            description
+              "Destination IP address mask of an IFIT flow.";
+          }
+          leaf protocol {
+            type uint8 {
+              range "0..254";
+              ext:value-meaning {
+                ext:item  "6" {
+                  ext:meaning "tcp";
+                }
+                ext:item  "17" {
+                  ext:meaning "udp";
+                }
+                ext:item  "132" {
+                  ext:meaning "sctp";
+                }
+              }
+            }
+            description
+              "Protocol of an IFIT flow.";
+          }
+          leaf source-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "Source port of an IFIT flow.";
+          }
+          leaf destination-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "Destination port of an IFIT flow.";
+          }
+          leaf ni-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "Name of the VPN to which an IFIT flow belongs.";
+          }
+          leaf if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Interface name to which an IFIT flow passes.";
+          }
+          leaf interval {
+            type uint16 {
+              range "10|30|60|300";
+            }
+            units "s";
+            description
+              "Interval of an IFIT flow.";
+          }
+          leaf measure-mode {
+            type ifit-common:measure-mode;
+            description
+              "Measure mode of an IFIT flow.";
+          }
+          leaf delay-measure-enable {
+            type boolean;
+            description
+              "Enable/disable delay measure function of an IFIT flow.";
+          }
+          leaf loss-measure-enable {
+            type boolean;
+            description
+              "Enable/disable loss measure function of an IFIT flow.";
+          }
+          leaf disorder-measure-enable {
+            type boolean;
+            description
+              "Enable/disable disorder measure function of an IFIT flow.";
+          }
+          leaf dscp {
+            type uint16 {
+              range "0..63";
+            }
+            description
+              "DSCP of an IFIT flow.";
+          }
+        }
+      }
+    }
+  }
+}

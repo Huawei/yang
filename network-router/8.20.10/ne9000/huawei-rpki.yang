@@ -1,0 +1,94 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-rpki {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-rpki";
+  prefix rpki;
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Resource Public Key Infrastructure.";
+  revision 2020-12-09 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  container rpki {
+    description
+      "Configure RPKI.";
+    container rpki {
+      presence "Enable RPKI.";
+      description
+        "Enable/disable RPKI globally.";
+    }
+  }
+  augment /ni:network-instance/ni:instances/ni:instance {
+    description
+      "Rpki session configuration.";
+    container rpki {
+      when "/rpki:rpki/rpki:rpki";
+      description
+        "Configure RPKI.";
+      container sessions {
+        description
+          "List of rpki session.";
+        list session {
+          must "aging-time>=2*(refresh-time)";
+          key "remote-address";
+          max-elements 2;
+          description
+            "Configure rpki session.";
+          leaf remote-address {
+            type inet:ip-address-no-zone;
+            description
+              "Specifies the address of a Resource Public Key Infrastructure (RPKI) server to establish a TCP connection between the router and the RPKI server.";
+          }
+          leaf tcp-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "TCP connection port.";
+          }
+          leaf aging-time {
+            type uint32 {
+              range "60..604800";
+            }
+            units "s";
+            default "3600";
+            description
+              "Aging time.";
+          }
+          leaf refresh-time {
+            type uint32 {
+              range "10..3600";
+            }
+            units "s";
+            default "1800";
+            description
+              "Refresh time.";
+          }
+        }
+      }
+    }
+  }
+  ext:task-name "rpki";
+}

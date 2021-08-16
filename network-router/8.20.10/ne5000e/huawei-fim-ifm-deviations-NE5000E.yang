@@ -1,0 +1,67 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-ifm-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-fim-ifm-deviations-NE5000E";
+  prefix fim-ifm-devs-NE5000E;
+
+  import huawei-fim-ifm {
+    prefix fim-ifm;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fim-ifm module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim/fim-ifm:statistic-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp-mss/fim-ifm:tcp-mss" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-ifm-veint" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:ve-group" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:global/fim-ifm:fim-ifm-global/fim-ifm:trunk-delaysend-time" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:global/fim-ifm:fim-ifm-global/fim-ifm:qinq-transport-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:global/fim-ifm:fim-trunk-localfwd" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:global/fim-ifm:ve-groups" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-ifm-mru/fim-ifm:mru" {
+    deviate delete {
+      must "not(/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp-mss/fim-ifm:tcp-mss)";
+    }
+  }
+
+}

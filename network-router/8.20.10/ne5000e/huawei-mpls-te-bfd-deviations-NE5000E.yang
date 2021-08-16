@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-te-bfd-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mpls-te-bfd-deviations-NE5000E";
+  prefix mpls-te-bfd-devs-NE5000E;
+
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-mpls-te-bfd {
+    prefix mpls-te-bfd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2020-10-13 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te-bfd:bfd-for-lsp/mpls-te-bfd:reverse-label" {
+    deviate not-supported;
+  }
+}
