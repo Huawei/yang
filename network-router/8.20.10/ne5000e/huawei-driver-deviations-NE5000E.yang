@@ -1,0 +1,423 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-driver-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-driver-deviations-NE5000E";
+  prefix driver-devs-NE5000E;
+
+  import huawei-driver {
+    prefix driver;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+  
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-driver module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef fan-workmode-deviations {
+    type enumeration {
+      enum "auto" {
+        value 1;
+        description 
+          "Automatic.";
+      }
+      enum "manual" {
+        value 2;
+        description 
+          "Percent.";
+      }
+      enum "full" {
+        value 5;
+        description 
+          "Full.";
+      }
+      enum "minimum-percent" {
+        value 9;
+        description 
+          "Minimum-percent.";
+      }
+    }
+    description 
+      "Information of enum type fan-workmode.";
+  }
+   typedef driver-run-mode-type-deviations {
+    type enumeration {
+      enum "single" {
+        value 1;
+        description
+          "Single.";
+      }
+      enum "ccc-0" {
+        value 2;
+        description
+          "Ccc-0.";
+      }
+      enum "ccc-2" {
+        value 4;
+        description
+          "Ccc-2.";
+      }
+    }
+    description 
+      "Information of enum type driver-run-mode-type.";
+  }
+
+  typedef trap-type-deviations {
+    type enumeration {
+      enum "base-trap" {
+        value 1;
+        description 
+          "Base-trap.";
+      }
+    }
+    description 
+      "Information of enum type trap-type.";
+  }
+
+  deviation "/driver:driver/driver:global-attribute/driver:board-power-on-delay" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:card-power-on-delay" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:dustproof-check" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:entity-fault-card-isolate" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:interface-match-check" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:least-sfu-number" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:optional-entity-fault-isolate" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:pic-reload-cycle" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:sampling-period" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:system-mac-address" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:system-mac-number" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-forward-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:next-forward-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-work-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:next-work-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:warm-backup-states" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:warm-backup-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-device-work-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:next-device-work-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-system-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:next-system-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:split-resume" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:switch-port-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:usb-uart-status" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-system-mac-address" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:board-channel-check-status" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:dcn-management-plane-lock-status" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:cur-dcn-plane-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:next-dcn-plane-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:io-inspect-states" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:io-inspect-attributes" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:electric-current-infos" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:interface-match-check-states" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:area-energyinfos/driver:area-energyinfo/driver:area-assigned-power" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:board-powers" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:multi-chassis-attributes" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:chassis-run-modes" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:stratum-3-clocks" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:system-sync-clocks" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:rollback-attribute" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-usb-uart-stat" {
+    deviate not-supported;
+  }
+  deviation "/driver:interface-match-check-recovery" {
+    deviate not-supported;
+  }
+  deviation "/driver:rollback" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-multi-chassis-id" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-chassis-run-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-next-work-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-split-resume" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-led-flash" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-slot-led-flash" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-npu-led-flash" {
+    deviate not-supported;
+  }
+  deviation "/driver:board-channel-check" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-vsu-service-type" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-bip8-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-crc-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-input-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-output-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-sdh-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-symbol-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-trans-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:clear-nv-port-tx-pause-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-nv-laser-turn" {
+    deviate not-supported;
+  }
+  deviation "/driver:check-lcm-channel" {
+    deviate not-supported;
+  }
+  deviation "/driver:multi-level-alarm-boolean" {
+    deviate not-supported;
+  }
+  deviation "/driver:sysmac-load/driver:input/driver:chassis-id" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-next-system-mode" {
+    deviate not-supported;
+  }
+  deviation "/driver:set-dcn-management-plane-lock" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:pm-input-voltage-110" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-mode" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-input" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-temp" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-limit" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-alarm-limit" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-assigned" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-assigned-utility" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-left" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-real" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:power-supply-attribute/driver:power-supply-real-utility" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:cmus/driver:cmu/driver:cmu-switchs" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:cmus/driver:cmu/driver:cmu-relays" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:cmus/driver:cmu/driver:cmu-analogs" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:cmus/driver:cmu/driver:cmu-alarms" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:ccus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:dacss" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:power-environments/driver:power-environment/driver:out-voltage-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:power-environments/driver:power-environment/driver:out-electrical-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:power-supplys/driver:power-supply/driver:power-environments/driver:power-environment/driver:out-power-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:dmus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:pdus" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/driver:driver/driver:vsus" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/driver:system-trap" {
+    deviate replace {
+      type driver-devs-NE5000E:trap-type-deviations;
+    }
+  }
+  deviation "/driver:driver/driver:temperatures/driver:temperature" {
+    deviate add {
+      must "(minor and major and fatal) or (not(minor) and not(major) and not(fatal))";
+    }
+  }
+  deviation "/driver:driver/driver:voltageinfos/driver:voltageinfo" {
+    deviate add {
+      must "(major-voltage-threshold-low and major-voltage-threshold-high and fatal-voltage-threshold-low and fatal-voltage-threshold-high) or (not(major-voltage-threshold-low) and not(major-voltage-threshold-high) and not(fatal-voltage-threshold-low) and not(fatal-voltage-threshold-high))";
+    }
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:fan-attribute/driver:workmode" {
+    deviate replace {
+      type driver-devs-NE5000E:fan-workmode-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:chassis-run-mode/driver:current-run-mode" {
+    deviate replace {
+      type driver-devs-NE5000E:driver-run-mode-type-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:chassis-run-mode/driver:next-run-mode" {
+    deviate replace {
+      type driver-devs-NE5000E:driver-run-mode-type-deviations;
+    }
+  }
+  deviation "/driver:set-next-run-mode/driver:input/driver:next-run-mode" {
+    deviate replace {
+      type driver-devs-NE5000E:driver-run-mode-type-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/driver:fan-attribute/driver:speed" {
+    deviate replace {
+      type uint32 {
+        range "30..100";
+      }
+    }
+  }
+  deviation "/driver:check-system-software/driver:output/driver:match-result" {
+    deviate not-supported;
+  }
+  deviation /lcs:license/driver:lcs-boards {
+    deviate not-supported;
+  }
+  deviation /lcs:license/driver:lcs-usage-board-capacitys {
+    deviate not-supported;
+  }
+  deviation /driver:driver/driver:electronic-labels/driver:electronic-label/driver:silk-screen {
+    deviate not-supported;
+  }
+  
+}

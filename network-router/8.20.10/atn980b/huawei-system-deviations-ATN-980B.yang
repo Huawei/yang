@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-system-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-system-deviations-ATN-980B";
+  prefix system-devs-ATN-980B;
+
+  import huawei-system {
+    prefix system;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviation of Fault management module.";
+
+  revision 2020-11-18 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/system:system/system:system-info/system:uname" {
+    deviate not-supported;
+  }
+}

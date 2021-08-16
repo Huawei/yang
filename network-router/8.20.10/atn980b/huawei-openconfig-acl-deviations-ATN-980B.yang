@@ -1,0 +1,34 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-acl-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-acl-deviations-ATN-980B";
+  prefix of-acl-devs-ATN-980B;
+
+  import openconfig-acl {
+    prefix oc-acl;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Access Control List (ACL). An ACL is used to identify and select data packets through packet attributes. For example, applying an ACL in the firewall can either permit or discard data packets. Applying an ACL in IPsec can encrypt data packets that match ACL rules and forward those that do not match any ACL rule.";
+
+  revision 2019-06-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-acl:acl" {
+    deviate not-supported;
+  }
+}

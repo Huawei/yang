@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-routing-table-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-bgp-routing-table-deviations-NE5000E";
+  prefix bgp-rt-devs-NE5000E;
+
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+
+  revision 2019-09-30 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-unicast/bgp-rt:routes/bgp-rt:route/bgp-rt:entropy-label-padding" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-unicast/bgp-rt:peer-advertise-routes/bgp-rt:peer-advertise-route/bgp-rt:entropy-label-padding" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-unicast/bgp-rt:peer-receive-routes/bgp-rt:peer-receive-route/bgp-rt:entropy-label-padding" {
+    deviate not-supported;
+  }
+}

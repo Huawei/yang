@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-ptpadapt-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-clocksync-ptpadapt-deviations-ATN-980B";
+  prefix clocksync-ptpadapt-devs-ATN-980B;
+
+  import huawei-clocksync-ptpadapt {
+    prefix clocksync-ptpadapt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-ptpadapt module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/clocksync-ptpadapt:clocksync-ptpadapt/clocksync-ptpadapt:ptpa-common/clocksync-ptpadapt:hop-by-hop-mode" {
+    deviate not-supported;
+  }
+
+}

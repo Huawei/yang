@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-ethernet-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-fim-ethernet-deviations-NE5000E";
+  prefix fim-ethernet-devs-NE5000E;
+
+  import huawei-fim-ethernet {
+    prefix fim-ethernet;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fim-ethernet module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/fim-ethernet:mode-channel" {
+    deviate not-supported;
+  }
+
+}

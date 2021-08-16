@@ -1,0 +1,59 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-connectionless-oam-methods-ext {
+  yang-version 1.1;
+  namespace "urn:huawei:yang:huawei-ietf-connectionless-oam-methods-ext";
+  prefix cloam-methods-ext;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-connectionless-oam-methods {
+    prefix cloam-methods;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This YANG module defines an extension to the ietf-connectionless-oam-methods
+     YANG data model defined in the RFC 8533.";
+  revision 2020-09-02 {
+    description
+      "Initial revision.";
+    reference
+      "RFC 8533:Extending Connectionless OAM Method Module by augmenting the
+       ietf-connectionless-oam-methods YANG data model with ICMP ping attributes.";
+  }
+  augment "/cloam-methods:continuity-check"
+   +"/cloam-methods:output"{
+     description
+      "RFC 8533:Extending Connectionless OAM Method Module.";
+     container session-rtt-statistics{
+      leaf min-rtt{
+       type uint32;
+    description
+    "This minimum ping round-trip-time (RTT) received.";
+      }
+      leaf max-rtt{
+       type uint32;
+    description
+    "This maximum ping RTT received.";
+      }
+      leaf avg-rtt{
+       type uint32;
+    description
+     "The current average ping RTT.";
+      }
+      description
+      "This container presents the ping RTT statistics.";
+     }
+   }
+   ext:task-name "sla";
+}

@@ -1,0 +1,603 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pic-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-pic-deviations-ATN-980B";
+  prefix pic-devs-ATN-980B;
+
+  import huawei-pic {
+    prefix pic;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  import huawei-driver {
+    prefix driver;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-pic module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef alarm-ais-insert-name-deviations {
+    type enumeration {
+      enum "hptim" {
+        value 1;
+        description 
+          "Hptim.";
+      }
+      enum "lptim" {
+        value 2;
+        description 
+          "Lptim.";
+      }
+      enum "rstim" {
+        value 3;
+        description 
+          "Rstim.";
+      }
+    }
+    description 
+      "Alarm Name.";
+  }
+
+  typedef clock-deviations {
+    type enumeration {
+      enum "master" {
+        value 0;
+        description 
+          "Master.";
+      }
+      enum "slave" {
+        value 1;
+        description 
+          "Slave.";
+      }
+    }
+    default "master";
+    description 
+      "Clock mode.";
+  }
+
+  typedef eth-speed-type-deviations {
+    type enumeration {
+      enum "10M" {
+        value 0;
+        description 
+          "Configure 10M.";
+      }
+      enum "100M" {
+        value 1;
+        description 
+          "Configure 100M.";
+      }
+      enum "1000M" {
+        value 2;
+        description 
+          "Configure 1000M.";
+      }
+      enum "auto" {
+        value 9;
+        description 
+          "Auto.";
+      }
+    }
+    description 
+      "Speed type.";
+  }
+
+  typedef j0-mode-deviations {
+    type enumeration {
+      enum "SDH" {
+        value 0;
+        description 
+          "SDH.";
+      }
+    }
+    description 
+      "J0 mode on a port.";
+  }
+
+  typedef panel-split-ports-split-type-deviations {
+    type enumeration {
+      enum "1X25GE-NULL" {
+        value 19;
+        description 
+          "1*25GE-null.";
+      }
+      enum "1X10GE-1X10GE" {
+        value 20;
+        description 
+          "1*10GE-1*10GE.";
+      }
+    }
+    description 
+      "Enum of split type.";
+  }
+
+  typedef port-ethernet-fec-mode-deviations {
+    type enumeration {
+      enum "standard" {
+        value 1;
+        description 
+          "Standard.";
+      }
+      enum "none" {
+        value 0;
+        description 
+          "None.";
+      }
+      enum "enhanced" {
+        value 2;
+        description 
+          "Enhanced.";
+      }
+      enum "enhanced-i-4" {
+        value 4;
+        description 
+          "Enhanced-i-4.";
+      }
+      enum "enhanced-i-7" {
+        value 3;
+        description 
+          "Enhanced-i-7.";
+      }
+      enum "lhaul-sd" {
+        value 5;
+        description 
+          "Lhaul-sd.";
+      }
+    }
+    description 
+      "Fec mode.";
+  }
+
+  typedef port-flowctl-deviations {
+    type enumeration {
+      enum "receive-enabled" {
+        value 1;
+        description 
+          "Receive Enabled.";
+      }
+      enum "all-disabled" {
+        value 0;
+        description 
+          "All Disabled.";
+      }
+    }
+    description 
+      "Flow control method of an Ethernet port.";
+  }
+
+  typedef port-negotiation-mode-type-deviations {
+    type enumeration {
+      enum "slave" {
+        value 0;
+        description 
+          "Slave.";
+      }
+      enum "auto" {
+        value 2;
+        description 
+          "Auto.";
+      }
+      enum "master" {
+        value 3;
+        description 
+          "Master.";
+      }
+    }
+    description 
+      "Port negotiation mode.";
+  }
+
+  typedef port-trans-mode-type-deviations {
+    type enumeration {
+      enum "lan-mode" {
+        value 0;
+        description 
+          "LAN Mode.";
+      }
+      enum "otn-mode" {
+        value 2;
+        description 
+          "OTN Mode.";
+      }
+    }
+    description 
+      "Port transmit mode type.";
+  }
+
+  deviation "/pic:pic/pic:tad-trans-alarm-if-downs" {
+    deviate not-supported;
+  }
+  deviation "/pic:attr-abort" {
+    deviate not-supported;
+  }
+  deviation "/pic:attr-start" {
+    deviate not-supported;
+  }
+  deviation "/pic:clear-port-crc-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/pic:clear-port-input-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/pic:clear-port-output-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/pic:clear-port-sdh-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/pic:clear-port-symbol-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/pic:clear-port-rx-pause-err-alarm" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:crc-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:symbol-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:input-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:output-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:sdh-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:bip8-sd-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:badbytes-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:optical-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:tx-pause-enable" {
+    deviate not-supported;
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:port-bandwidth-type" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:tx-power-cfg-type" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:tx-power-target-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:jumbo-frame" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:gf-media-type" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:txipg" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:promiscuous-mode" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:attenuation" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:remote-fault" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:local-fault-status" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:romote-fault-status" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:eth-wan-attr" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:wave-modulation-mode" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:signal-dqpsk-tx" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:signal-dqpsk-rx" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:chromatic-dispersion" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:polarization-mode-dispersion" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:direction-type" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:total-rx-power" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:total-rx-high-warn" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:total-rx-low-warn" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:total-rx-high-alarm" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:optical-module/pic:total-rx-low-alarm" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:pos" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:atm" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:frame-format" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:multiplex" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:ais-flag" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:tuais-flag" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:j0-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:clock" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:rx-j0-value" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:e1t1s/pic:e1t1/pic:clock-recovery-domain" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:e1t1s/pic:e1t1/pic:clock-master-domain" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:crc-enabled-down" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:input-enabled-down" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:input-error-high-threshold" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:input-error-low-threshold" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:input-error-interval" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:output-enabled-down" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:output-error-high-threshold" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:output-error-low-threshold" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:output-error-interval" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:phy-updown-en" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:eth-port-alarm" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:sdh-port-alarm" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:crc-sample/pic:crc-alg-realtime-factor" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:alarm-type/pic:crc-error-threshold/pic:crc-error-threshold/pic:crc-error-high" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:alarm-type/pic:crc-error-threshold/pic:crc-error-threshold/pic:crc-error-low" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:alarm-type/pic:crc-error-threshold/pic:crc-error-threshold/pic:crc-shutdown-en" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:port-alarm/pic:alarm-type/pic:crc-error-threshold/pic:crc-error-threshold/pic:crc-error-percent-alm-thr" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:rx-power" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:tx-power" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:wavelength" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:conect-relation" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:direction" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:wave-band" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:wavelength-num" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:tx-wavelength" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:rx-wavelength" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:tx-wavelength-num" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:adm-port/pic:rx-wavelength-num" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:phy-serial" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:phy-voice" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:e1t1/pic:code" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:e3t3" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/pic:lcs-ports/pic:port-basic/pic:port-band" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/pic:upgrade-ports" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/pic:rtus" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/pic:rtu-extends" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:cards/devm:card/pic:service-mode" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:cards/devm:card/pic:port-group-modes" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:cards/devm:card/pic:queue-priority" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:cards/devm:card/pic:frame-format" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:cards/devm:card/pic:process-mode" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:cards/devm:card/pic:em-set" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:cards/devm:card/pic:service-switch" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:cards/devm:card/pic:panel-slots" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/pic:cmac-padding" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/pic:cmac-padding" {
+    deviate not-supported;
+  }
+  deviation "/pic:pic/pic:panel-split-ports/pic:panel-split-port/pic:split-type" {
+    deviate replace {
+      type pic-devs-ATN-980B:panel-split-ports-split-type-deviations;
+    }
+  }
+  deviation "/pic:pic/pic:alarm-ais-inserts/pic:alarm-ais-insert/pic:name" {
+    deviate replace {
+      type pic-devs-ATN-980B:alarm-ais-insert-name-deviations;
+    }
+  }
+  deviation "/pic:pic/pic:alarm-ais-inserts/pic:alarm-ais-insert/pic:rdi" {
+    deviate add {
+      must "(../name = 'rstim' and ../rdi = 'false') or (../name = 'hptim' or ../name = 'lptim')";
+    }
+  }
+  ext:deviation-ext "/pic:pic/pic:alarm-ais-inserts/pic:alarm-ais-insert/pic:rdi" {
+    ext:deviate-ext add {
+      ext:dynamic-default {
+        ext:default-value "false" {
+          when "../name = 'hptim' or ../name = 'lptim' or ../name = 'rstim'";
+          description "The default value is false when name is hptim or lptim or rstim.";
+        }
+      }
+    }
+  }
+  deviation "/driver:driver/driver:global-attribute/pic:global/pic:loopback-clear" {
+    deviate replace {
+      default "true";
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:speed" {
+    deviate replace {
+      type pic-devs-ATN-980B:eth-speed-type-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:negotiation-mode" {
+    deviate replace {
+      type pic-devs-ATN-980B:port-negotiation-mode-type-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:trans-mode" {
+    deviate replace {
+      type pic-devs-ATN-980B:port-trans-mode-type-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:fec-mode" {
+    deviate replace {
+      type pic-devs-ATN-980B:port-ethernet-fec-mode-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:ethernet/pic:flowctl" {
+    deviate replace {
+      type pic-devs-ATN-980B:port-flowctl-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:j0-mode" {
+    deviate replace {
+      type pic-devs-ATN-980B:j0-mode-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:e1t1s/pic:e1t1/pic:clock" {
+    deviate replace {
+      type pic-devs-ATN-980B:clock-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/pic:cpos/pic:e1t1s/pic:e1t1/pic:loopback" {
+    deviate add {
+      must "(../clock='master' and (../loopback='none' or ../loopback='local')) or (../clock='slave' and (../loopback='none' or ../loopback='remote'))";
+    }
+  }
+
+}

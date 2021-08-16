@@ -1,0 +1,51 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qppb-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-qppb-deviations-NE5000E";
+  prefix qppb-devs-NE5000E;
+
+  import huawei-qppb {
+    prefix qppb;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-qppb module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/qos:qos/qppb:qppb/qppb:local-policys/qppb:local-policy/qppb:service-class-outbound" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qppb:qppb/qppb:query-policys" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qppb:qppb/qppb:policys/qppb:policy/qppb:share-mode" {
+    deviate not-supported;
+  }
+
+}

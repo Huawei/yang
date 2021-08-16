@@ -1,0 +1,63 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-tty-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-tty-deviations-NE5000E";
+  prefix tty-devs-NE5000E;
+
+  import huawei-tty {
+    prefix tty;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "TTY Component.";
+
+  revision 2019-05-01 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  typedef tty-authmode-type-deviations {
+    type enumeration {
+      enum password {
+        value 2;
+        description
+          "Authentication mode password.";
+      }
+      enum aaa {
+        value 3;
+        description
+          "Authentication mode aaa.";
+      }
+      enum init {
+        value 4;
+        description
+          "Undo authentication mode.";
+      }
+    }
+    description
+      "TTY authentication mode type list.";
+  }
+
+  deviation "/tty:tty/tty:console/tty:shutdown-enble" {
+    deviate not-supported;
+  }
+  deviation "/tty:tty/tty:console/tty:auth-mode" {
+    deviate replace {
+      type tty-devs-NE5000E:tty-authmode-type-deviations;
+    }
+  }
+  deviation "/tty:tty/tty:aux" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-ipv4-address-manage-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-bras-ipv4-address-manage-deviations-NE9000";
+  prefix bras-ipv4-address-manage-devs-NE9000;
+
+  import huawei-bras-ipv4-address-manage {
+    prefix bras-ipv4-address-manage;
+  }
+
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-ipv4-address-manage module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/bras-ipv4-address-manage:bas" {
+    deviate not-supported;
+  }
+
+}

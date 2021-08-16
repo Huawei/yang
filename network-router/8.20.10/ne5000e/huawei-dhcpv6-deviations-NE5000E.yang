@@ -1,0 +1,87 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dhcpv6-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-dhcpv6-deviations-NE5000E";
+  prefix dhcpv6-devs-NE5000E;
+
+  import huawei-dhcpv6 {
+    prefix dhcpv6;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Dynamic Host Configuration Protocol for IPv6.";
+
+  revision 2019-04-29 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef dhcpv6-duid-deviations {
+    type enumeration {
+      enum invalid {
+        value 0;
+        description
+          "-";
+      }
+      enum llt {
+        value 1;
+        description
+          "Link-layer address plus time.";
+      }
+      enum user-defined {
+        value 3;
+        description
+          "User-defined.";
+      }
+    }
+    description
+      "Description of dhcp6_dhcpv6Duid_type.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:link-address" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:strict-check" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:rebuild-option" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:access-limit-setting" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:pd-route-track-vrrp" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:dhcpv6/dhcpv6:relay/dhcpv6:pd-route" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:dhcpv6/dhcpv6:common/dhcpv6:global/dhcpv6:duid-format" {
+    deviate replace {
+      type dhcpv6-devs-NE5000E:dhcpv6-duid-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:dot1q-access-limits" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:qinq-access-limits" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:qinq-any-access-limits" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,108 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lldp-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-lldp-deviations-NE5000E";
+  prefix lldp-devs-NE5000E;
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-lldp {
+    prefix lldp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Link layer discovery protocol.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:ddp" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:port-vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:protocol-vlan-id-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:vlan-name-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:vlan-name-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:protocol-vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:identity" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:identity-tlv" {
+    deviate not-supported;
+  }
+  deviation "/lldp:lldp/lldp:global-attribute/lldp:mdn-status" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:ddp-tlv" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:port-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:sub-interface-lldp" {
+    deviate not-supported;
+  }
+  deviation "/lldp:lldp/lldp:global-attribute/lldp:management-address-mode/lldp:global-mode/lldp:management-address-ipv4-bind-if" {
+    deviate not-supported;
+  }
+  deviation "/lldp:lldp/lldp:global-attribute/lldp:management-address-mode/lldp:interface-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:identity-tlv" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:management-addresss" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:port-vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:protocol-vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:protocol-vlan-supported" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:protocol-vlan-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:vlan-name-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:vlan-name" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:port-vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:protocol-vlans" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:vlan-names" {
+    deviate not-supported;
+  }
+}

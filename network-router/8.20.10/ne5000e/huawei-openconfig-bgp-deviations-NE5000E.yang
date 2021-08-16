@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-bgp-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-bgp-deviations-NE5000E";
+  prefix of-bgp-devs-NE5000E;
+
+  import openconfig-bgp {
+    prefix oc-bgp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module describes a YANG model for BGP protocol
+     configuration.It is a limited subset of all of the configuration
+     parameters available in the variety of vendor implementations,
+     hence it is expected that it would be augmented with vendor-
+     specific configuration data as needed. Additional modules or
+     submodules to handle other aspects of BGP configuration,
+     including policy, VRFs, VPNs, and additional address families
+     are also expected.";
+
+  revision 2020-10-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-bgp:bgp" {
+    deviate not-supported;
+  }
+}

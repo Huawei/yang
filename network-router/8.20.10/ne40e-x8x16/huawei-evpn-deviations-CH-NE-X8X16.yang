@@ -1,0 +1,85 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpn-deviations-CH-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-evpn-deviations-CH-NE-X8X16";
+  prefix evpn-devs-CH-NE-X8X16;
+
+  import huawei-evpn {
+    prefix evpn;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+  import huawei-mac {
+    prefix mac;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "EVPN configuration.";
+
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/evpn:evpn/evpn:site/evpn:ad-per-es-split" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:alm-threshold" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:irb-reoriginated" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:irb-split-group" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:recovery-percentage" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/evpn:evpn/evpn:irb2ip" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:base-process/evpn:source-address" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:source-vtep-ip=current()]) and not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:bypass-vtep-ip=current()])';
+    }
+  }
+  deviation "/evpn:evpn/evpn:base-process/evpn:evpn-overlay" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:umr-originate" {
+    deviate delete {
+      must "(../umr-originate='true' and not(../../nvo3:nvo3/nvo3:vni-list/nvo3:vni) and not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bds/l2vpn:bd[l2vpn:id=current()/../../bd:id])) or (../umr-originate='false')";
+    }
+    deviate add {
+      must "(../umr-originate='true' and not(../../nvo3:nvo3/nvo3:vni-list/nvo3:vni) and not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bds/l2vpn:bd[l2vpn:id=current()/../../bd:id]) and not(../../mac:mac-addresss/mac:mac-address[mac:address = '0000-0000-0000'])) or (../umr-originate='false')";
+    }
+  }
+}

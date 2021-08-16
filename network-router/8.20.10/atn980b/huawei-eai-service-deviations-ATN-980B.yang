@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-eai-service-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-eai-service-deviations-ATN-980B";
+  prefix eai-service-devs-ATN-980B;
+
+  import huawei-eai-service {
+    prefix eai-service;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-eai-service module.";
+
+  revision 2020-11-10 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/eai-service:eai-service/eai-service:global/eai-service:anomaly-detection-enable" {
+    deviate not-supported;
+  }
+
+}

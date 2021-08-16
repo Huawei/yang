@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-license-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-license-deviations-NE9000";
+  prefix license-devs-NE9000;
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Proof of permission granted.";
+
+  revision 2020-06-11 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/lcs:license/lcs:global-states/lcs:global-state/lcs:license-mode" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:cloud-servers" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license-assign" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license-switch-mode" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license-smooth" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:license-sale-items/lcs:license-sale-item/lcs:sub-sale-items" {
+    deviate not-supported;
+  }
+}

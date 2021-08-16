@@ -1,0 +1,123 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-ldp-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-mpls-ldp-deviations-ATN-980B";
+  prefix mpls-ldp-devs-ATN-980B;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2019-03-27 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:tcp/mpls-ldp:cir" {
+    deviate replace {
+      units "pps";
+      default "1";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:tcp/mpls-ldp:cbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "2";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:tcp/mpls-ldp:pir" {
+    deviate replace {
+      units "pps";
+      default "2000";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:tcp/mpls-ldp:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "2000";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:udp-local/mpls-ldp:cir" {
+    deviate replace {
+      units "pps";
+      default "1";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:udp-local/mpls-ldp:cbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "2";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:udp-local/mpls-ldp:pir" {
+    deviate replace {
+      units "pps";
+      default "2";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:udp-local/mpls-ldp:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "4";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:udp-remote/mpls-ldp:cir" {
+    deviate replace {
+      units "pps";
+      default "1";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:udp-remote/mpls-ldp:cbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "2";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:udp-remote/mpls-ldp:pir" {
+    deviate replace {
+      units "pps";
+      default "2";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:session-car/mpls-ldp:ldp/mpls-ldp:udp-remote/mpls-ldp:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "4";
+    }
+  }
+}

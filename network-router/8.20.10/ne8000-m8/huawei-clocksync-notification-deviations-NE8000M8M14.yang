@@ -1,0 +1,52 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-notification-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-clocksync-notification-deviations-NE8000M8M14";
+  prefix clocksync-notification-devs-NE8000M8M14;
+
+  import huawei-clocksync-notification {
+    prefix clocksync-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-notification module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/clocksync-notification:clock-cluster-topo-fail" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-cluster-topo-fail-resume" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-fm-switch" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-fm-switch-resume" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-sync-bad" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-sync-bad-resume" {
+    deviate not-supported;
+  }
+
+}

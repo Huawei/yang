@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2vpn-notification-deviations-NE9000 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-l2vpn-notification-deviations-NE9000";
+  prefix l2vpn-notification-devs-NE9000;
+
+  import huawei-l2vpn-notification {
+    prefix l2vpn-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Notification of l2vpn-notification-deviations-ngip.";
+
+  revision 2019-07-08 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/l2vpn-notification:pw-oam-fdi" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-fdi-clear" {
+    deviate not-supported;
+  }
+}

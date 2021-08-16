@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-static-user-deviations-CH-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-bras-static-user-deviations-CH-NE-X8X16";
+  prefix bras-static-user-devs-CH-NE-X8X16;
+
+  import huawei-bras-static-user {
+    prefix bras-static-user;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bras-static-user module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bras-static-user:bras-static-user/bras-static-user:ipv4-users/bras-static-user:ipv4-user/bras-static-user:up-backup-interface" {
+    deviate not-supported;
+  }
+  deviation "/bras-static-user:bras-static-user/bras-static-user:ipv6-users/bras-static-user:ipv6-user/bras-static-user:up-backup-interface" {
+    deviate not-supported;
+  }
+  deviation "/bras-static-user:bras-static-user/bras-static-user:dual-stack-users/bras-static-user:dual-stack-user/bras-static-user:up-backup-interface" {
+    deviate not-supported;
+  }
+}

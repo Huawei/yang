@@ -1,0 +1,110 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bfd-static-mpls-te-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bfd-static-mpls-te-deviations-NE5000E";
+  prefix bfd-mpls-te-devs-NE5000E;
+
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-bfd-static-mpls-te {
+    prefix bfd-static-mpls-te;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Bidirectional Forwarding Detection (BFD) is a detection mechanism used uniformly on the entire network. BFD is used to rapidly detect and monitor the connectivity of links or IP routes on a network.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-mpls-te:te-lsp/bfd-static-mpls-te:min-tx-interval-static-te-lsp" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-mpls-te:te-lsp/bfd-static-mpls-te:min-rx-interval-static-te-lsp" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-mpls-te:te-tunnel/bfd-static-mpls-te:min-tx-interval-static-te-tunnel" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-mpls-te:te-tunnel/bfd-static-mpls-te:min-rx-interval-static-te-tunnel" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd-static-mpls-te:te-lsp/bfd-static-mpls-te:min-tx-interval-auto-te-lsp" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd-static-mpls-te:te-lsp/bfd-static-mpls-te:min-rx-interval-auto-te-lsp" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd-static-mpls-te:te-tunnel/bfd-static-mpls-te:min-tx-interval-auto-te-tunnel" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd-static-mpls-te:te-tunnel/bfd-static-mpls-te:min-rx-interval-auto-te-tunnel" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-mpls-te:te-tunnel/bfd-static-mpls-te:select-board-slot-static-te-tunnel" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd-static-mpls-te:mpls-te-groups/bfd-static-mpls-te:mpls-te-group/bfd-static-mpls-te:sub-select-slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-mpls-te:te-lsp/bfd-static-mpls-te:sr-bit-err-det-static-te-lsp" {
+    deviate not-supported;
+  }
+}

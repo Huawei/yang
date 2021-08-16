@@ -1,0 +1,185 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-warranty-notification {
+  namespace "urn:huawei:yang:huawei-warranty-notification";
+  prefix warranty-notification;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of warranty.";
+  revision 2020-05-14 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "warranty";
+
+  notification warranty-to-be-expired {
+    description
+      "The electronic warranty of the device is expiring.";
+    leaf type {
+      type string{
+        length "1..10";
+      }
+      description
+        "Specify the unit of the electronic warranty.";
+    }
+    leaf slot {
+      type string{
+        length "1..32";
+      }
+      description
+            "Specify the slot path.";
+    }
+    leaf serial-number {
+      type string{
+        length "1..100";
+      }
+      description
+        "Serial number of the electronic warranty.";
+    }
+    leaf remained-days {
+      type uint32;
+      description
+        "Remained days of the electronic warranty.";
+    }
+  }
+  notification warranty-to-be-expired-clear {
+    description
+      "The ararm indicating that the electronic warranty of the device is expiring was cleared.";
+    leaf type {
+      type string{
+        length "1..10";
+      }
+      description
+        "Specify the unit of the electronic warranty.";
+    }
+    leaf slot {
+      type string{
+        length "1..32";
+      }
+      description
+            "Specify the slot path.";
+    }
+    leaf serial-number {
+      type string{
+        length "1..100";
+      }
+      description
+        "Serial number of the electronic warranty.";
+    }
+  }
+  notification warranty-expired {
+    description
+      "The electronic warranty of the device is expired.";
+    leaf type {
+      type string{
+        length "1..10";
+      }
+      description
+        "Specify the unit of the electronic warranty.";
+    }
+    leaf slot {
+      type string{
+        length "1..32";
+      }
+      description
+            "Specify the slot path.";
+    }
+    leaf serial-number {
+      type string{
+        length "1..100";
+      }
+      description
+        "Serial number of the electronic warranty.";
+    }
+  }
+  notification warranty-expired-clear {
+    description
+      "The alarm indicating that the electronic warranty of the device is expired cleared.";
+    leaf type {
+      type string{
+        length "1..10";
+      }
+      description
+        "Specify the unit of the electronic warranty.";
+    }
+    leaf slot {
+      type string{
+        length "1..32";
+      }
+      description
+            "Specify the slot path.";
+    }
+    leaf serial-number {
+      type string{
+        length "1..100";
+      }
+      description
+        "Serial number of the electronic warranty.";
+    }
+  }
+  notification warranty-missing-session {
+    description
+      "The electronic warranty's session of the device is missing.";
+    leaf type {
+      type string{
+        length "1..10";
+      }
+      description
+        "Specify the unit of the electronic warranty.";
+    }
+    leaf slot {
+      type string{
+        length "1..32";
+      }
+      description
+        "Specify the slot path.";
+    }
+    leaf serial-number {
+      type string{
+        length "1..100";
+      }
+      description
+        "Serial number of the electronic warranty.";
+    }
+  }
+  notification warranty-missing-session-clear {
+    description
+      "The alarm indicationg that the electronic warranty's session of the device is missing was cleared.";
+    leaf type {
+      type string{
+        length "1..10";
+      }
+      description
+        "Specify the unit of the electronic warranty.";
+    }
+    leaf slot {
+      type string{
+        length "1..32";
+      }
+      description
+        "Specify the slot path.";
+    }
+    leaf serial-number {
+      type string{
+        length "1..100";
+      }
+      description
+        "Serial number of the electronic warranty.";
+    }
+  }
+}

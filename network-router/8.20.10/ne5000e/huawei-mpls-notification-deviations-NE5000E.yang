@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-notification-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-mpls-notification-deviations-NE5000E";
+  prefix mpls-notification-devs-NE5000E;
+
+  import huawei-mpls-notification {
+    prefix mpls-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Notification of MPLS deviations ne5ke.";
+
+  revision 2019-07-08 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls-notification:mpls-static-lsp-down" {
+    deviate not-supported;
+  }
+  deviation "/mpls-notification:mpls-static-lsp-up" {
+    deviate not-supported;
+  }
+}

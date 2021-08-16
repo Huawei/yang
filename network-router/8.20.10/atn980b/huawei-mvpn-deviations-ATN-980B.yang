@@ -1,0 +1,49 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mvpn-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-mvpn-deviations-ATN-980B";
+  prefix mvpn-devs-ATN-980B;
+
+  import huawei-mvpn {
+    prefix mvpn;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "A model for Multicast Virtual Private Network (MVPN).";
+
+  revision 2019-09-15 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mvpn:mvpn/mvpn:globals/mvpn:global/mvpn:mvpn-id" {
+    deviate add {
+      must "../mvpn:address-family='ipv4-unicast'";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng" {
+    deviate add {
+      must "../../l3vpn:type='ipv4-unicast'";
+    }
+  }
+  deviation "/mvpn:mvpn/mvpn:globals/mvpn:global/mvpn:apply-explicit-null-label" {
+    deviate not-supported;
+  }
+}

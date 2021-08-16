@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ssl-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-ssl-deviations-NE9000";
+  prefix ssl-devs-NE9000;
+
+  import huawei-ssl {
+    prefix ssl;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Secure Socket Layer (SSL)";
+
+  revision 2020-07-02 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ssl:ssl/ssl:ssl-policys/ssl:ssl-policy/ssl:ecdh-group" {
+    deviate not-supported;
+  }
+}

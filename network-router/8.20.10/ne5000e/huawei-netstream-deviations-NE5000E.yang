@@ -1,0 +1,223 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-netstream-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-netstream-deviations-NE5000E";
+  prefix netstream-devs-NE5000E;
+
+  import huawei-netstream {
+    prefix netstream;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-netstream module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef nsm-agg-type-deviations {
+    type enumeration {
+      enum "as" {
+        value 0;
+        description 
+          "AS aggregation.";
+      }
+      enum "as-tos" {
+        value 1;
+        description 
+          "AS-ToS aggregation.";
+      }
+      enum "protocol-port" {
+        value 2;
+        description 
+          "Protocol-port.";
+      }
+      enum "protocol-port-tos" {
+        value 3;
+        description 
+          "Protocol-port-ToS aggregation.";
+      }
+      enum "source-prefix" {
+        value 4;
+        description 
+          "Source-prefix aggregation. It classifies flows by four key values, that is, the source AS number, source mask length, source prefix, and incoming interface index.";
+      }
+      enum "source-prefix-tos" {
+        value 5;
+        description 
+          "Source prefix-ToS aggregation. It classifies flows by five key values, that is, the source AS number, source mask length, source prefix, ToS, and incoming interface index.";
+      }
+      enum "destination-prefix" {
+        value 6;
+        description 
+          "Destination-prefix aggregation. It classifies flows by four key values, that is, the destination AS number, destination mask length, destination prefix, and outgoing interface index.";
+      }
+      enum "destination-prefix-tos" {
+        value 7;
+        description 
+          "Destination prefix-ToS aggregation. It classifies flows by five key values, that is, the destination AS number, destination mask length, destination prefix, ToS, and outgoing interface index.";
+      }
+      enum "prefix" {
+        value 8;
+        description 
+          "Prefix aggregation. It classifies flows by eight key values, that is, the source AS number, destination AS number, source mask length, destination mask length, source prefix, destination prefix, incoming interface index, and outgoing interface index.";
+      }
+      enum "prefix-tos" {
+        value 9;
+        description 
+          "Prefix-ToS aggregation. It classifies flows by nine key values, that is, the source AS number, destination AS number, source mask length, destination mask length, source prefix, destination prefix, ToS, incoming interface index, and outgoing interface index.";
+      }
+      enum "mpls-label" {
+        value 10;
+        description 
+          "MPLS-label aggregation. It classifies flows by six key values, that is, the first layer label, second layer label, third layer label, TopLabelIpAddress, stack bottom symbol of the first layer label, and the EXP value of the first layer label.";
+      }
+      enum "vlan-id" {
+        value 11;
+        description 
+          "VLAN-ID aggregation. It classifies flows by two key values, that is, the VLAN ID and incoming interface index.";
+      }
+      enum "bgp-nexthop-tos" {
+        value 12;
+        description 
+          "BGP next hop-ToS aggregation. It classifies streams by six key values including the BGP next hop, source AS number, destination AS number, incoming interface index, outgoing interface index, and ToS.";
+      }
+      enum "index-tos" {
+        value 13;
+        description 
+          "Interface index-ToS aggregation. It classifies flows by three key values, that is, the incoming interface index, outgoing interface index, and ToS.";
+      }
+      enum "source-index-tos" {
+        value 14;
+        description 
+          "Interface source-index-ToS aggregation.";
+      }
+      enum "vni-sip-dip" {
+        value 16;
+        description 
+          "It classifies flows by three key values, that is, the vni id, sip, and dip.";
+      }
+    }
+    description 
+      "Netstream aggregation type deviations.";
+  }
+
+  typedef nsm-destination-board-deviations {
+    type enumeration {
+      enum "self" {
+        value 0;
+        description 
+          "To Self.";
+      }
+    }
+    description 
+      "Description of destination board type.";
+  }
+
+  deviation "/netstream:netstream/netstream:sampler-rate-lower-limits" {
+    deviate not-supported;
+  }
+  deviation "/netstream:netstream/netstream:stream-log-infos" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/netstream:netstream/netstream:sampler-modes/netstream:sampler-mode/netstream:dest-slot" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/netstream:netstream" {
+    deviate not-supported;
+  }
+  ext:deviation-ext "/netstream:netstream/netstream:flow-instances/netstream:flow-instance/netstream:export-version" {
+    ext:deviate-ext add {
+      ext:dynamic-default {
+        ext:default-value "5" {
+          when "../flow-type='ip-flow'";
+          description "The default value is 5 of version when flow type is IPv4.";
+        }
+      }
+    }
+  }
+  deviation "/netstream:netstream/netstream:aggregations/netstream:aggregation/netstream:agg-type" {
+    deviate replace {
+      type netstream-devs-NE5000E:nsm-agg-type-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/netstream:netstream/netstream:sampler-modes/netstream:sampler-mode/netstream:sampler-mode" {
+    deviate replace {
+      type netstream-devs-NE5000E:nsm-destination-board-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/netstream:netstream/netstream:sampler-enables/netstream:sampler-enable" {
+    deviate add {
+      must "../../../ifm:type='Ethernet' or
+../../../ifm:type='GigabitEthernet' or
+../../../ifm:type='Eth-Trunk' or
+../../../ifm:type='100GE' or
+../../../ifm:type='400GE' or
+../../../ifm:type='40GE' or
+../../../ifm:type='50GE' or
+../../../ifm:type='50|100GE' or
+../../../ifm:type='25GE' or
+../../../ifm:type='ATM' or
+../../../ifm:type='FlexE' or
+../../../ifm:type='Serial' or
+../../../ifm:type='Ip-Trunk' or
+../../../ifm:type='Mp-group' or
+../../../ifm:type='Pos' or
+../../../ifm:type='Vbdif' or
+../../../ifm:type='Vlanif' or
+(../../../ifm:type='Global-VE' and ../../../ifm:class='sub-interface') or
+(../../../ifm:type='Virtual-Ethernet' and ../../../ifm:class='sub-interface')";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/netstream:netstream/netstream:sampler-rates/netstream:sampler-rate" {
+    deviate add {
+      must "../../../ifm:type='Ethernet' or
+../../../ifm:type='GigabitEthernet' or
+../../../ifm:type='Eth-Trunk' or
+../../../ifm:type='100GE' or
+../../../ifm:type='400GE' or
+../../../ifm:type='40GE' or
+../../../ifm:type='50GE' or
+../../../ifm:type='50|100GE' or
+../../../ifm:type='25GE' or
+../../../ifm:type='ATM' or
+../../../ifm:type='FlexE' or
+../../../ifm:type='Serial' or
+../../../ifm:type='Ip-Trunk' or
+../../../ifm:type='Mp-group' or
+../../../ifm:type='Pos' or
+../../../ifm:type='Vbdif' or
+../../../ifm:type='Vlanif' or
+(../../../ifm:type='Global-VE' and ../../../ifm:class='sub-interface') or
+(../../../ifm:type='Virtual-Ethernet' and ../../../ifm:class='sub-interface')";
+    }
+  }
+
+}

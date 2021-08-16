@@ -1,0 +1,1177 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-socket {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-socket";
+  prefix socket;
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Socket.";
+  revision 2020-12-15 {
+    description
+      "Support TCP AO.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ip-stack";
+  typedef socket-proto-type {
+    type enumeration {
+      enum "ipv4" {
+        value 0;
+        description
+          "IPv4.";
+      }
+      enum "ipv6" {
+        value 1;
+        description
+          "IPv6.";
+      }
+    }
+    description
+      "Socket proto type.";
+  }
+  typedef socket-type {
+    type enumeration {
+      enum "socket-stream" {
+        value 1;
+        description
+          "Stream socket.";
+      }
+      enum "socket-dgram" {
+        value 2;
+        description
+          "Dgram socket.";
+      }
+      enum "socket-raw" {
+        value 3;
+        description
+          "Rawip socket.";
+      }
+      enum "socket-rawlink" {
+        value 4;
+        description
+          "Rawlink socket.";
+      }
+    }
+    description
+      "Socket type.";
+  }
+  typedef tcp-statue-type {
+    type enumeration {
+      enum "closed" {
+        value 1;
+        description
+          "Closed.";
+      }
+      enum "listen" {
+        value 2;
+        description
+          "Listening.";
+      }
+      enum "syn-sent" {
+        value 3;
+        description
+          "Synchronised sent.";
+      }
+      enum "syn-received" {
+        value 4;
+        description
+          "Synchronised received.";
+      }
+      enum "established" {
+        value 5;
+        description
+          "Established.";
+      }
+      enum "close-wait" {
+        value 6;
+        description
+          "Close wait.";
+      }
+      enum "fin-wait-1" {
+        value 7;
+        description
+          "Fin wait first step.";
+      }
+      enum "closing" {
+        value 8;
+        description
+          "Closing.";
+      }
+      enum "last-ack" {
+        value 9;
+        description
+          "Last ack.";
+      }
+      enum "fin-wait-2" {
+        value 10;
+        description
+          "Fin wait second step.";
+      }
+      enum "time-wait" {
+        value 11;
+        description
+          "Time wait.";
+      }
+    }
+    description
+      "Socket type.";
+  }
+  typedef tcp-static-proto {
+    type enumeration {
+      enum "bgp" {
+        value 1;
+        description
+          "BGP.";
+      }
+      enum "ftp" {
+        value 2;
+        description
+          "FTP.";
+      }
+      enum "ldp" {
+        value 3;
+        description
+          "LDP.";
+      }
+      enum "msdp" {
+        value 4;
+        description
+          "MSDP.";
+      }
+      enum "telnet" {
+        value 5;
+        description
+          "TELNET.";
+      }
+      enum "ssh" {
+        value 6;
+        description
+          "SSH.";
+      }
+      enum "others" {
+        value 7;
+        description
+          "Others.";
+      }
+    }
+    description
+      "TCP static verbose proto type.";
+  }
+  typedef udp-static-proto {
+    type enumeration {
+      enum "ldp" {
+        value 1;
+        description
+          "LDP.";
+      }
+      enum "dhcp" {
+        value 2;
+        description
+          "DHCP.";
+      }
+      enum "bfd" {
+        value 3;
+        description
+          "BFD.";
+      }
+      enum "rip" {
+        value 4;
+        description
+          "RIP.";
+      }
+      enum "snmp" {
+        value 5;
+        description
+          "SNMP.";
+      }
+      enum "others" {
+        value 6;
+        description
+          "Others.";
+      }
+    }
+    description
+      "UDP static verbose proto type.";
+  }
+  container socket {
+    description
+      "Socket.";
+    container tcp-global {
+      description
+        "Configure global tcp attribute configuration.";
+      leaf tcp-fin-timeout {
+        type uint32 {
+          range "76..3600";
+        }
+        units "s";
+        default "675";
+        description
+          "TCP IPv4 fin timer.";
+      }
+      leaf tcp-syn-timeout {
+        type uint32 {
+          range "2..600";
+        }
+        units "s";
+        default "75";
+        description
+          "TCP IPv4 synchronised timer.";
+      }
+      leaf tcp-window {
+        type uint32 {
+          range "1..32";
+        }
+        units "kB";
+        default "8";
+        description
+          "TCP IPv4 window.";
+      }
+      leaf tcp6-fin-timeout {
+        type uint32 {
+          range "76..3600";
+        }
+        units "s";
+        default "675";
+        description
+          "TCP IPv6 fin timer.";
+      }
+      leaf tcp6-syn-timeout {
+        type uint32 {
+          range "2..600";
+        }
+        units "s";
+        default "75";
+        description
+          "TCP IPv6 synchronised timer.";
+      }
+      leaf tcp6-window {
+        type uint32 {
+          range "1..32";
+        }
+        units "kB";
+        default "8";
+        description
+          "TCP IPv6 window.";
+      }
+      leaf tcp-max-mss {
+        type uint32 {
+          range "32..9600";
+        }
+        units "Octet";
+        must "../tcp-min-mss<=../tcp-max-mss";
+        description
+          "IPv4 TCP max mss.";
+      }
+      leaf tcp6-max-mss {
+        type uint32 {
+          range "32..9600";
+        }
+        units "Octet";
+        must "../tcp6-min-mss<=../tcp6-max-mss";
+        description
+          "IPv6 TCP max mss.";
+      }
+      leaf tcp-pathmtu-timeout {
+        type uint32 {
+          range "10..100";
+        }
+        units "min";
+        description
+          "TCP IPv4 path MTU timer.";
+      }
+      leaf tcp-min-mss {
+        type uint32 {
+          range "32..9600";
+        }
+        units "Octet";
+        must "(../tcp-min-mss<=../tcp-max-mss) or not(../tcp-max-mss)";
+        default "216";
+        description
+          "IPv4 TCP min mss.";
+      }
+      leaf tcp6-min-mss {
+        type uint32 {
+          range "32..9600";
+        }
+        units "Octet";
+        must "(../tcp6-min-mss<=../tcp6-max-mss) or not(../tcp6-max-mss)";
+        default "216";
+        description
+          "IPv6 TCP min mss.";
+      }
+    }
+    container tcp-infos {
+      config false;
+      description
+        "List of TCP status.";
+      list tcp-info {
+        key "family socket-id cid";
+        description
+          "Operational data of TCP status.";
+        leaf family {
+          type socket-proto-type;
+          description
+            "Family.";
+        }
+        leaf socket-id {
+          type uint32 {
+            range "0..2147418111";
+          }
+          description
+            "Socket ID.";
+        }
+        leaf cid {
+          type pub-type:hex-binary;
+          description
+            "CID.";
+        }
+        leaf local-addr {
+          type inet:ip-address-no-zone;
+          description
+            "Local ip address.";
+        }
+        leaf local-port {
+          type uint16;
+          description
+            "Local port number.";
+        }
+        leaf remote-addr {
+          type inet:ip-address-no-zone;
+          description
+            "Remote ip address.";
+        }
+        leaf remote-port {
+          type uint16;
+          description
+            "Remote port number.";
+        }
+        leaf tcp-state {
+          type tcp-statue-type;
+          description
+            "TCP state.";
+        }
+      }
+    }
+    container udp-infos {
+      config false;
+      description
+        "List of UDP status.";
+      list udp-info {
+        key "family socket-id cid";
+        description
+          "Operational data of UDP status.";
+        leaf family {
+          type socket-proto-type;
+          description
+            "Family.";
+        }
+        leaf socket-id {
+          type uint32 {
+            range "0..2147418111";
+          }
+          description
+            "Socket ID.";
+        }
+        leaf cid {
+          type pub-type:hex-binary;
+          description
+            "App component CID.";
+        }
+        leaf local-addr {
+          type inet:ip-address-no-zone;
+          description
+            "Local ip address.";
+        }
+        leaf local-port {
+          type uint16;
+          description
+            "Local port number.";
+        }
+        leaf remote-addr {
+          type inet:ip-address-no-zone;
+          description
+            "Remote ip address.";
+        }
+        leaf remote-port {
+          type uint16;
+          description
+            "Remote port number.";
+        }
+        leaf fenode {
+          type uint32;
+          description
+            "Forwarding engine node.";
+        }
+      }
+    }
+    container rawip-infos {
+      config false;
+      description
+        "List of rawip status.";
+      list rawip-info {
+        key "socket-id cid";
+        description
+          "Operational data of rawip status.";
+        leaf socket-id {
+          type uint32 {
+            range "0..2147418111";
+          }
+          description
+            "Socket ID.";
+        }
+        leaf cid {
+          type pub-type:hex-binary;
+          description
+            "App component CID.";
+        }
+        leaf local-addr {
+          type inet:ipv4-address-no-zone;
+          description
+            "Local ip address.";
+        }
+        leaf remote-addr {
+          type inet:ipv4-address-no-zone;
+          description
+            "Remote ip address.";
+        }
+      }
+    }
+    container rawlink-infos {
+      config false;
+      description
+        "List of rawlink status.";
+      list rawlink-info {
+        key "socket-id cid";
+        description
+          "Operational data of rawlink status.";
+        leaf socket-id {
+          type uint32 {
+            range "0..2147418111";
+          }
+          description
+            "Socket ID.";
+        }
+        leaf cid {
+          type pub-type:hex-binary;
+          description
+            "App component CID.";
+        }
+      }
+    }
+    container ip-socket-infos {
+      config false;
+      description
+        "List of IPv4 Socket Informations.";
+      list ip-socket-info {
+        key "type cid socket-id";
+        description
+          "Operational data of IPv4 socket.";
+        leaf type {
+          type socket-type;
+          description
+            "Socket type.";
+        }
+        leaf cid {
+          type pub-type:hex-binary;
+          description
+            "CID.";
+        }
+        leaf socket-id {
+          type uint32;
+          description
+            "Socket ID.";
+        }
+        leaf protocol {
+          type uint8;
+          description
+            "Protocol number.";
+        }
+        leaf local-addr {
+          type inet:ipv4-address-no-zone;
+          description
+            "Source address.";
+        }
+        leaf local-port {
+          type uint16;
+          description
+            "Source port.";
+        }
+        leaf remote-addr {
+          type inet:ipv4-address-no-zone;
+          description
+            "Destination address.";
+        }
+        leaf remote-port {
+          type uint16;
+          description
+            "Destination port.";
+        }
+        leaf snd-buff {
+          type uint32;
+          description
+            "Send buffer.";
+        }
+        leaf rcv-buff {
+          type uint32;
+          description
+            "Receive buffer.";
+        }
+        leaf snd-pkt-number {
+          type uint32;
+          description
+            "Send packet number.";
+        }
+        leaf rcv-pkt-number {
+          type uint32;
+          description
+            "Receive packet number.";
+        }
+        leaf sock-option {
+          type string {
+            length "0..100";
+          }
+          description
+            "Socket Options.";
+        }
+        leaf sock-state {
+          type string {
+            length "0..100";
+          }
+          description
+            "Socket states.";
+        }
+      }
+    }
+    container ip6-sock-infos {
+      config false;
+      description
+        "List of IPv6 Socket Informations.";
+      list ip6-sock-info {
+        key "type cid socket-id";
+        description
+          "Operational data of IPv6 Socket.";
+        leaf type {
+          type socket-type;
+          description
+            "Socket type.";
+        }
+        leaf cid {
+          type pub-type:hex-binary;
+          description
+            "CID.";
+        }
+        leaf socket-id {
+          type uint32;
+          description
+            "Socket ID.";
+        }
+        leaf protocol {
+          type uint8;
+          description
+            "Protocol number.";
+        }
+        leaf local-port {
+          type uint16;
+          description
+            "Source port.";
+        }
+        leaf remote-port {
+          type uint16;
+          description
+            "Destination port.";
+        }
+        leaf local-addr {
+          type inet:ipv6-address-no-zone;
+          description
+            "Source address.";
+        }
+        leaf remote-addr {
+          type inet:ipv6-address-no-zone;
+          description
+            "Destination address.";
+        }
+        leaf snd-buff {
+          type uint32;
+          description
+            "Send buffers.";
+        }
+        leaf rcv-buff {
+          type uint32;
+          description
+            "Receive buffers.";
+        }
+        leaf snd-pkt-number {
+          type uint32;
+          description
+            "Send packet number.";
+        }
+        leaf rcv-pkt-number {
+          type uint32;
+          description
+            "Receive packet number.";
+        }
+        leaf sock-option {
+          type string {
+            length "0..100";
+          }
+          description
+            "Socket options.";
+        }
+        leaf sock-state {
+          type string {
+            length "0..100";
+          }
+          description
+            "Socket states.";
+        }
+      }
+    }
+    container tcp-aos {
+      description
+        "List of TCP AO configuration.";
+      list tcp-ao {
+        key "name";
+        description
+          "Configure TCP AO instance.";
+        leaf name {
+          type string {
+            length "1..47";
+          }
+          description
+            "The name of a TCP AO instance.";
+        }
+        leaf accept-mismatch {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable accepting TCP segments even though AO mismatched.";
+        }
+        container keychains {
+          description
+            "List of bound keychain.";
+          list keychain {
+            key "kc-name";
+            max-elements "1";
+            description
+              "Configure a keychain instance.";
+            leaf kc-name {
+              type string {
+                length "1..47";
+                pattern '[^A-Z]+';
+              }
+              description
+                "Specify a keychain name.";
+            }
+            container key-ids {
+              description
+                "List of key on a TCP AO instance.";
+              list key-id {
+                key "kc-keyid";
+                unique "send-id";
+                unique "receive-id";
+                description
+                  "Configure key instance.";
+                leaf kc-keyid {
+                  type uint32 {
+                    range "0..63";
+                  }
+                  description
+                    "ID of key.";
+                }
+                leaf send-id {
+                  type uint8;
+                  description
+                    "Send ID.";
+                }
+                leaf receive-id {
+                  type uint8;
+                  description
+                    "Receive ID.";
+                }
+                leaf include-tcp-options {
+                  type boolean;
+                  default "true";
+                  description
+                    "Enable/disable including TCP options header with AO.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    container tcp-statisticss {
+      config false;
+      description
+        "List of TCP packets statistics.";
+      list tcp-statistics {
+        key "family";
+        description
+          "Statistics of TCP packets.";
+        leaf family {
+          type socket-proto-type;
+          description
+            "Protocol type.";
+        }
+        leaf rcv-packet {
+          type uint32;
+          units "packet";
+          description
+            "Received packets statistics.";
+        }
+        leaf rcv-count {
+          type uint32;
+          units "packet";
+          description
+            "Indicates the number of received fragments.";
+        }
+        leaf pkt-in-seq {
+          type uint32;
+          units "packet";
+          description
+            "Packets in sequence.";
+        }
+        leaf rcv-win-probe-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Received window probe packets.";
+        }
+        leaf rcv-win-update-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Received window update packets.";
+        }
+        leaf rcv-cksum-err {
+          type uint32;
+          units "packet";
+          description
+            "Checksum error.";
+        }
+        leaf rcv-offset-err {
+          type uint32;
+          units "packet";
+          description
+            "Offset error.";
+        }
+        leaf rcv-short-err {
+          type uint32;
+          units "packet";
+          description
+            "Short error.";
+        }
+        leaf rcv-duplicate-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Duplicate packet.";
+        }
+        leaf rcv-part-dup-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Partially duplicate packet.";
+        }
+        leaf rcv-outoforder-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Out-of-order packets.";
+        }
+        leaf rcv-after-win-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Packets with data after window.";
+        }
+        leaf rcv-after-close {
+          type uint32;
+          units "packet";
+          description
+            "Packet after close.";
+        }
+        leaf rcv-ack-pkt {
+          type uint32;
+          units "packet";
+          description
+            "ACK packets.";
+        }
+        leaf rcv-dup-ack-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Duplicate ACK packets.";
+        }
+        leaf rcv-ack-toomuch {
+          type uint32;
+          units "packet";
+          description
+            "Received Ack too much.";
+        }
+        leaf snd-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Send packets.";
+        }
+        leaf snd-count {
+          type uint32;
+          units "packet";
+          description
+            "Send packets count.";
+        }
+        leaf snd-urgent-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Send urgent packet.";
+        }
+        leaf snd-reset-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Send reset packet.";
+        }
+        leaf snd-win-probe-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Send window probe packets.";
+        }
+        leaf snd-win-update {
+          type uint32;
+          units "packet";
+          description
+            "Send window update packets.";
+        }
+        leaf snd-data-pkt {
+          type uint32;
+          units "packet";
+          description
+            "Send data packets.";
+        }
+        leaf snd-data-rexmit {
+          type uint32;
+          units "packet";
+          description
+            "Data packets retransmitted.";
+        }
+        leaf snd-ack-only-pkt {
+          type uint32;
+          units "packet";
+          description
+            "ACK only packets.";
+        }
+        leaf rexmit-timeout {
+          type uint32;
+          units "packet";
+          description
+            "Retransmitted timeout.";
+        }
+        leaf timeout-drop {
+          type uint32;
+          units "packet";
+          description
+            "Connection dropped in retransmitted timeout.";
+        }
+        leaf keepalive-timeout {
+          type uint32;
+          units "packet";
+          description
+            "Keepalive timeout.";
+        }
+        leaf keepalive-probe {
+          type uint32;
+          units "packet";
+          description
+            "Keepalive probe.";
+        }
+        leaf keepalive-drop {
+          type uint32;
+          units "packet";
+          description
+            "Keepalive timeout, so connections disconnected.";
+        }
+        leaf conn-attempt {
+          type uint32;
+          units "packet";
+          description
+            "Connection attempt.";
+        }
+        leaf accepts {
+          type uint32;
+          units "packet";
+          description
+            "Accepted connections.";
+        }
+        leaf connects {
+          type uint32;
+          units "packet";
+          description
+            "Established connections.";
+        }
+        leaf closed {
+          type uint32;
+          units "packet";
+          description
+            "Closed connections.";
+        }
+        leaf md5-drop {
+          type uint32;
+          units "packet";
+          description
+            "Packets dropped with MD5 authentication.";
+        }
+        leaf md5-pass {
+          type uint32;
+          units "packet";
+          description
+            "Packets premitted with MD5 authentication.";
+        }
+        leaf snd-kc-permit {
+          type uint32;
+          units "packet";
+          description
+            "Send packets permitted with keychain authentication.";
+        }
+        leaf rcv-kc-permit {
+          type uint32;
+          units "packet";
+          description
+            "Receive packets permitted with keychain authentication.";
+        }
+        leaf rcv-kc-drop {
+          type uint32;
+          units "packet";
+          description
+            "Receive packets dropped with keychain authentication.";
+        }
+        leaf tcp-ao-pass {
+          type uint32;
+          units "packet";
+          description
+            "Receive packets permitted with TCP-AO authentication.";
+        }
+        leaf tcp-ao-drop {
+          type uint32;
+          units "packet";
+          description
+            "Receive packets dropped with TCP-AO authentication.";
+        }
+        leaf attempt-fails {
+          type uint32;
+          units "packet";
+          description
+            "Attempt fails.";
+        }
+        leaf established-resets {
+          type uint32;
+          units "packet";
+          description
+            "Established resets.";
+        }
+      }
+    }
+    container udp-statisticss {
+      config false;
+      description
+        "List of UDP packets statistics.";
+      list udp-statistics {
+        key "family";
+        description
+          "Statistics of UDP packets.";
+        leaf family {
+          type socket-proto-type;
+          description
+            "Protocol type.";
+        }
+        leaf rcv-packets {
+          type uint32;
+          units "packet";
+          description
+            "Received packet count.";
+        }
+        leaf badsum {
+          type uint32;
+          units "packet";
+          description
+            "Checksum error.";
+        }
+        leaf short-error {
+          type uint32;
+          units "packet";
+          description
+            "Packet length shorter than header.";
+        }
+        leaf badlen {
+          type uint32;
+          units "packet";
+          description
+            "Data length larger than packet.";
+        }
+        leaf no-port {
+          type uint32;
+          units "packet";
+          description
+            "No socket on port.";
+        }
+        leaf broadcast {
+          type uint32;
+          units "packet";
+          description
+            "Broadcast.";
+        }
+        leaf full-sock {
+          type uint32;
+          units "packet";
+          description
+            "Not delivered, input socket full.";
+        }
+        leaf pcb-cache-miss {
+          type uint32;
+          units "packet";
+          description
+            "Input packets missing pcb cache.";
+        }
+        leaf snd-packets {
+          type uint32;
+          units "packet";
+          description
+            "Send packet count.";
+        }
+      }
+    }
+    container tcp-statistics-verboses {
+      config false;
+      description
+        "List of TCP packets for statistics of each protocol.";
+      list tcp-statistics-verbose {
+        key "family type";
+        description
+          "Statistics of TCP packets of each protocol.";
+        leaf family {
+          type socket-proto-type;
+          description
+            "Protocol type.";
+        }
+        leaf type {
+          type tcp-static-proto;
+          description
+            "Application protocol type of TCP.";
+        }
+        leaf cksum-err {
+          type uint32;
+          units "packet";
+          description
+            "Checksum errors.";
+        }
+        leaf fmt-err {
+          type uint32;
+          units "packet";
+          description
+            "Format errors.";
+        }
+        leaf no-port {
+          type uint32;
+          units "packet";
+          description
+            "No port.";
+        }
+        leaf md5-err {
+          type uint32;
+          units "packet";
+          description
+            "MD5 auth errors.";
+        }
+        leaf kc-err {
+          type uint32;
+          units "packet";
+          description
+            "Keychain auth errors.";
+        }
+        leaf ao-err {
+          type uint32;
+          units "packet";
+          description
+            "TCP AO auth errors.";
+        }
+        leaf out-drop {
+          type uint32;
+          units "packet";
+          description
+            "Dropped packets.";
+        }
+      }
+    }
+    container udp-statistics-verboses {
+      config false;
+      description
+        "List of UDP packets for statistics of each protocol.";
+      list udp-statistics-verbose {
+        key "family type";
+        description
+          "Statistics of UDP packets of each protocol.";
+        leaf family {
+          type socket-proto-type;
+          description
+            "Protocol type.";
+        }
+        leaf type {
+          type udp-static-proto;
+          description
+            "Application protocol type of UDP.";
+        }
+        leaf fmt-err {
+          type uint32;
+          units "packet";
+          description
+            "Format errors.";
+        }
+        leaf cksum-err {
+          type uint32;
+          units "packet";
+          description
+            "Checksum errors.";
+        }
+        leaf no-port {
+          type uint32;
+          units "packet";
+          description
+            "No port.";
+        }
+        leaf out-drop {
+          type uint32;
+          units "packet";
+          description
+            "Dropped packets.";
+        }
+      }
+    }
+  }
+}

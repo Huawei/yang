@@ -1,0 +1,221 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vrrp-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-vrrp-deviations-ATN-980B";
+  prefix vrrp-devs-ATN-980B;
+
+  import huawei-vrrp {
+    prefix vrrp;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Global VRRP configuration.";
+
+  revision 2020-03-19 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:track-ip-routes/vrrp:track-ip-route/vrrp:track-mode" {
+    deviate not-supported;
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:cir" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:cir" {
+    deviate replace {
+      default "3";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:cir" {
+    deviate replace {
+      type uint32 {
+        range "0..1300";
+      }
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:cbs" {
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:cbs" {
+    deviate replace {
+      default "3";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:cbs" {
+    deviate replace {
+      type uint32 {
+        range "0..1300";
+      }
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:pir" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:pir" {
+    deviate replace {
+      default "6";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..1300";
+      }
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:pbs" {
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:pbs" {
+    deviate replace {
+      default "6";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:pbs" {
+    deviate replace {
+      type uint32 {
+        range "0..1300";
+      }
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:cir" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:cir" {
+    deviate replace {
+      default "3";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:cir" {
+    deviate replace {
+      type uint32 {
+        range "0..1300";
+      }
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:cbs" {
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:cbs" {
+    deviate replace {
+      default "3";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:cbs" {
+    deviate replace {
+      type uint32 {
+        range "0..1300";
+      }
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:pir" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:pir" {
+    deviate replace {
+      default "6";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..1300";
+      }
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:pbs" {
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:pbs" {
+    deviate replace {
+      default "6";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp6-session-car/vrrp:pbs" {
+    deviate replace {
+      type uint32 {
+        range "0..1300";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:adver-interval" {
+    deviate add {
+      must '((../adver-interval) mod 10 = 0)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:adver-interval" {
+    deviate add {
+      must '((../adver-interval) mod 1000 = 0)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:adver-interval" {
+    deviate replace {
+      type uint32 {
+        range "1000..255000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:preempt/vrrp:delay-time" {
+    deviate replace {
+      type uint16 {
+        range "0..3600";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:vgmp-role" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:virtual-ips/vrrp:virtual-ip/vrrp:mask" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:virtual-ips/vrrp:virtual-ip/vrrp:vgmp-role" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6" {
+    deviate add {
+      must "((count(track-bfds/track-bfd[bfd-type='normal'])<=8) and (count(track-bfds/track-bfd[bfd-type='link'])<=8) and (count(track-bfds/track-bfd[bfd-type='peer'])<=1)) or not(track-bfds/track-bfd)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:preempt/vrrp:delay-time" {
+    deviate replace {
+      type uint16 {
+        range "0..10800";
+      }
+    }
+  }
+}

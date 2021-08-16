@@ -1,0 +1,184 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-dhcp-snooping {
+  yang-version 1;
+  belongs-to huawei-dhcp {
+    prefix dhcp;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions for managing DHCP snooping.";
+  revision 2020-02-25 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef dhcp-snooping-port {
+    type enumeration {
+      enum "bootps" {
+        value 0;
+        description
+          "Bootps(67).";
+      }
+      enum "bootpc" {
+        value 1;
+        description
+          "Bootpc(68).";
+      }
+    }
+    description
+      "The type of DHCP snooping port.";
+  }
+  grouping dhcp-snooping-type {
+    description
+      "Configure DHCP snooping attributes.";
+    container global {
+      must "(not (user-bind-auto-save-enable='true') and not (user-bind-file-name)) or (user-bind-auto-save-enable='true' and user-bind-file-name)";
+      description
+        "Configure global attributes of DHCP snooping.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable DHCP snooping globally.";
+      }
+      leaf server-detect-enable {
+        when "../enable='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the check on bogus DHCP servers.";
+      }
+      leaf user-bind-auto-save-enable {
+        when "../enable='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable automatic saving of DHCP snooping binding entries.";
+      }
+      leaf user-bind-file-name {
+        when "../enable='true' and ../user-bind-auto-save-enable='true'"; 
+        type string {
+          length "1..56";
+          pattern '(cfcard:/dhcp/\S+\.tbl)';
+        }
+        description
+          "File name of saving the snooping binding table.";
+      }
+      leaf alarm-threshold {
+        when "../enable='true'";
+        type uint16 {
+          range "1..1000";
+        }
+        default "100";
+        description
+          "Global alarm threshold for DHCP packets.";
+      }
+      leaf arp-detect-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable ARP detection for DHCP users based on DHCP snooping binding entries.";
+      }
+      leaf mac-strict-check-enable {
+        when "../enable='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MAC strict check.";
+      }
+      leaf unicast-cpu-forward-disable {
+        when "../enable='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable CPU forwarding for DHCP snooping unicast packets.";
+      }
+    }
+    container white-lists {
+      description
+        "List of whitelists.";
+      list white-list {
+        key "white-list-name";
+        max-elements  "8";
+        description
+          "Configure a whitelist.";
+        leaf white-list-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Whitelist name.";
+        }
+        leaf apply-flag {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable to determine whether to use whitelists.";
+        }
+        container white-rules {
+          description
+            "List of whitelist rules.";
+          list white-rule {
+            must "(source-ip and source-mask and destination-address and destination-mask) or (not (source-ip) and not (source-mask) and destination-address and destination-mask) or (source-ip and source-mask and not (destination-address) and not (destination-mask))";
+            key "rule-id";
+            unique "source-ip source-mask destination-address destination-mask source-port destination-port";
+            max-elements  "1023";
+            description
+              "Configure a whitelist rule.";
+            leaf rule-id {
+              type uint16 {
+                range "1..1023";
+              }
+              description
+                "Whitelist rule ID.";
+            }
+            leaf source-ip {
+              type inet:ipv4-address-no-zone;
+              description
+                "Source address.";
+            }
+            leaf source-mask {
+              type inet:ipv4-address-no-zone;
+              description
+                "Source address mask.";
+            }
+            leaf destination-address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Destination address.";
+            }
+            leaf destination-mask {
+              type inet:ipv4-address-no-zone;
+              description
+                "Destination address mask.";
+            }
+            leaf source-port {
+              type dhcp-snooping-port;
+              description
+                "Source port.";
+            }
+            leaf destination-port {
+              type dhcp-snooping-port;
+              description
+                "Destination port.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

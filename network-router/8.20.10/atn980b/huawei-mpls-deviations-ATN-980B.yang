@@ -1,0 +1,38 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-mpls-deviations-ATN-980B";
+  prefix mpls-devs-ATN-980B;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2019-03-27 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls:common/mpls:global/mpls:null-lable-type" {
+    deviate replace {
+      default "non-null";
+    }
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:global/mpls:sr-exp-mode" {
+    deviate not-supported;
+  }
+}

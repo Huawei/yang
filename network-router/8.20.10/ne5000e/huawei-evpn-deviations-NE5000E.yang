@@ -1,0 +1,115 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpn-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-evpn-deviations-NE5000E";
+  prefix evpn-devs-NE5000E;
+
+  import huawei-evpn {
+    prefix evpn;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "EVPN configuration.";
+
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/evpn:evpn/evpn:site/evpn:ad-per-es-split" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:alm-threshold" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:irb-reoriginated" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:irb-split-group" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:recovery-percentage" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:routerid-extend-private-enable" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/evpn:evpn/evpn:irb2ip" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/evpn:evpn/evpn:e-tree-leaf" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:service-points/bd:service-point/evpn:evpn/evpn:e-tree-leaf" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn:etree-enable" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:i-evpn" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:etree-enable" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/evpn:evpn" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:inclusive-provider-tunnel" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:base-process/evpn:source-address" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:source-vtep-ip=current()]) and not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:bypass-vtep-ip=current()])';
+    }
+  }
+  deviation "/evpn:evpn/evpn:base-process/evpn:evpn-overlay" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:umr-originate" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:detail-suppressed" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:umr-forward" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:esi" {
+    deviate delete {
+      must "(../../nvo3:nvo3/nvo3:vni-list/nvo3:vni[../nvo3:split-horizon='true']) or ((../umr-originate='true') and not(/evpn:evpn/evpn:site/evpn:static-esis/evpn:static-esi[evpn:esi = current()]/evpn:redundancy-mode ='single-active'))";
+    }
+    deviate add {
+      must "../../nvo3:nvo3/nvo3:vni-list/nvo3:vni[../nvo3:split-horizon='true']";
+    }
+  }
+}

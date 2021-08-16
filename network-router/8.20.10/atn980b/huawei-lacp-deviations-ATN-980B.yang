@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lacp-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-lacp-deviations-ATN-980B";
+  prefix lacp-devs-ATN-980B;
+
+  import huawei-lacp {
+    prefix lacp;
+  }
+  import huawei-ifm-trunk {
+    prefix ifm-trunk;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Link Aggregation Control Protocol (LACP) management, which includes static LACP configuration, dynamic LACP learning.";
+
+  revision 2020-02-18 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/lacp:lacp/lacp:backup-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/ifm-trunk:members/ifm-trunk:member/lacp:lacp/lacp:port-attributes/lacp:role" {
+    deviate not-supported;
+  }
+  deviation "/lacp:lacp/lacp:global/lacp:m-lag" {
+    deviate not-supported;
+  }
+  deviation "/lacp:lacp/lacp:global/lacp:force-down" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/lacp:lacp/lacp:m-lag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lacp:lacp-force-up/lacp:extension-enable" {
+    deviate not-supported;
+  }
+}

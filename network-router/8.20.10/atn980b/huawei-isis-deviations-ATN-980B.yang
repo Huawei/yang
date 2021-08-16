@@ -1,0 +1,114 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-isis-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-isis-deviations-ATN-980B";
+  prefix isis-devs-ATN-980B;
+
+  import huawei-isis {
+    prefix isis;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "IS-IS management.";
+
+  revision 2019-04-04 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/isis:isis/isis:global/isis:session-car/isis:cir" {
+    deviate replace {
+      type uint32 {
+        range "0..1000000";
+      }
+      units "pps";
+      default "1";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:session-car/isis:cbs" {
+    deviate replace {
+      type uint32 {
+        range "0..1000000";
+      }
+      units "packet";
+      default "100";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:session-car/isis:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..1000000";
+      }
+      units "pps";
+      default "1500";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:session-car/isis:pbs" {
+    deviate replace {
+      type uint32 {
+        range "0..10000000";
+      }
+      units "packet";
+      default "1500";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:extern-ability/isis:virtual-cluster" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:extern-ability/isis:virtual-access" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:apply-qppb" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:max-load-balancing" {
+    deviate replace {
+      type uint32 {
+        range "1..8";
+      }
+      default "8";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:topologys/isis:topology/isis:max-load-balancing" {
+    deviate replace {
+      type uint32 {
+        range "1..8";
+      }
+      default "8";
+    }
+  }
+  deviation "/isis:isis/isis:global-stat" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:mpls-ldp-global/isis:auto-flag" {
+    deviate add {
+      must "../auto-flag='false' or (../../../../../../../ni:name='_public_' and /mpls:mpls/mpls-ldp:ldp/mpls-ldp:enable='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/isis:isis-import-rts" {
+    deviate not-supported;
+  }
+}

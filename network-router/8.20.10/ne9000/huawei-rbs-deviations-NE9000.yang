@@ -1,0 +1,184 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-rbs-deviations-NE9000 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-rbs-deviations-NE9000";
+  prefix rbs-devs-NE9000;
+
+  import huawei-rbs {
+    prefix rbs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Remote backup service, providing service backup between the master and backup devices, such as ARP entry backup.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef service-type-deviations {
+    type enumeration {
+      enum igmp-snooping {
+        value 2;
+        description
+          "IGMP snooping services that can be backed up.";
+      }
+      enum arp {
+        value 5;
+        description
+          "ARP services that can be backed up.";
+      }
+      enum igmp {
+        value 21;
+        description
+          "IGMP services that can be backed up.";
+      }
+      enum dhcp-server {
+        value 26;
+        description
+          "DHCP-SERVER services that can be backed up.";
+      }
+      enum nd {
+        value 32;
+        description
+          "Nd service that can backed up.";
+      }
+      enum dhcpv6-relay {
+        value 34;
+        description
+          "DHCPV6 relay services that can backed up.";
+      }
+    }
+    description
+      "RBP service type.";
+  }
+
+  typedef backup-mode-deviations {
+    type enumeration {
+      enum hot {
+        value 1;
+        description
+          "Default backup mode for real-time backup.";
+      }
+      enum warm {
+        value 2;
+        description
+          "Backup mode not supported.";
+      }
+    }
+    description
+      "Backup mode.";
+  }
+
+  typedef batch-backup-type-deviations {
+    type enumeration {
+      enum dhcp-server {
+        value 26;
+        description
+          "DHCP-SERVER services that can be batch backed up.";
+      }
+      enum dhcpv6-relay {
+        value 34;
+        description
+          "DHCPV6 relay services that can be batch backed up.";
+      }
+    }
+    description
+      "Service type batch backup.";
+  }
+
+  typedef batch-backup-rpc-type-deviations {
+    type enumeration {
+      enum all {
+        value 0;
+        description
+          "All services that can be batch backed up now.";
+      }
+      enum igmp-snooping {
+        value 2;
+        description
+          "IGMP snooping services that can be batch backed up.";
+      }
+      enum arp {
+        value 5;
+        description
+          "ARP services that can be batch backed up.";
+      }
+      enum dhcp-server {
+        value 26;
+        description
+          "DHCP-SERVER services that can be batch backed up.";
+      }
+      enum nd {
+        value 32;
+        description
+          "ND services that can be batch backed up.";
+      }
+      enum dhcpv6-relay {
+        value 34;
+        description
+          "DHCPV6 relay services that can be batch backed up.";
+      }
+    }
+    description
+      "Service type batch backup.";
+  }
+
+  typedef vrrp-mac-type-deviations {
+    type enumeration {
+      enum none {
+        value 0;
+        description
+          "VRRP association not based on odd/even MAC addresses.";
+      }
+    }
+    description
+      "VRRP association mode.";
+  }
+
+  deviation "/rbs:rbs/rbs:services/rbs:service/rbs:batch-backups/rbs:batch-backup/rbs:service-type" {
+    deviate replace {
+      type rbs-devs-NE9000:batch-backup-type-deviations;
+    }
+  }
+  deviation "/rbs:batch-backup-now/rbs:input/rbs:service-type" {
+    deviate replace {
+      type rbs-devs-NE9000:batch-backup-rpc-type-deviations;
+    }
+  }
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:service-types/rbs:service-type/rbs:type" {
+    deviate replace {
+      type rbs-devs-NE9000:service-type-deviations;
+    }
+  }
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:mode" {
+    deviate replace {
+      type rbs-devs-NE9000:backup-mode-deviations;
+    }
+  }
+  deviation "/rbs:rbs/rbs:services/rbs:service/rbs:shut-down" {
+    deviate not-supported;
+  }
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:name" {
+    deviate add {
+      must "((../rbs:mode = 'warm' and not (../rbs:service-types/rbs:service-type[rbs:type = 'nd']) and not (../rbs:service-types/rbs:service-type[rbs:type = 'arp']) and not (../rbs:service-types/rbs:service-type[rbs:type = 'igmp-snooping'])) or (../rbs:mode = 'hot')) and ((../rbs:service-types/rbs:service-type[rbs:type = 'igmp-snooping'] and not (../rbs:vrrps/rbs:vrrp/rbs:id)) or not (../rbs:service-types/rbs:service-type[rbs:type = 'igmp-snooping']))";
+    }
+  }
+  deviation "/rbs:rbs/rbs:profiles/rbs:profile/rbs:track-type/rbs:vrrp/rbs:vrrps/rbs:vrrp/rbs:mac-type" {
+    deviate replace {
+      type rbs-devs-NE9000:vrrp-mac-type-deviations;
+    }
+  }
+}

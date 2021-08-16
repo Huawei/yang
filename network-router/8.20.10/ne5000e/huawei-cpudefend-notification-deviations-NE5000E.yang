@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cpudefend-notification-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-cpudefend-notification-deviations-NE5000E";
+  prefix cpudefend-notification-devs-NE5000E;
+
+  import huawei-cpudefend-notification {
+    prefix cpudefend-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cpudefend-notification module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cpudefend-notification:portcar-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:portcar-alarm-clear" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:arpvlancar-enhance-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:arpvlancar-enhance-alarm-clear" {
+    deviate not-supported;
+  }
+
+}

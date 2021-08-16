@@ -1,0 +1,520 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-static-user {
+  namespace "urn:huawei:yang:huawei-bras-static-user";
+  prefix bras-static-user;
+  import huawei-aaa {
+    prefix aaa;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Bras static user.";
+  revision 2020-08-18 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bras-control";
+/*****************************************************************
+* data
+*****************************************************************/
+  container bras-static-user {
+    description
+      "Bras-static-user.";
+    container ipv4-users {
+      description
+        "List of static user for IPv4.";
+      list ipv4-user {
+        key "start-ip-address end-ip-address vpn-name";
+        description
+          "Configure a static user for IPv4, the number of addresses between start IPv4 addresse and end IPv4 addresse cannot exceed 256, YANG does not support the combination and splitting of keys in consecutive address segments.";
+        leaf start-ip-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Specify a start IP address.";
+        }
+        leaf end-ip-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Specify an end IP address. If this parameter is not specified, this command configures only one layer 2 static user.";
+        }
+        leaf vpn-name {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+          description
+            "Specify a VPN instance name. Public network vpn-name value is '_public_'.";
+        }
+        leaf interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='XGigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10x10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='4x25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='PW-VE'";
+          must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface' and not(../vlan-id)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface' and ../vlan-id) or (not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface') and not( ../vlan-id))";
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/bras-basic-access:bas";
+          description
+            "Specify an interface name.";
+        }
+        leaf up-backup-interface {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='XGigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10x10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='4x25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='PW-VE'";
+          must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface' and not(../vlan-id)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface' and ../vlan-id) or (not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface') and not( ../vlan-id))";
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/bras-basic-access:bas";
+          description
+            "Specify a up backup interface name.";
+        }
+        leaf vlan-id {
+          when "../interface-name";
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Specify a VLAN ID.";
+        }
+        leaf mac-address {
+          type pub-type:mac-address;
+          description
+            "Indicates MAC addresses. If this parameter is specified, it applies only to one layer 2 static user.";
+        }
+        leaf domain-name {
+          type leafref {
+            path "/aaa:aaa/aaa:domains/aaa:domain/aaa:name";
+          }
+          description
+            "Specify a domain name.";
+        }
+        leaf detect-enable {
+          when "../interface-name";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the device to detect whether the configured layer 2 static user is online. If this parameter is not configured, IPv4 users are triggered to go online only when ARP/IPv4 packets are sent.";
+        }
+        leaf qinq-vlan-id {
+          when "../vlan-id";
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Specify a QinQ VLAN ID.";
+        }
+        leaf export-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertises host routes of a layer 2 static user.";
+        }
+        leaf gateway-ip-address {
+          type inet:ipv4-address-no-zone;
+          mandatory true;
+          description
+            "Specify a gateway address.";
+        }
+        leaf description {
+          type string {
+            length "1..32";
+            pattern '([^A-Z]{1,32})';
+          }
+          must "../description != '-' and ../description != '--'";
+          description
+            "Specify a description for a layer 2 static user.";
+          ext:case-sensitivity lower-only;
+        }
+        leaf keep-online-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the device to retain the online status of the configured layer 2 static user even if user detection fails. This parameter is configured when firewalls exist on the network and detection packets cannot be sent out.";
+        }
+      }
+    }
+    container ipv6-users {
+      description
+        "List of static user for IPv6.";
+      list ipv6-user {
+        key "start-ipv6-address end-ipv6-address vpn-name";
+        unique "mac-address";
+        description
+          "Configure a static user for IPv6, the number of addresses between start IPv6 addresse and end IPv6 addresse cannot exceed 256, YANG does not support the combination and splitting of keys in consecutive address segments.";
+        leaf start-ipv6-address {
+          type inet:ipv6-address-no-zone;
+          description
+            "Specify a start IPv6 address.";
+        }
+        leaf end-ipv6-address {
+          type inet:ipv6-address-no-zone;
+          description
+            "Specify an end IPv6 address.";
+        }
+        leaf vpn-name {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+          description
+            "Specify a VPN instance name. Public network vpn-name value is '_public_'.";
+        }
+        leaf interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='XGigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10x10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='4x25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='PW-VE'";
+          must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface' and not(../vlan-id)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface' and ../vlan-id) or (not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface') and not( ../vlan-id))";
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/bras-basic-access:bas";
+          description
+            "Specify an interface name.";
+        }
+        leaf up-backup-interface {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='XGigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10x10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='4x25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='PW-VE'";
+          must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface' and not(../vlan-id)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface' and ../vlan-id) or (not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface') and not( ../vlan-id))";
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/bras-basic-access:bas";
+          description
+            "Specify a up backup interface name.";
+        }
+        leaf vlan-id {
+          when "../interface-name";
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Specify a VLAN ID.";
+        }
+        leaf mac-address {
+          type pub-type:mac-address;
+          must "not(../../../dual-stack-users/dual-stack-user[mac-address=current()])";
+          description
+            "Indicates MAC addresses. If this parameter is specified, it applies only to one layer 2 static user.";
+        }
+        leaf domain-name {
+          type leafref {
+            path "/aaa:aaa/aaa:domains/aaa:domain/aaa:name";
+          }
+          description
+            "Specify a domain name.";
+        }
+        leaf detect-enable {
+          when "../interface-name";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the device to detect whether the configured layer 2 static user is online. If this parameter is not configured, IPv4 users are triggered to go online only when ARP/IPv4 packets are sent.";
+        }
+        leaf qinq-vlan-id {
+          when "../vlan-id";
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Specify a QinQ VLAN ID.";
+        }
+        leaf export-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertises host routes of a layer 2 static user.";
+        }
+        leaf description {
+          type string {
+            length "1..32";
+            pattern '([^A-Z]{1,32})';
+          }
+          must "../description != '-' and ../description != '--'";
+          description
+            "Specify a description for a layer 2 static user.";
+          ext:case-sensitivity lower-only;
+        }
+        leaf start-ipv6-prefix {
+          type inet:ipv6-address-no-zone;
+          description
+            "Specify a start IPv6 delegation prefix.";
+        }
+        leaf end-ipv6-prefix {
+          when "../start-ipv6-prefix";
+          type inet:ipv6-address-no-zone;
+          mandatory true;
+          description
+            "Specify an end IPv6 delegation prefix.";
+        }
+        leaf prefix-length {
+          when "../start-ipv6-prefix";
+          type uint16 {
+            range "1..128";
+          }
+          mandatory true;
+          description
+            "Specify an IPv6 delegation prefix length.";
+        }
+        leaf gateway-ipv6-address {
+          type inet:ipv6-address-no-zone;
+          mandatory true;
+          description
+            "Specify an IPv6 gateway address.";
+        }
+        leaf keep-online-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the device to retain the online status of the configured layer 2 static user even if user detection fails. This parameter is configured when firewalls exist on the network and detection packets cannot be sent out.";
+        }
+      }
+    }
+    container dual-stack-users {
+      description
+      "List of static user for IPv4 and IPv6.";
+      list dual-stack-user {
+        
+        key "start-ip-address end-ip-address start-ipv6-address end-ipv6-address vpn-name";
+        unique "mac-address";
+        description
+          "Configure a static user for IPv4 and IPv6, the number of addresses between start IP addresse and end IP addresse cannot exceed 256, YANG does not support the combination and splitting of keys in consecutive address segments.";
+        leaf start-ip-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Specify a start IP address.";
+        }
+        leaf end-ip-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Specify an end IP address. If this parameter is not specified, this command configures only one layer 2 static user.";
+        }
+        leaf start-ipv6-address {
+          type inet:ipv6-address-no-zone;
+          description
+            "Specify a start IPv6 address.";
+        }
+        leaf end-ipv6-address {
+          type inet:ipv6-address-no-zone;
+          description
+            "Specify an end IPv6 address.";
+        }
+        leaf vpn-name {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast'] and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+          description
+            "Specify a VPN instance name. Public network vpn-name value is '_public_'.";
+        }
+        leaf interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='XGigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10x10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='4x25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='PW-VE'";
+          must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface' and not(../vlan-id)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface' and ../vlan-id) or (not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface') and not( ../vlan-id))";
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/bras-basic-access:bas";
+          description
+            "Specify an interface name.";
+        }
+        leaf up-backup-interface {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='XGigabitEthernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10x10GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='4x25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Ethernet' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='PW-VE'";
+          must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface' and not(../vlan-id)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface' and ../vlan-id) or (not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface') and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface') and not( ../vlan-id))";
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/bras-basic-access:bas";
+          description
+            "Specify a up backup interface name.";
+        }
+        leaf vlan-id {
+          when "../interface-name";
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Specify a VLAN ID.";
+        }
+        leaf mac-address {
+          type pub-type:mac-address;
+          must "not(../../../ipv6-users/ipv6-user[mac-address=current()])";
+          description
+            "Indicates MAC addresses. If this parameter is specified, it applies only to one layer 2 static user.";
+        }
+        leaf domain-name {
+          type leafref {
+            path "/aaa:aaa/aaa:domains/aaa:domain/aaa:name";
+          }
+          description
+            "Specify a domain name.";
+        }
+        leaf detect-enable {
+          when "../interface-name";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the device to detect whether the configured layer 2 static user is online. If this parameter is not configured, IPv4 users are triggered to go online only when ARP/IPv4 packets are sent.";
+        }
+        leaf qinq-vlan-id {
+          when "../vlan-id";
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Specify a QinQ VLAN ID.";
+        }
+        leaf export-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertises host routes of a layer 2 static user.";
+        }
+        leaf gateway-ip-address {
+          type inet:ipv4-address-no-zone;
+          mandatory true;
+          description
+            "Specify a gateway address.";
+        }
+        leaf description {
+          type string {
+            length "1..32";
+            pattern '([^A-Z]{1,32})';
+          }
+          must "../description != '-' and ../description != '--'";
+          description
+            "Specify a description for a layer 2 static user.";
+        }
+        leaf start-ipv6-prefix {
+          type inet:ipv6-address-no-zone;
+          description
+            "Specify a start IPv6 delegation prefix.";
+        }
+        leaf end-ipv6-prefix {
+          when "../start-ipv6-prefix";
+          type inet:ipv6-address-no-zone;
+          mandatory true;
+          description
+            "Specify an end IPv6 delegation prefix.";
+        }
+        leaf prefix-length {
+          when "../start-ipv6-prefix";
+          type uint16 {
+            range "1..128";
+          }
+          mandatory true;
+          description
+            "Specify an IPv6 delegation prefix length.";
+        }
+        leaf gateway-ipv6-address {
+          type inet:ipv6-address-no-zone;
+          mandatory true;
+          description
+            "Specify an IPv6 gateway address.";
+        }
+        leaf keep-online-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the device to retain the online status of the configured layer 2 static user even if user detection fails. This parameter is configured when firewalls exist on the network and detection packets cannot be sent out.";
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-routing-policy-ext-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-routing-policy-ext-deviations-NE5000E";
+  prefix rtp-ext-devs-NE5000E;
+
+  import huawei-routing-policy-ext {
+    prefix rtp-ext;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Routing policies are used to filter routes and control the receiving and advertising of routes. By changing the route attributes, such as reachability, you can change the path through which the traffic passes.";
+
+  revision 2019-04-27 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:nodes/rtp:node/rtp:actions/rtp-ext:apply-stitch-pmsi" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-dhcp-server-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-bras-dhcp-server-deviations-ATN-980B";
+  prefix bras-dhcp-server-devs-ATN-980B;
+
+  import huawei-bras-dhcp-server {
+    prefix bras-dhcp-server;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-dhcp-server module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-dhcp-server:bras-dhcp-server" {
+    deviate not-supported;
+  }
+
+}

@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ftps-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-ftps-deviations-ATN-980B";
+  prefix ftps-devs-ATN-980B;
+
+  import huawei-ftps {
+    prefix ftps;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Ftps management.";
+
+  revision 2019-05-01 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ftps:ftps/ftps:session-car/ftps:cir-interval" {
+    deviate replace {
+      units "pps";
+      default "800";
+    }
+  }
+  deviation "/ftps:ftps/ftps:session-car/ftps:cbs-interval" {
+    deviate replace {
+      units "packet";
+      default "3600";
+    }
+  }
+  deviation "/ftps:ftps/ftps:session-car/ftps:pir-interval" {
+    deviate replace {
+      units "pps";
+      default "32000";
+    }
+  }
+  deviation "/ftps:ftps/ftps:session-car/ftps:pbs-interval" {
+    deviate replace {
+      units "packet";
+      default "72000";
+    }
+  }
+}

@@ -1,0 +1,35 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-radius-client-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-radius-client-deviations-NE5000E";
+  prefix radius-client-devs-NE5000E;
+
+  import huawei-radius-client {
+    prefix radius-client;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviation of radius-client module.";
+
+  revision 2019-04-23 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/radius-client:radius-client/radius-client:global/radius-client:radius-enable" {
+    deviate replace {
+      default "true";
+    }
+  }
+}

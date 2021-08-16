@@ -1,0 +1,84 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifm-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-ifm-deviations-NE5000E";
+  prefix ifm-devs-NE5000E;
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Common interface management, which includes the public configuration of interfaces.";
+
+  revision 2019-05-06 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:global/ifm:sub-interface-link-trap-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:network-layer-status" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:protocol-up-delay-time" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:is-l2-switch" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:remote-interfaces" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:dynamic/ifm:sub-if-counts" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:auto-recovery-times" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:error-down" {
+    deviate not-supported;
+  }
+  deviation "/ifm:reset-if-counters-by-type/ifm:input/ifm:if-type" {
+    deviate add {
+      must "../ifm:if-type='Ethernet' or ../ifm:if-type ='GigabitEthernet' or ../ifm:if-type='Eth-Trunk' or ../ifm:if-type='Ip-Trunk' or ../ifm:if-type='Pos' or ../ifm:if-type='Tunnel' or ../ifm:if-type='NULL' or ../ifm:if-type='LoopBack' or ../ifm:if-type='Vlanif' or ../ifm:if-type='100GE' or ../ifm:if-type='40GE' or ../ifm:if-type='MTunnel' or ../ifm:if-type='MEth' or ../ifm:if-type='Lmpif' or ../ifm:if-type='Vbdif' or ../ifm:if-type='Nve' or ../ifm:if-type='Wdm' or ../ifm:if-type='400GE'";
+    }
+  }
+  deviation "/ifm:reset-if-mib-counters-by-type/ifm:input/ifm:if-type" {
+    deviate add {
+      must "../ifm:if-type='Ethernet' or ../ifm:if-type ='GigabitEthernet' or ../ifm:if-type='Eth-Trunk' or ../ifm:if-type='Ip-Trunk' or ../ifm:if-type='Pos' or ../ifm:if-type='Tunnel' or ../ifm:if-type='NULL' or ../ifm:if-type='LoopBack' or ../ifm:if-type='100GE' or ../ifm:if-type='40GE'  or ../ifm:if-type='MTunnel' or ../ifm:if-type='MEth' or ../ifm:if-type='Lmpif' or ../ifm:if-type='Vbdif'  or ../ifm:if-type='400GE'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:trap-threshold/ifm:input-rising-rate" {
+    deviate replace {
+      default "90";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:trap-threshold/ifm:input-resume-rate" {
+    deviate replace {
+      default "80";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:trap-threshold/ifm:output-rising-rate" {
+    deviate replace {
+      default "90";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:trap-threshold/ifm:output-resume-rate" {
+    deviate replace {
+      default "80";
+    }
+  }
+}

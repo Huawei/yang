@@ -1,0 +1,52 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-network-instance-deviations-NE9000 {
+  yang-version 1.1;
+  namespace "urn:huawei:yang:huawei-ietf-network-instance-deviations-NE9000";
+  prefix ni-devs-NE9000;
+
+  import ietf-interfaces {
+    prefix if;
+  }
+  import ietf-ip {
+    prefix ip;
+  }
+  import ietf-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviations for ietf-network-instance model.";
+
+  revision 2020-10-10 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/if:interfaces/if:interface/ni:bind-ni-name" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv4/ni:bind-ni-name" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv6/ni:bind-ni-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:bind-ni-name-failed" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instances" {
+    deviate not-supported;
+  }
+}

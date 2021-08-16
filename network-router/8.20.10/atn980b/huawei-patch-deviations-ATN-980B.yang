@@ -1,0 +1,68 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-patch-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-patch-deviations-ATN-980B";
+  prefix patch-devs-ATN-980B;
+
+  import huawei-patch {
+    prefix patch;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Patch deviations.";
+
+  revision 2020-11-20 {
+    description
+      "Custom the enum delete-type of patch.";
+    reference "Huawei private.";
+  }
+  revision 2019-12-10 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef delete-type-deviations {
+    type enumeration {
+      enum all {
+        value 0;
+        description
+          "The action of deleting patch package is all.";
+      }
+    }
+    description
+      "Specify the action of deleting patch package.";
+  }
+
+  deviation "/patch:patch/patch:next-startup-patchs" {
+    deviate not-supported;
+  }
+  deviation "/patch:patch/patch:operation-schedules/patch:operation-schedule/patch:name" {
+    deviate not-supported;
+  }
+  deviation "/patch:patch/patch:download-package-schedule" {
+    deviate not-supported;
+  }
+  deviation "/patch:patch/patch:download-package-load-path" {
+    deviate not-supported;
+  }
+  deviation "/patch:delete-patch/patch:input/patch:name" {
+    deviate not-supported;
+  }
+  deviation "/patch:reset-startup-patch/patch:input/patch:name" {
+    deviate not-supported;
+  }
+  deviation "/patch:download-patch-file" {
+    deviate not-supported;
+  }
+}

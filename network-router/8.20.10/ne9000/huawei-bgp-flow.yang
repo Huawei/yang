@@ -1,0 +1,706 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-flow {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bgp-flow";
+  prefix bgp-flow;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  import huawei-xpl {
+    prefix xpl;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+  revision 2020-02-25 {
+    description
+      "The YANG descriptions are modified according to new standards.";
+    reference "Huawei private.";
+  }
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+  typedef rpd-cap-type {
+    type enumeration {
+      enum "receive" {
+        value 1;
+        description
+          "Converts received BGP FlowSpec routes to common IP routes if these BGP FlowSpec routes carry the RPD attribute.";
+      }
+    }
+    description
+      "The type of FlowSpec Route Policy Distribute.";
+  }
+  /*
+   * grouping-stmt
+   */  
+  grouping bgp-peer-ipv4flow-cap-type {
+    description
+      "BGP IPv4-flow peer redirect tunnelv6.";
+    leaf redirect-tunnelv6 {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to handle the extended community attribute redirect-tunnelv6.";
+    }
+  }
+  /*
+   * augment-stmt
+   */
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af" {
+    description
+      "BGP flow address family configuration.";
+    container ipv4-flow {
+      when "../bgp:type='ipv4flow'";
+      description
+        "Configure IPv4-family flow options.";
+      container common {
+        description
+          "Configure BGP IPv4-family flow common options.";
+        leaf route-match-destination {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable matching the route destination.";
+        }
+        leaf validation-mode-as {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable using the route validation-mode include-as command, you can configure flow-route validation mode include as.";
+        }
+        leaf redirect-ip-relay-tnl-enable {
+          when "../../../../../../../ni:name='_public_'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable flow-route recursive-lookup tunnel.";
+        }
+        leaf redirect-ipv6-relay-tnl-sel-name{
+          when "../../../../../../../ni:name='_public_'";
+          type leafref {
+            path "/rtp:routing-policy/rtp:tunnel-selectors/rtp:tunnel-selector/rtp:name";
+          }
+          description
+            "Flow-route Tunnel Selector Name.";
+        }
+        leaf redirect-ip-relay-tunnel-selector-name {
+          when "../redirect-ip-relay-tnl-enable = 'true'";
+          type leafref {
+            path "/rtp:routing-policy/rtp:tunnel-selectors/rtp:tunnel-selector/rtp:name";
+          }
+          description
+            "Specifies the name of a tunnel selector.";
+        }
+        uses bgp:reflector-cluster-type;
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable route reflection between clients. If clients of a route reflector (RR) are fully meshed, you can disable route reflection among clients to reduce the cost.";
+        }
+        leaf check-origin-as-enable {
+          when "../../../../../../../ni:name='_public_'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the received BGP Flow Specification routes carrying a filtering rule that is based on the origin AS number of the destination IP address to be valid.";
+        }
+      }
+      uses bgp:routing-table-rib-only-type;
+    }
+    container ipv6-flow {
+      when "../bgp:type='ipv6flow'";
+      description
+        "Configure IPv6-family flow options.";
+      container common {
+        description
+          "Configure BGP IPv6-family flow common options.";
+        leaf route-match-destination {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable matchingatch the route destination.";
+        }
+        leaf validation-mode-as {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable using the route validation-mode include-as command, you can configure flow-route validation mode include as.";
+        }
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable route reflection between clients. If clients of a route reflector (RR) are fully meshed, you can disable route reflection among clients to reduce the cost.";
+        }
+        uses bgp:reflector-cluster-type;
+      }
+      uses bgp:routing-table-rib-only-type;
+    }
+    container vpnv4-flow {
+      when "../bgp:type='vpnv4flow'";
+      description
+        "Configure IPv4 VPN flow options.";
+      container common {
+        description
+          "Configure IPv4 VPN flow common options.";
+        uses bgp:vpn-target-type;
+        uses bgp:reflector-cluster-type;
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+          "Enable/disable route reflection between clients.";
+        }
+      }
+    }
+    container vpnv6-flow {
+      when "../bgp:type='vpnv6flow'";
+      description
+        "Configure IPv6 VPN flow options.";
+      container common {
+        description
+          "Configure IPv6 VPN flow common options.";
+        uses bgp:vpn-target-type;
+        uses bgp:reflector-cluster-type;
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+          "Enable/disable route reflection between clients.";
+        }
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af" {
+    description
+      "BGP flow address family configuration.";
+    container ipv4-flow {
+      when "../bgp:type='ipv4flow'";
+      description
+        "Configure IPv4-family flow options.";
+        leaf advertise-community {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertise the community attribute to a peer or a peer group.";
+        }
+        leaf reflect-client {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the local device as a route reflector (RR) and a peer or peer group as its client. This configuration is applicable between IBGP peers only. The configurations of RRs and its clients in an address family are valid only in this address family. Therefore, it is recommended to configure RRs and its clients in the specified address family that is required.";
+        }
+        leaf validation-disable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable route validation.";
+        }
+        leaf redirect-ip {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable peer handle the extended community attribute redirect-ip.";
+       }
+        leaf redirect-ip-vaildation {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function to indicate whether validation redirect ip, and this command only support IPv4-family flow address family.";
+       }
+        leaf redirect-ip-rfc-compatible {
+          type boolean;
+          must "not(../redirect-ip-rfc-compatible='true' and ../redirect-ip-draft-compatible='true')";
+          default "false";
+          description
+            "Enable/disable sending both number for the apply redirect IPv4 action.";
+       }
+        leaf redirect-ip-draft-compatible {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable sending both number for the apply redirect IPv4 action.";
+       }
+        uses bgp-peer-ipv4flow-cap-type;
+        leaf graceful-restart-static-timer {
+          type uint32 {
+            range "3600..2147483647";
+          }
+          units s;
+          description
+            "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+        }
+        leaf destination-origin-as {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the BGP peer origin validation.";
+        }
+        choice import-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf import-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container import-filter {
+              description
+                "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an import route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an import route-filter parameter.";
+              }
+            }
+          }
+        }
+        choice export-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf export-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container export-filter {
+              description
+                "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an export route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an export route-filter parameter.";
+              }
+            }
+          }
+        }
+        leaf advertise-large-community {
+          type bgp:peer-enable-config-type;
+          default "default";
+          description
+            "Enable large-community attribute advertisement. The Link-state address family and the RPD address family do not support this element.";
+        }
+        leaf route-update-interval {
+          type uint16 {
+            range "0..600";
+          }
+          units "s";
+          description
+            "Specify the minimum interval at which Update packets are sent. By default, the interval at which Update packets are sent to IBGP peers is 15s, 
+            and the interval at which Update packets are sent to EBGP peers is 30s. When routes change, a router will send Update packets to notify its peers. 
+            If a route changes frequently, you can set an interval at which Update packets are sent to prevent the router from sending Update packets each time the route changes. 
+            This configuration is valid only to the routes learned from peers.";
+          ext:dynamic-default;
+        }
+        leaf update-group-independent {
+          type bgp:peer-comm-config-type;
+          default "default";
+          description
+            "Enable/disable the peer which can reside in an independent peer group.";
+        }
+        leaf route-policy-distribute {
+          when "../../../../../../../../ni:name='_public_'";
+          type rpd-cap-type;
+          description
+            "Enable/disable route policy distribution (RPD) on a BGP device.";
+        }
+        uses bgp:route-limit-type;
+        uses bgp:path-attr-map-type;
+    }
+    container ipv6-flow {
+      when "../bgp:type='ipv6flow'";
+      description
+        "Configure IPv6-family flow options.";
+        leaf advertise-community {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertise the community attribute to a peer or a peer group.";
+        }
+        leaf reflect-client {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the local device as a route reflector (RR) and a peer or peer group as its client. This configuration is applicable between IBGP peers only. The configurations of RRs and its clients in an address family are valid only in this address family. Therefore, it is recommended to configure RRs and its clients in the specified address family that is required.";
+        }
+        leaf validation-disable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable route validation.";
+        }
+        leaf graceful-restart-static-timer {
+          type uint32 {
+            range "3600..2147483647";
+          }
+          units s;
+          description
+            "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+        }
+        choice import-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf import-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container import-filter {
+              description
+                "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an import route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an import route-filter parameter.";
+              }
+            }
+          }
+        }
+        choice export-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf export-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container export-filter {
+              description
+                "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an export route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an export route-filter parameter.";
+              }
+            }
+          }
+        }
+        leaf advertise-large-community {
+          type bgp:peer-enable-config-type;
+          default "default";
+          description
+            "Enable large-community attribute advertisement. The Link-state address family and the RPD address family do not support this element.";
+        }
+        uses bgp:rt-update-interval-type;
+        leaf update-group-independent {
+          type bgp:peer-comm-config-type;
+          default "default";
+          description
+            "Enable/disable the peer which can reside in an independent peer group.";
+        }
+        uses bgp:route-limit-type;
+        uses bgp:path-attr-map-type;
+    }
+    container vpnv4-flow {
+      when "../bgp:type='vpnv4flow'";
+      description
+        "Configure IPv4 VPN flow options.";
+        leaf advertise-large-community {
+          type bgp:peer-enable-config-type;
+          default "default";
+          description
+            "Enable large-community attribute advertisement.";
+        }
+        uses bgp:reflect-client-type;
+        leaf graceful-restart-static-timer {
+          type uint32 {
+            range "3600..2147483647";
+          }
+          units s;
+          description
+            "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+        }
+        leaf update-group-independent {
+          type bgp:peer-comm-config-type;
+          default "default";
+          description
+            "Enable/disable the peer which can reside in an independent peer group.";
+        }
+        choice import-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf import-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container import-filter {
+              description
+                "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an import route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an import route-filter parameter.";
+              }
+            }
+          }
+        }
+        choice export-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf export-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container export-filter {
+              description
+                "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an export route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an export route-filter parameter.";
+              }
+            }
+          }
+        }
+        leaf advertise-community {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertise the community attribute to a peer or a peer group.";
+        }
+        leaf redirect-ip-rfc-compatible {
+          type boolean;
+          must "not(../redirect-ip-rfc-compatible='true' and ../redirect-ip-draft-compatible='true')";
+          default "false";
+          description
+            "Enable/disable sending both number for the apply redirect IPv4 action.";
+        }
+        leaf redirect-ip-draft-compatible {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable sending both number for the apply redirect IPv4 action.";
+        }
+        uses bgp:route-limit-type;
+        uses bgp:path-attr-map-type;
+    }
+    container vpnv6-flow {
+      when "../bgp:type='vpnv6flow'";
+      description
+        "Configure IPv6 VPN flow options.";
+        leaf advertise-large-community {
+          type bgp:peer-enable-config-type;
+          default "default";
+          description
+            "Enable large-community attribute advertisement.";
+        }
+        uses bgp:reflect-client-type;
+        leaf graceful-restart-static-timer {
+          type uint32 {
+            range "3600..2147483647";
+          }
+          units s;
+          description
+            "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+        }
+        choice import-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf import-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container import-filter {
+              description
+                "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an import route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an import route-filter parameter.";
+              }
+            }
+          }
+        }
+        choice export-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf export-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container export-filter {
+              description
+                "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an export route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an export route-filter parameter.";
+              }
+            }
+          }
+        }
+        leaf advertise-community {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertise the community attribute to a peer or a peer group.";
+        }
+        uses bgp:route-limit-type;
+        uses bgp:path-attr-map-type;
+    }
+  }
+  ext:task-name "bgp";
+}

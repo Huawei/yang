@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-https-redirect-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bras-https-redirect-deviations-NE8000M8M14";
+  prefix bras-https-redirect-devs-NE8000M8M14;
+
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-bras-https-redirect {
+    prefix bras-https-redirect;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Global Configuration.";
+
+  revision 2021-04-19 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-https-redirect:https-redirect" {
+    deviate not-supported;
+  }
+}

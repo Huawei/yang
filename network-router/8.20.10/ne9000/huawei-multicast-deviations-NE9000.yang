@@ -1,0 +1,34 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-deviations-NE9000 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-multicast-deviations-NE9000";
+  prefix multicast-devs-NE9000;
+
+  import huawei-multicast {
+    prefix mc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Multicast basic service package.";
+
+  revision 2019-07-08 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mc:multicast/mc:global/mc:ipv4/mc:bas-igmp-extranet-enable" {
+    deviate not-supported;
+  }
+}

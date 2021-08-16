@@ -1,0 +1,108 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-igmp-mld-deviations-NE5000E {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-igmp-mld-deviations-NE5000E";
+  prefix igmp-mld-devs-NE5000E;
+
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-igmp-mld {
+    prefix igmp-mld;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specify MGMD.";
+
+  revision 2019-07-01 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:global/igmp-mld:query-response-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:global/igmp-mld:last-member-query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..5";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:global/igmp-mld:query-response-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:global/igmp-mld:last-member-query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..5";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:entry-limit" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:entry-limit-acl-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:query-response-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:query-response-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:last-member-query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..5";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:last-member-query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..5";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:dot1q-static-groups" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:qinq-static-groups" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:dot1q-static-groups" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:qinq-static-groups" {
+    deviate not-supported;
+  }
+}

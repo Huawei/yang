@@ -1,0 +1,76 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-if-ethernet-deviations-NE9000 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-if-ethernet-deviations-NE9000";
+  prefix of-interfaces-eth-devs-NE9000;
+
+  import openconfig-if-ethernet {
+    prefix oc-eth;
+  }
+  import openconfig-interfaces {
+    prefix oc-if;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Openconfig ethernet interface management.";
+
+  revision 2020-05-12 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config/oc-eth:mac-address" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config/oc-eth:auto-negotiate" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config/oc-eth:duplex-mode" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config/oc-eth:port-speed" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config/oc-eth:enable-flow-control" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:mac-address" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:auto-negotiate" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:duplex-mode" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:enable-flow-control" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:port-speed" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:hw-mac-address" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:negotiated-duplex-mode" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:negotiated-port-speed" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:state/oc-eth:counters" {
+    deviate not-supported;
+  }
+}

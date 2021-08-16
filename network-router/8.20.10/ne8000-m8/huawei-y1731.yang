@@ -1,0 +1,3143 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-y1731 {
+  namespace "urn:huawei:yang:huawei-y1731";
+  prefix y1731;
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-evpn {
+    prefix evpn;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Y.1731 is developed by ITU-T for operations, administration and maintenance (OAM) of Ethernet, which providing fault management and performance management solutions for Ethernet.";
+  revision 2019-12-10 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "y1731"; 
+  typedef version {
+    type enumeration {
+      enum "draft7" {
+        value 0;
+        description
+          "IEEE 802.1ag draft 7.";
+      }
+      enum "standard" {
+        value 1;
+        description
+          "IEEE Std 802.1ag-2007.";
+      }
+    }
+    description
+      "CFM version.";
+  }
+  typedef mp-address-model {
+    type enumeration {
+      enum "bridge" {
+        value 1;
+        description
+          "Bridge MAC model of an 802.1ag protocol.";
+      }
+      enum "individual" {
+        value 2;
+        description
+          "Individual MAC model of an 802.1ag protocol.";
+      }
+    }
+    description
+      "MP address model.";
+  }
+  typedef ccm-interval {
+    type enumeration {
+      enum "3.3ms" {
+        value 1;
+        description
+          "CCM interval of 3.3 ms.";
+      }
+      enum "10ms" {
+        value 2;
+        description
+          "CCM interval of 10 ms.";
+      }
+      enum "20ms" {
+        value 8;
+        description
+          "CCM interval of 20 ms.";
+      }
+      enum "30ms" {
+        value 9;
+        description
+          "CCM interval of 30 ms.";
+      }
+      enum "50ms" {
+        value 10;
+        description
+          "CCM interval of 50 ms.";
+      }
+      enum "100ms" {
+        value 3;
+        description
+          "CCM interval of 100 ms.";
+      }
+      enum "1s" {
+        value 4;
+        description
+          "CCM interval of 1s.";
+      }
+      enum "10s" {
+        value 5;
+        description
+          "CCM interval of 10s.";
+      }
+      enum "1min" {
+        value 6;
+        description
+          "CCM interval of 1 min.";
+      }
+      enum "10min" {
+        value 7;
+        description
+          "CCM interval of 10 min.";
+      }
+    }
+    description
+      "CCM interval.";
+  }
+  typedef l2vc-type {
+    type enumeration {
+      enum "vlan" {
+        value 4;
+        description
+          "Configure the L2VPN encapsulation type as VLAN.";
+      }
+      enum "ethernet" {
+        value 5;
+        description
+          "Configure the L2VPN encapsulation type as Ethernet.";
+      }
+    }
+    description
+      "L2VC type.";
+  }
+  typedef ma-format {
+    type enumeration {
+      enum "string" {
+        value 2;
+        description
+          "The maintenance association's name is in string format.";
+      }
+      enum "icc-based" {
+        value 32;
+        description
+          "The maintenance association's name is in ICC-based format.";
+      }
+    }
+    description
+      "MD format type.";
+  }
+  typedef md-format {
+    type enumeration {
+      enum "none" {
+        value 1;
+        description
+          "CCM packets have no maintenance domain name.";
+      }
+      enum "dns" {
+        value 2;
+        description
+          "The maintenance domain name is CCM packets DNS name.";
+      }
+      enum "mac-address" {
+        value 3;
+        description
+          "The maintenance domain name is MAC and 2-octet integer (H-H-H:U<0-65535>, example: 0001-0001-0001:1).";
+      }
+      enum "string" {
+        value 4;
+        description
+          "The maintenance domain name is string format.";
+      }
+    }
+    description
+      "MA format type.";
+  }
+  typedef direction {
+    type enumeration {
+      enum "inward" {
+        value 0;
+        description
+          "Type of a MEP, which sends packets to the device's relay.";
+      }
+      enum "outward" {
+        value 1;
+        description
+          "Type of a MEP, which sends packets out of device.";
+      }
+    }
+    description
+      "MEP direction.";
+  }
+  typedef measure-point {
+    type enumeration {
+      enum "pw" {
+        value 1;
+        description
+          "Measure the flow through the PW interface.";
+      }
+      enum "ac" {
+        value 2;
+        description
+          "Measure the flow through the AC interface.";
+      }
+    }
+    description
+      "Measure point.";
+  }
+  typedef on-demand-interval {
+    type enumeration {
+      enum "1000ms" {
+        value 1000;
+        description
+          "Interval of 1000 ms.";
+      }
+      enum "10000ms" {
+        value 10000;
+        description
+          "Interval of 10000 ms.";
+      }
+    }
+    description
+      "On demand interval.";
+  }
+  typedef sslm-interval {
+    type enumeration {
+      enum "3.3ms" {
+        value 3;
+        description
+          "Interval of 3.3 ms.";
+      }
+      enum "10ms" {
+        value 10;
+        description
+          "Interval of 10 ms.";
+      }
+      enum "100ms" {
+        value 100;
+        description
+          "Interval of 100 ms.";
+      }
+      enum "1000ms" {
+        value 1000;
+        description
+          "Interval of 1000 ms.";
+      }
+      enum "10000ms" {
+        value 10000;
+        description
+          "Interval of 10000 ms.";
+      }
+    }
+    description
+      "SSLM interval.";
+  }
+  typedef interval100and1000 {
+    type enumeration {
+      enum "3.3ms" {
+        value 3;
+        description
+          "Interval of 3.3ms.";
+      }
+      enum "10ms" {
+        value 10;
+        description
+          "Interval of 10 ms.";
+      }
+      enum "100ms" {
+        value 100;
+        description
+          "Interval of 100ms.";
+      }
+      enum "1000ms" {
+        value 1000;
+        description
+          "Interval of 1000ms.";
+      }
+    }
+    description
+      "SSLM message interval.";
+  }
+  typedef mip-create-type {
+    type enumeration {
+      enum "default" {
+        value 2;
+        description
+          "The rule of default: MIPs can be created on the port of the MD only when the port does not have the MEP of a higher MD-level or the MIP of a lower MD-level.";
+      }
+      enum "explicit" {
+        value 1;
+        description
+          "The rule of explicit: MIPs can be created on the port of the MD only when the port meets the following conditions: The port does not have the MEP of a higher MD-level or the MIP of a lower MD-level; The port has the MEP of a lower MD-level.";
+      }
+      enum "none" {
+        value 0;
+        description
+          "The rule of none: No MIPs can be created on the port of the maintenance domain.";
+      }
+    }
+    description
+      "MIP create type.";
+  }
+  typedef sender-tlv-type {
+    type enumeration {
+      enum "none" {
+        value 1;
+        description
+          "The sender ID TLV is not to be sent.";
+      }
+      enum "chassis" {
+        value 2;
+        description
+          "Information about the chassis ID is to be sent.";
+      }
+      enum "manage" {
+        value 3;
+        description
+          "Information about the management address is to be sent.";
+      }
+      enum "chassis-manage" {
+        value 4;
+        description
+          "Information about the chassis ID and management address is to be sent.";
+      }
+      enum "defer" {
+        value 5;
+        description
+          "The contents are determined by the maintenance domain managed object.";
+      }
+    }
+    description
+      "Sender TLV type.";
+  }
+  typedef ais-interval {
+    type enumeration {
+      enum "1s" {
+        value 1;
+        description
+          "AIS interval of 1s.";
+      }
+      enum "60s" {
+        value 60;
+        description
+          "AIS interval of 60s.";
+      }
+    }
+    description
+      "AIS interval.";
+  }
+  typedef measure-gran {
+    type enumeration {
+      enum "port-vlan" {
+        value 1;
+        description
+          "Measure the flow through the specified VLAN in the interface.";
+      }
+      enum "port" {
+        value 2;
+        description
+          "Measure the flow through the interface.";
+      }
+    }
+    description
+      "Measure granularity.";
+  }
+  typedef portid-tlv-type {
+    type enumeration {
+      enum "interface-name" {
+        value 5;
+        description
+          "Interface name type of port ID TLV.";
+      }
+      enum "local" {
+        value 7;
+        description
+          "Private type of port ID TLV.";
+      }
+    }
+    description
+      "Port ID TLV type.";
+  }
+  typedef measure-mode {
+    type enumeration {
+      enum "on-demand" {
+        value 1;
+        description
+          "Measure mode of on-demand.";
+      }
+      enum "proactive" {
+        value 2;
+        description
+          "Measure mode of proactive.";
+      }
+    }
+    description
+      "Measure mode.";
+  }
+  typedef status {
+    type enumeration {
+      enum "working" {
+        value 1;
+        description
+          "The measurement is in process.";
+      }
+      enum "finished" {
+        value 2;
+        description
+          "The measurement is finished.";
+      }
+    }
+    description
+      "The measurement status.";
+  }
+  typedef error-type {
+    type enumeration {
+      enum "valid" {
+        value 0;
+        description
+          "Data is valid.";
+      }
+      enum "invalid-loss" {
+        value 1;
+        description
+          "The packet loss is invalid.";
+      }
+      enum "invalid-delay" {
+        value 2;
+        description
+          "The delay is invalid.";
+      }
+    }
+    description
+      "Measurement error type.";
+  }
+  typedef cfm-status {
+    type enumeration {
+      enum "up" {
+        value 0;
+        description
+          "Status of up.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "Status of down.";
+      }
+      enum "disable" {
+        value 2;
+        description
+          "Status of disable.";
+      }
+    }
+    description
+      "CFM status.";
+  }
+  typedef delay-type {
+    type enumeration {
+      enum "one-way-delay" {
+        value 1;
+        description
+          "Threshold of one-way delay.";
+      }
+      enum "two-way-delay" {
+        value 2;
+        description
+          "Threshold of two-way delay.";
+      }
+      enum "one-way-jitter" {
+        value 3;
+        description
+          "Threshold of one-way jitter.";
+      }
+      enum "two-way-jitter" {
+        value 4;
+        description
+          "Threshold of two-way jitter.";
+      }
+    }
+    description
+      "Delay type.";
+  }
+  typedef test-delay-type {
+    type enumeration {
+      enum "two-way-delay" {
+        value 5;
+        description
+          "Threshold of two-way delay.";
+      }
+      enum "two-way-jitter" {
+        value 6;
+        description
+          "Threshold of two-way jitter.";
+      }
+    }
+    description
+      "Test threshold type.";
+  }
+  typedef loss-type {
+    type enumeration {
+      enum "single-ended-local-loss" {
+        value 1;
+        description
+          "Threshold of local loss of single-ended loss measurement.";
+      }
+      enum "single-ended-remote-loss" {
+        value 2;
+        description
+          "Threshold of remote loss of single-ended loss measurement.";
+      }
+      enum "dual-ended-local-loss" {
+        value 3;
+        description
+          "Threshold of local loss of dual-ended loss measurement.";
+      }
+      enum "dual-ended-remote-loss" {
+        value 4;
+        description
+          "Threshold of remote loss of dual-ended loss measurement.";
+      }
+    }
+    description
+      "Threshold type.";    
+  }
+  typedef loss-type-priority {
+    type enumeration {
+      enum "single-ended-local-loss" {
+        value 1;
+        description
+          "Threshold of local loss of single-ended loss measurement.";
+      }
+      enum "single-ended-remote-loss" {
+        value 2;
+        description
+          "Threshold of remote loss of single-ended loss measurement.";
+      }
+    }
+    description
+      "Threshold type.";    
+  }
+  typedef test-loss-type {
+    type enumeration {
+      enum "single-ended-local-loss" {
+        value 7;
+        description
+          "Threshold of local loss of single-ended loss measurement.";
+      }
+      enum "single-ended-remote-loss" {
+        value 8;
+        description
+          "Threshold of remote loss of single-ended loss measurement.";
+      }
+      enum "single-ended-synthetic-local-loss" {
+        value 5;
+        description
+          "Threshold of local loss of single-ended synthetic loss measurement.";
+      }
+      enum "single-ended-synthetic-remote-loss" {
+        value 6;
+        description
+          "Threshold of remote loss of single-ended syntheticloss measurement.";
+      }
+    }
+    description
+      "Test threshold type.";
+  }
+  typedef interval {
+    type enumeration {
+      enum "1000ms" {
+        value 1000;
+        description
+          "Interval of 1000 ms.";
+      }
+      enum "10000ms" {
+        value 10000;
+        description
+          "Interval of 10000 ms.";
+      }
+      enum "30000ms" {
+        value 30000;
+        description
+          "Interval of 30000 ms.";
+      }
+      enum "60000ms" {
+        value 60000;
+        description
+          "Interval of 60000 ms.";
+      }
+    }
+    description
+      "Y1731 message interval.";
+  }
+  typedef ma-mip-create-type {
+    type enumeration {
+      enum "default" {
+        value 2;
+        description
+          "The rule of default: MIPs can be created on the port of the MA only when the port does not have the MEP of a higher MD-level or the MIP of a lower MD-level.";
+      }
+      enum "explicit" {
+        value 1;
+        description
+          "The rule of explicit: MIPs can be created on the port of the MA only when the port meets the following conditions: The port does not have the MEP of a higher MD-level or the MIP of a lower MD-level; The port has the MEP of a lower MD-level.";
+      }
+      enum "none" {
+        value 0;
+        description
+          "The rule of none: No MIPs can be created on the port of the maintenance association.";
+      }
+      enum "defer" {
+        value 3;
+        description
+          "The rule of defer: The rule of MIP creation is deferred to the corresponding variable in the enclosing maintenance domain.";
+      }
+    }
+    description
+      "MA mip create type.";
+  }
+  typedef eth-bn-mode {
+    type enumeration {
+      enum "port" {
+        value 0;
+        description
+          "ETH-BN port mode.";
+      }
+      enum "port-vlan" {
+        value 1;
+        description
+          "ETH-BN port-VLAN mode.";
+      }
+    }
+    description
+      "ETH-BN mode.";
+  }
+  typedef chassis-sub-type {
+    type enumeration {
+      enum "locally-assigned" {
+        value 7;
+        description
+          "The locally assigned subtype of chassis ID subtype.";
+      }
+      enum "mac-address" {
+        value 4;
+        description
+          "The MAC address subtype of chassis ID subtype.";
+      }
+    }
+    description
+      "Chassis sub type.";
+  }
+  typedef trigger-type {
+    type enumeration {
+      enum "if-down" {
+        value 1;
+        description
+          "Shutdown the interface.";
+      }
+      enum "if-link-down" {
+        value 2;
+        description
+          "Block the interface.";
+      }
+    }
+    description
+      "Trigger if type.";
+  }
+  typedef measurement-type {
+    type enumeration {
+      enum "dual-loss" {
+        value 1;
+        description
+          "Type of dual-ended loss measure.";
+      }
+      enum "single-loss" {
+        value 2;
+        description
+          "Type of single-ended loss measure.";
+      }
+      enum "one-way-delay" {
+        value 3;
+        description
+          "Type of one-way delay measure.";
+      }
+      enum "two-way-delay" {
+        value 4;
+        description
+          "Type of two-way delay measure.";
+      }
+      enum "synthetic-loss" {
+        value 5;
+        description
+          "The type of synthetic loss measure.";
+      }
+    }
+    description
+      "Measurement type.";
+  }
+  typedef test-direction {
+    type enumeration {
+      enum "send" {
+        value 1;
+        description
+          "Send location.";
+      }
+      enum "receive" {
+        value 2;
+        description
+          "Receive location.";
+      }
+    }
+    description
+      "Test direction.";
+  }
+  typedef test-pattern {
+    type enumeration {
+      enum "zero-no-crc" {
+        value 0;
+        description
+          "Null signal without CRC-32.";
+      }
+      enum "zero-with-crc" {
+        value 1;
+        description
+          "Null signal with CRC-32.";
+      }
+    }
+    description
+      "Test pattern.";
+  }
+  container y1731 {
+    description
+      "Configure Y.1731 attributes. Y.1731 is developed by ITU-T for operations, administration and maintenance (OAM) of Ethernet, which providing fault management and performance management solutions for Ethernet.";
+    container global-attribute {
+      description
+        "Configure global Y.1731 attributes.";
+      leaf cfm-version {
+        type version;
+        default "standard";
+        description
+          "Version of Y.1731, which can be standard or draft7.";
+      }
+      leaf mp-address-model {
+        type mp-address-model;
+        default "bridge";
+        description
+          "MAC model of Y.1731, which can be bridge or individual.";
+      }
+      leaf pm-mode-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable Y.1731 PM.";
+      }
+      leaf portid-tlv {
+        type portid-tlv-type;
+        default "interface-name";
+        description
+          "Set the type of port ID TLV in MAC trace packet.";
+      }
+      leaf idle-test-id-count {
+        type uint16;
+        default "1";
+        description
+          "Set the number of idle test ID for query.";
+      }
+    }
+    container global-enable {
+      when "(../global-attribute/cfm-version='standard')";
+      presence "Enable/disable Y.1731.";
+      description
+        "Configure global-enable Y.1731 attributes. Y.1731 is developed by ITU-T for operations, administration and maintenance (OAM) of Ethernet, which providing fault management and performance management solutions for Ethernet.";
+      leaf clear-mac-vlan {
+        type pub-type:vlan-range;
+        description
+          "Configure the VLAN ID of clear MAC address.";
+      }
+      container mds {
+        description
+          "List of all maintenance domains.";
+        list md {
+          key "name";
+          description
+            "Configure a maintenance domain.";
+          leaf name {
+            type string {
+              length "1..43";
+              pattern '[^\?]*';
+            }
+            description
+              "Configure the name of a maintenance domain (MD).";
+          }
+          leaf level {
+            ext:operation-exclude update|delete;
+            type uint8 {
+              range "0..7";
+            }
+            must "not(../../../default-md/level) or (../../../default-md/level> ../level)";
+            default "0";
+            description
+              "Configure the level of the maintenance domain.";
+          }
+          leaf format {
+            ext:operation-exclude update|delete;
+            type md-format;
+            must "((../format='string') or ((../format='none') and (not(../format-name))) or ((../format!='none') and (../format-name)))";
+            default "string";              
+            description
+              "Configure the format of the maintenance domain name. By default, the format is a string. If the format is MAC-address, the format name must be in form of H-H-H:U<0-65535>, for example, 0001-0001-0001:1.";
+          }
+          leaf format-name {
+            ext:operation-exclude update|delete;
+            when "../format!='none'";
+            type string {
+              length "1..43";
+              pattern '[^\?]*';
+            }
+            ext:dynamic-default {
+              ext:default-value "../name" {
+                when "../format='string'";
+                description "The default value equals to the value of name when the format is string.";
+              }
+            }
+            description
+              "Configure the name of the maintenance domain which will be formatted. By default, it is the same as the name of the maintenance domain.";
+          }
+          leaf mip-create-type {
+            type mip-create-type;
+            default "none";
+            description
+              "Configure the MIP create type of maintenance domain."; 
+          }
+          leaf sender-tlv-type {
+            type sender-tlv-type;
+            default "defer";
+            description
+              "Configure the sender ID TLV type of the default maintenance domain.";
+          }
+          leaf chassis-sub-type {
+            when "(../sender-tlv-type='chassis') or (../sender-tlv-type='chassis-manage')";
+            type chassis-sub-type;
+            default "mac-address";
+            description
+              "Configure the chassis ID sub type of the maintenance domain.";  
+          }
+          container mas {
+            description
+              "List of all maintenance associations.";
+            list ma {
+              key "name";
+              description
+                "Configure a maintenance association.";
+              leaf name {
+                type string {
+                  length "1..43";
+                  pattern '[^\?]*';
+                }
+                description
+                  "Configure the name of a maintenance association (MA).";
+              }
+              leaf format {
+                ext:operation-exclude update|delete;
+                type ma-format;
+                must "((../format='icc-based' and ../../../format='none' and ../format-name) or (../format!='icc-based'))";
+                default "string";
+                description
+                  "Configure the format of the maintenance association's name.";
+              }
+              leaf format-name {
+                ext:operation-exclude update|delete;
+                type string {
+                  length "1..43";
+                  pattern '[^\?]*';
+                }
+                ext:dynamic-default {
+                  ext:default-value "../name" {
+                    when "../format='string'";
+                    description "The default value equals to the value of name when the format is string.";
+                  }
+                }
+                description
+                  "Configure the name of the maintenance association (MA) which will be formatted. By default, as the same with the name of the MA. The length of MA format description is [1,13] when the format is ICC-based, and [1,43] when it is string.";
+              }
+              choice map-service {
+                default no-bind;
+                description
+                  "Configure the type of a maintenance association's service.";
+                case no-bind {
+                  description
+                    "MA map no service.";
+                  leaf no-bind {
+                    type empty;
+                    description
+                      "MA map no service.";
+                  }
+                }
+                case bind-vlan {
+                  description
+                    "Map a VLAN.";
+                  leaf vlan-id {
+                    ext:operation-exclude update {
+                     when "../meps/mep or ../rmeps/rmep";
+                       description "The value cannot be updated, when mep or rmep exists.";
+                    }
+                    type uint16 {
+                      range "1..4094";
+                    }
+                    mandatory true;
+                    description
+                      "Configure the VLAN ID associated with the maintenance association.";
+                  }
+                  leaf one-way-threshold-value {
+                    ext:operation-exclude update;
+                    type uint32 {
+                      range "1..4294967295";
+                    }
+                    units "ms";
+                    description
+                      "Configure the threshold of one-way delay measurement.";
+                  }
+                  leaf two-way-threshold-value {
+                    ext:operation-exclude update;
+                    type uint32 {
+                      range "1..4294967295";
+                    }
+                    units "ms";
+                    description
+                      "Configure the threshold of two-way delay measurement.";
+                  }
+                }
+                case bind-l2vc {
+                  description
+                    "Map a L2VC.";
+                  leaf l2vc-id {
+                    ext:operation-exclude update {
+                     when "../meps/mep or ../rmeps/rmep";
+                       description "The 'l2vc-id' cannot be updated, when mep or rmep exists.";
+                    }
+                    type leafref {
+                      path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:pw-id";
+                    }
+                    must "count(../meps/mep)<=1";
+                    mandatory true;
+                    description
+                     "Configure the ID of the L2VC associated with the maintenance association.";
+                    ext:support-filter "true"; 
+                  }
+                  leaf l2vc-type {
+                    ext:operation-exclude update {
+                     when "../meps/mep or ../rmeps/rmep";
+                       description "The 'l2vc-type' cannot be updated, when mep or rmep exists.";
+                    }
+                    type l2vc-type;
+                    mandatory true;
+                    description
+                      "Configure the type of the L2VC associated with the maintenance association.";
+                    ext:support-filter "true";
+                  }
+                  leaf l2vc-ip {
+                    type leafref {
+                      path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw/l2vpn:peer-ip";
+                    }           
+                    description
+                      "Configure the peer IP of the L2VC associated with the maintenance association.";
+                  }
+                }
+                case bind-vsi {
+                  description
+                    "Map a VSI.";
+                  leaf vsi-name {
+                    ext:operation-exclude update {
+                     when "../meps/mep or ../rmeps/rmep";
+                       description "The 'vsi-name' cannot be updated, when mep or rmep exists.";
+                    }
+                    type leafref {
+                      path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+                    }
+                    must "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name = current()][l2vpn:type='vpls']";
+                    description
+                      "Configure the name of the VSI associated with the maintenance association.";
+                    ext:support-filter "true";
+                  }
+                }
+                case bind-ccc {
+                  description
+                    "Map a CCC.";
+                  leaf ccc-name {
+                    type leafref {
+                      path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+                    }
+                    must "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name = current()][l2vpn:type='vpws-local-ccc']";
+                    description
+                      "Configure the CCC names associated with the maintenance association.";
+                    ext:support-filter "true";
+                  }
+                }
+                case bind-l2tpv3-pw {
+                  description
+                    "Map the tunnel of a l2tpv3.";
+                  leaf tnl-name {
+                    type string {
+                      length "1..19";
+                    }
+                    description
+                      "Configures the L2TPV3 tunnel name that associated with the maintenance association.";
+                  }
+                }
+                case bind-l2tpv3-ccc {
+                  description
+                    "Map the local connection of a L2TPV3.";
+                  leaf l2tp-ccc-name {
+                    type string {
+                      length "1..31";
+                    }
+                    description
+                      "Configures the L2TPv3 local connection name that associated with the maintenance association.";
+                  }
+                }
+                case bind-bgp-pw {
+                  description
+                    "Map a BGP PW.";
+                  leaf vpn-name {
+                    type leafref {
+                      path "/l2vpn:l2vpn/l2vpn:common/l2vpn:vpws-bgp-vpns/l2vpn:vpws-bgp-vpn/l2vpn:name";
+                    }
+                    mandatory true;
+                    description
+                      "Configure the name of the L2VPN associated with the maintenance association.";
+                    ext:support-filter "true";
+                  }
+                  leaf ce-id {
+                    type leafref {
+                      path "/l2vpn:l2vpn/l2vpn:common/l2vpn:vpws-bgp-vpns/l2vpn:vpws-bgp-vpn[l2vpn:name=current()/../vpn-name]/l2vpn:sites/l2vpn:site/l2vpn:id";
+                    }
+                    mandatory true;
+                    description
+                      "Configure the ID of the CE associated with the maintenance association.";
+                    ext:support-filter "true";
+                  }
+                  leaf ce-off-set {
+                    type leafref {
+                      path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpws-bgp/l2vpn:pws/l2vpn:pw/l2vpn:remote-site-id";
+                    }
+                    mandatory true;
+                    description
+                      "Configure the ID of the remote CE associated with the maintenance association.";
+                    ext:support-filter "true";
+                  }
+                }
+                case bind-evpn {
+                  description
+                    "Map an EVPN.";
+                  leaf evpn-name {
+                    type leafref {
+                      path "/evpn:evpn/evpn:instances/evpn:instance/evpn:name";
+                    }
+                    must "/evpn:evpn/evpn:instances/evpn:instance[evpn:name=current()]/evpn:type='vpws-evpn' or /evpn:evpn/evpn:instances/evpn:instance[evpn:name=current()]/evpn:type='normal'";
+                    description
+                      "Configure the EVPN name associated with the maintenance association.";
+                  }
+                }
+                case bind-bd {
+                  description
+                    "Map a BD.";
+                  leaf bd-id {
+                    type leafref {
+                      path "/bd:bd/bd:instances/bd:instance/bd:id";
+                    }
+                    description
+                      "Configure the BD ID associated with the maintenance association.";
+                  }
+                }
+              }
+              leaf packet-priority {
+                type uint8 {
+                  range "0..7";
+                }
+                default "7";
+                description
+                  "Configure the priority of the packet which is sent in the maintenance association.";
+              }
+              leaf ccm-interval {
+                type ccm-interval;
+                default "1s";
+                description
+                  "Configure the interval at which CCMs are sent in a maintenance association.";
+              }
+              leaf alarm-occur-time {
+                type uint16 {
+                  range "0..30000";
+                }
+                units "ms";
+                must "(../alarm-occur-time mod 500)=0";
+                default "2500";
+                description
+                  "Configure the delay for reporting an alarm."; 
+              }
+              leaf alarm-finish-time {
+                type uint16 {
+                  range "0..30000";
+                }
+                units "ms";
+                must "(../alarm-finish-time mod 500)=0";
+                default "10000";
+                description
+                  "Configure the delay for clearing an alarm.";
+              }
+              leaf active-time {
+                type uint16 {
+                  range "0..600";
+                }
+                units "s";
+                default "0";
+                description
+                  "Configure the time to activate a RMEP.";
+              }
+              leaf interface-tlv {
+                type boolean;
+                default "false";
+                description
+                  "Enable/disable interface status TLV in CCM.";
+              }
+              leaf sender-id-tlv {
+                type boolean;
+                default "false";
+                description
+                  "Enable/disable sender ID TLV in CCM.";
+              }
+              leaf port-status-tlv {
+                type boolean;
+                default "false";
+                description
+                  "Enable/disable port status TLV in CCM.";
+              }
+              leaf mip-create-type {
+                type ma-mip-create-type;
+                default "defer";
+                description
+                  "Configures the MIP create type of maintenance association.";
+              }
+              leaf unexpected-mep-alarm {
+                type boolean;
+                default "false";
+                description
+                  "Enable/disable unexpectedMep alarm.";
+              }
+              container ais {
+                presence "Enable/disable AIS.";
+                description
+                  "Configure the function of all AIS instances.";
+                leaf interval {
+                  type ais-interval;
+                  default "1s";
+                  description
+                    "Configure the interval at which AIS packets are sent.";
+                }
+                leaf level {
+                  type uint8 {
+                    range "0..7";
+                  }
+                  must "../level>../../../../level";
+                  description
+                    "Configure the level of AIS packets.";
+                }
+                leaf suppress-alarm-enable {
+                  type boolean;
+                  default "false";
+                  description
+                    "Enable/disable suppressing alarms.";
+                }
+                container link-interfaces {
+                  description
+                    "List of AIS on interfaces.";
+                  list link-interface {
+                    key "if-name";
+                    description
+                      "Configure the interface instance of AIS.";
+                    leaf if-name {
+                      type leafref {
+                        path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                      }
+                      description
+                        "Configure the interface name of AIS.";
+                    }
+                  }
+                }
+              }
+              container meps {
+                description
+                  "List of all MEPs.";
+                list mep {
+                  must "(pe-vlan and ce-vlan) or (not(pe-vlan) and not(ce-vlan))";
+                  must "(direction and (if-name or peer-ip)) or (not(direction) and not(if-name) and not(peer-ip))";  
+                  key "id";
+                  description
+                    "Configure a MEP point.";
+                  leaf id {
+                    type uint16 {
+                      range "1..8191";
+                    }
+                    description
+                      "Configure a MEP ID.";
+                  }
+                  choice type {
+                    mandatory true;
+                    description
+                      "MEP type.";
+                    case if-mep {
+                      leaf if-name {
+                        ext:operation-exclude update;
+                        type leafref {
+                          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                        }
+                        must "not(../../../meps/mep[if-name!=current()])";
+                        mandatory true;
+                        description
+                          "Configure a MEP interface.";
+                      }
+                      choice tags {
+                        description
+                          "Configure the tags of a MEP.";
+                        case two-tags {
+                          leaf pe-vlan {
+                            ext:operation-exclude update|delete;
+                            type uint16 {
+                              range "1..4094";
+                            }
+                            description
+                              "Configure the PE VLAN of a MEP.";
+                          }
+                          leaf ce-vlan {
+                            ext:operation-exclude update|delete;
+                            type uint16 {
+                              range "1..4094";
+                            }
+                            description
+                              "Configure the CE VLAN of a MEP.";
+                          }
+                          description
+                            "Configure the two tags of a MEP.";
+                        }
+                        case one-tag {
+                          description
+                            "Configure the dot1q VLAN of a MEP.";
+                          leaf dot1q-vlan {
+                            ext:operation-exclude update|delete;
+                            type uint16 {
+                              range "1..4094";
+                            }
+                            description
+                              "Configure the dot1q VLAN of a MEP.";
+                          }
+                        }
+                      }
+                      leaf measure-point {
+                        when "../../../l2vc-id and ../direction='inward'";
+                        type measure-point;
+                        default "pw";
+                        description
+                          "Configure the measure point of a MEP.";
+                      }
+                      leaf clear-arp {
+                        when "../../../vlan-id";
+                        type boolean;
+                        must "../direction='outward'";
+                        default "false";
+                        description
+                          "Enable/disable clear ARP.";
+                      }
+                      leaf test-enable {
+                        type boolean;
+                        must "../test-enable='false' or (not(../../../l2tp-ccc-name) and not(../../../tnl-name))";
+                        default "false";
+                        description
+                          "Enable/disable test.";
+                      }
+                      container lck {
+                        presence "Enable/disable LCK.";
+                        description
+                          "Configure the LCK.";
+                        leaf level {
+                          type uint8 {
+                            range "0..7";
+                          }
+                          must "../level > ../../../../../../level";
+                          mandatory true;
+                          description
+                            "Configure the LCK message level.";
+                        }
+                      }
+                      container eth-bn-receive {
+                        when "(../../../vlan-id or ../../../no-bind) and (not (../pe-vlan)) and ../direction='outward'";
+                        presence "Enable the ETN-BN receive function.";
+                        description
+                          "Configure ETH-BN receive.";
+                        leaf min-bw {
+                          type uint8 {
+                            range "1..4";
+                          }
+                          units "Mbit/s";
+                          default "1";
+                          description
+                            "The min bandwidth.";
+                        }
+                        leaf mode {
+                          type eth-bn-mode;
+                          must "not((../../../../vlan-id) and (../mode='port-vlan'))";
+                          default "port";
+                          description
+                            "ETH-BN mode.";
+                        }
+                        container eth-bn-results {
+                          config false;
+                          description
+                            "List of ETH-BN message.";
+                          list eth-bn-result {
+                            key "src-mac port-id";
+                            description
+                              "Operational state of ETH-BN message.";
+                            leaf src-mac  {
+                              type pub-type:mac-address;
+                              description
+                                "Source MAC in ETH-BN message.";
+                            }  
+                            leaf port-id {
+                              type uint32;
+                              description
+                                "Port ID in ETH-BN message.";
+                            }
+                            leaf band-width {
+                              type uint32;
+                              units "Mbit/s";
+                              description
+                                "Bandwidth in ETH-BN message.";
+                            }
+                          }
+                        }
+                      }
+                      container ais {
+                        when "../../../ais and ../if-name";
+                        description
+                          "Configure AIS.";
+                        leaf vid {
+                          type pub-type:vlan-range;
+                          description
+                            "VLAN ID of AIS.";
+                        }
+                        container vlans {   
+                          description
+                            "List of AIS VLAN.";         
+                          list vlan {
+                            key "pe-vid";
+                            description
+                              "Configure the instance of AIS VLAN.";
+                            leaf pe-vid {
+                              type uint16 {
+                                range "1..4094";
+                              }
+                             description
+                                "Configure the PE VLAN of AIS.";
+                            }
+                            leaf ce-vid {
+                              type pub-type:vlan-range;
+                              mandatory true;
+                              description
+                                "Configure the CE VLAN of AIS.";
+                            }
+                          }
+                        }
+                      }
+                      container port-link {
+                        when "../direction='inward'";
+                        must "(loc='true' or tlv='true')";
+                        presence "Enable/disable port link in a MEP.";
+                        description
+                          "Configure port link.";
+                        leaf port-link-holdoff {
+                          type uint8 {
+                            range "0..100";
+                          }
+                          units "100 ms";
+                          default "0";
+                          description
+                            "Port linkage hold off time.";
+                        }
+                        leaf wtr {
+                          type uint16 {
+                            range "0..600";
+                          }
+                          units "s";
+                          default "60";
+                          description
+                            "Port linkage wait to restore (WTR) time.";
+                        }
+                        leaf loc {
+                          type boolean;
+                          default "true";
+                          description
+                            "Enable/disable LOC.";
+                        }
+                        leaf tlv {
+                          type boolean;
+                          default "false";
+                          description
+                            "Enable/disable interface status TLV.";
+                        }
+                      }
+                      container delay-thresholds {
+                        description
+                          "List of the threshold of delay measurement.";
+                        list delay-threshold {
+                          must "upper-limit>lower-limit";
+                          must "not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind)";
+                          key "delay-type";
+                          description
+                           "Configure the threshold of delay measurement.";
+                          leaf delay-type {
+                            type delay-type;
+                            description
+                              "Configure the type of delay measurement.";
+                          }
+                          leaf upper-limit {
+                            type uint32 {
+                              range "0..4294967295";
+                            }
+                            mandatory true;
+                            description
+                              "Configure the upper limit of delay threshold.";
+                          }
+                          leaf lower-limit {
+                            type uint32 {
+                              range "0..4294967295";
+                            }
+                            mandatory true;
+                            description
+                              "Configure the lower limit of delay threshold.";
+                          }
+                        }
+                      }
+                      container delay-threshold-prioritys {
+                        description
+                          "List of the threshold of delay measurement.";
+                        list delay-threshold-priority {
+                          must "upper-limit>lower-limit";
+                          must "not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind)";
+                          key "delay-type priority";
+                          description
+                           "Configure the threshold of delay measurement.";
+                          leaf delay-type {
+                            type delay-type;
+                            description
+                              "Configure the type of delay measurement.";
+                          }
+                          leaf priority {
+                            type uint8 {
+                             range "0..7";
+                            }
+                            description
+                              "Configure the priority of delay measurement.";
+                          }
+                          leaf upper-limit {
+                            type uint32 {
+                              range "0..4294967295";
+                            }
+                            mandatory true;
+                            description
+                              "Configure the upper limit of delay threshold.";
+                          }
+                          leaf lower-limit {
+                            type uint32 {
+                              range "0..4294967295";
+                            }
+                            mandatory true;
+                            description
+                              "Configure the lower limit of delay threshold.";
+                          }
+                        }
+                      }
+                      container loss-thresholds {
+                        description
+                          "List of the threshold of loss measurement.";
+                        list loss-threshold {
+                          must "not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind) and not(../../../../evpn-name) and not(../../../../bd-id)";
+                          key "loss-type";
+                          description
+                            "Configure the threshold of loss measurement.";
+                          leaf loss-type {
+                            type loss-type;
+                            description
+                              "Configure the type of loss measurement.";
+                          }
+                          leaf upper-limit {
+                            type string {
+                              length "1..8";
+                              pattern '[0-1]{0,1}[0-9]{0,1}[0-9]{0,1}(\.[0-9]{1,4})?';
+                            }
+                            mandatory true;
+                            description
+                              "Configure the upper limit of loss threshold.";
+                          }
+                          leaf lower-limit {
+                            type string {
+                              length "1..8";
+                              pattern '[0-1]{0,1}[0-9]{0,1}[0-9]{0,1}(\.[0-9]{1,4})?';
+                            }
+                            mandatory true;
+                            description
+                              "Configure the lower limit of loss threshold.";
+                          }
+                        }
+                      }
+                      container loss-threshold-prioritys {
+                        description
+                          "List of the threshold of loss measurement.";
+                        list loss-threshold-priority {
+                          must "not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind) and not(../../../../evpn-name) and not(../../../../bd-id)";
+                          key "loss-type priority";
+                          description
+                            "Configure the threshold of loss measurement.";
+                          leaf loss-type {
+                            type loss-type-priority;
+                            description
+                              "Configure the type of loss measurement.";
+                          }
+                          leaf priority {
+                            type uint8 {
+                             range "0..7";
+                            }
+                            description
+                              "Configure the priority of loss measurement.";
+                          }
+                          leaf upper-limit {
+                            type string {
+                              length "1..8";
+                              pattern '[0-1]{0,1}[0-9]{0,1}[0-9]{0,1}(\.[0-9]{1,4})?';
+                            }
+                            mandatory true;
+                            description
+                              "Configure the upper limit of loss threshold.";
+                          }
+                          leaf lower-limit {
+                            type string {
+                              length "1..8";
+                              pattern '[0-1]{0,1}[0-9]{0,1}[0-9]{0,1}(\.[0-9]{1,4})?';
+                            }
+                            mandatory true;
+                            description
+                              "Configure the lower limit of loss threshold.";
+                          }
+                        }
+                      }
+                      description
+                        "Configure a MEP on an interface.";
+                    }
+                    case pw-mep {
+                      when "../../vsi-name";
+                      leaf peer-ip {
+                        ext:operation-exclude update;
+                        type inet:ipv4-address-no-zone;
+                        mandatory true;
+                        description
+                          "Configure the IP of peer end.";
+                      }
+                      leaf vc-id {
+                        ext:operation-exclude update|delete;
+                        when "../peer-ip";
+                        type uint32 {
+                          range "1..4294967295";
+                        }
+                        description
+                         "Configure the ID of VC.";
+                      }
+                      leaf config-mac {
+                        ext:operation-exclude update|delete;
+                        type pub-type:mac-address;
+                        description
+                          "MAC address of a MEP."; 
+                      }
+                      description
+                        "Configure a MEP on a PW.";
+                    }
+                    case vlan-if-mep {
+                      when "../../vlan-id";
+                      leaf vlan-mep {
+                         type empty;
+                         description
+                           "A VLAN TYPE MEP.";
+                      }
+                      description
+                        "Configure a MEP on a VLANIF.";
+                    }
+                  }
+                  leaf direction {
+                    ext:operation-exclude update|delete;
+                    type direction;
+                    must "(../direction='outward' and count(../../mep)=1) or not(../../../meps/mep[direction!=current()])";
+                    description
+                      "Configure the direction of a MEP.";
+                  }
+                  leaf cc-send-enable {
+                    type boolean;
+                    must "../cc-send-enable='false' or (../if-name or ../vlan-mep)";
+                    default "false";
+                    description
+                      "Enable/disable CCMs which can be sent.";
+                  }
+                  leaf rdi-alarm-disabled {
+                    type boolean;
+                    must "../rdi-alarm-disabled='false' or (../if-name or ../peer-ip or ../vlan-mep)";
+                    default "false";
+                    description
+                      "Enable/disable suppressing RDI alarm.";
+                  }
+                  leaf ais-alarm-disabled {
+                    type boolean;
+                    must "../ais-alarm-disabled='false' or (../if-name or ../peer-ip or ../vlan-mep)";
+                    default "false";
+                    description
+                      "Enable/disable suppressing AIS alarm.";
+                  }
+                }
+              }
+              container rmeps {
+                description
+                  "List of all remote maintenance points.";
+                list rmep {
+                  key "id";
+                  description
+                    "Configure a remote maintenance point.";
+                  leaf id {
+                    type uint16 {
+                      range "1..8191";
+                    }
+                    description
+                      "Configure the ID of a RMEP.";
+                  }
+                  leaf cc-recv-enabled {
+                    type boolean;
+                    default "false";
+                    description
+                      "Enable/disable CC receive.";
+                  }
+                  leaf config-mac {
+                    ext:operation-exclude create|update|delete;
+                    type pub-type:mac-address;
+                    description
+                      "Configure the MAC of a RMEP, format: H-H-H.";
+                  }
+                  leaf cfm-status {
+                    type cfm-status;
+                    config false;
+                    description
+                      "Status of a RMEP.";
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      container test-instances {
+        description
+          "List of all test instances.";
+        list test-instance {
+          key "test-id";
+          description
+            "Configure a test instance.";
+          leaf test-id {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "Configure the ID of a test instance (65536 to 4294967295 is reserved for automatic allocation).";
+          }
+          leaf description {
+            ext:operation-exclude update|delete;
+            type string {
+              length "1..63";
+              pattern '[^\?]*';
+            }
+            description
+              "Configure the description of a test instance.";
+             
+          }
+          leaf md-name {
+            ext:operation-exclude update;
+            type leafref {
+              path "/y1731/global-enable/mds/md/name";
+            }
+            mandatory true;
+            description
+              "Configure the name of a maintenance domain (MD).";
+          }
+          leaf ma-name {
+            ext:operation-exclude update;
+            type leafref {
+              path "/y1731/global-enable/mds/md/mas/ma/name";
+            }
+            must "(/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()])";
+            mandatory true;
+            description
+              "Configure the name of a maintenance association (MA).";
+          }
+          leaf mep-id {
+            ext:operation-exclude update;
+            type leafref {
+              path "/y1731/global-enable/mds/md/mas/ma/meps/mep/id";
+            }
+            must "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:meps/y1731:mep[y1731:id=current()]";
+            mandatory true;
+            description
+              "Configure a MEP ID.";
+          }
+          choice remote {
+            description
+              "Configure the RMEP ID or MAC.";
+            case rmep-id {
+              leaf rmep-id {
+                ext:operation-exclude create|update|delete;
+                type leafref {
+                  path "/y1731/global-enable/mds/md/mas/ma/rmeps/rmep/id";
+                }
+                must "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:rmeps/y1731:rmep[y1731:id=current()]";
+                description
+                  "Configure a RMEP ID.";
+              }
+              description
+                "Configure a RMEP ID.";
+            }
+            case remote-mac
+            {
+              leaf rmep-mac {
+                ext:operation-exclude create|update|delete;
+                type pub-type:mac-address;
+                must "not(../../../y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:meps/y1731:mep[y1731:id=current()/../mep-id]/vlan-mep)";
+                description
+                  "Configure the MAC of a RMEP, format: H-H-H.";
+              }
+              description
+                "Configure the MAC of a RMEP, format: H-H-H.";
+            }
+          }
+          leaf priority {
+            ext:operation-exclude update|delete;
+            type uint8 {
+              range "0..7";
+            }
+            must "(../priority and not(../peer-ip) and not(../vc-id)) or not(../priority)";
+            description
+              "Configure the priority of packets.";
+          }
+          leaf peer-ip {
+            ext:operation-exclude update|delete;
+            type inet:ipv4-address-no-zone;
+            must "(../peer-ip and not(../priority)) or not(../peer-ip)";
+            description
+              "Configure the IP of peer end.";
+          }
+          leaf vc-id {
+            ext:operation-exclude update|delete;
+            type uint32 {
+              range "1..4294967295";
+            }
+            must "((../vc-id and ../peer-ip and not(../priority)) or not(../vc-id))";
+            description
+              "Configure the ID of VC.";
+          }
+          leaf test-file-enable {
+            ext:operation-exclude update|delete;
+            type boolean;
+            default "false";
+            description
+              "Enable/disable test ID file.";
+          }
+          container one-way-delay-send {
+            presence "Enable/disable one-way DM send.";
+            description
+              "Configure an one-way delay measurement send instance.";
+            leaf interval {
+              ext:operation-exclude update;
+              type interval;
+              mandatory true;
+              description
+                "Configure the interval of one-way delay measurement send.";
+            }
+          }
+          container one-way-delay-recv {
+            presence "Enable/disable one-way DM receive.";
+            description
+              "Configure an one-way delay measurement receive instance.";
+            leaf is-continue {
+              ext:operation-exclude update|delete;
+              type boolean;
+              default "false";
+              description
+                "Enable/disable one-way delay continue measurement receive.";
+            }
+          }
+          container two-way-delay-send {
+            presence "Enable/disable two-way DM send.";
+            description
+              "Configure a two-way delay measurement send instance.";
+            leaf interval {
+              ext:operation-exclude update;
+              type interval;
+              mandatory true;
+              description
+                "Configure the interval of two-way delay measurement send.";
+            }         
+            leaf period {
+              ext:operation-exclude update|delete;
+              type uint16 {
+                range "1..65535";
+              }
+              units "s";
+              default "900";
+              description
+                "The value of measurement duration.";
+            }
+          }
+          container two-way-delay-recv {
+            description
+              "Configure a two-way delay measurement receive instance.";
+            leaf receive-enabled {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable two-way delay measurement receive instance.";       
+            }
+          }
+          container single-loss-send {
+            must "not(../dual-loss/enabled='true')";
+            presence "Enable/disable single loss send.";
+            description
+              "Configure a single-ended loss measurement send instance.";
+            leaf interval {
+              ext:operation-exclude update;
+              type interval;
+              mandatory true;
+              description
+                "Configure the interval of single-ended loss measurement send.";
+            }
+            leaf period {
+              ext:operation-exclude update|delete;
+              type uint16 {
+                range "1..65535";
+              }
+              units "s";
+              default "900";
+              description
+                "The value of measurement duration.";
+            }
+          }
+          container single-loss-recv {
+            description
+              "Configure a single-ended loss measurement receive instance.";
+            leaf enabled {
+              type boolean;
+              must "(not(../../dual-loss/enabled='true') or ((../../dual-loss/enabled='true') and (../enabled='false')))";
+              default "false";
+              description
+                "Enable/disable single-ended loss measurement receive instance.";  
+            }
+          }
+          container dual-loss {
+            must "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:ccm-interval='100ms' or /y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:ccm-interval='1s' or /y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:ccm-interval='10s'";
+            description
+              "Configure a dual-ended loss measurement instance.";
+            leaf enabled {
+              type boolean;
+              must "(((../enabled='true') and (not(../../single-loss-send/interval) and ../../single-loss-recv/enabled='false')) or (../enabled='false'))";
+              default "false";
+              description
+                "Enable/disable dual-ended loss measurement instance.";    
+            }
+          }
+          container synthetic-loss-send {
+            presence "Enable/disable single synthetic LM send enable.";
+            description
+              "Configure a single ended synthetic send instance.";
+            leaf interval {
+              ext:operation-exclude update;
+              type sslm-interval;
+              mandatory true;
+              description
+                "Configuration interval of single ended synthetic send.";
+            }
+            leaf send-count {
+              ext:operation-exclude update|delete;
+              type uint16 {
+                range "1..1000";
+              }
+              default "10";
+              description
+                "Configuration count of single ended synthetic send.";
+            }
+            leaf timeout {
+              ext:operation-exclude update|delete;
+              type uint8 {
+                range "1..10";
+              }
+              default "5";
+              description
+                "Configuration time out value of single ended synthetic send.";
+            }
+            leaf period {
+              ext:operation-exclude update|delete;
+              type uint16 {
+                range "1..65535";
+              }
+              default "900";
+              description
+                "Configuration period of single ended synthetic loss measurement.";
+            }
+          }
+          container synthetic-loss-recv {
+            presence "Enable/disable single synthetic LM receive.";
+            description
+              "Configure a single ended synthetic receive instance.";
+            leaf timeout {
+              ext:operation-exclude update|delete;
+              type uint16 {
+                range "10..300";
+              }
+              units "s";
+              default "300";
+              description
+                "Configuration time out value of single ended synthetic receive.";
+            }
+          }
+          container delay-thresholds {
+            description
+              "List of the threshold of delay measurement.";
+            list delay-threshold {
+              must "(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/l2tp-ccc-name) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/tnl-name)";
+              key "delay-type";
+              description
+                "Configure the threshold of delay measurement.";
+              leaf delay-type {
+                type test-delay-type;
+                description
+                  "Configure the type of delay measurement.";
+              }
+              leaf upper-limit {
+                type uint32 {
+                  range "0..4294967295";
+                }
+                mandatory true;
+                description
+                  "Configure the upper limit of delay threshold.";
+              }
+              leaf lower-limit {
+                type uint32 {
+                  range "0..4294967295";
+                }
+                must "(../lower-limit<../upper-limit)";
+                mandatory true;
+                description
+                  "Configure the lower limit of delay threshold.";
+              }
+            }
+          }
+          container loss-thresholds {
+            description
+              "List of the threshold of loss measurement.";
+            list loss-threshold {
+              must "(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/l2tp-ccc-name) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/tnl-name)";
+              key "loss-type";
+              description
+                "Configure the threshold of loss measurement.";
+              leaf loss-type {
+                type test-loss-type;
+                description
+                  "Configure the type of loss measurement.";
+              }
+              leaf upper-limit {
+                type string {
+                  length "1..8";
+                  pattern '[0-1]{0,1}[0-9]{0,1}[0-9]{0,1}(\.[0-9]{1,4})?';
+                
+                }
+                mandatory true;
+                description
+                  "Configure the upper limit of loss threshold.";
+              }
+              leaf lower-limit {
+                type string {
+                  length "1..8";
+                  pattern '[0-1]{0,1}[0-9]{0,1}[0-9]{0,1}(\.[0-9]{1,4})?';
+                }
+                mandatory true;
+                description
+                  "Configure the lower limit of loss threshold.";
+              }
+            }
+          }
+          container two-way-delay-result {
+            config false;
+            description
+              "Operational state of two-way delay measurement.";
+            leaf measure-mode {
+              type measure-mode;
+              description
+                "Measure mode of two-way delay.";
+            }
+            leaf status {
+              type status;
+              description
+                "Status of two-way delay.";
+            }
+            container datas {
+              description
+                "List of two-way delay measurement.";
+              list data {
+                key "index";
+                description
+                  "Operational state of two-way delay measurement.";
+                leaf index {
+                  type uint32;
+                  description
+                    "Data index of two-way delay measurement.";
+                }
+                leaf error-type {
+                  type error-type;
+                  description
+                    "Error code of two-way delay measurement.";
+                }
+                leaf delay {
+                  type string {
+                    length "1..24";
+                  }
+                  units "ms";
+                  description
+                    "Result of two-way delay.";
+                }
+                leaf jitter {
+                  type string {
+                    length "1..24";
+                  }
+                  units "ms";
+                  description
+                    "Result of two-way jitter.";
+                }
+              }
+            }
+          }
+          container single-loss-result {
+            config false;
+            description
+              "Operational state of single-ended loss measurement.";
+            leaf measure-mode {
+              type measure-mode;
+              description
+                "Measure mode of single-ended loss measurement.";
+            }
+            leaf status {
+              type status;
+              description
+                "Status of single-ended loss measurement.";
+            }
+            container datas {
+              description
+                "List of single-ended loss measurement.";
+              list data {
+                key "index";
+                description
+                  "Operational state of single-ended loss measurement.";
+                leaf index {
+                  type uint32;
+                  description
+                    "Data index of single-ended loss measurement.";
+                }
+                leaf error-type {
+                  type error-type;
+                  description
+                    "Error code of single-ended loss measurement.";
+                }
+                leaf local-loss {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Number of single-ended locally dropped packets.";
+                }
+                leaf local-loss-ratio {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Single-ended local loss ratio.";
+                }
+                leaf remote-loss {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Number of single-ended remotely dropped packets.";
+                }
+                leaf remote-loss-ratio {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Single-ended remote loss ratio.";
+                }
+              }
+            }
+          }
+          container one-way-delay-datas {
+            config false;
+            description
+              "List of one-way delay measurement.";
+            list one-way-delay-data {
+              key "index";
+              description
+                "Operational state of one-way delay measurement.";
+              leaf index {
+                type uint32;
+                description
+                  "Data index of one-way delay measurement.";
+              }
+              leaf error-type {
+                type error-type;
+                description
+                  "Error code of one-way delay measurement.";
+              }
+              leaf delay {
+                type string {
+                  length "1..24";
+                }
+                units "ms";
+                description
+                  "One-way delay results.";
+              }
+              leaf jitter {
+                type string {
+                  length "1..24";
+                }
+                units "ms";
+                description
+                  "One-way jitter result.";
+              }
+            }
+          }
+          container dual-loss-datas {
+            config false;
+            description
+              "List of dual-ended loss measurement.";
+            list dual-loss-data {
+              key "index";
+              description
+                "Operational state of dual-ended loss measurement.";
+              leaf index {
+                type uint32;
+                description
+                  "Data index of dual-ended loss measurement.";
+              }
+              leaf error-type {
+                type error-type;
+                description
+                  "Error code of dual-ended loss measurement.";
+              }
+              leaf local-loss {
+                type string {
+                  length "1..24";
+                }
+                description
+                  "Number of dual-ended locally dropped packets.";
+              }
+              leaf local-loss-ratio {
+                type string {
+                  length "1..24";
+                }
+                description
+                  "Dual-ended local loss ratio.";
+              }
+              leaf remote-loss {
+                type string {
+                  length "1..24";
+                }
+                description
+                  "Number of dual-ended remotely dropped packets.";
+              }
+              leaf remote-loss-ratio {
+                type string {
+                  length "1..24";
+                }
+                description
+                  "Dual-ended remote loss ratio.";
+              }
+            }
+          }
+          container synthetic-loss-result {
+            config false;
+            description
+              "Operational state of single ended synthetic.";
+            leaf measure-mode {
+              type measure-mode;
+              description
+                "Measure mode of single-ended synthetic.";
+            }
+            leaf status {
+              type status;
+              description
+                "Status of single-ended synthetic.";
+            }
+            container datas {
+              description
+                "List of single-ended synthetic.";
+              list data {
+                key "index";
+                description
+                  "Operational state of single-ended synthetic.";
+                leaf index {
+                  type uint32;
+                  description
+                    "Index of single-ended synthetic.";
+                }
+                leaf error-type {
+                  type error-type;
+                  description
+                    "Error information of single-ended synthetic.";
+                }
+                leaf local-send-count {
+                  type uint32;
+                  description
+                    "Local send count of single-ended synthetic.";
+                }
+                leaf remote-send-count {
+                  type uint32;
+                  description
+                    "Remote send count of single-ended synthetic.";
+                }
+                leaf local-recive-count {
+                  type uint32;
+                  description
+                    "Local receive count of single-ended synthetic.";
+                }
+                leaf unack-count {
+                  type uint32;
+                  description
+                    "Unack count of single-ended synthetic.";
+                }
+                leaf local-loss {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Local loss of single-ended synthetic.";
+                }
+                leaf remote-loss {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Remote loss of single-ended synthetic.";
+                }
+                leaf local-loss-ratio {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Local loss ratio of single-ended synthetic.";
+                }
+                leaf remote-loss-ratio {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Remote loss ratio of single-ended synthetic.";
+                }
+              }
+            }
+          }
+          container single-loss-period-results {
+            config false;
+            description
+              "List of single-ended loss measurement in period.";
+            list single-loss-period-result {
+              key "index";
+              description
+                "Statistics of single-ended loss measurement in period.";
+              leaf index {
+                type uint32;
+                description
+                  "Index of single-ended loss measurement in period.";
+              }
+              leaf local-samples {
+                type uint32;
+                description
+                  "Samples of single-ended locally in period.";
+              }
+              leaf local-send-packets {
+                type uint64;
+                description
+                  "Number of single-ended locally send packets in period.";
+              }
+              leaf local-receive-packets {
+                type uint64;
+                description
+                  "Number of single-ended locally receive packets in period.";
+              }
+              leaf local-loss-packets {
+                type uint64;
+                description
+                  "Number of single-ended locally dropped packets in period.";
+              }
+              leaf local-thrd-exceeded-number {
+                type uint32;
+                description
+                  "Number of single-ended local loss ratio exceed upper-limit threshold in period.";
+              }
+              leaf local-thrd-below-number {
+                type uint32;
+                description
+                  "Number of single-ended local loss ratio below low-limit threshold in period.";
+              }
+              leaf remote-samples {
+                type uint32;
+                description
+                  "Samples of single-ended remotely in period.";
+              }
+              leaf remote-send-packets {
+                type uint64;
+                description
+                  "Number of single-ended remotely send packets in period.";
+              }
+              leaf remote-receive-packets {
+                type uint64;
+                description
+                  "Number of single-ended remotely receive packets in period.";
+              }
+              leaf remote-loss-packets {
+                type uint64;
+                description
+                  "Number of single-ended remotely dropped packets in period.";
+              }
+              leaf remote-thrd-exceeded-number {
+                type uint32;
+                description
+                  "Number of single-ended remote loss ratio exceed upper-limit threshold in period.";
+              }
+              leaf remote-thrd-below-number {
+                type uint32;
+                description
+                  "Number of single-ended remote loss ratio below low-limit threshold in period.";
+              }
+            }
+          }
+          container single-ended-synthetic-loss-period-results{
+            config false;
+            description
+              "List of single-ended synthetic loss measurement in period.";
+            list single-ended-synthetic-loss-period-result {
+              key "index";
+              description
+                "Statistics of single-ended synthetic loss measurement in period.";
+              leaf index {
+                type uint32;
+                description
+                  "Index of single-ended synthetic in period.";
+              }
+              leaf local-samples {
+                type uint32;
+                description
+                  "Samples of single-ended synthetic locally in period.";
+              }
+              leaf local-send-packets {
+                type uint32;
+                description
+                  "Number of single-ended synthetic locally send packets in period.";
+              }
+              leaf local-receive-packets {
+                type uint32;
+                description
+                  "Number of single-ended synthetic locally receive packets in period.";
+              }
+              leaf local-loss-packets {
+                type int32;
+                description
+                  "Number of single-ended synthetic locally dropped packets in period.";
+              }
+              leaf local-thrd-exceeded-number {
+                type uint32;
+                description
+                  "Number of single-ended synthetic local loss ratio exceed upper-limit threshold in period.";
+              }
+              leaf local-thrd-below-number {
+                type uint32;
+                description
+                  "Number of single-ended synthetic local loss ratio below low-limit threshold in period.";
+              }
+              leaf remote-samples {
+                type uint32;
+                description
+                  "Samples of single-ended synthetic remotely in period.";
+              }
+              leaf remote-send-packets {
+                type uint32;
+                description
+                  "Number of single-ended synthetic remotely send packets in period.";
+                }
+              leaf remote-receive-packets {
+                type uint32;
+                description
+                  "Number of single-ended synthetic remotely receive packets in period.";
+              }
+              leaf remote-loss-packets {
+                type int32;
+                description
+                  "Number of single-ended synthetic remotely dropped packets in period.";
+              }
+              leaf remote-thrd-exceeded-number {
+                type uint32;
+                description
+                  "Number of single-ended synthetic remote loss ratio exceed upper-limit threshold in period.";
+              }
+              leaf remote-thrd-below-number {
+                type uint32;
+                description
+                  "Number of single-ended synthetic remote loss ratio below low-limit threshold in period.";
+              }
+            }
+          }
+          container two-way-delay-period-results {
+            config false;
+            description
+              "List of two-way delay measurement in period.";
+            list two-way-delay-period-result {
+              key "index";
+              description
+                "Statistics of two-way delay measurement in period.";
+              leaf index {
+                type uint32;
+                description
+                  "Index of two-way delay measurement in peirod.";
+              }
+              leaf delay-samples {
+                type uint32;
+                description
+                  "Samples of two-way delay in period.";
+              }
+              leaf delay-max {
+                type uint32;
+                units "us";
+                description
+                  "Max two-way delay.";
+              }
+              leaf delay-min {
+                type uint32;
+                units "us";
+                description
+                  "Min two-way delay.";
+              }
+              leaf delay-average {
+                type uint32;
+                units "us";
+                description
+                  "Average two-way delay.";
+              }
+              leaf delay-exceeded {
+                type uint32;
+                description
+                  "Number of two-way delay exceed upper-limit threshold in period.";
+              }
+              leaf delay-below {
+                type uint32;
+                description
+                  "Number of two-way delay below low-limit threshold in period.";
+              }
+              leaf jitter-samples {
+                type uint32;
+                description
+                  "Samples of two-way jitter in period.";
+              }
+              leaf jitter-max {
+                type uint32;
+                units "us";
+                description
+                  "Max two-way jitter.";
+              }
+              leaf jitter-min {
+                type uint32;
+                units "us";
+                description
+                  "Min two-way jitter.";
+              }
+              leaf jitter-average {
+                type uint32;
+                units "us";
+                description
+                  "Average two-way jitter.";
+              }
+              leaf jitter-exceeded {
+                type uint32;
+                description
+                  "Number of two-way jitter exceed upper-limit threshold in period.";
+              }
+              leaf jitter-below {
+                type uint32;
+                description
+                  "Number of two-way jitter below low-limit threshold in period.";
+              }
+            }
+          }
+        }
+      }
+      container default-md {
+        presence "Enable/disable default maintenance domain.";
+        description
+          "Configure the default maintenance domain.";
+        leaf level {
+          ext:operation-exclude update|delete;
+          type uint8 {
+            range "0..7";
+          }
+          default "7";
+          description
+            "Configure the level of the default maintenance domain.";
+        }
+        leaf vlan {
+          type pub-type:vlan-range;
+          description
+            "Configure the VLAN of the default maintenance domain.";    
+        }
+        leaf mip-create-type {
+          type mip-create-type;
+          default "none";
+          description
+            "Configure the MIP create type of the default maintenance domain.";
+        }
+        leaf sender-tlv-type {
+          type sender-tlv-type;
+          default "defer";
+          description
+            "Configure the sender ID TLV type of the default maintenance domain.";
+        }
+      }
+      container test-send-results {
+        config false;
+        description
+          "List of result returned after test packets are sent.";
+        list test-send-result {
+          key "md-name ma-name mep-id";
+          description
+            "Operational state of result returned after test packets are sent.";
+          leaf md-name {
+            type string {
+              length "1..43";
+              pattern '[^\?]*';
+            }
+            description
+              "Name of a maintenance domain.";
+          }
+          leaf ma-name {
+            type string {
+              length "1..43";
+              pattern '[^\?]*';
+            }
+            description
+              "Name of a maintenance association.";
+          }
+          leaf mep-id {
+            type uint16 {
+              range "1..8191";
+            }
+            description
+              "ID of a MEP.";
+          }
+          leaf rmep-id {
+            type uint16 {
+              range "1..8191";
+            }
+            description
+              "ID of a RMEP.";
+          }
+          leaf rmep-mac {
+            type pub-type:mac-address;
+            description
+              "MAC address of a RMEP.";
+          }
+          leaf pkt-send-num {
+            type uint64;
+            description
+              "Number of sent test packets.";
+          }
+          leaf is-send {
+            type boolean;
+            default "false";
+            description
+              "State of packet send.";
+          }
+          leaf rate-value {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "The rate value of sending packets.";
+          }
+          leaf priority {
+            type uint32 {
+              range "0..7";
+            }
+            default "7";
+            description
+              "The priority of packet.";
+          }
+          leaf pattern {
+            type test-pattern;
+            default "zero-no-crc";
+            description
+              "The pattern type.";
+          }
+          leaf packet-size {
+            type uint16 {
+              range "64..1518";
+            }
+            units Byte;
+            default "64";
+            description
+              "The length of packet to be sent.";
+          }
+          leaf out-of-service {
+            type boolean;
+            default "false";
+            description
+              "State of the out of service.";
+          }
+          leaf lck-level {
+            type uint8 {
+              range "0..7";
+          }
+          description
+            "The value of LCK message level.";
+          }
+          leaf timeout {
+            type uint32 {
+              range "1..1800";
+            } 
+            default "300";
+            description
+              "The value of time out.";
+          }
+          leaf send-rate {
+            type uint32 {
+              range "1..1800";
+            }
+            description
+              "Real send rate.";
+          }
+          leaf send-time {
+            type uint32 {
+              range "1..1800";
+            }
+            description
+              "Real send time.";
+          }
+        }
+      }
+      container test-recv-results {
+        config false;
+        description
+          "List of received test results.";
+        list test-recv-result {
+          key "md-name ma-name mep-id source-mac";
+          description
+            "Operational state of received test results.";
+          leaf md-name {
+            type string {
+              length "1..43";
+              pattern '[^\?]*';
+            }
+            description
+              "Name of a maintenance domain.";
+          }
+          leaf ma-name {
+            type string {
+              length "1..43";
+              pattern '[^\?]*';
+            }
+            description
+              "Name of a maintenance association.";
+          }
+          leaf mep-id {
+            type uint16 {
+              range "1..8191";
+            }
+            description
+              "ID of a MEP.";
+          }
+          leaf source-mac {
+            type pub-type:mac-address;
+            description
+              "Remote MAC address.";
+          }
+          leaf pkt-receive-number {
+            type uint64;
+            description
+              "Receive packets.";
+          }
+          leaf pkt-receive-type-error-number {
+            type uint64;
+            description
+              "Number of received type error packets.";
+          }
+          leaf pkt-receive-bit-error-number {
+            type uint64;
+            description
+              "Number of received bit error packets.";
+          }
+          leaf pkt-receive-sequence-error-number {
+            type uint64;
+            description
+              "Receive Sequence error packets number.";
+          }
+          leaf pkt-receive-crc-error-number {
+            type uint64;
+            description
+              "Receive CRC error packets number.";
+          }
+        }
+      }
+    }
+  }
+  rpc one-way-on-demand-delay {
+    description
+      "Configure an on-demand one-way delay measurement send instance.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance";
+    input {
+      leaf test-id {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:test-id";
+        }
+        mandatory true;
+        description
+          "Configure the ID of a test instance.";
+      }
+      leaf interval {
+        type on-demand-interval;
+        mandatory true;
+        description
+          "Configure the interval of one-way delay measurement send.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..60";
+        }
+        mandatory true;
+        description
+          "Configure the count of one-way delay measurement send.";
+      }
+    }
+  }
+  rpc two-way-on-demand-delay {
+    description
+      "Configure an on-demand two-way delay measurement send instance.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance";
+    input {
+      leaf test-id {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:test-id";
+        }
+        mandatory true;
+        description
+          "Configure the ID of a test instance.";
+      }
+      leaf interval {
+        type on-demand-interval;
+        mandatory true;
+        description
+          "Configure the interval of two-way delay measurement send.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..60";
+        }
+        mandatory true;
+        description
+          "Configure the count of two-way delay measurement send.";
+      }
+    }
+  }
+  rpc synthetic-on-demand-loss {
+    description
+      "Configure frame loss measurement of single-ended synthetic.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance";
+    input {
+      leaf test-id {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:test-id";
+        }
+        mandatory true;
+        description
+          "Configure test ID of single-ended synthetic frame loss measurement.";
+      }
+      leaf interval {
+        type interval100and1000;
+        mandatory true;
+        description
+          "Configure interval of single-ended synthetic frame loss measurement.";
+      }
+      leaf send-count {
+        type uint16 {
+          range "1..1000";
+        }
+        default "10";
+        description
+          "Configure send count of single-ended synthetic frame loss measurement.";
+      }
+      leaf time-out {
+        type uint8 {
+          range "1..10";
+        }
+        default "5";
+        description
+          "Congifure time-out value of single-ended synthetic frame loss measurement.";
+      }
+    }
+  }
+  rpc reset-stats {
+    description
+      "Reset the statistic result.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance";
+    input {
+      leaf test-id {
+        type leafref {
+          path "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:test-id";
+        }
+        mandatory true;
+        description
+          "Configure the ID of a test instance.";
+      }
+      leaf statistic-type {
+        type measurement-type;
+        mandatory true;
+        description
+          "Configure the statistic type.";
+      }
+    }
+  }
+  rpc reset-all-stats {
+    description
+      "Reset all statistic result.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance";
+    input {
+      leaf statistic-type {
+        type measurement-type;
+        mandatory true;
+        description
+          "Configure the statistic type.";
+      }
+    }
+  }
+  rpc delete-test-result {
+    description
+      "Delete test results.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep";
+    input {
+      leaf md-name {
+        type leafref {
+          path "/y1731/global-enable/mds/md/name";
+        }
+        mandatory true;
+        description
+          "Configure the name of a maintenance domain (MD).";
+      }
+      leaf ma-name {
+        type leafref {
+          path "/y1731/global-enable/mds/md/mas/ma/name";
+        }
+        mandatory true;
+        description
+          "Configure the name of a maintenance association (MA).";
+      }
+      leaf mep-id {
+        type leafref {
+          path "/y1731/global-enable/mds/md/mas/ma/meps/mep/id";
+        }
+        mandatory true;
+        description
+          "Configure a MEP ID.";
+      }
+      leaf direction {
+        type test-direction;
+        mandatory true;
+        description
+          "Location of test measurement.";
+      }
+    }
+  }
+  rpc start-test-send {
+    description
+      "Configure sending test packets.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep";
+    input {
+      leaf md-name {
+        type leafref {
+          path "/y1731/global-enable/mds/md/name";
+        }
+        mandatory true;
+        description
+          "Configure the name of a maintenance domain (MD).";
+      }
+      leaf ma-name {
+        type leafref {
+          path "/y1731/global-enable/mds/md/mas/ma/name";
+        }
+        mandatory true;
+        description
+          "Configure the name of a maintenance association (MA).";
+      }
+      leaf mep-id {
+        type leafref {
+          path "/y1731/global-enable/mds/md/mas/ma/meps/mep/id";
+        }
+        mandatory true;
+        description
+          "Configure a MEP ID.";
+      }
+      choice eth-test-type {
+        mandatory true;
+        description
+          "Configure the type of Eth-test.";
+        case id-type {
+          description 
+            "The type of remote mep ID.";
+          leaf rmep-id {
+            type leafref {
+              path "/y1731/global-enable/mds/md/mas/ma/rmeps/rmep/id";
+            }
+            description
+              "Configure a RMEP ID.";
+          }
+        }
+        case mac-type {
+          description
+            "The type of remote mep MAC.";
+          leaf rmep-mac {
+            type pub-type:mac-address;
+            description
+              "Configure the MAC of a RMEP, format: H-H-H.";
+          }
+        }
+      }
+      leaf rate-value {
+        type uint32 {
+          range "1..4294967295";
+        }
+        units "kbit/s";
+        mandatory true;
+        description
+          "Configure the rate value of sending packets.";
+      }
+      leaf priority {
+        type uint8 {
+          range "0..7";
+        }
+        default "7";
+        description
+          "Configure the priority of packets.";
+      }
+      leaf pattern {
+        type test-pattern;
+        default "zero-no-crc";
+        description
+          "Configure the pattern type.";
+      }
+      leaf packet-size {
+        type uint16 {
+          range "64..1518";
+        }
+        units Byte;
+        default "64";
+        description
+          "Configure the number of bytes of the sent test packets.";
+      }
+      leaf out-of-service {
+        type boolean;
+        default "false";
+        description
+          "Configure the out of service.";
+      }
+      leaf lck-level {
+        type uint8 {
+          range "0..7";
+        }
+        description
+          "Configure the value of LCK message level.";
+      }
+      leaf timeout {
+        type uint16 {
+          range "1..1800";
+        }
+        units "s";
+        default "300";
+        description
+          "Configure the value of time out.";
+      }
+    }
+  }
+  rpc stop-test-send {
+    description
+      "Stop sending test packets.";
+    ext:node-ref "/y1731:y1731/y1731:global-enable/y1731:test-send-results/y1731:test-send-result";
+    input {
+      leaf md-name {
+        type leafref {
+          path "/y1731/global-enable/mds/md/name";
+        }
+        mandatory true;
+        description
+          "Configure the name of a maintenance domain (MD).";
+      }
+      leaf ma-name {
+        type leafref {
+          path "/y1731/global-enable/mds/md/mas/ma/name";
+        }
+        mandatory true;
+        description
+          "Configure the name of a maintenance association (MA).";
+      }
+      leaf mep-id {
+        type leafref {
+          path "/y1731/global-enable/mds/md/mas/ma/meps/mep/id";
+        }
+        mandatory true;
+        description
+          "Configure a MEP ID.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" { 
+    description
+      "Configure Y1731 attributes on interfaces.";
+    container y1731 {
+      when "/y1731:y1731/y1731:global-enable";
+      description
+        "Configure Y1731 attributes on an interface.";
+      container manual-mip {
+        presence "Enable/disable a MIP on an interface.";
+        description
+          "Configure a MIP on an interface.";
+        leaf level {
+          type uint8 {
+            range "0..7";
+          }
+          mandatory true;
+          description
+            "Configure the level of a MIP.";
+          ext:support-filter "true";
+        }
+        leaf mac {
+          type pub-type:mac-address;
+          config false;
+          description
+            "MAC address of an interface.";
+        }
+      }
+      container auto-mips {
+        config false;
+        description
+          "Operational state of instances of MIP points.";
+        leaf level {
+          type uint8 {
+            range "0..7";
+          }
+          description
+            "The level of a MIP.";
+          ext:support-filter "true";
+        }
+        leaf mac {
+          type pub-type:mac-address;
+          description
+            "MAC address of an interface.";
+        }
+      }
+      container measure-granularity {
+        when "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep[y1731:if-name=current()/../../ifm:name]";
+        description
+          "Configure the measure granularity of an interface.";
+        leaf measure-gran {
+          type measure-gran;
+          default "port-vlan";
+          description
+            "Configure measure granularity of an interface.";
+        }
+      }      
+      container trigger-if {
+        presence "Enable/disable a trigger type on an interface.";
+        description
+          "Configure the y1731 trigger if.";
+        leaf md-name {
+          ext:operation-exclude update;
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+          }
+          mandatory true;
+          description
+            "Configure the name of a maintenance domain (MD).";
+        }
+        leaf ma-name {
+          ext:operation-exclude update;
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../y1731:md-name]/y1731:mas/y1731:ma/y1731:name";
+          }
+          mandatory true;
+          description
+            "Configure the name of a maintenance association (MA).";
+        }
+        leaf rmep-id {
+          ext:operation-exclude update;
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../y1731:md-name]/y1731:mas/y1731:ma[y1731:name=current()/../y1731:ma-name]/y1731:rmeps/y1731:rmep/y1731:id";
+          }
+          mandatory true;
+          description
+            "Configure a RMEP ID.";
+        }
+        leaf trigger-type {
+          ext:operation-exclude update;
+          type trigger-type;
+          mandatory true;
+          description
+            "Configure a trigger type.";
+        }
+      }      
+    }
+  }
+}

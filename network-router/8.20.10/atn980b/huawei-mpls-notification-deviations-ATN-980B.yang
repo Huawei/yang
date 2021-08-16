@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-notification-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-mpls-notification-deviations-ATN-980B";
+  prefix mpls-notification-devs-ATN-980B;
+
+  import huawei-mpls-notification {
+    prefix mpls-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Notification of mpls-notification-deviations-atn980b.";
+
+  revision 2021-03-10 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls-notification:mpls-slot-res-total-count-exceed" {
+    deviate not-supported;
+  }
+  deviation "/mpls-notification:mpls-slot-res-total-count-exceed-clear" {
+    deviate not-supported;
+  }
+}

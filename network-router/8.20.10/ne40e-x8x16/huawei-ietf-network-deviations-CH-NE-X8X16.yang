@@ -1,0 +1,34 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-network-deviations-CH-NE-X8X16 {
+  yang-version 1.1;
+  namespace "urn:huawei:yang:huawei-ietf-network-deviations-CH-NE-X8X16";
+  prefix nw-devs-CH-NE-X8X16;
+
+  import ietf-network {
+    prefix nw;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviations for ietf-network model.";
+
+  revision 2020-09-19 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/nw:networks" {
+    deviate not-supported;
+  }
+}

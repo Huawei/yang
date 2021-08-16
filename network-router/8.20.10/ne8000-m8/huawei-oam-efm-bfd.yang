@@ -1,0 +1,93 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-efm-bfd {
+  namespace "urn:huawei:yang:huawei-oam-efm-bfd";
+  prefix oam-efm-bfd;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-efm {
+    prefix efm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+  revision 2020-09-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "oammgr";
+  typedef efm-bind-bfd-type {
+    type enumeration {
+      enum "EFM-BFD" {
+        value 1;
+        description
+          "Type that EFM transfers fault information to BFD.";
+      }
+      enum "BFD-EFM" {
+        value 2;
+        description
+          "Type that BFD transfers fault information to EFM.";
+      }
+    }
+    description
+      "Binding type.";
+  }
+  augment "/oammgr:oammgr" {
+    description
+      "Configure the operation, administration and maintenance (OAM) association function.";
+    container efm-bind-bfds {
+      description
+        "List of associations between EFM and BFD.";
+      list efm-bind-bfd {
+        key "if-name bfd-session-id bind-type";
+        unique "if-name bind-type";
+        unique "bfd-session-id bind-type";
+        description
+          "Configure an instance of an association between EFM and BFD.";
+        leaf if-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/efm:efm/efm:session/efm:state='enable'";
+          description
+            "Configure the name of interface which the EFM instance bound.";
+        }
+        leaf bfd-session-id {
+          type uint32 {
+            range "1..16384";
+          }
+          must "/bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-multicast-ipv4=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-static-ldp-lsp=current()]";
+          description
+            "Configure the local discriminator of a BFD session.";
+        }
+        leaf bind-type {
+          type efm-bind-bfd-type;
+          description
+            "Configure a binding type.";
+        }
+      }
+    }
+  }
+}

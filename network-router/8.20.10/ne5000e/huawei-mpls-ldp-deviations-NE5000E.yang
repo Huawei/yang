@@ -1,0 +1,78 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-ldp-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mpls-ldp-deviations-NE5000E";
+  prefix mpls-ldp-devs-NE5000E;
+
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2019-03-27 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:auto-dod-request-enable" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:interfaces/mpls-ldp:interface/mpls-ldp:label-advertise-mode" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:label-ctrl-mode" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:remote-peers/mpls-ldp:remote-peer/mpls-ldp:auto-dod-request-mode" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:remote-peers/mpls-ldp:remote-peer/mpls-ldp:label-advertise-mode" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:global/mpls-ldp:entropy-label-enable" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:bfd/mpls-ldp:p2p/mpls-ldp:min-tx" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:bfd/mpls-ldp:p2p/mpls-ldp:min-rx" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:bfd/mpls-ldp:mldp/mpls-ldp:p2mp-tunnel-min-tx" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:global/mpls-ldp:bit-err-detect-level" {
+    deviate not-supported;
+  }
+}
