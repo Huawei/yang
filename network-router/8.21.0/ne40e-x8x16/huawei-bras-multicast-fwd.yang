@@ -1,0 +1,188 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-multicast-fwd {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bras-multicast-fwd";
+  prefix bras-multicast-fwd;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-bras-multicast {
+    prefix bras-multicast;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Configure bras attribute.";
+  revision 2020-11-19 {
+    description
+      "Add new nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-19 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "forwarding";
+  typedef board-type {
+    type enumeration {
+      enum "board-type-total" {
+        value 0;
+        description
+          "All board types.";
+      }
+      enum "board-type-mpu" {
+        value 1;	  
+        description
+          "Board type of MPU.";
+      }
+      enum "board-type-lpu" {
+        value 2;	  
+        description
+          "Board type of LPU.";
+      }
+    }
+    description
+      "Multicast RUI static board type.";
+  }
+  container bras-multicast-fwd {
+    description
+      "Table of BRAS multicast forward.";
+    container rbs-service-statistics {
+      config false;
+      description
+        "List of IGMP packet statistics based on the RBS name.";
+      list rbs-service-statistic {
+        key "name";
+          description
+            "Statistics of IGMP packets based on the RBS name.";
+        leaf name {
+          type string {
+            length "1..32";
+          }
+          description
+            "RBS name.";
+        }
+        leaf send-total {
+          type uint32;
+          units packet;
+          description
+            "Total of sent packets.";
+        }
+        leaf send-fail-total {
+          type uint32;
+          units packet;
+          description
+            "Total of packets that fail to be sent.";
+        }
+        leaf send-success-total {
+          type uint32;
+          units packet;
+          description
+            "Total of packets that are successfully sent.";
+        }
+        leaf receive-total {
+          type uint32;
+          units packet;
+          description
+            "Total of received packets.";
+        }
+        leaf receive-fail-total {
+          type uint32;
+          units packet;
+          description
+            "Total of packets that fail to be received.";
+        }
+        leaf receive-success-total {
+          type uint32;
+          units packet;
+          description
+            "Total of packets that are successfully received.";
+        }
+        container board-statistics {
+          description
+            "List of IGMP packet statistics based on the board type.";
+          list board-statistic {
+            key "slot";
+            description
+              "Statistics of IGMP packets based on the board type.";
+            leaf slot {
+              type string {
+                length "1..16";
+              }
+              description
+                "Slot ID.";
+            }
+            leaf board-type {
+              type board-type;
+              description
+                "Board type.";
+            }
+            leaf send-packet {
+              type uint32;
+              units packet;
+              description
+                "Number of sent packets.";
+            }
+            leaf send-fail-packet {
+              type uint32;
+              units packet;
+              description
+                "Number of packets that failed to be sent.";
+            }
+            leaf send-success-packet {
+              type uint32;
+              units packet;
+              description
+                "Number of successfully sent packets.";
+            }
+            leaf receive-packet {
+              type uint32;
+              units packet;
+              description
+                "Number of received packets.";
+            }
+            leaf receive-fail-packet {
+              type uint32;
+              units packet;
+              description
+                "Number of packets that failed to be received.";
+            }
+            leaf receive-success-packet {
+              type uint32;
+              units packet;
+              description
+                "Number of successfully received packets.";
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc reset-rbs-service-statistics {
+    description
+      "Delete the statistic of RBS services informations.";
+    ext:node-ref "/bras-multicast-fwd:bras-multicast-fwd/bras-multicast-fwd:rbs-service-statistics";
+  }
+  augment "/bras-multicast:bras-multicast" {
+    description
+      "Configure bras attribute.";
+    container bandwidth-enable {
+      presence "multicastbandwidth enable";
+      description
+        "Enable/disable multicast bandwidth.";
+    }
+  }
+}

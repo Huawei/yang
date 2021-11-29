@@ -1,0 +1,87 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-user-manage-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-bras-user-manage-deviations-OC-NE-X8X16";
+  prefix bras-user-manage-devs-OC-NE-X8X16;
+
+  import huawei-bras-user-manage {
+    prefix bras-user-manage;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-user-manage module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:ip-userlog/bras-user-manage:ip-userlog-access/bras-user-manage:cu-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:ip-userlog/bras-user-manage:ip-userlog-call-status/bras-user-manage:cu-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:online-fail-or-offline-records/bras-user-manage:online-fail-or-offline-record/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-user-types" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-domains" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-filters" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-upmng-instances" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-tables/bras-user-manage:access-table/bras-user-manage:access-user-l2tp-or-cu-info/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:cu-max-online-user-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:aaa-online-fail-or-offline-cu-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:up-backup" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-tables/bras-user-manage:input/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-tables/bras-user-manage:input/bras-user-manage:up-backup-profile-name" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-online-number-by-vlan/bras-user-manage:output/bras-user-manage:access-online-number-by-vlans/bras-user-manage:access-online-number-by-vlan/bras-user-manage:upmng-instance" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-basic-access:bras/bras-user-manage:ip-unr-host-route" {
+    deviate not-supported;
+  }
+
+}

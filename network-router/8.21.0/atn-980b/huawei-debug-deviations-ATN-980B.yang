@@ -1,0 +1,38 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-debug-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-debug-deviations-ATN-980B";
+  prefix debug-devs-ATN-980B;
+
+  import huawei-debug {
+    prefix debug;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-debug module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/debug:debug/debug:disk" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:resouce-reliability/debug:memory-reliability/debug:enable" {
+    deviate replace {
+      default "true";
+    }
+  }
+}

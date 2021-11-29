@@ -1,0 +1,202 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pcc-notification {
+  namespace "urn:huawei:yang:huawei-pcc-notification";
+  prefix pcc-notification;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of PCC.";
+  revision 2021-05-26 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "pce";
+  notification pce-delgate-resource-limit-exceed {
+    description
+      "PCE server entering resource limit exceeded state.";
+  }
+  notification pce-delgate-resource-limit-exceed-clear {
+    description
+      "PCE server exiting resource limit exceeded state.";
+  }
+  notification mpls-tunnel-delegation-return {
+    description
+      "The results of TE LSP was returned by controller.";
+    leaf session-tunnel-id {
+      type uint32;
+      description
+        "Tunnel ID.";
+    }
+    leaf local-lsp-id {
+      type uint32;
+      description
+        "Local LSP ID.";
+    }
+    leaf ingress-lsr-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "LSR ID of the tunnel ingress node.";
+    }
+    leaf egress-lsr-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "LSR ID of the tunnel egress node.";
+    }
+    leaf tunnel-name {
+      type string {
+        length "1..63";
+      }
+      description
+        "Tunnel name.";
+    }
+    leaf lsp-role {
+      type string {
+        length "1..63";
+      }
+      description
+        "LSP role: Primary LSP, Backup LSP, Ordinary LSP, Best-effort LSP.";
+    }
+  }
+  notification mpls-tunnel-delegation-return-clear {
+    description
+      "The results of TE LSP was returned by controller is cleared.";
+    leaf session-tunnel-id {
+      type uint32;
+      description
+        "Tunnel ID.";
+    }
+    leaf local-lsp-id {
+      type uint32;
+      description
+        "Local LSP ID.";
+    }
+    leaf ingress-lsr-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "LSR ID of the tunnel ingress node.";
+    }
+    leaf egress-lsr-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "LSR ID of the tunnel egress node.";
+    }
+    leaf tunnel-name {
+      type string {
+        length "1..63";
+      }
+      description
+        "Tunnel name.";
+    }
+    leaf lsp-role {
+      type string {
+        length "1..63";
+      }
+      description
+        "LSP role: Primary LSP, Backup LSP, Ordinary LSP, Best-effort LSP.";
+    }
+  }
+  notification pcep-session-down {
+    description
+      "PCEP session state change.";
+    leaf entity-index {
+      type uint32;
+      description
+        "PCEP index.";
+    }
+    leaf address-type {
+      type uint32;
+      description
+        "Type of a peer PCEP IP address.";
+    }
+    leaf peer-address {
+      type string {
+        length "1..63";
+      }
+      description
+        "IP address of a peer PCEP device.";
+    }
+    leaf session-initiator {
+      type uint32;
+      description
+        "Initial PCEP session status.";
+    }
+    leaf session-state {
+      type uint32;
+      description
+        "PCEP session status.";
+    }
+    leaf state-change-time {
+      type uint32;
+      description
+        "Last changed PCEP session status.";
+    }
+    leaf reason {
+      type string {
+        length "1..63";
+      }
+      description
+        "Cause for the alarm.";
+    }
+  }
+  notification pcep-session-up {
+    description
+      "PCEP session state change.";
+    leaf entity-index {
+      type uint32;
+      description
+        "PCEP index.";
+    }
+    leaf address-type {
+      type uint32;
+      description
+        "Type of a peer PCEP IP address.";
+    }
+    leaf peer-address {
+      type string {
+        length "1..63";
+      }
+      description
+        "IP address of a peer PCEP device.";
+    }
+    leaf session-initiator {
+      type uint32;
+      description
+        "Initial PCEP session status.";
+    }
+    leaf session-state {
+      type uint32;
+      description
+        "PCEP session status.";
+    }
+    leaf state-change-time {
+      type uint32;
+      description
+        "Last changed PCEP session status.";
+    }
+    leaf reason {
+      type string {
+        length "1..63";
+      }
+      description
+        "Cause for the alarm.";
+    }
+  }
+}
+

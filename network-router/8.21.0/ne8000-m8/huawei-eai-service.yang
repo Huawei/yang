@@ -1,0 +1,775 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-eai-service {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-eai-service";
+  prefix eai-service;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Huawei EAI service.";
+  reference
+    "Huawei private.";
+  revision 2020-05-12 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef kpi-state {
+    type enumeration {
+      enum "abnormal" {
+        value 0;
+        description
+          "KPI changes to abnormal state.";
+      }
+      enum "abnormal-duration" {
+        value 1;
+        description
+          "KPI remains in abnormal state, reports data periodically.";
+      }
+      enum "normal" {
+        value 2;
+        description
+          "KPI changes to normal state.";
+      }
+      enum "normal-duration" {
+        value 3;
+        description
+          "KPI remains in normal state, reports data periodically.";
+      }
+    }
+    description
+      "KPI state.";
+  }
+  typedef kpi-value-type {
+    type enumeration {
+      enum "percentage" {
+        value 0;
+        description
+          "Value in percentage terms.";
+      }
+      enum "original" {
+        value 1;
+        description
+          "Value in original terms.";
+      }
+    }
+    description
+      "KPI value type.";
+  }
+  typedef class-type {
+    type enumeration {
+      enum "control-plane" {
+        value 0;
+        description
+          "Control plane.";
+      }
+      enum "forwarding-plane" {
+        value 1;
+        description
+          "Forwarding plane.";
+      }
+      enum "protocol" {
+        value 2;
+        description
+          "Protocol.";
+      }
+      enum "basic-network-services" {
+        value 3;
+        description
+          "Basic network services.";
+      }
+      enum "system-management" {
+        value 4;
+        description
+          "System management.";
+      }
+      enum "security" {
+        value 5;
+        description
+          "Security.";
+      }
+      enum "qos" {
+        value 6;
+        description
+          "Qos.";
+      }
+      enum "basic-configuration" {
+        value 7;
+        description
+          "Basic configuration.";
+      }
+      enum "system-monitor" {
+        value 8;
+        description
+          "System monitor.";
+      }
+      enum "service" {
+        value 9;
+        description
+          "Service.";
+      }
+    }
+    description
+      "Class type.";
+  }
+  typedef sub-class-type {
+    type enumeration {
+      enum "device-control-plane" {
+        value 0;
+        description
+          "Device control plane.";
+      }
+      enum "traffic-management" {
+        value 1;
+        description
+          "Traffic management.";
+      }
+      enum "network-processor" {
+        value 2;
+        description
+          "Network processor.";
+      }
+      enum "ip-routing" {
+        value 3;
+        description
+          "IP routing.";
+      }
+      enum "mpls" {
+        value 4;
+        description
+          "MPLS.";
+      }
+      enum "ip-multicast" {
+        value 5;
+        description
+          "IP multicast.";
+      }
+      enum "ip-services" {
+        value 6;
+        description
+          "IP services.";
+      }
+      enum "device-management" {
+        value 7;
+        description
+          "Device management.";
+      }
+      enum "wan-access" {
+        value 8;
+        description
+          "WAN access.";
+      }
+      enum "urpf" {
+        value 9;
+        description
+          "URPF.";
+      }
+      enum "traffic-policing" {
+        value 10;
+        description
+          "Traffic policing.";
+      }
+      enum "network-reliability" {
+        value 11;
+        description
+          "Network reliability.";
+      }
+      enum "vpn" {
+        value 12;
+        description
+          "VPN.";
+      }
+      enum "ipsec" {
+        value 13;
+        description
+          "IPsec.";
+      }
+      enum "user-access" {
+        value 14;
+        description
+          "User access.";
+      }
+      enum "interface-and-data-link" {
+        value 15;
+        description
+          "Interface and data link.";
+      }
+      enum "qppb" {
+        value 16;
+        description
+          "QPPB.";
+      }
+      enum "mirroring" {
+        value 17;
+        description
+          "Mirroring.";
+      }
+      enum "mf-classification" {
+        value 18;
+        description
+          "MF classification.";
+      }
+      enum "lan-access-and-man-access" {
+        value 19;
+        description
+          "LAN access and MAN access.";
+      }
+      enum "dcn" {
+        value 20;
+        description
+          "DCN.";
+      }
+      enum "system-management" {
+        value 21;
+        description
+          "System management.";
+      }
+      enum "file-system-management" {
+        value 22;
+        description
+          "File system management.";
+      }
+      enum "telnet" {
+        value 23;
+        description
+          "Telnet.";
+      }
+      enum "user-management" {
+        value 24;
+        description
+          "User management.";
+      }
+      enum "segment-routing" {
+        value 25;
+        description
+          "Segment routing.";
+      }
+      enum "arp-security" {
+        value 26;
+        description
+          "ARP security.";
+      }
+      enum "device-security" {
+        value 27;
+        description
+          "Device Security.";
+      }
+      enum "mpls-diffserv-mode" {
+        value 28;
+        description
+          "MPLS diffserv mode.";
+      }
+      enum "congestion-avoidance" {
+        value 29;
+        description
+          "Congestion avoidance.";
+      }
+      enum "bgp-flow-specification" {
+        value 30;
+        description
+          "BGP flow specification.";
+      }
+      enum "hqos" {
+        value 31;
+        description
+          "HQoS.";
+      }
+      enum "clock-synchronization" {
+        value 32;
+        description
+          "Clock synchronization.";
+      }
+      enum "sma" {
+        value 33;
+        description
+          "SMA.";
+      }
+      enum "soc" {
+        value 34;
+        description
+          "SOC.";
+      }
+      enum "gtsm" {
+        value 35;
+        description
+          "GTSM.";
+      }
+      enum "ip-hard-pipe" {
+        value 36;
+        description
+          "IP hard pipe.";
+      }
+      enum "vpn-qos" {
+        value 37;
+        description
+          "VPN QoS.";
+      }
+      enum "dhcp-snooping" {
+        value 38;
+        description
+          "DHCP snooping.";
+      }
+      enum "system-monitor" {
+        value 39;
+        description
+          "System monitor.";
+      }
+      enum "loop-detection" {
+        value 40;
+        description
+          "Loop detection.";
+      }
+      enum "netstream" {
+        value 41;
+        description
+          "Netstream.";
+      }
+      enum "lldp" {
+        value 42;
+        description
+          "LLDP.";
+      }
+      enum "macsec" {
+        value 43;
+        description
+          "MACsec.";
+      }
+      enum "CGN" {
+        value 44;
+        description
+          "CGN.";
+      }
+      enum "traffic" {
+        value 45;
+        description
+          "Traffic.";
+      }
+      enum "fabric-interface-controller" {
+        value 46;
+        description
+          "Fabric interface controller.";
+      }
+      enum "subcard" {
+        value 47;
+        description
+          "Subcard.";
+      }
+    }
+    description
+      "Sub-class type.";
+  }
+
+  grouping algorithm-id {
+    description 
+      "Algorithm ID.";
+    leaf algorithm-id {
+      type uint8;      
+      description "Algorithm ID.";
+    }    
+  }
+  grouping fingerprint-data {
+    description 
+      "Fingerprints data.";
+    container fingerprints {  
+      description
+        "List of fingerprint.";
+      uses algorithm-id;
+      list fingerprint {        
+        key "fingerprint-group-id";
+        description 
+          "Fingerprint data.";
+        leaf fingerprint-group-id {
+          type uint8 {
+            range "1..15";
+          }
+          description
+            "Group index of a group of fingerprints.";
+        }       
+        container features {
+          description
+            "List of feature.";
+          list feature {
+            key "feature-id";
+            description 
+              "Feature info.";
+            leaf feature-id {
+              type uint8;
+              description
+                "Feature index.";
+            }
+            leaf feature-value {
+              type string {
+                length "1..256";
+                pattern '[0-9]*(.[0-9]+)?';
+              }
+              description
+                "Feature value string.";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  container eai-service {
+    description
+      "EAI service management.";
+    container global {
+      description
+        "Configure global attributes.";
+      leaf anomaly-detection-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable EAI anomaly detection.";
+      }
+      leaf anomaly-identify-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable EAI anomaly identify.";
+      }
+      leaf resource-prediction-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable EAI resource prediction.";
+      }
+    }
+    container anomaly-identify-datas {
+      config false;
+      description
+        "List of anomaly identify data.";
+      list anomaly-identify-data {
+        key "class sub-class module-id chassis-id slot-id object-id attribute-id sequence-id";
+        description
+          "Statistics of anomaly identify data.";
+        leaf class {
+          type class-type;
+          description
+            "KPI main class.";
+        }
+        leaf sub-class {
+          type sub-class-type;
+          description
+            "KPI sub class.";
+        }
+        leaf module-id {
+          type uint32;
+          description
+            "KPI module ID.";
+        }
+        leaf chassis-id {
+          type uint8;
+          description
+            "Chassis ID.";
+        }
+        leaf slot-id {
+          type uint16;
+          description
+            "Slot ID.";
+        }
+        leaf object-id {
+          type string {
+            length "1..128";
+          }
+          description
+            "Object name.";
+        }
+        leaf attribute-id {
+          type string {
+            length "1..128";
+          }
+          description
+            "Attribute name.";
+        }
+        leaf sequence-id {
+          type uint32;
+          config false;
+          description
+            "KPI data sequence ID.";
+        }
+        leaf state {
+          type kpi-state;
+          description
+            "KPI state.";
+        }
+        leaf upload-time {
+          type uint32;
+          units "s";
+          description
+            "Number of seconds from 00:00 on January 1, 1970 to the time when the event was generated, in UTC.";
+        }
+        leaf collect-interval {
+          type uint16;
+          units "s";
+          description
+            "Collect interval.";
+        }
+        leaf fault-point-count {
+          type uint8;
+          description
+            "Fault point count.";
+        }
+        leaf abnormal-degree {
+          type uint16;
+          description
+            "Auxiliary parameters for determining the abnormality severity.";
+        }
+      }
+    }
+    container resource-prediction-datas {
+      config false;
+      description
+        "List of resource prediction data.";
+      list resource-prediction-data {
+        key "class sub-class module-id chassis-id slot-id object-id attribute-id sequence-id";
+        description
+          "Statistics of resource prediction data.";
+        leaf class {
+          type class-type;
+          description
+            "KPI main class.";
+        }
+        leaf sub-class {
+          type sub-class-type;
+          description
+            "KPI sub class.";
+        }
+        leaf module-id {
+          type uint32;
+          description
+            "KPI module ID.";
+        }
+        leaf chassis-id {
+          type uint8;
+          description
+            "Chassis ID.";
+        }
+        leaf slot-id {
+          type uint16;
+          description
+            "Slot ID.";
+        }
+        leaf object-id {
+          type string {
+            length "1..128";
+          }
+          description
+            "Object name.";
+        }
+        leaf attribute-id {
+          type string {
+            length "1..128";
+          }
+          description
+            "Attribute name.";
+        }
+        leaf sequence-id {
+          type uint32;
+          config false;
+          description
+            "KPI data sequence ID.";
+        }
+        leaf state {
+          type kpi-state;
+          description
+            "KPI state. 0: alarm;";
+        }
+        leaf upload-time {
+          type uint32;
+          units "s";
+          description
+            "Number of seconds from 00:00 on January 1, 1970 to the time when the event was generated, in UTC.";
+        }
+        leaf collect-interval {
+          type uint16;
+          units "s";
+          description
+            "Collect interval.";
+        }
+        leaf over-threshold-days {
+          type uint16;
+          units "d";
+          description
+            "Prediction days over the threshold.";
+        }
+        leaf period {
+          type uint8 {
+            range "1..72";
+          }
+          units "h";
+          description
+            "Period time of prediction.";
+        }
+        leaf value-type {
+          type kpi-value-type;
+          description
+            "Value type of KPI.";
+        }
+        leaf threshold {
+          type uint64;
+          description
+            "KPI threshold.";
+        }
+        leaf predict-num {
+          type uint16;
+          description
+            "Predict number in the event.";
+        }
+        leaf predict-value {
+          type string {
+            length "1..10000";
+          }
+          description
+            "Predict indcator value, seperated by comma.";
+        }
+        leaf predict-std-value {
+          type string {
+            length "1..10000";
+          }
+          description
+            "Predict standard deviation value, seperated by comma.";
+        }
+        leaf history-value {
+          type string {
+            length "1..10000";
+          }
+          description
+            "History value, seperated by comma.";
+        }
+      }
+    }
+  }
+
+  rpc recv-algorithm-tagging {
+    description
+      "EAI receive algorithm and tagging data from controller.";
+    input {
+      container algorithm-tagging-datas {
+        description
+          "List of algorithm and tagging data.";
+        list algorithm-tagging-data {
+          key "recv-data-index";
+          description
+            "Algorithm and tagging data.";          
+          leaf recv-data-index {
+            type uint8;
+            description "Index of received data.";
+          }
+          choice data-type {
+            description
+              "Algorithm or tagging.";
+            case algorithm {
+              description
+                "Algorithm data.";
+              container algorithm {
+                description
+                  "Algorithm-selection data.";
+                uses algorithm-id;
+                uses fingerprint-data;                
+              }
+            }
+            case tagging {
+              description
+                "Tagging data.";
+              container tagging {
+                description
+                  "Tagging data.";
+                leaf start-time {
+                  type uint32;
+                  mandatory true;
+                  description "UTC time, time for data to start tagging.";
+                }
+                leaf end-time {
+                  type uint32;
+                  mandatory true;
+                  description "UTC time, time for data to stop tagging.";
+                }
+                leaf tagging-type {
+                  type uint8;
+                  mandatory true;
+                  description "Tagging type, e.g. white, black.";
+                }
+                uses fingerprint-data;                
+              }
+            }
+          }
+          container module {
+            description "Module info.";          
+            leaf module-id {
+              type uint32;
+              description "Index of module.";
+            }
+            container objects {
+              description "List of object.";
+              list object {
+                key "object-group-id object-id chassis-id slot-id";
+                description "Object info.";
+                leaf object-group-id {
+                  type uint8 {
+                    range "1..50";
+                  }
+                  description
+                    "Group index of a group of objects.";
+                }              
+                leaf object-id {
+                  type string {
+                    length "1..128";
+                  }
+                  description "Object index: ID or name.";
+                }
+                leaf chassis-id {
+                  type uint8;
+                  description
+                    "Chassis ID of this object.";
+                }
+                leaf slot-id {
+                  type uint16;
+                  description
+                    "Slot ID of this object.";
+                }
+                container attributes {
+                  description "List of attribute.";
+                  list attribute {
+                    key "attribute-group-id attribute-id";
+                    description "Attribute info.";  
+                    leaf attribute-group-id {
+                      type uint8 {
+                        range "1..50";
+                      }
+                      description
+                        "Group index of a group of attributes.";
+                    }                
+                    leaf attribute-id {
+                      type string {
+                        length "1..128";
+                      }
+                      description
+                        "Attribute index: ID or name.";
+                    }                 
+                  }
+                }
+              }        
+            }
+          }
+        } 
+      }  
+    }    
+  }
+
+  ext:task-name "eai";
+}

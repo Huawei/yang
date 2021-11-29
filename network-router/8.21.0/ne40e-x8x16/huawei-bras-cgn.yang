@@ -1,0 +1,194 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-cgn {
+  namespace "urn:huawei:yang:huawei-bras-cgn";
+  prefix bras-cgn;
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+  import huawei-bras-vas {
+    prefix bras-vas;
+  }
+  import huawei-bras-ipv4-address-manage {
+    prefix bras-ipv4-address-manage;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Bras cgn.";
+
+  revision 2019-04-01 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+  ext:task-name "aaa-access";
+
+  container bras-cgn {
+    description
+      "Bras cgn.";
+    container pub-user-auto-cut {
+      description
+        "Configure automatic switchback from public IP address-based access to private IP address-based access for CGN public network users.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable automatic switchback from public IP address-based access to private IP address-based access for CGN public network users.";
+      }
+    }
+    container access-radius-nat-update-speed {
+      description
+        "Configure the speed for instructing the RADIUS server to update NAT.";
+      leaf speed-value {
+        type uint32 {
+          range "1..65535";
+        }
+        default "210";
+        description
+          "Speed value.";
+      }
+    }
+  }
+
+  augment "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas" {
+    description
+      "Bras cgn in bas domain.";
+    container bras-cgn {
+      description
+        "Configure Bras cgn in bas domain.";
+      container public-address {
+        must "not(./assign-first='true' and ./nat-instance-down='true')";
+        description
+          "Configure in distributed CGN scenarios.";
+        leaf nat-enable {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable the NAT device to process traffic from public network IPv4 address users in distributed CGN scenarios before forwarding it based on the routing table.";
+        }
+        leaf assign-first {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable public network IPv4 addresses to be preferentially allocated to users.";
+        }
+        leaf nat-instance-down {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable CGN users to access a device using a public IP address if the CGN service board fails.";
+        }
+      }
+      container ipv6-pool-domain {
+        description
+          "Configure IPv6 attribute configuration of an AAA domain.";
+        leaf aftr-name {
+          type string {
+            length "1..63";
+            pattern "[a-zA-Z0-9._-]{1,63}";
+          }
+          must "../aftr-name != '-' and ../aftr-name != '--'";
+          description
+            "Specifies an AFTR (Address Family Transition Router) name.";
+        }
+      }
+      container ds-lite-ipv4-portal {
+        description
+          "Configure captive portal in DS-Lite scenarios.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable captive portal in DS-Lite scenarios.";
+        }
+      }
+      container user-group-bind-nats {
+        description
+          "List of NAT instance with a user group in a domain.";
+        list user-group-bind-nat {
+          must "not(../../user-group-bind-ds-lites/user-group-bind-ds-lite)";
+          key "user-group-name";
+          max-elements 8;
+          description
+            "Configure a NAT instance instance with a user group in a domain.";
+          leaf user-group-name {
+            type leafref {
+              path "/bras-basic-access:bras-basic-access/bras-basic-access:user-groups/bras-basic-access:user-group/bras-basic-access:name";
+            }
+            must "count(/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-group[bras-basic-access:name=current()])=0";
+            must "count(/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-cgn:bras-cgn/bras-cgn:user-group-bind-ds-lites/bras-cgn:user-group-bind-ds-lite[bras-cgn:user-group-name=current()])=0";
+            must "count(/bras-basic-access:bras-basic-access/bras-basic-access:user-group-lists/bras-basic-access:user-group-list/bras-basic-access:user-groups/bras-basic-access:user-group[bras-basic-access:name=current()])=0";
+            description
+              "Specifies the name of a user group, and the user group must not be added to a user group list or a domain without binding nat instance.";
+          }
+          leaf instance-name {
+            type string {
+              length "1..31";
+            }
+            mandatory true;
+            description
+              "Specifies the name of a NAT instance.";
+          }
+          leaf ip-pool-name {
+            type leafref {
+              path "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool/bras-ipv4-address-manage:name";
+            }
+            must "(/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool[bras-ipv4-address-manage:name=current()]/bras-ipv4-address-manage:type = 'dynamic' or
+            (/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool[bras-ipv4-address-manage:name=current()]/bras-ipv4-address-manage:local/bras-ipv4-address-manage:gateway/bras-ipv4-address-manage:gate-ip or
+            /bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool[bras-ipv4-address-manage:name=current()]/bras-ipv4-address-manage:remote/bras-ipv4-address-manage:gateway/bras-ipv4-address-manage:gate-ip))";
+            description
+              "Specifies the name of an IP address pool.";
+          }
+        }
+      }
+      container user-group-bind-ds-lites {
+        description
+          "List of DS-Lite instance with a user group in a domain.";
+        list user-group-bind-ds-lite {
+          must "not(../../user-group-bind-nats/user-group-bind-nat)";
+          must "not(../../../bras-basic-access:ipv4-basic-access/bras-basic-access:user-group/bras-basic-access:name)";
+          key "user-group-name";
+          max-elements 8;
+          description
+            "Configure a DS-Lite instance with a user group in a domain.";
+          leaf user-group-name {
+            type leafref {
+              path "/bras-basic-access:bras-basic-access/bras-basic-access:user-groups/bras-basic-access:user-group/bras-basic-access:name";
+            }
+            must "count(/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-group[bras-basic-access:name=current()])=0";
+            must "count(/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-cgn:bras-cgn/bras-cgn:user-group-bind-nats/bras-cgn:user-group-bind-nat[bras-cgn:user-group-name=current()])=0";
+            must "count(/bras-vas:bras-vas/bras-vas:vas-policys/bras-vas:vas-policy/bras-vas:user-group-bind-nats/bras-vas:user-group-bind-nat[bras-vas:user-group-name=current()])=0";
+            must "count(/bras-basic-access:bras-basic-access/bras-basic-access:user-group-lists/bras-basic-access:user-group-list/bras-basic-access:user-groups/bras-basic-access:user-group[bras-basic-access:name=current()])=0";
+            description
+              "Specifies the name of a user group, and the user group must not be added to a user group list or a domain without binding ds-lite instance.";
+          }
+          leaf instance-name {
+            type string {
+              length "1..31";
+            }
+            mandatory true;
+            description
+              "Specifies the name of a DS-Lite instance.";
+          }
+        }
+      }
+    }
+  }
+}

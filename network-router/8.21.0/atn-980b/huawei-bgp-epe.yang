@@ -1,0 +1,266 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-epe {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bgp-epe";
+  prefix bgp-epe;
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-srv6 {
+    prefix srv6;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-te {
+    prefix te;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-twamp-controller {
+    prefix twamp-controller;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "BGP EPE configuration.";
+  revision 2020-03-25 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bgp";
+  typedef sid-type {
+    type enumeration {
+      enum "psp-usp-usd-sid" {
+        value 2;
+        description
+          "Static End.X SID (psp, usp, usd) of a BGP peer.";
+      }
+      enum "psp-usp-usd-coc-sid" {
+        value 3;
+        description
+          "Static End.X SID (psp, usp, usd, coc) of a BGP peer.";
+      }
+    }
+    description
+      "SRv6 static SID type.";
+  }
+  typedef sid-mode-type {
+    type enumeration {
+      enum "common" {
+        value 0;
+        description
+          "Common mode of SRv6 static SID type.";
+      }
+      enum "compress" {
+        value 1;
+        description
+          "Compress mode of SRv6 static SID type.";
+      }
+    }
+    description
+      "Sid mode type.";
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process" {
+    description
+      "BGP egress engineering segment-routing IPv6 configuration.";
+      container epe-srv6 {
+        when "../../../ni:name='_public_'";
+        description
+          "Configure BGP egress engineering segment-routing IPv6 information.";
+          leaf locator-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator/srv6:name";
+            }
+            description
+              "Referenced locator name.";
+          }
+      }
+    
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer" {
+    description
+      "BGP peer egress engineering segment-routing IPv6 configuration.";
+    container epe-srv6 {
+      when "../../../../../ni:name='_public_' and ../bgp:egress-engineer='enable'";      
+      description
+        "Configure BGP peer egress engineering segment-routing IPv6 information.";
+      choice sid-option {
+        description
+          "Set automatic SID or static SID.";
+        case auto-sid {
+          description
+            "Set automatic SID.";
+          leaf locator-name {
+            type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator/srv6:name";
+            }
+          
+            description
+              "Name of the locator referenced by a BGP peer.";
+          }
+        }
+        case static-sid {
+          when "../../../bgp-epe:epe-srv6/bgp-epe:locator-name";
+          description
+            "Set static SID (PSP) value.";
+          choice psp-sid-type {
+            description
+              "Set SID compress flag.";
+            case uncompress {
+              description
+                "SID (PSP).";
+              leaf psp-sid {
+                type inet:ipv6-address-no-zone;
+                must "not(../no-flavor-sid) or (.!=../no-flavor-sid)";
+                must "not(../no-flavor-sid-compress) or (.!=../no-flavor-sid-compress)";
+                must "not(../ext-static-sids/ext-static-sid[sid-value=current()])";
+                description
+                  "Static End.X SID (PSP) of a BGP peer.";
+              }
+            }
+            case compress {
+              description
+                "Compress SID (PSP).";
+              leaf psp-sid-compress {
+                type inet:ipv6-address-no-zone;
+                must "not(../no-flavor-sid) or (.!=../no-flavor-sid)";
+                must "not(../no-flavor-sid-compress) or (.!=../no-flavor-sid-compress)";
+                must "not(../ext-static-sids/ext-static-sid[sid-value=current()])";
+                must "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator[srv6:name=current()/../../../../bgp-epe:epe-srv6/bgp-epe:locator-name]/srv6:compress-block-length";
+                must "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator[srv6:name=current()/../../../../bgp-epe:epe-srv6/bgp-epe:locator-name]/srv6:compress-static-length";
+                description
+                  "Static End.X Compress SID (PSP) of a BGP peer.";
+              }
+            }
+          }
+          choice no-flavor-sid-type {
+            description
+              "Set static SID (no flavor) value.";
+            case uncompress {
+              description
+                "SID (no flavor).";
+              leaf no-flavor-sid { 
+                type inet:ipv6-address-no-zone;
+                must "not(../psp-sid) or (.!=../psp-sid)";
+                must "not(../psp-sid-compress) or (.!=../psp-sid-compress)";
+                must "not(../ext-static-sids/ext-static-sid[sid-value=current()])";
+                description
+                  "Static End.X SID (no flavor) of a BGP peer.";
+              }
+            }
+            case compress {
+              description
+                "Compress SID (no flavor).";
+              leaf no-flavor-sid-compress {
+                type inet:ipv6-address-no-zone;
+                must "not(../psp-sid) or (.!=../psp-sid)";
+                must "not(../psp-sid-compress) or (.!=../psp-sid-compress)";
+                must "not(../ext-static-sids/ext-static-sid[sid-value=current()])";
+                must "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator[srv6:name=current()/../../../../bgp-epe:epe-srv6/bgp-epe:locator-name]/srv6:compress-block-length";
+                must "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator[srv6:name=current()/../../../../bgp-epe:epe-srv6/bgp-epe:locator-name]/srv6:compress-static-length";
+                description
+                  "Static End.X Compress SID (no flavor) of a BGP peer.";
+              }
+            }
+          }
+          container ext-static-sids {
+            description
+              "List of static SID.";
+            list ext-static-sid {
+              key "type";
+              unique sid-value;
+              description
+                "Configure static SID.";
+              leaf type {
+                type sid-type;
+                description
+                  "The type of SRv6 static SID type.";
+              }
+              leaf sid-mode {
+                type sid-mode-type;
+                must ".!='compress' or (.='compress' and /ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator[srv6:name=current()/../../../../bgp-epe:epe-srv6/bgp-epe:locator-name]/srv6:compress-block-length and /ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator[srv6:name=current()/../../../../bgp-epe:epe-srv6/bgp-epe:locator-name]/srv6:compress-static-length)";
+                mandatory true;
+                description
+                  "The mode of SRv6 static SID type.";
+              }
+              leaf sid-value {
+                type inet:ipv6-address-no-zone;
+                mandatory true;
+                description
+                  "Sid value.";
+              }
+            }
+          }
+        }
+      }
+    }
+    container epe {
+      description
+        "Configure BGP peer egress engineering information.";
+      container virtual-link {
+        when "../../../../../../ni:name='_public_'";
+	must "../../bgp:egress-engineer='enable'";
+        must "contains(../../bgp:address,':') and (substring(../../bgp:address,1,4) != 'FE80')";
+        must "not(admin-groups-name) or not(admin-groups)";
+        presence "Create EPE virtual link."; 
+        description
+          "Configure BGP peer egress engineering segment-routing IPv6 virtual link information.";
+        leaf metric { 
+          type uint32 {
+            range "1..16777215";
+          }
+          description
+            "Specifies the Value of virtual link metric.";
+        }
+        leaf admin-groups {
+          type pub-type:hex-binary;
+          description
+            "Specifies virtual link management attributes. They are total 32 bits.";
+        }
+        leaf-list srlg-group {
+          type uint32 {
+            range "0..4294967295";
+          }
+          max-elements "64";
+          description
+            "Configure a list of risk-shared link groups of virtual link.";
+        }
+        leaf twamp-test-session-id { 
+          type leafref {
+            path "/twamp-controller:twamp-controller/twamp-controller:client/twamp-controller:sessions/twamp-controller:session/twamp-controller:id";
+          }
+          must "contains(/twamp-controller:twamp-controller/twamp-controller:client/twamp-controller:sessions/twamp-controller:session[twamp-controller:id = current()]/twamp-controller:send-ip-addr, ':')";
+          description
+            "Specifies the Value of twamp test-session ID.";
+        }
+        leaf-list admin-groups-name {
+          type leafref {
+            path "/te:te/te:affinity-define/te:affinity-mappings/te:affinity-mapping/te:attribute-name";
+          }
+          max-elements "32";
+          description
+            "Configure the virtual link management attributes. They are total 32 bits.";
+        }
+      }
+    }
+  }
+}

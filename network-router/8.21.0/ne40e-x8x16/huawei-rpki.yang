@@ -1,0 +1,236 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-rpki {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-rpki";
+  prefix rpki;
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-ssl {
+    prefix ssl;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Resource Public Key Infrastructure.";
+  revision 2021-07-09 {
+    description
+      "Add region-validation nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-12-09 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef as-number-validate {
+    type string {
+      length "1..11";
+      pattern '((([1-9]\d{0,8})|([1-3]\d{9})|(4[0-1]\d{8})|(42[0-8]\d{7})|(429[0-3]\d{6})|(4294[0-8]\d{5})|(42949[0-5]\d{4})|(429496[0-6]\d{3})|(4294967[0-1]\d{2})|(42949672[0-8]\d{1})|(429496729[0-5]))|((([1-9]\d{0,3})|([1-5]\d{4})|(6[0-4]\d{3})|(65[0-4]\d{2})|(655[0-2]\d)|(6553[0-5]))[\.](([0-9]\d{0,3})|([1-5]\d{4})|(6[0-4]\d{3})|(65[0-4]\d{2})|(655[0-2]\d)|(6553[0-5]))))';
+    }
+    description
+      "AS number is not include.";
+  }
+  container rpki {
+    description
+      "Configure RPKI.";
+    container rpki {
+      presence "Enable RPKI.";
+      description
+        "Enable/disable RPKI globally.";
+      container region-validation {
+        presence "Enable region validation.";
+        description
+          "Configure region validation.";
+        container regions {
+          description
+            "List of RPKI regions.";
+          list region {
+            key "id";
+            description
+              "Configure region information.";
+            leaf id {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Region ID.";
+            }
+            leaf description {
+              type string {
+                length "1..255";
+                pattern '([^?]*)';
+              }
+              description
+                "Description of a region, which is a string of letters and digits, spaces supported. By default, no description is configured for a peer.";
+            }
+            leaf-list as {
+              type as-number-validate;
+              must "count(../../region/as[. = current()]) <= 1";
+              max-elements 100;
+              description
+                "Configure AS lists contained in the region.";
+            }
+          }
+        }
+        container confederations {
+          description
+            "List of RPKI region confederations.";
+          list confederation {
+            key "id";
+            description
+              "Configure confederation information.";
+            leaf id {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Region confederation ID.";
+            }
+            leaf description {
+              type string {
+                length "1..255";
+                pattern '([^?]*)';
+              }
+              description
+                "Description of a confederation, which is a string of letters and digits, spaces supported. By default, no description is configured for a peer.";
+            }
+            leaf-list region-id {
+              type uint32 {
+                range "1..4294967295";
+              }
+              must "count(../../confederation/region-id[. = current()]) <= 1";
+              must "count(../../confederation/region-id[. = current()/../../../regions/region/id]) = count(.)";
+              max-elements 100;
+              description
+                "Configure region lists contained in the region confederation.";
+            }
+          }
+        }
+      }
+    }
+  }
+  augment /ni:network-instance/ni:instances/ni:instance {
+    description
+      "Rpki session configuration.";
+    container rpki {
+      when "/rpki:rpki/rpki:rpki";
+      description
+        "Configure RPKI.";
+      container sessions {
+        description
+          "List of rpki session.";
+        list session {
+          must "aging-time>=2*(refresh-time)";
+          must "(contains(remote-address, ':') and (../../../l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast'])) or (not (contains(remote-address, ':') and not (../../../l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast'])))";
+          key "remote-address";
+          max-elements 2;
+          description
+            "Configure rpki session.";
+          leaf remote-address {
+            type inet:ip-address-no-zone;
+            description
+              "Specifies the address of a Resource Public Key Infrastructure (RPKI) server to establish a TCP connection between the router and the RPKI server.";
+          }
+          leaf local-if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Specifies an interface name to set up a RPKI session.";
+          }
+          leaf local-if-address {
+            type inet:ip-address-no-zone;
+            description
+              "Specifies a source address to set up a RPKI session.";
+          }
+          leaf tcp-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "TCP connection port.";
+          }
+          choice tcp-authentication-type {
+            when "tcp-port";
+            description
+              "Set password or keychain name.";
+                case password {
+                  description
+                    "Set password.";
+                     leaf password-text {
+                       type pub-type:password-extend;
+                       description
+                         "The TCP connection password is a string of characters, spaces not supported. If only a space is input, the password is cleared. The password is a string ranging from 1 to 255 characters for a plaintext password and 20 to 432 characters for a ciphertext password. The two ends must have the same password; otherwise, TCP connection cannot be established between the two ends.";
+                    }
+                }
+                case key-chain {
+                  description
+                    "Set keychain name.";
+                    leaf key-chain-name {
+                       type string {
+                         length "1..47";
+                         pattern '[^A-Z]+';
+                        }
+                       description
+                         "Specifies the name of the keychain authentication.";
+                    }
+                }
+          }
+          leaf aging-time {
+            type uint32 {
+              range "60..604800";
+            }
+            units "s";
+            default "3600";
+            description
+              "Aging time.";
+          }
+          leaf refresh-time {
+            type uint32 {
+              range "10..3600";
+            }
+            units "s";
+            default "1800";
+            description
+              "Refresh time.";
+          }
+          leaf ssl-policy {
+           type leafref {
+             path "/ssl:ssl/ssl:ssl-policys/ssl:ssl-policy/ssl:policy-name";
+           }
+           description
+             "SSL policy name.";
+         }
+        }
+      }
+    }
+  }
+  ext:task-name "rpki";
+}

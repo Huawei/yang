@@ -1,0 +1,595 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-bier {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-diagnostic-tools-common;
+  include huawei-diagnostic-tools-type;
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "BIER diagnosis tool.";
+
+  revision 2020-08-24 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-07-04 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  grouping bier-ping-trace-result-type {
+    description
+      "BIER test result.";
+    container ipv6-ping-results {
+      config false;
+      description
+        "List of BIER IPv6 ping test results.";
+      list ipv6-ping-result {
+        key "test-name bfr-id";
+        config false;
+        description
+          "Statistics of BIER IPv6 ping test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          config false;
+          description
+            "Test name.";
+        }
+        leaf bfr-id {
+          type uint16 {
+            range "1..65535";
+        }
+          config false;
+          description
+            "BFR-ID of the replier.";
+        }
+        leaf dest-ip-addr {
+          type inet:ipv6-address-no-zone;
+          config false;
+          description
+            "Destination address of the related hop in a test.";
+        }
+        leaf packet-send {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of sent packets.";
+        }
+        leaf packet-recv {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of received packets.";
+        }
+        leaf loss-ratio {
+          type pub-type:percent {
+            range "0..100";
+          }
+          units "%";
+          config false;
+          description
+            "Packet loss ratio of a test.";
+        }
+        leaf rtt-min {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          config false;
+          description
+            "Minimum RTT of all test packets.";
+        }
+        leaf rtt-max {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          config false;
+          description
+            "Maximum RTT of all test packets.";
+        }
+        leaf average-rtt {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          config false;
+          description
+            "Average RTT of all test packets.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          config false;
+          description
+            "Test status.";
+        }
+        leaf error-type {
+          type dgntl-error-type;
+          config false;
+          description
+            "Test operation status.";
+        }
+        container details {
+          config false;
+          description
+            "List of packet results.";
+          list detail {
+            key "index";
+            config false;
+            description
+              "Statistics of probe result.";
+            leaf index {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Serial number of a test packet received.";
+            }
+            leaf packet-size {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Number of bytes in a received response packet.";
+            }
+            leaf ttl {
+              type uint8 {
+                range "1..255";
+              }
+              config false;
+              description
+                "Hop limit of received response packets.";
+            }
+            leaf rtt {
+              type uint32 {
+                range "0..4294967295";
+              }
+              units "ms";
+              config false;
+              description
+                "RTT of test packets.";
+            }
+            leaf result-type {
+              type detail-result-type;
+              config false;
+              description
+                "Result of packets sending, which is either success or timeout.";
+            }
+            leaf is-delete {
+              ext:support-filter "true";
+              type boolean;
+              config false;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+          }
+        }
+      }
+    }
+    container ipv6-trace-results {
+      config false;
+      description
+        "List of BIER IPv6 trace test results.";
+      list ipv6-trace-result {
+        key "test-name";
+        config false;
+        description
+          "Statistics of BIER IPv6 trace test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status.";
+        }
+        container hop-results {
+          config false;
+          description
+            "List of hop results.";
+          list hop-result {
+            key "ttl";
+            config false;
+            description
+              "Statistics of hop result.";
+            leaf ttl {
+              type uint8 {
+                range "0..255";
+              }
+              description
+                "Hop limit of received response packets.";
+            }
+            leaf result-type {
+              type detail-result-type;
+              description
+                "Result of packets sending, which is either success or timeout.";
+            }
+            leaf is-delete {
+              ext:support-filter "true";
+              type boolean;
+              config false;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+            container packets {
+              config false;
+              description
+                "List of packet results.";
+              list packet {
+                key "packet-index";
+                config false;
+                description
+                  "Statistics of packet result.";
+                leaf packet-index {
+                  type uint32 {
+                    range "1..4294967295";
+                  }
+                  description
+                    "Packet index of received response packets.";
+                }
+                leaf rtt {
+                  type uint32 {
+                    range "0..4294967295";
+                  }
+                  units "ms";
+                  description
+                    "RTT of test packets.";
+                }
+                leaf replier-ip-addr {
+                  type inet:ipv6-address-no-zone;
+                  description
+                    "IPv6 address of the replier.";
+                }
+                leaf replier-bfr-id {
+                  type uint16 {
+                    range "0..65535";
+                  }
+                  description
+                    "BFR-ID of the replier.";
+                }
+                leaf transit-type {
+                  type bier-transmit-type;
+                  description
+                    "Transit type of the replier.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc bier-start-ipv6-ping {
+    description
+      "Start BIER IPv6 ping test.";
+    input  {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf sub-domain-id {
+        type uint8 {
+          range "0..255";
+        }
+        mandatory true;
+        description
+          "Bit Index Explicit Replication (BIER) subdomain.";
+      }
+      leaf bit-string-len {
+        type bit-string-len-type;
+        mandatory true;
+        description
+          "BFR bit string length.";
+      }
+      choice target-bfr {
+        description
+          "Specify the target BFR.";
+        case single-bfrid {
+          description
+            "Specify a single BFR-ID.";
+          leaf bfr-id {
+            type uint16 {
+              range "1..65535";
+            }
+            mandatory true;
+            description
+              "Specify the BFR-ID of the target router.";
+          }
+        }
+        case bfrid-range {
+          description
+            "Specify the target BFR-ID range.";
+          leaf start-bfr-id {
+            type uint16 {
+              range "1..65535";
+            }
+            mandatory true;
+            description
+              "Specify the minimum BFR-ID of the target routers.";
+          }
+          leaf end-bfr-id {
+            type uint16 {
+              range "1..65535";
+            }
+            must "(../end-bfr-id >= ../start-bfr-id)";
+            mandatory true;
+            description
+              "Specify the maximum BFR-ID of the target routers.";
+          }
+        }
+      }
+      leaf timeout {
+        type uint32 {
+          range "100..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time to wait for a response packet after a test packet is sent.";
+      }
+      leaf pkt-count {
+        type uint32 {
+          range "1..65535";
+        }
+        default "5";
+        description
+          "Number of sent test packets.";
+      }
+      leaf interval {
+        type uint32 {
+          range "100..10000";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Interval for sending test packets.";
+      }
+      leaf ttl {
+        type uint8 {
+          range "1..255";
+        }
+        default "255";
+        description
+          "Time to live.";
+      }
+      leaf source-address {
+        type inet:ipv6-address-no-zone;
+        description
+          "Source address.";
+      }
+      leaf dest-udp-port {
+        type uint16 {
+          range "1..65535";
+        }
+        default "49100";
+        description
+          "Destination UDP port of echo request.";
+      }
+    }
+  }
+  rpc bier-stop-ipv6-ping {
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:bier/diagnostic-tools:ipv6-ping-results";
+    description
+      "Stop BIER IPv6 ping test.";
+    input  {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:bier/diagnostic-tools:ipv6-ping-results/diagnostic-tools:ipv6-ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+  rpc bier-delete-ipv6-ping {
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:bier/diagnostic-tools:ipv6-ping-results";
+    description
+      "Delete BIER IPv6 ping test.";
+    input  {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:bier/diagnostic-tools:ipv6-ping-results/diagnostic-tools:ipv6-ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc bier-start-ipv6-trace {
+    description
+      "Start BIER IPv6 trace test.";
+    input  {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf sub-domain-id {
+        type uint8 {
+          range "0..255";
+        }
+        mandatory true;
+        description
+          "Bit Index Explicit Replication (BIER) subdomain.";
+      }
+      leaf bit-string-len {
+        type bit-string-len-type;
+        mandatory true;
+        description
+          "BFR bit string length.";
+      }
+      choice target-bfr {
+        description
+          "Specify the target BFR.";
+        case single-bfrid {
+          description
+            "Specify a single BFR-ID.";
+          leaf bfr-id {
+            type uint16 {
+              range "1..65535";
+            }
+            mandatory true;
+            description
+              "Specify the BFR-ID of the target router.";
+          }
+        }
+        case bfrid-range {
+          description
+            "Specify the target BFR-ID range.";
+          leaf start-bfr-id {
+            type uint16 {
+              range "1..65535";
+            }
+            mandatory true;
+            description
+              "Specify the minimum BFR-ID of the target routers.";
+          }
+          leaf end-bfr-id {
+            type uint16 {
+              range "1..65535";
+            }
+            must "(../end-bfr-id >= ../start-bfr-id)";
+            mandatory true;
+            description
+              "Specify the maximum BFR-ID of the target routers.";
+          }
+        }
+      }
+      leaf timeout {
+        type uint32 {
+          range "100..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time to wait for response packets after a test packet is sent.";
+      }
+      leaf max-ttl {
+        type uint8 {
+          range "1..255";
+        }
+        must "(../max-ttl >= ../first-ttl)";
+        default "30";
+        description
+          "Specify the maximum TTL of the test packets.";
+      }
+      leaf first-ttl {
+        type uint8 {
+          range "1..255";
+        }
+        must "(../max-ttl >= ../first-ttl)";
+        default "1";
+        description
+          "TTL of the first packet in a test.";
+      }
+      leaf source-address {
+        type inet:ipv6-address-no-zone;
+        description
+          "Source address.";
+      }
+      leaf dest-udp-port {
+        type uint16 {
+          range "1..65535";
+        }
+        default "49100";
+        description
+          "Destination UDP port of echo request.";
+      }
+      leaf entropy {
+        type uint32 {
+          range "0..1048575";
+        }
+        default "0";
+        description
+          "The entropy is used for route selection in load balancing scenarios.";
+      }
+    }
+  }
+  rpc bier-stop-ipv6-trace {
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:bier/diagnostic-tools:ipv6-trace-results";
+    description
+      "Stop BIER IPv6 trace test.";
+    input  {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:bier/diagnostic-tools:ipv6-trace-results/diagnostic-tools:ipv6-trace-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+  rpc bier-delete-ipv6-trace {
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:bier/diagnostic-tools:ipv6-trace-results";
+    description
+      "Delete BIER IPv6 trace test.";
+    input  {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:bier/diagnostic-tools:ipv6-trace-results/diagnostic-tools:ipv6-trace-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+ 
+  augment "/diagnostic-tools:diagnostic-tools" {
+    description
+      "List of BIER ping and trace tests.";
+    container bier {
+      config false;
+      description
+        "Statistics of BIER ping and trace tests.";
+      uses diagnostic-tools:bier-ping-trace-result-type;
+    }
+  }
+}

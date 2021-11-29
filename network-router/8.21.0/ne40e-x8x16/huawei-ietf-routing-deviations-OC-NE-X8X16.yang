@@ -1,0 +1,70 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-routing-deviations-OC-NE-X8X16 {
+  yang-version 1.1;
+  namespace "urn:huawei:yang:huawei-ietf-routing-deviations-OC-NE-X8X16";
+  prefix rt-devs-OC-NE-X8X16;
+
+  import ietf-routing {
+    prefix rt;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviations for ietf-network model.";
+
+  revision 2021-01-15 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/rt:routing/rt:router-id" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:interfaces" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:name" {
+    deviate replace {
+      type string {
+        length "1..10";
+      }
+    }
+  }
+  deviation "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:description" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:name" {
+    deviate add {
+      must "((../type='rt:static' or ../type='rt:direct') and ../name='default')";
+    }
+  }
+  deviation "/rt:routing/rt:ribs" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing-state" {
+    deviate not-supported;
+  }
+  ext:deviation-ext "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        when "./name = 'default'";
+        description
+          "The default protocol is generated automatically.";
+      }
+    }
+  }
+}

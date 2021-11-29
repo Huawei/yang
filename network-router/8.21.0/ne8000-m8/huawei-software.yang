@@ -1,0 +1,981 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+module: huawei-software
+   +--rw software
+      +--rw global
+      |  +--rw auto-save
+      |     +--rw enable?   boolean
+      x--ro versions
+      |  +--ro version* [base]
+      |     +--ro base     string
+      |     +--ro patch?   string
+      +--ro startup-packages
+      |  +--ro startup-package* [slot-id]
+      |     +--ro slot-id            string
+      |     +--ro current-package?   string
+      |     +--ro next-package?      string
+      +--ro packages
+      |  +--ro package* [name]
+      |     +--ro name            string
+      |     +--ro package-type?   package-type
+      +--ro upgrade-rollback-timer
+      |  +--ro timer-enable?   boolean
+      |  +--ro time?           uint32
+      +--ro checkpoint-infos
+      |  +--ro checkpoint-info* [name]
+      |     +--ro name               string
+      |     +--ro create-time?       yang:date-and-time
+      |     +--ro create-mode?       checkpoint-create-type
+      |     +--ro base-package?      string
+      |     +--ro feature-package?   string
+      |     +--ro patch-package?     string
+      |     +--ro module-package?    string
+      +--ro operation-schedules
+         +--ro operation-schedule* [operation-type file-name]
+            +--ro operation-type      operation-type
+            +--ro file-name           string
+            +--ro status?             operation-status
+            +--ro fail-reason?        uint32
+rpcs:
+   +---x startup-by-mode
+   |  +---w input
+   |     +---w name    string
+   |     +---w mode?   startup-mode
+   +---x startup-by-slot-id
+   |  +---w input
+   |     +---w name       string
+   |     +---w slot-id?   string
+   +---x enable-upgrade-rollback
+   |  +---w input
+   |     +---w rollback-time    uint32
+   +---x undo-upgrade-rollback
+   +---x install-feature-software
+   |  +---w input
+   |     +---w name    string
+   +---x uninstall-feature-software
+   |  +---w input
+   |     +---w name    string
+   +---x upgrade-feature-software
+   |  +---w input
+   |     +---w name    string
+   +---x startup-feature-software
+   |  +---w input
+   |     +---w feature-package-name    string
+   +---x reset-feature-software-next-startup
+   |  +---w input
+   |     +---w feature-package-name    string
+   +---x create-startup-checkpoint
+   |  +---w input
+   |     +---w name    -> /software/checkpoint-infos/checkpoint-info/name
+   +---x delete-startup-checkpoint
+   |  +---w input
+   |     +---w name    -> /software/checkpoint-infos/checkpoint-info/name
+   +---x check-startup-checkpoint
+   |  +---w input
+   |     +---w name    -> /software/checkpoint-infos/checkpoint-info/name
+   +---x restore-startup-checkpoint
+   |  +---w input
+   |     +---w name    -> /software/checkpoint-infos/checkpoint-info/name
+   +---x refresh-startup-secure-version-configuration
+      +---w input
+         +---w slot?   string
+*/
+
+module huawei-software {
+  namespace "urn:huawei:yang:huawei-software";
+  prefix software;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  } 
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specify software package upgrade management.";
+  revision 2021-09-24 {
+    description
+      "Add noderef to rpc enable-upgrade-rollback.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-07-10 {
+    description
+      "Add rpc rollback-feature-software.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-04-30 {
+    description
+      "Add rpc in-service-upgrade-feature-software. Modify length and description of leaf name in rpc install-feature-software, uninstall-feature-software, upgrade-feature-software, startup-feature-software and reset-feature-software-next-startup.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-04-28 {
+    description
+      "Modify software-integrated-infos to integrated-infos.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-04-27 {
+    description
+      "Add startup-features.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-04-07 {
+    description
+      "Add software-integrated-infos.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-03-24 {
+    description
+      "Modify operation-schedules fail-reason type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-03-11 {
+    description
+      "Add leaf software-name to packages.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-03-10 {
+    description
+      "Add integrate-software-package,restore-software-package,leaf-list current-feature-packages of startup-packages,leaf-list next-feature-packages of startup-packages.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-02-23 {
+    description
+      "Delete trust-startup-softwares.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-02-20 {
+    description
+      "Add trust-startup-softwares.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-02-04 {
+    description
+      "Add operation-schedules.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-12-31 {
+    description
+      "Add rpc reset-feature-software-next-startup.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-30 {
+    description
+      "Revert modification of software node's config attribute.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-29 {
+    description
+      "Modify node description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-27 {
+    description
+      "Add rpc refresh-startup-secure-version-configuration.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-02 {
+    description
+      "Add install-feature-software, uninstall-feature-software, upgrade-feature-software.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-02 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "upgrade";
+  typedef startup-mode {
+    type enumeration {
+      enum "primary" {
+        value 1;
+        description
+          "Upgrade the software package on the master MPU.";
+      }
+      enum "slave" {
+        value 2;
+        description
+          "Upgrade the software package on the slave MPU.";
+      }
+      enum "all" {
+        value 3;
+        description
+          "Upgrade the software package on all MPUs.";
+      }
+    }
+    description
+      "Startup mode.";
+  }
+  typedef package-type {
+    type enumeration {
+      enum "system" {
+        value 1;
+        description
+          "The type of a software package on the device is a system software package.";
+      }
+      enum "feature" {
+        value 2;
+        description
+          "The type of a software package on the device is a feature software package.";
+      }
+    }
+    description
+      "Specify the type of a software package on the device.";
+  }
+  typedef checkpoint-create-type {
+    type enumeration {
+      enum "manual" {
+        value 1;
+        description
+          "The type of a checkpoint created mode.";
+      }
+      enum "auto" {
+        value 2;
+        description
+          "The type of a checkpoint created mode.";
+      }
+    }
+    description
+      "Specify the type of a software package on the device.";
+  }
+  typedef operation-type {
+    type enumeration {
+      enum "startup-system-software" {
+        value 0;
+        description
+          "Startup the system software.";
+      }
+      enum "install-feature-software" {
+        value 1;
+        description
+          "Install the feature software.";
+      }
+      enum "uninstall-feature-software" {
+        value 2;
+        description
+          "Uninstall the feature software.";
+      }
+      enum "upgrade-feature-software" {
+        value 3;
+        description
+          "Upgrade the feature software.";
+      }
+      enum "startup-feature-software" {
+        value 4;
+        description
+          "Startup the feature software.";
+      }
+    }
+    description
+      "Specify the operation type of software.";
+  }
+  typedef operation-status { 
+    type enumeration {
+      enum "not-started" {
+        value 0;
+        description
+          "The current status is not started.";
+      }
+      enum "operating" {
+        value 1;
+        description
+          "The current status is operating.";
+      }
+      enum "successful" {
+        value 2;
+        description
+          "The current status is successful.";
+      }
+      enum "failed" {
+        value 3;
+        description
+          "The current status is failed.";
+      }
+    }
+    description
+      "Specify the operation status of software.";
+  }
+  typedef operation-fail-reason { 
+    type enumeration {
+      enum "para-invalid" {
+        value 0;
+        description
+          "Para is invalid.";
+      }
+      enum "system-busy" {
+        value 1;
+        description
+          "Another user is performing package management opertions.";
+      }
+      enum "integrity-check-failed" {
+        value 2;
+        description
+          "Integrity check failed.";
+      }
+      enum "compatibility-check-failed" {
+        value 3;
+        description
+          "Compatibility check failed.";
+      }
+      enum "dependency-check-failed" {
+        value 4;
+        description
+          "Dependency check failed.";
+      }
+      enum "version-revoked" {
+        value 5;
+        description
+          "Version revoked.";
+      }
+      enum "startup-error" {
+        value 6;
+        description
+          "Startup error.";
+      }
+    }
+    description
+      "Specify software operation fail reason.";
+  }
+  typedef feature-status { 
+    type enumeration {
+      enum "inactive" {
+        value 0;
+        description
+          "Feature package was not activated.";
+      }
+      enum "active" {
+        value 1;
+        description
+          "Feature package was activated.";
+      }
+    }
+    description
+      "Specify the feature package was activated or deactivated.";
+  }
+  container software {
+    description
+      "Specify software package upgrade management.";
+    container global {
+      description "Configure of auto save checkpoint switch.";
+      container auto-save {
+        description "Configure of enable auto save checkpoint.";
+        leaf enable {
+          type boolean;
+          default "true";
+          description "Enable/disable auto save checkpoint when upgrade software package.";    
+        }
+      }
+    }
+    container versions {
+      config false;
+      status deprecated;
+      description
+        "List of operational state of software package versions. The node versions is deprecated. You are advised to use the node /system/system-info.";
+      list version {
+        key "base";
+        status deprecated;
+        description
+          "Operational state of a software package version. The node version is deprecated. You are advised to use the node /system/system-info.";
+        leaf base {
+          type string {
+            length "1..63";
+          }
+          status deprecated;
+          description
+            "Current software package version. The node base is deprecated. You are advised to use the node /system/system-info/product-version.";
+        }
+        leaf patch {
+          type string {
+            length "1..63";
+          }
+          status deprecated;
+          description
+            "Current patch package version. The node patch is deprecated. You are advised to use the node /system/system-info/patch-version.";
+        }
+      }
+    }
+    container startup-packages {
+      config false;
+      description
+        "List of operational state of startup software packages.";
+      list startup-package {
+        key "slot-id";
+        description
+          "Operational state of startup software package.";
+        leaf slot-id {
+          type string {
+            length "1..31";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf current-package {
+          type string {
+            length "4..255";
+          }
+          description
+            "The name of a software package used at the current startup.";
+        }
+        leaf next-package {
+          type string {
+            length "4..255";
+          }
+          description
+            "The name of a software package used at the next startup.";
+        }
+        leaf-list current-feature-packages {
+          type string {
+            length "4..255";
+          }
+          description
+            "Operational data of the feature software packages used at the current startup. Name of the files that end with ccx.";
+        }
+        leaf-list next-feature-packages {
+          type string {
+            length "4..255";
+          }
+          description
+            "Operational data of the feature software packages used at the next startup. Name of the files that end with ccx.";
+        }
+      }
+    }
+    container packages {
+      config false;
+      description
+        "List of operational state of software packages on the device.";
+      list package {
+        key "name";
+        description
+          "Operational state of a software package on the device.";
+        leaf name {
+          type string {
+            length "4..255";
+          }
+          description
+            "The file name of a software package on the device, which can be modified by users.";
+        }
+        leaf software-name {
+          type string {
+            length "4..255";
+          }
+          description
+            "The software name of the software package file, which is published with package and can not be modified.";
+        }
+        leaf package-type {
+          type package-type;
+          description
+            "The type of a software package on the device.";
+        }
+        leaf version {
+          type string {
+            length "1..63";
+          }
+          description
+            "Specify the version of a feature software package.";
+        }
+        leaf-list feature-names {
+          type string {
+            length "1..127";
+          }
+          description
+            "Operational data of the feature package name of a software package. Such as URL/Macsec, etc.";
+        }
+      }
+    }
+    container upgrade-rollback-timer {
+      config false;
+          description
+        "Operational data of upgrade rollback timer.";
+      leaf timer-enable {
+        type boolean;
+        description
+          "When the rollback timer is closed, the time leaf will not be shown.";
+      }
+      leaf time {
+        when "../timer-enable = 'true'";
+        type uint32 {
+          range "10..360";
+        }
+        units min;
+        description
+          "Rollback time.";
+      }
+    }
+    container checkpoint-infos {
+      config false;
+      description "List of checkpoint base information.";
+      list checkpoint-info {
+        key "name";
+        description 
+          "Statistics of a checkpoint info.";
+        leaf name {
+          type string {
+            length "5..32";
+          }
+          description "Checkpoint name.";    
+        }
+        leaf create-time {
+          type yang:date-and-time;
+          description "Checkpoint create time.";
+        }
+        leaf create-mode {
+          type checkpoint-create-type;
+          description "Checkpoint create mode.";
+        }
+        leaf base-package {
+          type string {
+            length "0..255";
+          }
+          description "Checkpoint software package.";
+        }
+        leaf feature-package {
+          type string {
+            length "0..2047";
+          }
+          description "Checkpoint feature packages.";
+        }
+        leaf patch-package {
+          type string {
+            length "0..2047";
+          }
+          description "Checkpoint patch packages.";
+        }
+        leaf module-package {
+          type string {
+            length "0..2047";
+          }
+          description "Checkpoint mod patchs.";
+        }
+        leaf paf-file {
+          type string {
+            length "0..255";
+          }
+          description "Checkpoint paf file.";
+        }
+        leaf saved-configuration-file {
+          type string {
+            length "0..255";
+          }
+          description "Checkpoint saved-configuration file.";
+        }
+      }
+    }
+    container operation-schedules {
+      config false;
+      description
+        "List of operational state of software packages.";
+      list operation-schedule {
+        key "operation-type";
+        description
+          "Operational state of software packages.";
+        leaf operation-type {
+          type operation-type;
+          description
+            "Software operation type.";
+        }
+        leaf file-name {
+          type string {
+            length "5..63";
+          }
+          description
+            "Software package name.";
+        }
+        leaf status {
+          type operation-status;
+          description
+            "Status of the software operation.";
+        }
+        leaf fail-reason {
+          when "../status = 'failed'";
+          type operation-fail-reason;
+          description
+            "Cause of the software operation failure.";
+        }
+      }
+    }
+    container integrated-infos {
+      config false;
+      description
+        "List of software packages on the device.";
+      list integrated-info {
+        key "name";
+        description
+          "Operational data of a software package on the device."; 
+        leaf name {
+          type string {
+            length "4..127";
+          }
+          description
+            "Specify the name of a software package on the device.";
+        }
+        leaf package-integrated-version {
+          type string {
+            length "1..63";
+          }
+          description
+            "Specify the integrated version of a software package on the device.";
+        }
+        leaf component-status {
+          type string {
+            length "1..63";
+          }
+          description
+            "Specify the component status of a software package on the device.";
+        }
+        leaf component-version {
+          type string {
+            length "1..63";
+          }
+          description
+            "Specify the component version of a software package on the device.";
+        }
+      }
+    }
+    container startup-features {
+        config false;
+        description
+            "List of startup feature software package versions.";
+
+        list startup-feature {
+            key "feature-name location";
+            
+            description
+                "Operational data of a startup feature software package version information.";
+            
+            leaf feature-name {
+                type string {
+                    length "1..63";
+                }
+                description
+                "Specify the feature name of a feature software package used at the current startup.";
+            }
+            leaf location {
+                type string {
+                    length "5..255";
+                }
+                description
+                "Specify the file name of a feature software package used at the current startup.";
+            }
+            leaf status {
+                type feature-status;
+                description
+                    "Specify the feature package is active or inactive.";
+            }
+            leaf version {
+                type string {
+                    length "1..63";
+                }
+                description
+                    "Specify the software version of a feature software package used at the current startup.";
+            }
+            leaf activated-time {
+                type yang:date-and-time;
+                description
+                    "Specify the software installation time of a feature software package used at the current startup.";
+            }
+        }
+    }
+  }
+  rpc startup-by-mode {
+    description
+      "Specify the mode-based upgrade for software packages.";
+    ext:node-ref "/software/packages/package"; 
+    input {
+      leaf name {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a software package that needs to be upgraded.";
+      }
+      leaf mode {
+        type startup-mode;
+        description
+          "Specify a software package upgrade mode.";
+      }
+    }
+  }
+  rpc startup-by-slot-id {
+    description
+      "Specify the slot ID-based upgrade for software packages.";
+    ext:node-ref "/software/packages/package";
+    input {
+      leaf name {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a software package that needs to be upgraded.";
+      }
+      leaf slot-id {
+        type string {
+          length "1..31";
+        }
+        description
+          "Specify the slot ID of a board on which a software package needs to be upgraded.";
+      }
+    }
+  }
+  rpc enable-upgrade-rollback {
+    ext:node-ref "/software/upgrade-rollback-timer";
+    description
+      "Specify the rollback time when upgrade software package.";
+    input {
+      leaf rollback-time {
+        type uint32 {
+          range "10..360";
+        }
+        units min;
+        mandatory true;
+        description
+          "Specify the rollback time.";
+      }
+    }
+  }
+  rpc undo-upgrade-rollback {
+    ext:node-ref "/software/upgrade-rollback-timer";
+    description
+      "Delete the rollback time when upgrade software package.";
+  }
+  rpc install-feature-software {
+    description
+      "Install feature software.";
+    input  {
+      leaf name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "Specifies the name of feature software package. Two types are available. One type of feature software package ends with '.ccx'. The other type of feature software package is in the system software package without a suffix.";
+      }
+    }
+  }
+  rpc uninstall-feature-software {
+    description
+      "Uninstall feature software.";
+    input  {
+      leaf name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "Specifies the name of feature software package. Two types are available. One type of feature software package ends with '.ccx'. The other type of feature software package is in the system software package without a suffix.";
+      }
+    }
+  }
+  rpc upgrade-feature-software {
+    description
+      "Upgrade feature software on line.";
+    input  {
+      leaf name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "Specifies the name of feature software package. Two types are available. One type of feature software package ends with '.ccx'. The other type of feature software package is in the system software package without a suffix.";
+      }
+    }
+  }
+  rpc startup-feature-software {
+    description
+      "Startup feature software.";
+    input  {
+      leaf feature-package-name {
+        type string {
+          length "5..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of an independent feature software package which ends with '.ccx'.";
+      }
+    }  
+}
+  rpc reset-feature-software-next-startup {
+    description
+      "Reset next startup feature software.";
+    input  {
+      leaf feature-package-name {
+        type string {
+          length "5..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of an independent feature software package which ends with '.ccx'.";
+      }
+    }  
+  }
+  rpc create-startup-checkpoint {
+    description
+      "Create a specified startup checkpoint.";
+    input  {
+      leaf name {
+        type string {
+          length "5..32";
+        }
+        mandatory true;
+        description
+          "Specify the name of a checkpoint.";
+      }
+    }
+  }
+  rpc delete-startup-checkpoint {
+    ext:node-ref "/software/checkpoint-infos/checkpoint-info";
+    description
+      "Delete a specified startup checkpoint.";
+    input  {
+      leaf name {
+        type leafref {
+          path "/software/checkpoint-infos/checkpoint-info/name";
+        }
+        mandatory true;
+        description
+          "Specify the name of a checkpoint.";
+      }
+    }
+  }
+  rpc check-startup-checkpoint {
+    ext:node-ref "/software/checkpoint-infos/checkpoint-info";
+    description
+      "Check a specified startup checkpoint.";
+    input  {
+      leaf name {
+        type leafref {
+          path "/software/checkpoint-infos/checkpoint-info/name";
+        }
+        mandatory true;
+        description
+          "Specify the name of a checkpoint.";
+      }
+    }
+  }
+  rpc restore-startup-checkpoint {
+    ext:node-ref "/software/checkpoint-infos/checkpoint-info";
+    description
+      "Restore a specified checkpoint.";
+    input  {
+      leaf name {
+        type leafref {
+          path "/software/checkpoint-infos/checkpoint-info/name";
+        }
+        mandatory true;
+        description
+          "Specify the name of a checkpoint.";
+      }
+    }
+  }
+  rpc refresh-startup-secure-version-configuration {
+    description
+      "Update the eFUSE and version revocation list. If the slot parameter is not specified, information on all boards is updated.";
+    input {
+      leaf slot {
+        type string {
+          length "1..49";
+        }
+        description
+          "Specify the slot name.";
+      }
+    }
+  }
+  rpc integrate-software-package {
+    description
+      "Integrate software package.";
+    input  {
+      leaf original-package {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a original software package.";
+      }
+      leaf integrated-package {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a integrated software package.";
+      }
+      leaf signature-backup-file {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of the software package containing signature backup file.";
+      }
+    }
+  }
+  rpc restore-software-package {
+    description
+      "Restore software package.";
+    input  {
+      leaf integrated-package {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of a integrated software package.";
+      }
+      leaf signature-backup-file {
+        type string {
+          length "4..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of the software package containing signature backup file.";
+      }
+    }
+  }
+  rpc in-service-upgrade-feature-software {
+    description
+      "Upgrade feature software in service.";
+    input  {
+      leaf name {
+        type string {
+          length "5..127";
+        }
+        mandatory true;
+        description
+          "Specify the name of an independent feature software package which ends with '.ccx'.";
+      }
+    }
+  }
+  rpc rollback-feature-software {
+    description
+      "Roll back the most recently upgraded feature software.";
+  }
+}

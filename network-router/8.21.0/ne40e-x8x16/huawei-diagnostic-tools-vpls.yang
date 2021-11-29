@@ -1,0 +1,609 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-vpls {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  include huawei-diagnostic-tools-common;
+  include huawei-diagnostic-tools-type;
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Vpls diagnosis tool.";
+
+  revision 2021-06-11 {
+    description
+      "Add VPLS VSI ping.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-01-08 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  grouping vpls-ping-trace-result-type {
+    description
+      "Test result.";
+    container mac-ping-results {
+      description
+        "List of VPLS MAC ping test result.";
+      list mac-ping-result {
+        key "test-name";
+        description
+        "Statistics of VPLS MAC ping test results.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf packet-send {
+          type uint32;
+          description
+            "Total number of sent packets.";
+        }
+        leaf packet-receive {
+          type uint32;
+          description
+            "Total number of received packets.";
+        }
+        leaf loss-ratio {
+          type pub-type:percent;
+          description
+            "Packet loss ratio of a test.";
+        }
+        leaf rtt-min {
+          type uint32;
+          units "ms";
+          description
+            "Minimum RTT of all test packets.";
+        }
+        leaf rtt-max {
+          type uint32;
+          units "ms";
+          description
+            "Maximum RTT of all test packets.";
+        }
+        leaf rtt-average {
+          type uint32;
+          units "ms";
+          description
+            "Average RTT of all test packets.";
+        }
+        leaf replier-pe-addr {
+            type inet:ipv4-address-no-zone;
+            description
+              "Reply PE address in a received response packet.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status.";
+        }
+        container probes {
+          description
+            "List of ping results of all packets in a test.";
+          list probe {
+            key "sequence";
+            description
+              "Statistics of get the response result of a single packet in an VPLS MAC ping test.";
+            leaf sequence {
+              type uint32;
+              description
+                "Serial number of a received response packet.";
+            }
+            leaf replier {
+              type inet:ipv4-address-no-zone;
+              description
+                "Reply address in a received response packet.";
+            }
+            leaf data-bytes {
+              type uint32;
+              description
+                "Number of bytes in a received response packet.";
+            }
+            leaf rtt {
+              type uint32;
+              units "ms";
+              description
+                "RTT of test packets.";
+            }
+            leaf result-type {
+              type probe-result-type;
+              description
+                "Result of packet sending, which is either success or timeout.";
+            }
+            leaf is-delete {
+              ext:support-filter "true";
+              type boolean;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+          }
+        }
+      }
+    }
+    container vsi-ping-results {
+      description
+        "List of VPLS VSI ping test results.";
+      list vsi-ping-result {
+        key "test-name";
+        description
+          "Statistics of VPLS VSI ping test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf pw-type {
+          type pw-type;
+          description
+            "PW type.";
+        }
+        leaf pw-id {
+          type uint32;
+          description
+            "PW index.";
+        }
+        leaf sender-ve-id {
+          type uint16;
+          description
+            "Sender VE ID.";
+        }
+        leaf remote-ve-id {
+          type uint16;
+          description
+            "Remote VE ID.";
+        }
+        leaf packet-send {
+          type uint32;
+          description
+            "Total number of sent packets.";
+        }
+        leaf packet-receive {
+          type uint32;
+          description
+            "Total number of received packets.";
+        }
+        leaf loss-ratio {
+          type pub-type:percent;
+          description
+            "Packet loss ratio of a test.";
+        }
+        leaf rtt-min {
+          type uint32;
+          units "ms";
+          description
+            "Minimum RTT of all test packets.";
+        }
+        leaf rtt-max {
+          type uint32;
+          units "ms";
+          description
+            "Maximum RTT of all test packets.";
+        }
+        leaf rtt-average {
+          type uint32;
+          units "ms";
+          description
+            "Average RTT of all test packets.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status.";
+        }
+        container probes {
+          description
+            "List of VPLS VSI ping results of all packets in a test.";
+          list probe {
+            key "sequence";
+            description
+              "Statistics of VPLS VSI ping result of a single packet in a test.";
+            leaf sequence {
+              type uint32;
+              description
+                "Serial number of a test packet received.";
+            }
+            leaf replier {
+              type inet:ipv4-address-no-zone;
+              description
+                "Reply address in a received response packet.";
+            }
+            leaf data-bytes {
+              type uint32;
+              description
+                "Number of bytes in a received response packet.";
+            }
+            leaf rtt {
+              type uint32;
+              units "ms";
+              description
+                "RTT of test packet.";
+            }
+            leaf return-code {
+              type uint32;
+              description
+                "Return code.";
+            }
+            leaf return-subcode {
+              type uint32;
+              description
+                "Return sub-code.";
+            }
+            leaf result-type {
+              type probe-result-type;
+              description
+                "Result type of sent packet, which is either success or timeout.";
+            }
+            leaf is-delete {
+              type boolean;
+              ext:support-filter true;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc vpls-start-mac-ping {
+    description
+      "Start VPLS MAC ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:mac-ping-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf vsi-name {
+        type string {
+          length "1..31";
+        }
+        mandatory true;
+        description
+          "VSI name.";
+      }
+      leaf dest-mac {
+        type pub-type:mac-address;
+        mandatory true;
+        description
+          "Destination mac address.";
+      }
+      leaf vlan {
+        type uint16 {
+          range "1..4094";
+        }
+        description
+        "VLAN ID.";
+      }
+      leaf src-addr {
+        type inet:ipv4-address-no-zone;
+        description
+          "Source address.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..4294967295";
+        }
+        default "5";
+        description
+          "Number of sent test packets.";
+      }
+      leaf interval {
+        type uint32 {
+          range "1..10000";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Interval for sending test packets.";
+      }
+      leaf packet-size {
+        type uint32 {
+          range "142..1442";
+        }
+        units "Byte";
+        default "142";
+        description
+          "Number of bytes in a sent test packet.";
+      }
+      leaf exp {
+        type uint32 {
+          range "0..7";
+        }
+        default "0";
+        description
+          "EXP value in the label field of MPLS packets.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time taken to wait for the response packets after detection packets are sent.";
+      }
+      leaf reply-mode {
+        type reply-mode-vpls-mac;
+        default "udp-via-vpls";
+        description
+          "Reply Mode.";
+      }
+      leaf ttl {
+        type uint32 {
+          range "1..255";
+        }
+        default "255";
+        description
+          "TTL value.";
+      }
+      leaf fragment {
+        type boolean;
+        default "false";
+        description
+          "Set the Fragment flag in packet.";
+      }
+    }
+  }
+
+  rpc vpls-stop-mac-ping {
+    description
+      "Stop VPLS MAC ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:mac-ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:mac-ping-results/diagnostic-tools:mac-ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc vpls-delete-mac-ping {
+    description
+      "Delete VPLS MAC ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:mac-ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:mac-ping-results/diagnostic-tools:mac-ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+  
+  rpc vpls-start-vsi-ping {
+    description
+      "Start VPLS VSI ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:vsi-ping-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf vsi-name {
+        type string {
+          length "1..31";
+        }
+        mandatory true;
+        description
+          "VSI name.";
+      }
+      choice signal-type {
+        mandatory true;
+        description
+          "Signal type.";
+        case ldp {
+          description
+            "Detecting by LDP signal.";   
+          leaf peer-address {
+            type inet:ipv4-address-no-zone;
+            mandatory true;
+            description
+              "Specify the peer IP address.";
+          }
+          leaf negotiation-vc-id {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "Local pw ID.";
+          }
+          leaf remote-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "Specify the IP address of the remote LDP session.";
+          }
+          leaf remote-pw-id {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "Remote PW ID.";
+          }
+          leaf sender-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "The source address of the target session.";
+          }
+        }
+        case bgp {
+          description
+            "Detecting by BGP signal.";
+          leaf local-site-id {
+            type uint32 {
+              range "0..65534";
+            }
+            mandatory true;
+            description
+              "Local site ID.";
+          }
+          leaf remote-site-id {
+            type uint32 {
+              range "0..65534";
+            }
+            mandatory true;
+            description
+              "Remote site ID.";
+          }
+        }
+      }
+      leaf label-type {
+        type vpls-label-type;
+        description
+          "Label type.";
+      }
+      leaf bypass-source-if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Set the interface as the source interface of ping packet when specifying VPLS bypass LSP.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..4294967295";
+        }
+        default "5";
+        description
+          "Number of sent test packets.";
+      }
+      leaf interval {
+        type uint32 {
+          range "1..10000";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Interval for sending test packets.";
+      }
+      leaf packet-size {
+        type uint32 {
+          range "65..9600";
+        }
+        units "Byte";
+        default "100";
+        description
+          "Number of bytes in a sent test packet.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time taken to wait for the response packets after detection packets are sent.";
+      }
+      leaf exp {
+        type uint32 {
+          range "0..7";
+        }
+        default "0";
+        description
+          "EXP value in the label field of MPLS packets.";
+      }
+      leaf reply-mode {
+        type reply-mode-vpls;
+        default "udp";
+        description
+          "Reply mode.";
+      }
+      leaf verbose-info {
+        type empty;
+        description
+          "Verbose output.";
+      }
+      leaf fragment {
+        type empty;
+        description
+          "Set the fragment flag in packet.";
+      }
+    }
+  }
+
+  rpc vpls-stop-vsi-ping {
+    description
+      "Stop VPLS VSI ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:vsi-ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:vsi-ping-results/diagnostic-tools:vsi-ping-result/diagnostic-tools:test-name";
+        }
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc vpls-delete-vsi-ping {
+    description
+      "Delete VPLS VSI ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:vsi-ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:vsi-ping-results/diagnostic-tools:vsi-ping-result/diagnostic-tools:test-name";
+        }
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  augment "/diagnostic-tools:diagnostic-tools" {
+    description
+      "List of VPLS ping and trace tests.";
+    container vpls {
+      description
+        "Statistics of VPLS ping and trace tests.";
+      uses diagnostic-tools:vpls-ping-trace-result-type;
+    }
+  }
+
+}

@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cpudefend-notification-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-cpudefend-notification-deviations-OC-NE-X8X16";
+  prefix cpudefend-notification-devs-OC-NE-X8X16;
+
+  import huawei-cpudefend-notification {
+    prefix cpudefend-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cpudefend-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cpudefend-notification:portcar-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:portcar-alarm-clear" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:arpvlancar-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:arpvlancar-alarm-clear" {
+    deviate not-supported;
+  }
+
+}

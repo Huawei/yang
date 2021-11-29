@@ -1,0 +1,179 @@
+module openconfig-mpls-rsvp {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://openconfig.net/yang/rsvp";
+
+  prefix "oc-rsvp";
+
+  // import some basic types
+  import openconfig-inet-types { prefix inet; }
+  import openconfig-extensions { prefix oc-ext; }
+  import openconfig-interfaces { prefix oc-if; }
+
+
+  // meta
+  organization "OpenConfig working group";
+
+  contact
+    "OpenConfig working group
+     netopenconfig@googlegroups.com";
+
+  description
+    "Configuration for RSVP-TE signaling, including global protocol
+     parameters and LSP-specific configuration for constrained-path
+     LSPs";
+
+  oc-ext:openconfig-version "3.0.1";
+
+  revision "2018-11-21" {
+    description
+      "Add OpenConfig module metadata extensions.";
+    reference "3.0.1";
+  }
+
+  revision "2018-07-02" {
+    description
+      "Add new RSVP-TE statistics, remove associated-rsvp-session
+      leaf. Remove use of date-and-time.";
+    reference "3.0.0";
+  }
+
+  revision "2018-06-16" {
+    description
+      "Included attributes for base LDP configuration.";
+     reference "2.6.0";
+  }
+
+  revision "2018-06-13" {
+    description
+      "Add ttl-propagation to global MPLS config";
+    reference "2.5.0";
+  }
+
+  revision "2018-06-05" {
+    description
+      "Fixed bugs in when statements on RSVP-TE attributes";
+    reference "2.4.2";
+  }
+
+  revision "2017-08-24" {
+    description
+      "Minor formatting fixes.";
+    reference "2.4.1";
+  }
+
+  revision "2017-06-21" {
+    description
+      "Add TC bits typedef.";
+    reference "2.4.0";
+  }
+
+  revision "2017-03-22" {
+    description
+      "Add RSVP calculated-absolute-subscription-bw";
+    reference "2.3.0";
+  }
+
+  revision "2017-01-26" {
+    description
+      "Add RSVP Tspec, clarify units for RSVP, remove unused LDP";
+    reference "2.2.0";
+  }
+
+  revision "2016-12-15" {
+    description
+      "Add additional MPLS parameters";
+    reference "2.1.0";
+  }
+
+  revision "2016-09-01" {
+    description
+      "Revisions based on implementation feedback";
+    reference "2.0.0";
+  }
+
+  revision "2016-08-08" {
+    description
+      "Public release of MPLS models";
+    reference "1.0.1";
+  }
+
+  // OpenConfig specific extensions for module metadata.
+  oc-ext:regexp-posix;
+  oc-ext:catalog-organization "openconfig";
+  oc-ext:origin "openconfig";
+
+  // grouping statements
+
+
+  grouping rsvp-global {
+    description
+      "Global RSVP protocol configuration";
+    container rsvp-te {
+      description
+        "RSVP-TE global signaling protocol configuration";
+      container interface-attributes {
+        description
+          "Attributes relating to RSVP-TE enabled interfaces";
+
+        list interface {
+          key "interface-id";
+          description
+            "list of per-interface RSVP configurations";
+
+          leaf interface-id {
+            type leafref {
+              path "../config/interface-id";
+            }
+            description
+              "reference to the interface-id data";
+          }
+
+
+          container config {
+            description
+              "Configuration of per-interface RSVP parameters";
+            uses mpls-rsvp-interfaces-config;
+          }
+        }
+      }
+    }
+  }
+
+  grouping rsvp-p2p-tunnel-attributes-config {
+    description
+      "properties of RSVP point-to-point paths";
+
+    leaf source {
+      when "../signaling-protocol = 'PATH_SETUP_RSVP'" {
+        description
+          "When the signaling protocol is RSVP-TE ";
+      }
+      type inet:ip-address;
+      description
+        "RSVP-TE tunnel source address";
+    }
+  }
+
+  grouping mpls-rsvp-interfaces-config {
+    description
+      "RSVP configuration information relevant to an interface";
+
+    leaf interface-id {
+      type oc-if:interface-id;
+      description
+        "Identifier for the interface";
+    }
+  }
+
+  // data definition statements
+
+  // augment statements
+
+  // rpc statements
+
+  // notification statements
+
+}

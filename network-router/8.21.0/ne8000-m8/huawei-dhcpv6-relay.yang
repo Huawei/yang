@@ -1,0 +1,579 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-dhcpv6-relay {
+  yang-version 1;
+  belongs-to huawei-dhcpv6 {
+    prefix dhcpv6;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions for managing DHCPv6 relay.";
+  revision 2020-03-09 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-16 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef rapid-commit-flag-type {
+    type enumeration {
+      enum "off" {
+        value 0;
+        description
+          "Disable rapid commit.";
+      }
+      enum "on" {
+        value 1;
+        description
+          "Enable rapid commit.";
+      }
+    }
+    description
+      "The type of rapid commit flag.";
+  }
+  typedef relay-table-status {
+    type enumeration {
+      enum "init" {
+        value 0;
+        description
+          "Init status.";
+      }
+      enum "solicit" {
+        value 1;
+        description
+          "Send solicit packet to server.";
+      }
+      enum "advertise" {
+        value 2;
+        description
+          "Send Advertise packet to client.";
+      }
+      enum "request" {
+        value 3;
+        description
+          "Send request packet to server.";
+      }
+      enum "renewrebind" {
+        value 4;
+        description
+          "Send renew or rebind packet to server.";
+      }
+      enum "confirm" {
+        value 5;
+        description
+          "Send confirm packet to server.";
+      }
+      enum "decline" {
+        value 6;
+        description
+          "Send decline packet to server.";
+      }
+      enum "release" {
+        value 7;
+        description
+          "Send release packet to server.";
+      }
+      enum "up" {
+        value 8;
+        description
+          "Stable status.";
+      }
+      enum "error" {
+        value 9;
+        description
+          "Error status.";
+      }
+    }
+    description
+      "The type of relay table status.";
+  }
+  typedef ia-type {
+    type enumeration {
+      enum "iainvalid" {
+        value 0;
+        description
+          "Invalid identity association.";
+      }
+      enum "iana" {
+        value 1;
+        description
+          "Identity association for non-temporary addresses.";
+      }
+      enum "iata" {
+        value 2;
+        description
+          "Identity association for temporary addresses.";
+      }
+      enum "iapd" {
+        value 3;
+        description
+          "Identity association for prefix delegation.";
+      }
+    }
+    description
+      "The type of identity association.";
+  }
+  typedef relay-file-authentication-mode {
+    type enumeration {
+      enum "check" {
+        value 0;
+        description
+          "Check.";
+      }
+      enum "no-check" {
+        value 1;
+        description
+          "No-check.";
+      }
+      enum "force-check" {
+        value 2;
+        description
+          "Force-check.";
+      }
+    }
+    description
+      "The type of file authentication mode.";
+  }
+  grouping dhcpv6-relay-type {
+    description
+      "DHCPv6 relay.";
+    container pd-route {
+      description
+        "Configure DHCPv6 PD route.";
+      leaf export {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable DHCPv6 export PD route.";
+      }
+      leaf save-file-name {
+        type string {
+          length "12..69";
+          pattern '(\S+:\S*/dhcp/\S+\.pd)';
+        }
+        description
+          "Name of the file for saving PD routes. For example, the name can be in the format of cfcard:/dhcp/xxx.pd or home:/dhcp/xxx.pd, where xxx can be any characters.";
+      }
+      leaf write-route-delay {
+        type uint32 {
+          range "1..1440";
+        }
+        units "min";
+        default "5";
+        description
+          "The delay time for saving PD routes.";
+      }
+      leaf write-route-number {
+        type uint32 {
+          range "40960..1310720";
+        }
+        default "40960";
+        description
+          "The number for saving PD routes. Only 40960 userinfo table items can be written to a board with memory less than 16 GB, and other boards support 1310720 userinfo table items.";
+      }
+      leaf access-limit {
+        type uint32 {
+          range "40960..655360";
+        }
+        description
+          "Maximum number of access users.";
+      }
+      leaf file-authentication-mode {
+        type relay-file-authentication-mode;
+        default "check";
+        description
+          "Set file authentication mode.";
+      }
+    }
+    container server-groups {
+      description
+        "List of DHCPv6 relay server groups.";
+      list server-group {
+        key "name";
+        max-elements  "10";
+        description
+          "Configure a DHCPv6 relay server group.";
+        leaf name {
+          type string {
+            length "1..32";
+          }
+          description
+            "DHCPv6 relay server group name.";
+        }
+        container server-addresses {
+          description
+            "List of DHCPv6 relay destination servers in a server group.";
+          list server-address {
+            key "server";
+            max-elements  "20";
+            description
+              "Configure a DHCPv6 relay destination server in a server group.";
+            leaf server {
+              type inet:ipv6-address-no-zone;
+              description
+                "DHCPv6 relay destination server address in a server group.";
+            }
+          }
+        }
+      }
+    }
+    container global-packet-statistics {
+      config false;
+      description
+        "Statistics of a DHCPv6 relay global packet.";
+      leaf received-from-clients {
+        type uint32;
+        description
+          "Packets received from clients.";
+      }
+      leaf solicit-received {
+        type uint32;
+        description
+          "Solicit packets received from clients.";
+      }
+      leaf request-received {
+        type uint32;
+        description
+          "Request packets received from clients.";
+      }
+      leaf confirm-received {
+        type uint32;
+        description
+          "Confirm packets received from clients.";
+      }
+      leaf renew-received {
+        type uint32;
+        description
+          "Renew packets received from clients.";
+      }
+      leaf rebind-received {
+        type uint32;
+        description
+          "Rebind packets received from clients.";
+      }
+      leaf decline-received {
+        type uint32;
+        description
+          "Decline packets received from clients.";
+      }
+      leaf release-received {
+        type uint32;
+        description
+          "Release packets received from clients.";
+      }
+      leaf inform-received {
+        type uint32;
+        description
+          "Information-request packets received from clients.";
+      }
+      leaf received-from-relay-agents-or-servers {
+        type uint32;
+        description
+          "Packets received from relay agents or servers.";
+      }
+      leaf relay-forward-received {
+        type uint32;
+        description
+          "Relay-forward packets received from relay agents or servers.";
+      }
+      leaf relay-reply-received {
+        type uint32;
+        description
+          "Relay-reply packets received from relay agents or servers.";
+      }
+      leaf sent-to-clients {
+        type uint32;
+        description
+          "Packets sent to clients.";
+      }
+      leaf advertise-send {
+        type uint32;
+        description
+          "Advertise packets sent to clients.";
+      }
+      leaf reply-send {
+        type uint32;
+        description
+          "Relay-reply packets sent to clients.";
+      }
+      leaf reconfig-send {
+        type uint32;
+        description
+          "Reconfigure packets sent to clients.";
+      }
+      leaf sent-to-relay-agents-or-servers {
+        type uint32;
+        description
+          "Packets sent to relay agents or servers.";
+      }
+      leaf relay-forward-send {
+        type uint32;
+        description
+          "Relay-forward packets sent to relay agents or servers.";
+      }
+      leaf relay-reply-send {
+        type uint32;
+        description
+          "Relay-reply packets sent to relay agents or servers.";
+      }
+      leaf bad-packets-received {
+        type uint32;
+        description
+          "Error packets received.";
+      }
+      leaf total-drop-packets {
+        type uint32;
+        description
+          "Total dropped packets.";
+      }
+      leaf drop-packets-for-table-full {
+        type uint32;
+        description
+          "Packets discarded because the table is full.";
+      }
+      leaf drop-packets-for-general-error {
+        type uint32;
+        description
+          "Packets discarded due to general errors.";
+      }
+      leaf drop-packets-for-ipsec-authentication-fail {
+        type uint32;
+        description
+          "Packets discarded due to IPsec authentication failures.";
+      }
+    }
+    container user-infos {
+      config false;
+      description
+        "List of user informations.";
+      list user-info {
+        key "index";
+        description
+          "Operational state of user informations.";
+        leaf index {
+          type uint32;
+          description
+            "User index.";
+        }
+        leaf client-duid {
+          type string {
+            length "1..256";
+          }
+          description
+            "Client DUID.";
+          ext:support-filter "true";
+        }
+        leaf iaid {
+          type uint32;
+          default "0";
+          description
+            "Identity association identifier.";
+        }
+        leaf ia-type {
+          type ia-type;
+          description
+            "Identity association type.";
+        }
+        leaf server-duid {
+          type string {
+            length "1..256";
+          }
+          description
+            "Server DUID.";
+          ext:support-filter "true";
+        }
+        leaf server-address {
+          type inet:ipv6-address-no-zone;
+          description
+            "Server IPv6 address.";
+          ext:support-filter "true";
+        }
+        leaf if-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Interface name.";
+          ext:support-filter "true";
+        }
+        leaf pe-vlan {
+          type uint16;
+          default "1";
+          description
+            "PE VLAN ID.";
+        }
+        leaf ce-vlan {
+          type uint16;
+          description
+            "CE VLAN ID.";
+        }
+        leaf vpn-name {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          description
+            "VPN name.";
+          ext:support-filter "true";
+        }
+        leaf client-mac {
+          type pub-type:mac-address;
+          description
+            "Client MAC address.";
+          ext:support-filter "true";
+        }
+        leaf rapid-commit {
+          type rapid-commit-flag-type;
+          description
+            "Rapid Commit option.";
+        }
+        leaf transaction-id {
+          type uint32;
+          description
+            "Transaction ID.";
+        }
+        leaf info-transaction-id {
+          type uint32;
+          description
+            "Info transaction ID.";
+        }
+        container iana-infos {
+          description
+            "List of identifying association for non-temporary addresses.";
+          list iana-info {
+            key "ipv6-address";
+            description
+              "Operational state of identifying association for non-temporary addresses.";
+            leaf ipv6-address {
+              type inet:ipv6-address-no-zone;
+              description
+                "IPv6 address.";
+              ext:support-filter "true";
+            }
+            leaf server-duid {
+              type string {
+                length "1..256";
+              }
+              description
+                "Server DUID.";
+            }
+            leaf server-address {
+              type inet:ipv6-address-no-zone;
+              description
+                "Server IPv6 address.";
+            }
+            leaf valid-time {
+              type string {
+                length "0..30";
+              }
+              description
+                "Valid time.";
+            }
+            leaf lease {
+              type uint32;
+              units s;
+              description
+                "Lease time.";
+            }
+            leaf remain-lease {
+              type uint32;
+              units s;
+              description
+                "Remaining lease.";
+            }
+            leaf status {
+              type relay-table-status;
+              description
+                "Table status.";
+            }
+          }
+        }
+        container iapd-infos {
+          description
+            "List of identifying association for prefix delegation.";
+          list iapd-info {
+            key "ipv6-address";
+            description
+              "Operational state of identifying association for prefix delegation.";
+            leaf ipv6-address {
+              type inet:ipv6-address-no-zone;
+              description
+                "IPv6 address.";
+              ext:support-filter "true";
+            }
+            leaf prefix {
+              type uint32;
+              description
+                "IPv6 address prefix.";
+            }
+            leaf server-duid {
+              type string {
+                length "1..256";
+              }
+              description
+                "Server DUID.";
+            }
+            leaf server-address {
+              type inet:ipv6-address-no-zone;
+              description
+                "Server IPv6 address.";
+            }
+            leaf valid-time {
+              type string {
+                length "0..30";
+              }
+              description
+                "Valid time.";
+            }
+            leaf lease {
+              type uint32;
+              units s;
+              description
+                "Lease time.";
+            }
+            leaf remain-lease {
+              type uint32;
+              units s;
+              description
+                "Remaining lease.";
+            }
+            leaf status {
+              type relay-table-status;
+              description
+                "Table status.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

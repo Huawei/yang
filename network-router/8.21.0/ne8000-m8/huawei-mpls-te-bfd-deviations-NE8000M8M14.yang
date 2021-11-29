@@ -1,0 +1,168 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-te-bfd-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-mpls-te-bfd-deviations-NE8000M8M14";
+  prefix mpls-te-bfd-devs-NE8000M8M14;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-mpls-te-bfd {
+    prefix mpls-te-bfd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-rsvp-interface {
+    prefix rsvp-interface;
+  }
+  import huawei-gre {
+    prefix gre;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2019-03-27 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-bfd:bfd-for-lsp/mpls-te-bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-bfd:bfd-for-lsp/mpls-te-bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-bfd:bfd-for-tunnel/mpls-te-bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-bfd:bfd-for-tunnel/mpls-te-bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te-bfd:bfd-for-tunnel/mpls-te-bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te-bfd:bfd-for-tunnel/mpls-te-bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te-bfd:bfd-for-lsp/mpls-te-bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te-bfd:bfd-for-lsp/mpls-te-bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:tunnel-mode/mpls-te:p2p-rsvp-te/mpls-te:rsvp-te/mpls-te-bfd:bfd-for-lsp/mpls-te-bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:tunnel-mode/mpls-te:p2p-rsvp-te/mpls-te:rsvp-te/mpls-te-bfd:bfd-for-lsp/mpls-te-bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-te:te/rsvp-interface:rsvp-interfaces/rsvp-interface:rsvp-interface/mpls-te-bfd:bfd/mpls-te-bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-te:te/rsvp-interface:rsvp-interfaces/rsvp-interface:rsvp-interface/mpls-te-bfd:bfd/mpls-te-bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te-bfd:bfd/mpls-te-bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te-bfd:bfd/mpls-te-bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2mp-templates/mpls-te:p2mp-template/mpls-te-bfd:bfd/mpls-te-bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2mp-templates/mpls-te:p2mp-template/mpls-te-bfd:bfd/mpls-te-bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-te:te/rsvp-interface:rsvp-interfaces/rsvp-interface:rsvp-interface/mpls-te-bfd:bfd/mpls-te-bfd:set-bfd-pst" {
+    deviate add {
+      must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../rsvp-interface:name]/tnlm:tunnel-protocol/gre:gre-tunnel) or ../set-bfd-pst='false'";
+    }
+  }
+}

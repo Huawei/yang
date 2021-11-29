@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-direct-route-vlink-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-direct-route-vlink-deviations-ATN-980B";
+  prefix direct-route-vlink-devs-ATN-980B;
+
+  import huawei-direct-route-vlink {
+    prefix directrtvlink;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions for managing direct route VLINK.";
+
+  revision 2019-07-15 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/directrtvlink:vlink-routes" {
+    deviate not-supported;
+  }
+}

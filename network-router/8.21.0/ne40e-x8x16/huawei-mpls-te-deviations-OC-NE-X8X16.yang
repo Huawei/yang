@@ -1,0 +1,206 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-te-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-mpls-te-deviations-OC-NE-X8X16";
+  prefix mpls-te-devs-OC-NE-X8X16;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2019-03-27 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  typedef tunnel-protect-switch-type-deviations {
+    type enumeration {
+      enum clear {
+        value 1;
+        description
+          "Clear all of the externally initiated switch commands.";
+      }
+      enum lock {
+        value 2;
+        description
+          "Traffic is locked on the working path (LOCK-P).";
+      }
+      enum force {
+        value 3;
+        description
+          "Forcible switch from the working path to the protection path.";
+      }
+      enum manual {
+        value 4;
+        description
+          "Manual switch from the working path to the protection path.";
+      }
+    }
+    description
+      "Tunnel protect switch type.";
+  }
+
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:rsvp/mpls-te:distribute-instances" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:global/mpls-te:explicit-path-deletion-down" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-mode" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-frequency" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-max-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-min-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-threshold" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:auto-bandwidth-threshold-absolute" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-enable" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-revertive-mode" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-wtr" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-path-overlap" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:hotstandby-dynamic-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template/mpls-te:statistic-enable" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:ipv6-ingress-lsr-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:ipv6-egress-lsr-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:tunnel-description" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:cir" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:cbs" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:pir" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:pbs" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:quit-ring-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:quit-ring-direction" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:quit-ring-src-node-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:enter-ring-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:enter-ring-direction" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-tunnels/mpls-te:te-tunnel/mpls-te:enter-ring-sink-node-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:tunnel-description" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:cir" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:cbs" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:pir" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:pbs" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:quit-ring-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:quit-ring-direction" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:quit-ring-src-node-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:enter-ring-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:enter-ring-direction" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:te-egress-lsps/mpls-te:te-egress-lsp/mpls-te:enter-ring-sink-node-id" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te:p2p-templates/mpls-te:p2p-template" {
+    deviate delete {
+      must 'auto-bandwidth-max-bandwidth>=auto-bandwidth-min-bandwidth';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:tunnel-mode/mpls-te:p2p-rsvp-te/mpls-te:rsvp-te/mpls-te:traffic-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:tunnel-mode/mpls-te:p2p-rsvp-te/mpls-te:rsvp-te/mpls-te:lsp-paths/mpls-te:lsp-path/mpls-te:explicit-path-name" {
+    deviate add {
+      must "../../../path-disjoint-calculate = 'false'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:tunnel-mode/mpls-te:p2p-rsvp-te/mpls-te:rsvp-te/mpls-te:lsp-paths/mpls-te:lsp-path/mpls-te:hop-limit" {
+    deviate add {
+      must "../../../path-disjoint-calculate = 'false'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te:tunnel-mode/mpls-te:p2mp-te/mpls-te:p2mp-te/mpls-te:traffic-enable" {
+    deviate not-supported;
+  }
+  deviation "/mpls-te:tunnel-protect-switch/mpls-te:input/mpls-te:operation" {
+    deviate replace {
+      type mpls-te-devs-OC-NE-X8X16:tunnel-protect-switch-type-deviations;
+    }
+  }
+}

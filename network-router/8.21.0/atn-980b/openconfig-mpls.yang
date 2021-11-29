@@ -1,0 +1,298 @@
+module openconfig-mpls {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://openconfig.net/yang/mpls";
+
+  prefix "oc-mpls";
+
+
+  // import some basic types
+  import openconfig-mpls-rsvp { prefix oc-rsvp; }
+  import openconfig-mpls-ldp { prefix oc-ldp; }
+  import openconfig-interfaces { prefix oc-if; }
+  import openconfig-extensions { prefix oc-ext; }
+
+  // include submodules
+  include openconfig-mpls-te;
+  include openconfig-mpls-igp;
+  include openconfig-mpls-static;
+
+
+  // meta
+  organization "OpenConfig working group";
+
+  contact
+    "OpenConfig working group
+    netopenconfig@googlegroups.com";
+
+  description
+    "This module provides data definitions for configuration of
+    Multiprotocol Label Switching (MPLS) and associated protocols for
+    signaling and traffic engineering.
+
+    RFC 3031: Multiprotocol Label Switching Architecture
+
+    The MPLS / TE data model consists of several modules and
+    submodules as shown below.  The top-level MPLS module describes
+    the overall framework.  Three types of LSPs are supported:
+
+    i) traffic-engineered (or constrained-path)
+
+    ii) IGP-congruent (LSPs that follow the IGP path)
+
+    iii) static LSPs which are not signaled
+
+    The structure of each of these LSP configurations is defined in
+    corresponding submodules.  Companion modules define the relevant
+    configuration and operational data specific to key signaling
+    protocols used in operational practice.
+
+
+                              +-------+
+            +---------------->| MPLS  |<--------------+
+            |                 +-------+               |
+            |                     ^                   |
+            |                     |                   |
+       +----+-----+      +--------+-------+     +-----+-----+
+       | TE LSPs  |      | IGP-based LSPs |     |static LSPs|
+       |          |      |                |     |           |
+       +----------+      +----------------+     +-----------+
+           ^  ^                    ^  ^
+           |  +----------------+   |  +--------+
+           |                   |   |           |
+           |   +------+      +-+---+-+      +--+--+
+           +---+ RSVP |      |SEGMENT|      | LDP |
+               +------+      |ROUTING|      +-----+
+                             +-------+
+    ";
+
+  oc-ext:openconfig-version "3.1.0";
+
+  revision "2019-03-26" {
+    description
+      "Add Pseudowire encapsulation.";
+    reference "3.1.0";
+  }
+
+  revision "2018-11-21" {
+    description
+      "Add OpenConfig module metadata extensions.";
+    reference "3.0.1";
+  }
+
+  revision "2018-07-02" {
+    description
+      "Add new RSVP-TE statistics, remove associated-rsvp-session
+      leaf. Remove use of date-and-time.";
+    reference "3.0.0";
+  }
+
+  revision "2018-06-16" {
+    description
+      "Included attributes for base LDP configuration.";
+     reference "2.6.0";
+  }
+
+  revision "2018-06-13" {
+    description
+      "Add ttl-propagation to global MPLS config";
+    reference "2.5.0";
+  }
+
+  revision "2018-06-05" {
+    description
+      "Fixed bugs in when statements on RSVP-TE attributes";
+    reference "2.4.2";
+  }
+
+  revision "2017-08-24" {
+    description
+      "Minor formatting fixes.";
+    reference "2.4.1";
+  }
+
+  revision "2017-06-21" {
+    description
+      "Add TC bits typedef.";
+    reference "2.4.0";
+  }
+
+  revision "2017-03-22" {
+    description
+      "Add RSVP calculated-absolute-subscription-bw";
+    reference "2.3.0";
+  }
+
+  revision "2017-01-26" {
+    description
+      "Add RSVP Tspec, clarify units for RSVP, remove unused LDP";
+    reference "2.2.0";
+  }
+
+  revision "2016-12-15" {
+    description
+      "Add additional MPLS parameters";
+    reference "2.1.0";
+  }
+
+  revision "2016-09-01" {
+    description
+      "Revisions based on implementation feedback";
+    reference "2.0.0";
+  }
+
+  revision "2016-08-08" {
+    description
+      "Public release of MPLS models";
+    reference "1.0.1";
+  }
+
+  // OpenConfig specific extensions for module metadata.
+  oc-ext:regexp-posix;
+  oc-ext:catalog-organization "openconfig";
+  oc-ext:origin "openconfig";
+
+  // grouping statements
+
+
+  grouping te-interface-attributes-top {
+    description
+      "Top level grouping for attributes
+      for TE interfaces.";
+
+    list interface {
+      key "interface-id";
+      description
+        "List of TE interfaces";
+
+      leaf interface-id {
+        type leafref {
+          path "../config/interface-id";
+        }
+        description
+          "Reference to the interface id list key";
+      }
+
+      container config {
+        description
+          "Configuration parameters related to TE interfaces:";
+        uses te-interface-attributes-config;
+      }
+    }
+  }
+
+  grouping te-interface-attributes-config {
+    description
+      "global level definitions for interfaces
+      on which TE is run";
+
+    leaf interface-id {
+      type oc-if:interface-id;
+      description
+        "Id of the interface";
+    }
+  }
+
+ grouping mpls-interfaces-top {
+    description
+      "Top level grouping for attributes
+      for MPLS-enabled interfaces.";
+    container interface-attributes {
+      description
+        "Parameters related to MPLS interfaces";
+      list interface {
+        key "interface-id";
+        description
+          "List of TE interfaces";
+
+        leaf interface-id {
+          type leafref {
+            path "../config/interface-id";
+          }
+          description
+            "Reference to the interface id list key";
+        }
+
+        container config {
+          description
+            "Configuration parameters related to MPLS interfaces:";
+          uses mpls-interface-attributes-config;
+        }
+      }
+    }
+  }
+
+  grouping mpls-interface-attributes-config {
+    description
+      "global level definitions for interfaces
+      on which MPLS is run";
+
+    leaf interface-id {
+      type oc-if:interface-id;
+      description
+        "Indentifier for the MPLS interface";
+    }
+
+    leaf mpls-enabled {
+      type boolean;
+      default false;
+      description
+        "Enable MPLS forwarding on this interface";
+    }
+  }
+
+  grouping mpls-top {
+    description
+      "Top level grouping for MPLS configuration and state";
+
+    container mpls {
+      description
+        "Anchor point for mpls configuration and operational
+        data";
+
+      container global {
+        // entropy label support, label ranges will be added here.
+       description
+        "general mpls configuration applicable to any
+        type of LSP and signaling protocol - label ranges,
+        entropy label supportmay be added here";
+       uses mpls-interfaces-top;
+      }
+
+      container te-interface-attributes {
+        description
+          "traffic engineering attributes specific
+          for interfaces";
+        uses te-interface-attributes-top;
+      }
+
+      container signaling-protocols {
+        description
+          "top-level signaling protocol configuration";
+
+        uses oc-rsvp:rsvp-global;
+        uses oc-ldp:ldp-global;
+      }
+
+      container lsps {
+        description
+          "LSP definitions and configuration";
+
+        container constrained-path {
+          description
+            "traffic-engineered LSPs supporting different
+            path computation and signaling methods";
+          uses te-tunnels-top;
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  // rpc statements
+
+  // notification statements
+}

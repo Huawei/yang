@@ -1,0 +1,99 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-efm {
+  namespace "urn:huawei:yang:huawei-oam-cfm-efm";
+  prefix oam-cfm-efm;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-efm {
+    prefix efm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+  revision 2020-09-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "oammgr";
+  typedef cfm-bind-efm-type {
+    type enumeration {
+      enum "CFM-EFM" {
+        value 1;
+        description
+          "Type that CFM transfers fault information to EFM.";
+      }
+      enum "EFM-CFM" {
+        value 2;
+        description
+          "Type that EFM transfers fault information to CFM.";
+      }
+    }
+    description
+      "Binding type.";
+  }
+  augment "/oammgr:oammgr" {
+    description
+      "Configure the operation, administration and maintenance (OAM) association function.";
+    container cfm-bind-efms {
+      description
+        "List of associations between CFM and EFM.";
+      list cfm-bind-efm {
+        key "md-name ma-name if-name bind-type";
+        unique "md-name ma-name bind-type";
+        unique "if-name bind-type";
+        description
+          "Configure an instance of an association between CFM and EFM.";
+        leaf md-name {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+          }
+          description
+            "Configure a MD name.";
+        }
+        leaf ma-name {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma/y1731:name";
+          }
+          description
+            "Configure a MA name.";
+        }
+        leaf if-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/efm:efm/efm:session/efm:state='enable'";
+          description
+            "Configure the name of interface which the EFM instance bound.";
+        }
+        leaf bind-type {
+          type cfm-bind-efm-type;
+          description
+            "Configure a binding type.";
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-flexe-deviations-NE8000M8M14 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-flexe-deviations-NE8000M8M14";
+  prefix flexe-devs-NE8000M8M14;
+  
+  import huawei-flexe {
+    prefix flexe;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-flexe module.";
+  revision 2020-07-08 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  
+/*
+ typedef deviations begin
+*/
+  typedef flexe-sub-ts-granula-type-deviations {
+    type enumeration {
+      enum "1G" {
+        value 1;
+        description
+          "Sub-timeslot granularity 1G.";
+      }
+      enum "5G" {
+        value 0;
+        description
+        "Sub-timeslot granularity 5G.";
+      }
+    }
+    description
+    "Setting sub-timeslot granularity.";
+  }
+
+  deviation /flexe:flexe/flexe:card-attributes/flexe:card-attribute/flexe:sub-timeslot-granula {
+    deviate replace {
+      type flexe-devs-NE8000M8M14:flexe-sub-ts-granula-type-deviations;
+    }
+  }
+
+/*
+ typedef deviations end
+*/
+}

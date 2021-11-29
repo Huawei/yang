@@ -1,0 +1,540 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-te-flow-group {
+  namespace "urn:huawei:yang:huawei-te-flow-group";
+  prefix teflowgroup;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-srv6 {
+    prefix srv6;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  include huawei-te-flow-group-type;
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Flow groups.";
+  revision 2021-05-20 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "teflowgroup";
+
+  augment /ni:network-instance/ni:instances/ni:instance/srv6:srv6 {
+    description "Augment for Segment Routing te flow group.";
+    container teflowgroup {
+      when "../srv6:enable='true'";
+      description
+        "Configure flow group parameters.";
+        leaf group-threshold-upper {
+          type uint32 {
+            range "2..100";
+          }
+          must "(../group-threshold-upper>../group-threshold-lower)";
+          default "80";
+          description
+            "Upper threshold for the number of SRv6 TE flow groups.";
+        }
+        leaf group-threshold-lower {
+          type uint32 {
+            range "1..99";
+          }
+          default "75";
+          description
+            "Lower threshold for the number of SRv6 TE flow groups.";
+        }
+
+        container mapping-policys {
+          description
+            "List of mapping policys.";
+          list mapping-policy {
+            key "color";
+            unique "name";
+            description
+              "Configure a mapping policy.";
+            leaf color {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Color of a mapping policy.";
+            }
+            leaf name {
+              type string {
+                length "1..31";
+                pattern '[^ \?]*';
+              } 
+              mandatory true;
+              description
+                "Mapping policy name.";
+            }
+            leaf description {
+              type string {
+                length "1..242";
+              }
+              description
+                "Description of a mapping policy.";
+            }
+            leaf match-type {
+              type match-type;
+              must "(../match-type='service-class') or (../match-type='dscp')";
+              description
+                "Match type of a mapping policy.";
+            }
+            container dscp-maps {
+              when "../match-type='dscp'";
+              description
+                "List of dscp maps.";
+              list dscp-map {
+                key "default index af-type";
+                max-elements "130";
+                description
+                  "Configure a dscp map.";
+                leaf default {
+                  type boolean;
+                  must "(../default='true' and ../index=4294967295) or (../default='false')";
+                  description
+                    "Enable/disable the default DSCP.";
+                }
+                leaf index {
+                  type uint32 {
+                    range "0..4294967295";
+                  }
+                  description
+                    "Index.";
+                }
+                leaf af-type {
+                  type address-family-set-type;
+                  description
+                    "Address family type.";
+                }
+                leaf dscp-value {
+                  when "../default='false'";
+                  type dscp-type;
+                  mandatory true;
+                  description
+                    "DSCP list.";
+                }
+                choice match-tunnel {
+                  mandatory true;
+                  description
+                    "Match tunnel.";
+                  case sr-policy {
+                    description
+                      "Flow match sr-policy.";
+                    leaf color {
+                      type uint32 {
+                        range "0..4294967295";
+                      }
+                      must "not(../../dscp-map[color=current()][af-type=current()/../af-type][index=current()/../index][default!=current()/../default] or ../../dscp-map[color=current()][af-type=current()/../af-type][default=current()/../default][index!=current()/../index])";
+                      description
+                        "Color of an SR Policy.";
+                    }
+                  }
+                  case ip {
+                    description
+                      "Flow match native-ip.";
+                    leaf native-ip {
+                      type empty;
+                      must "not(../../dscp-map[af-type=current()/../af-type][index=current()/../index][default!=current()/../default]/native-ip or ../../dscp-map[af-type=current()/../af-type][default=current()/../default][index!=current()/../index]/native-ip)";
+                      description
+                        "Native-ip configured.";
+                    }
+                  }
+                }
+              }
+            }
+            container service-class-maps {
+              when "../match-type='service-class'";
+              description
+                "List of service class maps.";
+              list service-class-map {
+                key "index";
+                description
+                  "Configure a service-class map.";
+                leaf index {
+                  type uint32 {
+                    range "1..4294967295";
+                  }
+                  description
+                    "Index.";
+                }
+                leaf service-class {
+                  when "../index != 4294967295";
+                  type service-class-type;
+                  mandatory true;
+                  description
+                    "Service-class type.";
+                }
+                choice match-tunnel {
+                  mandatory true;
+                  description
+                    "Match tunnel.";
+                  case sr-policy {
+                    description
+                      "Flow match sr-policy.";
+                    leaf color {
+                      type uint32 {
+                        range "0..4294967295";
+                      }
+                      must "not(../../service-class-map[color=current()][index!=current()/../index])";
+                      description
+                        "Color of an SR Policy.";
+                    }
+                  }
+                  case ip {
+                    description
+                      "Flow match native-ip.";
+                    leaf native-ip {
+                      type empty;
+                      must "not(../../service-class-map[index!=current()/../index]/native-ip)";
+                      description
+                        "Native-ip configured.";
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        container running-flow-groups {
+          config false;
+          description
+            "List of flow groups.";
+          list running-flow-group {
+            key "endpoint color name";
+            description
+              "Operational state of a flow group.";
+            leaf endpoint {
+              type inet:ipv6-address-no-zone;
+              description
+                "Endpoint of a flow group.";
+            }
+            leaf color {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Color of a flow group.";
+            }
+            leaf name {
+              type string {
+                length "1..31";
+              }	
+              description
+                "Flow group name.";
+            }
+            leaf type {
+              type group-create-type;
+              description
+                "Type of a flow group, static or dynamic.";
+            }
+            leaf tunnel-id {
+              type uint32;
+              description
+                "Tunnel ID.";
+            }
+            leaf tunnel-type {
+              type tunnel-type;
+              description
+                "Tunnel type.";
+            }
+            leaf state {
+              type group-state-type;
+              description
+                "State of a flow group.";
+            }
+            leaf state-change-time {
+              type yang:date-and-time;
+              description
+                "Date and time when the state of a flow group changed.";
+            }
+            leaf delay-timer-remain {
+              type uint32;
+              units ms;
+              description
+                "Remaining time of the delay timer.";
+            }
+            leaf map-count {
+              type uint32;
+              description
+                "Number of mappings in a flow group.";
+            }
+            leaf up-map-count {
+              type uint32;
+              description
+                "Number of mappings that are up in a flow group.";
+            }
+
+            container flow-maps {
+              description
+                "List of flow maps.";
+              list flow-map {
+                key "match-type default index af-type";
+                description
+                  "Operational state of a flow map.";
+                leaf match-type {
+                  type flow-match-type;
+                  description
+                    "Flow match type.";
+                }
+                leaf default {
+                  type boolean;
+                  description
+                    "Default.";
+                }
+                leaf index {
+                  type uint32 {
+                    range "0..4294967295";
+                  }
+                  description
+                    "Index.";
+                }
+                leaf af-type {
+                  type address-family-type;
+                  description
+                    "Address family type.";
+                }
+                leaf dscp-value {
+                  type dscp-type;
+                  description
+                    "DSCP list.";
+                }
+                leaf service-class {
+                  type string {
+                    length "2..30";
+                  }
+                  description
+                    "Service class list.";
+                }
+                leaf policy-color {
+                  type uint32;
+                  description
+                    "Color of an SR Policy.";
+                }
+                leaf policy-tunnel-id {
+                  type uint32;
+                  description
+                    "Policy tunnel ID.";
+                }
+                leaf native-ip {
+                  type boolean;
+                  description
+                    "Native-ip.";
+                }
+                leaf state {
+                  type tunnel-state-type;
+                  description
+                    "State of the match tunnel.";
+                }
+              }
+            }
+          }
+        }
+
+        container flow-group-down-reasons {
+          config false;
+          description
+            "List of down records of flow groups.";
+          list flow-group-down-reason {
+            key "endpoint color name up-time up-millisecond";
+            description
+              "Operational state of down record of a flow group.";
+            leaf endpoint {
+              type inet:ipv6-address-no-zone;
+              description
+                "Endpoint of a flow group.";
+            }
+            leaf color {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Color of a flow group.";
+            }
+            leaf name {
+              type string {
+                length "1..31";
+              }	
+              description
+                "Flow group name.";
+            }
+            leaf up-time {
+              type yang:date-and-time;
+              description
+                "Date and time when a flow group went up.";
+            }
+            leaf up-millisecond {
+              type uint32 {
+                range "0..1000";
+              }
+              units ms;
+              description
+                "Millisecond value of the time when a flow group went up.";
+            }
+            leaf tunnel-id {
+              type uint32;
+              description
+                "Tunnel ID.";
+            }
+            leaf tunnel-type {
+              type tunnel-type;
+              description
+                "Tunnel type.";
+            }
+            leaf create-time {
+              type yang:date-and-time;
+              description
+                "Date and time when a flow group was created.";
+            }
+            leaf down-time {
+              type yang:date-and-time;
+              description
+                "Date and time when a flow group went down.";
+            }
+            leaf down-reason {
+              type group-down-reason-type;
+              description
+                "Reason why a flow group went down.";
+            }
+            container flow-maps {
+              description
+                "List of down records of flow maps.";
+              list flow-map {
+                key "match-type default index af-type";
+                description
+                  "Operational state of down record of a flow map.";
+                leaf match-type {
+                  type flow-match-type;
+                  description
+                    "Flow match type.";
+                }
+                leaf default {
+                  type boolean;
+                  description
+                    "Default.";
+                }
+                leaf index {
+                  type uint32 {
+                    range "0..4294967295";
+                  }
+                  description
+                    "Index.";
+                }
+                leaf af-type {
+                  type address-family-type;
+                  description
+                    "Address family type.";
+                }
+                leaf policy-color {
+                  type uint32;
+                  description
+                    "Color of an SR Policy.";
+                }
+                leaf native-ip {
+                  type boolean;
+                  description
+                    "Native-ip.";
+                }
+                leaf up-time {
+                  type yang:date-and-time;
+                  description
+                    "Date and time when a flow map went up.";
+                }
+                leaf up-millisecond {
+                  type uint32 {
+                    range "0..1000";
+                  }
+                  units ms;
+                  description
+                    "Millisecond value of the time when a flow map went up.";
+                }
+                leaf down-time {
+                  type yang:date-and-time;
+                  description
+                    "Date and time when a flow map went down.";
+                }
+                leaf down-reason {
+                  type map-down-reason-type;
+                  description
+                    "Reason why a flow map went down.";
+                }
+              }
+            }
+          }
+        }
+
+        container flow-group-statistic {
+          config false;
+          description
+            "Statistics of flow groups.";
+          leaf mapping-policy-count {
+            type uint32;
+            description
+              "Number of mapping policies.";
+          }
+          leaf flow-group-count {
+            type uint32;
+            description
+              "Number of flow groups.";
+          }
+          leaf flow-group-up-count {
+            type uint32;
+            description
+              "Number of flow groups that are up.";
+          }
+          leaf dynamic-flow-group-count {
+            type uint32;
+            description
+              "Number of dynamic flow groups.";
+          }
+          leaf dynamic-flow-group-up-count {
+            type uint32;
+            description
+              "Number of dynamic flow groups that are up.";
+          }
+          leaf dscp-map-count {
+            type uint32;
+            description
+              "Number of dscp maps.";
+          }
+          leaf dscp-map-up-count {
+            type uint32;
+            description
+              "Number of dscp maps that are up.";
+          }
+          leaf service-class-map-count {
+            type uint32;
+            description
+              "Number of service class maps.";
+          }
+          leaf service-class-map-up-count {
+            type uint32;
+            description
+              "Number of service class maps that are up.";
+          }
+        }
+    }
+  }
+}

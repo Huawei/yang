@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ethernet-ext-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-ethernet-ext-deviations-ATN-980B";
+  prefix ethernet-ext-devs-ATN-980B;
+
+  import huawei-ethernet-ext {
+    prefix ethernet-ext;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-ethernet-ext module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-stacking/ethernet:qinq-stacking/ethernet-ext:stacking-mode-enable" {
+    deviate not-supported;
+  }
+
+}

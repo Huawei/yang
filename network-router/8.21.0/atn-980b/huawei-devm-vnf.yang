@@ -1,0 +1,534 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-devm-vnf {
+  namespace "urn:huawei:yang:huawei-devm-vnf";
+  prefix devm-vnf;
+  import huawei-extension {
+    prefix ext;
+  }  
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configuration management module.";
+  revision 2021-04-26 {
+    description
+      "Add container vms.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-04-10 {
+    description
+      "Modify description warnings.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-07-01 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+    
+  typedef run-state-type {
+    type enumeration {
+      enum "abnormal" {
+        value 0;
+        description
+          "Abnormal.";
+      }
+      enum "normal" {
+        value 1;
+        description
+          "Normal.";
+      }
+      enum "isolated" {
+        value 2;
+        description
+          "Isolated.";
+      }
+      enum "notinstall" {
+        value 3;
+        description
+          "Not install.";
+      }
+      enum "wrongtype" {
+        value 4;
+        description
+          "Wrong type.";
+      } 
+      enum "active" {
+        value 5;
+        description
+          "Active.";
+      }
+      enum "inactive" {
+        value 6;
+        description
+          "Inactive.";
+      }
+      enum "offline" {
+        value 7;
+        description
+          "Offline.";
+      }
+      enum "stop" {
+        value 8;
+        description
+          "Stop.";
+      }
+    }
+    description
+      "Run state.";
+  }  
+
+  typedef resource-type {
+    type enumeration {
+      enum "vm" {
+        value 0;
+        description
+          "Virtual machine.";
+      }
+    }
+    description
+      "Resource source type.";
+  }  
+
+  typedef standby-state-type {
+    type enumeration {
+      enum "not-supported" {
+        value 0;
+        description
+          "No standby state.";
+      }
+      enum "master" {
+        value 1;
+        description
+          "Master board.";
+      }
+      enum "slave" {
+        value 2;
+        description
+          "Slave board.";
+      }
+    }
+    description
+      "Board standby state.";
+  }
+  
+  typedef board-role-type {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown.";
+      }
+      enum "mmb" {
+        value 1;
+        description
+          "MMB.";
+      }
+      enum "mb" {
+        value 4;
+        description
+          "MB.";
+      }
+      enum "lc" {
+        value 5;
+        description
+          "LC.";
+      }
+      enum "other" {
+        value 200;
+        description
+          "OTHER.";
+      }
+      enum "na" {
+        value 255;
+        description
+          "NA.";
+      }
+    }
+    description
+      "Board role.";
+  }
+
+typedef network-plane-type {
+    type enumeration {
+      enum "BASE" {
+        value 0;
+        description
+          "Basic service interface.";
+      }
+      enum "INNERMNG" {
+        value 1;
+        description
+          "Internal management interface.";
+      }
+      enum "OUTERMNG" {
+        value 2;
+        description
+          "External management interface.";
+      }
+      enum "OUTERLINK" {
+        value 3;
+        description
+          "External connection interface.";
+      }
+      enum "INTRASERV" {
+        value 4;
+        description
+          "Fabric plane sub-interface.";
+      }
+      enum "INNERPAE" {
+        value 5;
+        description
+          "Inter-PAE communication interface.";
+      }
+      enum "OUTERLINUX" {
+        value 6;
+        description
+          "External linux interface.";
+      }
+      enum "NLSOUTERMNG" {
+        value 7;
+        description
+          "VNFC external management interface.";
+      }
+      enum "INNERSLE" {
+        value 8;
+        description
+          "Master/Slave arbitration extension interface.";
+      }
+      enum "INNERDIRECTLOGIC" {
+        value 9;
+        description
+          "Forwarding topology logical interface.";
+      }
+      enum "INNERCHAINLOGIC" {
+        value 10;
+        description
+          "Forwarding integration logical interface.";
+      }
+      enum "INNERLOGICSERV" {
+        value 11;
+        description
+          "Internal logic service interface.";
+      }
+      enum "EXTBASE" {
+        value 12;
+        description
+          "Second basic service interface.";
+      }
+      enum "EXTINNERLOGICSERV" {
+        value 13;
+        description
+          "Second internal logic service interface.";
+      }
+      enum "INNERCTRL" {
+        value 14;
+        description
+          "Internal control interface.";
+      }
+      enum "TUNNEL" {
+        value 15;
+        description
+          "Internal data plane socket communication interface.";
+      }
+    }
+    description
+      "Network plane type.";
+  }
+
+  typedef port-state-type {
+    type enumeration {
+      enum "DOWN" {
+        value 0;
+        description
+          "The virtual interface is Down.";
+      }
+      enum "UP" {
+        value 1;
+        description
+          "The virtual interface is Up.";
+      }
+      enum "ADMINDOWN" {
+        value 2;
+        description
+          "The virtual interface is administratively Down.";
+      }
+    }
+    description
+      "Port state type.";
+  }
+
+  ext:task-name "device-mgr";
+  container devm-vnf {
+    description
+      "Virtualized network function (VNF) infomation.";
+    container vnf-boards {
+      description
+        "List of virtualized network function (VNF) board.";
+      list vnf-board {
+        key "vnfc-name id";
+        description
+          "Configure virtualized network function (VNF) board.";
+        leaf vnfc-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Virtualized network function component (VNFC) name.";
+        }
+        leaf id {
+          type uint32;
+          description
+            "Board ID.";
+        }
+        leaf type-name {
+          ext:operation-exclude update;
+          type string {
+            length "1..63";
+          }
+          mandatory true;
+          description
+            "Type name.";
+        }
+        leaf name {
+          type string {
+            length "1..63";
+          }
+          config false;
+          description
+            "Board name.";
+        }
+        leaf run-state {
+          type run-state-type;
+          config false;
+          description
+            "Running status.";
+        }
+        leaf resource-type {
+          type resource-type;
+          config false;
+          description
+            "Resource Type.";
+        }
+        leaf resource-name {
+          type string {
+            length "1..63";
+          }
+          config false;
+          description
+            "Name of a resource source.";
+        }
+        leaf standby-state {
+          type standby-state-type;
+          config false;
+          description
+            "Standby state of a VNF board.";
+        }
+        leaf role {
+          type board-role-type;
+          config false;
+          description
+            "MPU role.";
+        }
+        leaf up-time  {
+          type pub-type:time-tick;
+          config false;
+          description
+            "Running period.";
+        }
+        leaf physical-index {
+          type uint32;
+          config false;
+          description
+            "Entity index.";
+        }
+      }
+    }
+    container vms {
+      config false;
+      description
+        "List of virtual machines.";
+      list vm {
+        key "name";
+        description
+          "Operational state of virtual machine.";
+        leaf name {
+          type string {
+            length "1..63";
+          }
+          description
+            "Virtual machine name.";
+        }
+        leaf logic-id {
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "Logical virtual machine ID.";
+        }
+        leaf id {
+          type string {
+            length "1..63";
+          }
+          description
+            "Virtual machine ID.";
+        }
+        leaf phy-id {
+          type string {
+            length "1..63";
+          }
+          default "0";
+          description
+            "Physical virtual machine ID.";
+        }
+        leaf type-name {
+          type string {
+            length "1..63";
+          }
+          description
+            "Virtual machine type name.";
+        }
+        leaf run-state {
+          type run-state-type;
+          description
+            "Virtual machine running state.";
+        }
+        leaf memory-size {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units MB;
+          description
+            "Memory size.";
+        }
+        leaf storage-size {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units GB;
+          description
+            "Storage size.";
+        }
+        leaf cpu-number {
+          type uint32 {
+            range "1..31";
+          }
+          default "1";
+          description
+            "Virtual machine CPU number.";
+        }
+        leaf memory-usage {
+          type uint32 {
+            range "0..100";
+          }
+          units %;
+          description
+            "Memory usage.";
+        }
+        leaf cpu-usage {
+          type uint32 {
+            range "0..100";
+          }
+          units %;
+          default "1";
+          description
+            "CPU usage.";
+        }
+        leaf storage-usage {
+          type uint32 {
+            range "0..100";
+          }
+          units %;
+          description
+            "Storage usage.";
+        }
+        leaf up-time {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units s;
+          description
+            "Virtual machine up time.";
+        }
+        container veth-ports {
+          config false;
+          description
+            "List of virtual ethernet ports.";
+          list veth-port {
+            key "name";
+            description
+              "Operational state of virtual ethernet port.";
+            leaf name {
+              type string {
+                length "1..63";
+              }
+              description
+                "Virtual port name.";
+            }
+            leaf id {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Virtual port ID.";
+            }
+            leaf is-bind-pae {
+              type boolean;
+              description
+                "Whether the PAE is bound.";
+            }
+            leaf is-external {
+              type boolean;
+              description
+                "Whether the port is an external port.";
+            }
+            leaf network-plane {
+              type network-plane-type;
+              description
+                "Network plane type.";
+            }
+            leaf netmac {
+              type pub-type:mac-address;
+              default "0000-0000-0000";
+              description
+                "MAC address.";
+            }
+            leaf netmask {
+              type inet:ipv4-address-no-zone;
+              default "0.0.0.0";
+              description
+                "Network mask.";
+            }
+            leaf netip {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP address.";
+            }
+            leaf run-state {
+              type port-state-type;
+              description
+                "Port running state.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

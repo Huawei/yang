@@ -1,0 +1,492 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-virtual-system {
+  namespace "urn:huawei:yang:huawei-virtual-system";
+  prefix vs;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Virtual system (VS) management.";
+  revision 2021-07-26 {
+    description
+      "Add node switch-authentication.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-09-22 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "lsvs";
+  typedef admin-status {
+    type enumeration {
+      enum "running" {
+        value 0;
+        description
+          "A VS is running.";
+      }
+      enum "stop" {
+        value 1;
+        description
+          "A VS is stopped.";
+      }
+    }
+    description
+      "Admin status of VS.";
+  }
+  typedef port-mode {
+    type enumeration {
+      enum "port" {
+        value 1;
+        description
+          "Port mode.";
+      }
+      enum "group" {
+        value 2;
+        description
+          "Port group mode.";
+      }
+      enum "none" {
+        value 3;
+        description
+          "None port mode.";
+      }
+    }
+    description
+      "Port mode of VS.";
+  }
+  typedef status {
+    type enumeration {
+      enum "running" {
+        value 0;
+        description
+          "A VS is running.";
+      }
+      enum "stop" {
+        value 1;
+        description
+          "A VS is stopped.";
+      }
+      enum "restoring" {
+        value 2;
+        description
+          "A VS is recovering.";
+      }
+      enum "shutdowning" {
+        value 3;
+        description
+          "A VS is being stopped.";
+      }
+    }
+    description
+      "The current status of VS.";
+  }
+
+  container virtual-system {
+    description
+      "Virtual system (VS) management.";
+    container global {
+      description
+        "Configure global configuration of a VS.";
+      leaf combined-sysname-switch {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable allow the command line prompt of a non-admin VS to carry the system name of an admin VS.";
+      }
+    }
+    container vs-instances {
+      description
+        "List of virtual systems.";
+      list vs-instance {
+        key "name";
+        description
+          "Configure a physical router (PR) or a logical router (LR) into several VRs through hardware and software simulation, and each VR performs routing tasks independently.";
+        ext:generated-by system {
+          ext:filter "name = 'Admin-VS'";
+          description "The Admin-VS is generated automatically.";
+        }
+        leaf name {
+          type string {
+            length "1..31";
+            pattern '[a-zA-Z][a-zA-Z_0-9-]*((\.|\.\.)[a-zA-Z_0-9-]+)*';
+          }
+          description
+            "Name of a virtual system. The name cannot be changed.";
+        }
+        leaf id {
+          type uint32 {
+            range "0..4095";
+          }
+          config false;
+          description
+            "The VS ID is allocated by the system and cannot be changed after creation.";
+        }
+        leaf is-admin {
+          type boolean;
+          config false;
+          description
+            "Whether the virtual system is a management VS.";
+        }
+        leaf port-mode {
+          type port-mode;
+          description
+            "Port mode of a virtual system. The port mode of the virtual system cannot be changed.";
+        }
+        leaf description {
+          type string {
+            length "1..242";
+          }
+          description
+            "Description of a VS. It is used to describe the usage of the virtual system. The description can be empty.";
+        }
+        leaf system-mac {
+          type pub-type:mac-address {
+            length "0..255";
+          }
+          config false;
+          description
+            "MAC address of a VS.";
+        }
+        leaf admin-status {
+          type admin-status;
+          default "running";
+          description
+            "Status of a VS.";
+        }
+        leaf system-time {
+          type pub-type:time-tick;
+          config false;
+          description
+            "Running time of a VS.";
+        }
+        container resource {
+          description
+            "Configure the resource that is allocated to the VS.";
+          leaf vpn-instance-number {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "Number of VPNs allocated to the VS.";
+          }
+          leaf vlan-number {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "Number of VLANs allocated to the VS.";
+          }
+          leaf ipv4-unicast-route-number {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of unicast IPv4 routes allocated to the VS.";
+          }
+          leaf ipv6-unicast-route-number {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of unicast IPv6 routes allocated to the VS.";
+          }
+          leaf ipv4-multicast-route-number {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of multicast IPv4 routes allocated to the VS.";
+          }
+          leaf ipv6-multicast-route-number {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of multicast IPv6 routes allocated to the VS.";
+          }
+          leaf mpls-switch {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable MPLS for a VS.";
+          }
+          leaf mcast-switch {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable multicast for a VS.";
+          }
+          leaf trill-switch {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable trill for a VS.";
+          }
+          leaf cpu-weight {
+            type uint32 {
+              range "1..10";
+            }
+            default "5";
+            description
+              "CPU weight allocated to a VS.";
+          }
+          leaf memory-weight {
+            type uint32 {
+              range "1..100";
+            }
+            default "100";
+            description
+              "Memory weight allocated to a VS.";
+          }
+          leaf disk-weight {
+            type uint32 {
+              range "1..100";
+            }
+            default "100";
+            description
+              "Disk space weight allocated to a VS.";
+          }
+        }
+        container saved-state {
+          config false;
+          description
+            "Operational state of saving VS configuration.";
+          leaf state {
+            type boolean;
+            default "false";
+            config false;
+            description
+              "VS configuration saving status.";
+          }
+        }
+        container running-status {
+          config false;
+          description
+            "Operational state of a VS.";
+          leaf status {
+            type status;
+            default "running";
+            config false;
+            description
+              "Current running status of a VS.";
+          }
+        }
+        container logical-resource-state {
+          config false;
+          description
+            "Operational state of logical resource.";
+          leaf vpn-instance-used-number {
+            type uint32 {
+              range "1..4096";
+            }
+            config false;
+            description
+              "Number of VPN instances used by a VS.";
+          }
+          leaf vlan-used-number {
+            type uint32 {
+              range "1..4090";
+            }
+            config false;
+            description
+              "Number of VLANs used by a VS.";
+          }
+          leaf ipv4-unicast-route-used-number {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Number of unicast IPv4 routes used by a VS.";
+          }
+          leaf ipv6-unicast-route-used-number {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Number of unicast IPv6 routes used by a VS.";
+          }
+          leaf ipv4-multicast-route-used-number {
+            type uint32 {
+              range "0..16000";
+            }
+            config false;
+            description
+              "Number of multicast IPv4 routes used by a VS.";
+          }
+          leaf ipv6-multicast-route-used-number {
+            type uint32 {
+              range "0..16000";
+            }
+            config false;
+            description
+              "Number of multicast IPv6 routes used by a VS.";
+          }
+        }
+        container physical-resource-states {
+          config false;
+          description
+            "List of the information about the use of VS physical resources.";
+          list physical-resource-state {
+            key "slot";
+            config false;
+            description
+              "Operational state of physical resources.";
+            leaf slot {
+              type string {
+                length "1..31";
+              }
+              config false;
+              description
+                "Slot information.";
+            }
+            leaf cpu-used-rate {
+              type uint32 {
+                range "0..100";
+              }
+              config false;
+              description
+                "CPU usage of a VS.";
+            }
+            leaf memory-used-size {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Memory usage of a VS.";
+            }
+            leaf memory-total-size {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Total memory size of a VS.";
+            }
+            leaf home-folder-used-size {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Size of the home directory used by a VS.";
+            }
+            leaf home-folder-total-size {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Total size of the home directory of a VS.";
+            }
+            leaf logfile-folder-used-size {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Size of the logfile directory used by a VS.";
+            }
+            leaf logfile-folder-total-size {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Total size of the logfile directory of a VS.";
+            }
+          }
+        }
+      }
+    }
+    container global-resources {
+      config false;
+      description
+        "List of global resource.";
+      list global-resource {
+        key "resource-item port-mode";
+        config false;
+        description
+          "Operational state of global VS resource.";
+        leaf resource-item {
+          type string {
+            length "1..32";
+          }
+          config false;
+          description
+            "VS resource name.";
+        }
+        leaf port-mode {
+          type port-mode;
+          config false;
+          description
+            "VS port allocation mode, which can be port or group. For some resources, the port allocation mode is identified using '-'.";
+        }
+        leaf total-number {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of VS resources.";
+        }
+        leaf allocated-number {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of allocated VS resources.";
+        }
+        leaf assignable-number {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of VS resources that can be allocated.";
+        }
+      }
+    }
+  }
+  rpc reset {
+    description
+      "A VS is being reloaded.";
+    ext:node-ref "/virtual-system/vs-instances/vs-instance";
+    input {
+      leaf name {
+        type leafref {
+          path "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:name";
+        }
+        must "(../name != 'Admin-VS')";
+        description
+          "User-defined VS name, which cannot be modified after being defined.";
+      }
+      leaf save-config-switch {
+        type boolean;
+        default "true";
+        description
+          "Whether to save VS configurations in the case of a reset.";
+      }
+    }
+  }
+}

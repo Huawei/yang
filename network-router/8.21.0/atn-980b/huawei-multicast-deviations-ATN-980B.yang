@@ -1,0 +1,86 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-multicast-deviations-ATN-980B";
+  prefix multicast-devs-ATN-980B;
+
+  import huawei-multicast {
+    prefix mc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Multicast basic service package.";
+
+  revision 2019-07-08 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mc:multicast/mc:global/mc:ipv4/mc:bas-igmp-extranet-enable" {
+    deviate not-supported;
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim/mc:cir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim/mc:cbs-interval" {
+    deviate replace {
+      default "1000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim/mc:pir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim/mc:pbs-interval" {
+    deviate replace {
+      default "1000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim-ipv6/mc:cir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim-ipv6/mc:cbs-interval" {
+    deviate replace {
+      default "1000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim-ipv6/mc:pir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim-ipv6/mc:pbs-interval" {
+    deviate replace {
+      default "1000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+}

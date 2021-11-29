@@ -1,0 +1,858 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-type {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+description
+     "Diagnosis tool types.";
+
+  revision 2021-05-11 {
+    description
+      "Add pw-type, reply-mode-pwe3 and pwe3-label-type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-01-11 {
+    description
+      "Add reply-mode-vpls-mac.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-07-04 {
+    description
+      "Add bit-string-len-type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-12 {
+    description
+      "Add detail-result-type sr-version sr-be-version.";
+    reference
+      "Huawei private.";
+  }
+
+  revision 2019-04-09 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef dgntl-test-status-type {
+    type enumeration {
+      enum "processing" {
+        value 0;
+        description
+          "The test is in progress.";
+      }
+      enum "finished" {
+        value 1;
+        description
+          "The test is finished.";
+      }
+    }
+    description
+      "Description of dgntl-test-status-type.";
+  }
+  typedef dgntl-error-type {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "The test succeeded.";
+      }
+      enum "failed" {
+        value 1;
+        description
+          "The test failed.";
+      }
+    }
+    description
+      "Description of dgntl-error-type.";
+  } 
+  typedef detail-result-type {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "The test succeeded.";
+      }
+      enum "timeout" {
+        value 1;
+        description
+          "The test timeout.";
+      }
+      enum "failed" {
+        value 2;
+        description
+          "The test failed.";
+      }
+    }
+    description
+      "Description of detail-result-type.";
+  }
+  
+  typedef sr-version {
+    type enumeration {
+      enum "DRAFT2" {
+        value 2;
+        description
+          "Draft2 version.";
+      }
+      enum "RFC8287" {
+        value 3;
+        description
+          "Rfc8287 version.";
+      }
+    }
+    description
+      "Description of sr-version.";
+  }
+  typedef sr-be-version {
+    type enumeration {
+      enum "DRAFT2" {
+        value 2;
+        description
+          "Draft2 version.";
+      }
+    }
+    description
+      "Description of sr-be-version.";
+  }
+
+  typedef transmit-type {
+    type enumeration {
+      enum "ingress" {
+        value 1;
+        description
+          "Ingress.";
+      }
+      enum "transit" {
+        value 2;
+        description
+          "Transit node.";
+      }
+      enum "egress" {
+        value 3;
+        description
+          "Egress.";
+      }
+    }
+    description
+      "Description of transmit-type.";
+  }
+  typedef probe-result-type {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "The test succeeded.";
+      }
+      enum "timeout" {
+        value 1;
+        description
+          "Timeout.";
+      }
+      enum "failed" {
+        value 2;
+        description
+          "The test failed.";
+      }
+    }
+    description
+      "Description of probe-result-type.";
+  }
+  typedef lsp-type {
+    type enumeration {
+      enum "te" {
+        value 1;
+        description
+          "TE.";
+      }
+      enum "srte" {
+        value 8;
+        description
+          "SR-TE.";
+      }
+      enum "srbe" {
+        value 9;
+        description
+          "SR-BE.";
+      }
+    }
+    description
+      "Description of lsp-type.";
+  }
+  typedef dgntl-lsp-protocol-origin {
+    type enumeration {
+      enum "pecp" {
+        value 10;
+        description
+          "Pecp.";
+      }
+      enum "bgp" {
+        value 20;
+        description
+          "Bgp.";
+      }
+      enum "local" {
+        value 30;
+        description
+          "Local.";
+      }
+      enum "unknown" {
+        value 255;
+        description
+          "Unknown.";
+      }
+    }
+    description
+      "Description of dgntl-lsp-protocol-origin.";
+  }
+  typedef reply-mode-evpn {
+    type enumeration {
+      enum "no-reply" {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum "udp" {
+        value 2;
+        description
+          "UDP.";
+      }
+      enum "router-alert" {
+        value 3;
+        description
+          "Router-Alert.";
+      }
+      enum "level-control-channel" {
+        value 4;
+        description
+          "Level-Control-Channel.";
+      }
+    }
+    description
+      "Description of reply-mode-evpn.";
+  }
+  typedef ttl-mode {
+    type enumeration {
+      enum "uniform" {
+        value 1;
+        description
+          "Uniform.";
+      }
+      enum "pipe" {
+        value 2;
+        description
+          "Pipe.";
+      }
+    }
+    description
+      "Description of ttl-mode.";
+  }
+  typedef ttl-mode-type {
+    type enumeration {
+      enum "uniform" {
+        value 0;
+        description
+          "Uniform.";
+      }
+      enum "pipe" {
+        value 1;
+        description
+          "Pipe.";
+      }
+    }
+    description
+      "Description of ttl-mode.";
+  }
+  typedef dgntl-sr-policy-path-type {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown.";
+      }
+      enum "primary" {
+        value 1;
+        description
+          "Primary.";
+      }
+      enum "backup" {
+        value 2;
+        description
+          "Backup.";
+      }
+    }
+    description
+      "Description of dgntl-sr-policy-path-type.";
+  }
+
+  typedef reply-mode-te {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+      enum level-control-channel {
+        value 4;
+        description
+          "Reply via application level control channel.";
+      }
+    }
+    description
+      "Description of reply-mode-te.";
+  }  
+
+  typedef reply-mode-ip {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+    }
+    description
+      "Description of reply-mode-ip.";
+  }
+
+  typedef reply-mode-bgp {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+    }
+    description
+      "Description of reply-mode-bgp.";
+  }
+
+  typedef reply-mode-srbe {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+    }
+    description
+      "Description of reply-mode-srbe.";
+  }
+
+  typedef reply-mode-vpn {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+    }
+    description
+      "Description of reply-mode-vpn.";
+  }
+
+  typedef reply-mode-srte {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+      enum level-control-channel {
+        value 4;
+        description
+          "Reply via application level control channel.";
+      }
+    }
+    description
+      "Description of reply-mode-srte.";
+  }
+
+  typedef lsp-path {
+    type enumeration {
+      enum working-path {
+        value 0;
+        description
+          "The working path.";
+      }
+      enum hot-standby {
+        value 2;
+        description
+          "The hot standby path.";
+      }
+      enum "primary" {
+        value 3;
+        description
+          "Primary.";
+      }
+    }
+    description
+      "Description of lsp-path.";
+  }
+
+  typedef lsp-remote-fec-type {
+    type enumeration {
+      enum LDP {
+        value 1;
+        description
+          "Specify LDP LSP.";
+      }
+      enum NIL {
+        value 2;
+        description
+          "Specify nil fec.";
+      }
+    }
+    description
+      "Description of lsp-remote-fec-type.";
+  }
+  typedef lsptrace-remote-fec-type {
+    type enumeration {
+      enum LDP {
+        value 1;
+        description
+          "Specify LDP LSP.";
+      }
+    }
+    description
+      "Description of lsptrace-remote-fec-type.";
+  }  
+  typedef bit-string-len-type {
+    type enumeration {
+      enum "bsl-64" {
+        value 1;
+        description
+          "64 bit.";
+      }
+      enum "bsl-128" {
+        value 2;
+        description
+          "128 bit.";
+      }
+      enum "bsl-256" {
+        value 3;
+        description
+          "256 bit.";
+      }
+    }
+    description
+      "Description of bit-string-len-type.";
+  } 
+
+  typedef vxlan-reply-mode {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+      enum overlay-segment {
+        value 3;
+        description
+          "Reply via overlay segment.";
+      }
+    }
+    description
+      "Description of vxlan-reply-mode.";
+  }
+  typedef reply-mode-vpls-mac {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4 UDP packet.";
+      }
+      enum udp-via-vpls {
+        value 5;
+        description
+          "Reply via a VPLS IPv4 UDP packet.";
+      }
+    }
+    description
+      "Description of reply-mode-vpls-mac.";
+  }
+  typedef bierv6-return-code {
+    type enumeration {
+      enum no-return-code {
+        value 0;
+        description
+          "No return code.";
+      }
+      enum malformed-echo {
+        value 1;
+        description
+          "Malformed echo request received.";
+      }
+      enum unknown-tlv {
+        value 2;
+        description
+          "One or more of the TLVs was not understood.";
+      }
+      enum only-bfer {
+        value 3;
+        description
+          "Replying BFR is the only BFER in header bitstring.";
+      }
+      enum one-of-bfer {
+        value 4;
+        description
+          "Replying BFR is one of the BFERs in header bitstring.";
+      }
+      enum packet-forward-success {
+        value 5;
+        description
+          "Packet forwards success.";
+      }
+      enum invalid-multipath {
+        value 6;
+        description
+          "Invalid multipath info request.";
+      }
+      enum forward-fail {
+        value 8;
+        description
+          "No matching entry in forwarding table.";
+      }
+      enum si-mismatch {
+        value 9;
+        description
+          "Set identifier mismatch.";
+      }
+      enum ddmap-mismatch {
+        value 10;
+        description
+          "DDMAP mismatch.";
+      }
+    }
+    description
+      "Description of bierv6-return-code.";
+  }
+  typedef bier-transmit-type {
+    type enumeration {
+      enum "ingress" {
+        value 1;
+        description
+          "Ingress node.";
+      }
+      enum "transit" {
+        value 2;
+        description
+          "Transit node.";
+      }
+      enum "bud" {
+        value 3;
+        description
+          "Bud node.";
+      }
+      enum "egress" {
+        value 4;
+        description
+          "Egress node.";
+      }
+    }
+    description
+      "Description of bier-transmit-type.";
+  }
+  typedef pw-type {
+    type enumeration {
+      enum "atm-aal5-sdu" {
+        value 2;
+        description
+          "ATM AAL5 SDU encapsulation.";
+      }
+      enum "atm-trans-cell" {
+        value 3;
+        description
+          "ATM transparent cell transport.";
+      }
+      enum "vlan" {
+        value 4;
+        description
+          "VLAN encapsulation.";
+      }
+      enum "ethernet" {
+        value 5;
+        description
+          "Ethernet encapsulation.";
+      }
+      enum "hdlc" {
+        value 6;
+        description
+          "HDLC encapsulation.";
+      }
+      enum "ppp" {
+        value 7;
+        description
+          "PPP encapsulation.";
+      }
+      enum "atm-nto1-vcc" {
+        value 9;
+        description
+          "ATM n-to-one VCC cell transport.";
+      }
+      enum "atm-nto1-vpc" {
+        value 10;
+        description
+          "ATM n-to-one VPC cell transport.";
+      }
+      enum "ip-layer2" {
+        value 11;
+        description
+          "IP-layer2 encapsulation.";
+      }
+      enum "atm-1to1-vcc" {
+        value 12;
+        description
+          "ATM one-to-one VCC Cell Mode.";
+      }
+      enum "atm-1to1-vpc" {
+        value 13;
+        description
+          "ATM one-to-one VPC Cell Mode.";
+      }
+      enum "cep" {
+        value 16;
+        description
+          "CEP encapsulation.";
+      }
+      enum "satop-e1" {
+        value 17;
+        description
+          "Structure-agnostic E1 over Packet.";
+      }
+      enum "cesopsn-basic" {
+        value 21;
+        description
+          "CESoPSN basic mode.";
+      }
+      enum "ip-interworking" {
+        value 64;
+        description
+          "MPLS L2VPN IP interworking.";
+      }
+    }
+    description
+      "Description of pw type.";
+  }
+  typedef reply-mode-pwe3 {
+    type enumeration {
+      enum "no-reply" {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum "udp" {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+      enum "level-control-channel" {
+        value 4;
+        description
+          "Reply through an application level control channel.";
+      }
+    }
+    description
+      "Description of reply mode.";
+  }
+  typedef pwe3-label-type {
+    type enumeration {
+      enum "label-alert" {
+        value 1;
+        description
+          "Specify router alert for label option type.";
+      }
+      enum "control-word" {
+        value 2;
+        description
+          "Specify control word for label option type.";
+      }
+      enum "normal" {
+        value 3;
+        description
+          "Specify normal for label option type.";
+      }
+    }
+    description
+      "Description of PWE3 label type.";
+  }
+  typedef vpls-label-type {
+    type enumeration {
+      enum "control-word" {
+        value 2;
+        description
+          "Specify control word for label option type.";
+      }
+    }
+    description
+      "Description of VPLS label type.";
+  }
+  typedef reply-mode-vpls {
+    type enumeration {
+      enum "no-reply" {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum "udp" {
+        value 2;
+        description
+          "UDP.";
+      }
+      enum "router-alert" {
+        value 3;
+        description
+          "Router-Alert.";
+      }
+      enum "level-control-channel" {
+        value 4;
+        description
+          "Level-Control-Channel.";
+      }
+    }
+    description
+      "Description of reply-mode-vpls.";
+  }
+  typedef service-class-value {
+    type enumeration {
+      enum "be" {
+        value 0;
+        description
+          "Specify BE.";
+      }
+      enum "af1" {
+        value 1;
+        description
+          "Specify AF1.";
+      }
+      enum "af2" {
+        value 2;
+        description
+          "Specify AF2.";
+      }
+      enum "af3" {
+        value 3;
+        description
+          "Specify AF3.";
+      }
+      enum "af4" {
+        value 4;
+        description
+          "Specify AF4.";
+      }
+      enum "ef" {
+        value 5;
+        description
+          "Specify EF.";
+      }
+      enum "cs6" {
+        value 6;
+        description
+          "Specify CS6.";
+      }
+      enum "cs7" {
+        value 7;
+        description
+          "Specify CS7.";
+      }
+    }
+    description
+      "Description of Service class.";
+  }
+  typedef lsp-sr-policy-path {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "UNKNOWN.";
+      }
+      enum "main-path" {
+        value 1;
+        description
+          "MAIN-PATH.";
+      }
+      enum "backup-path" {
+        value 2;
+        description
+          "BACK-PATH.";
+      }
+    }
+    description
+      "LSP SR-TE policy path.";
+  }
+  typedef lsp-protocol-origin {
+    type enumeration {
+      enum "pecp" {
+        value 10;
+        description
+          "PECP.";
+      }
+      enum "bgp" {
+        value 20;
+        description
+          "BGP.";
+      }
+      enum "local" {
+        value 30;
+        description
+          "LOCAL.";
+      }
+      enum "unknown" {
+        value 255;
+        description
+          "UNKNOWN.";
+      }
+    }
+    description
+      "LSP protocol origin.";
+  }
+}

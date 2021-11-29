@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-nat444-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-cgn-nat444-deviations-ATN-980B";
+  prefix cgn-nat444-devs-ATN-980B;
+
+  import huawei-cgn-nat444 {
+    prefix cgn-nat444;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn-nat444 module.";
+
+  revision 2021-09-10 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:hosts/cgn-nat444:host/cgn-nat444:inside-vpn-name" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:hosts/cgn-nat444:host/cgn-nat444:secondary" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,131 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-wdm-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-wdm-deviations-NE8000M8M14";
+  prefix wdm-devs-NE8000M8M14;
+
+  import huawei-wdm {
+    prefix wdm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-wdm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef transalarmifdown-alarmtype-deviations {
+    type enumeration {
+      enum "ODU-AIS" {
+        value 22;
+        description 
+          "ODU-AIS.";
+      }
+      enum "ODU-LCK" {
+        value 23;
+        description 
+          "ODU-LCK.";
+      }
+      enum "ODU-OCI" {
+        value 24;
+        description 
+          "ODU-OCI.";
+      }
+      enum "OTU-AIS" {
+        value 25;
+        description 
+          "OTU-AIS.";
+      }
+      enum "OTU-LOM" {
+        value 26;
+        description 
+          "OTU-LOM.";
+      }
+      enum "OTU-SD-BER" {
+        value 27;
+        description 
+          "OTU-SD-BER.";
+      }
+      enum "OTU-SF-BER" {
+        value 28;
+        description 
+          "OTU-SF-BER.";
+      }
+      enum "PM-BDI" {
+        value 29;
+        description 
+          "PM-BDI.";
+      }
+      enum "PM-TIM" {
+        value 30;
+        description 
+          "PM-TIM.";
+      }
+      enum "R-LOF" {
+        value 31;
+        description 
+          "R-LOF.";
+      }
+      enum "R-LOS" {
+        value 32;
+        description 
+          "R-LOS.";
+      }
+      enum "R-OOF" {
+        value 33;
+        description 
+          "R-OOF.";
+      }
+      enum "SM-BDI" {
+        value 34;
+        description 
+          "SM-BDI.";
+      }
+      enum "SM-IAE" {
+        value 35;
+        description 
+          "SM-IAE.";
+      }
+      enum "SM-TIM" {
+        value 36;
+        description 
+          "SM-TIM.";
+      }
+      enum "PREFEC-TCA" {
+        value 37;
+        description 
+          "PREFEC-TCA.";
+      }
+      enum "ODU-SD-BER" {
+        value 45;
+        description 
+          "ODU-SD-BER.";
+      }
+    }
+    description 
+      "Transmission alarm.";
+  }
+
+  deviation "/wdm:wdm/wdm:wdms/wdm:wdm/wdm:transmission-alarm/wdm:trans-alarm-ifdowns/wdm:trans-alarm-ifdown/wdm:alarm-type" {
+    deviate replace {
+      type wdm-devs-NE8000M8M14:transalarmifdown-alarmtype-deviations;
+    }
+  }
+
+}

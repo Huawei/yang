@@ -1,0 +1,147 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ospfv3-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-ospfv3-deviations-NE8000M8M14";
+  prefix ospfv3-devs-NE8000M8M14;
+
+  import huawei-ospfv3 {
+    prefix ospfv3;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-if-ip {
+    prefix if-ip;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ospfv3 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef authen-mode-deviations {
+    type enumeration {
+      enum none {
+        value 0;
+        description
+          "To cancel authentication.";
+      }
+      enum hmac-sha256 {
+        value 2;
+        description
+          "Cipher text authentication mode.";
+      }
+      enum hmac-sm3 {
+        value 4;
+        description
+          "Cipher text authentication mode.";
+      }
+    }
+    description
+      "OSPFv3 authencation mode.";
+  }
+
+  deviation "/ospfv3:ospfv3/ospfv3:advertise-max-cost" {
+    deviate not-supported;
+  }
+  deviation "/ospfv3:reset-redistribution" {
+    deviate not-supported;
+  }
+  deviation "/ospfv3:reset-counter" {
+    deviate not-supported;
+  }
+  deviation "/ospfv3:reset-process" {
+    deviate not-supported;
+  }
+  deviation "/ospfv3:reset-peer" {
+    deviate not-supported;
+  }
+  deviation "/ospfv3:reset-frr" {
+    deviate not-supported;
+  }
+  deviation "/ospfv3:reset-suppress-peer" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:bgp-ls" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:authentication/ospfv3:key-chain-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:cost-bindings" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:areas/ospfv3:area/ospfv3:authentication/ospfv3:key-chain-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:areas/ospfv3:area/ospfv3:interfaces/ospfv3:interface/ospfv3:authentication/ospfv3:key-chain-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:authentication/ospfv3:mode" {
+    deviate replace {
+      type ospfv3-devs-NE8000M8M14:authen-mode-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:areas/ospfv3:area/ospfv3:authentication/ospfv3:mode" {
+    deviate replace {
+      type ospfv3-devs-NE8000M8M14:authen-mode-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:areas/ospfv3:area/ospfv3:interfaces/ospfv3:interface/ospfv3:authentication/ospfv3:mode" {
+    deviate replace {
+      type ospfv3-devs-NE8000M8M14:authen-mode-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:nexthop-weights/ospfv3:nexthop-weight/ospfv3:if-name" {
+    deviate add {
+      must '/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6 or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if[if-ip:name=current()/../ospfv3:if-name]';
+    }
+    deviate delete {
+      must '/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6';
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:silent-interfaces/ospfv3:silent-interface/ospfv3:if-name" {
+    deviate delete {
+      must '/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6';
+    }
+    deviate add {
+      must '/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6 or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if[if-ip:name=current()/../ospfv3:if-name]';
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:undo-silent-interfaces/ospfv3:undo-silent-interface/ospfv3:if-name" {
+    deviate add {
+      must '/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6 or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if[if-ip:name=current()/../ospfv3:if-name]';
+    }
+    deviate delete {
+      must '/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6';
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv3:ospfv3/ospfv3:sites/ospfv3:site/ospfv3:areas/ospfv3:area/ospfv3:interfaces/ospfv3:interface/ospfv3:name" {
+    deviate add {
+      must '/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6 or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if[if-ip:name=current()/../ospfv3:name]';
+    }
+    deviate delete {
+      must '/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6';
+    }
+  }
+}

@@ -1,0 +1,134 @@
+/******************************************************
+* Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn-nat444 {
+  namespace "urn:huawei:yang:huawei-cgn-nat444";
+  prefix cgn-nat444;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-cgn-common {
+    prefix cgn-common;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }  
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn NAT444.";
+
+  revision 2021-07-31 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  container cgn-nat444 {
+    description
+      "NAT444.";
+    container nat-instances {
+      description
+        "List of nat-instance.";
+      list nat-instance {
+        key "instance-name instance-id";
+        unique "instance-id";
+        unique "instance-name";
+        description
+          "Configure nat instance, used to translate network address.";
+        leaf instance-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Specify the name of a NAT instance.";
+        }
+        leaf instance-id {
+          type uint16 {
+            range "1..4095";
+          }
+          description
+            "Specify the id of a NAT instance.";
+        }
+
+        uses cgn-common:alg;
+        container log {
+          description "Configure nat log.";
+          container hosts {
+            description "List of host.";
+            list host {
+              key "host-ip host-port vpn-name";
+              description "Configure a NAT log host.";
+              leaf  host-ip {
+                type inet:ipv4-address-no-zone;
+                description "Specifies IP address of a NAT log host.";
+              }
+              leaf host-port {
+                type uint16 {
+                  range "1..65535";
+                }
+                description "Specifies the port number of a NAT log host.";
+              }
+              leaf vpn-name {
+                type leafref {
+                  path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+                }
+                must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+                description
+                  "Specifiy the name of VPN instance of the log host, the name of public network is _public_.";    
+              }
+              leaf source-ip {
+                type inet:ipv4-address-no-zone;
+                mandatory true;
+                description "Specifies the source IP address used by a NAT device to communicate with a NAT log host.";
+              }
+              leaf source-port {
+                type uint16 {
+                  range "1..65535";
+                }
+                mandatory true;
+                description "Specifies the source port number used by a NAT device to communicate with a NAT log host.";
+              }           
+              leaf inside-vpn-name {
+                type leafref {
+                  path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+                }
+                must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+                description
+                  "Specify the name of VPN instance on the private network side, the name of public network is _public_.";
+              }
+              leaf host-name {
+                type string {
+                  length "1..31";
+                }
+                description "Specifies the name of a NAT log host.";
+              }
+              leaf secondary {
+                type boolean;
+                default "false";
+                description
+                  "Enable/disable the secondary log host group.";   
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  ext:task-name "nat";
+}

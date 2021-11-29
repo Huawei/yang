@@ -1,0 +1,71 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-ipv4-address-manage-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-bras-ipv4-address-manage-deviations-OC-NE-X8X16";
+  prefix bras-ipv4-address-manage-devs-OC-NE-X8X16;
+
+  import huawei-bras-ipv4-address-manage {
+    prefix bras-ipv4-address-manage;
+  }
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-ipv4-address-manage module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool/bras-ipv4-address-manage:local/bras-ipv4-address-manage:occupied-policy" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool/bras-ipv4-address-manage:remote/bras-ipv4-address-manage:occupied-policy" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool/bras-ipv4-address-manage:dynamic/bras-ipv4-address-manage:dap-server" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool/bras-ipv4-address-manage:dynamic/bras-ipv4-address-manage:bind-up-authorization-group" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool/bras-ipv4-address-manage:dynamic/bras-ipv4-address-manage:subnet-segments/bras-ipv4-address-manage:subnet-segment/bras-ipv4-address-manage:occupied-policy" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:ipv4-pools/bras-ipv4-address-manage:ipv4-pool/bras-ipv4-address-manage:dynamic/bras-ipv4-address-manage:cu-pool-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:cu-global-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:statistics-by-domains/bras-ipv4-address-manage:statistics-by-domain/bras-ipv4-address-manage:usages/bras-ipv4-address-manage:upid-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:statistics-by-domains/bras-ipv4-address-manage:statistics-by-domain/bras-ipv4-address-manage:cu-max-usages" {
+    deviate not-supported;
+  }
+  deviation "/bras-ipv4-address-manage:bras-ipv4-address-manage/bras-ipv4-address-manage:statistics-by-domains/bras-ipv4-address-manage:statistics-by-domain/bras-ipv4-address-manage:cu-usage-statuss" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-ipv4-address-manage:ipv4-address-manage" {
+    deviate not-supported;
+  }
+
+}

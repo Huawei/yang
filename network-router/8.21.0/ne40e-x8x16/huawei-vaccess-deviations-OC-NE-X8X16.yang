@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vaccess-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-vaccess-deviations-OC-NE-X8X16";
+  prefix vaccess-devs-OC-NE-X8X16;
+
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the virtual access model.";
+
+  revision 2020-03-14 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/vaccess:vaccess/vaccess:ap" {
+    deviate not-supported;
+  }
+}

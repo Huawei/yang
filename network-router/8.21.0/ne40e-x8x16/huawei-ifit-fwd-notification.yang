@@ -1,0 +1,145 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifit-fwd-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ifit-fwd-notification";
+  prefix ifit-fwd-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of ifit-fwd-notification.";
+  revision 2021-01-12{
+    description
+      "Modify description: add new notification of ifit instances spec exceed.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-07-08 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ifit";
+  notification ifit-dynamic-flow-exceed {
+    description
+      "The total number of iFIT dynamic flows on the interface board reached the upper limit.";
+    leaf slot-id {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot ID of an interface board.";
+    }
+    leaf flow-limit-num {
+      type uint32;
+      description
+        "Maximum number of iFIT Instances on the interface board.";
+    }
+  }
+  notification ifit-dynamic-flow-exceed-resume {
+    description
+      "The total number of iFIT dynamic flows on the interface board fell below the upper limit.";
+    leaf slot-id {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot ID of an interface board.";
+    }
+    leaf flow-limit-num {
+      type uint32;
+      description
+        "Maximum number of iFIT Instances on the interface board.";
+    }
+  }
+  notification ifit-static-flow-exceed {
+    description
+      "The total number of iFIT static flows and reverse flows on the interface board reached the upper limit.";
+    leaf slot-id {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot ID of an interface board.";
+    }
+    leaf flow-limit-num {
+      type uint32;
+      description
+        "Maximum number of iFIT Instances on the interface board.";
+    }
+  }
+  notification ifit-static-flow-exceed-resume {
+    description
+      "The total number of iFIT static flows and reverse flows on the interface board fell below the upper limit.";
+    leaf slot-id {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot ID of an interface board.";
+    }
+    leaf flow-limit-num {
+      type uint32;
+      description
+        "Maximum number of iFIT Instances on the interface board.";
+    }
+  }
+  notification ifit-instance-spec-exceed {
+    description
+      "The total number of iFIT instances on the interface board reaches the upper limit.";
+    leaf type {
+      type string {
+        length "1..32";
+      }
+      description
+        "The Instance Type.";
+    }
+    leaf slot-id {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot ID of an interface board.";
+    }
+    leaf flow-limit-num {
+      type uint32;
+      description
+        "Maximum number of iFIT Instances on the interface board.";
+    }
+  }
+  notification ifit-instance-spec-exceed-resume {
+    description
+      "The total number of iFIT instances on the interface board has been lower than the upper limit.";
+    leaf type {
+      type string {
+        length "1..32";
+      }
+      description
+        "The Instance Type.";
+    }
+      leaf slot-id {
+      type string {
+        length "1..32";
+      }
+      description
+        "Slot ID of an interface board.";
+    }
+    leaf flow-limit-num {
+      type uint32;
+      description
+        "Maximum number of iFIT Instances on the interface board.";
+    }
+  }
+}

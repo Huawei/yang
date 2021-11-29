@@ -1,0 +1,2548 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-igmp-mld-snooping {
+  namespace "urn:huawei:yang:huawei-igmp-mld-snooping";
+  prefix ims;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-acl {
+    prefix acl;
+  }
+  import huawei-multicast {
+    prefix mc;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-evpn {
+    prefix evpn;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+  import huawei-igmp-mld {
+    prefix igmp-mld;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "The module defines a collection of YANG definitions common for all Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Snooping devices.";
+  revision 2020-05-21 {
+    description
+      "Add a when condition for IGMP snooping of VPLS. Modify the type of except-acl. Add a when condition for mld-snooping. Modify the type and the must conditions of some nodes that reference ACL. Add the must conditions for limit-max-entry. Modify design for multicast VLAN. Add node send-query-source-address. Add node send-query-prune-source-port. Add the must conditions for some nodes. Add the when conditions for some nodes. Modify the type for some nodes. Modify the design for static-router-ports and ssm-mapping-groups and proxy-uplink-port.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-04 {
+    description
+      "Modify units.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-01-21 {
+    description
+      "Modify the type of remote-peer from IPv4IPv6 to IPv4.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-12 {
+    description
+      "Add new leaves; Modify units of some leaves; Modify ssm-mapping-policy type from leafref to string, Leafref should be used together with require-instance When version 1.1 is supported.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-03-30 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "l2mc"; 
+
+  typedef snooping-mode {
+    type enumeration {
+      enum "asm-ssm" {
+        value 1;
+        description
+          "A device learns multicast entries with group addresses in the ASM and SSM address ranges.";
+      }
+      enum "asm-only" {
+        value 2;
+        description
+          "A device only learns multicast entries with group addresses in the ASM address range.";
+      }
+      enum "ssm-only" {
+        value 3;
+        description
+          "A device only learns multicast entries with group addresses in the SSM address range.";
+      }
+    }
+    description
+      "Snooping mode.";
+  }
+  typedef copy-mode {
+    type enumeration {
+      enum "invalid" {
+        value 0;
+        description
+          "Invalid value, do not copy.";
+      }
+      enum "by-vlan" {
+        value 1;
+        description
+          "By VLAN.";
+      }
+      enum "by-unicast-mac" {
+        value 2;
+        description
+          "By unicast MAC.";
+      }
+    }
+    description
+      "Multicast copy mode.";
+  }
+  typedef evi-rt-type {
+    type enumeration {
+      enum "export-extcommunity" {
+        value 2;
+        description
+          "Export-extcommunity.";
+      }
+      enum "import-extcommunity" {
+        value 3;
+        description
+          "Import-extcommunity.";
+      }
+    }
+    description
+      "EVI RT type.";
+  }
+  typedef entry-flag-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None.";
+      }
+      enum "protocol" {
+        value 1;
+        description
+          "Entry generated through protocol packets or static configuration.";
+      }
+      enum "active" {
+        value 2;
+        description
+          "Entry generated through multicast data flows.";
+      }
+      enum "protocol-active" {
+        value 3;
+        description
+          "Both protocol and active.";
+      }
+      enum "fastchannel" {
+        value 4;
+        description
+          "Entry generated through fast channel configuration.";
+      }
+      enum "protocol-fastchannel" {
+        value 5;
+        description
+          "Both protocol and fast-channel.";
+      }
+      enum "active-fastchannel" {
+        value 6;
+        description
+          "Both active and fast-channel.";
+      }
+      enum "protocol-active-fastchannel" {
+        value 7;
+        description
+          "Both protocol, active and fast-channel.";
+      }
+    }
+    description
+      "Entry flag type.";
+  }
+  typedef source-flag-type {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown.";
+      }
+      enum "igmp" {
+        value 1;
+        description
+          "IGMP.";
+      }
+      enum "active" {
+        value 2;
+        description
+          "Active.";
+      }
+      enum "igmp-active" {
+        value 3;
+        description
+          "IGMP Active.";
+      }
+      enum "fastchannel" {
+        value 4;
+        description
+          "Fast-Channel.";
+      }
+      enum "igmp-fastchannel" {
+        value 5;
+        description
+          "IGMP Fast-Channel.";
+      }
+      enum "active-fastchannel" {
+        value 6;
+        description
+          "Active Fast-Channel.";
+      }
+      enum "igmp-active-fastchannel" {
+        value 7;
+        description
+          "IGMP Active Fast-Channel.";
+      }
+      enum "mld" {
+        value 9;
+        description
+          "MLD.";
+      }
+      enum "active6" {
+        value 10;
+        description
+          "Active.";
+      }
+      enum "mld-active6" {
+        value 11;
+        description
+          "MLD Active6.";
+      }
+      enum "fastchannel6" {
+        value 12;
+        description
+          "Fast-Channel.";
+      }
+      enum "mld-fastchannel6" {
+        value 13;
+        description
+          "MLD Fast-Channel.";
+      }
+      enum "active6-fastchannel6" {
+        value 14;
+        description
+          "Active Fast-Channel.";
+      }
+      enum "mld-active6-fastchannel6" {
+        value 15;
+        description
+          "MLD Active Fast-Channel.";
+      }
+      enum "trill" {
+        value 16;
+        description
+          "Trill.";
+      }
+      enum "igmp-trill" {
+        value 17;
+        description
+          "IGMP Trill.";
+      }
+      enum "active-trill" {
+        value 18;
+        description
+          "Active Trill.";
+      }
+      enum "igmp-active-trill" {
+        value 19;
+        description
+          "IGMP Active Trill.";
+      }
+    }
+    description
+      "Source flag type.";
+  }
+  typedef l2mc-esi {
+    type string {
+      length "0..24";
+      pattern '(^ *(00([0-9a-fA-F]){2}\.(([0-9a-fA-F]){4}\.){3}(([0-9a-fA-F]){4}))? *$)';
+    }
+    description
+      "ESI is begin with a-f or A-f or 0-9.";
+  }
+  typedef df-status-type {
+    type enumeration {
+      enum "df" {
+        value 1;
+        description
+          "The PE is DF.";
+      }
+      enum "non-df" {
+        value 2;
+        description
+          "The PE is non-DF.";
+      }
+    }
+    description
+      "DF status type.";
+  }
+  typedef remote-flag-type {
+    type enumeration {
+      enum "local" {
+        value 1;
+        description
+          "Local.";
+      }
+      enum "remote" {
+        value 2;
+        description
+          "Remote.";
+      }
+      enum "local-remote" {
+        value 3;
+        description
+          "Local Remote.";
+      }
+    }
+    description
+      "Remote flag type.";
+  }
+  typedef smet-prefix {
+    type string {
+      length "1..68";
+    }
+    description
+      "SMET prefix.";
+  }
+  typedef join-prefix {
+    type string {
+      length "1..90";
+    }
+    description
+      "IGMP Join Synch prefix.";
+  }
+  grouping display-vlan-port-info {
+    description
+      "List of layer 2 multicast port information of a VLAN.";
+    container group-ports {
+      config false;
+      description
+        "List of layer 2 multicast port information.";
+      list group-port {
+        key "group-address source-address";
+        description
+          "Layer 2 multicast port state.";
+        leaf group-address {
+          type inet:ip-address-no-zone;
+          description
+            "Address of a multicast group.";
+        }
+        leaf source-address {
+          type inet:ip-address-no-zone;
+          description
+            "Multicast source address.";
+        }
+        leaf up-time {
+          type pub-type:time-tick;
+          units "s";
+          description
+            "Time since a router port was discovered.";
+        }
+        leaf entry-flag {
+          type entry-flag-type;
+          description
+            "Entity flag.";
+        }
+        leaf source-flag {
+          type source-flag-type;
+          description
+            "Source flag.";
+        }
+        container ports {
+          description
+            "List of port state.";
+          list port {
+            key "interface";
+            description
+              "Port state.";
+            leaf interface {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              description
+                "Interface name.";
+            }
+            leaf up-time {
+              type pub-type:time-tick;
+              description
+                "Time since a router port was discovered.";
+            }
+            leaf expire-time {
+                type pub-type:time-tick {
+                  ext:value-meaning {
+                    ext:item "1879048190" {
+                      ext:meaning "--";
+                    }
+                  }
+                }
+              description
+                "Time after which a port will be deleted from the router port record table.";
+            }
+            leaf port-flag {
+              type string {
+                length "0..64";
+              }
+              description
+                "Port flag. S: static; D: dynamic; M: SSM-mapping.";
+            }
+          }
+        }
+      }
+    }
+  }
+  grouping display-evpn-routing-table {
+    description
+      "Routing table infomation.";
+    leaf nexthop {
+      type inet:ip-address-no-zone;
+      description
+        "Next-hop address to which packets are sent.";
+    }
+    leaf local-preference {
+      type uint32;
+      description
+        "Local preference.";
+    }
+    leaf protocol-preferred-value {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+        "Preferred value of a protocol.";
+    }
+    leaf as-path {
+      type string {
+        length "1..300";
+      }
+      description
+        "List of the ASs that packets pass through.";
+    }
+    leaf origin {
+      type evpn:bgp-origin-type;
+      description
+        "Origin of a route.";
+    }
+    leaf route-flag {
+      type string {
+        length "1..100";
+      }
+      description
+        "Route flag.";
+    }
+    leaf advertised-peers {
+      type string {
+        length "1..300";
+      }
+      description
+        "Sending peers.";
+    }
+    leaf route-duration-time {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+        "Time stamp of a route.";
+    }
+    leaf originator {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of the route initiator.";
+    }
+    leaf remote-route-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of a peer.";
+    }
+    leaf other-attribute {
+      type string {
+        length "1..300";
+      }
+      description
+        "Other attribute.";
+    }
+    leaf flags {
+      type string {
+        length "1..50";
+      }
+      description
+        "Flag fields of INCLUDE and EXCLUDE filter-modes and IGMP snooping version.";
+    }
+    leaf qos-info {
+      type string {
+        length "1..20";
+      }
+      description
+        "Qos infomation.";
+    }
+  }
+  augment "/bd:bd/bd:instances/bd:instance" {
+    description "Adds configuration to the bd module.";
+    container igmp-snooping {
+      description
+        "Configure IGMP snooping in the BD.";
+      container global {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        description
+          "Configure IGMP snooping in the BD.";
+        leaf ssm-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic'))";
+          description
+            "SSM group range policy.";
+        }
+        leaf version {
+          type uint32 {
+            range "1..3";
+          }
+          default "2";
+          description
+            "IGMP version on an interface.";
+        }
+        leaf ssm-mapping-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SSM mapping.";
+        }
+        leaf ssm-mapping-policy {
+          when "../ssm-mapping-enable='true'";
+          type string {
+            length "1..31";
+          }
+          must "not(../../ssm-mapping-groups/ssm-mapping-group)";
+          description
+            "Configure a policy for SSM Mapping.";
+        }
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable IGMP snooping in the bridge domain.";
+        }
+        leaf group-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "IGMP group policy.";
+        }
+        leaf group-policy-version {
+          when "../group-policy-acl";
+          type uint32 {
+            range "1..3";
+          }
+          description
+            "A group policy applies only to a specified IGMP version.";
+        }
+        leaf max-response-time {
+          type uint32 {
+            range "1..25";
+          }
+          units "s";
+          default "10";
+          description
+            "Maximum response time for an IGMP Query message. This time is used to control the deadline for user hosts to send Report messages.";
+        }
+        leaf immediately-leave {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable prompt-leave. Prompt-Leave allows an interface to immediately delete a group record after receiving a Leave message for this group, without sending a last-member query message.";
+        }
+        leaf immediately-leave-acl {
+          when "../immediately-leave='true'";
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "ACL used to control the applicable range of IGMP prompt-leave.";
+        }
+        leaf proxy-enable {
+          type boolean;
+          must "../proxy-enable='false' or (../report-suppress='false' and ../querier-enable='false')";
+          default "false";
+          description
+            "Enable/disable IGMP snooping proxy.";
+        }
+        leaf multicast-group-model {
+          type snooping-mode;
+          default "asm-ssm";
+          description
+            "IGMP group join mode.";
+        }
+        leaf ip-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "IP filter policy.";
+        }
+        leaf query-ip-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "Querier IP policy.";
+        }
+        leaf querier-election {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable IGMP querier election.";
+        }
+        leaf proxy-router-protocol-pass {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable an IGMP snooping proxy-enabled device to transparently transmit IGMP Report messages.";
+        }
+        leaf querier-enable {
+          type boolean;
+          must "(../proxy-enable='false' and not (../../../evpn:evpn/evpn:name)) or (../querier-enable='false')";
+          default "false";
+          description
+            "Enable/disable an IGMP querier.";
+        }
+        leaf query-interval {
+          type uint32 {
+            range "1..65535";
+          }
+          units "s";
+          default "60";
+          description
+            "Interval at which a device sends General Query messages.";
+        }
+        leaf require-router-alert {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to permit only IGMP messages that contain the Router-Alert option in the IP header. By default, IGMP messages that do not carry the Router-Alert option are also permitted.";
+        }
+        leaf send-router-alert {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable a device to send IGMP messages that contain the Router-Alert option in the IP header.";
+        }
+        leaf robustness {
+          type uint32 {
+            range "2..5";
+          }
+          default "2";
+          description
+            "Number of times for retransmitting a message to avoid packet loss.";
+        }
+        leaf router-aging-time {
+          type uint32 {
+            range "1..1000";
+          }
+          units "s";
+          default "180";
+          description
+            "Aging time of dynamic router ports. By default, the aging time of a dynamic router port is 180 seconds or equals the holdtime value contained in a PIM Hello packet.";
+        }
+        leaf router-port-learning {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable dynamic router port learning.";
+        }
+        leaf query-suppress-time {
+          type uint32 {
+            range "0..300";
+          }
+          units "s";
+          default "10";
+          description
+            "Time during which IGMP Report messages are suppressed.";
+        }
+        leaf last-member-query-interval {
+          type uint32 {
+            range "1..5";
+          }
+          units "s";
+          default "1";
+          description
+            "Interval at which a last-member query message is sent.";
+        }
+        leaf static-group-suppress-dynamic-join {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a Layer 2 device from sending IGMP Report and Leave messages of a group that has been configured as a static group on the upstream device.";
+        }
+        leaf report-suppress {
+          type boolean;
+          must "(../proxy-enable='false' and not (../../../evpn:evpn/evpn:name)) or (../report-suppress='false')";
+          default "false";
+          description
+            "Enable/disable the function of suppressing IGMP Report messages.";
+        }
+        leaf source-life-time {
+          type uint32 {
+            range "60..1000";
+          }
+          units "s";
+          default "210";
+          description
+            "Aging time for entries triggered by multicast flows.";
+        }
+        leaf designated-vlan {
+          type uint32 {
+            range "1..4094";
+          }
+          must "(not (../../../evpn:evpn/evpn:name)) or (not (../designated-vlan))";
+          description
+            "Specify the IGMP snooping VLAN in which multicast messages and data are transparently transmitted.";
+        }
+        leaf signal-smet-disable {
+          type boolean;
+          must "(../../../evpn:evpn/evpn:name) or ../signal-smet-disable='false'";
+          default "false";
+          description
+            "Enable/disable the function of signal-smet.";
+        }
+        leaf signal-synch-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of signal-synch. Configuration prerequisite for the leaf: The BD instance is associated with an EVPN instance, and IGMP snooping proxy is enabled for the BD or IGMP is enabled on the VBDIF interface of the BD.";
+        }
+        leaf signal-ignore-df-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of signal-ignore-df. Configuration prerequisite for the leaf: The BD instance is associated with an EVPN instance, and IGMP snooping proxy is enabled for the BD or IGMP is enabled on the VBDIF interface of the BD.";
+        }
+        container evi-rts {
+          when "../signal-synch-enable='true'";
+          description
+            "List of EVI-RT extended community.";
+          list evi-rt {
+            key "type";
+            description
+              "Configure EVI-RT extended community.";
+            leaf type {
+              type evi-rt-type;
+              description
+                "Specify the VPN target type. Export-extcommunity: specifies the extended community attributes carried in routing information to be sent. Import-extcommunity: receives routing information carrying specified extended community attributes.";
+            }
+            leaf value {
+              type string {
+                length "3..21";
+                pattern '(((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}):(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0))|((6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0):(429496729[0-5]|42949672[0-8]\d|4294967[0-1]\d{2}|429496[0-6]\d{3}|42949[0-5]\d{4}|4294[0-8]\d{5}|429[0-3]\d{6}|42[0-8]\d{7}|4[0-1]\d{8}|[1-3]\d{9}|[1-9]\d{0,8}))|((6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}):0)|((429496729[0-5]|42949672[0-8]\d|4294967[0-1]\d{2}|429496[0-6]\d{3}|42949[0-5]\d{4}|4294[0-8]\d{5}|429[0-3]\d{6}|42[0-8]\d{7}|4[0-1]\d{8}|[1-3]\d{9}|[1-9]\d{5,8}|[7-9]\d{4}|6[6-9]\d{3}|65[6-9]\d{2}|655[4-9]\d|6553[6-9]):(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0))|((6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3})\.(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0):(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0))|(0\.(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}):(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0))|(0\.0:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}))';
+              }
+              mandatory true;
+              description
+                "Vpn-target: adds VPN target extended community attribute to the export or import VPN target extended community list. The vpn-target can be expressed in either of the following formats: (1)16-bit AS number:32-bit user-defined number. For example, 1:3. The AS number ranges from 0 to 65535. The user-defined number ranges from 0 to 4294967295. The AS number and the user-defined number cannot be 0s at the same time. That is, a VPN target cannot be 0:0. (2)32-bit IP address:16-bit user-defined number. For example, 192.168.122.15:1. The IP address ranges from 0.0.0.0 to 255.255.255.255. The user-defined number ranges from 0 to 65535. (3)32-bit AS number:16-bit user-defined number. For example, 65537:3. The AS number ranges from 65536 to 4294967295. The user-defined number ranges from 0 to 65535. (4)32-bit AS number in dotted notation:16-bit user-defined number. For example, 0.0:3 or 0.1:0. The 32-bit AS number in dotted notation is in the format of x.y, where x and y are integers that both range from 0 to 65535. The user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot both be 0s. Specifically, a VPN target cannot be 0:0.0.";
+            }
+          }
+        }
+      }
+      container interfaces {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        description
+          "List of sub-interface configuration.";
+        list interface {
+          must "not(../../../nvo3:nvo3/nvo3:vni-list)";
+          must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../bd:service-points/bd:service-point/bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:default)";
+          must "./group-policy-acl or ./learning='false' or ./proxy-uplink-port='true'";
+          key "name";
+          description
+            "Configure sub-interface configuration.";
+          leaf name {
+            type leafref {
+              path "../../../../bd:service-points/bd:service-point/bd:interface-name";
+            }
+            description
+              "Interface name.";
+          }
+          leaf group-policy-acl {
+            type acl:acl4-identity;
+            must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance') or (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance')";
+            description
+              "Configure a policy for filtering multicast groups on an interface to control the range of multicast groups that hosts can join.";
+          }
+          leaf group-policy-version {
+            when "../group-policy-acl";
+            type uint32 {
+              range "1..3";
+            }
+            description
+              "A group policy applies only to a specified IGMP version.";
+          }
+          leaf learning {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable IGMP-snooping learning function.";
+          }
+          leaf proxy-uplink-port {
+            type boolean;
+            must "(../proxy-uplink-port='false') or (not(../pe-vid) and not(../ce-vid) and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:untag) or ((../pe-vid) and not(../ce-vid) and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:dot1q) or ((../pe-vid) and (../ce-vid) and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:qinqs)";
+            default "false";
+            description
+              "Enable/disable IGMP proxy uplink port.";
+          }
+          leaf pe-vid {
+            when "../proxy-uplink-port='true'";
+            type uint32 {
+              range "1..4094";
+            }
+            description
+              "Outer VLAN ID.";
+          }
+          leaf ce-vid {
+            when "../proxy-uplink-port='true'";
+            type uint32 {
+              range "1..4094";
+            }
+            description
+              "Inner VLAN ID.";
+          }
+        }
+      }
+      container pw-static-router-ports {
+        when "(/mc:multicast/ims:igmp-snooping/ims:global-enable or /ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface[igmp-mld:enable='true'][igmp-mld:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:type='Vbdif'][ifm:number=string(current()/../../bd:id)]/ifm:name]) and /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bds/l2vpn:bd[l2vpn:id=current()/../../bd:id]";
+        description
+          "List of router port configurations of PWs.";
+        list pw-static-router-port {
+          must "not(../../../nvo3:nvo3/nvo3:vni-list)";
+          must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../bd:service-points/bd:service-point/bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:default)";
+          key "vsi-name remote-peer negotiation-vc-id";
+          description
+            "Configure router port configuration of a PW.";
+          leaf vsi-name {
+            type leafref {
+              path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+            }
+            description
+              "Name of a virtual switch instance.";
+          }
+          leaf remote-peer {
+            type inet:ipv4-address-no-zone {
+              pattern '([1-9]|[1-9]\d|1[0-1]\d|12[0-68-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "IP address of the peer end.";
+          }
+          leaf negotiation-vc-id {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "Negotiation VC ID.";
+          }
+        }
+      }
+      container static-router-ports {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable or /ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface[igmp-mld:enable='true'][igmp-mld:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:type='Vbdif'][ifm:number=string(current()/../../bd:id)]/ifm:name]";
+        description
+          "List of static router port configuration of sub-interfaces.";
+        list static-router-port {
+          must "not(../../../nvo3:nvo3/nvo3:vni-list)";
+          key "interface";
+          description
+            "Configure static router port configuration of sub-interfaces.";
+          leaf interface {
+            type leafref {
+              path "../../../../bd:service-points/bd:service-point/bd:interface-name";
+            }
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:untag";
+            description
+              "Interface name.";
+          }
+        }
+      }
+      container static-dot1q-router-ports {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable or /ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface[igmp-mld:enable='true'][igmp-mld:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:type='Vbdif'][ifm:number=string(current()/../../bd:id)]/ifm:name]";
+        description
+          "List of static router port configuration of sub-interfaces.";
+        list static-dot1q-router-port {
+          must "not(../../../nvo3:nvo3/nvo3:vni-list)";
+          key "interface vid";
+          description
+            "Configure static dot1q router port configuration of sub-interfaces.";
+          leaf interface {
+            type leafref {
+              path "../../../../bd:service-points/bd:service-point/bd:interface-name";
+            }
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:dot1q/ethernet:vlans";
+            description
+              "Interface name.";
+          }
+          leaf vid {
+            type uint32 {
+              range "1..4094";
+            }
+            must "not(../../../global/designated-vlan) or ../vid=../../../global/designated-vlan";
+            description
+              "Outer VLAN ID.";
+          }
+        }
+      }
+      container static-qinq-router-ports {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable or /ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface[igmp-mld:enable='true'][igmp-mld:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:type='Vbdif'][ifm:number=string(current()/../../bd:id)]/ifm:name]";
+        description
+          "List of static router port configuration of sub-interfaces.";
+        list static-qinq-router-port {
+          must "not(../../../nvo3:nvo3/nvo3:vni-list)";
+          key "interface pe-vid ce-vid";
+          description
+            "Configure static qinq router port configuration of sub-interfaces.";
+          leaf interface {
+            type leafref {
+              path "../../../../bd:service-points/bd:service-point/bd:interface-name";
+            }
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:qinqs/ethernet:qinq-vids";
+            description
+              "Interface name.";
+          }
+          leaf pe-vid {
+            type uint32 {
+              range "1..4094";
+            }
+            must "not(../../../global/designated-vlan)";
+            description
+              "Outer VLAN ID.";
+          }
+          leaf ce-vid {
+            type uint32 {
+              range "1..4094";
+            }
+            description
+              "Inner VLAN ID.";
+          }
+        }
+      }
+      container ssm-mapping-groups {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        description
+          "List of SSM mapping configuration of a BD.";
+        list ssm-mapping-group {
+          must "not(../../../nvo3:nvo3/nvo3:vni-list)";
+          must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../bd:service-points/bd:service-point/bd:interface-name]/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:default)";
+          must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../bd:service-points/bd:service-point/bd:interface-name][ifm:type='Global-VE'])";
+          must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../bd:service-points/bd:service-point/bd:interface-name][ifm:type='Virtual-Ethernet'])";
+          key "group-address mask-length source-address";
+          max-elements 128;
+          description
+            "Configure SSM mapping configuration of a BD.";
+          leaf group-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(22[4-9]|23\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "Address of a multicast group.";
+          }
+          leaf mask-length {
+            type uint32 {
+              range "4..32";
+            }
+            description
+              "Mask length of a group address.";
+          }
+          leaf source-address {
+            type inet:ipv4-address-no-zone {
+              pattern '([1-9]|[1-9]\d|1[0-1]\d|12[0-68-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "Multicast source IPv4 address.";
+          }
+        }
+      }
+      container group-ports {
+        config false;
+        description
+          "List of layer 2 multicast port information.";
+        list group-port {
+          key "group-address source-address";
+          description
+            "Layer 2 multicast port state.";
+          leaf group-address {
+            type inet:ip-address-no-zone;
+            description
+              "Address of a multicast group. In IPv4, the value ranges from 224.0.1.0 to 239.255.255.255, in dotted decimal notation.";
+          }
+          leaf source-address {
+            type inet:ip-address-no-zone;
+            description
+              "Multicast source address.";
+          }
+          leaf source-up-time {
+            type pub-type:time-tick;
+            description
+              "Time since a multicast source was discovered.";
+          }
+          leaf group-up-time {
+            type pub-type:time-tick;
+            description
+              "Time since a multicast group was discovered.";
+          }
+          leaf entry-flag {
+            type entry-flag-type;
+            description
+              "Entity flag.";
+          }
+          leaf source-flag {
+            type source-flag-type;
+            description
+              "Source flag.";
+          }
+          container ports {
+            description
+              "List of port state.";
+            list port {
+              key "interface";
+              description
+                "Port state.";
+              leaf interface {
+                type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                }
+                description
+                  "Interface name.";
+              }
+              leaf up-time {
+                type pub-type:time-tick;
+                description
+                  "Time since a router port was discovered.";
+              }
+              leaf expire-time {
+                type pub-type:time-tick {
+                  ext:value-meaning {
+                    ext:item "1879048190" {
+                      ext:meaning "--";
+                    }
+                  }
+                }
+                description
+                  "Time after which a port will be deleted from the router port record table.";
+              }
+              leaf port-flag {
+                type string {
+                  length "0..50";
+                }
+                description
+                  "Port flag. S: static; D: dynamic; M: SSM-mapping.";
+              }
+              leaf esi {
+                type l2mc-esi;
+                description
+                  "Ethernet Segment Identifier.";
+              }
+              leaf df-status {
+                type df-status-type;
+                description
+                  "One of the PEs may be either DF or non-DF In a redundancy mode.";
+              }
+              leaf remote-flag {
+                type remote-flag-type;
+                description
+                  "The source of the port information. Remote: passed from other devices; local: locally generated; local remote: both.";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  augment "/mc:multicast" {
+    description
+      "Adds igmp/mld snooping configuration to the multicast module.";
+    container igmp-snooping {
+      description
+        "Configure igmp-snooping features.";
+      container global-enable {
+        presence "igmp-snooping enable";
+        description
+          "Enable/disable global IGMP snooping.";
+        leaf send-query {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of sending Layer 2 multicast Query messages.";
+        }
+        leaf send-query-source-address {
+          type inet:ipv4-address-no-zone {
+            pattern '(12[0-6]|1[0-1]\d|[1-9]\d|[1-9])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|(12[8-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+          }
+          default "192.168.0.1";
+          description
+            "Source IP address for Layer 2 multicast General Query messages.";
+        }
+      }
+      container instances {
+        when "../ims:global-enable";
+        description
+          "List of Layer 2 multicast instance configuration.";
+        list instance {
+          key "id";
+          description
+            "Configure Layer 2 multicast instance.";
+          leaf id {
+            type uint32 {
+              range "1..32";
+            }
+            description
+              "Instance ID.";
+          }
+          choice multicast-instance-type {
+            description
+              "Multicast-instance type.";
+            case vlan {
+              description
+                "Multicast-instance type is VLAN.";
+              leaf vlan-id {
+                type leafref {
+                  path "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:id";
+                }
+                must "/vlan:vlan/vlan:vlans/vlan:vlan[vlan:id=current()]/ims:igmp-snooping/ims:global/ims:enable='true'";
+                must "/vlan:vlan/vlan:vlans/vlan:vlan[vlan:id=current()]/vlan:type='common'";
+                must "count(../../ims:instance[ims:vlan-id=current()])=1";
+                description
+                  "ID of a virtual local area network.";
+              }
+            }
+            case vsi {
+              description
+                "Multicast-instance type is VSI.";
+              leaf vsi-name {
+                type leafref {
+                  path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+                }
+                must "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/ims:igmp-snooping/ims:global/ims:enable='true'";
+                must "count(../../ims:instance[ims:vsi-name=current()])=1";
+                must "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:work-mode='normal'";
+                must "not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:bgp-signaling)";
+                must "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:bgp-multi-homing-signaling or (/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:bgpad-signaling and /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:ipmsi/l2vpn:leaf and not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:ipmsi/l2vpn:root)) or (not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:bgpad-signaling) and /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:vsi-id)";
+                description
+                  "Name of a virtual switch instance.";
+              }
+            }
+          }
+          container user-instance-vsis {
+            description
+              "List of VSIs configured as user-instance.";
+            list user-instance-vsi {
+              key "vsi-name";
+              description
+                "Configure VSI as user-instance.";
+              leaf vsi-name {
+                type leafref {
+                  path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+                }
+                must "not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()]/l2vpn:vpls/ims:igmp-snooping)";
+                must "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:work-mode='normal'";
+                must "not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:bgp-signaling)";
+                must "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:bgp-multi-homing-signaling or (/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:bgpad-signaling and /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:ipmsi/l2vpn:leaf and not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:ipmsi/l2vpn:root)) or (not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:bgpad-signaling) and /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:vsi-id)";
+                description
+                  "Name of a virtual switch instance.";
+              }
+            }
+          }
+          container user-instance-vlan {
+            description
+              "Configure VLAN as user-instance.";
+            leaf vlans {
+              type pub-type:vlan-range;
+              description
+                "VLAN list.";
+            }
+          }
+        }
+      }
+      container global-channel {
+        presence "L2-multicast-channel.";
+        description
+          "Enable/disable L2-multicast CAC.";
+        leaf unspecified-channel-deny {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to filter out multicast data for undefined groups in a channel. Specify the unspecified channel, deny the join of multicast group that does not belong to any channel.";
+        }
+      }
+    }
+    container mld-snooping {
+      description
+        "Configure MLD snooping features.";
+      container global-enable {
+        presence "mld-snooping enable";
+        description
+          "Enable/disable global MLD snooping.";
+        leaf send-query {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of sending Layer 2 multicast Query messages.";
+        }
+        leaf send-query-source-address {
+          type inet:ipv6-address-no-zone {
+            pattern '([Ff][Ee]80:)(([0]{1,4}:){0,2})(((:[0-9A-Fa-f]{1,4}){1,4})|(:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:)|([Ff][Ee]80:)(([0]{1,4}:){3})((((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)|(([0-9A-Fa-f]{1,4}:)(((:[0-9A-Fa-f]{1,4}){1,2})|(:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|((([0-9A-Fa-f]{1,4}:){2})((:[0-9A-Fa-f]{1,4})|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){3}(([0-9A-Fa-f]{1,4})|:)))';
+          }
+          default "FE80::";
+          description
+            "Source IP address for Layer 2 multicast General Query messages.";
+        }
+      }
+    }
+  }
+  augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls" {
+    description
+      "Adds configuration to the L2VPN module.";
+    container igmp-snooping {
+      description
+        "Configure Layer 2 multicast configurations in the VSI.";
+      container global {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable and ((../../l2vpn:bgp-signaling and not(../../l2vpn:ldp-signaling)) or ../../l2vpn:bgp-multi-homing-signaling or (../../l2vpn:bgpad-signaling and ../../l2vpn:ipmsi/l2vpn:leaf and not(../../l2vpn:ipmsi/l2vpn:root)) or (not(../../l2vpn:bgpad-signaling) and not(../../l2vpn:bgp-signaling) and ../../l2vpn:ldp-signaling/l2vpn:vsi-id and ../../l2vpn:p2p-vsi='false')) and ../../l2vpn:work-mode='normal'";
+        description
+          "Configure Layer 2 multicast in the VSI.";
+        leaf ssm-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic'))";
+          description
+            "SSM group range policy.";
+        }
+        leaf version {
+          type uint32 {
+            range "1..3";
+          }
+          default "2";
+          description
+            "Layer 2 multicast version on an interface.";
+        }
+        leaf ssm-mapping-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SSM mapping.";
+        }
+        leaf ssm-mapping-policy {
+          when "../ssm-mapping-enable='true'";
+          type string {
+            length "1..31";
+          }
+          must "not(../../ssm-mapping-groups/ssm-mapping-group)";
+          description
+            "Configure a policy for SSM mapping.";
+        }
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast snooping in the VSI.";
+        }
+        leaf group-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "Layer 2 multicast group policy.";
+        }
+        leaf group-policy-version {
+          when "../group-policy-acl";
+          type uint32 {
+            range "1..3";
+          }
+          description
+            "A group policy applies only to a specified layer 2 multicast version.";
+        }
+        leaf max-response-time {
+          type uint32 {
+            range "1..127";
+          }
+          units "s";
+          default "10";
+          description
+            "Maximum response time for a Layer 2 multicast Query message. This time is used to control the deadline for user hosts to send Report messages.";
+        }
+        leaf immediately-leave {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable prompt-leave. Prompt-Leave allows an interface to immediately delete a group record after receiving a Leave message for this group, without sending a last-member query message.";
+        }
+        leaf immediately-leave-acl {
+          when "../immediately-leave='true'";
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "ACL used to control the applicable range of layer 2 multicast prompt-leave.";
+        }
+        leaf proxy-enable {
+          type boolean;
+          must "../proxy-enable='false' or (../querier-enable='false' and ../report-suppress='false' and ../packet-encapsulation-raw='false')";
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast snooping proxy.";
+        }
+        leaf multicast-group-model {
+          type snooping-mode;
+          default "asm-ssm";
+          description
+            "Layer 2 multicast group join mode.";
+        }
+        leaf ip-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "IP filter policy.";
+        }
+        leaf query-ip-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "Querier IP policy.";
+        }
+        leaf querier-election {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast querier election.";
+        }
+        leaf proxy-router-protocol-pass {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a Layer 2 multicast snooping proxy-enabled device to transparently transmit Layer 2 multicast Report messages.";
+        }
+        leaf querier-enable {
+          type boolean;
+          must "../querier-enable='false' or (../proxy-enable='false' and ../packet-encapsulation-raw='false')";
+          default "false";
+          description
+            "Enable/disable a Layer 2 multicast querier.";
+        }
+        leaf query-interval {
+          type uint32 {
+            range "1..65535";
+          }
+          units "s";
+          default "60";
+          description
+            "Interval at which a device sends General Query messages.";
+        }
+        leaf require-router-alert {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to permit only Layer 2 multicast messages that contain the Router-Alert option in the IP header.";
+        }
+        leaf send-router-alert {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable a device to permit only Layer 2 multicast messages that contain the Router-Alert option in the IP header.";
+        }
+        leaf robustness {
+          type uint32 {
+            range "2..5";
+          }
+          default "2";
+          description
+            "Number of times for retransmitting a message to avoid packet loss.";
+        }
+        leaf router-aging-time {
+          type uint32 {
+            range "1..1000";
+          }
+          units "s";
+          default "180";
+          description
+            "Aging time of dynamic router ports. The aging time of a dynamic router port is default value or equals to the holdtime value contained in a PIM Hello packet.";
+        }
+        leaf router-port-learning {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable dynamic router port learning.";
+        }
+        leaf last-member-query-interval {
+          type uint32 {
+            range "1..5";
+          }
+          units "s";
+          default "1";
+          description
+            "Interval at which a last-member query message is sent.";
+        }
+        leaf static-group-suppress-dynamic-join {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a Layer 2 device from sending Layer 2 multicast Report and Leave messages of a group that has been configured as a static group on the upstream device.";
+        }
+        leaf report-suppress {
+          type boolean;
+          must "../report-suppress='false' or ../proxy-enable='false'";
+          default "false";
+          description
+            "Enable/disable the function of suppressing Layer 2 multicast Report messages.";
+        }
+        leaf source-life-time {
+          type uint32 {
+            range "60..1000";
+          }
+          units "s";
+          default "210";
+          description
+            "Aging time for entries triggered by multicast flows.";
+        }
+        leaf limit-max-entry {
+          when "not(../../../l2vpn:bgp-signaling)";
+          type uint32 {
+            range "1..16384";
+          }
+          description
+            "Maximum number of entries that can be generated.";
+        }
+        leaf limit-except-acl {
+          when "../limit-max-entry";
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "ACL used to prevent groups from being counted against the multicast group number limit. A basic ACL filters both (*, G) and (S, G) multicast entries, while an advanced ACL filters only (S, G) multicast entries.";
+        }
+        leaf backup-query-forward {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of forwarding Layer 2 multicast query packet to backup PW.";
+        }
+        leaf backup-query-source-mac-replace {
+          when "../backup-query-forward='true'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of replacing MAC address when forwarding query packet to backup PW.";
+        }
+        leaf backup-report-forward {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of forwarding report packet received from backup PW.";
+        }
+        leaf backup-report-source-mac-replace {
+          when "../backup-report-forward='true'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of replacing MAC address when forwarding report packet received from backup PW.";
+        }
+        leaf dynamic-trunk-bandwidth-lose-mode {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable dynamic Eth-Trunk bandwidth limit lose mode.";
+        }
+        leaf pim-forward-to-router-port-only {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable PIM messages forwarding to router port only.";
+        }
+        leaf qinq-stacking-listen {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable listening report from qinq-stacking interface in the VSI, by default, igmp-snooping enable in the VSI will be conflict with the qinq-stacking interface binding vsi.";
+        }
+        leaf qinq-stacking-copy-mode {
+          when "../qinq-stacking-listen='true'";
+          type copy-mode;
+          default "invalid";
+          description
+            "Specify the qinq-stacking interface copy mode, by default, the traffic will not be forward to the qinq-stacking interface.";
+        }
+        leaf qinq-mapping-listen {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable listening report from qinq-mapping interface in the VSI, by default, igmp-snooping enable in the VSI will be conflict with the qinq-mapping interface binding vsi.";
+        }
+        leaf qinq-mapping-copy-mode {
+          when "../qinq-mapping-listen='true'";
+          type copy-mode;
+          default "invalid";
+          description
+            "Specify the qinq-mapping interface copy mode, by default, the traffic will not be forward to the qinq-mapping interface.";
+        }
+        leaf user-info-delete-delay-time {
+          type uint32 {
+            range "0..300";
+          }
+          units "s";
+          default "70";
+          description
+            "The user information delete delay time of qinq statcking and qinq mapping interface.";
+        }
+        leaf pw-fast-control {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable PW fast control, do not delete entries fot PW ports when the PW state become down.";
+        }
+        leaf pw-fast-control-holdtime {
+          when "../pw-fast-control='true'";
+          type uint32 {
+            range "5..120";
+          }
+          units "s";
+          description
+            "PW fast control holdtime.";
+        }
+        leaf packet-encapsulation-raw {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to reserve the original tag and add a new tag to the IGMP Report packets when the packets are forwarded from L2VE sub-interface to L3VE QinQ termination sub-interface.";
+        }
+      }
+      container transparent-vlan {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable and (../../l2vpn:ldp-signaling/l2vpn:vsi-id and ../../l2vpn:p2p-vsi='false') and ../../l2vpn:work-mode='normal'";
+        must "../global/report-suppress='false' and ../global/proxy-enable='false' and ../global/querier-enable='false'";
+        must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:acs/l2vpn:ac/l2vpn:interface-name]/ifm:class!='sub-interface'";
+        must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:acs/l2vpn:ac/l2vpn:interface-name]/ifm:type!='Vlanif'";
+        presence "transparent-vlan enable";
+        description
+          "Enable/disable a device to transmit IGMP messages with VLAN tag transparently.";
+      }
+      container static-router-port {
+        description
+          "Configure static router port.";
+        container ldp-pws {
+          when "/mc:multicast/ims:igmp-snooping/ims:global-enable and ../../../l2vpn:ldp-signaling/l2vpn:vsi-id and ../../../l2vpn:work-mode='normal'";
+          description
+            "List of router ports for VSIs.";
+          list ldp-pw {
+            key "remote-peer negotiation-vc-id";
+            description
+              "Configure a router port for a VSI.";
+            leaf remote-peer {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP address of the peer end.";
+            }
+            leaf negotiation-vc-id {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Negotiation VC ID.";
+            }
+          }
+        }
+        container bgp-ad-pws {
+          when "/mc:multicast/ims:igmp-snooping/ims:global-enable and ../../../l2vpn:ipmsi/l2vpn:leaf";
+          description
+            "Configure router ports for VSIs.";
+          leaf-list remoter-peer {
+            type inet:ipv4-address-no-zone;
+            description
+              "Configure IP address of the peer end.";
+          }
+        }
+      }
+      container proxy-uplink-port {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        description
+          "Configure IGMP/MLD snooping proxy uplink interfaces.";
+        container ldp-pws {
+          description
+            "List of router ports for VSIs.";
+          list ldp-pw {
+            must "../../../ims:global/ims:proxy-enable='true' or ../../../ims:global/ims:querier-enable='true'";
+            must "not (../../../../l2vpn:acs/l2vpn:ac/ims:igmp-snooping/ims:proxy-uplink-port)";
+            must "../../../../l2vpn:work-mode='normal' and ../../../../l2vpn:ldp-signaling/l2vpn:vsi-id and not(../../../../l2vpn:bgp-signaling) and (not(../../../../l2vpn:bgpad-signaling) or (../../../../l2vpn:bgpad-signaling and ../../../../l2vpn:ipmsi/l2vpn:leaf and not(../../../../l2vpn:ipmsi/l2vpn:root)))";
+            must "not (../../bgp-ad-pws)";
+            key "remote-peer negotiation-vc-id";
+            max-elements "1";
+            description
+              "Configure router ports for a VSI.";
+            leaf remote-peer {
+              type inet:ipv4-address-no-zone {
+                pattern '([1-9]|[1-9]\d|1[0-1]\d|12[0-68-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+              }
+              description
+                "IP address of the peer end.";
+            }
+            leaf negotiation-vc-id {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Negotiation VC ID.";
+            }
+          }
+        }
+        container bgp-ad-pws {
+          description
+            "Configure router ports for VSIs.";
+          leaf-list remoter-peer {
+            type inet:ipv4-address-no-zone {
+              pattern '([1-9]|[1-9]\d|1[0-1]\d|12[0-68-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            must "../../../ims:global/ims:proxy-enable='true' or ../../../ims:global/ims:querier-enable='true'";
+            must "not (../../../../l2vpn:acs/l2vpn:ac/ims:igmp-snooping/ims:proxy-uplink-port)";
+            must "(../../../../l2vpn:bgpad-signaling and ../../../../l2vpn:ipmsi/l2vpn:leaf and not(../../../../l2vpn:ipmsi/l2vpn:root)) or (../../../../l2vpn:bgp-multi-homing-signaling)";
+            must "not (../../ldp-pws)";
+            max-elements "1";
+            description
+              "Configure IP address of the peer end.";
+          }
+        }
+      }
+      container ssm-mapping-groups {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable and ((../../l2vpn:bgp-signaling and not(../../l2vpn:ldp-signaling)) or ../../l2vpn:bgp-multi-homing-signaling or (../../l2vpn:bgpad-signaling and ../../l2vpn:ipmsi/l2vpn:leaf and not(../../l2vpn:ipmsi/l2vpn:root)) or (not(../../l2vpn:bgpad-signaling) and not(../../l2vpn:bgp-signaling) and ../../l2vpn:ldp-signaling/l2vpn:vsi-id)) and ../../l2vpn:work-mode='normal'";
+        description
+          "List of SSM mapping configurations.";
+        list ssm-mapping-group {
+          must "not(../../global/ssm-mapping-policy)";
+          must "not(/mc:multicast/ims:igmp-snooping/ims:instances/ims:instance/ims:user-instance-vsis/ims:user-instance-vsi[ims:vsi-name=current()/../../../../l2vpn:name])";
+          key "group-address mask-length source-address";
+          max-elements 128;
+          description
+            "Configure groups for which a device can immediately forward multicast data after receiving IGMP report messages.";
+          leaf group-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(22[4-9]|23\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "Address of a multicast group.";
+          }
+          leaf mask-length {
+            type uint32 {
+              range "4..32";
+            }
+            description
+              "Mask length of a group address.";
+          }
+          leaf source-address {
+            type inet:ipv4-address-no-zone {
+              pattern '([1-9]|[1-9]\d|1[0-1]\d|12[0-68-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "Multicast source IPv4 address.";
+          }
+        }
+      }
+    }
+    container mld-snooping {
+      description
+        "Configure Layer 2 multicast MLD snooping in the VSI.";
+      container global {
+        when "/mc:multicast/ims:mld-snooping/ims:global-enable and ../../l2vpn:ldp-signaling/l2vpn:vsi-id and ../../l2vpn:work-mode='normal'";
+        description
+          "Configure Layer 2 multicast in the VSI.";
+        leaf ssm-policy-acl {
+          type leafref {
+            path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+          }
+          must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic'";
+          description
+            "SSM group range policy.";
+        }
+        leaf version {
+          type uint32 {
+            range "1..2";
+          }
+          default "2";
+          description
+            "Layer 2 multicast version on an interface.";
+        }
+        leaf ssm-mapping-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SSM mapping.";
+        }
+        leaf ssm-mapping-policy {
+          when "../ssm-mapping-enable='true'";
+          type string {
+            length "1..31";
+          }
+          must "not(../../ssm-mapping-groups/ssm-mapping-group)";
+          description
+            "Configure a policy for SSM mapping.";
+        }
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast snooping in the VSI.";
+        }
+        leaf group-policy-acl {
+          type leafref {
+            path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+          }
+          must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='advance'";
+          description
+            "Layer 2 multicast group policy.";
+        }
+        leaf group-policy-version {
+          when "../group-policy-acl";
+          type uint32 {
+            range "1..2";
+          }
+          description
+            "A group policy applies only to a specified layer 2 multicast version.";
+        }
+        leaf max-response-time {
+          type uint32 {
+            range "1..25";
+          }
+          units "s";
+          default "10";
+          description
+            "Maximum response time for a Layer 2 multicast Query message. This time is used to control the deadline for user hosts to send Report messages.";
+        }
+        leaf immediately-leave {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable prompt-leave. Prompt-Leave allows an interface to immediately delete a group record after receiving a Leave message for this group, without sending a last-member query message.";
+        }
+        leaf immediately-leave-acl {
+          when "../immediately-leave='true'";
+          type leafref {
+            path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+          }
+          must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='advance'";
+          description
+            "ACL used to control the applicable range of layer 2 multicast prompt-leave.";
+        }
+        leaf proxy-enable {
+          type boolean;
+          must "../proxy-enable='false' or (../querier-enable='false' and ../report-suppress='false' and ../packet-encapsulation-raw='false')";
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast snooping proxy.";
+        }
+        leaf multicast-group-model {
+          type snooping-mode;
+          default "asm-ssm";
+          description
+            "Layer 2 multicast group join mode.";
+        }
+        leaf ip-policy-acl {
+          type leafref {
+            path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+          }
+          must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='advance'";
+          description
+            "IP filter policy.";
+        }
+        leaf query-ip-policy-acl {
+          type leafref {
+            path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+          }
+          must "/acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:group6s/acl:group6[acl:identity=current()]/acl:type='advance'";
+          description
+            "Querier IP policy.";
+        }
+        leaf querier-election {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast querier election.";
+        }
+        leaf proxy-router-protocol-pass {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a Layer 2 multicast snooping proxy-enabled device to transparently transmit Layer 2 multicast Report messages.";
+        }
+        leaf querier-enable {
+          type boolean;
+          must "../querier-enable='false' or (../proxy-enable='false' and ../packet-encapsulation-raw='false')";
+          default "false";
+          description
+            "Enable/disable a Layer 2 multicast querier.";
+        }
+        leaf query-interval {
+          type uint32 {
+            range "1..65535";
+          }
+          units "s";
+          default "125";
+          description
+            "Interval at which a device sends General Query messages.";
+        }
+        leaf require-router-alert {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to permit only Layer 2 multicast messages that contain the Router-Alert option in the IP header.";
+        }
+        leaf send-router-alert {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable a device to permit only Layer 2 multicast messages that contain the Router-Alert option in the IP header.";
+        }
+        leaf robustness {
+          type uint32 {
+            range "2..5";
+          }
+          default "2";
+          description
+            "Number of times for retransmitting a message to avoid packet loss.";
+        }
+        leaf router-aging-time {
+          type uint32 {
+            range "1..1000";
+          }
+          units "s";
+          default "180";
+          description
+            "Aging time of dynamic router ports. The aging time of a dynamic router port is default value or equals to the holdtime value contained in a PIM Hello packet.";
+        }
+        leaf router-port-learning {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable dynamic router port learning.";
+        }
+        leaf last-member-query-interval {
+          type uint32 {
+            range "1..5";
+          }
+          units "s";
+          default "1";
+          description
+            "Interval at which a last-member query message is sent.";
+        }
+        leaf static-group-suppress-dynamic-join {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a Layer 2 device from sending Layer 2 multicast Report and Leave messages of a group that has been configured as a static group on the upstream device.";
+        }
+        leaf report-suppress {
+          type boolean;
+          must "../report-suppress='false' or ../proxy-enable='false'";
+          default "false";
+          description
+            "Enable/disable the function of suppressing Layer 2 multicast Report messages.";
+        }
+        leaf source-life-time {
+          type uint32 {
+            range "60..1000";
+          }
+          units "s";
+          default "210";
+          description
+            "Aging time for entries triggered by multicast flows.";
+        }
+        leaf packet-encapsulation-raw {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to reserve the original tag and add a new tag to the IGMP Report packets when the packets are forwarded from L2VE sub-interface to L3VE QinQ termination sub-interface.";
+        }
+      }
+      container static-router-port {
+        description
+          "Configure static router ports.";
+        container ldp-pws {
+          when "/mc:multicast/ims:mld-snooping/ims:global-enable and ../../../l2vpn:ldp-signaling/l2vpn:vsi-id and ../../../l2vpn:work-mode='normal'";
+          description
+            "List of router ports for VSIs.";
+          list ldp-pw {
+            key "remote-peer negotiation-vc-id";
+            description
+              "Configure a router port for a VSI.";
+            leaf remote-peer {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP address of the peer end.";
+            }
+            leaf negotiation-vc-id {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Negotiation VC ID.";
+            }
+          }
+        }
+      }
+      container ssm-mapping-groups {
+        when "/mc:multicast/ims:mld-snooping/ims:global-enable and ../../l2vpn:ldp-signaling/l2vpn:vsi-id and ../../l2vpn:work-mode='normal'";
+        description
+          "List of SSM mapping configurations.";
+        list ssm-mapping-group {
+          must "not(../../global/ssm-mapping-policy)";
+          must "not(/mc:multicast/ims:igmp-snooping/ims:instances/ims:instance[ims:vsi-name=current()/../../../../l2vpn:name])";
+          must "not(/mc:multicast/ims:igmp-snooping/ims:instances/ims:instance/ims:user-instance-vsis/ims:user-instance-vsi[ims:vsi-name=current()/../../../../l2vpn:name])";
+          key "group-address mask-length source-address";
+          max-elements 128;
+          description
+            "Configure groups for which a device can immediately forward multicast data after receiving IGMP report messages.";
+          leaf group-address {
+            type inet:ipv6-address-no-zone {
+              pattern '[Ff]{2}[0-9A-Fa-f][03-9a-fA-F].+';
+            }
+            description
+              "Address of a multicast group.";
+          }
+          leaf mask-length {
+            type uint32 {
+              range "16 | 32 | 64 | 128";
+            }
+            description
+              "Mask length of a group address.";
+          }
+          leaf source-address {
+            type inet:ipv6-address-no-zone;
+            description
+              "Multicast source IPv6 address. Value restrictions: The value cannot be any of the following: All 0s: 0::0, Loopback address: 0::1, Multicast address: ff00::0/8, Link-local address: fe80::0/10, In the format of ::x.x.x.x, class A addresses do not contain network segments 0 and 127. Class A, B, and C addresses cannot be network numbers or broadcast numbers.";
+          }
+        }
+      }
+    }
+  }
+  augment "/vlan:vlan/vlan:vlans/vlan:vlan" {
+    description
+      "Adds configuration to the VLAN module.";
+    container igmp-snooping {
+      when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+      description
+        "Configure Layer 2 multicast in the VLAN.";
+      container global {
+        must "proxy-enable='false' or (querier-enable='false' and report-suppress='false')";
+        must "(../../vlan:type='common') or (../../vlan:type='super' and ( proxy-enable='false' or (not (/vlan:vlan/vlan:vlans/vlan:vlan[vlan:super-vlan=current()/../../vlan:id]/ims:igmp-snooping/ims:global/ims:querier-enable='true') and not (/vlan:vlan/vlan:vlans/vlan:vlan[vlan:super-vlan=current()/../../vlan:id]/ims:igmp-snooping/ims:global/ims:report-suppress='true')))) or (../../vlan:type='sub' and (proxy-enable='false' or (not (/vlan:vlan/vlan:vlans/vlan:vlan[vlan:id=current()/../../vlan:super-vlan]/ims:igmp-snooping/ims:global/ims:querier-enable='true') and not(/vlan:vlan/vlan:vlans/vlan:vlan[vlan:id=current()/../../vlan:super-vlan]/ims:igmp-snooping/ims:global/ims:report-suppress='true') and not(/vlan:vlan/vlan:vlans/vlan:vlan[vlan:super-vlan=current()/../../vlan:super-vlan]/ims:igmp-snooping/ims:global/ims:querier-enable='true') and not(/vlan:vlan/vlan:vlans/vlan:vlan[vlan:super-vlan=current()/../../vlan:super-vlan]/ims:igmp-snooping/ims:global/ims:report-suppress='true'))))";
+        description
+          "Configure Layer 2 multicast in the VLAN.";
+        leaf ssm-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic'))";
+          description
+            "SSM group range policy.";
+        }
+        leaf version {
+          type uint32 {
+            range "1..3";
+          }
+          default "2";
+          description
+            "Layer 2 multicast version on an interface.";
+        }
+        leaf ssm-mapping-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SSM mapping.";
+        }
+        leaf ssm-mapping-policy {
+          when "../ssm-mapping-enable='true'";
+          type string {
+            length "1..31";
+          }
+          must "not(../../ssm-mapping-groups/ssm-mapping-group)";
+          description
+            "Configure a policy for SSM mapping.";
+        }
+        leaf report-suppress {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of suppressing report messages.";
+        }
+        leaf static-group-suppress-dynamic-join {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a Layer 2 device from sending Layer 2 multicast report and leave messages of a group that has been configured as a static group on the upstream device.";
+        }
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast snooping in the VLAN.";
+        }
+        leaf group-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "Configure a policy for filtering multicast groups on an interface to control the range of multicast groups that hosts can join.";
+        }
+        leaf group-policy-version {
+          when "../group-policy-acl";
+          type uint32 {
+            range "1..3";
+          }
+          description
+            "A group policy applies only to a specified Layer 2 multicast version.";
+        }
+        leaf max-response-time {
+          type uint32 {
+            range "1..25";
+          }
+          units "s";
+          default "10";
+          description
+            "Maximum response time for a Layer 2 multicast Query message. This time is used to control the deadline for user hosts to send report messages.";
+        }
+        leaf immediately-leave {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable prompt-leave. Prompt-Leave allows an interface to immediately delete a group record after receiving a leave message for this group, without sending a last-member query message.";
+        }
+        leaf immediately-leave-acl {
+          when "../immediately-leave='true'";
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "ACL used to control the applicable range of Layer 2 multicast prompt-leave.";
+        }
+        leaf proxy-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast snooping proxy.";
+        }
+        leaf multicast-group-model {
+          type snooping-mode;
+          default "asm-ssm";
+          description
+            "Layer 2 multicast group join mode.";
+        }
+        leaf ip-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "IP filter policy.";
+        }
+        leaf query-ip-policy-acl {
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "Querier IP policy.";
+        }
+        leaf querier-election {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable Layer 2 multicast querier election.";
+        }
+        leaf proxy-router-protocol-pass {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a Layer 2 multicast snooping proxy-enabled device to transparently transmit Layer 2 multicast report messages.";
+        }
+        leaf querier-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a Layer 2 multicast querier.";
+        }
+        leaf query-interval {
+          type uint32 {
+            range "1..65535";
+          }
+          units "s";
+          default "60";
+          description
+            "Interval at which a device sends general query messages.";
+        }
+        leaf require-router-alert {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to permit only Layer 2 multicast messages that contain the router-alert option in the IP header.";
+        }
+        leaf send-router-alert {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable a device to send Layer 2 multicast router alert.";
+        }
+        leaf robustness {
+          type uint32 {
+            range "2..5";
+          }
+          default "2";
+          description
+            "Number of times for retransmitting a message to avoid packet loss.";
+        }
+        leaf last-member-query-interval {
+          type uint32 {
+            range "1..5";
+          }
+          units "s";
+          default "1";
+          description
+            "Interval at which a last-member query message is sent.";
+        }
+        leaf router-aging-time {
+          type uint32 {
+            range "1..1000";
+          }
+          units "s";
+          default "180";
+          description
+            "Aging time of dynamic router ports. The aging time of a dynamic router port is default value or equals to the holdtime value contained in a PIM hello packet.";
+        }
+        leaf router-port-learning {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable dynamic router port learning.";
+        }
+        leaf source-life-time {
+          type uint32 {
+            range "60..1000";
+          }
+          units "s";
+          default "210";
+          description
+            "Aging time for entries triggered by multicast flows.";
+        }
+        leaf pim-forward-to-router-port-only {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable PIM messages forwarding to router port only.";
+        }
+        leaf send-query-source-address {
+          type inet:ipv4-address-no-zone {
+            pattern '(12[0-6]|1[0-1]\d|[1-9]\d|[1-9])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|(12[8-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+          }
+          description
+            "Source IP address for Layer 2 multicast General Query messages.";
+        }
+      }
+      container multicast-vlan {
+        must "../global/enable='true'";
+        must "../../vlan:type='common'";
+        must "not (/mc:multicast/ims:igmp-snooping/ims:instances/ims:instance[ims:vlan-id=current()/../../vlan:id])";
+        presence "Enable multicast VLAN.";
+        description
+          "Configure multicast VLAN.";
+        leaf user-vlans {
+          type pub-type:vlan-range;
+          description
+            "User VLAN of the multicast VLAN.";
+        }
+        leaf querier-election-user-vlans {
+          when "../user-vlans";
+          type pub-type:vlan-range;
+          description
+            "Enable the querier election function in user VLANs.";
+        }
+        leaf send-query-prune-source-port {
+          type boolean;
+          default false;
+          description
+            "Enable/disable a multicast VLAN from sending General Query messages back through the source interface in the user VLAN.";
+        } 
+
+      }
+      container ssm-mapping-groups {
+        description
+          "List of SSM mapping configurations.";
+        list ssm-mapping-group {
+          must "not(../../global/ssm-mapping-policy)";
+          key "group-address mask-length source-address";
+          max-elements 128;
+          description
+            "Configure SSM mapping of a VLAN.";
+          leaf group-address {
+            type inet:ipv4-address-no-zone {
+              pattern '(22[4-9]|23\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "Address of a multicast group.";
+          }
+          leaf mask-length {
+            type uint32 {
+              range "4..32";
+            }
+            description
+              "Mask length of a group address.";
+          }
+          leaf source-address {
+            type inet:ipv4-address-no-zone {
+              pattern '([1-9]|[1-9]\d|1[0-1]\d|12[0-68-9]|1[3-9]\d|2[0-1]\d|22[0-3])(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}';
+            }
+            description
+              "Multicast source IPv4 address.";
+          }
+        }
+      }
+      uses display-vlan-port-info;
+    }
+    container mld-snooping {
+      when "/mc:multicast/ims:mld-snooping/ims:global-enable";
+      description
+        "Configure Layer 2 multicast configurations in the VLAN.";
+      container ssm-mapping-groups {
+        description
+          "List of SSM mapping configurations.";
+        list ssm-mapping-group {
+          must "not(/mc:multicast/ims:igmp-snooping/ims:instances/ims:instance[ims:vlan-id=current()/../../../vlan:id])";
+          key "group-address mask-length source-address";
+          max-elements 128;
+          description
+            "Configure SSM mapping of a VLAN.";
+          leaf group-address {
+            type inet:ipv6-address-no-zone {
+              pattern '[Ff]{2}[0-9A-Fa-f][03-9a-fA-F].+';
+            }
+            description
+              "Address of a multicast group.";
+          }
+          leaf mask-length {
+            type uint32 {
+              range "16 | 32 | 64 | 128";
+            }
+            description
+              "Mask length of a group address.";
+          }
+          leaf source-address {
+            type inet:ipv6-address-no-zone;
+            description
+              "Multicast source IPv6 address. Value restrictions: The value cannot be any of the following: All 0s: 0::0, Loopback address: 0::1, Multicast address: ff00::0/8, Link-local address: fe80::0/10, In the format of ::x.x.x.x, class A addresses do not contain network segments 0 and 127. Class A, B, and C addresses cannot be network numbers or broadcast numbers.";
+          }
+        }
+      }
+    }
+  }
+  augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac" {
+    description
+      "Adds configuration to the L2VPN module.";
+    container igmp-snooping {
+      description
+        "Configure IGMP-snooping on VPLS AC interface.";
+      container static-router-port {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable and ((../../../../l2vpn:bgp-signaling and not(../../../../l2vpn:ldp-signaling)) or ../../../../l2vpn:bgp-multi-homing-signaling or (../../../../l2vpn:bgpad-signaling and ../../../../l2vpn:ipmsi/l2vpn:leaf and not(../../../../l2vpn:ipmsi/l2vpn:root)) or (not(../../../../l2vpn:bgpad-signaling) and not(../../../../l2vpn:bgp-signaling) and ../../../../l2vpn:ldp-signaling/l2vpn:vsi-id)) and ../../../../l2vpn:work-mode='normal'";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination)";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking)";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-mapping)";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-policy/ethernet:policy-type='8021p')";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination/ethernet:dot1q-vlans-policy/ethernet:policy-vlans/ethernet:policy-vlan[ethernet:policy-type='8021p'])";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination/ethernet:dot1q-vlans-policy/ethernet:policy-vlan-groups/ethernet:policy-vlan-group[ethernet:policy-type='8021p'])";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:untag-policy)";
+        must "not(/mc:multicast/ims:igmp-snooping/ims:instances/ims:instance/ims:user-instance-vsis/ims:user-instance-vsi[ims:vsi-name=current()/../../../../../l2vpn:name])";
+        presence "static-router-port.";
+        description
+          "Configure static router port.";
+      }
+      container backup-report-forward {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ifm:type='Eth-Trunk'";
+        must "not (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking)";
+        must "not (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-mapping)";
+        presence "backup-report-forward.";
+        description
+          "Configure backup interfaces that forward report to router port.";
+      }
+      container proxy-uplink-port {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q[ethernet:vlan-type-vid=current()/pe-vid] and not(./ce-vid)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ifm:class='main-interface' and not(./pe-vid) and not(./ce-vid)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination and ./pe-vid and not(./ce-vid)) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination/ethernet:qinq-vids/ethernet:qinq-vid[ethernet:pe-vlan-begin<=current()/pe-vid][ethernet:pe-vlan-end>=current()/pe-vid] and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination/ethernet:qinq-vids/ethernet:qinq-vid[ethernet:ce-vlan-begin<=current()/ce-vid][ethernet:ce-vlan-end>=current()/ce-vid])";
+        must "(../../../../ims:igmp-snooping/ims:global/ims:proxy-enable='true') or (../../../../ims:igmp-snooping/ims:global/ims:querier-enable='true')";
+        must "not (../../../../ims:igmp-snooping/ims:proxy-uplink-port)";
+        presence "proxy-uplink-port.";
+        leaf pe-vid {
+          type uint32 {
+            range "1..4094";
+          }
+          description
+            "Outer VLAN ID.";
+        }
+        leaf ce-vid {
+          type uint32 {
+            range "1..4094";
+          }
+          description
+            "Inner VLAN ID.";
+        }
+        description
+          "Configure a proxy uplink port.";
+      }
+      container limit-max-entry {    
+        description
+          "Configure Layer 2 multicast entry limit of an AC interface.";
+        leaf config-entry {
+          type uint32 {
+            range "1..16384";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ifm:type!='Vlanif'";
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ifm:type!='IMEth'";
+          description
+            "Maximum number of entries that can be generated. VLANIF or IMETH interface does not support.";
+        }
+        leaf except-acl {
+          when "../config-entry";
+          type acl:acl4-identity;
+          must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+          description
+            "ACL used to prevent groups from being counted against the multicast group number limit. A basic ACL filters both (*, G) and (S, G) multicast entries, while an advanced ACL filters only (S, G) multicast entries.";
+        }
+        leaf current-entry {
+          type uint32 {
+            range "0..16384";
+          }
+          config false;
+          description
+            "Current entry statistics.";
+        }
+      }
+    }
+    container mld-snooping {
+      description
+        "Configure MLD-snooping on VPLS AC interface.";
+      container static-router-port {
+        when "/mc:multicast/ims:mld-snooping/ims:global-enable and ../../../../l2vpn:ldp-signaling/l2vpn:vsi-id and ../../../../l2vpn:work-mode='normal'";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination)";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking)";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-mapping)";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-policy/ethernet:policy-type='8021p')";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination/ethernet:dot1q-vlans-policy/ethernet:policy-vlans/ethernet:policy-vlan[ethernet:policy-type='8021p'])";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination/ethernet:dot1q-vlans-policy/ethernet:policy-vlan-groups/ethernet:policy-vlan-group[ethernet:policy-type='8021p'])";
+        must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:untag-policy)";
+        must "not(/mc:multicast/ims:igmp-snooping/ims:instances/ims:instance/ims:user-instance-vsis/ims:user-instance-vsi[ims:vsi-name=current()/../../../../../l2vpn:name])";
+        presence "static-router-port.";
+        description
+          "Configure static router port."; 
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "Adds configuration to the ifm module.";
+    container igmp-snooping {
+      description
+        "Configure Layer 2 multicast in the VLAN interface.";
+      leaf learning-disable-vlans {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        type pub-type:vlan-range;
+        description
+          "Whether dynamic entry learning is enabled on an interface.";
+      }
+      leaf static-router-port-vlans {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        type pub-type:vlan-range;
+        description
+          "List of VLANs for static router ports.";
+      }
+      leaf limit-max-entry {
+        type uint32 {
+          range "1..16384";
+        }
+        description
+          "Maximum number of entries that can be generated.";
+      }
+      leaf except-acl {
+        when "../limit-max-entry>0";
+        type acl:acl4-identity;
+        must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+        description
+          "ACL used to prevent groups from being counted against the multicast group number limit. A basic ACL filters both (*, G) and (S, G) multicast entries, while an advanced ACL filters only (S, G) multicast entries.";
+      }
+      container proxy-uplink-ports {
+        when "/mc:multicast/ims:igmp-snooping/ims:global-enable";
+        description
+          "List of layer 2 multicast proxy uplink ports. layer 2 multicast Query messages cannot be sent to such ports to prevent layer 2 multicast querier reelection.";
+        list proxy-uplink-port {
+          must "../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute";
+          key "vlan-id";
+          description
+            "Configure Layer 2 multicast proxy uplink port.";
+          leaf vlan-id {
+            type uint32 {
+              range "1..4094";
+            }
+            description
+              "ID of a virtual local area network.";
+          }
+        }
+      }
+      container number-limits {
+        description
+          "List of limit configurations of interfaces.";
+        list number-limit {
+          must "vlan-id-end>=vlan-id-begin";
+          must "../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute";
+          key "limit-max-entry vlan-id-begin vlan-id-end";
+          description
+            "Configure limit of an interface. The newly configured VLAN tag range may be combined with the existing VLAN tag range.";
+          leaf limit-max-entry {
+            type uint32 {
+              range "1..16384";
+            }
+            description
+              "Maximum number of entries that can be generated.";
+          }
+          leaf vlan-id-begin {
+            type uint32 {
+              range "1..4094";
+            }
+            description
+              "Begin VLAN ID in batch configuration.";
+          }
+          leaf vlan-id-end {
+            type uint32 {
+              range "1..4094";
+            }
+            description
+              "End VLAN ID in batch configuration.";
+          }
+          leaf except-acl {
+            type acl:acl4-identity;
+            must "(/acl:acl/acl:groups/acl:group[acl:number=number(current())] and (/acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:number=number(current())]/acl:type='advance')) or (/acl:acl/acl:groups/acl:group[acl:identity=current()] and (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic' or /acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance'))";
+            description
+              "ACL used to prevent groups from being counted against the multicast group number limit. A basic ACL filters both (*, G) and (S, G) multicast entries, while an advanced ACL filters only (S, G) multicast entries.";
+          }
+        }
+      }
+    }
+    container mld-snooping {
+      description
+        "Configure Layer 2 multicast in the VLAN interface.";
+      leaf learning-disable-vlans {
+        when "/mc:multicast/ims:mld-snooping/ims:global-enable";
+        type pub-type:vlan-range;
+        description
+          "Whether dynamic entry learning is enabled on an interface.";
+      }
+      leaf static-router-port-vlans {
+        when "/mc:multicast/ims:mld-snooping/ims:global-enable";
+        type pub-type:vlan-range;
+        description
+          "List of VLANs for static router ports.";
+      }
+      container proxy-uplink-ports {
+        when "/mc:multicast/ims:mld-snooping/ims:global-enable";
+        description
+          "List of Layer 2 multicast proxy uplink ports. Layer 2 multicast Query messages cannot be sent to such ports to prevent layer 2 multicast querier reelection.";
+        list proxy-uplink-port {
+          must "../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute";
+          key "vlan-id";
+          description
+            "Configure Layer 2 multicast proxy uplink port.";
+          leaf vlan-id {
+            type uint32 {
+              range "1..4094";
+            }
+            description
+              "ID of a virtual local area network.";
+          }
+        }
+      }
+    }	
+  }  
+  augment /evpn:evpn/evpn:instances/evpn:instance {
+    description
+      "EVPN multicast routes.";
+    container smet-routes {
+      config false;
+      description
+        "List of SMET routes.";
+      list smet-route {
+        key "rd prefix from route-type-flag";
+        config false;
+        description
+          "Statistics of SMET routes.";
+        leaf rd {
+          type string {
+            length "3..21";
+          }
+          description
+            "Route distinguisher.";
+        }
+        leaf prefix {
+          type smet-prefix;
+          description
+            "Prefix of SMET route.";
+        }
+        leaf from {
+          type inet:ip-address-no-zone;
+          description
+            "Source peer that sends a route.";
+        }
+        leaf route-type-flag {
+          type evpn:best-flag-type;
+          description
+            "Route type.";
+        }
+        uses display-evpn-routing-table;
+      }
+    }
+    container join-routes {
+      config false;
+      description
+        "List of IGMP Join Synch routes.";
+      list join-route {
+        key "rd prefix from route-type-flag";
+        config false;
+        description
+          "Statistics of IGMP Join Synch routes.";
+        leaf rd {
+          type string {
+            length "3..21";
+          }
+          description
+            "Route distinguisher.";
+        }
+        leaf prefix {
+          type join-prefix;
+          description
+            "Prefix of IGMP Join Synch route.";
+        }
+        leaf from {
+          type inet:ip-address-no-zone;
+          description
+            "Source peer that sends a route.";
+        }
+        leaf route-type-flag {
+          type evpn:best-flag-type;
+          description
+            "Route type.";
+        }
+        uses display-evpn-routing-table;
+      }
+    }
+  }
+}

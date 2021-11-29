@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-eai-service-notification-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-eai-service-notification-deviations-ATN-980B";
+  prefix eai-service-notification-devs-ATN-980B;
+
+  import huawei-eai-service-notification {
+    prefix eai-service-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-eai-service-notification module.";
+
+  revision 2020-11-10 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/eai-service-notification:anomaly-packet-loss" {
+    deviate not-supported;
+  }
+
+  deviation "/eai-service-notification:anomaly-packet-loss-resume" {
+    deviate not-supported;
+  }
+
+}

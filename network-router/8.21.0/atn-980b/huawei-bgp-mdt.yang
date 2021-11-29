@@ -1,0 +1,358 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-mdt {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bgp-mdt";
+  prefix bgp-mdt;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-xpl {
+    prefix xpl;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+  revision 2020-08-30 {
+    description
+      "The YANG descriptions are modified according to new standards.";
+    reference "Huawei private.";
+  }
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  grouping mdt-route-statistics {
+    description
+      "BGP IPv4 mdt route statistics information.";
+    container statistics {
+      description
+        "List of BGP routes statistics information of the IPv4 mdt address family.";
+      list statistic {
+        key "vpn-name";
+        description
+          "BGP IPv4 mdt address family routes statistics.";
+        uses bgp-rt:routing-table-vpn-name;
+        uses bgp-rt:route-total-st-type;
+        uses bgp-rt:cidr-route-st-type;
+        uses bgp-rt:community-route-st-type;
+        uses bgp-rt:different-origin-as-route-st-type;
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af" {
+    description
+      "BGP mdt address family configuration.";
+    container mdt {
+      when "../bgp:type = 'mdt'";
+      description
+        "Configure IPv4-family mdt options.";
+      container common {
+        description
+          "Configure BGP mdt address family common options.";
+        leaf policy-vpntarget {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable VPN target-based filtering for the received VPN routes. Only the VPN route whose Export RT attribute matches the local Import RT attribute can be added to the routing table. This option can be used in the inter-AS VPN Option B solution and the ASBR MP-EBGP inter-AS L2VPN solution in Kompella mode.";
+        }
+        uses bgp:reflector-cluster-type;
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable route reflection between clients. If clients of a route reflector (RR) are fully meshed, you can disable route reflection among clients to reduce the cost.";
+        }
+        leaf bestroute-igp-metric-ignore {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable BGP to ignore the IGP cost of each BGP route to the next hop in route selection. By default, a BGP route with a smaller IGP cost to the next hop is preferred.";
+        }
+        uses bgp:reflect-type;
+        leaf route-select-delay {
+          type uint16 {
+            range "0..3600";
+          }
+          units "s";
+          default "0";
+          description
+            "Route selection delay.";
+        }
+        uses bgp:route-reflector-ext-community-filter-type;
+      }
+      uses bgp:ipv4-import-filter-protocol-type;
+      container export-filter-policy {
+        description
+          "Configure a filtering policy. It is used to filter the routes received from a peer. By default, routes are not filtered.";
+        uses bgp:ipv4-import-filter-protocol-policy-choice-type;
+      }
+      uses bgp:slow-peer-type;
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af" {
+    description
+      "BGP IPv4 mdt address family configuration.";
+    container mdt {
+      when "../bgp:type='mdt'";
+      description
+        "Configure BGP IPv4 mdt options.";
+      uses bgp:advertise-large-community-group-type;
+      uses bgp:advertise-community-type;
+      uses bgp:rt-update-interval-type;
+      uses bgp:peer-group-acl-name-or-num-type;
+      uses bgp:group-independent-peer-group-type;
+      uses bgp:ip-prefix-filter-type;
+      uses bgp:as-path-filter-type;
+      choice import-policy-type {
+        description
+          "Set route policy or filter.";
+        case rtp-ref {
+          description
+            "Route policy.";
+          leaf import-policy {
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+          }
+        }
+        case xpl-ref {
+          description
+            "Route filter.";
+          container import-filter {
+            description
+              "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+            leaf name {
+              type leafref {
+                path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+              }
+              description
+                "Specify an import route-filter name.";
+            }
+            leaf parameter {
+              when "../name";
+              type xpl:filter-parameter-type;
+              description
+                "Specify an import route-filter parameter.";
+            }
+          }
+        }
+      }
+      choice export-policy-type {
+        description
+          "Set route policy or filter.";
+        case rtp-ref {
+          description
+            "Route policy.";
+          leaf export-policy {
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+          }
+        }
+        case xpl-ref {
+          description
+            "Route filter.";
+          container export-filter {
+            description
+              "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+            leaf name {
+              type leafref {
+                path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+              }
+              description
+                "Specify an export route-filter name.";
+            }
+            leaf parameter {
+              when "../name";
+              type xpl:filter-parameter-type;
+              description
+                "Specify an export route-filter parameter.";
+            }
+          }
+        }
+      }
+      leaf reflect-client {
+        when "../../../../bgp:type='ibgp'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the local device as a route reflector (RR) and a peer or peer group as its client. This configuration is applicable between IBGP peers only. The configurations of RRs and its clients in an address family are valid only in this address family. Therefore, it is recommended to configure RRs and its clients in the specified address family that is required.";
+      }
+      leaf nexthop-configure {
+        type bgp:nexthop-configuration-type;
+        must "../nexthop-configure='local'";
+        description
+          "Both the next-hop-local mode and next-hop-invariable mode are available when the peer address family is the VPNv4/VPNV6/L2VPN AD address family. Only the next-hop-local mode is available when the peer address family is not VPNv4/VPNV6/L2VPN AD address family. In next-hop-local mode, you can configure a BGP speaker to set its IP address of as the next hop of the routes to be advertised to IBGP peers or IBGP peer groups. In next-hop-invariable mode, you can configure PEs in different ASs not to change the next hop of routes when the PEs advertise the routes to their EBGP peers and use the next hop addresses of IGP routes to advertise imported IGP routes to IBGP peers. By default, when a BGP speaker advertises routes to EBGP peers and imported IGP routes to IBGP peers, the BGP speaker changes the next hop to its interface address. If the value of nexthop-configure is set to local, the configuration does not take effect in the current address family.";
+      }
+      leaf nexthop-effective {
+        when "../nexthop-configure='local'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the next hop of group takes effect in the RR scenario.";
+      }
+      uses bgp:route-limit-type;
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af" {
+    description
+      "BGP IPv4 mdt address family configuration.";
+    container mdt {
+      when "../bgp:type = 'mdt'";
+      description
+        "Configure IPv4 mdt options.";
+      leaf group-name {
+        type leafref {
+          path "../../../../../../bgp:peer-groups/bgp:peer-group/bgp:name";
+        }
+        must "../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name = current()]/bgp:afs/bgp:af[bgp:type='mdt']";
+        must "../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name = current()]/bgp:peer-establish-mode = 'static'";
+        description
+          "Configure a name for a peer group. After a peer is deleted from the peer group, the peer is disabled from the address family. The object cannot be modified.";
+        ext:operation-exclude update {
+          description "The node cannot be modified, when the peer already belongs to a peer-group.";
+        }
+      }
+      uses bgp:advertise-large-community-type;
+      uses bgp:advertise-community-type;
+      uses bgp:rt-update-interval-type;
+      uses bgp:peer-group-acl-name-or-num-type;
+      uses bgp:peer-independent-peer-group-type;
+      uses bgp:ip-prefix-filter-type;
+      uses bgp:as-path-filter-type;
+      choice import-policy-type {
+        description
+          "Set route policy or filter.";
+        case rtp-ref {
+          description
+            "Route policy.";
+          leaf import-policy {
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+          }
+        }
+        case xpl-ref {
+          description
+            "Route filter.";
+          container import-filter {
+            description
+              "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+            leaf name {
+              type leafref {
+                path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+              }
+              description
+                "Specify an import route-filter name.";
+            }
+            leaf parameter {
+              when "../name";
+              type xpl:filter-parameter-type;
+              description
+                "Specify an import route-filter parameter.";
+            }
+          }
+        }
+      }
+      choice export-policy-type {
+        description
+          "Set route policy or filter.";
+        case rtp-ref {
+          description
+            "Route policy.";
+          leaf export-policy {
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+          }
+        }
+        case xpl-ref {
+          description
+            "Route filter.";
+          container export-filter {
+            description
+              "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+            leaf name {
+              type leafref {
+                path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+              }
+              description
+                "Specify an export route-filter name.";
+            }
+            leaf parameter {
+              when "../name";
+              type xpl:filter-parameter-type;
+              description
+                "Specify an export route-filter parameter.";
+            }
+          }
+        }
+      }
+      leaf reflect-client {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the local device as a route reflector (RR) and a peer or peer group as its client. This configuration is applicable between IBGP peers only. The configurations of RRs and its clients in an address family are valid only in this address family. Therefore, it is recommended to configure RRs and its clients in the specified address family that is required.";
+      }
+      leaf nexthop-configure {
+        type bgp:nexthop-configuration-type;
+        must "../nexthop-configure='local'";
+        description
+          "Both the next-hop-local mode and next-hop-invariable mode are available when the peer address family is the VPNv4/VPNV6/L2VPN AD address family. Only the next-hop-local mode is available when the peer address family is not VPNv4/VPNV6/L2VPN AD address family. In next-hop-local mode, you can configure a BGP speaker to set its IP address of as the next hop of the routes to be advertised to IBGP peers or IBGP peer groups. In next-hop-invariable mode, you can configure PEs in different ASs not to change the next hop of routes when the PEs advertise the routes to their EBGP peers and use the next hop addresses of IGP routes to advertise imported IGP routes to IBGP peers. By default, when a BGP speaker advertises routes to EBGP peers and imported IGP routes to IBGP peers, the BGP speaker changes the next hop to its interface address. If the value of nexthop-configure is set to local, the configuration does not take effect in the current address family.";
+      }
+      leaf nexthop-effective {
+        when "../nexthop-configure='local'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the next hop of peer takes effect in the RR scenario.";
+      }
+      uses bgp:route-limit-type;
+      uses bgp:path-attr-map-type;
+    }
+  }
+  augment "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route" {
+    description
+      "BGP mdt address family routes information.";
+    container mdt {
+      config false;
+      description
+        "Statistics of BGP routes information of mdt address family.";
+      uses mdt-route-statistics;
+    }
+  }
+  ext:task-name "bgp";
+}

@@ -1,0 +1,103 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-routing-policy-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-routing-policy-deviations-ATN-980B";
+  prefix of-rpol-devs-ATN-980B;
+
+  import openconfig-routing-policy {
+    prefix oc-rpol;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Policies are expressed as a set of top-level policy definitions,
+     each of which consists of a sequence of policy statements. Policy
+     statements consist of simple condition-action tuples. Conditions
+     may include mutiple match or comparison operations, and similarly
+     actions may be multitude of changes to route attributes or a
+     final disposition of accepting or rejecting the route.";
+
+  revision 2020-10-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-rpol:config/oc-rpol:policy-result" {
+    deviate add {
+      default "ACCEPT_ROUTE";
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:config/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..200";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:state/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..200";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:config/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..5";
+        pattern '(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{0,3}|0)';
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:state/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..5";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement" {
+    deviate add {
+      min-elements 1;
+      max-elements 65535;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:config/oc-rpol:call-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:state/oc-rpol:call-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-interface" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-prefix-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-neighbor-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-tag-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:neighbor-sets" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:tag-sets" {
+    deviate not-supported;
+  }
+}

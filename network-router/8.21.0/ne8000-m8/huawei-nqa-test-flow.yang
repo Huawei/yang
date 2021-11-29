@@ -1,0 +1,547 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-nqa-test-flow {
+  yang-version 1;
+  belongs-to huawei-nqa {
+    prefix nqa;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Description of submodule nqa-instance.";
+  revision 2021-04-29 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  grouping test-flows-type {
+    description
+      "Test flow.";
+    list test-flow {
+      must "(ce-vid and pe-vid) or (not(ce-vid) and not(pe-vid))";
+      must "(color-aware-green-8021p and color-aware-yellow-8021p) or (not(color-aware-green-8021p) and not(color-aware-yellow-8021p))";
+      must "(color-aware-green-dscp and color-aware-yellow-dscp) or (not(color-aware-green-dscp) and not(color-aware-yellow-dscp))";
+      must "(end-dest-port and (end-dest-port - dest-port) > 0 and (end-dest-port - dest-port) < 128) or not(end-dest-port)";
+      must "(end-src-port  and (end-src-port  - src-port)  > 0 and (end-src-port  - src-port)  < 128) or not(end-src-port)";
+      must "(end-vlan-id   and (end-vlan-id   - vlan-id)   > 0 and (end-vlan-id   - vlan-id)   < 128) or not(end-vlan-id)";
+      must "(end-ce-vid    and (end-ce-vid    - ce-vid)    > 0 and (end-ce-vid    - ce-vid)    < 128) or not(end-ce-vid)";
+      must "(end-color-aware-green-8021p  and end-color-aware-green-8021p  > color-aware-green-8021p)  or not(end-color-aware-green-8021p)";
+      must "(end-color-aware-yellow-8021p and end-color-aware-yellow-8021p > color-aware-yellow-8021p) or not(end-color-aware-yellow-8021p)";
+      must "(end-color-aware-green-dscp   and end-color-aware-green-dscp   > color-aware-green-dscp)   or not(end-color-aware-green-dscp)";
+      must "(end-color-aware-yellow-dscp  and end-color-aware-yellow-dscp  > color-aware-yellow-dscp)  or not(end-color-aware-yellow-dscp)";
+      must "(end-color-blind-8021p        and end-color-blind-8021p        > color-blind-8021p)        or not(end-color-blind-8021p)";
+      must "(end-color-blind-dscp         and end-color-blind-dscp         > color-blind-dscp)         or not(end-color-blind-dscp)";
+      must "(flr and ftd and fdv) or (not(flr) and not(ftd) and not(fdv))";
+      key "test-flow-id";
+      description
+        "Configure NQA test flow.";
+      leaf test-flow-id {
+        type uint16 {
+          range "1..65535";
+        }
+        description
+          "ID of a test flow.";
+      }
+      leaf dest-mac {
+        type pub-type:mac-address;
+        default "0000-0000-0000";
+        description
+          "Start destination MAC address.";
+      }
+      leaf src-mac {
+        type pub-type:mac-address;
+        default "0000-0000-0000";
+        description
+          "Start source MAC address.";
+      }
+      leaf dest-ipv4 {
+        type inet:ipv4-address-no-zone;
+        default "0.0.0.0";
+        description
+          "Start destination IPv4 address.";
+      }
+      leaf src-ipv4 {
+        type inet:ipv4-address-no-zone;
+        default "0.0.0.0";
+        description
+          "Start source IP address.";
+      }
+      leaf dest-port {
+        type uint16 {
+          range "7|1025..65535";
+        }
+        default "7";
+        description
+          "Start destination UDP port.";
+      }
+      leaf src-port {
+        type uint16 {
+          range "1025..65535";
+        }
+        default "49184";
+        description
+          "Start source UDP port.";
+      }
+      choice vlan-tag-config {
+        description
+          "VLAN configuration selection. One VLAN tag or two VLAN tags can be configured.";
+        case one-vlan-tag {
+          description
+            "One VLAN tag can be configured.";
+          leaf vlan-id {
+            type uint16 {
+              range "1..4094";
+            }
+            description
+              "Begin VLAN ID.";
+          }
+        }
+        case two-vlan-tag {
+          description
+            "Two VLAN tags can be configured.";
+          leaf ce-vid {
+            type uint16 {
+              range "1..4094";
+            }
+            description
+              "Begin CE VLAN ID.";
+          }
+          leaf pe-vid {
+            type uint16 {
+              range "1..4094";
+            }
+            description
+              "PE VLAN ID.";
+          }
+        }
+      }
+      choice color-mode {
+        description
+          "Color mode of a test flow.";
+        case color-blind {
+          description
+             "The color mode is color blind.";
+          choice blind-priority-type {
+            description
+              "The priority type when color mode is color-blind.";
+            case blind-priority-8021p {
+              description
+                "The priority type is 802.1p.";
+              leaf color-blind-8021p {
+                type uint8 {
+                  range "0..7";
+                }
+                description
+                  "The start 802.1p priority when color mode is color-blind.";
+              }
+            }
+            case blind-priority-dscp {
+              description
+                "The priority type is DSCP.";
+              leaf color-blind-dscp {
+                type uint8 {
+                  range "0..63";
+                }
+                description
+                  "The start DSCP priority when color mode is color-blind.";
+              }
+            }
+          }
+        }
+        case color-aware {
+          description
+             "The color mode is color aware.";
+          choice aware-priority-type {
+            description
+              "The priority type when color mode is color-aware.";
+            case aware-priority-8021p {
+              description
+                "The priority type is 802.1p.";
+              leaf color-aware-green-8021p {
+                type uint8 {
+                  range "0..7";
+                }
+                description
+                  "The start 802.1p priority of green packets when the color mode is color-aware.";
+              }
+              leaf color-aware-yellow-8021p {
+                type uint8 {
+                  range "0..7";
+                }
+                description
+                  "The start 802.1p priority of yellow packets when the color mode is color-aware.";
+              }
+            }
+            case aware-priority-dscp {
+              description
+                "The priority type is DSCP.";
+              leaf color-aware-green-dscp {
+                type uint8 {
+                  range "0..63";
+                }
+                description
+                  "The start DSCP priority of green packets when the color mode is color-aware.";
+              }
+              leaf color-aware-yellow-dscp {
+                type uint8 {
+                  range "0..63";
+                }
+                description
+                  "The start DSCP priority of yellow packets when the color mode is color-aware.";
+              }
+            }
+          }
+        }
+      }
+      choice range-type {
+        description
+          "Range type.";
+        case dest-mac {
+          description
+            "The destination MAC address will be set to a range.";
+          choice dest-mac-range-type {
+            description
+              "Destination MAC range type.";
+            case end-dest-mac {
+              description
+                "End destination MAC address.";
+              leaf end-dest-mac {
+                type pub-type:mac-address;
+                description
+                  "End destination MAC address.";
+              }
+            }
+            case increment-dest-mac {
+              description
+                "The incremental range of destination MAC addresses.";
+              leaf dest-mac-mask {
+                type pub-type:mac-address;
+                description
+                  "The mask of destination MAC address. After conversion to binary, the positions of 1s must be consecutive, and the number of consecutive 1s cannot be less than 1 or greater than 32.";
+              }
+              leaf dest-mac-increment-step {
+                type uint8 {
+                  range "1..128";
+                }
+                description
+                  "Increment step.";
+              }
+              leaf dest-mac-increment-count {
+                type uint8 {
+                  range "1..128";
+                }
+                description
+                  "Increment count.";
+              }
+            }
+          }
+        }
+        case source-mac {
+          description
+            "The source MAC address will be set to a range.";
+          choice src-mac-range-type {
+            description
+              "Source MAC range type.";
+            case end-src-mac {
+              description
+                "End source MAC address.";
+              leaf end-src-mac {
+                type pub-type:mac-address;
+                description
+                  "End source MAC address.";
+              }
+            }
+            case increment-src-mac {
+              description
+                "The incremental range of source MAC addresses.";
+              leaf src-mac-mask {
+                type pub-type:mac-address;
+                description
+                  "The mask of source MAC address. After conversion to binary, the positions of 1s must be consecutive, and the number of consecutive 1s cannot be less than 1 or greater than 32.";
+              }
+              leaf src-mac-increment-step {
+                type uint8 {
+                  range "1..128";
+                }
+                description
+                  "Increment step.";
+              }
+              leaf src-mac-increment-count {
+                type uint8 {
+                  range "1..128";
+                }
+                description
+                  "Increment count.";
+              }
+            }
+          }
+        }
+        case dest-ipv4 {
+          description
+            "The destination IPv4 address will be set to a range.";
+          choice dest-ipv4-range-type {
+            description
+              "Destination IPv4 range type.";
+            case end-dest-ipv4 {
+              description
+                "End destination IPv4 address.";
+              leaf end-dest-ipv4 {
+                type inet:ipv4-address-no-zone;
+                description
+                  "End destination IPv4 address.";
+              }
+            }
+            case increment-dest-ipv4 {
+              description
+                "The incremental range of destination IPv4 addresses.";
+              leaf dest-ipv4-mask {
+                type inet:ipv4-address-no-zone;
+                description
+                  "The mask of destination IPv4 address. After conversion to binary, the positions of 1s must be consecutive, and the number of consecutive 1s cannot be less than 1 or greater than 32.";
+              }
+              leaf dest-ipv4-increment-step {
+                type uint8 {
+                  range "1..128";
+                }
+                description
+                  "Increment step.";
+              }
+              leaf dest-ipv4-increment-count {
+                type uint8 {
+                  range "1..128";
+                }
+                description
+                  "Increment count.";
+              }
+            }
+          }
+        }
+        case source-ipv4 {
+          description
+            "The source IPv4 address will be set to a range.";
+          choice src-ipv4-range-type {
+            description
+              "Source IPv4 range type.";
+            case end-src-ipv4 {
+              description
+                "End source IPv4 address.";
+              leaf end-src-ipv4 {
+                type inet:ipv4-address-no-zone;
+                description
+                  "End source IPv4 address.";
+              }
+            }
+            case increment-src-ipv4 {
+              description
+                "The incremental range of source IPv4 addresses.";
+              leaf src-ipv4-mask {
+                type inet:ipv4-address-no-zone;
+                description
+                  "The mask of source IPv4 address. After conversion to binary, the positions of 1s must be consecutive, and the number of consecutive 1s cannot be less than 1 or greater than 32.";
+              }
+              leaf src-ipv4-increment-step {
+                type uint8 {
+                  range "1..128";
+                }
+                description
+                  "Increment step.";
+              }
+              leaf src-ipv4-increment-count {
+                type uint8 {
+                  range "1..128";
+                }
+                description
+                  "Increment count.";
+              }
+            }
+          }
+        }
+        case dest-port {
+          description
+            "The destination UDP port will be set to a range.";
+          leaf end-dest-port {
+            type uint16 {
+              range "1025..65535";
+            }
+            description
+              "End destination UDP port.";
+          }
+        }
+        case source-port {
+          description
+            "The source UDP port will be set to a range.";
+          leaf end-src-port {
+            type uint16 {
+              range "1025..65535";
+            }
+            description
+              "End source UDP port.";
+          }
+        }
+        case vlan-id {
+          description
+            "The VLAN ID will be set to a range.";
+          leaf end-vlan-id {
+            when "../vlan-id";
+            type uint16 {
+              range "1..4094";
+            }
+            description
+              "End CE VLAN ID.";
+          }
+        }
+        case ce-vid {
+          description
+            "The CE VLAN ID will be set to a range.";
+          leaf end-ce-vid {
+            when "../ce-vid";
+            type uint16 {
+              range "1..4094";
+            }
+            description
+              "End CE VLAN ID.";
+          }
+        }
+        case color-blind-8021p {
+          description
+            "The 802.1p priority value in color-blind mode will be set to a range.";
+          leaf end-color-blind-8021p {
+            when "../color-blind-8021p";
+            type uint8 {
+              range "0..7";
+            }
+            description
+              "The end 802.1p priority when color mode is color-blind.";
+          }
+        }
+        case color-blind-dscp {
+          description
+            "The DSCP priority value in color-blind mode will be set to a range.";
+          leaf end-color-blind-dscp {
+            when "../color-blind-dscp";
+            type uint8 {
+              range "0..63";
+            }
+            description
+              "The end dscp priority when color mode is color-blind.";
+          }
+        }
+        case color-aware-8021p {
+          description
+            "The 802.1p priority value in color-aware mode will be set to a range.";
+          leaf end-color-aware-green-8021p {
+            when "../color-aware-green-8021p";
+            type uint8 {
+              range "0..7";
+            }
+            description
+              "The end 802.1p priority of green packets when color mode is color-aware.";
+          }
+          leaf end-color-aware-yellow-8021p {
+            when "../color-aware-yellow-8021p";
+            type uint8 {
+              range "0..7";
+            }
+            description
+              "The end 802.1p priority of yellow packets when color mode is color-aware.";
+          }
+        }
+        case color-aware-dscp {
+          description
+            "The DSCP priority value in color-aware mode will be set to a range.";
+          leaf end-color-aware-green-dscp {
+            when "../color-aware-green-dscp";
+            type uint8 {
+              range "0..63";
+            }
+            description
+              "The end DSCP priority of green packets when color mode is color-aware.";
+          }
+          leaf end-color-aware-yellow-dscp {
+            when "../color-aware-yellow-dscp";
+            type uint8 {
+              range "0..63";
+            }
+            description
+              "The end DSCP priority of yellow packets when color mode is color-aware.";
+          }
+        }
+      }
+      leaf cir {
+        type uint32 {
+          range "8..10000000";
+        }
+        units "kbit/s";
+        description
+          "Committed information rate.";
+      }
+      leaf eir {
+        when "../cir";
+        type uint32 {
+          range "1..10000000";
+        }
+        units "kbit/s";
+        description
+          "Excess information rate.";
+      }
+      leaf flr {
+        type uint32 {
+          range "0..100000";
+        }
+        units "0.001 %";
+        description
+          "Value of frame loss rate in per 100000.";
+      }
+      leaf ftd {
+        type uint32 {
+          range "1..10000000";
+        }
+        units "us";
+        description
+          "Frame transmission delay.";
+      }
+      leaf fdv {
+        type uint32 {
+          range "1..10000000";
+        }
+        units "us";
+        description
+          "Frame delay variation.";
+      }
+      leaf cir-simple-test {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable a simple CIR test.";
+      }
+      leaf traffic-policing-test {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable traffic policing test.";
+      }
+      leaf description {
+        type string {
+          length "1..127";
+        }
+        description
+          "Description of a test flow.";
+      }
+    }
+  }
+}

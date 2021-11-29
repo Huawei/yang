@@ -1,0 +1,627 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-8021ag {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  
+  include huawei-diagnostic-tools-common;
+  include huawei-diagnostic-tools-type;
+
+  organization "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "LBLT diagnosis tool.";
+
+  revision 2021-01-15 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef lblt-test-status-type {
+    type enumeration {
+      enum "testing" {
+        value 0;
+        description
+          "The test is in progress.";
+      }
+      enum "finished" {
+        value 1;
+        description
+          "The test is finished.";
+      }
+      enum "stopped" {
+        value 2;
+        description
+          "The test is stopped.";
+      }
+    }
+    description
+      "Description of lblt-test-status-type.";
+  }
+  typedef lblt-error-type {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "The test succeeded.";
+      }
+      enum "timeout" {
+        value 1;
+        description
+          "The test timeout.";
+      }
+      enum "failed" {
+        value 2;
+        description
+          "The test failed.";
+      }
+      enum "local-mac" {
+        value 3;
+        description
+          "The destination address cannot be a local address.";
+      }
+      enum "no-mac-for-rmep" {
+        value 4;
+        description
+          "No MAC address is specified for an RMEP.";
+      }
+      enum "no-md-or-ma" {
+        value 5;
+        description
+          "The specified MD or MA is not exist.";
+      }
+      enum "mac-out-if-err" {
+        value 6;
+        description
+          "No outbound interface for the destination MAC.";
+      }
+    }
+    description
+      "Description of lblt-error-type.";
+  }
+  typedef lblt-detail-result-type {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "The test succeeded.";
+      }
+      enum "timeout" {
+        value 1;
+        description
+          "Timeout.";
+      }
+    }
+    description
+      "Description of lblt-detail-result-type.";
+  }
+  typedef lt-forward-action-type {
+    type enumeration {
+      enum "forward-success" {
+        value 0;
+        description
+          "Forward packet successfully.";
+      }
+      enum "forward-fail" {
+        value 1;
+        description
+          "Failed to forward packets.";
+      }
+      enum "invalid" {
+        value 2;
+        description
+          "No action.";
+      }
+    }
+    description
+      "Description of lt-forward-action-type.";
+  }
+  typedef lt-relay-action-type {
+    type enumeration {
+      enum "forward" {
+        value 0;
+        description
+          "Relay forward.";
+      }
+      enum "hit" {
+        value 1;
+        description
+          "Relay hit.";
+      }
+    }
+    description
+      "Description of lt-relay-action-type.";
+  }
+  typedef lt-mep-type {
+    type enumeration {
+      enum "no-mep" {
+        value 0;
+        description
+          "The relay point is not MEP.";
+      }
+      enum "is-mep" {
+        value 1;
+        description
+          "The relay point is MEP.";
+      }
+    }
+    description
+      "Description of lt-mep-type.";
+  }
+
+  rpc start-lb-test {
+    description
+      "Start LB test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lb-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf md-name {
+        type string {
+          length "1..43";
+          pattern '[^\?]*';
+        }
+        mandatory true;
+        description
+          "Specify the name of a maintenance domain (MD).";
+      }
+      leaf ma-name {
+        type string {
+          length "1..43";
+          pattern '[^\?]*';
+        }
+        mandatory true;
+        description
+          "Specify the name of a maintenance association (MA).";
+      }
+      leaf mep-id {
+        type uint16 {
+          range "1..8191";
+        }
+        mandatory true;
+        description
+          "Specify a MEP ID.";
+      }
+      choice remote {
+        mandatory true;
+        description
+          "Specify the RMEP ID or MAC.";
+        case remote-mep-id {
+          leaf rmep-id {
+            type uint16 {
+              range "1..8191";
+            }
+            description
+              "Specify a RMEP ID.";
+          }
+          description
+            "Specify a RMEP ID.";
+        }
+        case remote-mac
+        {
+          leaf rmep-mac {
+            type pub-type:mac-address;
+            description
+              "Specify the MAC of an RMEP.";
+          }
+          description
+            "Specify the MAC of an RMEP.";
+        }
+      }
+      leaf priority {
+        type uint8 {
+          range "0..7";
+        }
+        description
+          "Specify the priority of packets.";
+      }
+      leaf packet-size {
+        type uint32 {
+          range "64..2000";
+        }
+        default "95";
+        description
+          "Number of bytes in a sent test packet.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..4294967295";
+        }
+        default "5";
+        description
+          "Number of sent test packets.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "1..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time to wait for a response packet after a test packet is sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+
+    }
+  }
+
+  rpc stop-lb-test {
+    description
+      "Stop LB test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lb-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lb-results/diagnostic-tools:lb-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc delete-lb-test {
+    description
+      "Delete LB test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lb-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lb-results/diagnostic-tools:lb-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+
+  rpc start-lt-test {
+    description
+      "Start LT test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lt-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf md-name {
+        type string {
+          length "1..43";
+          pattern '[^\?]*';
+        }
+        mandatory true;
+        description
+          "Specify the name of a maintenance domain (MD).";
+      }
+      leaf ma-name {
+        type string {
+          length "1..43";
+          pattern '[^\?]*';
+        }
+        mandatory true;
+        description
+          "Specify the name of a maintenance association (MA).";
+      }
+      leaf mep-id {
+        type uint16 {
+          range "1..8191";
+        }
+        mandatory true;
+        description
+          "Specify a MEP ID.";
+      }
+      choice remote {
+        mandatory true;
+        description
+          "Specify the RMEP ID or MAC.";
+        case remote-mep-id {
+          leaf rmep-id {
+            type uint16 {
+              range "1..8191";
+            }
+            description
+              "Specify a RMEP ID.";
+          }
+          description
+            "Specify a RMEP ID.";
+        }
+        case remote-mac
+        {
+          leaf rmep-mac {
+            type pub-type:mac-address;
+            description
+              "Specify the MAC of an RMEP.";
+          }
+          description
+            "Specify the MAC of an RMEP.";
+        }
+      }
+      leaf ttl {
+        type uint8 {
+          range "1..255";
+        }
+        default "64";
+        description
+          "Specify the maximum TTL value of test packets.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "1..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time to wait for a response packet after a test packet is sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+
+    }
+  }
+
+  rpc stop-lt-test {
+    description
+      "Stop LT test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lt-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lt-results/diagnostic-tools:lt-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc delete-lt-test {
+    description
+      "Delete LT test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lt-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:lblt/diagnostic-tools:lt-results/diagnostic-tools:lt-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+
+  augment "/diagnostic-tools:diagnostic-tools" {
+    description
+      "List of LBLT tests.";
+    container lblt {
+      config false;
+      description
+        "Statistics of LBLT tests.";
+    container lb-results {
+      description
+        "List of test result of LB.";
+      list lb-result {
+        key "test-name";
+        description
+          "Statistics of test result of LB.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf packet-receive {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Total number of received packets.";
+        }
+        leaf packet-send {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Total number of sent packets.";
+        }
+        leaf loss-ratio {
+          type pub-type:percent;
+          description
+            "Packet loss ratio of a test.";
+        }
+        leaf rtt-min {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          description
+            "Minimum RTT of all test packets.";
+        }
+        leaf rtt-max {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          description
+            "Maximum RTT of all test packets.";
+        }
+        leaf rtt-average {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          description
+            "Average RTT of all test packets.";
+        }
+        leaf status {
+          type lblt-test-status-type;
+          description
+            "Test status.";
+        }
+        leaf error-type {
+          type lblt-error-type;     
+          description
+            "Path test status.";
+        }
+        container details {
+          description
+             "List of lb results of all packets in a test.";
+          list detail {
+            key "index";
+            description
+              "Statistics of lb result of a single packet in a test.";
+            leaf index {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Serial number of a test packet received by a certain hop.";
+            }
+            leaf rmep-mac {
+              type pub-type:mac-address;
+              description
+                "MAC address of an RMEP.";
+            }
+            leaf bytes {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Bytes of received response packets.";
+            }
+            leaf rtt {
+              type uint32 {
+                range "0..4294967295";
+              }
+              units "ms";
+              description
+                "RTT of test packets.";
+            }
+            leaf result-type {
+              type lblt-detail-result-type;
+              description
+                "Result of packet sending.";
+            }
+          }	
+        }
+      }
+    }
+    container lt-results {
+      description
+        "List of test result of LT.";
+      list lt-result {
+        key "test-name";
+        description
+           "Statistics of test result of LT.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf status {
+          type lblt-test-status-type;
+          description
+            "Test status.";
+        }
+        leaf error-type {
+          type lblt-error-type;     
+          description
+            "Path test status.";
+        }
+        container details {
+          description
+            "List of LT results of all packets in a test.";
+          list detail {
+            key "hop-index";
+            description
+              "Statistics of LT result of a single packet in a test.";
+            leaf hop-index {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Hop limit of received response packets.";
+            }
+            leaf ingress-mac {
+              type pub-type:mac-address;
+              description
+                "MAC of MIP or MEP configured on the ingress port.";
+            }
+            leaf ingress-port {
+              type string{
+                length "0..64";
+              }
+              description
+                "Ingress port name.";
+            }
+            leaf ingress-action {
+              type lt-forward-action-type;
+              description
+                "Ingress port action.";
+            }
+            leaf egress-mac {
+              type pub-type:mac-address;
+              description
+                "MAC of MIP or MEP configured on the egress port.";
+            }
+            leaf egress-port {
+              type string{
+                length "0..64";
+              }
+              description
+                "Egress port name.";
+            }
+            leaf egress-action {
+              type lt-forward-action-type;
+              description
+                "Egress port action.";
+            }
+            leaf relay-action {
+              type lt-relay-action-type;
+              description
+                "Action of relay equipment.";
+            }
+            leaf is-mep {
+              type lt-mep-type;
+              description
+                "MEP flag.";
+            }
+          }	
+        }
+      }
+    }
+    }
+  }
+}

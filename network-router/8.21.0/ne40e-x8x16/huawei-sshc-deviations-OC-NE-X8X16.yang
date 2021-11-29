@@ -1,0 +1,64 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-sshc-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-sshc-deviations-OC-NE-X8X16";
+  prefix sshc-devs-OC-NE-X8X16;
+
+  import huawei-sshc {
+    prefix sshc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-sshc module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/sshc:sshc/sshc:client/sshc:pki-domain" {
+    deviate not-supported;
+  }
+  deviation "/sshc:sshc/sshc:kex-alg/sshc:dh-group18-sha512" {
+    deviate not-supported;
+  }
+  deviation "/sshc:sshc/sshc:kex-alg/sshc:curve25519-sha256" {
+    deviate not-supported;
+  }
+  deviation "/sshc:sshc/sshc:pubkey-alg/sshc:x509v3-ssh-rsa" {
+    deviate not-supported;
+  }
+  deviation "/sshc:sshc/sshc:session-car" {
+    deviate not-supported;
+  }
+  deviation "/sshc:tcp-port-forwarding" {
+    deviate not-supported;
+  }
+  deviation "/sshc:sshc/sshc:kex-alg" {
+    deviate add {
+      must "../kex-alg/dh-group-exchange-sha-256 = 'true' or ../kex-alg/dh-group-exchange-sha1 = 'true' or ../kex-alg/dh-group1-sha1 = 'true' or ../kex-alg/ecdh-sha2-nistp-256 = 'true' or ../kex-alg/ecdh-sha2-nistp-384 = 'true' or ../kex-alg/ecdh-sha2-nistp-521 = 'true' or ../kex-alg/sm2-kep = 'true' or ../kex-alg/dh-group14-sha1 = 'true' or ../kex-alg/dh-group16-sha512 = 'true'";
+    }
+    deviate delete {
+      must "../kex-alg/dh-group-exchange-sha-256 = 'true' or ../kex-alg/dh-group-exchange-sha1 = 'true' or ../kex-alg/dh-group1-sha1 = 'true' or ../kex-alg/ecdh-sha2-nistp-256 = 'true' or ../kex-alg/ecdh-sha2-nistp-384 = 'true' or ../kex-alg/ecdh-sha2-nistp-521 = 'true' or ../kex-alg/sm2-kep = 'true' or ../kex-alg/dh-group14-sha1 = 'true' or ../kex-alg/dh-group16-sha512 = 'true' or ../kex-alg/dh-group18-sha512 = 'true' or ../kex-alg/curve25519-sha256 = 'true'";
+    }
+  }
+  deviation "/sshc:sshc/sshc:pubkey-alg" {
+    deviate add {
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/sm2 = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true'";
+    }
+    deviate delete {
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/sm2 = 'true' or ../pubkey-alg/x509v3-ssh-rsa = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true'";
+    }
+  }
+}

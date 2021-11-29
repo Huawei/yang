@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-te-auto-tunnel-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-mpls-te-auto-tunnel-deviations-ATN-980B";
+  prefix mpls-te-auto-tunnel-devs-ATN-980B;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-mpls-te-auto-tunnel {
+    prefix mpls-te-auto-tunnel;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2021-07-09 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-auto-tunnel:sr-te-auto-tunnels" {
+    deviate not-supported;
+  }
+}

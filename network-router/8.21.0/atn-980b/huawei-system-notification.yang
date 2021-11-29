@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-system-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-system-notification";
+  prefix system-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "The SYSTEM notification nodes are defined in this file.";
+  revision 2021-09-17 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "system";
+  notification security-risk {
+    description
+      "With the development of cryptographic technologies and
+       the improvement of computing capabilities, some cryptographic
+       algorithm and protocols are deprecated. Please use more secure
+       algorithms and protocols.";
+    leaf risk-type {
+      type string {
+        length "1..31";
+      }
+      description
+        "Risk type.";
+    }
+  }
+  notification security-risk-clear {
+    description
+      "The security risk has been recoverd.";
+    leaf risk-type {
+      type string {
+        length "1..31";
+      }
+      description
+        "Risk type.";
+    }
+  }
+}

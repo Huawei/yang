@@ -1,0 +1,166 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-snmp-ext {
+  namespace "urn:huawei:yang:huawei-ietf-snmp-ext";
+  prefix hw-snmp-ext;
+
+  import ietf-snmp {
+    prefix snmp;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+    organization
+        "Huawei Technologies Co., Ltd.";
+    contact
+        "Huawei Industrial Base
+         Bantian, Longgang
+         Shenzhen 518129
+         People's Republic of China
+         Website: http://www.huawei.com
+         Email: support@huawei.com";
+    description
+        "Expand ietf-snmp.yang.";
+
+    revision 2020-01-17 {
+      description
+        "Initial revision.";
+      reference
+        "Expand ietf-snmp.yang.";
+    }
+
+    ext:task-name "ietf-snmp";
+
+  typedef key-hex-string {
+    type string {
+      length "2..max";
+      pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+    }
+    description
+      "A hexadecimal string with octets represented as hex digits separated by colons.";
+  }
+
+  augment "/snmp:snmp/snmp:usm/snmp:local/snmp:user/snmp:auth/snmp:protocol" {
+      description 
+          "Authentication algorithm.";
+    case sha2-224 {
+        description
+            "SHA224 authentication algorithm.";
+        container sha2-224 {
+            description
+                "Configure SNMPv3 user authen protocol.";
+            leaf key {
+                type key-hex-string;
+                mandatory true;
+                description
+                    "Localized key specified as a list of colon-specified hexadecimal octets.";
+            }
+        }
+    }
+    case sha2-256 {
+        description
+            "SHA256 authentication algorithml.";
+        container sha2-256 {
+            description
+                "Configure SNMPv3 user authen protocol.";
+            leaf key {
+                type key-hex-string;
+                mandatory true;
+                description
+                    "Localized key specified as a list of colon-specified hexadecimal octets.";
+            }
+        }
+    }
+    case sha2-384 {
+        description
+            "SHA384 authentication algorithm.";
+        container sha2-384 {
+            description
+                "Configure SNMPv3 user authen protocol.";
+            leaf key {
+                type key-hex-string;
+                mandatory true;
+                description
+                    "Localized key specified as a list of colon-specified hexadecimal octets.";
+            }
+        }
+    }
+    case sha2-512 {
+        description
+            "SHA512 authentication algorithm.";
+        container sha2-512 {
+            description
+                 "Configure SNMPv3 user authen protocol.";
+            leaf key {
+                type key-hex-string;
+                mandatory true;
+                description
+                    "Localized key specified as a list of colon-specified hexadecimal octets.";
+            }
+        }
+    }
+  } 
+  
+  augment "/snmp:snmp/snmp:usm/snmp:remote/snmp:user/snmp:auth/snmp:protocol" {
+      description
+          "SNMPv3 remote user authen protocol.";
+    case sha2-224 {
+        description
+            "SHA224 authentication algorithm.";
+        container sha2-224 {
+            description
+                "Configure SNMPv3 user authen protocol.";
+            leaf key {
+                type key-hex-string;
+                mandatory true;
+                description
+                    "Localized key specified as a list of colon-specified hexadecimal octets.";
+            }
+        }
+    }
+    case sha2-256 {
+        description
+            "SHA256 authentication algorithm.";
+        container sha2-256 {
+            description
+                "Configure SNMPv3 user authen protocol.";
+            leaf key {
+                type key-hex-string;
+                mandatory true;
+                description
+                    "Localized key specified as a list of colon-specified hexadecimal octets.";
+            }
+        }
+    }
+    case sha2-384 {
+        description
+            "SHA384 authentication algorithm.";
+        container sha2-384 {
+            description
+                "Configure SNMPv3 user authen protocol.";
+            leaf key {
+                type key-hex-string;
+                mandatory true;
+                description
+                    "Localized key specified as a list of colon-specified hexadecimal octets.";
+            }
+        }
+    }
+    case sha2-512 {
+        description
+            "SHA512 authentication algorithm.";
+        container sha2-512 {
+            description
+                "Configure SNMPv3 user authen protocol.";
+            leaf key {
+                type key-hex-string;
+                mandatory true;
+                description
+                    "Localized key specified as a list of colon-specified hexadecimal octets.";
+            }
+        }
+    }
+  }
+}

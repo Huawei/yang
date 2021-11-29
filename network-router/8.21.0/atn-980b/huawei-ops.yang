@@ -1,0 +1,1191 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ops {
+  namespace "urn:huawei:yang:huawei-ops";
+  prefix ops;
+  import huawei-extension {
+    prefix ext;
+  } 
+  import ietf-yang-types {
+    prefix yang;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "The open programmability system.";
+  revision 2021-05-08 {
+    description
+      "Fix description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-01-10 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ops";  
+  typedef ops-execution-type {
+    type enumeration {
+      enum "command" {
+        value 1;
+        description
+          "The command line.";
+      }
+      enum "python" {
+        value 2;
+        description
+          "Python scripts.";
+      }
+      enum "batch-file" {
+        value 3;
+        description
+          "The batch file.";
+      }
+    }
+    description
+      "Ops assistant action type.";
+  }
+
+  typedef ops-operation-type {
+    type enumeration {
+      enum "equal" {
+        value 1;
+        description
+          "Equal to.";
+      }
+      enum "not-equal" {
+        value 2;
+        description
+          "Not equal to.";
+      }
+      enum "less" {
+        value 3;
+        description
+          "Less than.";
+      }
+      enum "less-or-equal" {
+        value 4;
+        description
+          "Less than or equal to.";
+      }
+      enum "greater" {
+        value 5;
+        description
+          "Greater than.";
+      }
+      enum "greater-or-equal" {
+        value 6;
+        description
+          "Greater than or equal to.";
+      }
+      enum "match" {
+        value 7;
+        description
+          "Match with.";
+      }
+      enum "not-match" {
+        value 8;
+        description
+          "Not match with.";
+      }
+      enum "contain" {
+        value 9;
+        description
+          "Contain.";
+      }
+    }
+    description
+      "Ops operation type.";
+  }
+
+  typedef ops-process-state {
+    type enumeration {
+      enum "init" {
+        value 1;
+        description
+          "Init.";
+      }
+      enum "running" {
+        value 2;
+        description
+          "Running.";
+      }
+      enum "input" {
+        value 3;
+        description
+          "Input.";
+      }
+      enum "stop" {
+        value 4;
+        description
+          "Stop.";
+      }
+      enum "exit" {
+        value 5;
+        description
+          "Exit.";
+      }
+    }
+    description
+      "Ops process state.";
+  }
+
+  typedef alarm-state-type {
+    type enumeration {
+      enum "start" {
+        value 0;
+        description
+          "Start.";
+      }
+      enum "end" {
+        value 1;
+        description
+          "End.";
+      }
+    }
+    description
+      "State of alarm type.";
+  }
+
+  typedef ops-severity-level {
+    type enumeration {
+      enum "critical" {
+        value 1;
+        description
+          "Critical.";
+      }
+      enum "major" {
+        value 2;
+        description
+          "Major.";
+      }
+      enum "minor" {
+        value 3;
+        description
+          "Minor.";
+      }
+      enum "warning" {
+        value 4;
+        description
+          "Warning.";
+      }
+    }
+    description
+      "Severity of alarm level.";
+  }
+
+  typedef ops-access-type {
+    type enumeration {
+      enum "save" {
+        value 1;   
+        description
+          "Save.";
+      }
+      enum "retrieve" {
+        value 2;
+        description
+          "Retrieve.";
+      }
+    }
+    description
+      "Ops access type.";
+  }
+
+  typedef ops-assistant-state-type {
+    type enumeration {
+      enum "init" {
+        value 0;
+        description
+          "Init.";
+      }
+      enum "ready" {
+        value 1;
+        description
+          "Ready.";
+      }
+      enum "pending" {
+        value 2;
+        description
+          "Pending.";
+      }
+      enum "running" {
+        value 3;
+        description
+          "Running.";
+      }
+      enum "shutdown" {
+        value 4;
+        description
+          "Shutdown.";
+      }
+      enum "suspend" {
+        value 5;
+        description
+          "Suspend.";
+      }
+    }
+    description
+      "Ops asst state type.";
+  }
+
+  typedef ops-assistant-cond-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None.";
+      }
+      enum "timer" {
+        value 1;
+        description
+          "Timer.";
+      }
+      enum "event" {
+        value 2;
+        description
+          "Event.";
+      }
+      enum "startup" {
+        value 3;
+        description
+          "Startup.";
+      }
+      enum "alarm" {
+        value 4;
+        description
+          "Alarm.";
+      }
+      enum "syslog" {
+        value 5;
+        description
+          "Syslog.";
+      }
+      enum "snmp-notification" {
+        value 6;
+        description
+          "Snmp-notification.";
+      }
+      enum "auto" {
+        value 7;
+        description
+          "Auto.";
+      }
+      enum "cli" {
+        value 8;
+        description
+          "Cli.";
+      }
+      enum "relative" {
+        value 9;
+        description
+          "Relative.";
+      }
+      enum "absolute" {
+        value 10;
+        description
+          "Absolute.";
+      }
+      enum "countdown" {
+        value 11;
+        description
+          "Countdown.";
+      }
+      enum "kpi-event" {
+        value 12;
+        description
+          "Kpi event.";
+      }
+      enum "multiple" {
+        value 100;
+        description
+          "Multiple.";
+      }
+      enum "subscribe" {
+        value 101;
+        description
+          "Subscribe.";
+      }
+      enum "unsubscribe" {
+        value 102;
+        description
+          "Unsubscribe.";
+      }
+    }
+    description
+      "Ops assistant condition type.";
+  }
+
+  typedef ops-assistant-type {
+    type enumeration {
+      enum "command" {
+        value 0;
+        description
+          "Command.";
+      }
+      enum "script" {
+        value 1;
+        description
+          "Script.";
+      }
+    }
+    description
+      "Ops assistant type.";
+  }
+
+  typedef ops-owner-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None.";
+      }
+      enum "assistant" {
+        value 1;
+        description
+          "Assistant.";
+      }
+      enum "user" {
+        value 2;
+        description
+          "User.";
+      }
+      enum "auto" {
+        value 3;
+        description
+          "Auto.";
+      }
+    }
+    description
+      "Ops process owner type.";
+  }
+
+  typedef ops-assistant-condition-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None.";
+      }
+      enum "alarm" {
+        value 1;
+        description
+          "The alarm.";
+      }
+      enum "event" {
+        value 2;
+        description
+          "The event.";
+      }
+      enum "snmp-notification" {
+        value 3;
+        description
+          "Snmp notification.";
+      }
+      enum "syslog" {
+        value 4;
+        description
+          "The system log.";
+      }
+      enum "timer" {
+        value 5;
+        description
+          "The timer.";
+      }
+      enum "alarmlevel" {
+        value 6;
+        description
+          "The alarm level.";
+      }
+    }
+    description
+      "Ops cli assistant condition type.";
+  }
+
+  typedef ops-assistant-state-return-type {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description
+          "Normal.";
+      }
+      enum "abnormal" {
+        value 1;
+        description
+          "Abnormal.";
+      }
+      enum "usercancel" {
+        value 2;
+        description
+          "UserCancel.";
+      }
+    }
+    description
+      "Ops assistant history result.";
+  }
+
+  typedef ops-assistant-sub-state-type {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "Success.";
+      }
+      enum "failure" {
+        value 1;
+        description
+          "Failure.";
+      }
+      enum "cancel" {
+        value 2;
+        description
+          "Cancel.";
+      }
+    }
+    description
+      "Ops assistant subscript state.";
+  }
+
+  typedef ops-process-state-return-type {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description
+          "Normal.";
+      }
+      enum "cancel" {
+        value 1;
+        description
+          "Cancel.";
+      }
+      enum "disconnect" {
+        value 2;
+        description
+          "Disconnect.";
+      }
+      enum "timeout" {
+        value 3;
+        description
+          "Timeout.";
+      }
+      enum "script-exception" {
+        value 4;
+        description
+          "Script Exception.";
+      }
+      enum "user-stop" {
+        value 5;
+        description
+          "User Stop.";
+      }
+      enum "delete-vs" {
+        value 6;
+        description
+          "Delete VS.";
+      }
+      enum "init-failed" {
+        value 7;
+        description
+          "Init Failed.";
+      }
+      enum "wait" {
+        value 8;
+        description
+          "User wait.";
+      }
+    }
+    description
+      "Ops processing state result.";
+  }
+  typedef ops-python-version-type {
+    type enumeration {
+      enum "python3" {
+        value 1;
+        description
+          "Type python version 3.";
+      }
+    }
+    description
+      "Ops python version type.";
+  }
+  
+  container ops {
+    description
+      "The open programmability system.";
+    container global-switch {
+      description
+        "Configure OPS global switch.";
+      leaf enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable OPS global switch.";
+      }
+    }
+    container python-version {
+      config false;
+      description
+        "Operational state of Python version.";
+      leaf version {
+        type ops-python-version-type;
+        config false;
+        description
+          "Ops python version.";
+      }
+    }
+    container assistant {
+      description
+        "Configure OPS assistant node.";
+	  container mtp-status-switch {
+	    description
+		  "Configure assistant maintain probe.";
+	    leaf enable {
+		  type boolean;
+		  default "true";
+		  description
+		    "Enable/disable assistant maintain probe.";
+	    }
+	  }
+
+	  container total-status-switch {
+	    description
+		  "Configure assistant total switch.";
+	    leaf suspend {
+		  type boolean;
+		  default "false";
+		  description
+		    "Enable/disable assistant total switch.";
+	    }
+	  }
+     container script-assistants {
+       description
+         "List of script assistant.";
+       list script-assistant {
+        key "name";
+         max-elements  "100";
+        description
+            "Configure script assistant instance.";
+        leaf name {
+          type string {
+            length "4..64";
+            pattern '([^_].*\.py)';
+          }
+          description
+            "Script assistant name.";
+        }
+        leaf shutdown {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable script assistant.";
+		  }
+	    }
+	  }
+
+      container cli-assistants {
+        description
+          "List of cli assistant.";
+        list cli-assistant {
+          key "name";
+          max-elements "100";
+          description
+            "Configure assistant instance.";
+          leaf name {
+            type string {
+              length "1..15";
+              pattern '([A-Za-z][A-Za-z0-9_]*)';
+            }
+            description
+              "Name of assistant.";
+          }
+          leaf shutdown {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable cli assistant.";
+		      }
+          leaf condition-type {
+            type ops-assistant-cond-type;
+            description
+              "Condition type.";
+          }
+          container condition {
+            description
+              "Configure condition of assistant task.";
+            container alarm {
+              when "../../condition-type='alarm'";
+              description
+                "Configure the conditions of match criteria.";
+              leaf feature-name {
+                type string {
+                  length "1..31";
+                }
+                description
+                  "Feature name.";
+              }
+              leaf alarm-name {
+                type string {
+                  length "1..63";
+                }
+                description
+                  "Alarm name.";
+              }
+              leaf alarm-state {
+                type alarm-state-type;
+                description
+                  "The state of alarm, start or end.";
+              }
+              leaf occur-number {
+                type uint32 {
+                  range "1..32";
+                }
+                description
+                  "The number of matching occurrences before the assistant is triggered.";
+              }
+              leaf period {
+                type uint32 {
+                  range "1..4294967295";
+                }
+                description
+                  "The period of check matching occurrences.";
+              }
+              container parameters {
+                description
+                  "List of cli assistant's parameters.";
+                list parameter {
+                  key "name";
+                  max-elements "4";
+                  description
+                    "Configure assistant parameters instance.";
+                  leaf name {
+                    type string {
+                      length "1..32";
+                    }
+                    description
+                      "Parameter ID.";
+                  }
+                  leaf operator {
+                    type ops-operation-type;
+                    description
+                      "The operation type.";
+                  }
+                  leaf value {
+                    type string {
+                      length "1..63";
+                    }
+                    description
+                      "Operation value.";
+                  }
+                }
+              }
+            }
+
+            container event {
+              when "../../condition-type='event'";
+              description
+                "Configure the conditions of match criteria.";
+              leaf feature-name {
+                type string {
+                  length "1..31";
+                }
+                description
+                  "Feature name.";
+              }
+              leaf log-name {
+                type string {
+                  length "1..63";
+                }
+                description
+                  "Log name.";
+              }
+              leaf occur-number {
+                type uint32 {
+                  range "1..32";
+                }
+                description
+                  "The number of matching occurrences before the assistant is triggered.";
+              }
+              leaf period {
+                type uint32 {
+                  range "1..4294967295";
+                }
+                description
+                  "The period of check matching occurrences.";
+              }
+              container parameters {
+                description
+                  "List of cli assistant's parameters.";
+                list parameter {
+                  key "name";
+                  max-elements "4";
+                  description
+                    "Configure assistant parameters instance.";
+                  leaf name {
+                    type string {
+                      length "1..32";
+                    }
+                    description
+                      "Parameter ID.";
+                  }
+                  leaf operator {
+                    type ops-operation-type;
+                    description
+                      "The operation type.";
+                  }
+                  leaf value {
+                    type string {
+                      length "1..63";
+                    }
+                    description
+                      "Operation value.";
+                  }
+                }
+              }
+            }
+
+            container snmp-notification {
+              when "../../condition-type='snmp-notification'";
+              description
+                "Configure the conditions of match criteria.";
+              leaf oid {
+                type string {
+                  length "1..127";
+                }
+                description
+                  "The oid string. For exapmle: 1.3.6.1.4.1.2011.5.25.177.1.3.1.";
+              }
+              leaf operator {
+                type ops-operation-type;
+                description
+                  "The operation type.";
+              }
+              leaf oid-value {
+                type int32;
+                description
+                  "The field value of oid string.";
+              }
+            }
+
+            container syslog {
+              when "../../condition-type='syslog'";
+              description
+                "Configure the conditions of match criteria.";
+              leaf pattern {
+                type string {
+                  length "1..255";
+                }
+                description
+                  "The regular expression of syslog.";
+              }
+              leaf occur-number {
+                type uint32 {
+                  range "1..32";
+                }
+                description
+                  "The number of matching occurrences before the assistant is triggered.";
+              }
+              leaf period {
+                type uint32 {
+                  range "1..4294967295";
+                }
+                description
+                  "The period of check matching occurrences.";
+              }
+            }
+
+            container timer {
+              when "../../condition-type='timer'";
+              description
+                "Configure the conditions of match criteria.";
+              leaf minute {
+                type string {
+                  length "1..63";
+                }
+                description
+                  "Minute vaule (0-59) in crontab expression.";
+              }
+              leaf hour {
+                type string {
+                  length "1..63";
+                }
+                description
+                  "Hour vaule (0-23) in crontab expression.";
+              }
+              leaf day-of-month {
+                type string {
+                  length "1..63";
+                }
+                description
+                  "Day-of-month vaule (0-31) in crontab expression.";
+              }
+              leaf month {
+                type string {
+                  length "1..63";
+                }
+                description
+                  "Month vaule (0-31) in crontab expression.";
+              }
+              leaf day-of-week {
+                type string {
+                  length "1..63";
+                }
+                description
+                  "Day-of-week vaule (0-7) in crontab expression (0 to 6 are Sunday to Saturday, 7 is Sunday,the same as 0).";
+              }
+              leaf year {
+                type string {
+                  length "1..4";
+                }
+                description
+                  "Year vaule (2000-2099) in crontab expression.";
+              }
+            }
+          }
+
+          container executions {
+            description
+              "List of assistant execution node.";
+            list execution {
+              key "priority";
+              max-elements  "10";
+              description
+                "Configure assistant execution instance.";
+              leaf priority {
+                type string {
+                  length "1..7";
+                  pattern '(\d+(\.\d+)?)';
+                }
+                description
+                  "The action sequence number, such as 1, 1.1, 2, 3.";
+              }
+              leaf execution-type {
+                type ops-execution-type;
+                description
+                  "The execution type,now support command,python,batch-file.";
+              }
+              leaf command {
+                when "../execution-type='command'";
+                type string {
+                  length "1..511";
+                }
+                description
+                  "The action content, command string.";
+              }
+              leaf file-name {
+                when "../execution-type='python' or ../execution-type='batch-file'";
+                type string {
+                  length "1..127";
+                  pattern '(.+\.(py|bat))';
+                }
+                description
+                  "The file name.";
+              }
+              leaf argument {
+                when "../execution-type='python'";
+                type string {
+                  length "1..383";
+                }
+                description
+                  "The python script arguments.";
+              }
+            }
+          }
+        }
+      }
+    }
+
+    container environments {
+      description
+        "List of OPS environment node.";
+      list environment {
+        key "name";
+        max-elements  "100";
+        description
+            "Configure script environment instance.";
+        leaf name {
+          type string {
+            length "1..31";
+          }
+          description
+            "The environment variable name.";
+        }
+        leaf value {
+          type string {
+            length "1..256";
+          }
+          description
+            "The environment variable value.";
+        }
+      }
+    }
+
+    container applications {
+      config false;
+      description
+        "List of the OPS application.";
+      list application {
+        key "file-name";
+        config false;
+        description
+          "Operational state of OPS application node.";
+        leaf file-name {
+          type string {
+            length "1..255";
+          }
+          config false;
+          description
+            "OPS application file name.";
+        }
+        leaf size {
+          type uint32;
+          config false;
+          description
+            "The file size (unit:byte).";
+        }
+      }
+    }
+  
+    container contexts {
+      config false;
+      description
+        "List of the OPS context.";
+      list context {
+        key "variable";
+        config false;
+        description
+          "Operational data of OPS context node.";
+        leaf variable {
+          type string {
+            length "1..17";
+          }
+          description
+            "Name of variable.";
+        }
+        leaf creator {
+          type string {
+            length "1..128";
+          }
+          description
+            "Script name of access.";
+        }
+        leaf value {
+          type string {
+            length "1..65";
+          }
+          description
+            "Value of varible.";
+        }
+        leaf access-type {
+          type ops-access-type;
+          description
+            "Assistant type.";
+        }
+        leaf access-time {
+          type yang:date-and-time;
+          description
+            "When access.";
+        }
+      }
+    }
+
+    container process-current-states {
+      config false;
+      description
+        "List of the current states of OPS processes.";
+      list process-current-state {
+        key "process-id";
+        config false;
+        description
+          "Operational state of OPS process node.";
+        leaf process-id {
+          type uint32;
+          description
+            "Process ID.";
+        }
+        leaf command {
+          type string {
+            length "1..256";
+          }
+          description
+            "Start command.";
+        }
+        leaf process-name {
+          type string {
+            length "0..256";
+          }
+          description
+            "Process Name.";
+        }
+        leaf state {
+          type ops-process-state;
+          description
+            "The state, such as running, suspend, waiting.";
+        }
+        leaf owner-type {
+          type ops-owner-type;
+          description
+            "Type of owner.";
+        }
+        leaf owner-name {
+          type string {
+            length "0..64";
+          }
+          description
+            "Name of owner.";
+        }
+        leaf is-background {
+          type boolean;
+          default false;
+          description
+            "Run in background flag.";
+        }
+        leaf trigger-time {
+          type string {
+            length "1..20";
+          }
+          description
+            "Trigger time.";
+        }
+        leaf start-time {
+          type string {
+            length "1..20";
+          }
+          description
+            "Start time.";
+        }
+      }
+    }
+
+    container process-history-states {
+      config false;
+      description
+        "List of the history states of OPS processes.";
+      list process-history-state {
+        key "process-id";
+        config false;
+        description
+          "Operational state of OPS process node.";
+        leaf process-id {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Process ID.";
+        }
+        leaf command {
+          type string {
+            length "1..256";
+          }
+          description
+            "Start command.";
+        }
+        leaf owner-type {
+          type ops-owner-type;
+          description
+            "Type of owner.";
+        }
+        leaf owner-name {
+          type string {
+            length "0..64";
+          }
+          description
+            "Name of owner.";
+        }
+        leaf is-background {
+          type boolean;
+          default false;
+          description
+            "Run in background flag.";
+        }
+        leaf result {
+          type ops-process-state-return-type;
+          description
+            "The result of script.";
+        }
+        leaf trigger-time {
+          type yang:date-and-time;
+          description
+            "Trigger time.";
+        }
+        leaf start-time {
+          type yang:date-and-time;
+          description
+            "Start time.";
+        }
+        leaf end-time {
+          type yang:date-and-time;
+          description
+            "Start time.";
+        }
+      }
+    }
+  }
+  rpc install-application {
+    description
+      "Install OPS application.";
+    ext:node-ref "/ops/applications/application";
+    input {
+      leaf file-name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "The install OPS applcation file name.";
+      }
+      leaf destination {
+        type string {
+          length "1..127";
+        }
+        description
+          "The install OPS applcation file destination.";
+      }
+    }
+  }
+  rpc uninstall-application {
+    description
+      "Uninstall OPS application.";
+    ext:node-ref "/ops/applications/application";
+    input {
+      leaf file-name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "Uninstall OPS applcation file name.";
+      }
+    }
+  }
+  rpc run-python-script {
+    description
+      "Run python script.";
+    ext:node-ref "/ops/applications/application";
+    input {
+      leaf name {
+        type string {
+          length "1..127";
+        }
+        mandatory true;
+        description
+          "Python script name.";
+      }
+      leaf argument {
+        type string {
+          length "1..383";
+        }
+        description
+          "Python script argument.";
+      }
+    }
+  }
+}

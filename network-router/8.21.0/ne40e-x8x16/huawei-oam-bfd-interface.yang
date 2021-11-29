@@ -1,0 +1,97 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-bfd-interface {
+  namespace "urn:huawei:yang:huawei-oam-bfd-interface";
+  prefix oam-bfd-interface;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+  revision 2021-03-19 {
+    description
+      "Reconstruct leaf.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-12-12 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bfd";
+  augment "/oammgr:oammgr" {
+    description
+      "Configure the operation, administration and maintenance (OAM) association function.";
+    container bfd-bind-interfaces {
+      description
+        "List of associations between BFD and an interface.";
+      list bfd-bind-interface {
+        key "if-name";
+        description
+          "Configure an instance of an association between BFD and an interface.";
+        leaf if-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Configure the name of interface.";
+        }
+        leaf reboot-impact {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a BFD session to associate the interface status after device reboot.";
+        }
+        choice name-or-id {
+          mandatory true;
+          description
+              "List of BFD session configurations.";
+          case name {
+            description
+              "List of name of BFD session."; 
+            leaf bfd-sess-name {
+              type leafref {
+                path "/bfd:bfd/bfd:sessions/bfd:session/bfd:name";
+              }
+              description
+                "Configure the name of a BFD session.";
+            }
+          }
+          case id {
+            description
+              "List of local discriminator of BFD session.";
+            leaf bfd-session-id {
+              type uint32 {
+                range "1..16384";
+              }
+              description
+                "Configure the local discriminator of a BFD session.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pcc-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-pcc-deviations-OC-NE-X8X16";
+  prefix pcc-devs-OC-NE-X8X16;
+
+  import huawei-pcc {
+    prefix pcc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Path Computation Client (PCC).";
+
+  revision 2020-12-19 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/pcc:pcc/pcc:srv6-te-policy-cpaths" {
+    deviate not-supported;
+  }
+  deviation "/pcc:pcc/pcc:attribute/pcc:srv6-capability" {
+    deviate not-supported;
+  }
+  deviation "/pcc:pcc/pcc:threshold-alarm" {
+    deviate not-supported;
+  }
+}

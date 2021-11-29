@@ -1,0 +1,366 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+
+module huawei-sflow {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-sflow";
+  prefix sflow;
+  
+  import ietf-inet-types {
+    prefix inet;
+  } 
+  import huawei-extension {
+    prefix ext;
+  }  
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "The sFlow sample.";
+  revision 2020-03-11{
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "sflow";
+  typedef flow-direction {
+    type enumeration {
+      enum inbound {
+        value 0;
+        description
+          "Inbound.";
+      }
+      enum outbound {
+        value 1;
+        description
+          "Outbound.";
+      }
+    }
+    description
+      "Flow directions.";
+  }
+  container sflow {
+    description
+      "The sFlow feature.";
+    container sflow-enable {
+      presence "Enable sFlow.";
+      description
+        "Enable/disable sFlow.";
+      container global {
+        description
+          "Configure sFlow global attribute.";
+        leaf agent-ipv4-address {
+          type inet:ipv4-address-no-zone;
+          must "../agent-ipv4-address!='0.0.0.0'";
+          description
+            "Agent IPv4 address.";
+        }
+        leaf agent-ipv6-address {
+          type inet:ipv6-address-no-zone;
+          must "../agent-ipv6-address!='::'";
+          description
+            "Agent IPv6 address.";
+        }
+        leaf extended-route-data {
+          type enumeration {
+            enum disable {
+              value 1;
+              description
+                "Disable.";
+            }
+            enum enable {
+              value 0;
+              description
+                "Enable.";
+            }
+          }
+          default "enable";
+          description
+            "Extend route data enable.";
+        }
+      }
+      container collectors {
+        description
+          "List of sFlow collector.";
+        list collector {
+          key "collector-id";
+          description
+            "Configure sFlow collector.";
+          leaf collector-id {
+              type uint8 {
+                range 1..2;
+              }
+              description
+                "Collector id.";
+          }
+          leaf max-packet-length {
+            type uint16 {
+              range 1024..8100;
+            }
+            default "1400";
+            description
+              "Maximum packet length.";
+          }
+          container ip-server {
+            presence "Configure sFlow IP server."; 
+            description
+              "Configure sFlow IP server.";
+            choice ip-type {
+              mandatory true;
+              description
+                "IP address.";
+              case ipv4-address {
+                description
+                  "IPv4 address.";
+                leaf ipv4-address {
+                  type inet:ipv4-address-no-zone;
+                  must "../ipv4-address!='0.0.0.0'";
+                  description
+                    "IPv4 address.";
+                }
+              }
+              case ipv6-address {
+                description
+                  "IPv6 address.";
+                leaf ipv6-address {
+                  type inet:ipv6-address-no-zone;
+                  must "../ipv6-address!='::'";
+                  description
+                    "IPv6 address.";
+                }
+              }
+            }
+            leaf vpn-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+              }
+              must "(../ipv4-address and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']) or (../ipv6-address and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast'])";
+              default "_public_";
+              description
+                "VPN name.";
+            }
+            leaf udp-port {
+              type uint16 {
+                range 1..65535;
+              }
+              default "6343";
+              description
+                "UDP port.";
+            }
+          }
+        }
+      }
+    }
+    container slot-statistics {
+      config false;
+      description
+        "List of sFlow packet statistics in slot.";
+      list slot-statistic {
+        key "slot-id collector-id";
+        description
+          "Statistics of sFlow packet in slot.";
+        leaf slot-id {
+          type leafref {
+            path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf collector-id {
+          type uint8 {
+            range 1..2;
+          }
+          description
+            "Collector id.";
+        }
+        leaf packet-count {
+          type uint64;
+          description
+            "Packet count.";
+        }
+        leaf flow-sample-count {
+          type uint64;
+          description
+            "Flow sample count.";
+        }
+      }
+    }
+    container interface-statistics {
+      config false;
+      description
+        "List of sFlow packet statistics in interface.";
+      list interface-statistic {
+        key "interface-name direction slot-id";
+        description
+          "Statistics of sFlow packet in interface.";
+        leaf interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Interface name.";
+        }
+        leaf direction {
+          type flow-direction;
+          description
+            "Inbound or outbound.";
+        }
+        leaf slot-id {
+          type leafref {
+            path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf flow-sample-count {
+          type uint64;
+          description
+            "Flow sample count.";
+        }
+      }
+    }
+  }
+  
+  rpc reset-interface-statistics {
+    description
+      "Reset sFlow packet statistics in interface.";
+    ext:node-ref "/sflow:sflow/sflow:interface-statistics/sflow:interface-statistic";
+    input  {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf slot-id {
+        type leafref {
+          path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+        }
+        description
+          "Slot ID.";
+      }
+    }
+  }
+  
+  rpc reset-slot-statistics {
+    description
+      "Reset sFlow packet statistics in slot.";
+    ext:node-ref "/sflow:sflow/sflow:slot-statistics/sflow:slot-statistic";
+    input  {
+      leaf slot-id {
+        type leafref {
+          path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+        }
+        mandatory true;
+        description
+          "Slot ID.";
+      }
+    }
+  }
+
+  augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
+    description "Adds slot configuration to devm slot model.";
+    container sflow {
+      description
+        "Configure sFlow feature.";
+      container slot-sampling {
+        description
+          "Configure slot sFlow sampling function.";
+        leaf enable {
+          type boolean;
+          default "false"; 
+          description
+            "Enable/disable sFlow function in slot.";
+        }
+      }
+    }
+  }
+  augment "/devm:devm/devm:mpu-boards/devm:mpu-board" {
+    description "Adds slot configuration to devm slot model.";
+    container sflow {
+      description
+        "Configure sFlow feature.";
+      container slot-sampling {
+        description
+          "Configure slot sFlow sampling function.";
+        leaf enable {
+          type boolean;
+          default "false"; 
+          description
+            "Enable/disable sFlow function in slot.";
+        }
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description "Adds interface configuration to ifm interface model.";
+    container sflow {
+      description "Configure sFlow interface configuration.";
+      container bind-collectors {
+        description
+          "List of sFlow interface bind collector.";
+        list bind-collector {
+          must "/sflow:sflow/sflow:sflow-enable";
+          must "not(../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute or ../../../ifm:l2-mode-enable = 'true' or ../../../ifm:type = 'Eth-Trunk')";
+          key "direction";
+          description
+            "Configure sFlow interface bind collector.";
+          leaf direction {
+            type flow-direction;
+            description
+              "Inbound or outbound.";
+          }
+          leaf collector-id {
+            type leafref {
+              path "/sflow:sflow/sflow:sflow-enable/sflow:collectors/sflow:collector/sflow:collector-id";
+            }
+            mandatory true;
+            description
+              "Collector id.";
+          }
+          leaf secondary-collector-id {
+            type leafref {
+              path "/sflow:sflow/sflow:sflow-enable/sflow:collectors/sflow:collector/sflow:collector-id";
+            }
+            must "../secondary-collector-id != ../collector-id";
+            description
+              "Secondary collector id.";
+          }
+          leaf flow-sampling-rate {
+            type uint16 {
+              range "1..65535";
+            }
+            default "8192";
+            description
+              "Every rate value sampling one packet.";
+          }
+        }
+      }
+    }
+  }
+}

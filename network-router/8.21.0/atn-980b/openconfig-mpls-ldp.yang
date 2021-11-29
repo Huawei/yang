@@ -1,0 +1,374 @@
+module openconfig-mpls-ldp {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://openconfig.net/yang/ldp";
+
+  prefix "oc-ldp";
+
+  // import some basic types
+  import openconfig-extensions { prefix oc-ext; }
+  import openconfig-inet-types { prefix oc-inet; }
+
+  // meta
+  organization "OpenConfig working group";
+
+  contact
+    "OpenConfig working group
+    netopenconfig@googlegroups.com";
+
+  description
+    "Configuration of Label Distribution Protocol global and LSP-
+    specific parameters for IGP-congruent LSPs.
+
+    This model reuses data items defined in the IETF YANG model for
+    LDP described by draft-ietf-mpls-ldp-yang-04, YANG Data Model for
+    MPLS LDP, following an alternate structure.
+
+    Portions of this code were derived from draft-ietf-mpls-ldp-yang-04.
+    Please reproduce this note if possible.
+
+    IETF code is subject to the following copyright and license:
+    Copyright (c) IETF Trust and the persons identified as authors of
+    the code.
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, is permitted pursuant to, and subject to the license
+    terms contained in, the Simplified BSD License set forth in
+    Section 4.c of the IETF Trust's Legal Provisions Relating
+    to IETF Documents (http://trustee.ietf.org/license-info).";
+
+  oc-ext:openconfig-version "3.0.2";
+
+  revision "2019-07-09" {
+    description
+      "Remove units for timeticks64 leaves, since the type
+      specifies the units.";
+    reference "3.0.2";
+  }
+
+  revision "2018-11-21" {
+    description
+      "Add OpenConfig module metadata extensions.";
+    reference "3.0.1";
+  }
+
+  revision "2018-07-02" {
+    description
+      "Add new RSVP-TE statistics, remove associated-rsvp-session
+      leaf. Remove use of date-and-time.";
+    reference "3.0.0";
+  }
+
+  revision "2018-06-16" {
+    description
+      "Included attributes for base LDP configuration.";
+     reference "2.6.0";
+  }
+
+  revision "2018-06-13" {
+    description
+      "Add ttl-propagation to global MPLS config";
+    reference "2.5.0";
+  }
+
+  revision "2018-06-05" {
+    description
+      "Fixed bugs in when statements on RSVP-TE attributes";
+    reference "2.4.2";
+  }
+
+  revision "2017-08-24" {
+    description
+      "Minor formatting fixes.";
+    reference "2.4.1";
+  }
+
+  revision "2017-06-21" {
+    description
+      "Add TC bits typedef.";
+    reference "2.4.0";
+  }
+
+  revision "2017-03-22" {
+    description
+      "Add RSVP calculated-absolute-subscription-bw";
+    reference "2.3.0";
+  }
+
+  revision "2017-01-26" {
+    description
+      "Add RSVP Tspec, clarify units for RSVP, remove unused LDP";
+    reference "2.2.0";
+  }
+
+  revision "2016-12-15" {
+    description
+      "Add additional MPLS parameters";
+    reference "2.1.0";
+  }
+
+  revision "2016-09-01" {
+    description
+      "Revisions based on implementation feedback";
+    reference "2.0.0";
+  }
+
+  revision "2016-08-08" {
+    description
+      "Public release of MPLS models";
+    reference "1.0.1";
+  }
+
+  // OpenConfig specific extensions for module metadata.
+  oc-ext:regexp-posix;
+  oc-ext:catalog-organization "openconfig";
+  oc-ext:origin "openconfig";
+
+  // typedef statements
+
+  typedef mpls-ldp-adjacency-type {
+    type enumeration {
+      enum LINK {
+        description
+          "Link LDP adjacency";
+      }
+      enum TARGETED {
+        description
+          "Targeted LDP adjacency";
+      }
+    }
+    description
+     "enumerated type for specifying LDP adjacencies";
+  }
+
+  typedef mpls-ldp-afi {
+    type enumeration {
+      enum IPV4 {
+        description
+          "IPv4 AFI for LDP adjancencies";
+      }
+      enum IPV6 {
+        description
+          "IPv6 AFI for LDP adjancencies";
+      }
+    }
+    description
+     "enumerated type for specifying LDP AFIs";
+  }
+
+  // grouping statements
+
+   grouping ldp-global {
+    description
+      "Global LDP signaling configuration";
+
+    container ldp {
+      description
+        "LDP global signaling configuration";
+
+      container global {
+        description
+          "Platform wide LDP configuration and state";
+
+        uses mpls-ldp-global;
+      }
+      uses mpls-ldp-targeted-top;
+    }
+  }
+
+  grouping mpls-ldp-global {
+    description
+      "Global LDP attributes";
+
+    container config {
+      description
+        "Global LDP configuration attributes.";
+      uses mpls-ldp-global-config;
+    }
+  }
+
+  grouping mpls-ldp-global-config {
+    description
+      "Grouping containing platform wide LDP information";
+
+    leaf lsr-id {
+      type oc-inet:ip-address;
+      description
+        "Global label switch router identifier
+        configuration.";
+      reference "RFC5036 LDP Specification";
+    }
+  }
+
+  grouping mpls-ldp-address-families-ldp-top {
+    description
+      "Grouping containing the state and configuration
+      attributes for adress families.";
+
+    container address-families {
+      description
+        "Top container comprising the adress families
+        attributes";
+      list address-family {
+        key "afi-name";
+        description
+          "List for attributes related to address-families for LDP.";
+
+        leaf afi-name {
+          type leafref {
+                path "../config/afi-name";
+              }
+              description
+                "Adress-family name atttibute (IPv4, IPv6).";
+        }
+
+        container config {
+          description
+            "Configuration attributes related to address-families
+            for LDP.";
+          uses mpls-ldp-address-family-config;
+        }
+      }
+    }
+  }
+
+  grouping mpls-ldp-targeted-top {
+
+    description
+      "Grouping containing attributes for targeted LDP";
+
+    container targeted {
+      description
+        "Top container for targeted LDP state and configuration
+        attributes.";
+
+      uses mpls-ldp-address-targeted-ldp-top;
+    }
+  }
+
+  grouping mpls-ldp-address-targeted-ldp-top {
+    description
+      "Grouping containing address attributes for targeted LDP.";
+
+    container address-families {
+      description
+        "Global container for IPv4 and IPv6 attributes for LDP.";
+
+      list address-family {
+        key "afi-name";
+        description
+          "List of address families for targeted LDP
+          configuration";
+
+        leaf afi-name {
+          type leafref {
+                path "../config/afi-name";
+              }
+              description
+                "Adress-family name atttibute (IPv4, IPv6).";
+        }
+
+        container config {
+          description
+            "Address-family configuration for targeted LDP";
+          uses mpls-ldp-address-family-config;
+        }
+
+        container targets {
+          description
+            "Container aggregating all targeted sessions and
+            their LDP-specific attributes.";
+
+          list target {
+            key "remote-address";
+
+            description
+              "List of LDP targets configuration";
+
+            leaf remote-address {
+              type leafref {
+                path "../config/remote-address";
+              }
+              description
+                "Neighbor address of the targeted LDP session";
+            }
+
+            container config {
+
+              description
+                "Configuration parameters of a targeted LDP
+                adjacency";
+
+              leaf remote-address {
+                type oc-inet:ip-address;
+                description
+                  "Configuration of neighbor address of the
+                  targeted LDP adjacency";
+              }
+
+              leaf local-address {
+                type oc-inet:ip-address;
+                description
+                  "Local IP address of the LDP adjacency";
+              }
+              
+              uses admin-config;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  grouping mpls-ldp-address-family-config {
+    description
+      "Grouping containing adress-family name atttibute";
+
+    leaf afi-name {
+      description
+        "Adress-family name atttibute (IPv4, IPv6).";
+      type oc-ldp:mpls-ldp-afi;
+    }
+  }
+
+  grouping igp-tunnel-ldp {
+    description
+      "common defintiions for LDP-signaled LSP tunnel
+      types";
+  }
+  grouping igp-lsp-ldp-setup {
+    description
+      "grouping for LDP setup attributes";
+
+    container ldp {
+      description
+        "LDP signaling setup for IGP-congruent LSPs";
+      uses igp-tunnel-ldp;
+    }
+  }
+
+  grouping admin-config {
+    description
+      "Re-usable grouping to enable or disable a particular LDP feature.";
+
+    leaf enabled {
+      type boolean;
+      default false;
+      description
+        "When set to true, the functionality within which this leaf is
+        defined is enabled, when set to false it is explicitly disabled.";
+    }
+  }
+
+  // data definition statements
+
+  // augment statements
+
+  // rpc statements
+
+  // notification statements
+
+}

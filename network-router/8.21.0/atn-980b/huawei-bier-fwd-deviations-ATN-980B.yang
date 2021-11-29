@@ -1,0 +1,47 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-fwd-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-bier-fwd-deviations-ATN-980B";
+  prefix bier-fwd-devs-ATN-980B;
+
+  import huawei-bier-fwd {
+    prefix bier-fwd;
+  }
+
+  import huawei-bier {
+    prefix bier;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bier-fwd module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bier-fwd:bier-fwd/bier-fwd:select-boards" {
+    deviate not-supported;
+  }
+  deviation "/bier:bier/bier-fwd:forward" {
+    deviate not-supported;
+  }
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier-fwd:load-balance-enhance-factor" {
+    deviate not-supported;
+  }
+
+}

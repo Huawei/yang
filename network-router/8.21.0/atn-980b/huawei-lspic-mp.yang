@@ -1,0 +1,230 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lspic-mp {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-lspic-mp";
+  prefix lspic-mp;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ppp-net {
+    prefix ppp-net;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "MP-group CRC and los packet alarm threshold configuration and time delay detect.";
+  revision 2019-05-05 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef enable-status {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable.";
+      }
+    }
+    description
+      "Enable status.";
+  }
+  typedef fragment-statistics-mode {
+    type enumeration {
+      enum "fragment-statistics" {
+        value 0;
+        description
+          "Fragment statistics.";
+      }
+      enum "non-fragment-statistics" {
+        value 1;
+        description
+          "Non-fragment statistics.";
+      }
+    }
+    description
+      "Fragment statistics mode.";
+  }
+  typedef packet-priority-type {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description
+          "MP-group Packet Mormal Priority.";
+      }
+      enum "high" {
+        value 1;
+        description
+          "MP-group Packet High Priority.";
+      }
+    }
+    description
+      "Type of ifmmp pack priority.";
+  }
+  typedef packet-queue-depth-mode {
+    type enumeration {
+      enum "depth256" {
+        value 0;
+        description
+          "Queue depth 256 packets.";
+      }
+      enum "depth512" {
+        value 1;
+        description
+          "Queue depth 512 packets.";
+      }
+      enum "depth1024" {
+        value 2;
+        description
+          "Queue depth 1024 packets.";
+      }
+      enum "depth2048" {
+        value 3;
+        description
+          "Queue depth 2048 packets.";
+      }
+      enum "depth4096" {
+        value 4;
+        description
+          "Queue depth 4096 packets.";
+      }
+    }
+    description
+      "Packet queue depth mode.";
+  }
+  container lspic-mp {
+    description
+      "The global configurations of MP-group interface.";
+    container fragment-attribute {
+      description
+        "Configure global configurations of MP-group interface.";
+      leaf statistics-mode {
+        ext:dynamic-default ;
+        type fragment-statistics-mode;
+        description
+          "Global settings of the MP-group and Global-MP-Group interfaces fragment statistics mode. If the fragment statistics mode is fragment-statistics, it will clear statistics of all MP-Group and Global-MP-Group interfaces.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:multilink-ppp/ppp-net:mp-base" {
+    description
+      "MP-group CRC and los packet alarm threshold configuration and time delay detect.";
+    container time-delay-detect {
+      when "../../../../ifm:type='Mp-group'";
+      description
+        "Configure MP-group time delay detect.";
+      leaf detect-enable {
+        type enable-status;
+        default "disable";
+        description
+          "MP-group time delay detect enable status.";
+      }
+      leaf detect-threshold {
+        ext:dynamic-default;
+        type uint32 {
+          range "25..500";
+        }
+        units "100 us";
+        description
+          "MP-group time delay detect threshold.";
+      }
+    }
+    container qos-attribute {
+      description
+        "Configure MP-group drop timeout and port-queue config.";
+      leaf drop-timeout {
+        type uint32 {
+          range "10..100";
+        }
+        units "ms";
+        default "100";
+        description
+          "MP-group drop timeout threshold.";
+      }
+      leaf dynamic-bandwidth-enable {
+        type enable-status;
+        default "disable";
+        description
+          "MP-group Dynamic BandWidth Mode Config.";
+      }
+      leaf low-latency-enable {
+        ext:dynamic-default;
+        type enable-status;
+        description
+          "MP-group Low Latency Mode Config.";
+      }
+      leaf packet-priority {
+        ext:dynamic-default ;
+        type packet-priority-type;
+        description
+          "MP-group Packet Priority Config.";
+      }
+      leaf packet-queue-depth {
+        ext:dynamic-default ;
+        type packet-queue-depth-mode;
+        description
+          "MP-group Packet Queue Depth Config.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:multilink-ppp/ppp-net:mp-members/ppp-net:mp-member" {
+    description
+      "Time delay information of the MP-group member interface.";
+    container time-delay {
+      config false;
+      description
+        "Statistics of time delay information of the MP-group member interface.";
+      leaf max-time-delay {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "us";
+        description
+          "Max history delay of an MP-group member interface.";
+      }
+      leaf last-record-1 {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "us";
+        description
+          "Last delay of an MP-group member interface.";
+      }
+      leaf last-record-2 {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "us";
+        description
+          "Last but one delay of an MP-group member interface.";
+      }
+      leaf last-record-3 {
+        type uint32 {
+          range "0..1000000";
+        }
+        units "us";
+        description
+          "Last but two delay of an MP-group member interface.";
+      }
+    }
+  }
+  ext:task-name "interface-mgr";
+}

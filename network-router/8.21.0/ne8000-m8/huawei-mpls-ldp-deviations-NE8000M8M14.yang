@@ -1,0 +1,58 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-ldp-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-mpls-ldp-deviations-NE8000M8M14";
+  prefix mpls-ldp-devs-NE8000M8M14;
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2021-07-16 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ldp-peer-group-auth-mode-deviations {
+    type enumeration {
+      enum md5 {
+        value 1;
+        description
+          "Specifies mode for cipher or plain MD5 password.";
+      }
+      enum keychain {
+        value 2;
+        description
+          "Specifies mode for keychain password.";
+      }
+    }
+    description
+      "LDP Peer Authentication Type.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:auth-peer-groups/mpls-ldp:auth-peer-group/mpls-ldp:authen-mode" {
+    deviate replace {
+      type mpls-ldp-devs-NE8000M8M14:ldp-peer-group-auth-mode-deviations;
+    }
+  }
+}

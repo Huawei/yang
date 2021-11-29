@@ -1,0 +1,762 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dcn {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-dcn";
+  prefix dcn;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-ssl {
+    prefix ssl;
+  }
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+  import huawei-vaccess-master {
+    prefix vaccess-master;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-isis {
+    prefix isis;
+  }
+  import huawei-ospfv2 {
+    prefix ospfv2;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Data communication network.";
+
+  revision 2021-09-10 {
+    description
+      "Added DCN VLAN, dcn ospf area, some DCN and QX parameters, core-routing, transparent, vaccess import routing.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-09-23 {
+    description
+      "Added the DCN and TC DCN functions for interfaces.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-07-16 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  
+  ext:task-name "dcn";
+  typedef connect-type {
+    type enumeration {
+      enum "all" {
+        value 0;
+        description
+          "Both ssl and normal connection mode.";
+      }
+      enum "ssl" {
+        value 1;
+        description
+          "The secure connection mode.";
+      }
+      enum "normal" {
+        value 2;
+        description
+          "The ordinary connection mode.";
+      }
+    }
+    description
+      "The connection mode between a GNE and the NMS.";
+  }
+  typedef verify-mode-type {
+    type enumeration {
+      enum "dual" {
+        value 3;
+        description
+          "Dual verify mode.";
+      }
+      enum "single" {
+        value 1;
+        description
+          "Single verify mode.";
+      }
+    }
+    description
+      "The verify mode type.";
+  }
+  typedef level-type {
+    type enumeration {
+      enum "level-2" {
+        value 0;
+        description
+          "Level 2.";
+      }
+      enum "level-1" {
+        value 1;
+        description
+          "Level 1.";
+      }
+      enum "level-1-2" {
+        value 2;
+        description
+          "Level 1 and 2.";
+      }
+    }
+    description
+      "The level type.";
+  }
+  typedef admin-ip-import-protocol {
+    type enumeration {
+      enum "ospf" {
+        value 2;
+        description
+          "Import OSPF routes.";
+      }
+      enum "isis" {
+        value 3;
+        description
+          "Import ISIS routes.";
+      }
+      enum "bgp" {
+        value 6;
+        description
+          "Import BGP routes.";
+      }
+      enum "public" {
+        value 15;
+        description
+          "Import public routes.";
+      }
+    }
+    description
+      "Import admin-ip protocol type.";
+  }
+
+  typedef dcn-ospf-import-protocol {
+    type enumeration {
+      enum "direct" {
+        value 1;
+        description
+          "Import direct routes.";
+      }
+      enum "ospf" {
+        value 2;
+        description
+          "Import OSPF routes.";
+      }
+      enum "isis" {
+        value 3;
+        description
+          "Import ISIS routes.";
+      }
+      enum "static" {
+        value 4;
+        description
+          "Import static routes.";
+      }
+      enum "bgp" {
+        value 6;
+        description
+          "Import BGP routes.";
+      }
+    }
+    description
+      "Import dcn-ospf protocol type.";
+  }
+  typedef dcn-login-mode {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown login mode.";
+      }
+      enum "ip" {
+        value 1;
+        description
+          "IP login mode.";
+      }
+      enum "transmission" {
+        value 2;
+        description
+          "Transmission login mode.";
+      }
+    }
+    description
+      "Login mode of the ne.";
+  }
+
+  typedef pnp-state {
+    type enumeration {
+      enum "init" {
+        value 0;
+        description
+          "Init.";
+      }
+      enum "start" {
+        value 1;
+        description
+          "Start.";
+      }
+      enum "finish" {
+        value 2;
+        description
+          "Finished.";
+      }
+    }
+    description
+      "The PNP state.";
+  }
+
+  container dcn {
+    description
+      "Data communication network.";
+    container tc-dcn-auth {
+      description
+        "Configure TC DCN authentication key.";
+      leaf tc-auth-key {
+        type pub-type:password-extend {
+          length "8..16 | 32 | 48 | 108..128";
+        }
+        description
+          "Telecom DCN authentication key.
+          The character string in a password identifies the contents of the password, spaces not supported.
+          If a plaintext is used, the password is a string of 8 to 16 characters.
+          If a ciphertext is used, the password is a string of 32, 48, or 108 to 128 characters.";
+      }
+    }
+    container site {
+      must "(./ne-ip and ./mask-length) or (not (./ne-ip) and not (./mask-length))";
+      description
+        "Configure data communication network.";
+      leaf enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable DCN.";
+      }
+      leaf ne-id {
+        ext:dynamic-default ;
+        ext:operation-exclude "create|delete";
+        type pub-type:hex-binary;
+        description
+          "Configure the NE identifier.
+          Neid identify a network element (NE) uniquely.
+          Neid=subnetid<<16+baseid, in which subnetid varies from 0x01 to 0xfe, and baseid varies from 0x0001 to 0xfffe.
+          An error is reported if the NE ID conflicts with the NE ID in the core routing table.";
+      }
+      leaf ne-ip {
+        when "../enable = 'true'";
+        type inet:ipv4-address-no-zone;
+        description
+          "Configure the NE IP address.";
+      }
+      leaf mask-length {
+        when "../enable = 'true'";
+        type uint8 {
+          range "1..32";
+        }
+        description
+          "Configure the mask length of the NE IP address.";
+      }
+      leaf effect-ne-ip {
+        when "../enable = 'true'";
+        type inet:ipv4-address-no-zone;
+        config false;
+        description
+          "Effective NE IP address.";
+      }
+      leaf effect-mask-length {
+        when "../enable = 'true'";
+        type uint8 {
+          range "1..32";
+        }
+        config false;
+        description
+          "Effective mask length of the NE IP address.";
+      }
+      leaf auto-report {
+        when "../enable = 'true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the automatic NE reporting function.";
+      }
+      leaf advertise-ne-ip {
+        when "../enable = 'true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the function to advertise the NE IP address.";
+      }
+      leaf eth-bandwidth {
+        when "../enable = 'true'";
+        ext:dynamic-default ;
+        type uint32 {
+          range "64|128|192|256|512|1024|2048";
+        }
+        description
+          "Bandwidth of DCN ethernet interface.";
+      }
+      leaf pos-bandwidth {
+        when "../enable = 'true'";
+        type uint32 {
+          range "64|128|192|256|512|1024|2048";
+        }
+        default 1024;
+        description
+          "Bandwidth of DCN pos interface.";
+      }
+      leaf serial-bandwidth {
+        when "../enable = 'true'";
+        type uint32 {
+          range "64|128|192|256|512|1024|2048";
+        }
+        default 192;
+        description
+          "Bandwidth of DCN serial interface.";
+      }
+      leaf ne-number-threshold {
+        when "../enable = 'true'";
+        type uint32 {
+          range "30..500";
+        }
+        default 200;
+        description
+          "The alarm threshold of ne number overload.";
+      }
+      leaf data-priority {
+        type uint8 {
+          range "0..5";
+        }
+        default 3;
+        description
+          "Data priority.";
+      }
+      leaf qx-enable {
+        ext:dynamic-default ;
+        when "../enable = 'true'";
+        type boolean;
+        description
+          "Enable/disable the QX protocol.";
+      }
+      container qx {
+        when "../qx-enable = 'true'";
+        description
+          "Configure the QX protocol.";
+        leaf connet-mode {
+          type connect-type;
+          default "ssl";
+          description
+            "Configure the connection mode between a GNE and the NMS.";
+        }
+        leaf server-dtls-policy {
+          type leafref {
+            path "/ssl:ssl/ssl:dtls-policys/ssl:dtls-policy/ssl:policy-name";
+          }
+          description
+            "Bind DTLS policy name for server.";
+        }
+        leaf client-dtls-policy {
+          type leafref {
+            path "/ssl:ssl/ssl:dtls-policys/ssl:dtls-policy/ssl:policy-name";
+          }
+          description
+            "Bind DTLS policy name for client.";
+        }
+        leaf ssl-verify-ip {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function of ssl verify IP.";
+        }
+        leaf ssl-verify-mode {
+          type verify-mode-type;
+          default "dual";
+          description
+            "Enable/disable the function of ssl verify mode.";
+        }
+        leaf ssl-fail-threshold {
+          type uint8 {
+            range "1..100";
+          }
+          default 1;
+          description
+            "The alarm threshold of ssl fail count.";
+        }
+        leaf bind-ssl-policy {
+          type leafref {
+            path "/ssl:ssl/ssl:ssl-policys/ssl:ssl-policy/ssl:policy-name";
+          }
+          description
+            "Bind ssl policy name for QX Communications.";
+        }
+        leaf bind-all-interface {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function to bind all interface for QX Communications.";
+        }
+      }
+      container transparent-interfaces {
+        when "../enable = 'true'";
+        description
+          "List of transparent interfaces.";
+        list transparent-interface {
+          must "./source-interface != ./destination-interface " ;
+          key "source-interface";
+          unique "destination-interface";
+          max-elements 5;
+          description
+            "Configure a transparent interface.";
+          leaf source-interface {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/dcn:dcn/dcn:dcnv4/dcn:enable != 'true'";
+            description
+              "Transparent source interface name.";
+          }
+          leaf destination-interface {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/dcn:dcn/dcn:dcnv4/dcn:enable != 'true'";
+            mandatory true;
+            description
+              "Transparent destination interface name.";
+          }
+        }
+      }
+    }
+    container core-routings {
+      config false;
+      description
+        "List of the DCN core routing table.";
+      list core-routing {
+        key "ne-id";
+        description
+          "Operational data of the DCN core routing table.";
+        leaf ne-id {
+          type pub-type:hex-binary;
+          description
+            "Destination NE ID.";
+        }
+        leaf ne-ip {
+          type inet:ipv4-address-no-zone;
+          description
+            "IP address of an NE.";
+        }
+        leaf distance {
+          type uint32;
+          description
+            "Number of hops of a core route.";
+        }
+        leaf life-cycle {
+          type uint8{
+            range "0..255";
+          }
+          description
+            "Lifecycle of a core route.";
+        }
+        leaf login-mode {
+          type dcn-login-mode;
+          description
+            "Login mode of an NE.";
+        }
+        leaf host-name {
+          type string {
+            length "1..256";
+          }
+          description
+            "Host name of an NE.";
+        }
+        leaf pnp-state {
+          type pnp-state;
+          description
+            "PNP state of an NE.";
+        }
+        leaf esn {
+          type string {
+            length "1..64";
+          }
+          description
+            "ESN name of an NE.";
+        }
+        container nexthops {
+          description
+            "List of nexthops.";
+          list nexthop {
+            key "dcn-if-name";
+            description
+              "Operational data of nexthop.";
+            leaf dcn-if-name {
+              type pub-type:if-name;
+              description
+                "Outgoing dcn interface name.";
+            }
+            leaf if-name {
+              type pub-type:if-name;
+              description
+                "Outgoing physical interface name.";
+            }
+            leaf nexthop {
+              type inet:ipv4-address-no-zone;
+              description
+                "Nexthop IP address.";
+            }
+          }
+        }
+      }
+    }
+    container tc-core-routings {
+      config false;
+      description
+        "List of the TC DCN core routing table.";
+      list tc-core-routing {
+        key "ne-id";
+        description
+          "Operational data of the TC DCN core routing table.";
+        leaf ne-id {
+          type pub-type:hex-binary;
+          description
+            "Destination NE ID.";
+        }
+        leaf ne-ip {
+          type inet:ipv4-address-no-zone;
+          description
+            "IP address of an NE.";
+        }
+        leaf mac {
+          type pub-type:mac-address;
+          description
+            "MAC address of an NE.";
+        }
+        leaf device-type {
+          type string {
+            length "1..256";
+          }
+          description
+            "NE type.";
+        }
+        leaf company-name {
+          type string {
+            length "1..256";
+          }
+          description
+            "NE manufacturer.";
+        }
+        leaf ne-ipv6 {
+          type inet:ipv6-address-no-zone;
+          description
+            "IPv6 address of an NE.";
+        }
+      }
+    }
+  }
+  augment /ifm:ifm/ifm:interfaces/ifm:interface {
+    description
+      "DCN interface configuration.";
+    container dcn {
+      when "/dcn:dcn/dcn:site/dcn:enable = 'true'";
+      description
+        "Configure DCN interface.";
+      container ospfv2-site {
+        must "../dcnv4/enable = 'true' or ../tc-dcn/enable = 'true'";
+        presence "Configure DCN OSPF process.";
+        description
+          "Configure DCN OSPF process.";
+        leaf process-id {
+          type uint32 {
+            range "1..4294967295";
+          }
+          mandatory true;
+          description
+            "OSPF process ID.";
+        }
+        leaf area-id {
+          type inet:ipv4-address-no-zone;
+          mandatory true;
+          description
+            "Area ID.";
+        }
+      }
+      container dcnv4 {
+        description
+          "Configure DCN interface.";
+        leaf default-port {
+          type boolean;
+          ext:operation-exclude "create|delete|update";
+          description
+            "Enable/disable auto enable DCN.";
+        }
+        leaf enable {
+          type boolean;
+          ext:dynamic-default {
+            ext:default-value "true" {
+              when "/dcn:dcn/dcn:site/dcn:enable = 'true' and ../default-port = 'true'";
+              description "DCN is enabled on a default DCN port when the global DCN is enabled.";
+            }
+          }
+          description
+            "Enable/disable DCN.";
+        }
+        leaf vlan-id {
+          when "../enable = 'true' and ../../../ifm:type != 'Pos' and ../../../ifm:type != 'Serial' and ../../../ifm:type != 'Pos-Trunk' and  ../../../ifm:type != 'Trunk-Serial'";
+          type uint16 {
+            range "1..4094";
+          }
+          default "4094";
+          description
+            "VLAN ID of DCN interface.";
+        }
+        leaf vlan-list {
+          when "../enable = 'true' and ../../../ifm:type != 'Pos' and ../../../ifm:type != 'Serial' and ../../../ifm:type != 'Pos-Trunk' and  ../../../ifm:type != 'Trunk-Serial'";
+          type pub-type:vlan-range;
+          description
+           "VLAN list of DCN interface. The maximum number of VLAN IDs is 64.";
+        }
+      }
+      container tc-dcn {
+        description
+          "Configure TC DCN interface.";
+        leaf default-port {
+          type boolean;
+          ext:operation-exclude "create|delete|update";
+          description
+            "Enable/disable auto enable TC DCN.";
+        }
+        leaf enable {
+          type boolean;
+          ext:dynamic-default {
+            ext:default-value "true" {
+              when "/dcn:dcn/dcn:site/dcn:enable = 'true' and ../default-port = 'true'";
+              description "TC DCN is enabled on a default TC DCN port when the global DCN is enabled.";
+            }
+          }
+          description
+            "Enable/disable TC DCN.";
+        }
+      }
+    }
+  }
+  augment /vaccess:vaccess/vaccess-master:master {
+    description
+      "Import protocols Configuration information augment to module vaccess master.";
+    container import-admin-ips {
+      must "/dcn:dcn/dcn:site/dcn:enable = 'true'";
+      description
+        "List of import admin-ip to protocols.";
+      list import-admin-ip {
+        key "protocol process-id vpn-instance";
+        description
+          "Configure import admin-ip to protocol.";
+        leaf protocol {
+          type admin-ip-import-protocol;
+          description
+            "Set the routing protocol from which routes are imported.";
+        }
+        leaf process-id {
+          type uint32 {
+            range "0..4294967295";
+          }
+          must "(../process-id=0 and (../protocol='public' or ../protocol='bgp')) or (../process-id>0 and (../protocol='ospf' or ../protocol='isis'))";
+          description
+            "Set the process ID. The process ID is required when the routing protocol is OSPF, or ISIS.";
+        }
+        leaf vpn-instance {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+          must "((../protocol='isis' and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/isis:isis/isis:sites/isis:site[isis:id = current()/../process-id]) or (../protocol='ospf' and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/ospfv2:ospfv2/ospfv2:sites/ospfv2:site[ospfv2:process-id = current()/../process-id]) or (../protocol='bgp' and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/bgp:bgp/bgp:base-process/bgp:afs/bgp:af[bgp:type='ipv4uni']) or (../protocol='public' and ../vpn-instance='_public_'))";
+          description
+            "VPN instance.";
+        }
+        leaf level-type {
+          when "../protocol='isis'";
+          type level-type;
+          default "level-2";
+          description
+            "Import routes to the level 1 or (and) level 2 routing table.";
+        }
+      }
+    }
+    container import-protocols {
+      must "/dcn:dcn/dcn:site/dcn:enable = 'true'";
+      description
+        "List of import protocols to dcn ospf.";
+      list import-protocol {
+        key "protocol process-id vpn-instance";
+        description
+          "Configure import protocols to dcn ospf.";
+        leaf protocol {
+          type dcn-ospf-import-protocol;
+          description
+            "Set the routing protocol from which routes are imported.";
+        }
+        leaf process-id {
+          type uint32 {
+            range "0..4294967295";
+          }
+          must "(../process-id=0 and (../protocol='direct' or ../protocol='static' or ../protocol='bgp')) or (../process-id>0 and (../protocol='ospf' or ../protocol='isis'))";
+          description
+            "Set the process ID. The process ID is required when the routing protocol is OSPF, or ISIS.";
+        }
+        leaf vpn-instance {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+          must "((../protocol='isis' and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/isis:isis/isis:sites/isis:site[isis:id = current()/../process-id]) or (../protocol='ospf' and /ni:network-instance/ni:instances/ni:instance[ni:name=current()]/ospfv2:ospfv2/ospfv2:sites/ospfv2:site[ospfv2:process-id = current()/../process-id]) or (../protocol='bgp' and /bgp:bgp/bgp:base-process/bgp:enable='true') or ../protocol='direct' or ../protocol='static')";
+          description
+            "VPN instance.";
+        }
+        leaf route-policy-name {
+          type leafref {
+            path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+          }
+          description
+            "Set a route policy name.";
+        }
+      }
+    }
+  }
+  ext:refine-ext "/ni:network-instance/ni:instances/ni:instance" {
+    ext:generated-by "system" {
+      description
+        "The instance is create by DCN.";
+      when "/dcn:dcn/dcn:site/dcn:enable = 'true'";
+      ext:filter "starts-with(ni:name, '__dcn_vpn__')";
+    }
+  }
+}
