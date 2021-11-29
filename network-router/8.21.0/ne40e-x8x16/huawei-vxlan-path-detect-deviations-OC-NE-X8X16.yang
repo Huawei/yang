@@ -1,0 +1,43 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vxlan-path-detect-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-vxlan-path-detect-deviations-OC-NE-X8X16";
+  prefix vxlan-path-detect-devs-OC-NE-X8X16;
+
+  import huawei-vxlan-path-detect {
+    prefix vxlan-path-detect;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-vxlan-path-detect module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/vxlan-path-detect:vxlan-path-detect/vxlan-path-detect:ip-ping-detects" {
+    deviate not-supported;
+  }
+  deviation "/vxlan-path-detect:vxlan-path-detect/vxlan-path-detect:mac-ping-detects" {
+    deviate not-supported;
+  }
+  deviation "/vxlan-path-detect:vxlan-path-detect/vxlan-path-detect:ipv6-ping-detects" {
+    deviate not-supported;
+  }
+
+}

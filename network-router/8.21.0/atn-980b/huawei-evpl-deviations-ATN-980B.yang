@@ -1,0 +1,66 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpl-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-evpl-deviations-ATN-980B";
+  prefix evpl-devs-ATN-980B;
+
+  import huawei-evpl {
+    prefix evpl;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Management of EVPL.";
+
+  revision 2019-03-01 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  typedef evpl-mode-deviations {
+    type enumeration {
+      enum mpls-mode {
+        value 1;
+        status deprecated;
+        description
+          "MPLS mode.";
+      }
+      enum srv6-mode {
+        value 2;
+        status deprecated;
+        description
+          "SRv6 mode.";
+      }
+      enum none {
+        value 3;
+        description
+          "None mode.";
+      }
+    }
+    description
+      "The mode of EVPL instance.";
+  }
+
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpl:peers" {
+    deviate not-supported;
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpl:evpl-statistics" {
+    deviate not-supported;
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpl:mode" {
+    deviate replace {
+      type evpl-devs-ATN-980B:evpl-mode-deviations;
+    }
+  }
+}

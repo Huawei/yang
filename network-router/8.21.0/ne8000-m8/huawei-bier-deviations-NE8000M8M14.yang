@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-deviations-NE8000M8M14 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bier-deviations-NE8000M8M14";
+  prefix bier-devs-NE8000M8M14;
+
+  import huawei-bier {
+    prefix bier;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Model for Bit Index Explicit Replication (BIER).";
+
+  revision 2019-09-06 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:routings/bier:routing/bier:invalid-nexthops/bier:invalid-nexthop/bier:igp-attribute/bier:ospf-protocol" {
+    deviate not-supported;
+  }
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:routings/bier:routing/bier:nexthops/bier:nexthop/bier:igp-attribute/bier:ospf-protocol" {
+    deviate not-supported;
+  }
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:routings/bier:routing/bier:prefix-igp-attribute/bier:ospf-protocol" {
+    deviate not-supported;
+  }
+}

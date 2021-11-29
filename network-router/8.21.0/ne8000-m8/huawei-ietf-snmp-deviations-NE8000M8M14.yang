@@ -1,0 +1,241 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-snmp-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-ietf-snmp-deviations-NE8000M8M14";
+  prefix snmp-devs-NE8000M8M14;
+
+  import ietf-snmp {
+    prefix snmp;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "SNMP.";
+
+  revision 2019-05-01 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/snmp:snmp/snmp:engine/snmp:listen/snmp:transport/snmp:udp/snmp:udp/snmp:port" {
+    deviate add {
+      default "161";
+    }
+    deviate replace {
+      type uint16 {
+        range "161 | 1025..65535";
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:engine/snmp:listen/snmp:transport/snmp:udp/snmp:udp/snmp:ip" {
+    deviate not-supported;
+  }
+  deviation "/snmp:snmp/snmp:target/snmp:transport/snmp:udp/snmp:udp/snmp:prefix-length" {
+    deviate not-supported;
+  }
+  deviation "/snmp:snmp/snmp:engine/snmp:enable-authen-traps" {
+    deviate add {
+      default "false";
+    }
+  }
+  deviation "/snmp:snmp/snmp:target-params/snmp:params/snmp:v1/snmp:v1/snmp:security-name" {
+    deviate replace {
+      type string {
+        length "1..168";
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:target-params/snmp:params/snmp:v2c/snmp:v2c/snmp:security-name" {
+    deviate replace {
+      type string {
+        length "1..168";
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:community/snmp:name/snmp:binary-name" {
+    deviate not-supported;
+  }
+  deviation "/snmp:snmp/snmp:community/snmp:name" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/snmp:snmp/snmp:community/snmp:name/snmp:text-name/snmp:text-name" {
+    deviate replace {
+      type string {
+        length "1..255";
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:community/snmp:target-tag" {
+    deviate not-supported;
+  }
+  deviation "/snmp:snmp/snmp:target/snmp:mms" {
+    deviate not-supported;
+  }
+  deviation "/snmp:snmp/snmp:target/snmp:retries" {
+    deviate replace {
+      type uint8 {
+        range "0..10";
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:target/snmp:timeout" {
+    deviate replace {
+      type uint32 {
+        range "100..180000";
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:community/snmp:security-name" {
+    deviate add {
+      must '../security-name = ../index';
+    }
+  }
+  deviation "/snmp:snmp/snmp:vacm/snmp:group/snmp:access/snmp:context-match" {
+    deviate replace {
+      type enumeration {
+        enum exact {
+          value 1;
+          description
+            "Exact.";
+        }
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:proxy/snmp:multiple-target-out" {
+    deviate replace {
+      config false;
+    }
+  }
+  deviation "/snmp:snmp/snmp:engine/snmp:listen/snmp:name" {
+    deviate add {
+      default "snmpListen";
+    }
+  }
+  deviation "/snmp:snmp/snmp:vacm/snmp:group/snmp:access/snmp:context" {
+    deviate replace {
+      type empty;
+    }
+  }
+  deviation "/snmp:snmp/snmp:vacm/snmp:group/snmp:access/snmp:read-view" {
+    deviate add {
+      default "ViewDefault";
+    }
+  }
+  deviation "/snmp:snmp/snmp:proxy/snmp:context-name" {
+    deviate not-supported;
+  }
+  deviation "/snmp:snmp/snmp:community" {
+    deviate add {
+      unique "snmp:name/snmp:text-name/snmp:text-name";
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:local/snmp:user/snmp:auth/snmp:protocol/snmp:md5/snmp:md5/snmp:key" {
+    deviate replace {
+      type string {
+        length "2..max";
+        pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:local/snmp:user/snmp:auth/snmp:protocol/snmp:sha/snmp:sha/snmp:key" {
+    deviate replace {
+      type string {
+        length "2..max";
+        pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:local/snmp:user/snmp:priv/snmp:protocol/snmp:des/snmp:des/snmp:key" {
+    deviate replace {
+      type string {
+        length "2..max";
+        pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:local/snmp:user/snmp:priv/snmp:protocol/snmp:aes/snmp:aes/snmp:key" {
+    deviate replace {
+      type string {
+        length "2..max";
+        pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:remote/snmp:user/snmp:auth/snmp:protocol/snmp:md5/snmp:md5/snmp:key" {
+    deviate replace {
+      type string {
+        length "2..max";
+        pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:remote/snmp:user/snmp:auth/snmp:protocol/snmp:sha/snmp:sha/snmp:key" {
+    deviate replace {
+      type string {
+        length "2..max";
+        pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:remote/snmp:user/snmp:priv/snmp:protocol/snmp:des/snmp:des/snmp:key" {
+    deviate replace {
+      type string {
+        length "2..max";
+        pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:remote/snmp:user/snmp:priv/snmp:protocol/snmp:aes/snmp:aes/snmp:key" {
+    deviate replace {
+      type string {
+        length "2..max";
+        pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
+      }
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:local/snmp:user/snmp:auth/snmp:protocol" {
+    deviate replace {
+      mandatory false;
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:local/snmp:user/snmp:priv/snmp:protocol" {
+    deviate replace {
+      mandatory false;
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:remote/snmp:user/snmp:auth/snmp:protocol" {
+    deviate replace {
+      mandatory false;
+    }
+  }
+  deviation "/snmp:snmp/snmp:usm/snmp:remote/snmp:user/snmp:priv/snmp:protocol" {
+    deviate replace {
+      mandatory false;
+    }
+  }
+  deviation "/snmp:snmp/snmp:engine/snmp:listen/snmp:transport" {
+    deviate replace {
+      mandatory false;
+    }
+  }
+  ext:deviation-ext "/snmp:snmp/snmp:engine/snmp:engine-id" {
+    ext:deviate-ext "add" {
+      ext:dynamic-default;
+    }
+  }
+}

@@ -1,0 +1,571 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-vxlan {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-diagnostic-tools-type;
+  include huawei-diagnostic-tools-common;
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+description
+     "Vxlan diagnosis tool.";
+
+  revision 2021-01-04 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  grouping vxlan-ping-trace-result-type {
+    description
+      "Test result.";
+    container ping-results {
+      config false;
+      description
+        "List of VXLAN ping test results.";
+      list ping-result {
+        key "test-name";
+        config false;
+        description
+          "Statistics of VXLAN ping test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf packet-send {
+          type uint32;
+          description
+            "Total number of sent packets.";
+        }
+        leaf packet-recv {
+          type uint32;
+          description
+            "Total number of received packets.";
+        }
+        leaf loss-ratio {
+          type pub-type:percent;
+          description
+            "Packet loss ratio of a test.";
+        }
+        leaf rtt-min {
+          type uint32;
+          units "ms";
+          description
+            "Minimum RTT of all test packets.";
+        }
+        leaf rtt-max {
+          type uint32;
+          units "ms";
+          description
+            "Maximum RTT of all test packets.";
+        }
+        leaf rtt-average {
+          type uint32;
+          units "ms";
+          description
+            "Average RTT of all test packets.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status (processing or finished).";
+        }
+        container probes {
+          description
+            "List of VXLAN ping results of all packets in a test.";
+          list probe {
+            key "index";
+            description
+              "Statistics of probe result of a single packet in a VXLAN ping test.";
+            leaf index {
+              type uint32;
+              description
+                "Serial number of a test packet received.";
+            }
+            leaf replier {
+              type inet:ip-address-no-zone;
+              description
+                "IPv4/IPv6 reply address in a received response packet.";
+            }
+            leaf packet-size {
+              type uint32;
+              description
+                "Number of bytes in a received response packet.";
+            }
+            leaf rtt {
+              type uint32;
+              units "ms";
+              description
+                "RTT of test packet.";
+            }
+            leaf result-type {
+              type probe-result-type;
+              description
+                "Result of sent packet (success or timeout or failed).";
+            }
+            leaf is-delete {
+              type boolean;
+              ext:support-filter true; 
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+          }
+        }
+      }
+    }
+    container trace-results {
+      config false;
+      description
+        "List of VXLAN trace test results.";
+      list trace-result {
+        key "test-name";
+        config false;
+        description
+          "Statistics of VXLAN trace test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status (processing or finished).";
+        }
+        container hops {
+          description
+            "List of tracert results of all packets in a test.";
+          list hop {
+            key "hop-index";
+            description
+              "Statistics of the response result of a single packet in a VXLAN tracert test.";
+            leaf hop-index {
+              type uint32;
+              description
+                "Serial number of a hop in the test path.";
+            }
+            leaf ttl {
+              type uint8 {
+                range "1..255";
+              }
+              description
+                "TTL of received response packet.";
+            }
+            leaf replier {
+              type inet:ipv4-address-no-zone;
+              description
+                "IPv4 destination address of the related hop in a test.";
+            }
+            leaf rtt {
+              type uint32;
+              units "ms";
+              description
+                "RTT of test packet.";
+            }
+            leaf ingress-port {
+              type string {
+                length "1..64";
+              }
+              description
+                "Inbound interface.";
+            }
+            leaf egress-port {
+              type string {
+                length "1..64";
+              }
+              description
+                "Outbound interface.";
+            }
+            leaf result-type {
+              type probe-result-type;
+              description
+                "Result of sent packet (success or timeout or failed).";
+            }
+            leaf is-delete {
+              type boolean;
+              ext:support-filter true;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc vxlan-start-ping {
+    description
+      "Start VXLAN ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf vni {
+        type uint32 {
+          range "1..16777215";
+        }
+        mandatory true;
+        description
+          "The ID of the VNI.";
+      }
+      leaf source-addr {
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+        description
+          "The source address of the NVE interface.";
+      }
+      leaf peer-addr {
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+        description
+          "The address of the remote NVE.";
+      }
+      leaf udp-port {
+        type uint16 {
+          range "1..65535";
+        }
+        description
+          "Destination UDP port number.";
+      }
+      leaf inner-source-addr {
+        type inet:ipv4-address-no-zone;
+        description
+          "The source address of the inner packet.";
+      }
+      leaf packet-count {
+        type uint32 {
+          range "1..4294967295";
+        }
+        default "5";
+        description
+          "Number of sent packets.";
+      }
+      leaf interval {
+        type uint32 {
+          range "1..10000";
+        }
+        units "ms";
+        default "500";
+        description
+          "Interval for sending test packets.";
+      }
+      leaf reply-mode {
+        type vxlan-reply-mode;
+        default "udp";
+        description
+          "Specify the reply mode of the test packets in a VXLAN ping test.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time taken to wait for the response packets after detection packets are sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+      choice load-balance {
+        description
+          "Load balance.";
+        case vxlan-port {
+          description
+            "VXLAN port.";
+          leaf vxlan-source-port {
+            type uint16 {
+              range "49152..65535";
+            }
+            description
+              "VXLAN source port for load balance.";
+          }
+          leaf vxlan-end-source-port {
+            type uint16 {
+              range "49152..65535";
+            }
+            description
+              "VXLAN end source port for load balance.";
+          }
+        }
+        case inner-packet {
+          description
+            "Inner packet information.";
+          leaf source-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "The IPv4 source address of the user packet for load balance.";
+          }
+          leaf destination-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "The IPv4 destination address of the user packet for load balance.";
+          }
+          leaf protocol {
+            type uint8 {
+              range "1..255";
+            }
+            description
+              "The protocol of the user packet for load balance.";
+          }
+          leaf source-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "The source port of the user packet for load balance.";
+          }
+          leaf destination-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "The destination port of the user packet for load balance.";
+          }
+          leaf source-mac {
+            type pub-type:mac-address;
+            description
+              "The source MAC of the user packet for load balance.";
+          }
+          leaf destination-mac {
+            type pub-type:mac-address;
+            description
+              "The destination MAC of the user packet for load balance.";
+          }
+        }
+      }
+    }
+  }
+  rpc vxlan-stop-ping {
+    description
+      "Stop VXLAN ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+  rpc vxlan-delete-ping {
+    description
+      "Delete VXLAN ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+  rpc vxlan-start-trace {
+    description
+      "Start VXLAN trace.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf vni {
+        type uint32 {
+          range "1..16777215";
+        }
+        mandatory true;
+        description
+          "The ID of the VNI.";
+      }
+      leaf source-addr {
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+        description
+          "The source address of the NVE interface.";
+      }
+      leaf peer-addr {
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+        description
+          "The address of the remote NVE.";
+      }
+      leaf udp-port {
+        type uint16 {
+          range "1..65535";
+        }
+        description
+          "Destination UDP port number.";
+      }
+      leaf inner-source-addr {
+        type inet:ipv4-address-no-zone;
+        description
+          "The source address of the inner packet.";
+      }
+      leaf reply-mode {
+        type vxlan-reply-mode;
+        default "udp";
+        description
+          "Specify the reply mode of the test packets in a VXLAN trace test.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time taken to wait for the response packets after detection packets are sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+      leaf max-ttl {
+        type uint8 {
+          range "1..255";
+        }
+        default "30";
+        description
+          "Max TTL of test packets.";
+      }
+      leaf ttl-mode {
+        type ttl-mode-type;
+        default "uniform";
+        description
+          "TTL mode.";
+      }
+      choice load-balance {
+        description
+          "Load balance.";
+        case vxlan-port {
+          description
+            "VXLAN port.";
+          leaf vxlan-source-port {
+            type uint16 {
+              range "49152..65535";
+            }
+            description
+              "VXLAN source port for load balance.";
+          }
+        }
+        case inner-packet {
+          description
+            "Inner packet information.";
+          leaf source-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "The IPv4 source address of the user packet for load balance.";
+          }
+          leaf destination-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "The IPv4 destination address of the user packet for load balance.";
+          }
+          leaf protocol {
+            type uint8 {
+              range "1..255";
+            }
+            description
+              "The protocol of the user packet for load balance.";
+          }
+          leaf source-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "The source port of the user packet for load balance.";
+          }
+          leaf destination-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "The destination port of the user packet for load balance.";
+          }
+          leaf source-mac {
+            type pub-type:mac-address;
+            description
+              "The source MAC of the user packet for load balance.";
+          }
+          leaf destination-mac {
+            type pub-type:mac-address;
+            description
+              "The destination MAC of the user packet for load balance.";
+          }
+        }
+      }
+    }
+  }
+  rpc vxlan-stop-trace {
+    description
+      "Stop VXLAN trace.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:trace-results/diagnostic-tools:trace-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+  rpc vxlan-delete-trace {
+    description
+      "Delete VXLAN trace.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan/diagnostic-tools:trace-results/diagnostic-tools:trace-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+  augment "/diagnostic-tools:diagnostic-tools" {
+    description
+      "List of VXLAN tests.";
+    container vxlan {
+      config false;
+      description
+        "Statistics of VXLAN tests.";
+      uses vxlan-ping-trace-result-type;
+    }
+  }
+}

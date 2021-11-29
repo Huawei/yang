@@ -1,0 +1,1979 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cpudefend-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-cpudefend-deviations-ATN-980B";
+  prefix cpudefend-devs-ATN-980B;
+
+  import huawei-cpudefend {
+    prefix cpudefend;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cpudefend module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef layer-2-type-deviations {
+    type enumeration {
+      enum "ppp" {
+        value 4;
+        description 
+          "PPP protocol.";
+      }
+      enum "chdlc" {
+        value 5;
+        description 
+          "CHDLC protocol.";
+      }
+      enum "ethernet" {
+        value 6;
+        description 
+          "Ethernet protocol.";
+      }
+      enum "unknown" {
+        value 0;
+        description 
+          "Unknown type.";
+      }
+      enum "x.25" {
+        value 1;
+        description 
+          "X.25 protocol.";
+      }
+      enum "fr" {
+        value 3;
+        description 
+          "FR protocol.";
+      }
+      enum "arp" {
+        value 8;
+        description 
+          "ARP protocol.";
+      }
+      enum "mpls" {
+        value 9;
+        description 
+          "MPLS protocol.";
+      }
+      enum "ipv4" {
+        value 10;
+        description 
+          "IPv4 protocol.";
+      }
+      enum "ipv6" {
+        value 11;
+        description 
+          "IPv6 protocol.";
+      }
+      enum "tcp" {
+        value 12;
+        description 
+          "TCP protocol.";
+      }
+      enum "udp" {
+        value 13;
+        description 
+          "UDP protocol.";
+      }
+      enum "icmp" {
+        value 14;
+        description 
+          "ICMP protocol.";
+      }
+      enum "icmpv6" {
+        value 15;
+        description 
+          "ICMPv6 protocol.";
+      }
+      enum "igmp" {
+        value 16;
+        description 
+          "IGMP protocol.";
+      }
+    }
+    description 
+      "Layer 2 Protocol Type.";
+  }
+
+  typedef link-type-deviations {
+    type enumeration {
+      enum "ethernet" {
+        value 1;
+        description 
+          "ETHERNET Protocol.";
+      }
+      enum "ppp" {
+        value 2;
+        description 
+          "PPP Protocol.";
+      }
+    }
+    description 
+      "Link type.";
+  }
+
+  typedef port-car-packet-deviations {
+    type enumeration {
+      enum "dhcp" {
+        value 2;
+        description 
+          "DHCP packet.";
+      }
+      enum "snmp" {
+        value 3;
+        description 
+          "SNMP packet.";
+      }
+      enum "telnet" {
+        value 4;
+        description 
+          "TELNET packet.";
+      }
+      enum "icmp" {
+        value 5;
+        description 
+          "ICMP packet.";
+      }
+      enum "ssh" {
+        value 6;
+        description 
+          "SSH packet.";
+      }
+      enum "icmp-nd" {
+        value 7;
+        description 
+          "ICMPv6 ND packet.";
+      }
+      enum "icmpv6" {
+        value 8;
+        description 
+          "ICMPv6 packet.";
+      }
+      enum "port" {
+        value 9;
+        description 
+          "Other packet types.";
+      }
+    }
+    description 
+      "Indicates the packet type of the rate limit on the interface.";
+  }
+
+  typedef protocol-group-deviations {
+    type enumeration {
+      enum "whitelist" {
+        value 1;
+        description 
+          "Group of authorized users or high-priority users.";
+      }
+      enum "management" {
+        value 3;
+        description 
+          "Management packets.";
+      }
+      enum "route" {
+        value 4;
+        description 
+          "Routing protocol packets.";
+      }
+      enum "multicast" {
+        value 5;
+        description 
+          "Multicast packets.";
+      }
+      enum "arp" {
+        value 6;
+        description 
+          "ARP packets.";
+      }
+      enum "mpls" {
+        value 7;
+        description 
+          "MPLS packets.";
+      }
+      enum "access-user" {
+        value 8;
+        description 
+          "Access packets.";
+      }
+      enum "link-layer" {
+        value 9;
+        description 
+          "Data link layer packets, including connectivity packets and reliability packets.
+          Data link layer packets also include protocol packets that influence services and links on the data link layer.";
+      }
+      enum "network-layer" {
+        value 10;
+        description 
+          "Network layer packets, including entries that the forwarding plane instructs the control plane to deliver.";
+      }
+      enum "blacklist" {
+        value 13;
+        description 
+          "Blacklist.";
+      }
+      enum "check-failed" {
+        value 14;
+        description 
+          "Check-failed.";
+      }
+      enum "fwddata-to-cp" {
+        value 15;
+        description 
+          "Fwddata-to-cp packets.";
+      }
+      enum "oam-check" {
+        value 16;
+        description 
+          "Oma check packets.";
+      }
+      enum "clock" {
+        value 17;
+        description 
+          "Clock.";
+      }
+      enum "heartbeat" {
+        value 18;
+        description 
+          "Heartbeat packets.";
+      }
+    }
+    description 
+      "Protocol group.";
+  }
+
+  typedef protocol-name-deviations {
+    type enumeration {
+      enum "1588acr" {
+        value 0;
+        description 
+          "1588ACR protocol.";
+      }
+      enum "802dot1ag" {
+        value 1;
+        description 
+          "802.1AG protocol.";
+      }
+      enum "802dot3ah" {
+        value 2;
+        description 
+          "802.3AH protocol.";
+      }
+      enum "arp" {
+        value 3;
+        description 
+          "ARP protocol.";
+      }
+      enum "arp-miss" {
+        value 4;
+        description 
+          "ARP miss protocol.";
+      }
+      enum "bfd" {
+        value 6;
+        description 
+          "BFD protocol.";
+      }
+      enum "bgp" {
+        value 7;
+        description 
+          "BGP protocol.";
+      }
+      enum "bgpv6" {
+        value 8;
+        description 
+          "BGPv6 protocol.";
+      }
+      enum "bpdu" {
+        value 10;
+        description 
+          "BPDU protocol.";
+      }
+      enum "dcn" {
+        value 11;
+        description 
+          "DCN protocol.";
+      }
+      enum "default-tcp" {
+        value 13;
+        description 
+          "Default CAR of tcp.";
+      }
+      enum "default-udp" {
+        value 14;
+        description 
+          "Default CAR of udp.";
+      }
+      enum "dhcp" {
+        value 15;
+        description 
+          "DHCP protocol.";
+      }
+      enum "dhcpv6" {
+        value 16;
+        description 
+          "DHCPv6 protocol.";
+      }
+      enum "dns-client" {
+        value 18;
+        description 
+          "DNS client protocol.";
+      }
+      enum "dnsv6" {
+        value 19;
+        description 
+          "DNSv6 protocol.";
+      }
+      enum "eapol" {
+        value 20;
+        description 
+          "EAPOL protocol.";
+      }
+      enum "fragment" {
+        value 21;
+        description 
+          "Fragment protocol.";
+      }
+      enum "ftp-client" {
+        value 22;
+        description 
+          "FTP client protocol.";
+      }
+      enum "ftp-server" {
+        value 23;
+        description 
+          "FTP server protocol.";
+      }
+      enum "ftpv6-client" {
+        value 24;
+        description 
+          "FTPv6 client protocol.";
+      }
+      enum "ftpv6-server" {
+        value 25;
+        description 
+          "FTPv6 server protocol.";
+      }
+      enum "hop-by-hop" {
+        value 26;
+        description 
+          "IPv6 hop-by-hop protocol.";
+      }
+      enum "hwtacacs" {
+        value 28;
+        description 
+          "HWTACACS protocol.";
+      }
+      enum "icmp" {
+        value 29;
+        description 
+          "ICMP protocol.";
+      }
+      enum "icmp-broadcast-address-echo" {
+        value 30;
+        description 
+          "Broadcast ICMP echo request packets.";
+      }
+      enum "icmp-nd" {
+        value 31;
+        description 
+          "ICMPv6-ND protocol.";
+      }
+      enum "icmp-noreach" {
+        value 32;
+        description 
+          "IPv6 ND miss.";
+      }
+      enum "icmpv6" {
+        value 33;
+        description 
+          "ICMPv6 protocol.";
+      }
+      enum "icmpv6-na" {
+        value 34;
+        description 
+          "ICMPv6-NA protocol.";
+      }
+      enum "icmpv6-ra" {
+        value 36;
+        description 
+          "ICMPv6-RA protocol.";
+      }
+      enum "icmpv6-rs" {
+        value 37;
+        description 
+          "ICMPv6-RS protocol.";
+      }
+      enum "igmp" {
+        value 38;
+        description 
+          "IGMP protocol.";
+      }
+      enum "ipfpm" {
+        value 39;
+        description 
+          "IPFPM protocol.";
+      }
+      enum "ipv6-fib-miss" {
+        value 44;
+        description 
+          "IPv6 FIB miss.";
+      }
+      enum "ipv6-ndh-miss" {
+        value 45;
+        description 
+          "IPv6 NDH miss.";
+      }
+      enum "ipv6-nd-miss" {
+        value 46;
+        description 
+          "IPv6 ND miss.";
+      }
+      enum "ipv6-ttl-expire" {
+        value 47;
+        description 
+          "IPv6 TTL expires packets.";
+      }
+      enum "isis" {
+        value 48;
+        description 
+          "ISIS protocol.";
+      }
+      enum "lacp" {
+        value 49;
+        description 
+          "LACP protocol.";
+      }
+      enum "ldp" {
+        value 50;
+        description 
+          "LDP protocol.";
+      }
+      enum "lldp" {
+        value 51;
+        description 
+          "LLDP protocol.";
+      }
+      enum "lspping" {
+        value 52;
+        description 
+          "LSPPING protocol.";
+      }
+      enum "mka" {
+        value 53;
+        description 
+          "MKA protocol.";
+      }
+      enum "mld" {
+        value 54;
+        description 
+          "IPv6 MLD protocol.";
+      }
+      enum "mpls-router-alert" {
+        value 56;
+        description 
+          "MPLS router alert packets.";
+      }
+      enum "mpls-trace-route" {
+        value 57;
+        description 
+          "MPLS trace route packets.";
+      }
+      enum "msdp" {
+        value 59;
+        description 
+          "MSDP protocol.";
+      }
+      enum "mtuv6" {
+        value 60;
+        description 
+          "MTUv6 protocol.";
+      }
+      enum "ntp" {
+        value 62;
+        description 
+          "NTP protocol.";
+      }
+      enum "ospf" {
+        value 64;
+        description 
+          "OSPF protocol.";
+      }
+      enum "ospfv3" {
+        value 65;
+        description 
+          "OSPFv3 protocol.";
+      }
+      enum "pim" {
+        value 66;
+        description 
+          "PIM protocol.";
+      }
+      enum "pimv6" {
+        value 67;
+        description 
+          "PIMv6 protocol.";
+      }
+      enum "ppp" {
+        value 69;
+        description 
+          "PPP protocol.";
+      }
+      enum "radius" {
+        value 70;
+        description 
+          "Radius protocol.";
+      }
+      enum "rip" {
+        value 71;
+        description 
+          "RIP protocol.";
+      }
+      enum "rsvp" {
+        value 73;
+        description 
+          "RSVP protocol.";
+      }
+      enum "snmp" {
+        value 74;
+        description 
+          "SNMP protocol.";
+      }
+      enum "ssh-client" {
+        value 77;
+        description 
+          "SSH client protocol.";
+      }
+      enum "ssh-server" {
+        value 78;
+        description 
+          "SSH server protocol.";
+      }
+      enum "sshv6-server" {
+        value 79;
+        description 
+          "SSHv6 server protocol.";
+      }
+      enum "telnet-client" {
+        value 82;
+        description 
+          "TELNET client protocol.";
+      }
+      enum "telnet-server" {
+        value 83;
+        description 
+          "TELNET server protocol.";
+      }
+      enum "telnetv6-client" {
+        value 84;
+        description 
+          "TELNETv6 client protocol.";
+      }
+      enum "telnetv6-server" {
+        value 85;
+        description 
+          "TELNETv6 server protocol.";
+      }
+      enum "tftp" {
+        value 86;
+        description 
+          "TFTP protocol.";
+      }
+      enum "traffic-behavior-log" {
+        value 88;
+        description 
+          "Traffic Behavior Log.";
+      }
+      enum "vrrp" {
+        value 154;
+        description 
+          "VRRP protocol.";
+      }
+      enum "whitelist" {
+        value 157;
+        description 
+          "Whitelist.";
+      }
+      enum "whitelist-bgp" {
+        value 158;
+        description 
+          "Whitelist of BGP protocol.";
+      }
+      enum "whitelist-isis" {
+        value 159;
+        description 
+          "Whitelist of ISIS protocol.";
+      }
+      enum "whitelist-ldp" {
+        value 160;
+        description 
+          "Whitelist of LDP protocol.";
+      }
+      enum "whitelist-ospf" {
+        value 161;
+        description 
+          "Whitelist of OSPF protocol.";
+      }
+      enum "whitelist-radius" {
+        value 162;
+        description 
+          "Whitelist of Radius protocol.";
+      }
+      enum "whitelist-rsvp" {
+        value 163;
+        description 
+          "Whitelist of RSVP protocol.";
+      }
+      enum "whitelistv6" {
+        value 164;
+        description 
+          "IPv6 whitelist.";
+      }
+      enum "whitelistv6-bgpv6" {
+        value 165;
+        description 
+          "IPv6 whitelist of BGPv6 protocol.";
+      }
+      enum "whitelistv6-ospfv3" {
+        value 166;
+        description 
+          "IPv6 whitelist of OSPFv3 protocol.";
+      }
+      enum "hwtacacsv6" {
+        value 167;
+        description 
+          "HWTACACSV6 protocol.";
+      }
+      enum "lsppingv6" {
+        value 168;
+        description 
+          "Lsppingv6 packet.";
+      }
+      enum "pcep" {
+        value 169;
+        description 
+          "Pcep packet.";
+      }
+      enum "radiusv6" {
+        value 170;
+        description 
+          "Radiusv6 packet.";
+      }
+      enum "syslogv6" {
+        value 171;
+        description 
+          "Syslogv6 packet.";
+      }
+      enum "vrrpv6" {
+        value 172;
+        description 
+          "Vrrpv6 packet.";
+      }
+      enum "web-auth-serverv6" {
+        value 173;
+        description 
+          "Web-auth-serverv6 packet.";
+      }
+      enum "others" {
+        value 174;
+        description 
+          "Others packet.";
+      }
+    }
+    description 
+      "Protocol name.";
+  }
+
+  typedef protocol-name-reset-deviations {
+    type enumeration {
+      enum "1588acr" {
+        value 0;
+        description 
+          "1588ACR protocol.";
+      }
+      enum "802dot1ag" {
+        value 1;
+        description 
+          "802.1AG protocol.";
+      }
+      enum "802dot3ah" {
+        value 2;
+        description 
+          "802.3AH protocol.";
+      }
+      enum "arp" {
+        value 3;
+        description 
+          "ARP protocol.";
+      }
+      enum "arp-miss" {
+        value 4;
+        description 
+          "ARP miss protocol.";
+      }
+      enum "bfd" {
+        value 6;
+        description 
+          "BFD protocol.";
+      }
+      enum "bgp" {
+        value 7;
+        description 
+          "BGP protocol.";
+      }
+      enum "bgpv6" {
+        value 8;
+        description 
+          "BGPv6 protocol.";
+      }
+      enum "bpdu" {
+        value 9;
+        description 
+          "BPDU protocol.";
+      }
+      enum "dcn" {
+        value 10;
+        description 
+          "DCN protocol.";
+      }
+      enum "default-tcp" {
+        value 12;
+        description 
+          "Default CAR of tcp.";
+      }
+      enum "default-udp" {
+        value 13;
+        description 
+          "Default CAR of udp.";
+      }
+      enum "dhcp" {
+        value 14;
+        description 
+          "DHCP protocol.";
+      }
+      enum "dhcpv6" {
+        value 15;
+        description 
+          "DHCPv6 protocol.";
+      }
+      enum "dns-client" {
+        value 17;
+        description 
+          "DNS client protocol.";
+      }
+      enum "dnsv6" {
+        value 18;
+        description 
+          "DNSv6 protocol.";
+      }
+      enum "eapol" {
+        value 19;
+        description 
+          "EAPOL protocol.";
+      }
+      enum "ftp-client" {
+        value 20;
+        description 
+          "FTP client protocol.";
+      }
+      enum "ftp-server" {
+        value 21;
+        description 
+          "FTP server protocol.";
+      }
+      enum "ftpv6-client" {
+        value 22;
+        description 
+          "FTPv6 client protocol.";
+      }
+      enum "ftpv6-server" {
+        value 23;
+        description 
+          "FTPv6 server protocol.";
+      }
+      enum "hop-by-hop" {
+        value 24;
+        description 
+          "IPv6 hop-by-hop protocol.";
+      }
+      enum "hwtacacs" {
+        value 26;
+        description 
+          "HWTACACS protocol.";
+      }
+      enum "icmp" {
+        value 27;
+        description 
+          "ICMP protocol.";
+      }
+      enum "icmp-broadcast-address-echo" {
+        value 28;
+        description 
+          "Broadcast ICMP echo request packets.";
+      }
+      enum "icmp-nd" {
+        value 29;
+        description 
+          "ICMPv6-ND protocol.";
+      }
+      enum "icmp-noreach" {
+        value 30;
+        description 
+          "IPv6 ND miss.";
+      }
+      enum "icmpv6" {
+        value 31;
+        description 
+          "ICMPv6 protocol.";
+      }
+      enum "icmpv6-na" {
+        value 32;
+        description 
+          "ICMPv6-NA protocol.";
+      }
+      enum "icmpv6-ra" {
+        value 34;
+        description 
+          "ICMPv6-RA protocol.";
+      }
+      enum "icmpv6-rs" {
+        value 35;
+        description 
+          "ICMPv6-RS protocol.";
+      }
+      enum "igmp" {
+        value 36;
+        description 
+          "IGMP protocol.";
+      }
+      enum "ipfpm" {
+        value 37;
+        description 
+          "IPFPM protocol.";
+      }
+      enum "ipv6-fib-miss" {
+        value 42;
+        description 
+          "IPv6 FIB miss.";
+      }
+      enum "ipv6-ndh-miss" {
+        value 43;
+        description 
+          "IPv6 NDH miss.";
+      }
+      enum "ipv6-nd-miss" {
+        value 44;
+        description 
+          "IPv6 ND miss.";
+      }
+      enum "ipv6-ttl-expire" {
+        value 45;
+        description 
+          "IPv6 TTL expires packets.";
+      }
+      enum "isis" {
+        value 46;
+        description 
+          "ISIS protocol.";
+      }
+      enum "lacp" {
+        value 47;
+        description 
+          "LACP protocol.";
+      }
+      enum "ldp" {
+        value 48;
+        description 
+          "LDP protocol.";
+      }
+      enum "lldp" {
+        value 49;
+        description 
+          "LLDP protocol.";
+      }
+      enum "lspping" {
+        value 50;
+        description 
+          "LSPPING protocol.";
+      }
+      enum "mka" {
+        value 51;
+        description 
+          "MKA protocol.";
+      }
+      enum "mld" {
+        value 52;
+        description 
+          "IPv6 MLD protocol.";
+      }
+      enum "mpls-router-alert" {
+        value 54;
+        description 
+          "MPLS router alert packets.";
+      }
+      enum "mpls-trace-route" {
+        value 55;
+        description 
+          "MPLS trace route packets.";
+      }
+      enum "msdp" {
+        value 57;
+        description 
+          "MSDP protocol.";
+      }
+      enum "mtuv6" {
+        value 58;
+        description 
+          "MTUv6 protocol.";
+      }
+      enum "ntp" {
+        value 60;
+        description 
+          "NTP protocol.";
+      }
+      enum "ospf" {
+        value 62;
+        description 
+          "OSPF protocol.";
+      }
+      enum "ospfv3" {
+        value 63;
+        description 
+          "OSPFv3 protocol.";
+      }
+      enum "pim" {
+        value 64;
+        description 
+          "PIM protocol.";
+      }
+      enum "pimv6" {
+        value 65;
+        description 
+          "PIMv6 protocol.";
+      }
+      enum "ppp" {
+        value 67;
+        description 
+          "PPP protocol.";
+      }
+      enum "radius" {
+        value 68;
+        description 
+          "Radius protocol.";
+      }
+      enum "rip" {
+        value 69;
+        description 
+          "RIP protocol.";
+      }
+      enum "rsvp" {
+        value 71;
+        description 
+          "RSVP protocol.";
+      }
+      enum "snmp" {
+        value 72;
+        description 
+          "SNMP protocol.";
+      }
+      enum "ssh-client" {
+        value 75;
+        description 
+          "SSH client protocol.";
+      }
+      enum "ssh-server" {
+        value 76;
+        description 
+          "SSH server protocol.";
+      }
+      enum "sshv6-server" {
+        value 77;
+        description 
+          "SSHv6 server protocol.";
+      }
+      enum "telnet-client" {
+        value 79;
+        description 
+          "TELNET client protocol.";
+      }
+      enum "telnet-server" {
+        value 80;
+        description 
+          "TELNET server protocol.";
+      }
+      enum "telnetv6-client" {
+        value 81;
+        description 
+          "TELNETv6 client protocol.";
+      }
+      enum "telnetv6-server" {
+        value 82;
+        description 
+          "TELNETv6 server protocol.";
+      }
+      enum "tftp" {
+        value 83;
+        description 
+          "TFTP protocol.";
+      }
+      enum "traffic-behavior-log" {
+        value 85;
+        description 
+          "Traffic Behavior Log.";
+      }
+      enum "vrrp" {
+        value 87;
+        description 
+          "VRRP protocol.";
+      }
+      enum "hwtacacsv6" {
+        value 90;
+        description 
+          "HWTACACSv6 protocol.";
+      }
+      enum "lsppingv6" {
+        value 91;
+        description 
+          "Lsppingv6 packet.";
+      }
+      enum "pcep" {
+        value 92;
+        description 
+          "Pcep packet.";
+      }
+      enum "radiusv6" {
+        value 93;
+        description 
+          "Radiusv6 packet.";
+      }
+      enum "syslogv6" {
+        value 94;
+        description 
+          "Syslogv6 packet.";
+      }
+      enum "vrrpv6" {
+        value 95;
+        description 
+          "Vrrpv6 packet.";
+      }
+      enum "web-auth-serverv6" {
+        value 96;
+        description 
+          "Web-auth-serverv6 packet.";
+      }
+      enum "others" {
+        value 97;
+        description 
+          "Others packet.";
+      }
+      enum "fragment" {
+        value 99;
+        description 
+          "FRAGMENT packet.";
+      }
+    }
+    description 
+      "Protocol name.";
+  }
+
+  typedef rate-limit-protocol-deviations {
+    type enumeration {
+      enum "snmp" {
+        value 2;
+        description 
+          "SNMP Protocol.";
+      }
+      enum "dhcp" {
+        value 3;
+        description 
+          "DHCP Protocol.";
+      }
+      enum "telnet" {
+        value 4;
+        description 
+          "TELNET Protocol.";
+      }
+      enum "icmp" {
+        value 5;
+        description 
+          "ICMP Protocol.";
+      }
+      enum "ssh" {
+        value 6;
+        description 
+          "SSH Protocol.";
+      }
+      enum "icmp-nd" {
+        value 7;
+        description 
+          "ICMP-ND Protocol.";
+      }
+      enum "icmpv6" {
+        value 8;
+        description 
+          "ICMPv6 Protocol.";
+      }
+      enum "port-car" {
+        value 9;
+        description 
+          "PORT-CAR Protocol.";
+      }
+    }
+    description 
+      "Rate limit protocol.";
+  }
+
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-names/cpudefend:cpcar-protocol-name/cpudefend:min-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-names/cpudefend:cpcar-protocol-name/cpudefend:priority" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-ids/cpudefend:cpcar-protocol-id/cpudefend:min-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-ids/cpudefend:cpcar-protocol-id/cpudefend:priority" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:ttl-expired-loop" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:ma-defend/cpudefend:alarm-drop-rate/cpudefend:threshold" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:ma-defend/cpudefend:alarm-drop-rate/cpudefend:interval" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:total-car/cpudefend:alarm-drop-rate" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:urpf" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cross-board-car" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:process-sequence" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:application-apperceive/cpudefend:alarm-drop-rate" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:attack-source-trace/cpudefend:ma-defend-enable" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpu-defend-acl/cpudefend:vpn-instance-enable" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpu-defend-acl/cpudefend:ipv6-enhance-enable" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpu-defend-acl/cpudefend:dhcp-discover-enable" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpu-defend-acl/cpudefend:ipv4-multicast-fib-miss-enable" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:tm-scheduling/cpudefend:protocol-group-settings/cpudefend:protocol-group-setting/cpudefend:cir" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:tm-scheduling/cpudefend:protocol-queue-settings" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:tm-scheduling/cpudefend:protocol-queue-prioritys" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:blacklist" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:user-defined-flows/cpudefend:user-defined-flow/cpudefend:acl-type/cpudefend:ipv4-identity/cpudefend:prior" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:user-defined-flows/cpudefend:user-defined-flow/cpudefend:acl-type/cpudefend:ipv4-number/cpudefend:acl-number-prior" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:user-defined-flows/cpudefend:user-defined-flow/cpudefend:alarm-drop-rate" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:whitelist-enable" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:whitelist" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:ipv6-whitelist" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:host-car-defense" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:nd-attack-defense/cpudefend:nd-attack-currents" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:nd-attack-defense/cpudefend:nd-attack-historys" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:nd-attack-defense/cpudefend:nd-attack-board-baseds" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cross-board-car" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:fixed-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:fixed-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:fixed-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:application-apperceive/cpudefend:ap-protocol-states" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:application-apperceive/cpudefend:ap-protocol-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:attack-source-trace/cpudefend:buffers/cpudefend:buffer/cpudefend:buffer-size" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:attack-source-trace/cpudefend:buffers/cpudefend:buffer/cpudefend:overwrite-flag" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:attack-source-trace/cpudefend:verboses/cpudefend:verbose/cpudefend:atm-vpi" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:attack-source-trace/cpudefend:verboses/cpudefend:verbose/cpudefend:atm-vci" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:default-states/cpudefend:default-state/cpudefend:min-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:default-states/cpudefend:default-state/cpudefend:fixed-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:default-states/cpudefend:default-state/cpudefend:priority" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:ap-default-states" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:current-states/cpudefend:current-state/cpudefend:min-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:current-states/cpudefend:current-state/cpudefend:fixed-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:current-states/cpudefend:current-state/cpudefend:priority" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:ap-current-states" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:acl-denied-packets" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:configured-cir" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:configured-cbs" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:actual-cir" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:actual-cbs" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:priority" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:min-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:fixed-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:last-drop-start-time" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:last-drop-end-time" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:last-drop-rate" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:last-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:peak-rate-time" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:peak-rate" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:ap-protocol-name-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:acl-denied-packets" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:configured-cir" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:configured-cbs" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:actual-cir" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:actual-cbs" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:priority" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:min-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:fixed-packet-length" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:last-drop-start-time" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:last-drop-end-time" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:last-drop-rate" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:last-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:peak-rate-time" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-id-statisticss/cpudefend:protocol-id-statistics/cpudefend:peak-rate" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:ap-protocol-id-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cp-rate-limit" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:tcpip-defend/cpudefend:ap-ipv4-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:tcpip-defend/cpudefend:ap-ipv6-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:urpf/cpudefend:cpu-defend-urpf" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:urpf/cpudefend:interface-discards" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:total-car" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:tm-scheduling/cpudefend:protocol-group-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:tm-scheduling/cpudefend:protocol-group-states/cpudefend:protocol-group-state/cpudefend:queue-states" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:tm-scheduling/cpudefend:protocol-group-states/cpudefend:protocol-group-state/cpudefend:cir-configured" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:tm-scheduling/cpudefend:protocol-group-states/cpudefend:protocol-group-state/cpudefend:cir-default" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:tm-scheduling/cpudefend:protocol-queue-states" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:spu-car" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:acl-statistics/cpudefend:blacklist-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:acl-statistics/cpudefend:whitelist-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-arp-attack-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-arp-check-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-arp-safeguard-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-cp-rate-limit-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-cp-rate-limit-enhance-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-cp-rate-limit-dot1q-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-cp-rate-limit-qinq-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-hostcar-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-http-hostcar-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-vlan-hostcar-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-ip-urpf-discard-statistic/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-ip-urpf-discard-interface-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-ipv6-nd-attack-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-nd-packet-filter-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-protocol-group-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-all-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-all-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-application-apperceive-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-application-apperceive-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-tcpip-defend-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-tcpip-defend-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-tcpip-defend-v6-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-tcpip-defend-v6-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-cpudefend-urpf-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-cpudefend-urpf-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-cross-board-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-blacklist-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-blacklist-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-fragment-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-fragment-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-tcpsyn-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-tcpsyn-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-user-defined-flow-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-user-defined-flow-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-whitelist-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-whitelist-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-whitelist-v6-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-whitelist-v6-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-protocol-name-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-protocol-name-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-protocol-id-statistics/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-car-protocol-id-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-spu-car-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-total-packet-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-total-packet-ap-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:reset-attack-source-trace/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:save-attack-source-trace/cpudefend:input/cpudefend:slot" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/cpudefend:cpudefend" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/cpudefend:cpudefend-devm/cpudefend:ignore-hostcar-acl" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/cpudefend:cpudefend-devm/cpudefend:bras-host-cars" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/cpudefend:cpudefend-devm/cpudefend:spu-cars" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/cpudefend:cpudefend-devm/cpudefend:nd-vlan-car" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/cpudefend:cpudefend" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/cpudefend:cpudefend-devm" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/cpudefend:cpudefend" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/cpudefend:cpudefend-devm" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:host-car-qinq-hashs" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:ipv4-urpf/cpudefend:method/cpudefend:peer-based" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:ipv4-urpf/cpudefend:statistics-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:ipv6-urpf/cpudefend:method/cpudefend:peer-based" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:ipv6-urpf/cpudefend:statistics-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:nd-vlan-cars" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:cp-rate-limit" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-names/cpudefend:cpcar-protocol-name/cpudefend:protocol-name" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:protocol-name-deviations;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-names/cpudefend:cpcar-protocol-name/cpudefend:cir" {
+    deviate replace {
+      type uint32 {
+        range "20..3000";
+      }
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-names/cpudefend:cpcar-protocol-name/cpudefend:cbs" {
+    deviate replace {
+      type uint32 {
+        range "20..3000";
+      }
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-ids/cpudefend:cpcar-protocol-id/cpudefend:cir" {
+    deviate replace {
+      type uint32 {
+        range "20..3000";
+      }
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:cpcar-protocol-ids/cpudefend:cpcar-protocol-id/cpudefend:cbs" {
+    deviate replace {
+      type uint32 {
+        range "20..3000";
+      }
+    }
+  }
+  ext:deviation-ext "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:alarm-protocol-ids/cpudefend:alarm-protocol-id/cpudefend:threshold" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "30000" {
+          description "The default value is 30000.";
+        }
+      }
+    }
+  }
+  ext:deviation-ext "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:alarm-protocol-ids/cpudefend:alarm-protocol-id/cpudefend:interval" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "600" {
+          description "The default value is 600.";
+        }
+      }
+    }
+  }
+  ext:deviation-ext "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:alarm-protocol-ids/cpudefend:alarm-protocol-id/cpudefend:speed-threshold" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "300" {
+          description "The default value is 300.";
+        }
+      }
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:total-car/cpudefend:cpu-defend-total-car/cpudefend:rate-limit/cpudefend:value/cpudefend:value" {
+    deviate replace {
+      type uint32 {
+        range "800..8000";
+      }
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:tm-scheduling/cpudefend:protocol-group-settings/cpudefend:protocol-group-setting/cpudefend:group" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:protocol-group-deviations;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:tm-scheduling/cpudefend:protocol-group-settings/cpudefend:protocol-group-setting/cpudefend:weight" {
+    deviate replace {
+      type uint32 {
+        range "1..16";
+      }
+    }
+  }
+  ext:deviation-ext "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:tm-scheduling/cpudefend:protocol-group-settings/cpudefend:protocol-group-setting/cpudefend:weight" {
+    ext:deviate-ext add {
+      ext:dynamic-default {
+        ext:default-value "8" {
+          when "../group = 'management'";
+          description "The default value is 8 when type is management.";
+        }
+        ext:default-value "10" {
+          when "../group = 'whitelist'";
+          description "The default value is 10 when type is whitelist.";
+        }
+        ext:default-value "3" {
+          when "../group = 'access-user'";
+          description "The default value is 3 when type is access-user.";
+        }
+        ext:default-value "4" {
+          when "../group = 'multicast'";
+          description "The default value is 4 when type is multicast.";
+        }
+        ext:default-value "5" {
+          when "../group = 'link-layer'";
+          description "The default value is 5 when type is link-layer.";
+        }
+        ext:default-value "4" {
+          when "../group = 'mpls'";
+          description "The default value is 4 when type is MPLS.";
+        }
+        ext:default-value "4" {
+          when "../group = 'network-layer'";
+          description "The default value is 4 when type is network-layer.";
+        }
+        ext:default-value "4" {
+          when "../group = 'arp'";
+          description "The default value is 4 when type is ARP.";
+        }
+        ext:default-value "9" {
+          when "../group = 'route'";
+          description "The default value is 9 when type is route.";
+        }
+        ext:default-value "8" {
+          when "../group = 'oam-check'";
+          description "The default value is 8 when type is oam-check.";
+        }
+        ext:default-value "1" {
+          when "../group = 'heartbeat'";
+          description "The default value is 1 when type is heartbeat.";
+        }
+        ext:default-value "1" {
+          when "../group = 'blacklist'";
+          description "The default value is 1 when type is blacklist.";
+        }
+        ext:default-value "2" {
+          when "../group = 'check-failed'";
+          description "The default value is 2 when type is check-failed.";
+        }
+        ext:default-value "1" {
+          when "../group = 'fwddata-to-cp'";
+          description "The default value is 1 when type is fwddata-to-cp.";
+        }
+        ext:default-value "2" {
+          when "../group = 'clock'";
+          description "The default value is 2 when type is clock.";
+        }
+      }
+    }
+  }
+  ext:deviation-ext "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:user-defined-flows/cpudefend:user-defined-flow" {
+    ext:deviate-ext delete {
+      ext:operation-exclude "create";
+    }
+    ext:deviate-ext delete {
+      ext:generated-by "system";
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:user-defined-flows/cpudefend:user-defined-flow/cpudefend:flow-id" {
+    deviate replace {
+      type uint32 {
+        range "1..32";
+      }
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:policys/cpudefend:policy/cpudefend:user-defined-flows/cpudefend:user-defined-flow/cpudefend:acl-type" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:configured-cir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:configured-cbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:configured-pir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:configured-pbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:actual-cir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:actual-cbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:actual-pir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelists/cpudefend:whitelist/cpudefend:actual-pbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:configured-cir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:configured-cbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:configured-pir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:configured-pbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:actual-cir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:actual-cbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:actual-pir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-v6s/cpudefend:whitelist-v6/cpudefend:actual-pbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:configured-cir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:configured-cbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:configured-pir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:configured-pbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:actual-cir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:actual-cbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:actual-pir" {
+    deviate replace {
+      units pps;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:dynamic-link-protection/cpudefend:session-car/cpudefend:whitelist-l2s/cpudefend:whitelist-l2/cpudefend:actual-pbs" {
+    deviate replace {
+      units packet;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:protocol-port-car/cpudefend:statisticss/cpudefend:statistics/cpudefend:protocol" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:port-car-packet-deviations;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:attack-source-trace/cpudefend:verboses/cpudefend:verbose/cpudefend:layer-2-type" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:layer-2-type-deviations;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:cpcar/cpudefend:protocol-name-statisticss/cpudefend:protocol-name-statistics/cpudefend:protocol-name" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:protocol-name-deviations;
+    }
+  }
+  deviation "/cpudefend:cpudefend/cpudefend:tm-scheduling/cpudefend:protocol-group-states/cpudefend:protocol-group-state/cpudefend:group" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:protocol-group-deviations;
+    }
+  }
+  deviation "/cpudefend:reset-rate-limit-statistics/cpudefend:input/cpudefend:protocol" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:rate-limit-protocol-deviations;
+    }
+  }
+  deviation "/cpudefend:reset-car-protocol-name-statistics/cpudefend:input/cpudefend:protocol-name" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:protocol-name-reset-deviations;
+    }
+  }
+  deviation "/cpudefend:save-attack-source-trace/cpudefend:input/cpudefend:link-type" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:link-type-deviations;
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:protocol-port-car/cpudefend:rate-limits/cpudefend:rate-limit" {
+    ext:deviate-ext delete {
+      ext:operation-exclude "create" {
+        ext:filter "./protocol='arp' or ./protocol='dhcp' or ./protocol='snmp' or ./protocol='telnet' or ./protocol='icmp' or ./protocol='ssh' or ./protocol='icmp-nd' or ./protocol='icmpv6'";
+        description "The instances whose protocol is not 'port' cannot be created.";
+      }
+    }
+    ext:deviate-ext add {
+      ext:operation-exclude "create" {
+        ext:filter "./protocol='dhcp' or ./protocol='snmp' or ./protocol='telnet' or ./protocol='icmp' or ./protocol='ssh' or ./protocol='icmp-nd' or ./protocol='icmpv6'";
+        description "The instances whose protocol is not 'port' cannot be created.";
+      }
+    }
+    ext:deviate-ext delete {
+      ext:generated-by "system" {
+        ext:filter "./protocol='arp' or ./protocol='dhcp' or ./protocol='snmp' or ./protocol='telnet' or ./protocol='icmp' or ./protocol='ssh' or ./protocol='icmp-nd' or ./protocol='icmpv6'";
+        description "The instances whose protocol is not 'port' are generated by system automatically.";
+      }
+    }
+    ext:deviate-ext add {
+      ext:generated-by "system" {
+        ext:filter "./protocol='dhcp' or ./protocol='snmp' or ./protocol='telnet' or ./protocol='icmp' or ./protocol='ssh' or ./protocol='icmp-nd' or ./protocol='icmpv6'";
+        description "The instances whose protocol is not 'port' are generated by system automatically.";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/cpudefend:cpudefend/cpudefend:protocol-port-car/cpudefend:rate-limits/cpudefend:rate-limit/cpudefend:protocol" {
+    deviate replace {
+      type cpudefend-devs-ATN-980B:port-car-packet-deviations;
+    }
+  }
+
+}

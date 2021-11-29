@@ -1,0 +1,167 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-warranty {
+  namespace "urn:huawei:yang:huawei-warranty";
+  prefix warranty;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Electronic warranty management module.";
+  revision 2020-04-24 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "warranty";
+  
+  typedef warranty-status {
+    type enumeration {
+      enum "normal" {
+        value 1;
+        description
+          "Normal.";
+      }
+      enum "to-be-expired" {
+        value 2;
+        description
+          "To be expired.";
+      }
+      enum "expired" {
+        value 3;
+        description
+          "Expired.";
+      }
+    }
+    description
+      "Warranty status.";
+  }
+  
+  typedef unit-type {
+    type enumeration {
+      enum "device" {
+        value 1;
+        description
+          "The warranty type is device.";
+      }
+      enum "part" {
+        value 2;
+        description
+          "The warranty type is part.";
+      }
+    }
+    description
+      "Unit type.";
+  }
+  
+  container warranty {
+    description
+      "Electronic warranty management module.";
+    container global{
+      description
+        "Configure the electronic warranty management alarm feature.";
+      leaf alarm-enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable function to report the alarms of electronic warranty management.";
+      }
+    }
+    container warranty-infos {
+      config false;
+      description
+        "List of information about electronic warranty Informations.";
+      list warranty-info {
+        key "slot type serial-number";
+        description
+          "Operational state of information about a electronic warranty.";
+        leaf slot {
+          type pub-type:position;
+          description
+          "Specify the slot path.";
+        }
+        leaf type {
+          type unit-type;
+          description
+          "Specify the type of the electronic warranty.";
+        }
+        leaf serial-number {
+          type string {
+          length "1..100";
+          }
+          description
+          "Serial number of the electronic warranty.";
+        }
+        leaf start-date {
+          type pub-type:date; 
+          description
+          "Starting point date for the electronic warranty.";
+        }
+        leaf life-span {
+          type uint32 {
+            range "1..600";
+          }
+          description
+          "Life span for the electronic warranty.";
+        }
+        leaf status {
+          type warranty-status;
+          description
+          "Status for the electronic warranty.";
+        }
+		  }
+    }
+	}
+    
+  rpc activate-warranty {
+    description
+      "Activate the electronic warranty on a device.";
+    input {
+      container warrantys {
+        description
+          "List of information about electronic warranty.";
+        list warranty {
+          key "serial-number";
+
+          description
+            "The list of warranty information to be activated.";
+          leaf serial-number {
+            type string {
+              length "1..100";
+            }
+            mandatory true;
+            description
+              "Serial number of the electronic warranty.";
+          }
+          leaf start-date {
+            type pub-type:date;
+            description
+               "Starting date for the electronic warranty.";
+          }
+          leaf life-span {
+            type uint32 {
+              range "1..600";
+            }
+            units month;
+            description
+              "Life span for the electronic warranty.";
+          }
+        }  
+      }
+    }
+  }
+}

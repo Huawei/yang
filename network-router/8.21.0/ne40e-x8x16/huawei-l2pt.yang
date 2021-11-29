@@ -1,0 +1,469 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2pt {
+  namespace "urn:huawei:yang:huawei-l2pt";
+  prefix l2pt;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "L2 protocol tunnel.";
+  revision 2020-03-13 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ethernet";
+  typedef bpdu-role-type {
+    type enumeration {
+      enum "customer" {
+        value 0;
+        description
+          "The bridge role is a customer.";
+      }
+      enum "provider" {
+        value 1;
+        description
+          "The bridge role is a provider.";
+      }
+    }
+    description
+      "Role type.";
+  }
+  typedef protocol-type {
+    type enumeration {
+      enum "EOAM3AH" {
+        value 1;
+        description
+          "Ethernet in the First mile OAM.";
+      }
+      enum "LLDP" {
+        value 2;
+        description
+          "Link Layer discovery protocol.";
+      }
+      enum "GMRP" {
+        value 3;
+        description
+          "GARP multicast registration protocol.";
+      }
+      enum "GVRP" {
+        value 4;
+        description
+          "GARP VLAN registration protocol.";
+      }
+      enum "DLDP" {
+        value 5;
+        description
+          "Device link detection protocol.";
+      }
+      enum "HGMP" {
+        value 6;
+        description
+          "HUAWEI group management protocol.";
+      }
+      enum "VTP" {
+        value 7;
+        description
+          "VLAN trunking protocol.";
+      }
+      enum "DTP" {
+        value 8;
+        description
+          "Dynamic trunking protocol.";
+      }
+      enum "CDP" {
+        value 9;
+        description
+          "Cisco discovery protocol.";
+      }
+      enum "UDLD" {
+        value 10;
+        description
+          "Unidirectional link detection.";
+      }
+      enum "PAGP" {
+        value 11;
+        description
+          "Port aggregation protocol.";
+      }
+      enum "PVST-PLUS" {
+        value 12;
+        description
+          "Per VLAN spanning tree plus.";
+      }
+      enum "STP" {
+        value 13;
+        description
+          "Spanning tree protocol.";
+      }
+      enum "LACP" {
+        value 14;
+        description
+          "Link aggregation control protocol.";
+      }
+      enum "MVRP" {
+        value 15;
+        description
+          "Multiple VLAN registration protocol.";
+      }
+      enum "MMRP" {
+        value 16;
+        description
+          "Multiple MAC registration protocol.";
+      }
+      enum "E-LMI" {
+        value 17;
+        description
+          "Ethernet local management interface.";
+      }
+      enum "802.1X" {
+        value 18;
+        description
+          "802.1X protocol.";
+      }
+      enum "SSTP" {
+        value 19;
+        description
+          "Secure socket tunneling protocol.";
+      }
+    }
+    description
+      "Protocol Type.";
+  }
+  typedef action-mode {
+    type enumeration {
+      enum "enable" {
+        value 0;
+        description
+          "Enable mode.";
+      }
+      enum "drop" {
+        value 1;
+        description
+          "Drop mode.";
+      }
+      enum "reverse" {
+        value 2;
+        description
+          "Reverse mode.";
+      }
+      enum "reverse-drop" {
+        value 3;
+        description
+          "Reverse drop mode.";
+      }
+    }
+    description
+      "Action mode.";
+  }
+  typedef vlan-action-mode {
+    type enumeration {
+      enum "enable" {
+        value 0;
+        description
+          "Enable mode.";
+      }
+      enum "reverse" {
+        value 2;
+        description
+          "Reverse mode.";
+      }
+    }
+    description
+      "VLAN action mode.";
+  }
+  typedef encapsulation-type {
+    type enumeration {
+      enum "ETHERNETII" {
+        value 1;
+        description
+          "EthernetII type.";
+      }
+      enum "LLC" {
+        value 2;
+        description
+          "Logical link control type.";
+      }
+      enum "SNAP" {
+        value 3;
+        description
+          "Sub-network access protocol.";
+      }
+    }
+    description
+      "Encapsulation type.";
+  }
+  container l2pt {
+    description
+      "L2 protocol tunnel.";
+    container bpdu-attribute {
+      description
+        "Configure BPDU tunnel global attribute.";
+      leaf bridge-role {
+        type bpdu-role-type;
+        default "customer";
+        description
+          "Bridge role that can be a customer or provider.";
+      }
+      leaf group-mac {
+        type pub-type:mac-address {
+          pattern '[0-9a-f][1|3|5|7|9|b|d|f][0-9a-f]{2}(-[0-9a-f]{4}){2}';
+        }
+        must "not (/l2pt:l2pt/l2pt:well-known-protocol/l2pt:group-macs/l2pt:group-mac[l2pt:protocol-type = 'STP'][l2pt:group-mac = current()])";
+        default "0100-0ccd-cdd0";
+        description
+          "BPDU well-known destination MAC address, Multicast MAC address, excluding 0180-c200-0000 to 0180-c200-002f and ffff-ffff-ffff.";
+      }
+    }
+    container well-known-protocol {
+      description
+        "Configure L2PT well-known protocol attributes.";
+      container group-macs {
+        description
+          "List of L2PT well-known protocol group MAC address.";
+        list group-mac {
+          key "protocol-type";
+          description
+            "Configure L2PT well-known Protocol attributes.";
+          leaf protocol-type {
+            type protocol-type;
+            description
+              "Well-known protocol name.";
+          }
+          leaf group-mac {
+            type pub-type:mac-address {
+              pattern '01[0-9a-f]{2}(-[0-9a-f]{4}){2}';
+            }
+            must "not (../protocol-type='STP' and ../group-mac=../../../../bpdu-attribute/group-mac)";
+            mandatory true;
+            description
+              "Well-known MAC address begin with 0x01, excluding but not limited to 0180-c200-0000 to 0180-c200-002f.";
+          }
+        }
+      }
+      container protocols {
+        config false;
+        description
+          "List of protocol informations.";
+        list protocol {
+          key "protocol-type";
+          description
+            "Statistics of protocol information.";
+          leaf protocol-type {
+            type protocol-type;
+            description
+              "Well-known protocol name.";
+          }
+          leaf group-mac {
+            type pub-type:mac-address;
+            description
+              "User-definded protocol group MAC address.";
+          }
+          leaf protocol-mac {
+            type pub-type:mac-address;
+            description
+              "MAC address of protocol.";
+          }
+          leaf encapsulation-type {
+            type encapsulation-type;
+            description
+              "Ethernet encapsulation type of layer 2 packets.";
+          }
+          leaf ethernet-type {
+            type pub-type:hex-binary;
+            description
+              "Protocol type of EthernetII.";
+          }
+          leaf snap-type {
+            type pub-type:hex-binary;
+            description
+              "The type of sub-network access protocol.";
+          }
+          leaf dsap-value {
+            type pub-type:hex-binary;
+            description
+              "The value of destination service access point value.";
+          }
+          leaf ssap-value {
+            type pub-type:hex-binary;
+            description
+              "The value of source service access point.";
+          }
+        }
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute" {
+    description
+        "BPDU tunnel interface attribute.";
+    container bpdu-tunnel {
+      description
+        "Configure BPDU tunnel attribute.";
+      choice bpdu-enable {
+        description
+          "BPDU enable type.";
+        case enable {
+          description
+            "Enable the BPDU tunnel function.";
+          leaf enable {
+            type empty;
+            must "not (../../ethernet:pvid and ../l2pt:vlan-id = ../../ethernet:pvid)";
+            must "not (../../l2pt:l2pt/l2pt:well-known-protocols/l2pt:well-known-protocol[l2pt:protocol-type = 'STP']/l2pt:action)";
+            must "not (../../../../l2pt:l2pt/l2pt:well-known-protocols/l2pt:well-known-protocol[l2pt:protocol-type = 'STP']/l2pt:action)";
+            description
+              "Enable the BPDU tunnel function.";
+          }
+        }
+        case enable-vlans {
+          description
+            "Configure the interface to transmit BPDUs with specified tags.";
+          leaf enable-vlans {
+            type pub-type:vlan-range;
+            must "not (../../l2pt:l2pt/l2pt:well-known-protocols/l2pt:well-known-protocol[l2pt:protocol-type = 'STP']/l2pt:action)";
+            must "not (../../../../l2pt:l2pt/l2pt:well-known-protocols/l2pt:well-known-protocol[l2pt:protocol-type = 'STP']/l2pt:action)";
+            description
+              "Configure the interface to transmit BPDUs with specified tags.";
+          }
+        }
+      }
+      leaf vlan-id {
+        type leafref {
+          path "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:id";
+        }
+        must "/vlan:vlan/vlan:vlans/vlan:vlan[vlan:id = current()]/vlan:type != 'super'";
+        description
+          "Enable an interface to add a specified VLAN ID to bridge protocol data units (BPDUs) before sending them.";
+      }
+    }
+    container l2pt {
+      description
+        "Configure L2 protocol tunnel on a tagged interface.";
+      container well-known-protocols {
+        description
+          "List of well-known protocol configurations.";
+        list well-known-protocol {
+          key "protocol-type";
+          description
+            "Configure well-known protocol.";
+          leaf protocol-type {
+            type protocol-type;
+            must "not (../../../../../../l2pt:l2pt/l2pt:well-known-protocols/l2pt:well-known-protocol[l2pt:protocol-type = current()])";
+            description
+              "Well-known protocol type.";
+          }
+          leaf vlan-list {
+            type pub-type:vlan-range;
+            mandatory true;
+            description
+              "VLAN list.";
+          }
+          leaf action {
+            type vlan-action-mode;
+            mandatory true;
+            description
+              "Action mode.";
+          }
+          leaf drop-threshold {
+            type uint32 {
+              range "1..4096";
+            }
+            description
+              "Drop threshold. Maximum packets can be passed in a second.";
+          }
+        }
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet" {
+    description
+      "BPDU tunnel interface attribute.";
+    container l2pt {
+      description
+        "Configure L2 protocol tunnel.";
+      container well-known-protocols {
+        description
+          "List of well-known protocol configurations.";
+        list well-known-protocol {
+          key "protocol-type";
+          description
+            "Configure well-known protocol.";
+          leaf protocol-type {
+            type protocol-type;
+            description
+              "Well-known protocol type.";
+          }
+          leaf action {
+            type action-mode;
+            mandatory true;
+            description
+              "Action mode.";
+          }
+          leaf drop-threshold {
+            type uint32 {
+              range "1..4096";
+            }
+            must "../action = 'enable' or ../action = 'reverse'";
+            description
+              "Drop threshold. Maximum packets can be passed in a second.";
+          }
+          container statistics {
+            config false;
+            description
+              "Statistics of L2PT packets.";
+            leaf input-packets {
+              type uint64;
+              units packet;
+              default "0";
+              description
+                "Number of input packets.";
+            }
+            leaf output-packets {
+              type uint64;
+              units packet;
+              default "0";
+              description
+                "Number of output packets.";
+            }
+            leaf drop-packets {
+              type uint64;
+              units packet;
+              default "0";
+              description
+                "Number of dropped packets.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

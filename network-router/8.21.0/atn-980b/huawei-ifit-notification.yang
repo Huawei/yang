@@ -1,0 +1,86 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifit-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ifit-notification";
+  prefix ifit-notification;
+  import huawei-extension {
+    prefix ext;
+  } 
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of ifit.";
+
+  revision 2021-02-01 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name  "ifit";
+
+  notification dynflow-ingress-exceed {
+    description
+      "The number of iFIT dynamic ingress flow reaches the upper limit.";
+    leaf upper-limit {
+      type uint32;
+      description
+        "Total dynamic ingress flow number upper limit of iFIT.";
+    }
+  }
+  notification dynflow-ingress-resume {
+    description
+      "The number of iFIT dynamic ingress flow is below the upper limit.";
+    leaf upper-limit {
+      type uint32;
+      description
+        "Total dynamic ingress flow number upper limit of iFIT.";
+    }
+  }
+  notification dynflow-midegress-exceed {
+    description
+      "The number of iFIT dynamic midegress flow reaches the upper limit.";
+    leaf upper-limit {
+      type uint32;
+      description
+        "Total dynamic midegress flow number upper limit of iFIT.";
+    }
+  }
+  notification dynflow-midegress-resume {
+    description
+      "The number of iFIT dynamic midegress flow is below the upper limit.";
+    leaf upper-limit {
+      type uint32;
+      description
+        "Total dynamic midegress flow number upper limit of iFIT.";
+    }
+  }
+  notification ingress-exceed {
+    description
+      "The number of iFIT ingress flow reaches the upper limit.";
+    leaf upper-limit {
+      type uint32;
+      description
+        "Total ingress flow number upper limit of iFIT.";
+    }
+  }
+  notification ingress-resume {
+    description
+      "The number of iFIT ingress flow is below the upper limit.";
+    leaf upper-limit {
+      type uint32;
+      description
+        "Total ingress flow number upper limit of iFIT.";
+    }
+  }
+}

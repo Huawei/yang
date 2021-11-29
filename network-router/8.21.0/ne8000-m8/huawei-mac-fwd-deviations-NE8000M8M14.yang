@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mac-fwd-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-mac-fwd-deviations-NE8000M8M14";
+  prefix mac-fwd-devs-NE8000M8M14;
+
+  import huawei-mac-fwd {
+    prefix mac-fwd;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-mac {
+    prefix mac;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-mac-fwd module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/mac-fwd:mac-sync" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:global-attribute/mac-fwd:mac-fwd/mac-fwd:mac-synchronize" {
+    deviate not-supported;
+  }
+
+}

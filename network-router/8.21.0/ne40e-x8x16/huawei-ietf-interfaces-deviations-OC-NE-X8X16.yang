@@ -1,0 +1,62 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-interfaces-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-ietf-interfaces-deviations-OC-NE-X8X16";
+  prefix if-devs-OC-NE-X8X16;
+
+  import ietf-interfaces {
+    prefix if;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Security management, which includes the management on authentication, authorization, accounting, domains, and users.";
+
+  revision 2019-03-01 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/if:interfaces/if:interface/if:name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/if:interfaces/if:interface/if:description" {
+    deviate replace {
+      type string {
+        length "1..242";
+      }
+    }
+  }
+  deviation "/if:interfaces-state/if:interface/if:name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/if:interfaces-state/if:interface/if:higher-layer-if" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces-state/if:interface/if:lower-layer-if" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces/if:interface/if:link-up-down-trap-enable" {
+    deviate add {
+      default "enabled";
+    }
+  }
+}

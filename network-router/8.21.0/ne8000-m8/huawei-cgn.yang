@@ -1,0 +1,722 @@
+/******************************************************
+* Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn {
+  namespace "urn:huawei:yang:huawei-cgn";
+  prefix cgn;
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }  
+  import huawei-license {
+    prefix lcs;
+  }  
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn.";
+	
+  revision 2021-08-05 {
+    description
+      "Add new countiners instance-address-usages and rpc get-port-usage-distributes and augment license.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-04-23 {
+    description
+      "Add new countiners nat-service-infos and nat-instance-infos.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-02-24 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef engine-id {
+    type enumeration {
+      enum "NA" {
+        value 0;
+        description
+          "The enumeration is NA when the service is based on slot or card.";
+      }
+      enum "engine0" {
+        value 1;
+        description
+          "Engine ID 0.";
+      }
+      enum "engine1" {
+        value 2;
+        description
+          "Engine ID 1.";
+      }
+      enum "engine2" {
+        value 3;
+        description
+          "Engine ID 2.";
+      }
+      enum "engine3" {
+        value 4;
+        description
+          "Engine ID 3.";
+      }
+    }
+    description
+      "CGN engine ID.";
+  }
+
+  typedef card-id {
+    type enumeration {
+      enum "NA" {
+        value 0;
+        description
+          "The enumeration is NA when the service is based on slot or engine.";
+      }
+      enum "card0" {
+        value 1;
+        description
+          "Card ID 0.";
+      }
+      enum "card1" {
+        value 2;
+        description
+          "Card ID 1.";
+      }
+    }
+    description
+      "CGN card ID.";
+  }
+  typedef instance-type {
+    type enumeration {
+      enum "nat" {
+        value 0;
+        description
+          "Nat type.";
+      }
+      enum "ds-lite" {
+        value 1;
+        description
+          "DS-Lite type.";
+      }
+      enum "nat64" {
+        value 2;
+        description
+          "Nat64 type.";
+      }
+    }
+    description
+      "Instance type.";
+  }
+  typedef license-type{
+    type enumeration{
+      enum "bandwidth-board-increment"{
+        value 0;
+        description
+          "Incremental board bandwidth.";
+      }
+      enum "bandwidth-board"{
+        value 1;
+        description
+          "Boad bandwidth which need to specified.";
+      }
+      enum "bandwidth-card"{
+        value 2;
+        description
+          "Subcard bandwidth license type.";
+      }
+    }
+    description
+      "CGN bandwidth license type.";
+  }
+
+  typedef valid-flag {
+    type enumeration {
+      enum "valid" {
+        value 0;
+        description
+          "Whether the license configuration is valid on the board.";
+      }
+      enum "invalid" {
+        value 1;
+        description
+          "License configuration is invalid on the board.";
+      }
+      enum "invalid-board-type-error" {
+        value 2;
+        description
+          "Invalid (board type error).";
+      }
+      enum "invalid-board-unregistered" {
+        value 3;
+        description
+          "Invalid (board unregistered).";
+      }
+    }
+    description
+      "Valid flag type.";
+  }
+
+  container cgn {
+    description
+      "Carrier Grade NAT.";
+    container nat-session-statisticss {
+      config false;
+      description
+        "List of nat sessions statistics.";
+      list nat-session-statistics {
+        key "slot engine card";
+        description
+          "Statistics of nat sessions.";
+        leaf slot {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf engine {
+          type engine-id;
+          description
+            "The value is NA when the service is based on slot or card.";
+        }
+        leaf card {
+          type card-id;
+          description
+            "The value is NA when the service is based on slot or engine.";
+        }
+        leaf session-count {
+          type uint32;
+          description
+            "Current nat sessions count.";
+        }
+      }
+    }
+    container nat-service-infos {
+      config false;
+      description
+        "List of nat service information.";
+      list nat-service-info {
+        key "slot engine card";
+        description
+        "Statistics of nat service.";
+        leaf slot {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot ID.";
+          }
+        leaf engine {
+          type engine-id;
+          description
+            "The value is NA when the service is based on slot or card.";
+        }
+        leaf card {
+          type card-id;
+          description
+            "The value is NA when the service is based on slot or engine.";
+        }
+        container payload-statistics{
+          description
+          "List of nat payload statistics.";
+          list payload-statistic {
+            key "start-time end-time";
+            description
+              "Statistics of nat payload.";
+            leaf start-time {
+              type yang:date-and-time;
+              description
+                "Start time when statistics were collected.";
+            }
+            leaf end-time {
+              type yang:date-and-time;
+              description
+                "End time when statistics were collected.";
+            }
+            leaf sampling-interval {
+              ext:support-filter "true";
+              type uint8 {
+                range "1..24";
+              }
+              units "h";
+              description
+                "Interval for sampling.";
+            }
+            leaf send-average-packet-speed {
+              type uint64;
+              units "pps";
+              description
+                "Average number of sent packet speed.";
+            }
+            leaf send-maximum-packet-speed {
+              type uint64;
+              units "pps";
+              description
+                "Maximum number of sent packet speed.";
+            }
+            leaf send-average-bit-speed {
+              type uint64;
+              units "bit/s";
+              description
+                "Average number of sent bit speed.";
+            }
+            leaf send-maximum-bit-speed  {
+              type uint64;
+              units "bit/s";
+              description
+                "Maximum number of sent bit speed.";
+            }
+            leaf received-average-packet-speed {
+              type uint64;
+              units "pps";
+              description
+                "Average value of received packet speed.";
+            }
+            leaf received-maximum-packet-speed {
+              type uint64;
+              units "pps";
+              description
+                "Maximum number of received packet speed.";
+            }
+            leaf received-average-bit-speed  {
+              type uint64;
+              units "bit/s";
+              description
+                "Average number of received bit speed.";
+            }
+            leaf received-maximum-bit-speed  {
+              type uint64;
+              units "bit/s";
+              description
+                "Maximum number of received bit speed.";
+            }
+          }
+        }
+      }
+    }
+    container nat-instance-infos {
+      config false;
+      description
+        "List of nat instance information.";
+      list nat-instance-info{
+        key "slot engine card instance-type instance-name";
+        description
+          "Statistics of nat instance.";
+        leaf slot {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf engine {
+          type engine-id;
+          description
+            "The value is NA when the service is based on slot or card.";
+        }
+        leaf card {
+          type card-id;
+          description
+            "The value is NA when the service is based on slot or engine.";
+        }
+        leaf instance-type {
+          type instance-type;
+          description
+            "Instance type.";
+        }
+        leaf instance-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Instance name.";
+        }
+        container session-usages {
+          description
+            "List of nat session usage.";
+          list session-usage {
+            key "start-time end-time";
+            description
+              "Statistics of nat session.";
+            leaf start-time {
+              type yang:date-and-time;
+              description
+                "Start time when statistics were collected.";
+            }
+            leaf end-time {
+              type yang:date-and-time;
+              description
+                "End time when statistics were collected.";
+            }
+            leaf sampling-interval {
+              ext:support-filter "true";
+              type uint8 {
+                range "1..24";
+              }
+              units "h";
+              description
+                "Interval for sampling.";
+            }
+            leaf current-session-usage {
+              type uint64;
+              description
+                "Current session usage.";
+            }
+            leaf average-session-usage {
+              type uint64;
+              description
+                "Average session usage.";
+            }
+            leaf maximum-session-usage {
+              type uint64;
+              description
+                "Maximum session usage.";
+            }
+          }
+        }
+      }
+    }
+    container instance-address-usages {
+      config false;
+      description "List of nat address group usage.";
+      list instance-address-usage {
+        key "instance-type instance-name pool-name slot engine card";
+        description "Statistics of address usage info on a cpu.";
+        leaf instance-type {
+          type instance-type;
+          description
+            "Instance type.";     
+        }
+        leaf instance-name {
+          type string {
+            length "1..31";
+          }
+          description "NAT instance name.";
+        }
+        leaf pool-name {      
+          type string {
+            length "1..31";
+          }
+          description "NAT address pool name.";
+        }
+        leaf slot {
+          type string {
+            length "1..15";
+          }
+          description "Specifies the Slot ID of a service board.";
+        }
+        leaf engine {
+          type engine-id;
+          description
+            "The value is NA when the service is based on slot or card. This parameter can only be configured on a centralized-boards.";
+        }
+        leaf card {
+          type card-id;
+          description
+            "The value is NA when the service is based on slot or engine. This parameter takes effect only on a VSUF-80 or VSUF-160 or VSUI-160-E.";
+        }          
+        leaf pool-id {
+          type uint8 {
+            range "0..127";
+          }
+          description "IP address pool ID.";
+        }
+        leaf pool-address-usage {
+          type pub-type:percent;
+          description 
+            "Address usage of an IP address pool. If a section is locked, an attempt to apply for public IP addresses may fail even if address usage is not 100%.";
+        }
+        leaf pool-port-usage {
+          type pub-type:percent;
+          description 
+            "Users' actual port usage. The value is the number of user actually used ports/Total number of ports (Reserved ports are not counted for the actually used ports and total ports).";
+        }
+        leaf pcp-allcated-port-usage {
+          type pub-type:percent;
+          description 
+            "Usage of the reserved PCP ports allocated by the RADIUS service. The value is the number of PCP ports allocated by the RADIUS service/Total number of reserved ports.";         
+        }
+        leaf pcp-reserved-port-usage {
+          type pub-type:percent;
+          description 
+            "Users' actual usage of reserved PCP ports. The value is the number of user actually used PCP ports/Total number of reserved ports (Well-known ports are not counted for the actually used PCP ports and reserved ports).";            
+        }
+      }     
+    }
+  }
+
+  rpc get-port-usage-distributes {
+    description
+      "Query port usage distributes in a nat-instance.";
+    input {
+      leaf instance-name {
+        type string {
+          length "1..31";
+        }
+        description "NAT instance name.";
+      }
+      leaf start-port {
+        type uint16;
+        default 0;
+        description "Displays the number of users assigned a port range with a specified start port number.";
+      }
+      leaf step {
+        type uint16 {
+          range "64..2048";
+        }
+        description "Displays the number of users assigned a port range with a specified port number step.";
+      }
+      leaf interval-count {
+        type uint8 {
+          range "1..10";
+        }
+        default 10;
+        description "Specifies the number of port ranges.";
+      }
+    }
+    output {
+      container port-range-infos {
+        description "List of port range info.";
+        list port-range-info {
+          key "instance-name start-port";
+          description
+            "Statistics of the users for which ports in specified ranges have been allocated.";
+          leaf instance-name {
+            type string {
+              length "1..31";
+            }
+            description "NAT instance name.";
+          }
+          leaf start-port {
+            type uint16;
+            description "Start port in a port range.";
+          }
+          leaf end-port {
+            type uint16;
+            description "End port in a port range.";
+          }
+          leaf user-number {
+            type uint16;
+            description "Number of users in a port range.";
+          }
+        }
+      }
+    }
+  }
+  augment "/lcs:license" {
+    description
+      "Configure CGN license for CGN board.";
+    container active-nat-sessions {
+      description
+        "List of active-nat-session-table-size for CGN board.";
+      list active-nat-session {
+        key "slot engine card";
+        description
+          "Configure active-nat-session-table-size for CGN board.";         
+        leaf slot {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf engine {
+          type engine-id;
+          must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+          description
+            "The value is NA when the service is based on slot or card.";
+        }
+        leaf card {
+          type card-id;
+          must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+          description
+            "The value is NA when the service is based on slot or engine.";
+        }
+        leaf session-number {
+          type uint32 {
+            range "1..32";
+          }
+          must "((../session-number) mod 2 = 0) and (not(../engine='NA' and ../card='NA'))";
+          mandatory true;
+          description
+            "The size of nat session table must be a multiple of 2, units: M sessions.";
+        }
+      }
+    }
+    container session-capacitys {
+      config false;
+      description
+        "Operational state of session-table info.";
+      leaf total-size {
+        type uint16;
+        description "Total session size, units: M sessions.";
+      }
+      leaf used-size {
+        type uint16;
+        description "Used session size, units: M sessions.";
+      }
+      leaf free-size {
+        type uint16;
+        description "Free session size, units: M sessions.";
+      }
+    }
+    container active-bandwidths {
+      description 
+        "List of active bandwidth for CGN board.";
+      list active-bandwidth {
+        key "slot engine card";
+        description
+          "Configure active-bandwidth for CGN board.";        
+        leaf slot {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf engine {
+          type engine-id;
+          must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+          description
+            "The value is NA when the service is based on slot or card.";
+        }
+        leaf card {
+          type card-id;
+          must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+          description
+            "The value is NA when the service is based on slot or engine.";
+        } 
+        leaf bandwidth-value {
+          when "(../engine='NA') and (../card='NA')";
+          type uint16 {
+            range "20..400";
+          }
+          units "Gbit/s";
+          mandatory true;
+          description
+            "The bandwidth value of a VSUI-400 series board must be an integer multiple of 20, the bandwidth value of a VSUP-100 series board must be an integer multiple of 10.";
+        }       
+      }
+    }
+    container bandwidth-capacitys {
+      config false;
+      description
+        "List of bandwidth capacity.";
+      list bandwidth-capacity {
+        key "license-type";
+        description
+          "Statistics of bandwidth capacity.";
+        leaf license-type {
+          type license-type;
+          description
+            "CGN license type.";
+        }
+        leaf total-size {
+          type uint32;
+          description
+            "Total basic bandwidth and license bandwidth of all boards on a device.";
+        }
+        leaf total-license-size {
+          type uint32;
+          description
+            "Total license bandwidth.";
+        }
+        leaf used-license-size {
+          type uint32;
+          description
+            "Used license bandwidth.";
+        }
+        leaf free-license-size {
+          type uint32;
+          description
+            "Remaining license bandwidth.";
+        }
+        container verbose-infos {
+          description
+            "List of bandwidth verbose info.";
+          list verbose-info{
+            key "slot engine card";
+            description
+              "Operational state of bandwidth.";
+            leaf slot {
+              type string {
+                length "1..16";
+              }
+              description
+                "Slot ID.";
+            }
+            leaf engine {
+              type engine-id;
+              description
+                "The value is NA when the service is based on slot or card.";
+            }
+            leaf card {
+              type card-id;
+              description
+                "The value is NA when the service is based on slot or engine.";
+            }            
+            leaf basic-bandwidth {
+              type uint32;
+              units "GB";
+              description 
+                "Basic bandwidth.";
+            }
+            leaf config-bandwidth {
+              type uint32;
+              units "GB";
+              description 
+                "Configured enhanced bandwidth.";
+            }
+            leaf total-bandwidth {
+              type uint32;
+              units "GB";
+              description
+                "Total bandwidth.";
+            }
+            leaf valid-flag {
+              type valid-flag;
+              description
+                "Whether the bandwidth configuration is valid on the board.";
+            }
+            leaf barcode {
+              type string {
+                length "1..32";
+              }
+              description
+                "Barcode of device, presence when in cloud mode.";
+            }
+            leaf active-value {
+              type uint32;
+              units "GB";
+              description
+                "Active value of bandwidth, presence when in cloud mode.";
+            }
+            leaf usage-value {
+              type uint32;
+              units "GB";
+              description
+                "Usage value of bandwidth, presence when in cloud mode.";
+            }
+          }
+        }
+      }
+    }
+  }
+  ext:task-name "nat";
+}

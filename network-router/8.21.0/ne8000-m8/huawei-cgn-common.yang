@@ -1,0 +1,89 @@
+/******************************************************
+* Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn-common {
+  namespace "urn:huawei:yang:huawei-cgn-common";
+  prefix cgn-common;
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn commaon element.";
+
+  revision 2021-07-31 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef alg-protocol-type {
+    type enumeration {
+      enum "ftp" {
+          value 1;
+          description "Indicate file transfer protocol.";
+      }
+      enum "rtsp" {
+          value 2;
+          description "Indicate real time streaming protocol.";
+      } 
+      enum "pptp" {
+          value 4;
+          description "Indicate point-to-point tunnel protocol.";
+      }   
+      enum "sip" {
+          value 8;
+          description "Indicate session initiation protocol.";
+      }
+      enum "dns" {
+          value 16;
+          description "Indicate domain name service.";
+      }
+    }
+    description
+      "ALG Protocol.";
+  } 
+  
+  grouping alg {
+    description "Application level gateway.";
+    container algs {
+      description "List of Application level gateway.";
+      list alg {
+        key "protocol";
+        description "Configure application level gateway.";
+        leaf protocol {
+          type alg-protocol-type;
+          description "Protocol.";
+        }
+        leaf rate-threshold {
+          when "../protocol='ftp'";
+          type uint16 {
+            range "64..15000";
+          }
+          units "pps";
+          description
+            "Enables NAT ALG rate limiting for standard FTP protocols.";
+        }
+        leaf separate-translation {
+          when "../protocol='sip'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the SIP control channel and data channel match an address-based NAT server separately in the NAT instance for NAT.";
+        }
+      }
+    }    
+  }  
+  ext:task-name "nat";
+}

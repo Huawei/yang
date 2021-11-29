@@ -1,0 +1,44 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-y1731-statistics-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-y1731-statistics-deviations-ATN-980B";
+  prefix y1731-statistics-devs-ATN-980B;
+
+  import huawei-y1731-statistics {
+    prefix y1731-statistics;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-y1731-statistics module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/y1731-statistics:cfm-mac-level-enable-lpu" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/y1731-statistics:cfm-mac-level-enable-mpu" {
+    deviate not-supported;
+  }
+
+}

@@ -1,0 +1,112 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-cgn-deviations-NE8000M8M14";
+  prefix cgn-devs-NE8000M8M14;
+
+  import huawei-cgn {
+    prefix cgn;
+  }
+
+  import huawei-vsm {
+    prefix vsm;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn module.";
+
+  revision 2021-05-19 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef engine-id-na-deviations {
+    type enumeration {
+      enum "NA" {
+        value 0;
+        description
+          "The enumeration is NA when the service is based on slot or card.";
+      }
+    }
+    description
+      "CGN engine ID.";
+  }
+
+  typedef card-id-deviations {
+    type enumeration {
+      enum "NA" {
+        value 0;
+        description
+          "The enumeration is NA when the service is based on slot or engine.";
+      }
+    }
+    description
+      "CGN card ID.";
+  }
+
+  deviation "/lcs:license/cgn:active-nat-sessions/cgn:active-nat-session" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+
+  deviation "/lcs:license/cgn:active-nat-sessions/cgn:active-nat-session/cgn:engine" {
+    deviate delete {
+      must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+    }
+    deviate replace {
+      type cgn-devs-NE8000M8M14:engine-id-na-deviations;
+    }
+  }
+
+  deviation "/lcs:license/cgn:active-nat-sessions/cgn:active-nat-session/cgn:card" {
+    deviate delete {
+      must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+    }
+    deviate replace {
+      type cgn-devs-NE8000M8M14:card-id-deviations;
+    }
+  }
+
+  deviation "/lcs:license/cgn:active-nat-sessions/cgn:active-nat-session/cgn:session-number" {
+    deviate delete {
+      must "((../session-number) mod 2 = 0) and (not(../engine='NA' and ../card='NA'))";
+    }
+  }
+
+  deviation "/lcs:license/cgn:active-bandwidths/cgn:active-bandwidth/cgn:engine" {
+    deviate delete {
+      must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+    }
+    deviate replace {
+      type cgn-devs-NE8000M8M14:engine-id-na-deviations;
+    }
+  }
+
+  deviation "/lcs:license/cgn:active-bandwidths/cgn:active-bandwidth/cgn:card" {
+    deviate delete {
+      must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+    }
+    deviate replace {
+      type cgn-devs-NE8000M8M14:card-id-deviations;
+    }
+  }
+}

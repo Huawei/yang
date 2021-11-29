@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cli-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-cli-deviations-NE8000M8M14";
+  prefix cli-devs-NE8000M8M14;
+
+  import huawei-cli {
+    prefix cli;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-cli module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/cli:cli/cli:query-diagnose-information-generate-process" {
+    deviate not-supported;
+  }
+  deviation "/cli:generate-diagnose-information" {
+    deviate not-supported;
+  }
+}

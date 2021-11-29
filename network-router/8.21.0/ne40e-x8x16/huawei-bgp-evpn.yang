@@ -1,0 +1,2080 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-evpn {
+  namespace "urn:huawei:yang:huawei-bgp-evpn";
+  prefix bgp-evpn;
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure BGP EVPN.";
+  revision 2021-08-06 {
+    description
+      "Update EVPN module YANG file for BGP EVPN peer.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-04-07 {
+    description
+      "EVPN module YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "evpnbgp";
+  typedef advertise-encap-type {
+    type enumeration {
+      enum "vxlan" {
+        value 1;
+        description
+          "VXLAN.";
+      }
+      enum "mpls" {
+        value 2;
+        description
+          "MPLS.";
+      }
+      enum "srv6" {
+        value 4;
+        description
+          "SRv6.";
+      }
+      enum "sd-wan" {
+        value 5;
+        description
+          "SD-WAN.";
+      }	  
+    }
+    description
+      "Encapsulation type of packets.";
+  }
+  typedef srv6-mode {
+    type enumeration {
+      enum "be" {
+        value 1;
+        description
+          "SRv6 iteration mode is BE.";
+      }
+      enum "te" {
+        value 2;
+        description
+          "SRv6 iteration mode is TE.";
+      }
+    }
+    description
+      "SRv6 mode is BE or TE.";
+  }
+  typedef add-path-cap-type {
+    type enumeration {
+      enum receive {
+        value 1;
+        description
+          "Support receiving add-path routes.";
+      }
+      enum send {
+        value 2;
+        description
+          "Support sending add-path routes.";
+      }
+      enum both {
+        value 3;
+        description
+          "Support receiving and sending add-path routes.";
+      }
+    }
+    description
+      "The type of add-path routes.";
+  }
+  typedef config-type {
+    type enumeration {
+      enum "default" {
+        value 0;
+        description
+          "Disable or inheritance group.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Explicit config enable.";
+      }
+      enum "disable" {
+        value 2;
+        description
+          "Explicit config disable.";
+      }
+    }
+    description
+      "Route server client.";
+  }
+  typedef route-limit-type {
+    type enumeration {
+      enum "noparameter" {
+        value 0;
+        description
+          "Default value.";
+      }
+      enum "alert-only" {
+        value 1;
+        description
+          "An alarm is generated and no additional routes will be accepted if the maximum number of routes allowed have been received.";
+      }
+      enum "idle-forever" {
+        value 2;
+        description
+          "The connection that is interrupted is not automatically re-established if the maximum number of routes allowed have been received.";
+      }
+      enum "idle-timeout" {
+        value 3;
+        description
+          "After the number of received routes exceeds the threshold and the timeout timer expires, the connection that is interrupted is automatically re-established.";
+      }
+    }
+    description
+      "The type of route limit.";
+  }
+  typedef es-ad-compatible-type {
+    type enumeration {
+      enum "default" {
+        value 0;
+        description
+          "Default ES AD compatible.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable ES AD compatible.";
+      }
+      enum "disable" {
+        value 2;
+        description
+          "Disable ES AD compatible.";
+      }
+    }
+    description
+      "Ethernet A-D per ES Route compatible type.";
+  }
+  typedef peer-comm-config-type {
+    type enumeration {
+      enum "default" {
+        value 0;
+        description
+          "Configuration on peer was default.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Configuration on peer was enable.";
+      }
+      enum "disable" {
+        value 2;
+        description
+          "Configuration on peer was disable.";
+      }
+    }
+    description
+      "State of the configuration on peer.";
+  }
+  typedef evpn-next-hop-mode {
+    type enumeration {
+      enum "null" {
+        value 0;
+        description
+          "The next hop is not changed.";
+      }
+      enum "local" {
+        value 1;
+        description
+          "The next hop is changed to the local IP address.";
+      }
+      enum "invariable" {
+        value 2;
+        description
+          "Prevent the device from changing the next hop of each imported IGP route when advertising it to its EVPN peers.";
+      }
+    }
+    description
+      "BGP EVPN peer and peer group next hop mode.";
+  }
+  typedef apply-label-type {
+    type enumeration {
+      enum "per-route" {
+        value 0;
+        description
+          "Per-route label allocation.";
+      }
+      enum "per-nexthop" {
+        value 1;
+        description
+          "Per-next-hop label allocation.";
+      }
+    }
+    description
+      "BGP EVPN apply label type.";
+  }
+  typedef select-depend-type {
+    type enumeration {
+      enum "depend-tunnel" {
+        value 1;
+        description
+          "Routing-dependent tunnel iteration.";
+      }
+      enum "depend-ip" {
+        value 2;
+        description
+          "Routing-dependent IP iteration.";
+      }
+    }
+    description
+      "The type of nexthop select depend.";
+  }
+  typedef select-depend-type-ext {
+    type enumeration {
+      enum "depend-tunnel" {
+        value 1;
+        description
+          "Routing-dependent tunnel iteration.";
+      }
+      enum "depend-ip" {
+        value 2;
+        description
+          "Routing-dependent IP iteration.";
+      }
+      enum "depend-none" {
+        value 3;
+        description
+          "Routing-dependent ignore.";
+      }
+    }
+    description
+      "The type of nexthop select depend.";
+  }
+  typedef import-vpn-rib-afi-type {
+    type enumeration {
+      enum "ipv4vpn" {
+        value 3;
+        description
+          "IPv4 vpn address family.";
+      }
+      enum "ipv6vpn" {
+        value 6;
+        description
+          "IPv6 vpn address Family.";
+      }
+    }
+    description
+      "The address famiily type of import rib.";
+  }
+  typedef import-rib-nhp-type {
+    type enumeration {
+      enum "mpls" {
+        value 1;
+        description
+          "MPLS tunnels, include LDP, TE, SR-TE, SR-MPLS BE.";
+      }
+	  enum "srv6" {
+        value 2;
+        description
+          "Segment routing IPv6 tunnel.";
+      }
+    }
+    description
+      "The mexthop type of import rib.";
+  }
+  typedef evpn-route-type {
+    type enumeration {
+      enum "ip-prefix" {
+        value 1;
+        description
+          "Ip prefix route.";
+      }
+    }
+    description
+      "The route type of evpn rib.";
+  }
+  typedef ad-prefix {
+    type string {
+      length "1..60";
+    }
+    description
+      "An EVPN auto-discovery route prefix has the following formats:
+Ethernet auto-discovery route. The value is in the format of xxxx.xxxx.xxxx.xxxx.xxxx:M, where:
+- xxxx.xxxx.xxxx.xxxx.xxxx indicates the ESI configured for the device originating this route.
+- M is form 0 to 4294967295.";
+  }
+  typedef mac-prefix {
+    type string {
+      length "1..60";
+    }
+    description
+      "An EVPN mac route prefix has the following formats:
+MAC advertisement route. The value is in the format of E:M:H-H-H:L:X.X.X.X or E:M:H-H-H:L: [X:X::X:X], where:
+- E indicates the ID of the VLAN to which the MAC address belongs.
+- M is fixed at 48, indicating the length of the MAC address.
+- H-H-H indicates the MAC address. The value is a 12-digit hexadecimal number, in the format of H-H-H. Each H is 4 digits. If an H contains fewer than 4 digits, the left-most digits are padded with zeros.
+- L indicating the mask length of the IP address corresponding to the MAC address.
+- X.X.X.X indicates the IP address corresponding to the MAC address.
+- X:X::X:X indicates the IPv6 address corresponding to the MAC address.";
+  }
+  typedef inclusive-prefix {
+    type string {
+      length "1..60";
+    }
+    description
+      "An EVPN ethernet segment route prefix has the following formats:
+Inclusive multicast route. The value is in the format of M:L:X.X.X.X, where:
+- M indicates the EthTagId configured for the device originating the route.
+- X.X.X.X indicates the source address configured for the device originating the route.
+- L indicates the mask length of the source address configured for the device originating the route.";
+  }
+  typedef es-prefix {
+    type string {
+      length "1..60";
+    }
+    description
+      "An EVPN ethernet segment route prefix has the following formats:
+Ethernet segment route. The value is in the format of xxxx.xxxx.xxxx.xxxx.xxxx, where x is a hexadecimal integer ranging from 0 to F. The value equals the ESI configured for the device originating this route.";
+  }
+  typedef evpn-ip-prefix {
+    type string {
+      length "1..60";
+    }
+    description
+      "An EVPN ip prefix route prefix has the following formats:
+IP Prefix route. The value is in the format of L:X.X.X.X:M or L:[X:X::X:X]:M, where:
+- L is fixed at 0. 
+- X.X.X.X indicates the ip address of host routes. 
+- M indicates the mask length of host routes. 
+- X:X::X:X indicates the IPv6 address of host routes.";
+  }
+  grouping routing-table-type {
+    description
+      "Routing table infomation.";
+    leaf nexthop {
+      type inet:ip-address-no-zone;
+      description
+        "Next-hop address to which packets are sent.";
+    }
+    leaf local-preference {
+      type uint32;
+      description
+        "Local priority. The attribute is only fit for the routes from IBGP peer, not suit for which of EBGP peer.";
+    }
+    leaf preferred-value {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+        "Preferred value of a protocol.";
+    }
+    leaf preference {
+      type uint8 {
+        range "0..255";
+      }
+      description
+        "Preference of a route.";
+    }
+    leaf worse-reason {
+      type string {
+        length "1..50";
+      }
+      description
+        "Reason why a route is not selected.";
+    }
+    leaf origin {
+      type bgp-rt:bgp-origin-type;
+      description
+        "Origin of a route.";
+    }
+    leaf med {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+        "Route MED in the attribute node. The attribute is only fit for the routes from EBGP peer, not suit for which of IBGP peer.";
+    }
+    leaf flag-string {
+      type string {
+        length "1..100";
+      }
+      description
+        "Route flag that contains a string of characters.";
+    }
+    leaf time {
+      type uint32;
+      units "s";
+      description
+        "Route duration time.";
+    }
+    leaf interface-name {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of the outbound interface of a route.";
+    }
+    leaf remote-route-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of a peer.";
+    }
+    leaf relay-nexthop {
+      type inet:ip-address-no-zone;
+      description
+        "Iterated next hop.";
+    }
+    leaf relay-tunnel-name {
+      type string {
+        length "1..44";
+      }
+      description
+        "Name of an iteration tunnel.";
+    }
+    leaf originator {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of the route initiator.";
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af" {
+    description "Augment for an L2VPN instance and EVPN association.";
+    container l2vpn-evpn {
+      when "../bgp:type = 'evpn' and ../../../../../../../ni:name='_public_'";
+      must "(all-route-limit='true' and mac-route-limit='false' and route-limit) or (all-route-limit='false' and mac-route-limit='true' and route-limit) or (all-route-limit='false' and mac-route-limit='false')";
+      must "not(advertise-arp = 'true' and advertise-irb = 'true')";
+      must "not(advertise-nd = 'true' and advertise-irbv6 = 'true')";
+      description
+        "Configure peer EVPN.";
+      leaf group-name {
+        ext:operation-exclude update;
+        type leafref {
+          path "../../../../../../bgp:peer-groups/bgp:peer-group/bgp:name";
+        }
+        must "(../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name=current()]/bgp:type = 'ibgp' and ../../../../bgp:remote-as = /bgp:bgp/bgp:base-process/bgp:as) or (../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name=current()]/bgp:type = 'ebgp' and ../../../../bgp:remote-as != /bgp:bgp/bgp:base-process/bgp:as)";
+        must "../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name=current()]/bgp:afs/bgp:af[bgp:type='evpn']";
+        must "../../../../../../bgp:peer-groups/bgp:peer-group[bgp:name=current()]/bgp:peer-establish-mode = 'static'";
+        description
+          "Configure a name for a peer group. By default, BGP peers join no peer group. BGP peers distinguish the peer group type when joining a peer group. IBGP peers cannot join an EBGP peer group. After a peer is deleted from the peer group, the peer is disabled from the address family. The object cannot be modified.";
+      }
+      leaf allow-as-loop {
+        type uint8 {
+          range "1..10";
+        }
+        description
+          "Allow repetitive local AS numbers. By default, repetitive local AS numbers are not allowed.";
+      }
+      leaf reflect-client {
+        when "../../../../bgp:remote-as = /bgp:bgp/bgp:base-process/bgp:as";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the local device as a route reflector (RR) and a peer or peer group as its client. This configuration is applicable between IBGP peers only. The configurations of RRs and its clients in an address family are valid only in this address family. Therefore, it is recommended to configure RRs and its clients in the specified address family that is required.";
+      }
+      choice import-policy-type {
+        description
+          "Set route policy or filter.";
+        case rtp-ref {
+          description
+            "Route policy.";
+          leaf import-policy {
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+          }
+        }
+      }
+      choice export-policy-type {
+        description
+          "Set route policy or filter.";
+        case rtp-ref {
+          description
+            "Route policy.";
+          leaf export-policy {
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+          }
+        }
+      }
+      leaf advertise-community {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable advertise community attribute to a peer or peer group.";
+      }
+      leaf advertise-large-community {
+        type config-type;
+        default "default";
+        description
+          "Enable large-community attribute advertisement. By default, the function is not configured on any peer. The Link-state address family and the RPD address family do not support this element.";
+      }
+      leaf advertise-arp {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the advertise ARP route when its value is true.";
+      }
+      leaf advertise-irb {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the advertise IRB route when its value is true.";
+      }
+      leaf advertise-irbv6 {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the advertise IRBv6 route when its value is true.";
+      }
+      leaf advertise-nd {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the advertise ND route when its value is true.";
+      }
+      leaf advertise-encap-type {
+        type advertise-encap-type;
+        must "(not(contains(../../../../bgp:address,':')) and (../advertise-encap-type != 'srv6')) or (contains(../../../../bgp:address,':') and (../advertise-encap-type != 'sd-wan'))";
+        default "mpls";
+        description
+          "Encapsulation type of packets.";
+      }
+      leaf advertise-add-path-mode {
+        type add-path-cap-type;
+        description
+          "Enable add-path route advertisement to a peer.";
+      }
+      leaf advertise-add-path-num {
+        type uint8 {
+          range "2..128";
+        }
+        description
+          "Number of add-path routes that can be advertised to a peer.";
+      }
+      leaf advertise-suppressed-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable advertising suppressed-detail-route.";
+      }
+      leaf advertise-suppressed-route-status {
+        type boolean;
+        default "false";
+        config false;
+        description
+          "The effective status of advertising suppressed-detail-route.";
+      }
+      leaf all-route-limit {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable all routing overflow alarm received from the specified peer.";
+      }
+      leaf mac-route-limit {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MAC routing overflow alarm received from the specified peer.";
+      }
+      leaf route-limit {
+        when "(../all-route-limit='true' or ../mac-route-limit='true')";
+        type uint32 {
+          range "1..4294967295";
+        }
+        description
+          "Configure the maximum number of routes that can be accepted from a peer.";
+      }
+      leaf route-limit-percent {
+        when "../route-limit";
+        type uint8 {
+          range "1..100";
+        }
+        default "75";
+        description
+          "Specify the percentage of routes when a router starts to generate an alarm.";
+      }
+      leaf route-limit-type {
+        when "../route-limit";
+        type route-limit-type;
+        must "(../route-limit-type = 'idle-timeout' and ../route-limit-idle-timeout) or (../route-limit-type = 'alert-only') or (../route-limit-type = 'idle-forever') or (../route-limit-type = 'noparameter')";
+        default "noparameter";
+        description
+          "Set the processing method as alert-only, idle-forever, or idle-timeout when the number of routes exceeds the set threshold. When alert-only is used, only an alarm is generated when the number of routes exceeds the threshold. In this case, new routes are no longer accepted. When idle-forever is used, connections are not automatically reestablished after being cut off until BGP connections are reset if the number of routes exceeds the set threshold. When idle-timeout is used and the idle-timeout timer is specified, the connections are automatically reestablished after being cut off if the number of routes exceeds the set threshold. You can reset BGP connections to reestablish the connections before the idle-timeout times expires.";
+      }
+      leaf route-limit-idle-timeout {
+        when "../route-limit-type = 'idle-timeout'";
+        type uint16 {
+          range "1..1200";
+        }
+        units "min";
+        description
+          "Enable/disable specify the value of the idle-timeout timer to automatically reestablish the connections after they are cut off when the number of routes exceeds the set threshold.";
+      }
+      leaf route-update-interval {
+        type uint16 {
+          range "0..600";
+        }
+        units "s";
+        ext:dynamic-default {
+          ext:default-value 15 {
+          when "../../../../bgp:remote-as = /bgp:bgp/bgp:base-process/bgp:as";
+		  }
+          ext:default-value 30 {
+          when "../../../../bgp:remote-as != /bgp:bgp/bgp:base-process/bgp:as";
+		  }
+        }			
+        description
+          "Specify the minimum interval at which Update packets are sent. By default, the interval at which Update packets are sent to IBGP peers is 15s, and the interval at which Update packets are sent to EBGP peers is 30s.";
+      }
+      leaf reoriginate-route-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable route regeneration.";
+      }
+      leaf reoriginate-vpnv4-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable VPNv4 route regeneration and advertisement.";
+      }
+      leaf reoriginate-mac-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MAC route regeneration and advertisement.";
+      }
+      leaf reoriginate-mac-ip-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MAC-IP route regeneration and advertisement.";
+      }
+      leaf reoriginate-mac-ipv6-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable reoriginating IRBv6 route of EVPN.";
+      }
+      leaf reoriginate-ip-route {
+         type boolean;
+         default "false";
+         description
+          "Enable/disable IP route regeneration and advertisement.";
+      }
+      leaf reoriginate-ipv6-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable reoriginating IPv6 prefix route of EVPN.";
+      }
+      leaf reoriginate-vpnv6-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable reoriginating the route of VPNv6.";
+      }
+      leaf graceful-restart-static-timer {
+        type uint32 {
+          range "3600..2147483647";
+        }
+        units s;
+        description
+          "Specifies the maximum time during which a peer waits for a BGP session reestablishment. In seconds.";
+      }
+      leaf es-ad-compatible {
+        type es-ad-compatible-type;
+        default "default";
+        description
+          "Ethernet A-D per ES Route Compatible.";
+      }
+      leaf split-group-name {
+        type string {
+          length "1..31";
+        }
+        description
+          "Split group name.";
+      }
+      leaf vpn-orf-disable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable VPN ORF.";
+      }
+      leaf upe-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the peer as an underlayer PE (UPE).";
+      }
+      leaf next-hop-mode {
+        type evpn-next-hop-mode;
+        default "null";
+        description
+          "Enable next hop mode.";
+      }
+      leaf high-priority {
+        type peer-comm-config-type;
+        default "default";
+        description
+          "Enable a higher priority to a specified peer.";
+      }
+      leaf high-priority-status {
+        type boolean;
+        default "false";
+        config false;
+        description
+          "The effective status of higher priority to a specified peer.";
+      }
+      leaf preferred-value {
+        type uint32 {
+          range "0..65535";
+        }
+        default "0";
+        description
+          "Assign a preferred value for the routes learned from a specified peer. The value is an integer. After a preferred value is configured for the routes learned from a specified peer, all the routes that learnt from this peer will use this preferred value. When multiple routes reach the same address prefix, the route with the largest preferred value will be selected.";
+      }
+      leaf mac-detail-route-only {
+        type "bgp:peer-attr-enable-type";
+        description
+          "Enable/disable only advertising evpn detailed mac-route.";
+      }
+      leaf mac-detail-route-only-status {
+        type boolean;
+        config false;
+        description
+          "The effective status of advertising evpn detailed mac-route.";
+      }
+      leaf advertise-srv6-locator {
+        when "../advertise-encap-type='srv6'";
+        type empty;
+        description
+          "Advertise SRv6 locator.";
+      }
+      leaf transit-med-to-ebgp {
+        type "bgp:peer-attr-enable-type";
+        description
+          "Transmits the MED attribute to EBGP peers.";
+      }
+      container effect-state {
+        config false;
+        description
+          "Operational state of peer.";
+        leaf advertise-srv6-locator {
+          type boolean;
+          description
+            "Whether to advertise SRv6 locators on the EVPN peer.";
+        }
+        leaf transit-med-to-ebgp {
+          type boolean;
+          description
+            "Transmits the MED attribute to EBGP peers.";
+        }
+      }
+      container path-attribute-treats {
+        description
+          "List of modes in which specified path attributes are processed.";
+        list path-attribute-treat {
+          must "discard-id-map or withdraw-id-map or unknown-id-map";
+          key "treat-type";
+          description
+            "Configure mode in which specified path attributes are processed.";
+          leaf treat-type {
+            type bgp:path-attr-treat-type;
+            description
+              "Mode in which specified path attributes are processed.";
+          }
+          leaf discard-id-map {
+            type pub-type:id-range {
+              pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+              ext:value-range 0..255;
+            }
+            description
+              "Specify a discard attribute ID list. The attribute ids which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+          }
+          leaf withdraw-id-map {
+            type pub-type:id-range {
+              pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+              ext:value-range 0..255;
+            }
+            description
+              "Specify a withdraw attribute ID list. The attribute ids which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+          }
+          leaf unknown-id-map {
+            type pub-type:id-range {
+              pattern '((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])?(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?(,((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))?))*)|((([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\)))?(,(([\+|\-](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))|([\+|\-]\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])-(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\))))*)';
+              ext:value-range 0..255;
+            }
+            description
+              "Specify an unknown attribute ID list. The attribute ids which are not supported as follows: 1 (ORIGIN), 2 (AS_PATH), 3 (NEXT_HOP), 4 (MED), 5 (LOCAL_PREF), 6 (ATOMICAGGREGATE), 7 (AGGREGATOR), 8 (COMMUNITY), 9 (ORIGINATOR_ID), 10 (CLUSTER_LIST), 14 (MP_REACH_NLRI), 15 (MP_UNREACH_NLRI), 17 (AS4PATH), 18 (AS4AGGREGATOR).";
+          }
+        }
+      }
+    }
+  } 
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af" {
+    description "Augment for an L2VPN instance and EVPN association.";
+    container l2vpn-evpn {
+      when "(../bgp:type = 'evpn' and ../../../../../../../ni:name='_public_')";
+      must "(all-route-limit='true' and mac-route-limit='false' and route-limit) or (all-route-limit='false' and mac-route-limit='true' and route-limit) or (all-route-limit='false' and mac-route-limit='false')";
+      must "not(advertise-arp = 'true' and advertise-irb = 'true')";
+      must "not(advertise-nd = 'true' and advertise-irbv6 = 'true')";
+      description
+        "Configure EVPN peer group.";
+      leaf allow-as-loop {
+        type uint8 {
+          range "1..10";
+        }
+        description
+          "Allow repetitive local AS numbers. By default, repetitive local AS numbers are not allowed.";
+      }
+      leaf reflect-client {
+        when "../../../../bgp:type = 'ibgp'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the local device as a route reflector (RR) and a peer or peer group as its client. This configuration is applicable between IBGP peers only. The configurations of RRs and its clients in an address family are valid only in this address family. Therefore, it is recommended to configure RRs and its clients in the specified address family that is required.";
+      }
+      choice import-policy-type {
+        description
+          "Set route policy or filter.";
+        case rtp-ref {
+          description
+            "Route policy.";
+          leaf import-policy {
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+          }
+        }
+      }
+      choice export-policy-type {
+        description
+          "Set route policy or filter.";
+        case rtp-ref {
+          description
+            "Route policy.";
+          leaf export-policy {
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+          }
+        }
+      }
+      leaf es-ad-compatible {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable ethernet A-D per ES route compatible.";
+      }
+      leaf split-group-name {
+        type string {
+          length "1..31";
+        }
+        description
+          "Split group name.";
+      }
+      leaf vpn-orf-disable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable VPN ORF.";
+      }
+      leaf upe-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the peer as an underlayer PE (UPE).";
+      }
+      leaf next-hop-mode {
+        type evpn-next-hop-mode;
+        default "null";
+        description
+          "Enable next hop mode.";
+      }
+      leaf advertise-community {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable an advertise the community attribute to a peer or peer group.";
+      }
+      leaf advertise-large-community {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable large-community attribute advertisement. The Link-state address family and the RPD address family do not support this element.";
+      }
+      leaf advertise-arp {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the advertise ARP route when its value is true.";
+      }
+      leaf advertise-irb {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the advertise IRB route when its value is true.";
+      }
+      leaf advertise-irbv6 {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the advertise IRBv6 route when its value is true.";
+      }
+      leaf advertise-nd {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the advertise ND route when its value is true.";
+      }
+      leaf advertise-encap-type {
+        type advertise-encap-type;
+        default "mpls";
+        description
+          "Encapsulation type of packets.";
+      }
+      leaf advertise-suppressed-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable advertising suppressed detail route.";
+      }
+      leaf advertise-add-path-mode {
+        type add-path-cap-type;
+        description
+          "Enable add-path route advertisement to a peer.";
+      }
+      leaf advertise-add-path-num {
+        type uint8 {
+          range "2..128";
+        }
+        description
+          "Number of add-path routes that can be advertised to a peer group.";
+      }
+      leaf all-route-limit {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable all routing overflow alarm received from the specified peer.";
+      }
+      leaf mac-route-limit {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MAC routing overflow alarm received from the specified peer.";
+      }
+      leaf route-limit {
+        when "(../all-route-limit='true' or ../mac-route-limit='true')";
+        type uint32 {
+          range "1..4294967295";
+        }
+        description
+          "Configure the maximum number of routes that can be accepted from a peer.";
+      }
+      leaf route-limit-percent {
+        when "../route-limit";
+        type uint8 {
+          range "1..100";
+        }
+        default "75";
+        description
+          "Specify the percentage of routes when a router starts to generate an alarm.";
+      }
+      leaf route-limit-type {
+        when "../route-limit";
+        type route-limit-type;
+        must "(../route-limit-type = 'idle-timeout' and ../route-limit-idle-timeout) or (../route-limit-type = 'alert-only') or (../route-limit-type = 'idle-forever') or (../route-limit-type = 'noparameter')";
+        default "noparameter";
+        description
+          "Set the processing method as alert-only, idle-forever, or idle-timeout when the number of routes exceeds the set threshold. When alert-only is used, only an alarm is generated when the number of routes exceeds the threshold. In this case, new routes are no longer accepted. When idle-forever is used, connections are not automatically reestablished after being cut off until BGP connections are reset if the number of routes exceeds the set threshold. When idle-timeout is used and the idle-timeout timer is specified, the connections are automatically reestablished after being cut off if the number of routes exceeds the set threshold. You can reset BGP connections to reestablish the connections before the idle-timeout times expires.";
+      }
+      leaf route-limit-idle-timeout {
+        when "../route-limit-type = 'idle-timeout'";		  
+        type uint16 {
+          range "1..1200";
+        }
+        units "min";
+        description
+          "Specify the value of the idle-timeout timer to automatically reestablish the connections after they are cut off when the number of routes exceeds the set threshold.";
+      }
+      leaf route-update-interval {
+        type uint16 {
+          range "0..600";
+        }
+        units "s";
+        ext:dynamic-default {
+          ext:default-value 15 {
+          when "../../../../bgp:type = 'ibgp'";
+		  }
+          ext:default-value 30 {
+          when "../../../../bgp:type = 'ebgp'";
+		  }
+        }
+        description
+          "Specify the minimum interval at which Update packets are sent. By default, the interval at which Update packets are sent to IBGP peers is 15s, and the interval at which Update packets are sent to EBGP peers is 30s.";
+      }
+      leaf reoriginated-route-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable route regeneration.";
+      }
+      leaf reoriginated-mac-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MAC route regeneration and advertisement.";
+      }
+      leaf reoriginated-mac-ip-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MAC-IP route regeneration and advertisement.";
+      }
+      leaf reoriginated-mac-ipv6-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable reoriginating IRBv6 route of EVPN.";
+      }
+      leaf reoriginated-ip-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable IP route regeneration and advertisement.";
+      }
+      leaf reoriginated-ipv6-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable reoriginating IPv6 prefix route of EVPN.";
+      }
+      leaf reoriginated-vpnv4-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable VPNv4 route regeneration and advertisement.";
+      }
+      leaf reoriginated-vpnv6-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable reoriginating the route of VPNv6.";
+      }
+      leaf high-priority {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable routes received from a specified peer have a higher priority.";
+      }
+      leaf preferred-value {
+        type uint32 {
+          range "0..65535";
+        }
+        default "0";
+        description
+          "Assign a preferred value for the routes learned from a specified peer. The value is an integer. After a preferred value is configured for the routes learned from a specified peer, all the routes that learnt from this peer will use this preferred value. When multiple routes reach the same address prefix, the route with the largest preferred value will be selected.";
+      }
+      leaf mac-detail-route-only {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable only advertising evpn detailed mac-route.";
+      }
+      leaf advertise-srv6-locator {
+        when "../advertise-encap-type='srv6'";
+        type empty;
+        description
+          "Advertise SRv6 locator.";
+      }
+      leaf transit-med-to-ebgp {
+        when "../../../../bgp:type = 'ebgp'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable transmits the MED attribute to EBGP peers.";
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af" {
+    description "Augment for an L2VPN instance and EVPN association.";
+    container l2vpn-evpn {
+      when "(../bgp:type = 'evpn') and (../../../../../ni:name='_public_')";
+      description
+        "Configure L2VPN-EVPN.";
+      leaf policy-vpntarget {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable VPN target-based filtering for the received VPN routes. By default, VPN target-based filtering is enabled. Only the VPN route whose Export RT attribute matches the local Import RT attribute can be added to the routing table. This option can be used in the inter-AS VPN Option B solution and the ASBR MP-EBGP inter-AS L2VPN solution in Kompella mode.";
+      }
+      leaf add-path-select-num {
+        type uint8 {
+          range "2..128";
+        }
+        description
+          "Number of add-path routes.";
+      }
+      leaf label-free-delay {
+        type uint8 {
+          range "0..180";
+        }
+        units s;
+        default "5";
+        description
+          "Label free delay.";
+      }
+      leaf route-select-delay {
+        type uint16 {
+          range "0..3600";
+        }
+        units s;
+        default "0";
+        description
+          "Route selection delay.";
+      }
+      leaf exclusive-eviad-enable {
+        when "../route-select-delay!=0";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable route selection delay for non-EVI-AD routes.";
+      }
+      leaf label-per-nexthop {
+        type apply-label-type;
+        default "per-route";
+        description
+          "Apply label per nexthop enable.";
+      }
+      leaf auto-frr {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable Auto FRR.";
+      }
+      leaf detection-threshold {
+        type uint16 {
+          range "120..3600";
+        }
+        default "300";
+        status deprecated;
+        description
+          "Specify the time in seconds lagging behind average when a peer is determined to be a slow peer. The leaf detection-threshold is deprecated. You are advised to use the leaf '/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:slow-peer/bgp-evpn:detection-threshold'.";
+      }  
+      leaf absolute-detection-threshold {
+        type uint16 {
+          range "3..3600";
+        }
+        default "9";
+        status deprecated;
+        description
+          "Specify the packet send delay time in second when a peer is determined to be a slow peer. The leaf absolute-detection-threshold is deprecated. You are advised to use the leaf '/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:slow-peer/bgp-evpn:absolute-detection-threshold'.";
+      }
+      leaf tunnel-selector {
+        type leafref {
+          path "/rtp:routing-policy/rtp:tunnel-selectors/rtp:tunnel-selector/rtp:name";
+        }
+        description
+          "Configure a tunnel selector and apply it to the BGP IPv4 unicast, BGP VPNv4 address families and BGP VPNv6 address families so that IPv4, VPNv4 and VPNv6 labeled routes can be iterated to tunnels based on the tunnel selector.";
+      }
+      leaf vpn-orf-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable VPN-ORF capability.";
+      }
+      leaf nexthop-select-depend-type {
+        type select-depend-type-ext;
+        default "depend-ip";
+        description
+          "In none mode, route selection does not depend on whether the next hop is reachable. In tunnel mode, the labeled EVPN route can participate in route selection only after its next hop is iterated to an LSP. In IP 
+          mode, the labeled EVPN route can participate in route selection only after its next hop is iterated to an IP address. By default, the labeled EVPN route can participate in route selection 
+          if its next hop can be iterated to an IP address, regardless of whether the LSP of the next hop exists. This allows the RR that is not enabled with MPLS to forward labeled routes. In non-RR 
+          networking or RR networking where the BGP next hop is changed, BGP needs to check whether there is an LSP destined for the next hop. If such an LSP is not found, BGP needs to establish an LSP in 
+          advance. If the default setting is adopted, a labeled EVPN route may be selected prior to LSP establishment. As a result, services are incorrectly switched before LSP establishment and 
+          service stability is affected. Therefore, allow route selection only after the labeled EVPN route is iterated to an LSP.";
+      }
+      leaf reflect-change-path {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable an RR to use an export policy to change route AS_Path.";
+      }
+      leaf rr-ext-community-filter {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ext-community-filters/rtp:ext-community-filter/rtp:name";
+        }
+        description
+          "Set the name of the extended community filter supported by an RR group. For the purpose of load balancing, only the IBGP route whose route-target extended community attribute meets the matching rules can be reflected.";
+      }
+      leaf time-df-delay {
+        type uint16 {
+          range "0..1200";
+        }
+        units s;
+        default "60";
+        description
+          "Specifies forwarder election delay-timer value. In seconds.";
+      }
+      leaf reflect-between-client {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable route reflection between clients. If clients of a route reflector (RR) are fully meshed, you can disable route reflection among clients to reduce the cost.";
+      }
+      leaf bestroute-igp-metric-ignore {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable EVPN to ignore the IGP cost of each EVPN route to the next hop in route selection. By default, an EVPN route with a smaller IGP cost to the next hop is preferred.";
+      }
+      choice reflector-type {
+        description
+          "Set IPv4 address or id.";
+        case address {
+          description
+            "IPv4 address.";
+          leaf reflector-cluster-ipv4 {
+            type inet:ipv4-address-no-zone;
+            description
+              "Set a cluster ID. The value is expressed in the format of an IPv4 address. Configuring multiple RRs in a cluster can enhance the stability of the network. If a cluster has more than one RR, select this option to set the same cluster ID for all the RRs to avoid routing loops. To allow clients to receive routes from RRs, ensure that the cluster ID of the RRs is different from the router ID of any client. If the cluster ID of the RRs is the same as the router ID of a client, the client will discard received routes.";
+          }
+        }
+        case id {
+          description
+            "Set value.";
+          leaf reflector-cluster-id {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+              "Set a cluster ID. Configuring multiple RRs in a cluster can enhance the stability of the network. If a cluster has more than one RR, select this option to set the same cluster ID for all the RRs to avoid routing loops. To allow clients to receive routes from RRs, ensure that the cluster ID of the RRs is different from the router ID of any client. If the cluster ID of the RRs is the same as the router ID of a client, the client will discard received routes.";
+          }
+        }
+      }
+      uses bgp:load-balancing-configuration;
+      container nexthop-recursive-lookup {
+       description
+        "Configure next hop iteration.";
+        container common {
+        description
+          "Configure next hop iteration common options.";
+          leaf restrain {
+            type boolean;
+            default "true";
+            description
+            "Enable/disable the function to restrain next hop iteration in case of next hop flapping.";
+          }
+          leaf default-route {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable default route.";
+          }
+        }
+        container delay {
+          description
+            "Configure time of next hop change responding delay.";
+          leaf time {
+            type uint8 {
+            range "1..100";
+            }
+            units "s";
+            description
+            "Specify the delay in responding to the next hop change.";
+          }
+          leaf no-critical-event-time {
+            type uint8 {
+            range "0..100";
+            }
+            units "s";
+            default "10";
+            description
+            "Specify the delay in responding to the next hop change on non critical relay change event.";
+          }
+        }
+        container bit-error-detection {
+          description
+              "Configure EVPN bit-error detection parameters.";
+          leaf enable {
+            type boolean;
+            must "(../enable='false') or (../enable='true' and (../med or ../local-preference))";
+            default "false";
+            description
+              "Enable/disable association between bit error events and the adjustment of route attributes.";
+          }
+          leaf med {
+            when "../enable='true'";
+            type uint32 {
+                range "1..4294967295";
+            }
+            description
+                "Specify the MED adjustment for EVPN routes used when a bit error event occurs.";
+          }
+          leaf local-preference {
+            when "../enable='true'";
+            type uint32 {
+                range "1..4294967295";
+            }
+            description
+                "Specify the local preference adjustment for routes used when a bit error event occurs.";
+          }
+          leaf route-policy {
+            when "../enable='true'";
+            type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+                "Specify the name of route-policy for bit-error-triggered protection switching. The MED or local preference of only the routes that match the route-policy is adjusted.";
+          }
+        }
+      }
+      uses bgp:vrf-af-dampening-routes-ext;
+      uses bgp:slow-peer-type;
+      container load-balancing {
+          when "../import-vpn-ribs";
+          description
+            "Configure the number of imported rib routes.";
+          leaf maximum-load-balancing-import-rib {
+          type uint16 {
+            range "1..2";
+          }
+          default "1";
+          description
+            "Specify the maximum number of imported rib routes.";
+        }
+      }
+      container import-vpn-ribs {
+        description
+        "List of imported VPN RIBs configuration.";
+        list import-vpn-rib {
+          key "source-address-family nexthop-type";
+          description
+          "Configure imported VPN RIBs configuration.";
+          leaf source-address-family {
+            type import-vpn-rib-afi-type;
+            description
+            "Source address family type for imported RIBs.";
+          }
+          leaf nexthop-type {
+            type import-rib-nhp-type;
+            must "../nexthop-type='mpls'";
+            description
+            "Imported valid route.";
+          }
+          choice policy-type {
+            description
+              "Set route policy or filter.";
+            case rtp-ref {
+              description
+                "Route policy.";
+              leaf policy-name {
+                type leafref {
+                  path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+                }
+                description
+                  "Specify the policy applied to the routes imported from other address family.";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast" {
+    description "EVPN configuration.";
+    container evpn {
+      description
+        "Configure EVPN IPv4.";
+      container srv6 {
+        when "../../../../../../../ni:name!='_public_'";
+        description
+          "Configure segment-routing IPv6 for EVPN.";
+        leaf mode {
+          type srv6-mode;
+          must "not (../../../../../../../../nvo3:nvo3/nvo3:vni-list)";
+          description
+            "SRv6 iteration mode.";
+        }
+        leaf down-switch {
+          when "../mode='te'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable switch TE to BE if the associated TE tunnel goes down.";
+        }
+      }
+      container common {
+        when "../../../../../../../ni:name!='_public_'";
+        description
+          "Configure EVPN common attribute.";
+        leaf reoriginate-disable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable reoriginate capability.";
+	      }
+      }
+      container local-cross {
+        when "../../../../../../../ni:name!='_public_'";
+        presence "Enable the EVPN instance to advertise routes to other VPN instances.";
+        description
+          "Configure EVPN local-cross attribute.";
+        leaf remote-cross-route-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the use of remotely leaked routes in EVPN local route leaking.";
+        }
+      }
+      container irb-asymmetric {
+        when "../../../../../../../ni:name!='_public_'";
+        description
+          "Configure IRB asymmetric mode.";
+        leaf irb-asymmetric {
+          type empty;
+          description
+            "Enable IRB asymmetric.";
+        }
+        leaf policy-name {
+          when "../irb-asymmetric";
+          type leafref {
+            path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+          }
+          description
+            "The name of IRB asymmetric route policy.";
+        }
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast" {
+    description "EVPN configuration.";
+    container evpn {
+      description
+        "Configure EVPN IPv6.";
+      container srv6 {
+        when "../../../../../../../ni:name!='_public_'";
+        description
+          "Configure segment-routing IPv6 for EVPN.";
+        leaf mode {
+          type srv6-mode;
+          must "not (../../../../../../../../nvo3:nvo3/nvo3:vni-list)";
+          description
+            "SRv6 iteration mode.";
+        }
+        leaf down-switch {
+          when "../mode='te'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable switch TE to BE if the associated TE tunnel goes down.";
+        }
+      }
+      container common {
+        when "../../../../../../../ni:name!='_public_'";
+        description
+          "Configure EVPN common attribute.";
+        leaf reoriginate-disable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable reoriginate capability.";
+	      }
+      }
+      container local-cross {
+        when "../../../../../../../ni:name!='_public_'";
+        presence "Enable the EVPN instance to advertise routes to other VPN instances.";
+        description
+          "Configure EVPN local-cross attribute.";
+        leaf remote-cross-route-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the use of remotely leaked routes in EVPN local route leaking.";
+        }
+      }
+      container irb-asymmetric {
+        when "../../../../../../../ni:name!='_public_'";
+        description
+          "Configure IRB asymmetric mode.";
+        leaf irb-asymmetric {
+          type empty;
+          description
+            "Enable IRB asymmetric.";
+        }
+        leaf policy-name {
+          when "../irb-asymmetric";
+          type leafref {
+            path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+          }
+          description
+            "The name of IRB asymmetric route policy.";
+        }
+      }
+    }
+  }
+  augment "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route" {
+    description "BGP routes information of EVPN address family.";
+    container l2vpn-evpn {
+      config false;
+      description
+        "Statistics of BGP routes information of EVPN address family.";
+      container statistics {
+        description
+          "List of BGP routes information of EVPN address family.";
+        list statistic {
+          must "./vpn-name = '_public_'";
+          key "vpn-name";
+          description
+            "BGP EVPN address family routes statistics.";
+          leaf vpn-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "VPN name of a BGP instance.";
+          }
+          leaf total-route-number {
+            type uint32;
+            description
+              "Total number of EVPN routes.";
+          }
+          leaf ad-route-number {
+            type uint32;
+            description
+              "Number of Ethernet Auto-Discovery routes.";
+          }
+          leaf mac-route-number {
+            type uint32;
+            description
+              "Number of MAC/IP Advertisement routes.";
+          }
+          leaf include-route-number {
+            type uint32;
+            description
+              "Number of Inclusive Multicast Ethernet Tag routes.";
+          }
+          leaf es-route-number {
+            type uint32;
+            description
+              "Number of Ethernet Segment routes.";
+          }
+          leaf ip-prefix-route-number {
+            type uint32;
+            description
+              "Number of IP Prefix routes.";
+          }
+          leaf smet-route-number {
+            type uint32;
+            description
+              "Number of Selective Multicast Ethernet Tag routes.";
+          }
+          leaf igmp-join-route-number {
+            type uint32;
+            description
+              "Number of IGMP Join Synch routes.";
+          }
+          leaf igmp-leave-route-number {
+            type uint32;
+            description
+              "Number of IGMP Leave Synch routes.";
+          }
+        }
+      }
+      container ad-routes {
+        config false;
+        description
+          "List of AD routes.";
+        list ad-route {
+          key "prefix route-distinguisher from route-type path-id";
+          config false;
+          description
+            "Statistics of AD routes.";
+          leaf prefix {
+            type ad-prefix;
+            description
+              "AD route prefix.";
+          }
+          leaf route-distinguisher {
+            type string {
+              length "3..21";
+            }
+            description
+              "Route distinguisher.";
+          }
+          leaf from {
+            type inet:ip-address-no-zone;
+            description
+              "Source peer that sends a route.";
+          }
+          leaf route-type {
+            type bgp-rt:bgp-route-type-flag;
+            description
+              "Route type.";
+          }
+          leaf path-id {
+            type string {
+              length "1..50";
+            }
+            description
+              "Path ID.";
+          }
+          leaf prefix-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "Prefix-SID attribute.";
+          }
+          leaf bypass-prefix-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "Bypass Prefix-SID attribute.";
+          }
+          leaf in-label {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "In-label.";
+          }
+          leaf out-label {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Out-label.";
+          }
+          uses routing-table-type {
+            description
+              "Routing table infomation.";
+          }
+        }
+      }
+      container mac-routes {
+        config false;
+        description
+          "List of MAC routes.";
+        list mac-route {
+          key "prefix route-distinguisher from route-type path-id";
+          config false;
+          description
+            "Statistics of MAC routes.";
+          leaf prefix {
+            type mac-prefix;
+            description
+              "MAC route prefix.";
+          }
+          leaf route-distinguisher {
+            type string {
+              length "3..21";
+            }
+            description
+              "Route distinguisher.";
+          }
+          leaf from {
+            type inet:ip-address-no-zone;
+            description
+              "Source peer that sends a route.";
+          }
+          leaf route-type {
+            type bgp-rt:bgp-route-type-flag;
+            description
+              "Route type.";
+          }
+          leaf path-id {
+            type string {
+              length "1..50";
+            }
+            description
+              "Path ID.";
+          }
+          uses routing-table-type;
+          leaf in-label1 {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Layer 2 incoming label.";
+          }
+          leaf in-label2 {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Layer 3 incoming label.";
+          }
+          leaf out-label1 {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Layer 2 outgoing label.";
+          }
+          leaf out-label2 {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Layer 3 outgoing label.";
+          }
+          leaf prefix-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "Prefix-SID attribute.";
+          }
+          leaf bypass-prefix-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "Bypass Prefix-SID attribute.";
+          }
+          leaf l3-prefix-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "L3 prefix sid.";
+          }
+          leaf effect-nexthop {
+            type inet:ip-address-no-zone;
+            description
+              "Effective nexthop.";
+          }
+          leaf redirect-out-interface {
+            type string {
+              length "1..64";
+            }
+            description
+              "Redirect out-interface.";
+          }
+        }
+      }
+      container inclusive-routes {
+        config false;
+        description
+          "List of inclusive routes.";
+        list inclusive-route {
+          key "prefix route-distinguisher from route-type path-id";
+          config false;
+          description
+            "Statistics of inclusive routes.";
+          leaf prefix {
+            type inclusive-prefix;
+            description
+              "Inclusive route prefix.";
+          }
+          leaf route-distinguisher {
+            type string {
+              length "3..21";
+            }
+            description
+              "Route distinguisher.";
+          }
+          leaf from {
+            type inet:ip-address-no-zone;
+            description
+              "Source peer that sends a route.";
+          }
+          leaf route-type {
+            type bgp-rt:bgp-route-type-flag;
+            description
+              "Route type.";
+          }
+          leaf path-id {
+            type string {
+              length "1..50";
+            }
+            description
+              "Path ID.";
+          }
+          leaf prefix-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "Prefix-SID attribute.";
+          }
+          leaf in-label {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "In-label.";
+          }
+          leaf out-label {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Out-label.";
+          }
+          uses routing-table-type {
+            description
+              "Routing table infomation.";
+          }
+        }
+      }
+      container es-routes {
+        config false;
+        description
+          "List of ES routes.";
+        list es-route {
+          key "prefix route-distinguisher from route-type path-id";
+          config false;
+          description
+            "Statistics of ES routes.";
+          leaf prefix {
+            type es-prefix;
+            description
+              "ES route prefix.";
+          }
+          leaf route-distinguisher {
+            type string {
+              length "3..21";
+            }
+            description
+              "Route distinguisher.";
+          }
+          leaf from {
+            type inet:ip-address-no-zone;
+            description
+              "Source peer that sends a route.";
+          }
+          leaf route-type {
+            type bgp-rt:bgp-route-type-flag;
+            description
+              "Route type.";
+          }
+          leaf path-id {
+            type string {
+              length "1..50";
+            }
+            description
+              "Path ID.";
+          }
+          uses routing-table-type {
+            description
+              "Routing table infomation.";
+          }
+        }
+      }
+      container ip-prefix-routes {
+        config false;
+        description
+          "List of IP Prefix routes.";
+        list ip-prefix-route {
+          key "prefix route-distinguisher from route-type path-id nexthop";
+          config false;
+          description
+            "Statistics of IP Prefix routes.";
+          leaf prefix {
+            type evpn-ip-prefix;
+            description
+              "IP Prefix route prefix.";
+          }
+          leaf route-distinguisher {
+            type string {
+              length "3..21";
+            }
+            description
+              "Route distinguisher.";
+          }
+          leaf from {
+            type inet:ip-address-no-zone;
+            description
+              "Source peer that sends a route.";
+          }
+          leaf route-type {
+            type bgp-rt:bgp-route-type-flag;
+            description
+              "Route type.";
+          }
+          leaf path-id {
+            type string {
+              length "1..50";
+            }
+            description
+              "Path ID.";
+          }
+          uses routing-table-type;
+          leaf in-label {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "In-label.";
+          }
+          leaf out-label {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Out-label.";
+          }
+          leaf prefix-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "Prefix-SID attribute.";
+          }
+        }
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:afs/bgp:af" {
+    description "Augment for an L2VPN instance and EVPN association.";
+    container l2vpn-evpn {
+      when "(../bgp:type = 'evpn') and (../../../../../../ni:name='_public_')";
+      description
+        "Configure L2VPN-EVPN.";
+      uses bgp:slow-peer-type;
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-vpn" {
+    description "EVPN configuration.";
+  container evpn{
+    description 
+      "Configure the EVPN configurations.";
+    container import-evpn-ribs {
+      description
+      "List of imported EVPN RIBs configuration.";
+      list import-evpn-rib {
+          key "nexthop-type route-type";
+          description
+          "Configure imported EVPN RIBs configuration.";
+          leaf nexthop-type {
+            type import-rib-nhp-type;
+            must "../nexthop-type='srv6'";
+            description
+            "Nexthop relay type.";
+          }
+          leaf route-type {
+            type evpn-route-type;
+            description
+            "Import route type.";
+          }
+          choice policy-type {
+            description
+              "Set route policy or filter.";
+            case rtp-ref {
+              description
+                "Route policy.";
+              leaf policy-name {
+                type leafref {
+                  path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+                }
+                description
+                  "Specify the policy applied to the routes imported from other address family.";
+              }
+            }
+          }
+        }
+      }
+      container load-balancing {
+        when "../import-evpn-ribs";
+        description
+          "Configure the number of imported rib routes.";
+          leaf maximum-load-balancing-import-rib {
+          type uint16 {
+            range "1..2";
+          }
+          default "1";
+          description
+            "Specify the maximum number of imported rib routes.";
+        }
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-vpn" {
+    description "EVPN configuration.";
+    container evpn{
+      description 
+        "Configure the EVPN configurations.";
+      container import-evpn-ribs {
+        description
+        "List of imported EVPN RIBs configuration.";
+        list import-evpn-rib {
+          key "nexthop-type route-type";
+          description
+          "Configure imported EVPN RIBs configuration.";
+          leaf nexthop-type {
+            type import-rib-nhp-type;
+            must "../nexthop-type='srv6'";
+            description
+            "Nexthop relay type.";
+          }
+          leaf route-type {
+            type evpn-route-type;
+            description
+            "Import route type.";
+          }
+          choice policy-type {
+            description
+              "Set route policy or filter.";
+            case rtp-ref {
+              description
+                "Route policy.";
+              leaf policy-name {
+                type leafref {
+                  path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+                }
+                description
+                  "Specify the policy applied to the routes imported from other address family.";
+              }
+            }
+          }
+        }
+      }
+      container load-balancing {
+        when "../import-evpn-ribs";
+        description
+          "Configure the number of imported rib routes.";
+        leaf maximum-load-balancing-import-rib {
+          type uint16 {
+            range "1..2";
+          }
+          default "1";
+          description
+            "Specify the maximum number of imported rib routes.";
+        }
+      }
+    }
+  }
+}

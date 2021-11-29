@@ -1,0 +1,57 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpl-ext-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-evpl-ext-deviations-ATN-980B";
+  prefix evpl-ext-devs-ATN-980B;
+
+  import huawei-evpl-ext {
+    prefix evpl-ext;
+  }
+
+  import huawei-evpl {
+    prefix evpl;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-evpl-ext module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpl-ext:pipe/evpl-ext:color" {
+    deviate not-supported;
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpl-ext:pipe/evpl-ext:pipe-mode" {
+    deviate add {
+      must "(../split-mode='false') and ((../pipe-mode='pipe' and (../service-class)) or (../pipe-mode='shortpipe' and (../service-class) and (../domain-name)) or (../pipe-mode='uniform'))";
+    }
+    deviate delete {
+      must "(../split-mode='false') and ((../pipe-mode='pipe' and (../service-class) and (../color)) or (../pipe-mode='shortpipe' and (../service-class) and (../color) and (../domain-name)) or (../pipe-mode='uniform'))";
+    }
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpl-ext:pipe/evpl-ext:ingress-pipe-mode" {
+    deviate delete {
+      must "((../split-mode='true') and (((../service-class) and (../color) and (../ingress-pipe-mode='shortpipe' or ../ingress-pipe-mode='pipe')) or (../ingress-pipe-mode='uniform' and ../egress-pipe-mode!='uniform')))";
+    }
+    deviate add {
+      must "((../split-mode='true') and (((../service-class) and (../ingress-pipe-mode='shortpipe' or ../ingress-pipe-mode='pipe')) or (../ingress-pipe-mode='uniform' and ../egress-pipe-mode!='uniform')))";
+    }
+  }
+
+}

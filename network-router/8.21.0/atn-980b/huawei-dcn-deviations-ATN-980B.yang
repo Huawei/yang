@@ -1,0 +1,69 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dcn-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-dcn-deviations-ATN-980B";
+  prefix dcn-devs-ATN-980B;
+
+  import huawei-dcn {
+    prefix dcn;
+  }
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+  import huawei-vaccess-master {
+    prefix vaccess-master;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Data communication network.";
+
+  revision 2021-07-28 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/dcn:dcn/dcn:site/dcn:qx/dcn:server-dtls-policy" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:pos-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/vaccess:vaccess/vaccess-master:master/dcn:import-admin-ips" {
+    deviate not-supported;
+  }
+  deviation "/vaccess:vaccess/vaccess-master:master/dcn:import-protocols" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:core-routings/dcn:core-routing/dcn:pnp-state" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:core-routings/dcn:core-routing/dcn:esn" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:eth-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:serial-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:transparent-interfaces" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dcn:dcn/dcn:dcnv4/dcn:vlan-id" {
+    deviate not-supported;
+  }
+}

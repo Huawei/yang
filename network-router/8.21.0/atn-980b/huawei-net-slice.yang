@@ -1,0 +1,363 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-net-slice {
+  namespace "urn:huawei:yang:huawei-net-slice";
+  prefix net-slice;
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This YANG module defines the essential types for the management of Net-Slice for IGP.";
+  revision 2021-09-24 {
+    description
+      "Add channelized-phy-port.";
+    reference "Huawei private.";
+  }
+  revision 2021-08-18 {
+    description
+      "Modify slice-capability-type.";
+    reference "Huawei private.";
+  }
+  revision 2021-02-08 {
+    description
+      "Modify container net-slices.";
+    reference "Huawei private.";
+  }
+  revision 2021-02-03 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+  ext:task-name "netslicing";
+
+  typedef net-af-type {
+    type enumeration {
+      enum "afipv4" {
+        value 1;
+        description
+          "IPv4 address family.";
+      }
+      enum "afipv6" {
+        value 2;
+        description
+          "IPv6 address family.";
+      }
+    }
+    description
+      "Net slice address family type.";
+  }
+  typedef slice-capability-type {
+    type enumeration {
+      enum "flex-phy-port" {
+        value 0;
+        description
+          "Flex phy port type.";
+      }
+      enum "flexe-port" {
+        value 1;
+        description
+          "FlexE port type.";
+      }
+      enum "channel-phy-port" {
+        value 2;
+        description
+          "Channel phy port type.";
+      }
+      enum "channelized-phy-port" {
+        value 3;
+        description
+          "Channelized phy port type.";
+      }
+    }
+    description
+      "Net slice capability type.";
+  }
+  typedef slice-service-class {
+    type enumeration {
+      enum "be" {
+        value 1; 
+        description
+          "BE service-class.";
+      }
+      enum "af1" {
+        value 2; 
+        description
+          "AF1 service-class.";
+      }
+      enum "af2" {
+        value 3; 
+        description
+          "AF2 service-class.";
+      }
+      enum "af3" {
+        value 4; 
+        description
+          "AF3 service-class.";
+      }
+      enum "af4" {
+        value 5; 
+        description
+          "AF4 service-class.";
+      }
+      enum "ef" {
+        value 6; 
+        description
+          "EF service-class.";
+      }
+      enum "cs6" {
+        value 7; 
+        description
+          "CS6 service-class.";
+      }
+      enum "cs7" {
+        value 8; 
+        description
+          "CS7 service-class.";
+      }
+    }
+    description
+      "Queue type.";
+  }
+  container net-slice {
+    description
+      "Configure net slice parameters.";
+    container instances {
+      description
+        "List of net slice instance information.";
+      list instance {
+        key "id";
+        description
+          "Configure net slice instance.";
+        leaf id {
+          type uint32 {
+            range "0 .. 4294967295";
+          }
+          description 
+            "Configure net slice instance identifier.";
+        }
+        leaf description {
+          type string {
+          length "1..80";
+        }
+        description
+          "Net slice instance description.";
+        }
+      }
+    } 
+    container global {
+      description
+        "Configure net slice global information.";
+      leaf protocol-id {
+        type uint8 {
+          range "0|160..252";
+        }
+        default "0";
+        description
+          "Configure net slice protocol number.";
+      }
+    }
+    container network-slice-color-mapping {
+      presence "Enable network-slice-color-mapping.";
+      description
+        "Enable/disable network-slice color mapping.";
+      container network-slice-color-maps {
+        description
+          "List of network-slice color map information.";
+        list network-slice-color-map {
+          key "color-index";
+          description
+            "Configure network-slice color map.";
+          leaf color-index {
+            type uint32 {
+            range "0..4294967295";
+            }
+            description
+              "Color index.";
+          }
+          leaf network-slice-id {
+            type leafref {
+              path "/net-slice:net-slice/net-slice:instances/net-slice:instance/net-slice:id";
+            }
+            must "../network-slice-id!=0";
+            mandatory true;
+            description
+              "Network-slice instance Id.";
+          }
+        }
+      }
+    }
+  }
+  rpc reset-flex-channel-statitic {
+    description
+      "Reset flex-channle statistic.";
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface/net-slice:net-slices/net-slice:net-slice/net-slice:flex-channel-statistics";
+    input {
+      leaf slice-id {
+        type uint32 {
+        range "1 .. 4294967295";
+        }
+        description
+          "Net-slice instance.";
+      }
+      leaf interface-name {
+        type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Interface name.";
+      }
+    }
+  }
+  augment /ifm:ifm/ifm:interfaces/ifm:interface {
+    description
+      "Net slice interface information.";
+    container slice-capabilitys {
+      config false;
+      description
+        "List of Capabilitys for a interface.";
+      list slice-capability {
+        key "capability";
+        description
+          "Statistics of net slice capability for a interface.";
+        leaf capability {
+          type slice-capability-type;
+          description
+            "Slice capability type.";
+        }
+      }
+    }
+    container net-slice-binding {
+      description
+        "Configure parameters for a net slice basic interface.";
+      leaf slice-id {
+        type leafref {
+          path "/net-slice:net-slice/net-slice:instances/net-slice:instance/net-slice:id";
+        }
+        must "not (../../net-slice:net-slices/net-slice:net-slice/net-slice:data-plane or ../../net-slice:net-slices/net-slice:net-slice/net-slice:flex-channel) and ../../ip:ipv6 and ((../../ifm:type = 'FlexE' and ../../ip:ipv6/ip:addresses/ip:address/ip:ip) or not (../../ifm:type = 'FlexE'))";
+        description
+          "Configure net slice basic instance identifier. When configuring a basic ID, ensure that a slice ID with the same value has been configured for the main interface or one of its sub-interfaces. If interface type is FLEXE, basic slice can't be enabled if the current interface has already enabled any of the following components:ISIS;ISIS IPv6;MPLS;pim sm;pim IPv6 sm;igmp;mld;dot1q/qinq termination;ip binding vpn;rip (IPv4, IPv6);ospf (IPv4, IPv6);ip address;ip address unnumbered interface;mac-address;IPv6 address;IPv6 address anycast;IPv6 address eui-64;IPv6 security rsakey-pair. Otherwise if the interface type is not FLEXE, basic slice can't be enabled only when the current interface has already enabled ip binding vpn.";
+      }
+    }
+    container net-slices {
+      description
+        "List of net slice interfaces.";
+      list net-slice {
+        key "slice-id";
+        description
+          "Configure parameters for a net slice interface. The slice IDs on the same main interface must be different.";
+        leaf slice-id {
+          type leafref {
+            path "/net-slice:net-slice/net-slice:instances/net-slice:instance/net-slice:id";
+          }
+          must "(../../../net-slice:net-slice-binding/net-slice:slice-id and (count(../../net-slice:net-slice/net-slice:data-plane) + count(../../net-slice:net-slice/net-slice:flex-channel)) <= 1) or not (../../../net-slice:net-slice-binding/net-slice:slice-id)";
+          description
+            "Configure net slice instance identifier.";
+        }
+        choice mode {
+          description
+            "Choose data plane mode or flex channel mode.";
+          case data-plane-mode {
+            description
+              "Enable/disable data plane mode.";
+            leaf data-plane {
+              type boolean;
+              must "../../../ip:ipv6 and ((../../../ifm:type = 'FlexE' and (../../../ip:ipv6/ip:addresses/ip:address/ip:ip or ../../../net-slice:net-slice-binding)) or not (../../../ifm:type = 'FlexE'))";              
+              description
+                "Enable/disable data plane mode.";
+              ext:operation-exclude update|delete;
+            }
+          }
+          case flex-channel-mode {
+            description
+              "Configure net slice flex channel.";
+            leaf flex-channel {
+              type uint32 {
+              range "1 .. 4294967295";
+              }
+              units "Mbit/s";
+              must "../../../ip:ipv6 and ((../../../ifm:type = 'FlexE' and (../../../ip:ipv6/ip:addresses/ip:address/ip:ip or ../../../net-slice:net-slice-binding)) or not (../../../ifm:type = 'FlexE'))";
+              description
+                "Configure net slice flex channel. Unit is Mbit/s.";
+              ext:operation-exclude delete;
+            }
+          }
+        }
+        container flex-channel-statistics {
+          config false;
+          description
+            "Statistics of flex-channel.";
+          leaf service-class {
+            type slice-service-class;
+            description
+              "Class of service.";
+          }
+          leaf passed-packets {
+            type uint64;
+            units "packet";
+            description
+              "Passed packets.";
+          }
+          leaf passed-bytes {
+            type uint64;
+            units "Byte";
+            description
+              "Passed bytes.";
+          }
+          leaf dropped-packets {
+            type uint64;
+            units "packet";
+            description
+              "Dropped packets.";
+          }
+          leaf dropped-bytes {
+            type uint64;
+            units "Byte";
+            description
+              "Dropped bytes.";
+          }
+          leaf passed-pps {
+            type uint64;
+            units "pps";
+            description
+              "Passed pps.";
+          }
+          leaf passed-bps {
+            type uint64;
+            units "bit/s";
+            description
+              "Passed bps.";
+          }
+          leaf dropped-pps {
+            type uint64;
+            units "pps";
+            description
+              "Dropped pps.";
+          }
+          leaf dropped-bps {
+            type uint64;
+            units "bit/s";
+            description
+              "Dropped bps.";
+          }
+        }
+      }
+    }
+  } 
+}

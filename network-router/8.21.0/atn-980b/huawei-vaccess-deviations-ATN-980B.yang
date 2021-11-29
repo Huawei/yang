@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vaccess-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-vaccess-deviations-ATN-980B";
+  prefix vaccess-devs-ATN-980B;
+
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the virtual access model.";
+
+  revision 2021-09-14 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/vaccess:vaccess" {
+    deviate not-supported;
+  }
+}

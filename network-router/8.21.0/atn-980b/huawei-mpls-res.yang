@@ -1,0 +1,254 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-res {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-mpls-res";
+  prefix mpls-res;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "This YANG module defines essential components for the management of labels.";
+  revision 2020-04-02 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-04-27 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "system";
+
+  typedef mpls-label-type {
+    type enumeration {
+      enum "reserved" {
+        value 0;
+        description
+          "Reserved label type.";
+      }
+      enum "static" {
+        value 1;
+        description
+          "Static label type.";
+      }
+      enum "dynamic" {
+        value 2;
+        description
+          "Dynamic label type.";
+      }
+      enum "block" {
+        value 3;
+        description
+          "Block label type.";
+      }
+    }
+    description
+      "Label type.";
+  }
+  container mpls-res {
+    description
+      "Query and configuration of labels.";
+    container static-label-segments {
+      config false;
+      description
+        "List of idle static label segments.";
+      list static-label-segment {
+        key "index";
+        description
+          "Operational data of a idle static label segment.";
+        leaf index {
+          type uint32;
+          description
+            "Specifies the index of label segment.";
+        }
+        leaf query-begin {
+          type uint32;
+          ext:support-filter true;
+          description
+            "Beginning of a label query segment.";
+        }
+        leaf query-length {
+          type uint32;
+          ext:support-filter true;
+          description
+            "Specifies the length of label query segment.";
+        }
+        leaf label-begin {
+          type uint32;
+          description
+            "Specifies the first idle label of a idle static label segment.";
+        }
+        leaf label-end {
+          type uint32;
+          description
+            "Specifies the last idle label of a idle static label segment.";
+        }
+        leaf label-length {
+          type uint32;
+          description
+            "Specifies the idle label length of a idle static label segment.";
+        }
+      }
+    }
+    container mpls-label-statisticss {
+      config false;
+      description
+        "List of label statistics.";
+      list mpls-label-statistics {
+        key "type";
+        description
+          "Statistics of the label.";
+        leaf type {
+          type mpls-label-type;
+          description
+            "Label type.";
+        }
+        leaf min-value {
+          type uint32;
+          description
+            "Minimum label value.";
+        }
+        leaf max-value {
+          type uint32;
+          description
+            "Maximum label value.";
+        }
+        leaf available-number {
+          type uint32;
+          description
+            "Number of available label.";
+        }
+      }
+    }
+  }
+  rpc static-label-statisticss {
+    description
+      "Query the tags that can be used by static services.";  
+    input {
+      leaf query-begin {
+        type uint32{
+          range "16..262143";
+        }
+        must "../query-length";
+        description
+          "Specify the start value for searching for available labels.";
+      }
+      leaf query-length {
+        type uint32{
+          range "1..262128";
+        }
+        description
+          "Specifies the length of label query segment.";
+      }
+    }
+    output {
+      container labels {
+        description
+          "List of label segment.";
+        list label {
+        key "label-begin label-end";
+        description
+          "Label segment.";
+          leaf label-begin {
+            type uint32;
+            description
+              "Start value of a label.";
+          }
+          leaf label-end {
+            type uint32;
+            description
+              "End value of a label.";
+          }
+        }
+      }
+    }
+  }
+  rpc dynamic-label-statisticss {
+    description
+        "Query the tags that can be used by dynamic services.";  
+    input {
+      leaf query-begin {
+        type uint32{
+          range "16..1048575";
+        }
+        must "../query-length";
+        description
+          "Specify the start value for searching for available labels.";
+      }
+      leaf query-length {
+        type uint32{
+          range "0..1048560";
+        }
+        description
+          "Specifies the length of label query segment.";
+      }
+    }
+    output {
+      container labels {
+        description
+          "List of label segment.";
+        list label {
+        key "label-begin label-end";
+        description
+          "Label segment.";
+          leaf label-begin {
+            type uint32;
+            description
+              "Start value of a label.";
+          }
+          leaf label-end {
+            type uint32;
+            description
+              "End value of a label.";
+          }
+        }
+      }
+    }
+  }
+  rpc label-pre-reserve {
+    description
+        "Pre-allocation of label resources.";  
+    input {     
+        leaf pre-reserve-number {
+          type uint32 {
+            range "1..65536";
+          }
+          mandatory true;
+          description
+            "Number of label resources pre-allocated.";
+        }             
+    }
+    output {
+      container labels {
+        description
+          "List of pre-allocated label IDs.";
+        list label {
+        key "index";
+        description
+          "Pre-allocated label ID.";
+          leaf index {
+            type uint32 {
+              range "16..1048575";
+            }
+            description
+               "Label ID.";
+          }
+        }
+      }
+    }
+  }
+}

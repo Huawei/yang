@@ -1,0 +1,64 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-virtual-system-if {
+  namespace "urn:huawei:yang:huawei-virtual-system-if";
+  prefix vs-if;
+
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Assign interface to a virtual-system.";
+  revision 2021-08-28 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "interface-mgr";
+
+  container virtual-system-if {
+    description
+      "Assign interface to a virtual-system.";
+    container if-bind-vses {
+      description
+        "List of interfaces.";
+      list if-bind-vs {
+        ext:operation-exclude create;
+        ext:generated-by system;
+        key "if-name";
+        description
+          "Configure information about an interface.";
+        leaf if-name {
+          type pub-type:if-name;
+          description
+            "The textual name of the interface. The value of this object should be the name of the interface as assigned by the local device and should be suitable for use in commands entered at the device's `console'. This might be a text name, such as ` NULL0 ', depending on the interface naming syntax of the device.";
+        }
+        leaf vs-name {
+          type string {
+            length "1..31";
+          }
+          default "Admin-VS";
+          description
+            "Name of a VS to which an interface belongs.";
+          ext:support-filter "true";
+        }
+      }
+    }
+  }
+}
+

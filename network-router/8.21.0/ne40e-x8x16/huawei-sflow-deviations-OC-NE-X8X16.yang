@@ -1,0 +1,60 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-sflow-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-sflow-deviations-OC-NE-X8X16";
+  prefix sflow-devs-OC-NE-X8X16;
+
+  import huawei-sflow {
+    prefix sflow;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-sflow module.";
+
+  revision 2020-03-11 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/sflow:sflow" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/sflow:sflow/sflow:bind-collectors/sflow:bind-collector" {
+    deviate add {
+      must  "../../../ifm:type='GigabitEthernet' or
+            ../../../ifm:type='100GE' or
+            ../../../ifm:type='40GE' or
+            ../../../ifm:type='10GE' or
+            ../../../ifm:type='400GE' or
+            ../../../ifm:type='50|100GE' or
+            ../../../ifm:type='50GE' or
+            ../../../ifm:type='200GE' or
+            ../../../ifm:type='4x10GE' or
+            ../../../ifm:type='10x10GE' or
+            ../../../ifm:type='3x40GE' or
+            ../../../ifm:type='4x25GE' or
+            ../../../ifm:type='25GE' or
+            ../../../ifm:type='XGigabitEthernet'";
+    }
+  }
+}

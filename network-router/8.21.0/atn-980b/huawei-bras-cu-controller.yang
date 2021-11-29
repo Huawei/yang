@@ -1,0 +1,1801 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-cu-controller {
+  namespace urn:huawei:yang:huawei-bras-cu-controller;
+  prefix bras-cu-controller;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "BRAS CU Controller.";
+  revision 2019-12-08 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bras-control";
+
+  typedef present-status-type {
+    type enumeration {
+      enum "unpresent" {
+        value 0;
+        description
+          "Unpresent.";
+      }
+      enum "present" {
+        value 1;
+        description
+          "Present.";
+      }
+    }
+    description
+      "The type of persent status.";
+  }
+  typedef registered-status-type {
+    type enumeration {
+      enum "unregistered" {
+        value 0;
+        description
+          "Unregistered.";
+      }
+      enum "registered" {
+        value 1;
+        description
+          "Registered.";
+      }
+    }
+    description
+      "The type of registered status type.";
+  }
+  typedef board-type {
+    type enumeration {
+      enum "LPU" {
+        value 0;
+        description
+          "LPU.";
+      }
+    }
+    description
+      "The type of board type.";
+  }
+  typedef deploy-status-type {
+    type enumeration {
+      enum "undeployed" {
+        value 0;
+        description
+          "Undeployed.";
+      }
+      enum "deployed" {
+        value 1;
+        description
+          "Deployed.";
+      }
+    }
+    description
+      "The type of deploy status.";
+  }
+  typedef other-profile-type {
+    type enumeration {
+      enum "warm-standby" {
+        value 2;
+        description
+          "Warm standby.";
+      }
+      enum "load-balance" {
+        value 3;
+        description
+          "Load balance.";
+      }
+      enum "cold-standby" {
+        value 4;
+        description
+          "Cold standby.";
+      }
+      enum "warm-standby-loadbalance" {
+        value 5;
+        description
+          "Warm standby loadbalance.";
+      }
+    }
+    description
+      "The type of profile type.";
+  }
+
+  typedef ip-assigned-mode-type {
+    type enumeration {
+      enum "by-backup-profile" {
+        value 0;
+        description
+          "By backup profile.";
+      }
+      enum "by-up" {
+        value 1;
+        description
+          "By up.";
+      }
+    }
+    description
+      "The type of ip assigned mode.";
+  }
+  typedef up-interface-type {
+    type enumeration {
+      enum "master" {
+        value 1;
+        description
+          "Master interface.";
+      }
+      enum "slave" {
+        value 2;
+        description
+          "Slave interface.";
+      }
+    }
+    description
+      "The type of up interface.";
+  }
+  typedef up-state-type {
+    type enumeration {
+      enum "init" {
+        value 0;
+        description
+          "Init.";
+      }
+      enum "master" {
+        value 1;
+        description
+          "Master.";
+      }
+      enum "slave" {
+        value 2;
+        description
+          "Slave.";
+      }
+    }
+    description
+      "The type of up state.";
+  }
+  typedef hot-backup-mode-type {
+    type enumeration {
+      enum "master-slave" {
+        value 0;
+        description
+          "Master slave.";
+      }
+      enum "load-balance-by-mac" {
+        value 1;
+        description
+          "Load balance by mac.";
+      }
+    }
+    description
+      "The type of backup mode.";
+  }
+  typedef access-type {
+    type enumeration {
+      enum "layer2-subscriber" {
+        value 1;
+        description
+          "Layer2 subscriber access.";
+      }
+      enum "layer3-subscriber" {
+        value 2;
+        description
+          "Layer3 subscriber access.";
+      }
+      enum "layer2-leaseline" {
+        value 3;
+        description
+          "Layer2 leaseline access.";
+      }
+      enum "layer3-leaseline" {
+        value 4;
+        description
+          "Layer3 leaseline access.";
+      }
+    }
+    description
+      "Interface access type.";
+  }
+  typedef hot-backup-mac-type {
+    type enumeration {
+      enum "even-mac" {
+        value 1;
+        description
+          "Even mac.";
+      }
+      enum "odd-mac" {
+        value 2;
+        description
+          "Odd mac.";
+      }
+    }
+    description
+      "The type of mac.";
+  }
+  typedef hash-arithmetic-type {
+    type enumeration {
+      enum "crc16" {
+        value 1;
+        description
+          "The crc16 hash-arithmetic.";
+      }
+      enum "crc32" {
+        value 2;
+        description
+          "The crc32 hash-arithmetic.";
+      }
+    }
+    description
+      "The hash-arithmetic.";
+  }
+  typedef south-config-status-type {
+    type enumeration {
+      enum "completed" {
+        value 0;
+        description
+          "Completed.";
+      }
+      enum "being-delivered" {
+        value 1;
+        description
+          "Being delivered.";
+      }
+      enum "tunnel-abnormal" {
+        value 2;
+        description
+          "Tunnel abnormal.";
+      }
+    }
+    description
+      "The type of south configuration status.";
+  }
+  typedef up-ip-mode-type {
+    type enumeration {
+      enum "odd-even" {
+        value 1;
+        description
+          "Odd even mode.";
+      }
+    }
+    description
+      "The mode of up ip.";
+  }
+  typedef upmng-instance-type {
+    type enumeration {
+      enum "dynamic" {
+        value 0;
+        description
+          "Dynamic UPMNG instance.";
+      }
+      enum "static" {
+        value 1;
+        description
+          "Static UPMNG instance.";
+      }
+    }
+    description
+      "The type of UPMNG instance.";
+  }
+  typedef load-balance-type {
+    type enumeration {
+      enum "by-session" {
+        value 0;
+        description
+          "By session.";
+      }
+      enum "by-interface" {
+        value 1;
+        description
+          "By interface.";
+      }
+    }
+    description
+      "The type of load balance.";
+  }
+  grouping backup-profile-basic {
+    description
+      "CU backup profile basic attributes.";
+    leaf ipv4-assigned-mode {
+      type ip-assigned-mode-type;
+      default "by-backup-profile";
+      description
+        "IPv4 address allocation mode.";
+    }
+    leaf ipv6-assigned-mode {
+      type ip-assigned-mode-type;
+      default "by-backup-profile";
+      description
+        "IPv6 address allocation mode.";
+    }
+    leaf nas-logic-port {
+      type pub-type:if-name;
+      description
+        "Name of an NAS logical interface. This interface can only be delivered as a GE or Eth-Trunk main interface.";
+    }
+  }
+  grouping hot-up-status {
+    description
+      "Information about vBRAS-UP status in UP backup mode.";
+    leaf up-id {
+      type uint32;
+      description
+        "UP ID.";
+    }
+    leaf state {
+      type up-state-type;
+      description
+        "UP state.";
+    }
+    leaf interface {
+      type pub-type:if-name;
+      description
+        "UP interface name.";
+    }   
+    leaf track-odd-mac-state {
+      type up-state-type;
+      description
+        "Track odd MAC state.";
+    }
+    leaf track-even-mac-state {
+      type up-state-type;
+      description
+        "Track even MAC state.";
+    }
+    leaf track-odd-interface {
+      type pub-type:if-name;
+      description
+        "Odd interface name.";
+    }    
+    leaf track-even-interface {
+      type pub-type:if-name;
+      description
+        "Even interface name.";
+    }
+  }
+  grouping interface-status {
+    description
+      "Information about interface.";
+    container interface-status {
+      config false;
+      description
+        "Interface state.";
+      leaf status {
+        type string {
+          length "1..64";
+        }
+        description
+          "Interface status.";
+      }
+    }
+  }
+  container bras-cu-controller {
+    description
+      "BRAS CU controller.";
+    container vm-capacity {
+      description
+        "Configure the maximum number of vUPs or ULPUs for a VM on the vBRAS-CP.";
+      leaf ulpus-num {
+        type uint32 {
+          range "1..64";
+        }
+        default "32";
+        description
+          "Maximum number of ULPUs that can be created for a UPACC VM.";
+      }
+      leaf dynamic-instance-vups-num {
+        type uint32 {
+          range "1..32";
+        }
+        default "8";
+        description
+          "Maximum number of vUPs that can be created for a dynamic UPMNG instance.";
+      }
+      leaf static-instance-vups-num {
+        type uint32 {
+          range "1..50";
+        }
+        config false;
+        description
+          "Maximum number of vUPs that can be created for a static UPMNG instance.";
+      }
+      leaf max-vups-num {
+        type uint32 {
+          range "1..100";
+        }
+        config false;
+        description
+          "Maximum number of vUPs that can be managed by a UPMNG VM.";
+      }
+    }
+    container global-attribute {
+      description
+        "Configure the global attribute of bras cu controller.";
+      leaf up-base-id {
+        ext:operation-exclude update{
+          when "count(../../resource-ups/resource-up) > 0 or count(../../up-backup-groups/up-backup-group/up-id) > 0 or count(../../static-upmng-instances/static-upmng-instance/up-id) > 0";
+          description "The vBRAS-UP base ID cannot be changed when vBRAS-UP IDs exist on the current device.";
+        }
+        type uint32 {
+          range "1024 | 2048 | 3072 | 4096";
+        }
+        default "1024";
+        description
+          "Base ID of a vBRAS-UP device.";
+      }
+    }
+    container up-backup-groups {
+      description
+        "List of UP backup group.";
+      list up-backup-group {
+        key "name";
+        description
+          "Configure UP backup group.";
+        leaf name {
+          type string {
+            length "1..15";
+          }
+          description
+            "Specifies the name of UP backup group.";
+        }
+        leaf-list up-id {
+          type uint32 {
+            range "1024..2023 | 2048..3047 | 3072..4071 | 4096..5095";
+          }
+          must "../up-id <= (../../../global-attribute/up-base-id + 999) and ../up-id >= ../../../global-attribute/up-base-id";
+          must "not(../../../static-upmng-instances/static-upmng-instance[up-id = current()])";
+          must "count(../../up-backup-group[up-id = current()]) = 1";
+          description
+            "Configure the ID of a UP on the CP. The vBRAS-UP backup group and static instance cannot contain the same member UP ID.";
+        }
+      }
+    }
+    container cusp-down-hold {
+      description
+        "Configure a delayed master/backup status switching time for a control channel fault on the vBRAS-CP.";
+      leaf hold-time {
+        type uint32 {
+          range "0..1800";
+        }
+        units s;
+        default "10";
+        description
+          "Delayed master/backup status switching time for a control channel fault.";
+      }
+    }
+    container wait-to-restore {
+      description
+        "Configure a delay for vBRAS-UP switchback after a CUSP tunnel fault, network-side fault, or VXLAN tunnel fault is rectified in vBRAS-UP hot backup scenarios.";
+      leaf restore-time {
+        type uint32 {
+          range "300..3600";
+        }
+        units s;
+        default "300";
+        description
+          "Restore time value.";
+      }
+    }
+    container static-upmng-instances {
+      description
+        "List of static UPMNG instances.";
+      list static-upmng-instance {
+        key "name";
+        max-elements "32";
+        description
+          "Configure a static UPMNG instance.";
+        leaf name {
+          type string {
+            length "1..15";
+            pattern '([a-zA-Z])([a-zA-Z0-9._-]{0,14})';
+          }
+          description
+            "Specifies the name of the static UPMNG instance.";
+        }
+        leaf deploy-weight {
+          type uint8 {
+             range "50 | 100";
+          }
+          default "50";
+          description
+            "Specifies the deploy weight of this instance.";
+        }
+        leaf-list up-id {
+          type uint32 {
+            range "1024..2023 | 2048..3047 | 3072..4071 | 4096..5095";
+          }
+          must "../up-id <= (../../../global-attribute/up-base-id + 999) and ../up-id >= ../../../global-attribute/up-base-id";
+          must "not(../../../up-backup-groups/up-backup-group[up-id = current()])";
+          must "count(../../static-upmng-instance[up-id = current()]) = 1";
+          description
+            "Configure UP ID. The vBRAS-UP backup group and static instance cannot contain the same member UP ID.";
+        }
+        leaf-list up-backup-group {
+          type leafref {
+            path "../../../up-backup-groups/up-backup-group/name";
+          }
+          ext:operation-exclude delete{
+            when "../../../up-backup-groups/up-backup-groups[name = current()]/up-id = ../../../resource-ups/resource-up/up-id";
+            description "If a resource UP has been created for a UP ID of a UP backup group, the UP backup group cannot be deleted from the corresponding static UPMNG instance.";
+          }
+          must "count(../../static-upmng-instance[up-backup-group = current()]) = 1";
+          description
+            "Configure UP backup groups.";
+        }
+      }
+    }
+    container resource-ups {
+      description
+        "List of resource UP.";
+      list resource-up {
+        key "up-id";
+        unique "cp-channel/vxlan-connection/vni";
+        unique "cp-channel/vxlan-connection/source-ip-address cp-channel/vxlan-connection/destination-ip-address cp-channel/vxlan-connection/vpn-instance-name";
+        description
+          "Configure resource UP.";
+        leaf up-id {
+          type uint32 {
+            range "1024..2023 | 2048..3047 | 3072..4071 | 4096..5095";
+          }
+          must "../up-id <= (../../../global-attribute/up-base-id + 999) and ../up-id >= ../../../global-attribute/up-base-id";
+          description
+            "UP ID.";
+        }
+        leaf-list remote-interface-name {
+          type pub-type:if-name;
+          description
+            "Configure remote UP interface name. If a remote interface is created or deleted in the UPID, a four-dimensional interface with the UPID specified will be created or deleted accordingly. The interface type must be 100GE, 25GE, 400GE, Eth-Trunk, GigabitEthernet, PW-VE, or Virtual-Ethernet. The interface can be configured as a master interface only.";
+        }
+        container resource-up-description {
+          description
+            "Configure UP description.";
+          leaf up-description {
+            type string {
+              length "1..246";
+            }
+            description
+              "Specify UP description.";
+          }
+        }
+        container brief {
+          config false;
+          description
+            "UP brief state.";
+          leaf sysname {
+            type string {
+              length "1..248";
+            }
+            description
+              "UP sysname.";
+          }
+          leaf netconf-agent-ip {
+            type inet:ipv4-address-no-zone;
+            description
+              "UP netconf agent ip.";
+          }
+        }
+        container remote-up-boards {
+          description
+            "List of remote UP boards.";
+          list remote-up-board {
+            key "board-id";
+            description
+              "Configure remote UP board.";
+            leaf board-id {
+              type uint32 {
+                range "0..35";
+              }
+              description
+                "Board ID.";
+            }
+          }
+        }
+        container cp-channel {
+          description
+            "Configure CP channel.";
+          container netconf-connection {
+            presence "Enable the NETCONF client.";
+            description
+              "Enable/disable a NETCONF connection policy between the vBRAS-CP and vBRAS-UP.";
+            container bind-policy {
+              description
+                "Configure a NETCONF connection policy.";
+              leaf name {
+                type string {
+                  length "1..63";
+                }
+                description
+                  "Policy name, referring netconf-client connection.";
+              }
+            }
+          }
+          container cusp-connection {
+            description
+              "Configure a CUSP connection.";
+            leaf agent-name {
+              type string {
+                length "1..31";
+              }
+              description
+                "Agent name, referring cusp-controller connection.";
+            }
+          }
+          container vxlan-connection {
+            must "./source-ip-address != ./destination-ip-address";
+            presence "Configure a VXLAN channel between the vBRAS-CP and vBRAS-UP.";
+            description
+              "Enable/disable vxlan connection.";
+            leaf vni {
+              type uint32 {
+                range "1..16777215";
+              }
+              mandatory true;
+              description
+                "VNI bound to the vBRAS-CP and vBRAS-UP.";
+            }
+            leaf source-ip-address {
+              type inet:ipv4-address-no-zone;
+              mandatory true;
+              description
+                "Source IP address of the protocol tunnel between the vBRAS-CP and vBRAS-UP.";
+            }
+            leaf destination-ip-address {
+              type inet:ipv4-address-no-zone;
+              mandatory true;
+              description
+                "Destination IP address of the protocol tunnel between the vBRAS-CP and vBRAS-UP.";
+            }
+            leaf vpn-instance-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+              }
+              must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast'] or ../vpn-instance-name = '_public_'";
+              default "_public_";
+              description
+                "Name of the VPN instance bound to the protocol tunnel between the vBRAS-CP and vBRAS-UP.";
+            }
+          }
+        }
+        container cp-to-up {
+          presence "CP Config configuration.";
+          description
+            "Enable/disable CP Config.";
+          container cu-agent {
+            presence "Enable the UP mode.";
+            description
+              "Enable/disable the UP mode.";
+            container cusp-agent {
+              description
+                "Configure a CUSP agent.";
+              leaf agent-name {
+                type leafref {
+                  path "../../../up-cusp-agents/up-cusp-agent/agent-name";
+                }
+                description
+                  "Agent name, referring CUSP connection from the UP network element.";
+              }
+            }
+            container vxlan-channel {
+              must "not(./source-ip-address = ./destination-ip-address)";
+              presence "Vxlan channel configuration.";
+              description
+                "Enable/disable CP channel configuration.";
+              leaf vni {
+                type uint32 {
+                  range "1..16777215";
+                }
+                mandatory true;
+                description
+                  "VNI bound to the vBRAS-CP and vBRAS-UP.";
+              }
+              leaf source-ip-address {
+                type inet:ipv4-address-no-zone;
+                mandatory true;
+                description
+                  "Source IP address.";
+              }
+              leaf-list destination-ip-address {
+                type inet:ipv4-address-no-zone;
+                min-elements "1";
+                max-elements "2";
+                description
+                  "Configure destination IP address.";
+              }
+              leaf vpn-instance-name {
+                type string {
+                  length "1..31";
+                }
+                default "_public_";
+                description
+                  "Name of the VPN instance from the UP network element.";
+              }
+            }
+          }
+          container up-cusp-agents {
+            description
+            "List of the CUSP agent attributes.";
+            list up-cusp-agent {
+              key "agent-name";
+              max-elements "1";
+              description
+                "Configure a CUSP agent.";
+              leaf agent-name {
+                type string {
+                  length "1..31";
+                }
+                description
+                  "The name of CUSP agent.";
+              }
+              leaf transport-address {
+                type inet:ipv4-address-no-zone;
+                must "not(../transport-address='0.0.0.0')";
+                description
+                  "Connect address.";
+              }
+              leaf transport-vpn-name {
+                when "../transport-address";
+                type string {
+                  length "1..31";
+                }
+                description
+                  "Name of VPN instance.";
+              }
+              leaf echo-interval {
+                type uint8 {
+                  range "0 | 2..60";
+                }
+                units s;
+                default "30";
+                description
+                  "Configure echo interval.";
+              }
+              leaf keychain-name {
+                type string {
+                  length "1..47";
+                  pattern '([^A-Z]{1,47})';
+                }
+                description
+                  "The name of keychain authentication.";
+                ext:case-sensitivity "lower-only";
+              }
+              leaf ssl-policy-name {
+                type string {
+                  length "1..23";
+                  pattern '([^A-Z]{1,23})';
+                }
+                description
+                  "The name of SSL policy.";
+                ext:case-sensitivity "lower-only";
+              }
+              leaf timeout-count {
+                type uint8 {
+                  range "4..10";
+                }
+                default "5";
+                description
+                  "Counts to define time out.";
+              }
+              leaf congest-duration {
+                type uint8 {
+                  range "1..10";
+                }
+                units min;
+                default "5";
+                description
+                  "Congest Duration time.";
+              }
+              leaf tcp-mss {
+                type uint16 {
+                  range "1..8192";
+                }
+                units Byte;
+                default "1400";
+                description
+                  "Tcp mss.";
+              }
+              container bfd {
+                presence "Bidirectional forwarding detection.";
+                description
+                  "Enable/disable bidirectional forwarding detection.";
+                leaf multiplier {
+                  type uint32 {
+                    range "3..50";
+                  }
+                  mandatory true;
+                  description
+                    "Specify the detect multiplier.";
+                }
+                leaf min-tx-interval {
+                  type uint32 {
+                    range "50..1000";
+                  }
+                  units ms;
+                  mandatory true;
+                  description
+                    "Set minimum transmit interval.";
+                }
+                leaf min-rx-interval {
+                  type uint32 {
+                    range "50..1000";
+                  }
+                  units ms;
+                  mandatory true;
+                  description
+                    "Set minimum receive interval.";
+                }
+                leaf tos-exp {
+                  type uint32 {
+                    range "0..7";
+                  }
+                  mandatory true;
+                  description
+                    "Set TOS or EXP field.";
+                }
+              }
+              container connections {
+                description
+                  "List of the connection infomation.";
+                list connection {
+                  key "controller-ip";
+                  description
+                    "Configure a connection.";
+                  leaf controller-ip {
+                    type inet:ipv4-address-no-zone;
+                    description
+                      "IP address of controller.";
+                  }
+                }
+              }
+            }
+          }
+        }
+        container cp-nqa-detect {
+          presence "Bind a NQA instance to the VXLAN tunnel to detect VXLAN tunnel faults.";
+          description
+            "Enable/disable CP NQA dectct to the VXLAN tunnel.";
+          leaf count {
+            type uint32 {
+              range "0..4294967295";
+            }
+            default "3";
+            description
+              "Number of sent Echo Request messages.";
+          }
+          choice detect-time-type {
+            default minute-level;
+            description
+              "Detect time type.";
+            case minute-level {
+              description
+                "Minute level.";
+              leaf minute-interval {
+                type uint32 {
+                  range "1..10000";
+                }
+                units min;
+                default "1";
+                description
+                  "Time elapses before a next Echo Request message is sent.";
+              }
+              leaf minute-timeout {
+                type uint32 {
+                  range "1..65535";
+                }
+                units min;
+                default "1";
+                description
+                  "Timeout period of waiting for an Echo Reply message.";
+              }
+            }
+            case second-level {
+              description
+                "Second level.";
+              leaf second-interval {
+                type uint32 {
+                  range "60..10000";
+                }
+                units s;
+                default "60";
+                description
+                  "Time elapses before a next Echo Request message is sent.";
+              }
+              leaf second-timeout {
+                type uint32 {
+                  range "60..65535";
+                }
+                units s;
+                default "60";
+                description
+                  "Timeout period of waiting for an Echo Reply message.";
+              }
+            }
+          }
+          leaf destination-port {
+            type uint32 {
+              range "1..65535";
+            }
+            mandatory true;
+            description
+              "Destination port number.";
+          }
+          leaf resume-threshold {
+            type uint8 {
+              range "0..95|100";
+            }
+            units %;
+            must "../resume-threshold = 100 or ../alarm-threshold >= ../resume-threshold + 5";
+            default "5";
+            description
+              "Resume threshold value of Plr.";
+          }
+          leaf alarm-threshold {
+            type uint8 {
+              range "0..100";
+            }
+            units %;
+            must "../resume-threshold = 100 or ../alarm-threshold >= ../resume-threshold + 5";
+            default "10";
+            description
+              "Alarm threshold value of Plr.";
+          }
+        }
+        container up-block {
+          description
+            "Configure vBRAS-UP blocked by the vBRAS-CP.";
+          leaf block-enable {
+            type empty;
+            description
+              "Specified vBRAS-UP blocked by the vBRAS-CP.";
+          }
+        }
+        container south-conflicts {
+          config false;
+          description
+            "List of south conflict configuration."; 
+          list south-conflict {
+            key "index";
+            description
+              "Statistics of Configure command index.";
+            leaf index {
+              type uint32 {
+                range "0..99";
+              }
+              description
+                "Index of configuration command.";
+            }
+            leaf command {
+              type string {
+                length "1..2047";
+              }
+              description
+                "Conflict command.";
+            }
+            leaf reason {
+              type string {
+                length "1..127";
+              }
+              description
+                "Conflict reason.";
+            }
+            leaf time {
+              type yang:date-and-time;
+              description
+                "Conflict time.";
+            }
+            leaf view {
+              type string {
+                length "1..179";
+              }
+              description
+                "Conflict View.";
+            }
+          }
+        }
+        container south-config-status {
+          config false;
+          description
+            "Operational state of the south configuration.";
+          leaf status {
+            type south-config-status-type;
+            description
+              "The south configuration status.";
+          }
+        }
+      }
+    }
+    container hot-profiles {
+      description
+        "List of hot backup policy profiles.";
+      list hot-profile {
+        key "name";
+        description
+          "Configure a hot backup policy profile.";
+        leaf name {
+          type string {
+            length "1..32";
+          }
+          must "not(../../../other-profiles/other-profile[name = current()])";
+          description
+            "Profile name.";
+        }
+        container backup-basic {
+          description
+            "Configure the basic attributes for a hot standby policy profile.";
+          uses backup-profile-basic;
+          leaf up-ip-mode {
+            type up-ip-mode-type;
+            description
+              "Configure up ip mode.";
+          }
+          leaf fail-recovery-enable {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable recovery from failure switch.";
+          }
+          leaf sub-interface-switch-enable {
+            type boolean;
+            must "../sub-interface-switch-enable = 'false' or (../sub-interface-switch-enable = 'true' and count(../../backup-groups/backup-group) <= 1)";
+            default "false";
+            description
+              "Enable/disable hot standby sub-interface.";
+          }
+          leaf delay-time {
+            type uint32 {
+              range "1..10800";
+            }
+            units s;
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../backup-groups/backup-group/master-interface]/ifm:type='Virtual-Ethernet'";
+            description
+              "Delay time number.";
+          }
+          leaf backup-mode {
+            type hot-backup-mode-type;
+            default "master-slave";
+            description
+              "UP backup mode.";
+          }
+          leaf virtual-router-id {
+            type uint8 {
+              range "128..255";
+            }
+            must "../virtual-router-id mod 2 = 0";
+            description
+              "Hot backup virtual router identifier.";
+          }
+          container load-balance {
+            when "../backup-mode = 'load-balance-by-mac'";
+            description
+              "Configure load balance.";
+            container hash-arithmetic {
+              description
+                "Configure hash arithmetic.";
+              leaf arithmetic-type {
+                type hash-arithmetic-type;
+                description
+                  "The hash arithmetic type.";
+              }
+              leaf mac-offset {
+                when "../arithmetic-type";
+                type uint8 {
+                  range "1..5";
+                }
+                description
+                  "Set the offset of mac mode.";
+              }
+            }
+            container remark-macs {
+              when "../hash-arithmetic/arithmetic-type";
+              description
+                "List of MAC addresses.";
+              list remark-mac {
+                key "address";
+                description
+                  "Configure a specified MAC address as an odd or even MAC address.";
+                leaf address {
+                  type pub-type:mac-address;
+                  description
+                    "Mac address. The MAC address must be a unicast address and cannot be all 0s, 0000-0000-0001, or 0000-0000-0002.";
+                }
+                leaf mac-type {
+                  type hot-backup-mac-type;
+                  mandatory true;
+                  description
+                    "Mac type.";
+                }
+              }
+            }
+            container by-mac-extend {
+              description
+                "Configure load balance by mac extend.";
+              leaf pppoe-by-option105 {
+                type boolean;
+                default "false";
+                description
+                  "Enable/disable PPPoE load balancing by MAC address+Option 105.";
+                }
+              leaf ipoe-by-vlan {
+                type boolean;
+                default "false";
+                description
+                  "Enable/disable IPoE load balancing by MAC address+VLAN.";
+              }
+            }
+          }
+        }
+        container backup-groups {
+          description
+            "List of hot backup groups.";
+          list backup-group {
+            must "./master-interface != ./slave-interface";
+            must "../../backup-basic/virtual-router-id";
+            must "(../../backup-basic/sub-interface-switch-enable = 'true' and count(../backup-group) <= 1) or not(../../backup-basic/sub-interface-switch-enable = 'true')";
+            key "master-interface slave-interface";
+            description
+              "Configure one vBRAS-UP's interface and another vBRAS-UP's interface as a hot backup group on a vBRAS-CP. If the backup groups bound to a backup policy template share a remote four-dimensional interface pool, a bound remote four-dimensional interface cannot be used by other backup groups, regardless of the type of the backup policy template. The UPIDs of the interfaces configured for the backup groups bound to a backup policy template must be bound to the same UP backup group. The primary backup interface and secondary backup interface in a backup group must have dufferebt UPIDs. In the same policy template, if the backup groups are bound to sub-interfaces, the primary backup interfaces of the backup groups must have the same UPID, and the secondary backup interfaces of the backup groups must have the same UPID.";
+            leaf master-interface {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='400GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet'"; 
+              must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='sub-interface' and ../../../backup-basic/sub-interface-switch-enable = 'true') or not(../../../backup-basic/sub-interface-switch-enable = 'true')";
+              description
+                "Name of an interface on the master vBRAS-UP.";
+            }
+            leaf slave-interface {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../backup-group/master-interface]/ifm:type != /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type) and
+                    not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../backup-group/master-interface]/ifm:class != /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class)";
+              description
+                "Name of an interface on the backup vBRAS-UP.";
+            }
+          }
+        }
+        container up-status {
+          config false;
+          description
+            "Up statistics.";
+          container master-vup {
+            description
+              "Master vBRAS-UP statistics.";
+            uses hot-up-status;
+          }
+          container slave-vup {
+            description
+              "Slave vBRAS-UP statistics.";
+            uses hot-up-status;
+          }
+        }
+      }
+    }
+    container other-profiles {
+      description
+        "List of other backup policy profiles.";
+      list other-profile {
+        key "name";
+        description
+          "Configure a other backup policy profiles.";
+        leaf name {
+          type string {
+            length "1..32";
+          }
+          must "not(../../../hot-profiles/hot-profile[name = current()])";
+          description
+            "Profile name.";
+        }
+        leaf standby-type {
+          ext:operation-exclude update;
+          type other-profile-type;
+          mandatory true;
+          description
+            "Other standby policy type.";
+        }
+        container backup-basic {
+          when "../standby-type='warm-standby' or ../standby-type='warm-standby-loadbalance'";
+          description
+            "Configure the basic attributes for a other standby policy profile.";
+          leaf nas-logic-port {
+            type pub-type:if-name;
+            description
+              "Name of an NAS logical interface. This interface can only be delivered as a GE or Eth-Trunk main interface.";
+          }
+          leaf ipv4-assigned-mode {
+            when "../../standby-type='warm-standby'";
+            type ip-assigned-mode-type;
+            default "by-backup-profile";
+            description
+              "IPv4 address allocation mode.";
+          }
+          leaf ipv6-assigned-mode {
+            when "../../standby-type='warm-standby'";
+            type ip-assigned-mode-type;
+            default "by-backup-profile";
+            description
+              "IPv6 address allocation mode.";
+          }
+          leaf sub-interface-enable {
+            when "../../standby-type='warm-standby'";
+            type empty;
+            description
+              "Enable warm standby sub-interface.";
+          }
+          leaf load-balance-mode {
+            when "../../standby-type='warm-standby-loadbalance'";
+            type load-balance-type;
+            default "by-interface";
+            description
+              "Configure a load balancing mode.";
+          }
+          leaf virtual-mac-number {
+            when "../../standby-type='warm-standby-loadbalance'";
+            type uint8 {
+              range "4..24";
+            }
+            default "6";
+            description
+              "Number of virtual MAC addresses allocated to each interface in an N+1 warm backup group.";
+          }
+          leaf preempt-time {
+            when "../../standby-type='warm-standby-loadbalance'";
+            type uint32 {
+              range "1..120";
+            }
+            units min;
+            default "30";
+            description
+              "Switchback delay.";
+          }
+        }
+        container master-profile-interfaces {
+          description
+            "List of master interfaces.";
+          list master-profile-interface {
+            must "(../../slave-profile-interfaces/slave-profile-interface/name and ../../standby-type='warm-standby' and ../../backup-basic/nas-logic-port) or
+            ../../standby-type='load-balance' or (../../slave-profile-interfaces/slave-profile-interface/name and ../../standby-type='cold-standby') or
+            (../../standby-type='warm-standby-loadbalance' and ../../backup-basic/nas-logic-port)";
+            key "name";
+            unique "virtual-router-id";
+            description
+              "Configure a master interface. If the backup groups bound to a backup policy template share a remote four-dimensional interface pool, a bound remote four-dimensional interface cannot be used by other backup groups, regardless of the type of the backup policy template. The UPIDs of the interfaces configured for the backup groups bound to a backup policy template must be bound to the same UP backup group. The primary backup interface and secondary backup interface in a backup group must have dufferebt UPIDs.";
+            leaf name {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "not(../../../slave-profile-interfaces/slave-profile-interface[name = current()])";
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='400GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                    (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' and (../../../standby-type='load-balance' or ../../../standby-type='warm-standby-loadbalance' or ../../../backup-basic/sub-interface-enable)) or
+                    (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='PW-VE' and ../../../standby-type = 'load-balance')";
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface'";
+              description
+                "Name of an interface.";
+            }
+            leaf virtual-router-id {
+              when "../../../standby-type='warm-standby'";
+              type uint8 {
+                range "1..255";
+              }
+              mandatory true;
+              description
+                "Virtual router ID.";
+            }
+            uses interface-status;
+          }
+        }
+        container slave-profile-interfaces {
+          when "../standby-type != 'load-balance' and ../standby-type != 'warm-standby-loadbalance'";
+          description
+            "List of slave interface.";
+          list slave-profile-interface {
+            key "name";
+            max-elements "1";
+            description
+              "Configure a slave interface. If the backup groups bound to a backup policy template share a remote four-dimensional interface pool, a bound remote four-dimensional interface cannot be used by other backup groups, regardless of the type of the backup policy template. The UPIDs of the interfaces configured for the backup groups bound to a backup policy template must be bound to the same UP backup group. The primary backup interface and secondary backup interface in a backup group must have dufferebt UPIDs.";
+            leaf name {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "not(../../../master-profile-interfaces/master-profile-interface[name = current()])";
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='400GE' or
+                    /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                    (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' and ../../../backup-basic/sub-interface-enable)"; 
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:class='main-interface'";
+              description
+                "Name of an interface.";
+            }
+            uses interface-status;
+          }
+        }
+        container profile-status {
+          config false;
+          description
+            "Profile state.";
+          leaf in-switch {
+            type boolean;
+            description
+              "Whether the backup group is being switched over.";
+          }
+        }
+        container sub-interface-mappings {
+          config false;
+          description
+            "List of sub interface mapping state.";
+          list sub-interface-mapping {
+            key "master-interface";
+            description
+              "Sub interface mapping state.";
+            leaf master-interface {
+              type pub-type:if-name;
+              description
+                "Name of a master interface.";
+            }
+            leaf slave-interface {
+              type pub-type:if-name;
+              description
+                "Name of a slave interface.";
+            }
+            leaf master-status {
+              type string {
+                length "1..64";
+              }
+              description
+                "Master interface status.";
+            }
+            leaf slave-status {
+              type string {
+                length "1..64";
+              }
+              description
+                "Slave interface status.";
+            }
+          }
+        }
+      }
+    }
+    container upmng-instances {
+      config false;
+      description
+        "List of UPMNG instances.";
+      list upmng-instance {
+        key "name";
+        description
+          "Statistics of UPMNG instance.";
+        leaf name {
+          type string {
+            length "1..15";
+          }
+          description
+            "The name of UPMNG instance.";
+        }
+        leaf instance-id {
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "Index assigned to the instance.";
+        }
+        leaf instance-type {
+          type upmng-instance-type;
+          description
+            "The type of UPMNG instance.";
+          ext:support-filter "true";
+        }
+        leaf deploy-weight {
+          type uint8 {
+            range "50 | 100";
+          }
+          description
+            "The deploy weight of this instance.";
+        }
+        leaf available-up-num {
+          type uint32 {
+            range "0..65535";
+          }
+          description
+            "The number of new UPs that can be added in this instance.";
+        }
+        leaf current-up-num {
+          type uint32 {
+            range "0..65535";
+          }
+          description
+            "The number of UPs in this instance currently.";
+        }
+        leaf-list upmng-slot {
+          type string {
+            length "1..15";
+          }
+          description
+            "Statistics of UPMNG VM deployed by this instance.";
+        }
+        leaf-list up-id {
+          type uint32 {
+            range "1024..5095";
+          }
+          description
+            "Statistics of UP ID.";
+        }
+      }
+    }
+    container up-statistics {
+      config false;
+      description
+        "UP statistics.";
+      leaf total-up-number {
+        type uint32 {
+          range "0..1024";
+        }
+        description
+          "Total UP number.";
+      }
+    }
+    container resource-upmngs {
+      config false;
+      description
+        "List of the vUPs managed by UPMNG VMs.";
+      list resource-upmng {
+        key "upmng-slot up-id";
+        description
+          "Statistics of vUP managed by a specified UPMNG VM.";
+        leaf upmng-slot {
+          type string {
+            length "1..15";
+          }
+          description
+            "Slot ID of a specified UPMNG VM.";
+        }
+        leaf up-id {
+          type uint32 {
+            range "1024..5095";
+          }
+          description
+            "ID of a vBRAS-UP on the vBRAS-CP.";
+        }
+        leaf agent-name {
+          type string {
+            length "1..49";
+          }
+          description
+            "Name of a vBRAS-UP on the vBRAS-CP.";
+        }
+        leaf agent-ip {
+          type inet:ipv4-address-no-zone;
+          description
+            "IP address of a vBRAS-UP on the vBRAS-CP.";
+        }
+      }
+    }
+    container resource-upaccs {
+      config false;
+      description
+        "List of the ULPUs managed by UPACC VM.";
+      list resource-upacc {
+        key "upacc-slot up-id up-slot";
+        description
+          "Statistics of ULPU managed by a specified UPACC VM.";
+        leaf upacc-slot {
+          type string {
+            length "1..15";
+          }
+          description
+            "Slot ID of a UPACC VM on the vBRAS-CP.";
+        }
+        leaf up-id {
+          type uint32 {
+            range "1024..5095";
+          }
+          description
+            "ID of a vBRAS-UP on the vBRAS-CP.";
+        }
+        leaf up-slot {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Slot ID of a specified vBRAS-UP.";
+        }
+      }
+    }
+    container resource-upboards{
+      config false;
+      description
+        "List of brief board information and ULPU deployment status of vBRAS-UP statistics.";
+      list resource-upboard {
+        key "board-position";
+        description
+          "Brief board information and ULPU deployment status of a vBRAS-UP statistics.";
+          
+        leaf board-position {
+          type string {
+            length "1..15";
+          }
+          description
+            "The board number of vBRAS-UP.";
+        }
+        leaf present-status {
+          type present-status-type;
+          description
+            "Online state of a board on the vBRAS-UP.";
+        }
+        leaf registered-status {
+          type registered-status-type;
+          description
+            "Registered state of a board on the vBRAS-UP.";
+        }
+        leaf board-type {
+          type board-type;
+          description
+            "The board type of vBRAS-UP.";
+        }
+        leaf deploy-status {
+          type deploy-status-type;
+          description
+            "ULPU deployment status.";
+        }
+      }
+    }
+    container resource-vpns{
+      config false;
+      description
+        "List of resource VPN statistics.";
+      list resource-vpn {
+        key "up-id identifier";
+        description
+          "Resource VPN statistics.";
+        leaf up-id {
+          type uint32 {
+            range "1024..5095";
+          }
+          description
+            "ID of a vBRAS-UP on the vBRAS-CP.";
+        }
+        leaf identifier {
+          type string {
+            length "1..31";
+          }
+          description
+            "VPN instance ID used to match the vBRAS-UP and vBRAS-CP.";
+        }
+        leaf cp-vpn-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Name of a vBRAS-CP-side VPN in a CU separation scenario.";
+        }
+        leaf up-vpn-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Name of a vBRAS-UP-side VPN instance in a CU separation scenario.";
+        }
+        leaf status {
+          type string {
+            length "1..9";
+          }
+          description
+            "VPN instance Status to match the vBRAS-UP and vBRAS-CP.";
+        }
+      }
+    }
+    container up-abilitys {
+      config false;
+      description
+        "List of UP interface backup ability statistics.";
+      list up-ability {
+        key "interface-name";
+        description
+          "UP interface backup ability statistics.";
+        leaf interface-name {
+          type pub-type:if-name;
+          description
+            "Interface name.";
+        }
+        leaf access-type {
+          type access-type;
+          description
+            "Access type.";
+        }
+        leaf support-backup {
+          type boolean;
+          description
+            "Supporting backup or not.";
+        }
+        leaf standby-type {
+          type enumeration {
+            enum "hot-standby" {
+              value 0;
+              description
+                "Hot standby.";
+            }
+            enum "warm-standby" {
+              value 1;
+              description
+                "Warm standby.";
+            }
+            enum "load-balance" {
+              value 2;
+              description
+                "Load balance.";
+            }
+            enum "cold-standby" {
+              value 3;
+              description
+                "Cold standby.";
+            }
+            enum "warm-loadbalance" {
+              value 4;
+              description
+                "Warm loadbalance.";
+            }
+          }
+          description
+            "Backup policy type.";
+        }
+        leaf profile-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Profile name.";
+        }
+      }
+    }
+    container cp-version {
+      config false;
+      description
+        "Statistics of CU interface version information on the CP side.";
+      leaf interface-version {
+        type string {
+          length 1..7;
+        }
+        description
+          "CU Interface Version.";
+      }
+      leaf management-interface-version-first {
+        type string {
+          length 1..7;
+        }
+        description
+          "CU Management Interface Version 1.";
+      }
+      leaf management-interface-version-second {
+        type string {
+          length 1..7;
+        }
+        description
+          "CU Management Interface Version 2.";
+      }
+      leaf management-interface-version-third {
+        type string {
+          length 1..7;
+        }
+        description
+          "CU Management Interface Version 3.";
+      }
+      container connected-up-versions {
+        description
+          "List of the connected UP version statistics.";
+        list connected-up-version {
+          key up-id;
+          description
+            "The connected UP version statistics.";
+          leaf up-id {
+            type uint32 {
+              range 1024..5095;
+            }
+            description
+              "UP ID.";
+          }
+          leaf up-version {
+            type string {
+              length 1..7;
+            }
+            description
+              "UP Version Information.";
+          }
+          leaf negotiation-result {
+            type string {
+              length 1..15;
+            }
+            description
+              "Negotiation Results.";
+          }
+        }
+      }
+    }
+  }
+  rpc reset-south-conflict-by-up {
+    description
+      "Reset south conflict configuration by up.";
+    input {
+      leaf up-id {
+        type leafref {
+          path "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-cu-controller:up-id";
+        }
+        mandatory true;
+        description
+          "UP ID.";
+      }
+    }
+  }
+  rpc reset-south-conflict-all-up {
+    description
+      "Reset south conflict configuration for all up.";
+  }
+  augment "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board" {
+    description
+      "CP cpu defend to the devm module.";
+    container cp-cpu-defend {
+      description
+        "Configure CP cpu defend.";
+      container vm-total-car {
+        description
+          "Configure Vm total car.";
+        leaf cir {
+          type uint32 {
+            range "0..1000000";
+          }
+          units "kbit/s";
+          default "58491";
+          description
+            "Committed information rate.";
+        }
+        leaf cbs {
+          type uint32 {
+            range "0..90000000";
+          }
+          units "Byte";
+          default "9000000";
+          description
+            "Committed burst size.";
+        }
+      }
+    }
+  }
+}

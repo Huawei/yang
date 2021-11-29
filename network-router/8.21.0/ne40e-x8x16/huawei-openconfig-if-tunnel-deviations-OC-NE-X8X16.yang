@@ -1,0 +1,107 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-if-tunnel-deviations-OC-NE-X8X16 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-if-tunnel-deviations-OC-NE-X8X16";
+  prefix oc-if-tunnel-devs-OC-NE-X8X16;
+
+  import openconfig-interfaces {
+    prefix oc-if;
+  }
+  import openconfig-if-tunnel {
+    prefix oc-tun;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import iana-if-type {
+    prefix ianaift;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This model adds extensions to the OpenConfig interfaces
+     model to configure tunnel interfaces on a network
+     device.";
+
+  revision 2020-10-20 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:config/oc-tun:ttl" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:config/oc-tun:gre-key" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:state/oc-tun:ttl" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:state/oc-tun:gre-key" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv6" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:proxy-arp" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:neighbors" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:unnumbered" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:config/oc-tun:dhcp-client" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:state/oc-tun:dhcp-client" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:state/oc-tun:counters" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:addresses/oc-tun:address/oc-tun:state/oc-tun:origin" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:config/oc-tun:mtu" {
+    deviate replace {
+      type uint16 {
+        range "46..64000";
+      }
+    }
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:state/oc-tun:mtu" {
+    deviate replace {
+      type uint16 {
+        range "46..64000";
+      }
+    }
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:config/oc-tun:enabled" {
+    deviate add {
+      must "../enabled='true'";
+    }
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel/oc-tun:ipv4/oc-tun:addresses/oc-tun:address/oc-tun:config/oc-tun:prefix-length" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  ext:deviation-ext "/oc-if:interfaces/oc-if:interface/oc-tun:tunnel" {
+    ext:deviate-ext "add" {
+      when "../oc-if:config/oc-if:type='ianaift:tunnel'";
+    }
+  }
+}

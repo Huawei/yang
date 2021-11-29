@@ -1,0 +1,70 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-unicast-fwd-notification-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-unicast-fwd-notification-deviations-ATN-980B";
+  prefix unicast-fwd-notification-devs-ATN-980B;
+
+  import huawei-unicast-fwd-notification {
+    prefix unicast-fwd-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-unicast-fwd-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/unicast-fwd-notification:forward-arp-alarm" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-arp-alarm-resume" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-fib-alarm" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-fib-alarm-resume" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-resource-lack-for-license" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-resource-lack-for-license-resume" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-fail-for-license" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-fail-for-license-resume" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:nd-proxy-not-support-alarm" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:nd-proxy-not-support-alarm-resume" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-entry-inconsistent" {
+    deviate not-supported;
+  }
+  deviation "/unicast-fwd-notification:forward-entry-inconsistent-resume" {
+    deviate not-supported;
+  }
+
+}

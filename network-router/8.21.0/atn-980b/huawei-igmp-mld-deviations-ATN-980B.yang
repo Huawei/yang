@@ -1,0 +1,95 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-igmp-mld-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-igmp-mld-deviations-ATN-980B";
+  prefix igmp-mld-devs-ATN-980B;
+
+  import huawei-igmp-mld {
+    prefix igmp-mld;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-multicast {
+    prefix mc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-igmp-mld module.";
+
+  revision 2020-09-02 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:global/igmp-mld:query-response-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:global/igmp-mld:last-member-query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..5";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:query-response-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:last-member-query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..5";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:global/igmp-mld:query-response-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:global/igmp-mld:last-member-query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..5";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:query-response-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:interfaces/igmp-mld:interface/igmp-mld:last-member-query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..5";
+      }
+    }
+  }
+  deviation "/mc:multicast/igmp-mld:igmp" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,875 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ppp-net {
+  namespace "urn:huawei:yang:huawei-ppp-net";
+  prefix ppp-net;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "PPP net.";
+  revision 2019-04-11 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ppp";
+  typedef ppp-damp-level-type {
+    type enumeration {
+      enum "light" {
+        value "0";
+        description
+          "Light weight.";
+      }
+      enum "middle" {
+        value "1";
+        description
+          "Middle weight.";
+      }
+      enum "heavy" {
+        value "2";
+        description
+          "Heavy weight.";
+      }
+      enum "manual" {
+        value "3";
+        description
+          "Manually configure the parameters.";
+      }
+    }
+    description
+      "PPP damp level type is light/middle/heavy/manual.";
+  }
+  typedef ppp-net-mru-negotiation-type {
+    type enumeration {
+      enum "ipv4" {
+        value 0;
+        description
+          "IPv4 MRU negotiation on PPP MRU.";
+      }
+      enum "ipv6" {
+        value 1;
+        description
+          "IPv6 MRU negotiation on PPP MRU.";
+      }
+    }
+    description
+      "PPP LCP MRU negotiation type.";
+  }
+  typedef ppp-enable {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disabling.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enabling.";
+      }
+    }
+    description
+      "Description of enable type.";
+  }
+  typedef ppp-net-link-type {
+    type enumeration {
+      enum "lcp" {
+        value 0;
+        description
+          "LCP.";
+      }
+      enum "ipcp" {
+        value 1;
+        description
+          "IPCP.";
+      }
+    }
+    description
+      "Link Type.";
+  }
+  typedef ppp-net-fsm-state {
+    type enumeration {
+      enum "initial" {
+        value 0;
+        description
+          "Initial.";
+      }
+      enum "starting" {
+        value 1;
+        description
+          "Starting.";
+      }
+      enum "closed" {
+        value 2;
+        description
+          "Closed.";
+      }
+      enum "stopped" {
+        value 3;
+        description
+          "Stopped.";
+      }
+      enum "closing" {
+        value 4;
+        description
+          "Closing.";
+      }
+      enum "stopping" {
+        value 5;
+        description
+          "Stopping.";
+      }
+      enum "request-sent" {
+        value 6;
+        description
+          "Request sent.";
+      }
+      enum "ack-received" {
+        value 7;
+        description
+          "Ack-received.";
+      }
+      enum "ack-sent" {
+        value 8;
+        description
+          "Ack-sent.";
+      }
+      enum "opened" {
+        value 9;
+        description
+          "Opened.";
+      }
+      enum "none" {
+        value 10;
+        description
+          "None.";
+      }
+    }
+    description
+      "PPP fsm state.";
+  }
+  typedef mp-fragment-size {
+    type enumeration {
+      enum "fragment-128" {
+        value 0;
+        description
+          "Fragment size 128 bytes.";
+      }
+      enum "fragment-256" {
+        value 1;
+        description
+          "Fragment size 256 bytes.";
+      }
+      enum "fragment-512" {
+        value 2;
+        description
+          "Fragment size 512 bytes.";
+      }
+      enum "no-fragment" {
+        value 3;
+        description
+          "No fragment.";
+      }
+      enum "fragment-64" {
+        value 4;
+        description
+          "Fragment size 64 bytes.";
+      }
+    }
+    description
+      "MP fragment size.";
+  }
+  typedef mp-member-physical-state {
+    type enumeration {
+      enum "down" {
+        value 0;
+        description
+          "The interface is in the down state.";
+      }
+      enum "up" {
+        value 1;
+        description
+          "The interface is in the up state.";
+      }
+      enum "admin-shutdown" {
+        value 2;
+        description
+          "The interface is in the admin shutdown state.";
+      }
+    }
+    description
+      "MP group member physical state.";
+  }
+  typedef mp-member-protocol-state {
+    type enumeration {
+      enum "down" {
+        value 0;
+        description
+          "The interface is in the down state.";
+      }
+      enum "up" {
+        value 1;
+        description
+          "The interface is in the up state.";
+      }
+      enum "damping" {
+        value 2;
+        description
+          "The interface is in the damping state.";
+      }
+    }
+    description
+      "MP group member protocol state.";
+  }
+  container ppp-net {
+    description
+      "PPP net.";
+    container ppp-dampening {
+      presence "PPP protocol status damping enable.";
+      description
+        "Enable/disable type of PPP damp. If dampen-level is set to manual, the settings of the other parameters need to meet the following requirement: suppress-value/1000 <= (reuse-value/1000) * 2^ (max-suppress-time/half-life-period).";
+      ext:generated-by system {
+        ext:can-be-deleted;
+        description "The PPP dampening whose level is light is generated by system automatically.";
+      }
+      leaf dampen-level {
+        type ppp-damp-level-type;
+        default "light";
+        description
+          "PPP protocol status damping level.";
+      }
+      leaf half-life-period {
+        when "../dampen-level='manual'";
+        type uint8 {
+          range "1..60";
+        }
+        units s;
+        mandatory true;
+        description
+          "PPP protocol status damping half life time (seconds)";
+      }
+      leaf suppress-value {
+        when "../dampen-level='manual'";
+        type uint16 {
+          range "1..20000";
+        }
+        must "../suppress-value >= ../reuse-value";
+        mandatory true;
+        description
+          "1000 times of PPP protocol status damping suppress threshold.";
+      }
+      leaf reuse-value {
+        when "../dampen-level='manual'";
+        type uint16 {
+          range "1..20000";
+        }
+        must "../suppress-value >= ../reuse-value";
+        mandatory true;
+        description
+          "1000 times of PPP protocol status damping reuse threshold.";
+      }
+      leaf max-suppress-time {
+        when "../dampen-level='manual'";
+        type uint8 {
+          range "1..255";
+        }
+        units s;
+        mandatory true;
+        description
+          "PPP protocol status damping max suppress time.";
+      }
+    }
+    container load-balance-identify-pppoe {
+      description
+        "Configure load balance identify PPPoE.";
+      leaf load-balance-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable a device to identify the IP.";
+      }
+    }
+  }
+  augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
+    description
+      "Add PPP net configuration to devm model.";
+    container ppp-net {
+      description
+        "Configure PPP net to devm.";
+      container ppp-min-packet-length {
+        description
+          "Configure PPP minimum packet length.";
+        leaf packet-length {
+          type uint32 {
+            range "8..64";
+          }
+          description
+            "PPP minimum packet length.";
+        }
+      }
+      container load-balance-identify-pppoe {
+        description
+          "Configure load balance identify PPPoE.";
+        leaf load-balance-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to identify the IP.";
+        }
+      }
+    }
+  }
+  augment "/devm:devm/devm:mpu-boards/devm:mpu-board" {
+    description
+      "Add PPP net configuration to devm model.";
+    container ppp-net {
+      description
+        "Configure PPP net to devm.";
+      container load-balance-identify-pppoe {
+        description
+          "Configure load balance identify PPPoE.";
+        leaf load-balance-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a device to identify the IP.";
+        }
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "PPP configuration of interface.";
+    container ppp-net {
+      description 
+        "Configure PPP configuration of interface.";
+      container ppp {
+        when "../../ifm:link-protocol='ppp'";
+        description
+          "Configure PPP of interface.";
+        container ppp-base {
+          description
+            "Configure PPP base.";
+          leaf negotiation-timeout {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Lmpif'";
+            type uint32 {
+              range "1..10";
+            }
+            units s;
+            default "3";
+            description
+              "Timeout duration of PPP negotiation.";
+          }
+          leaf dead-link-time {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Trunk-Serial'";
+            type uint32 {
+              range "5..30";
+            }
+            units s;
+            default "30";
+            description
+              "Specify the Link Dead timer value.";
+          }
+          leaf peer-ip-address {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Mp-group' or ../../../../ifm:type = 'Global-Mp-Group' or ../../../../ifm:type = 'Lmpif'";
+            type inet:ipv4-address-no-zone;
+            must "../peer-ip-address != '0.0.0.0'";
+            description
+              "IP address assigned for the peer.";
+          }
+          leaf mru-negotiation-type {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Lmpif'";
+            type ppp-net-mru-negotiation-type;
+            default "ipv4";
+            description
+              "Specify MRU negotiation.";
+          }
+          leaf magic-number-check-flag {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Lmpif'";
+            type ppp-enable;
+            default "disable";
+            description
+              "Enable/disable the function of magic numebr check.";
+          }
+          leaf osicp-negotiation-flag {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Mp-group' or ../../../../ifm:type = 'Global-Mp-Group'";
+            type ppp-enable;
+            default "enable";
+            description
+              "Enable OSICP negotiate.";
+          }
+          leaf mplscp-negotiation-flag {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Mp-group' or ../../../../ifm:type = 'Global-Mp-Group'";
+            type ppp-enable;
+            default "enable";
+            description
+              "Enable MPLSCP negotiate.";
+          }
+          leaf suppress-hostroute-flag {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Mp-group' or ../../../../ifm:type = 'Global-Mp-Group' or ../../../../ifm:type = 'Lmpif'";
+            type ppp-enable;
+            default "disable";
+            description
+              "Enable/disable the function of suppressing the adding of peer host routes to the local direct route table.";
+          }
+          leaf admit-any-dns {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Mp-group' or ../../../../ifm:type = 'Global-Mp-Group' or ../../../../ifm:type = 'Lmpif'";
+            type ppp-enable;
+            default "disable";
+            description
+              "Enable/disable receiving any DNS address sent by the peer.";
+          }
+          leaf primary-dns-address {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Mp-group' or ../../../../ifm:type = 'Global-Mp-Group' or ../../../../ifm:type = 'Lmpif'";
+            type inet:ipv4-address-no-zone;
+            must "../primary-dns-address != '0.0.0.0'";
+            description
+              "IP address of the master DNS server.";
+          }
+          leaf second-dns-address {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Mp-group' or ../../../../ifm:type = 'Global-Mp-Group' or ../../../../ifm:type = 'Lmpif'";
+            type inet:ipv4-address-no-zone;
+            must "../primary-dns-address and ../second-dns-address != '0.0.0.0'";
+            description
+              "IP address of the slave DNS server.";
+          }
+          leaf pap-authen-flag {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Lmpif'";
+            type ppp-enable;
+            default "disable";
+            description
+              "Enable/disable the PAP authentication mode.";
+          }
+          leaf chap-authen-flag {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Lmpif'";
+            type ppp-enable;
+            default "disable";
+            description
+              "Enable/disable the CHAP authentication mode.";
+          }
+          leaf pap-user-name {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Lmpif'";
+            type string {
+              length "1..253";
+            }
+            must "../pap-user-name and ../pap-password";
+            description
+              "PAP authentication on user names.";
+          }
+          leaf pap-password {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Lmpif'";
+            type pub-type:password-extend {
+              length "1..268";
+            }
+            must "../pap-user-name and ../pap-password";
+            description
+              "The password is a string ranging from 1 to 128 characters for a simple password and 1 to 268 characters for a ciphertext password.";
+          }
+          leaf chap-user-name {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Lmpif'";
+            type string {
+              length "1..253";
+            }
+            description
+              "CHAP authentication on user names.";
+          }
+          leaf chap-password {
+            when "../../../../ifm:type = 'Serial' or ../../../../ifm:type = 'Pos' or ../../../../ifm:type = 'Pos-Trunk' or ../../../../ifm:type = 'Trunk-Serial' or ../../../../ifm:type = 'Lmpif'";
+            type pub-type:password-extend {
+              length "1..268";
+            }
+            description
+              "The password is a string ranging from 1 to 128 characters for a simple password and 1 to 268 characters for a ciphertext password.";
+          }
+        }
+        container interface-link {
+          description
+            "Configure PPP polling interval.";
+          leaf time-interval {
+            when "../../../../ifm:type != 'Pos-Trunk' and ../../../../ifm:type != 'Mp-group' and ../../../../ifm:type != 'Global-Mp-Group'";
+            type uint32 {
+              range "0..32767";
+            }
+            units s;
+            default "10";
+            description
+              "Polling interval.";
+          }
+        }
+        container ppp-link-info {
+          config false;
+          description
+            "Statistics of PPP link.";
+          leaf lcp-state {
+            type ppp-net-fsm-state;
+            description
+              "LCP state.";
+          }
+          leaf ipcp-state {
+            type ppp-net-fsm-state;
+            description
+            "IPCP state.";
+          }
+          leaf local-mru {
+            type uint32;
+            description
+            "Negotiated MRU value of the local device.";
+          }
+          leaf peer-mru {
+            type uint32;
+            description
+            "Negotiated MRU value of the peer device.";
+          }
+          leaf magic-number {
+            type uint32;
+            description
+            "Negotiated magic number.";
+          }
+          leaf negotiation-timeout {
+            type uint32;
+            units s;
+            description
+            "Timeout period of PPP negotiation.";
+          }
+          leaf peer-ip-address {
+            type inet:ipv4-address-no-zone;
+            description
+            "Negotiated 32-bit-mask IP address of the peer device.";
+          }
+          leaf mplscp-state {
+            type ppp-net-fsm-state;
+            description
+            "MPLSCP state.";
+          }
+          leaf osicp-state {
+            type ppp-net-fsm-state;
+            description
+            "OSICP state.";
+          }
+          leaf ip6cp-state {
+            type ppp-net-fsm-state;
+            description
+            "IP6CP state.";
+          }
+          leaf reuse-time {
+            type uint16;
+            units s;
+            description
+              "Dampening reuse time.";
+          }
+          container down-events {
+            description
+              "List of down events.";
+            list down-event {
+              key "link-type";
+              description
+                "Statistics of down events.";
+              leaf link-type {
+                type ppp-net-link-type;
+                description
+                  "Link type.";
+              }
+              leaf down-time1 {
+                type yang:date-and-time;
+                description
+                  "The 1st latest down time.";
+              }
+              leaf down-reason1 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 1st latest down reason.";
+              }
+              leaf down-time2 {
+                type yang:date-and-time;
+                description
+                  "The 2nd latest down time.";
+              }
+              leaf down-reason2 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 2nd latest down reason.";
+              }
+              leaf down-time3 {
+                type yang:date-and-time;
+                description
+                  "The 3rd latest down time.";
+              }
+              leaf down-reason3 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 3rd latest down reason.";
+              }
+              leaf down-time4 {
+                type yang:date-and-time;
+                description
+                  "The 4th latest down time.";
+              }
+              leaf down-reason4 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 4th latest down reason.";
+              }
+              leaf down-time5 {
+                type yang:date-and-time;
+                description
+                  "The 5th latest down time.";
+              }
+              leaf down-reason5 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 5th latest down reason.";
+              }
+              leaf down-time6 {
+                type yang:date-and-time;
+                description
+                  "The 6th latest down time.";
+              }
+              leaf down-reason6 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 6th latest down reason.";
+              }
+              leaf down-time7 {
+                type yang:date-and-time;
+                description
+                  "The 7th latest down time.";
+              }
+              leaf down-reason7 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 7th latest down reason.";
+              }
+              leaf down-time8 {
+                type yang:date-and-time;
+                description
+                  "The 8th latest down time.";
+              }
+              leaf down-reason8 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 8th latest down reason.";
+              }
+              leaf down-time9 {
+                type yang:date-and-time;
+                description
+                  "The 9th latest down time.";
+              }
+              leaf down-reason9 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 9th latest down reason.";
+              }
+              leaf down-time10 {
+                type yang:date-and-time;
+                description
+                  "The 10th latest down time.";
+              }
+              leaf down-reason10 {
+                type string {
+                  length "1..100";
+                }
+                description
+                  "The 10th latest down reason.";
+              }
+            }
+          }
+        }
+      }
+      container multilink-ppp {
+        when "../../ifm:type='Mp-group' or ../../ifm:type='Global-Mp-Group'";
+        description
+          "Configure the interface that bundles multiple interfaces into a logical interface.";
+        container mp-base {
+          description
+            "Configure multilink PPP base.";
+          leaf fragment-size {
+            type mp-fragment-size;
+            default "no-fragment";
+            description
+              "Set the size of an MP-group fragment.";
+          }
+          leaf minimum-threshold {
+            type uint8 {
+              range "1..32";
+            }
+            default "1";
+            description
+              "Minimum number of member links in an MP-group.";
+          }
+          leaf mrru {
+            type uint32 {
+              range "328..9216";
+            }
+            default "1500";
+            description
+              "Set the MP Max-Receive-Reconstructed Unit (MRRU) for an MP-group.";
+          }
+          leaf short-sequence {
+            when "../../../../ifm:type='Mp-group'";
+            type ppp-enable;
+            default "disable";
+            description
+              "Enable/disable short-sequence negotiation.";
+          }
+          leaf discriminator {
+            type ppp-enable;
+            default "enable";
+            description
+              "Enable/disable the MP discriminator negotiation.";
+          }
+        }
+        container damping {
+          when "../../../ifm:type='Mp-group'";
+          must "detect-time < damping-time";
+          presence "Enable the function of suppressing the links in an MP-group.";
+          description
+            "Enable/disable the function of suppressing the links in an MP-group.";
+          leaf detect-time {
+            type uint32 {
+              range "30..3600";
+            }
+            default "30";
+            description
+              "MP-group detect time.";
+          }
+          leaf flap-count {
+            type uint16 {
+              range "1..64";
+            }
+            default "1";
+            description
+              "Maximum number of flappings allowed in an MP-group within the detect time.";
+          }
+          leaf damping-time {
+            type uint32 {
+              range "60..86400";
+            }
+            default "60";
+            description
+              "Time during which the MP-group links must be Up before being unsuppressed.";
+          }
+        }
+        container mp-members {
+          description
+            "List of MP-group member interfaces.";
+          list mp-member {
+            key "member-interface";
+            max-elements  "32";
+            description
+              "Configure MP-group member interface.";
+            leaf member-interface {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()][ifm:link-protocol='ppp']/ifm:type='Serial' and ../../../../../ifm:type='Mp-group') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()][ifm:link-protocol='ppp']/ifm:type='Trunk-Serial' and ../../../../../ifm:type='Global-Mp-Group')";
+              description
+                "Name of an MP-group member interface.";
+            }
+            leaf physical-status {
+              type mp-member-physical-state;
+              config false;
+              description
+                "Physical status of an MP-group member interface.";
+            }
+            leaf protocol-status {
+              type mp-member-protocol-state;
+              config false;
+              description
+                "Protocol status of an MP-group member interface.";
+            }
+          }
+        }
+        container mp-group-info {
+          config false;
+          description
+            "Statistics of an MP-group interface.";
+          leaf valid-member-links {
+            type uint32;
+            description
+              "Number of valid MP-group member interfaces.";
+          }
+          leaf valid-member-slots {
+            type uint32;
+            description
+              "Number of valid MP-group member slots.";
+          }
+          leaf lost-fragments {
+            type uint32;
+            description
+              "Number of lost received fragments.";
+          }
+          leaf reordered-fragments {
+            type uint32;
+            description
+              "Number of reassembled received packets.";
+          }
+          leaf unassigned-fragments {
+            type uint32;
+            description
+              "Number of received fragments waiting to be reassembled.";
+          }
+          leaf interleaved-fragments {
+            type uint32;
+            description
+              "Number of sent LFI fragments.";
+          }
+          leaf received-sequences {
+            type uint32;
+            description
+              "Number of received sequences.";
+          }
+          leaf sent-sequences {
+            type uint32;
+            description
+              "Number of sent sequences.";
+          }
+        }
+      }
+    }
+  }
+}

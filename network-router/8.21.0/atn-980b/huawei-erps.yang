@@ -1,0 +1,618 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-erps {
+  namespace "urn:huawei:yang:huawei-erps";
+  prefix erps;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-l2pt {
+    prefix l2pt;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Ethernet ring protection switching.";
+  revision 2020-05-26 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "erps";
+  typedef erps-version {
+    type enumeration {
+      enum "v1" {
+        value 1;
+        description
+          "ERPS ring version 1.";
+      }
+      enum "v2" {
+        value 2;
+        description
+          "ERPS ring version 2.";
+      }
+    }
+    description
+      "ERPS version.";
+  }
+  typedef erps-ring-mode {
+    type enumeration {
+      enum "major" {
+        value 0;
+        description
+          "ERPS major ring.";
+      }
+      enum "sub" {
+        value 1;
+        description
+          "ERPS sub-ring.";
+      }
+    }
+    description
+      "ERPS ring mode.";
+  }
+  typedef erps-enable-state {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable.";
+      }
+    }
+    description
+      "ERPS state.";
+  }
+  typedef erps-port-role {
+    type enumeration {
+      enum "common" {
+        value 0;
+        description
+          "Common port.";
+      }
+      enum "neighbour" {
+        value 1;
+        description
+          "RPL neighbour port.";
+      }
+      enum "owner" {
+        value 2;
+        description
+          "RPL owner port.";
+      }
+    }
+    description
+      "ERPS port role.";
+  }
+  typedef erps-port-status {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown type.";
+      }
+      enum "discarding" {
+        value 1;
+        description
+          "Discarding type.";
+      }
+      enum "forwarding" {
+        value 3;
+        description
+          "Forwarding type.";
+      }
+    }
+    description
+      "ERPS port status.";
+  }
+  typedef erps-signal-status {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Signal status is unknown.";
+      }
+      enum "failed" {
+        value 1;
+        description
+          "Signal status is failed.";
+      }
+      enum "non-failed" {
+        value 2;
+        description
+          "Signal status is non-failed.";
+      }
+    }
+    description
+      "ERPS port signal status.";
+  }
+  typedef erps-machine-state {
+    type enumeration {
+      enum "idle" {
+        value 0;
+        description
+          "Idle status.";
+      }
+      enum "protection" {
+        value 1;
+        description
+          "Protection status.";
+      }
+      enum "manualswitch" {
+        value 2;
+        description
+          "ManualSwitch status.";
+      }
+      enum "forcedswitch" {
+        value 3;
+        description
+          "ForcedSwitch status.";
+      }
+      enum "pending" {
+        value 4;
+        description
+          "Pending status.";
+      }
+    }
+    description
+      "ERPS machine status.";
+  }
+  typedef erps-protect-switch-mode {
+    type enumeration {
+      enum "forced" {
+        value 1;
+        description
+          "Forced switch mode.";
+      }
+      enum "manual" {
+        value 2;
+        description
+          "Manual switch mode.";
+      }
+    }
+    description
+      "ERPS protect switch mode.";
+  }
+  container erps {
+    description
+      "Ethernet ring protection switching.";
+    container rings {
+      description
+        "List of ERPS rings.";
+      list ring {
+        must "count(/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/erps:erps-attribute/erps:rings/erps:ring[erps:id=current()/id])<=2";
+        key "id";
+        unique "control-vlan";
+        description
+          "Configure ERPS ring management.";
+        leaf id {
+          type uint32 {
+            range "1..255";
+          }
+          description
+            "ERPS ring ID.";
+        }
+        leaf description {
+          type string {
+            length "1..80";
+          }
+          description
+            "Description of an ERPS ring.";
+          ext:dynamic-default;
+        }
+        leaf control-vlan {
+          type uint16 {
+            range "1..4094";
+          }
+          ext:operation-exclude update|delete {
+              when "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/erps:erps-attribute/erps:rings/erps:ring[erps:id=current()/../id] ";
+              description "The 'control-VLAN' cannot be updated or deleted, when a port is added to the ring.";
+          }
+          must "/vlan:vlan/vlan:vlans/vlan:vlan[vlan:id=current()]/vlan:mac-learning='disable'";
+          must "not (/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/l2pt:bpdu-tunnel[l2pt:vlan-id = current()])";
+          description
+            "Control VLAN ID.";
+        }
+        leaf protected-instance-list {
+          type pub-type:id-range {
+            ext:value-range '0..4094';
+            pattern '((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])?(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))?(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))?))*)|((([\\+|\\-](409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))|([\\+|\\-]\\((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])\\)))?(,(([\\+|\\-](409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))|([\\+|\\-]\\((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])\\))))*)';
+          }
+          ext:operation-exclude update|delete {
+              when "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/erps:erps-attribute/erps:rings/erps:ring[erps:id=current()/../id] ";
+              description "The 'protected-instance-list' cannot be updated or deleted, when a port is added to the ring.";
+          }
+          description
+            "Protect instance ID of an ERPS ring.";
+        }
+        leaf wait-restore-timer {
+          type uint32 {
+            range "1..12";
+          }
+          units "min";
+          default "5";
+          description
+            "Wait-to-restore time.";
+        }
+        leaf guard-timer {
+          type uint32 {
+            range "1..200";
+          }
+          units "cs";
+          default "200";
+          description
+            "Guard time for blocking received RAPS packets.";
+        }
+        leaf holdoff-timer {
+          type uint32 {
+            range "0..100";
+          }
+          units "ds";
+          default "0";
+          description
+            "Holdoff time.";
+        }
+        leaf raps-mel {
+          type uint32 {
+            range "0..7";
+          }
+          default "7";
+          description
+            "Maintenance entity group level for ring automatic protection switching.";
+        }
+        leaf version {
+          type erps-version;
+          default "v1";
+          description
+            "Basic version of an ERPS ring.";
+        }
+        leaf tc-protection-interval {
+          type uint16 {
+            range "1..600";
+          }
+          units "s";
+          default "2";
+          description
+            "Topology change notification interval.";
+        }
+        leaf tc-protection-threshold {
+          type uint16 {
+            range "1..255";
+          }
+          default "3";
+          description
+            "Topology change notification threshold.";
+        }
+        leaf revertive-enable {
+          type boolean;
+          must "../revertive-enable='true' or ../version='v2'";
+          default "true";
+          description
+            "Enable/disable revertive status of an ERPS ring.";
+        }
+        leaf ring-role {
+          type erps-ring-mode;
+          must "../ring-role='major' or ../version='v2'";
+          default "major";
+          description
+            "Role information of an ERPS ring.";
+        }
+        leaf virtual-channel-enable {
+          type boolean;
+          must "../virtual-channel-enable='false' or (../version='v2' and ../ring-role='sub')";
+          default "false";
+          description
+            "Enable/disable status of a virtual channel.";
+        }
+        leaf tc-notify-ring {
+          type pub-type:id-range {
+            ext:value-range '1..255';
+              pattern '((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1})?(-(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1}))?(,((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1})(-(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1}))?))*)|((([\\+|\\-](25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1}))|([\\+|\\-]\\((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1})-(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1})\\)))?(,(([\\+|\\-](25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1}))|([\\+|\\-]\\((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1})-(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]{0,1})\\))))*)';
+          }
+          must "../version='v2'";
+          description
+            "Ring ID for TC notification.";
+        }
+        container runing-info {
+          config false;
+          description
+            "Statistics of ERPS running status.";
+          leaf wtr-timer {
+            type uint32;
+            units "s";
+            description
+              "Value of the actual Wtr running time.";
+          }
+          leaf guard-timer {
+            type uint32;
+            units "10 ms";
+            description
+              "Value of the actual Guard running time.";
+          }
+          leaf holdoff-timer {
+            type uint32;
+            units "100 ms";
+            description
+              "Value of the actual Holdoff running time.";
+          }
+          leaf ring-state {
+            type erps-machine-state;
+            description
+              "Ring running state.";
+          }
+          leaf topo-last-change-time {
+            type string {
+              length "1..65";
+            }
+            description
+              "Topo last change time.";
+          }
+          leaf fsport {
+            type string {
+              length "1..151";
+            }
+            description
+              "Forced switch port.";
+          }
+          leaf msport {
+            type string {
+              length "1..151";
+            }
+            description
+              "Manual switch port.";
+          }
+          leaf wtb-timer {
+            type uint32;
+            description
+              "Value of the WTB timer.";
+          }
+        }
+        container erps-port-infos {
+          config false;
+          description
+          "List of interface in ERPS ring.";
+          list erps-port-info {
+            key "interface-name";
+            config false;
+            description
+              "Statistics of interface in ERPS ring.";
+            leaf interface-name {
+              type pub-type:if-name;
+              description
+                "Interface name in ERPS ring.";
+            }
+            leaf port-status {
+              type erps-port-status;
+              description
+                "Discarding or forwarding of port status in ERPS ring.";
+            }
+            leaf signal-status {
+              type erps-signal-status;
+              description
+               "Whether the port signals on the ERPS ring are failed.";
+            }
+            container erps-statics {
+              config false;
+              description
+                "Statistics of sent and received ERPS PDUs on a port.";
+              leaf rx-sf-pkts {
+                type uint32;
+                description
+                  "Receive statistics about R-APS (SF) messages.";
+              }
+              leaf tx-sf-pkts {
+                type uint32;
+                description
+                  "Sent statistics about R-APS (SF) messages.";
+              }
+              leaf rx-nr-pkts {
+                type uint32;
+                description
+                  "Receive statistics about R-APS (NR) messages.";
+              }
+              leaf tx-nr-pkts {
+                type uint32;
+                description
+                  "Sent statistics about R-APS (NR) messages.";
+              }
+              leaf rx-nrrb-pkts {
+                type uint32;
+                description
+                  "Receive statistics about R-APS (NR, RB) messages.";
+              }
+              leaf tx-nrrb-pkts {
+                type uint32;
+                description
+                  "Sent statistics about R-APS (NR, RB) messages.";
+              }
+              leaf rx-fs-pkts {
+                type uint32;
+                description
+                  "Receive statistics about R-APS (FS) messages.";
+              }
+              leaf tx-fs-pkts {
+                type uint32;
+                description
+                  "Sent statistics about R-APS (FS) messages.";
+              }
+              leaf rx-ms-pkts {
+                type uint32;
+                description
+                  "Receive statistics about R-APS (MS) messages.";
+              }
+              leaf tx-ms-pkts {
+                type uint32;
+                description
+                  "Sent statistics about R-APS (MS) messages.";
+              }
+              leaf rx-event-pkts {
+                type uint32;
+                description
+                  "Receive statistics about event messages.";
+              }
+              leaf tx-event-pkts {
+                type uint32;
+                description
+                  "Sent statistics about event messages.";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc protect-switch {
+    description
+      "Configure the port blocking mode for an ERPS port.";
+    ext:node-ref "/erps:erps/erps:rings/erps:ring";
+    input {
+      leaf if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf ring-id {
+        type leafref {
+          path "/erps:erps/erps:rings/erps:ring/erps:id";
+        }
+        mandatory true;
+        description
+          "ERPS ring ID.";
+      }
+      leaf mode {
+        type erps-protect-switch-mode;
+        mandatory true;
+        description
+          "ERPS protect switch mode.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute"{
+    description
+      "Configure ERPS attribute on layer 2 port.";
+    container erps-attribute {
+      must "../ethernet:link-type='hybrid' or ../ethernet:link-type='trunk'";
+      description
+        "Configure ERPS attribute on layer 2 port.";
+      container rings {
+        description
+          "List of ERPS layer 2 ports.";
+        list ring{
+          ext:operation-exclude delete {
+            when "../../../../../../../admin-status='up'";
+            description "The 'ring' cannot be deleted, when the port state is up.";
+          }
+          must "/erps:erps/erps:rings/erps:ring[erps:id = current()/id]/erps:control-vlan and /erps:erps/erps:rings/erps:ring[erps:id = current()/id]/erps:protected-instance-list";
+          key "id";
+          max-elements "2";
+          description
+            "Configure ERPS attribute on layer 2 port.";
+          leaf id {
+            type leafref {
+              path "/erps:erps/erps:rings/erps:ring/erps:id";
+            }
+            description
+              "ERPS ring ID.";
+          }
+          leaf port-role {
+            type erps-port-role;
+            ext:operation-exclude update|delete {
+              when "../../../../../../../admin-status='up'";
+              description "The 'port-role' cannot be updated or deleted, when the port state is up.";
+            }
+            must "not(../port-role='neighbour') or /erps:erps/erps:rings/erps:ring[erps:id = current()/../id]/erps:version='v2'";
+            default "common";
+            description
+              "Role of an ERPS ring port.";
+          }
+          container cfm-tracks{
+            description
+            "List of Configure ERPS with Ethernet CFM.";
+            list cfm-track{
+            key "md-name ma-name mep-id rmep-id";
+            max-elements "1";
+            description
+              "Configure ERPS with Ethernet CFM.";
+              leaf md-name {
+                type leafref {
+                  path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+                }
+              description
+                "Name of a maintenance domain.";
+              }
+              leaf ma-name {
+                type leafref {
+                  path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:name";
+                }
+                description
+                  "Name of a maintenance association.";
+              }
+              leaf mep-id {
+                type leafref {
+                  path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:id";
+                }
+                description
+                  "ID of a MEP.";
+              }
+              leaf rmep-id {
+                type leafref {
+                  path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:rmeps/y1731:rmep/y1731:id";
+                }
+                description
+                "ID of a remote MEP.";
+              }
+          }
+          }
+        }
+      }
+      container notify-subif {
+        when "../rings/ring";
+        description
+          "Configure association between ERPS and sub-interfaces.";
+        leaf notify-vpls {
+          type erps-enable-state;
+          default "disable";
+          description
+            "Associate ERPS with sub-interface bound to the VSI.";
+        }
+        leaf notify-bd {
+          type erps-enable-state;
+          default "disable";
+          description
+            "Associate ERPS with sub-interface bound to the BD.";
+        }
+      }
+    }
+  }
+}

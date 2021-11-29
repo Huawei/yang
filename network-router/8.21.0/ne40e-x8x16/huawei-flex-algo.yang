@@ -1,0 +1,204 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-flex-algo {
+  namespace "urn:huawei:yang:huawei-flex-algo";
+  prefix flex-algo;
+
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-te {
+    prefix te;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This YANG module defines the essential types for the
+        management of Flex-Algorithm for IGP.";
+
+  revision 2021-08-26 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+  ext:task-name "flexalgo";
+
+  typedef flex-algo-metic-type {
+    type enumeration {
+      enum "igp" {
+        value 0;
+        description
+          "IGP metric type.";
+      }
+      enum "link-delay" {
+        value 1;
+        description
+          "Delay metric type.";
+      }
+      enum "te" {
+        value 2;
+        description
+          "TE metric type.";
+      }
+    }
+    description
+      "Flexible algorithm metric type.";
+  }
+
+  grouping fad-definition {
+    description
+      "Flexible algorithm definition.";
+    leaf flex-algo-id {
+      type uint8 {
+        range "128..255";
+      }
+      description
+        "Flexible algorithm identifier.";
+    }
+    leaf metric-type {
+      type flex-algo-metic-type;
+      default "igp";
+      description
+        "Indicates which is the corresponding metric type for this algorithm.";
+    }
+    leaf priority {
+      type uint8 {
+        range "0..255";
+      }
+      default "128";
+      description
+        "Indicates the priority for this algorithm.";
+    }
+    container extended-admin-group {
+      description
+        "Configure extended admin group for this flexible algorithm.";
+      choice flex-algo-affinity-include {
+        description
+          "Configure affinities for this flexible algorithm.";
+        case include-all {
+          description
+            "Configure include-all type affinity name.";
+            container include-all-affinitys {
+              description
+                "List of affinity names of the flexible algorithm.";
+              list include-all-affinity {
+                key "name";
+                max-elements 32;
+                description
+                  "Configure affinity names.";
+                leaf name {
+                  type leafref {
+                    path "/te:te/te:affinity-define/te:affinity-mappings/te:affinity-mapping/te:attribute-name";
+                  }
+                  must "(not(../../../../extended-admin-group/exclude-affinitys/exclude-affinity[name=current()]))";
+                  description
+                    "Configure affinity names that can be refer to a flexible algorithm to include all."; 
+                }
+              }
+            }
+        }
+        case include-any {
+          description
+            "Configure include-any type affinity name.";
+            container include-any-affinitys{
+              description
+                "List of affinity names of the flexible algorithm.";
+              list include-any-affinity {
+                key "name";
+                max-elements 32;
+                description
+                  "Configure affinity names.";
+                leaf name {
+                  type leafref {
+                    path "/te:te/te:affinity-define/te:affinity-mappings/te:affinity-mapping/te:attribute-name";
+                  }
+                  must "(not(../../../../extended-admin-group/exclude-affinitys/exclude-affinity[name=current()]))";
+                  description
+                    "Configure affinity names that can be refer to a flexible algorithm to include any."; 
+                }
+              }
+            }
+        }
+      }
+      container exclude-affinitys {
+        description
+          "List of affinity names of the flexible algorithm.";
+        list exclude-affinity {
+          key "name";
+          max-elements 32;
+          description
+            "Configure affinity name to exclude.";
+          leaf name {
+            type leafref {
+              path "/te:te/te:affinity-define/te:affinity-mappings/te:affinity-mapping/te:attribute-name";
+            }
+            description
+              "Configure affinity names that can be refer to a flexible algorithm to exclude.";
+          }
+        }
+      }
+    }
+  }
+
+  augment /ni:network-instance/ni:instances/ni:instance {
+    description
+      "Flexible algorithms definition.";
+    container flex-algo-defines {
+      when "../ni:name='_public_'";
+      description
+        "List of flexible algorithms definition.";
+      list flex-algo-define {
+        key "flex-algo-id";
+        description
+          "Configure a flexible algorithm.";
+        uses fad-definition;
+      }
+    }
+  }
+
+  augment /ni:network-instance/ni:instances/ni:instance { 
+    description
+      "Flexible algorithm color mapping information.";
+    container flex-algo-color-mapping {
+      when "../ni:name='_public_'";
+      presence "The Flex-Algo and color mapping view.";
+      description
+        "Enable/disable the flexible algorithm and color mapping.";
+      container flex-algo-color-maps {
+        description
+          "List of flexible algorithm color map information.";
+        list flex-algo-color-map {
+          key "color-index";
+          description
+            "Configure flexible algorithm color map.";
+          leaf color-index {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Color index.";
+          }
+          leaf flex-algo-id {
+            type uint8 {
+              range "128..255";
+            }
+            mandatory true;
+            description
+              "Flexible algorithm identifier.";
+          }
+        }
+      }
+    }
+  }
+}

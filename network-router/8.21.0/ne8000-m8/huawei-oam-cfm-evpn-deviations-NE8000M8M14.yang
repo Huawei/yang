@@ -1,0 +1,51 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-evpn-deviations-NE8000M8M14 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-oam-cfm-evpn-deviations-NE8000M8M14";
+  prefix oam-cfm-evpn-devs-NE8000M8M14;
+
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-oam-cfm-evpn {
+    prefix oam-cfm-evpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+
+  revision 2020-09-18 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef cfm-bind-evpn-type-deviations {
+    type enumeration {
+      enum EVPN-CFM {
+        value 2;
+        description
+          "Type that EVPN transfers fault information to CFM.";
+      }
+    }
+    description
+      "Binding type.";
+  }
+
+  deviation "/oammgr:oammgr/oam-cfm-evpn:cfm-bind-evpns/oam-cfm-evpn:cfm-bind-evpn/oam-cfm-evpn:bind-type" {
+    deviate replace {
+      type oam-cfm-evpn-devs-NE8000M8M14:cfm-bind-evpn-type-deviations;
+    }
+  }
+}

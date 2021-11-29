@@ -1,0 +1,424 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bmp {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bmp";
+  prefix bmp;
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ssl {
+    prefix ssl;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "BGP Monitoring Protocol.";
+  revision 2021-09-04 {
+    description
+      "Update revision.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-03-02 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef monitor-af-type {
+    type enumeration {
+      enum "ipv4uni" {
+        value 1;
+        description
+          "IPv4 unicast address family.";
+      }
+      enum "ipv4vpn" {
+        value 3;
+        description
+          "IPv4 VPN address family.";
+      }
+      enum "ipv4labeluni" {
+        value 4;
+        description
+          "IPv4 labeled address family.";
+      }
+      enum "ipv6uni" {
+        value 5;
+        description
+          "IPv6 unicast address family.";
+      }
+      enum "ipv6vpn" {
+        value 6;
+        description
+          "IPv6 VPN address family.";
+      }
+    }
+    description
+      "The address family of BMP monitor.";
+  }
+  typedef monitor-vpn-af-type {
+    type enumeration {
+      enum "ipv4uni" {
+        value 1;
+        description
+          "IPv4 unicast address family.";
+      }
+      enum "ipv4labeluni" {
+        value 4;
+        description
+          "IPv4 labeled address family.";
+      }
+      enum "ipv6uni" {
+        value 5;
+        description
+          "IPv6 unicast address family.";
+      }
+    }
+    description
+      "The address family of BMP monitor.";
+  }
+
+  typedef rib-type {
+    type enumeration {
+      enum "ribin" {
+        value 0;
+        description
+          "Routes received from peers.";
+      }
+      enum "ribout" {
+        value 1;
+        description
+          "Routes advertised to peers.";
+      }
+    }
+    description
+      "The type of routing information base.";
+  }
+
+  typedef route-policy-mode {
+    type enumeration {
+      enum "null" {
+        value 0;
+        description
+          "Do not configure the policy mode.";
+      }
+      enum "pre-policy" {
+        value 1;
+        description
+          "Regardless of whether the route match the export policy.";
+      }
+      enum "post-policy" {
+        value 2;
+        description
+          "The route that match the route policy.";
+      }
+    }
+    description
+      "The type of policy mode.";
+  }
+
+  typedef peers-route-policy-mode {
+    type enumeration {
+      enum "pre-policy" {
+        value 1;
+        description
+          "Regardless of whether the route match the export policy.";
+      }
+      enum "post-policy" {
+        value 2;
+        description
+          "The route that match the route policy.";
+      }
+    }
+    description
+      "The type of policy mode.";
+  }
+  
+  typedef rib-type-vpn {
+    type enumeration {
+      enum "ribin" {
+        value 0;
+        description
+          "Routes received from peers.";
+      }
+      enum "ribout" {
+        value 1;
+        description
+          "Routes advertised to peers.";
+      }
+      enum "locrib" {
+        value 2;
+        description
+          "Routes received from peers and locally imported routes.";
+      }
+    }
+    description
+      "The type of routing information base.";
+  }
+  grouping route-mode {
+    description
+      "The BMP monitor route configuration.";
+    leaf adj-rib-mode {
+      type rib-type;
+      description
+        "Route storage type for BMP to monitor.";
+    }
+    leaf policy-mode {
+      type route-policy-mode;
+      must "../policy-mode != 'null'";
+      description
+        "Policy mode for BMP to monitor.";
+    }
+  }
+
+  grouping peers-route-mode {
+    description
+      "The BMP monitor route configuration.";
+    leaf adj-rib-mode {
+      type rib-type;
+      description
+        "Route storage type for BMP to monitor.";
+    }
+    leaf policy-mode {
+      type peers-route-policy-mode;
+      description
+        "Policy mode for BMP to monitor.";
+    }
+  }
+  
+  container bmp {
+    description
+      "Configure BMP.";
+    container bmp {
+      presence "Enable BMP.";
+      description
+        "Enable/disable BMP globally.";
+      leaf statistics-timer {
+        type uint16 {
+          range "15..65535";
+        }
+        units "s";
+        default "3600";
+        description
+          "Configure a statistic report timer.";
+      }
+      leaf interface-address {
+        type inet:ipv4-address-no-zone;
+        description
+          "Specifies a source IP address to set up a BMP session.";
+      }
+    }
+  }
+  augment /ni:network-instance/ni:instances/ni:instance {
+    description
+      "BMP session configuration.";
+    container bmp {
+      when "/bmp:bmp/bmp:bmp";
+      description
+        "Configure BMP.";
+      container sessions {
+        description
+          "List of BMP session.";
+        list session {
+          key "remote-address name";
+          max-elements 4;
+          description
+            "Configure BMP session.";
+          leaf remote-address {
+            type inet:ip-address-no-zone;
+            description
+              "Specifies a BMP session address for a BMP device to set up a TCP connection with a monitoring server.";
+          }
+          leaf name {
+            type string {
+              length "1..31";
+            }
+            description
+              "Specifies a session alias. When the device needs to establish multiple TCP connections with the same monitoring server through different port numbers, specify session aliases for differentiation.";
+          }
+          leaf ssl-policy-name {
+            when "not (contains(../remote-address, ':'))";
+            type leafref {
+              path "/ssl:ssl/ssl:ssl-policys/ssl:ssl-policy/ssl:policy-name";
+            }
+            description
+              "Configures a SSL policy for the BMP.";
+          }
+          leaf interface-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Name of a source interface that sends BMP packets. By default, the outbound interface of a BMP packet serves as the source interface of a BMP packet. To ensure that a router can send BMP packets when a physical interface fails, you can configure the source interface that sends BMP packets as a loopback interface. When using the loopback interface as the source interface, note the following points: The address of the loopback interface of the BMP peer must be reachable.";
+          }
+          leaf interface-address {
+            type inet:ip-address-no-zone;
+            must "(contains(., ':') and contains(../remote-address, ':')) or (not (contains(., ':')) and not (contains(../remote-address, ':')))";
+            description
+              "Address of a source interface that sends BMP packets. By default, the outbound interface of a BMP packet serves as the source interface of a BMP packet. To ensure that a router can send BMP packets when a physical interface fails, you can configure the source interface that sends BMP packets as a loopback interface. When using the loopback interface as the source interface, note the following points: The address of the loopback interface of the BMP peer must be reachable.";
+          }
+          leaf tcp-port {
+            type uint16 {
+              range "1..65535";
+            }
+            description
+              "TCP connection port.";
+          }
+          choice tcp-authentication-type {
+            when "tcp-port";
+            description
+              "Set password or key-chain name.";
+            case password {
+              description
+                "Set password.";
+              leaf password-text {
+                type pub-type:password-extend;
+                description
+                  "The TCP connection password is a string of characters, spaces not supported. If only a space is input, the password is cleared. The password is a string ranging from 1 to 255 characters for a plaintext password and 20 to 432 characters for a cipher-text password. The two ends must have the same password; otherwise, TCP connection cannot be established between the two ends.";
+              }
+            }
+            case key-chain {
+              description
+                "Set key-chain name.";
+              leaf key-chain-name {
+                type string {
+                  length "1..47";
+                  pattern '[^A-Z]+';
+                }
+                description
+                  "Specifies the name of the Keychain authentication.";
+              }
+            }
+          }
+          container monitor-all-vpn {
+            presence "List of monitor all the VPN instances.";
+            description
+              "Configure monitor all the VPN instances.";
+            container route-modes {
+              description
+                "List of monitoring modes.";
+              list route-mode {
+                key "address-family adj-rib-mode policy-mode";
+                description
+                  "Configure monitoring mode.";
+                leaf address-family {
+                  type monitor-vpn-af-type;
+                  description
+                    "Address family for BMP to monitor.";
+                }
+                uses route-mode;
+              }
+            }
+          }
+          container monitor-vpns {
+            description
+              "List of monitor specific VPN instances.";
+            list monitor-vpn {
+              key "bgp-vpn-name";
+              description
+                "Configure monitor a specific VPN instance.";
+              leaf bgp-vpn-name {
+                type leafref {
+                  path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+                }
+                description
+                  "Name of a BGP VPN instance.";
+              }
+              container route-modes {
+                description
+                  "List of monitoring modes.";
+                list route-mode {
+                  key "address-family adj-rib-mode policy-mode";
+                  description
+                    "Configure monitoring mode.";
+                  leaf address-family {
+                    type monitor-af-type;
+                    must "((../../../bgp-vpn-name != '_public_') and (../address-family !='ipv4vpn' and ../address-family !='ipv6vpn')) or (../../../bgp-vpn-name = '_public_')";
+                    description
+                      "Address family for BMP to monitor.";
+                  }
+                  leaf adj-rib-mode {
+                    type rib-type-vpn;
+                    description
+                      "Route storage type for BMP to monitor.";
+                  }
+                  leaf policy-mode {
+                    type route-policy-mode;
+                    must "(../policy-mode != 'null' and ../adj-rib-mode != 'locrib') or (../policy-mode = 'null' and ../adj-rib-mode = 'locrib')";
+                    description
+                      "Policy mode for BMP to monitor.";
+                  }
+                  leaf add-path {
+                    when "(../policy-mode ='null') and (../adj-rib-mode ='locrib')";
+                    type boolean;
+                    default "false";
+                    description
+                      "Enable/disable the device to send statistics about Add-Path routes of BGP peers to the monitoring server.";
+                  }
+                }
+              }
+            }
+          }
+          container monitor-peers {
+            description
+              "List of monitor specific peers.";
+            list monitor-peer {
+              key "bgp-vpn-name address";
+              description "Configure monitor a specific peer.";
+              leaf bgp-vpn-name {
+                type leafref {
+                  path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+                }
+                description
+                  "VPN instance name.";
+              }
+              leaf address {
+                type inet:ip-address-no-zone;
+                description
+                  "IP address of a BGP peer.";
+              }
+              container route-modes {
+                description
+                  "List of monitoring modes.";
+                list route-mode {
+                  key "address-family adj-rib-mode policy-mode";
+                  description
+                    "Configure monitoring mode.";
+                  leaf address-family {
+                    type monitor-af-type;
+                    must "((../../../bgp-vpn-name != '_public_') and (../address-family !='ipv4vpn' and ../address-family !='ipv6vpn')) or (../../../bgp-vpn-name = '_public_')";
+                    description
+                      "Address family for BMP to monitor.";
+                  }
+                  uses peers-route-mode;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  ext:task-name "bmp";
+}

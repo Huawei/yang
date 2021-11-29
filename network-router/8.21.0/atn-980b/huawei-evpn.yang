@@ -1,0 +1,2779 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpn {
+  namespace "urn:huawei:yang:huawei-evpn";
+  prefix evpn;
+  import huawei-acl {
+    prefix acl;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-evpl {
+    prefix evpl;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  include huawei-evpn-type;
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "EVPN configuration.";
+  revision 2021-08-12 {
+    description
+      "Add leaf nexthop-priority in container vpws-evpn.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-04 {
+    description
+      "Add container evpl-peer-info, add leaf local-ctrl-word in container evpl-info.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-04-20 {
+    description
+      "Add node tunnel-policy-name, modify descriptions of YANG module.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "evpnbgp";
+  grouping mac-duplication-infos-type {
+    description
+      "Information aggregation about MAC addresses that are duplicate in an EVPN instance.";
+    list mac-duplication-info {
+      key "mac-address bd-id";
+      description
+        "Operational state of information about MAC addresses that are duplicate in an EVPN instance.";
+      leaf mac-address {
+        type pub-type:mac-address;
+        description
+          "MAC address.";
+      }
+      leaf bd-id {
+        type uint32 {
+          range "1..16777215";
+        }
+        description
+          "Bridge domain ID.";
+      }
+      leaf bd-tag {
+        type uint32 {
+          range "1..4094";
+        }
+        description
+          "Bridge domain label.";
+      }
+      leaf dampened-times {
+        type uint8;
+        description
+          "Number of times that MAC duplication occurs.";
+      }
+      leaf suppress-flag {
+        type boolean;
+        description
+          "Flag indicating whether MAC duplication is suppressed.";
+      }
+      leaf last-source {
+        type string {
+          length "1..100";
+        }
+        description
+          "Source port.";
+      }
+      leaf peer-ip {
+        type inet:ipv4-address-no-zone;
+        description
+          "Peer IP address of a PW.";
+      }
+      leaf vc-id {
+        type uint32 {
+          range "1..4294967295";
+        }
+        description
+          "PW ID used to uniquely identify a VC.";
+      }
+      leaf vc-type {
+        type evpn:l2vpn-encapsulate-type;
+        description
+          "Encapsulation type of a PW.";
+      }
+      leaf suppress-time {
+        type yang:date-and-time;
+        description
+          "Date and time when MAC duplication was suppressed.";
+      }
+    }
+  }
+  grouping label-stacks-type {
+    description
+      "Label stack.";
+    list label-stack {
+      key "label-stack level";
+      description
+        "Operational data of the EVPN label stack.";
+      leaf label-stack {
+        type uint32 {
+          range "1..4294967295";
+        }
+        description
+          "Label stack index.";
+      }
+      leaf level {
+        type uint32 {
+          range "1..4294967295";
+        }
+        description
+          "Label level.";
+      }
+      leaf type {
+        type string {
+          length "1..20";
+        }
+        description
+          "Label type.";
+      }
+      leaf label {
+        type string {
+          length "1..20";
+        }
+        description
+          "Label value.";
+      }
+      leaf out-interface {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Outbound interface name.";
+      }
+    }
+  }
+  grouping routing-table-type {
+    description
+      "Routing table infomation.";
+    leaf nexthop {
+      type inet:ip-address-no-zone;
+      description
+        "Next-hop address to which packets are sent.";
+    }
+    leaf local-preference {
+      type uint32;
+      description
+        "Local priority. The attribute is only fit for the routes from IBGP peer, not suit for which of EBGP peer.";
+    }
+    leaf protocol-preferred-value {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+        "Preferred value of a protocol.";
+    }
+    leaf route-preference {
+      type uint8 {
+        range "0..255";
+      }
+      description
+        "Preference of a route.";
+    }
+    leaf route-worse-reason {
+      type string {
+        length "1..50";
+      }
+      description
+        "Reason why a route is not selected.";
+    }
+    leaf as-path {
+      type string {
+        length "1..300";
+      }
+      description
+        "List of the ASs that packets pass through.";
+    }
+    leaf origin {
+      type evpn:bgp-origin-type;
+      description
+        "Origin of a route.";
+    }
+    leaf med {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+        "Route MED in the attribute node. The attribute is only fit for the routes from EBGP peer, not suit for which of IBGP peer.";
+    }
+    leaf route-flag {
+      type string {
+        length "1..100";
+      }
+      description
+        "Route flag that contains a string of characters.";
+    }
+    leaf advertised-peers {
+      type string {
+        length "1..300";
+      }
+      description
+        "List of sending peers.";
+    }
+    leaf route-duration-time {
+      type uint32;
+      description
+        "Time stamp of a route.";
+    }
+    leaf pmsi {
+      type string {
+        length "1..300";
+      }
+      description
+        "PMSI attribute.";
+    }
+    leaf other-attribute {
+      type string {
+        length "1..300";
+      }
+      description
+        "Other attribute.";
+    }
+    leaf private-route {
+      type string {
+        length "1..300";
+      }
+      description
+        "Private route attribute.";
+    }
+    leaf outbound-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of the outbound interface of a route.";
+    }
+    leaf remote-route-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of a peer.";
+    }
+    leaf community {
+      type string {
+        length "1..300";
+      }
+      description
+        "Community attribute.";
+    }
+    leaf ext-community {
+      type string {
+        length "1..300";
+      }
+      description
+        "Extended community attribute.";
+    }
+    leaf ipv6-ext-community {
+      type string {
+        length "1..300";
+      }
+      description
+        "IPv6 extended community attribute.";
+    }
+    leaf large-community {
+      type string {
+        length "1..200";
+      }
+      description
+        "Large-community attribute information.";
+    }
+    leaf cluster-list {
+      type string {
+        length "1..300";
+      }
+      description
+        "List of Cluster IDs.";
+    }
+    leaf relay-nexthop {
+      type inet:ip-address-no-zone;
+      description
+        "Iterated next hop.";
+    }
+    leaf relay-tunnel-name {
+      type string {
+        length "1..44";
+      }
+      description
+        "Name of an iteration tunnel.";
+    }
+    leaf in-label {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+        "In-label.";
+    }
+    leaf out-label {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+        "Out-label.";
+    }
+    leaf originator {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of the route initiator.";
+    }
+  }
+  container evpn {
+    description
+      "Configure of EVPN.";
+    container base-process {
+      description
+        "Configure of EVPN base process.";
+      leaf redundancy-mode {
+        type redundancy-mode;
+        default "all-active";
+        description
+          "Redundancy mode.";
+      }
+      leaf source-address {
+        ext:operation-exclude update;
+        type inet:ipv4-address-no-zone;
+        description
+          "Source address.";
+      }
+      leaf evpn-overlay {
+        type boolean;
+        must "(../evpn-overlay!='true' and not(../../instances/instance)) or ../evpn-overlay='true'";
+        default "false";
+        description
+          "Enable/disable EVPN overlay.";
+      }
+    }
+    container site {
+      presence "evpn view";
+      description
+        "Enable/disable global EVPN configuration.";
+      leaf df-election-mode {
+        type df-election-mode;
+        default "per-interface";
+        description
+          "Global configuration DF election mode.";
+      }
+      leaf vpws-df-election-mode {
+        type vpws-df-election-mode;
+        default "per-interface";
+        description
+          "VPWS DF select mode.";
+      }
+      leaf ac-influnced-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable AC state influenced DF mode.";
+      }
+      leaf ad-per-es-split {
+        type ad-per-es-route-divmode;
+        default "dont-divide-rt";
+        description
+          "EVPN AD per ES route split.";
+      }
+      leaf irb-reoriginated {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable IRB reoriginated without bridge domain.";
+      }
+      leaf vlan-extend-private-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable VLAN extend extcommunity to carry VLAN in MAC routes.";
+      }
+      leaf vlan-extend-redirect-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable VLAN extend extcommunity to redirect to the same ESI interface.";
+      }
+      leaf local-remote-frr-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable local MAC and remote MAC to form FRR.";
+      }
+      leaf bypass-vxlan-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable bypass VXLAN extcommunity, use for allow all-active device to form bypass VXLAN.";
+      }
+      leaf alm-threshold {
+        type uint32 {
+          range "1..4294967295";
+        }
+        description
+          "Specify the alarm route threshold.";
+      }
+      leaf recovery-percentage {
+        when "../alm-threshold";
+        type uint32 {
+          range "1..95";
+        }
+        units "%";
+        default "80";
+        description
+          "Specify the alarm route recovery percentage.";
+      }
+      leaf local-remote-vpws-frr-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the local and remote FRR for EVPN VPWS.";
+      }
+      leaf remote-vpws-frr-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the remote FRR for EVPN VPWS.";
+      }
+      leaf irb-split-group {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable IRB advertise under split group.";
+      }
+      leaf compatible {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable IRB routing rebirth into ARP routing and prefix routing.";
+      }
+      leaf advertising-vxlan-tunnel-mac {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable advertising MAC routes learned by VXLAN tunnel.";
+      }
+      leaf advertise-suppressed-route {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable advertising suppressed detail route.";
+      }
+      leaf routerid-extend-private-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable router ID extend extcommunity for carrying router ID in EVPN routes.";
+      }
+      leaf mac-duplication-enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable mac-duplication.";
+      }
+      leaf nexthop-recursive-lookup-restrain {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable EVPN nexthop recursive lookup restrain.";
+      }
+      leaf adv-dci-local-rt-to-mpls {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable advertising DCI local route to MPLS peer.";
+      }
+      container mac-duplication {
+        description
+          "Configure MAC duplication.";
+        leaf period {
+          type uint8 {
+            range "3..10";
+          }
+          default "5";
+          description
+            "Number of times that MAC duplication is detected in a period.";
+        }
+        leaf cycle {
+          type uint16 {
+            range "60..900";
+          }
+          units "s";
+          must "../cycle mod 10 = 0";
+          default "180";
+          description
+            "Interval at which MAC duplication is detected.";
+        }
+        leaf recycle {
+          type uint16 {
+            range "120..3600";
+          }
+          units "s";
+          must "../recycle mod 10 = 0";
+          default "540";
+          description
+            "Period after which suppression on MAC duplication is removed.";
+        }
+      }
+      container static-esis {
+        description
+          "List of static ESI.";
+        list static-esi {
+          key "esi";
+          description
+            "Configure instance of static ESI.";
+          leaf esi {
+            type esi;
+            description
+              "Static ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+          }
+          leaf redundancy-mode {
+            type esi-redundancy-mode;
+            default "none";
+            description
+              "Redundancy mode.";
+          }
+          leaf df-election-type {
+            type df-election-type;
+            default "default";
+            description
+              "The DF election type of ESI.";
+          }
+          leaf preference {
+            when "../df-election-type='preference-based'";
+            type uint16 {
+              range "0..65535";
+            }
+            default "32767";
+            description
+              "The preference of ESI.";
+          }
+          leaf non-revertive {
+            when "../df-election-type='preference-based'";
+            type boolean;
+            default "false";
+            description
+              "Enable/disable non-revertive mode.";
+          }
+          leaf df-election {
+            when "../redundancy-mode='single-active'";
+            type boolean;
+            must "(current()='true' and (not(/ifm:ifm/ifm:interfaces/ifm:interface[evpn:evpn/evpn:esi=current()/../esi]/ifm:type) or (/ifm:ifm/ifm:interfaces/ifm:interface[evpn:evpn/evpn:esi=current()/../esi]/ifm:type!='Virtual-Ethernet'))) or current()='false'";
+            default "false";
+            description
+              "Enable/disable DF election mode.";
+          }
+        }
+      }
+      container dynamic-esis {
+        description
+          "List of dynamic ESI.";
+        list dynamic-esi {
+          key "esi-name";
+          description
+            "Configure instance of dynamic ESI.";
+          leaf esi-name {
+            type string {
+              length "1..31";
+            }
+            description
+              "Dynamic ESI name is a string of 1 to 31 characters, which begins with a-z or A-Z.";
+          }
+          leaf redundancy-mode {
+            type esi-redundancy-mode;
+            default "none";
+            description
+              "Redundancy mode.";
+          }
+          leaf df-election-type {
+            type df-election-type;
+            default "default";
+            description
+              "The DF election type of ESI.";
+          }
+          leaf preference {
+            when "../df-election-type='preference-based'";
+            type uint16 {
+              range "0..65535";
+            }
+            default "32767";
+            description
+              "The preference of ESI.";
+          }
+          leaf non-revertive {
+            when "../df-election-type='preference-based'";
+            type boolean;
+            default "false";
+            description
+              "Enable/disable non-revertive mode.";
+          }
+        }
+      }
+    }
+    container instances {
+      description
+        "List of EVPN instance.";
+      list instance {
+        key "name";
+        unique "normal-evpn/rd";
+        unique "b-evpn/rd";
+        unique "bd-evpn/rd";
+        unique "vpws-evpn/rd";
+        description
+          "Configure EVPN instance.";
+        leaf name {
+          type name-type {
+            length "1..31";
+          }
+          must "../name!='_public_'";
+          description
+            "EVPN instance name.";
+        }
+        leaf type {
+          ext:operation-exclude update|delete;
+          type evpn-type;
+          default "normal";
+          description
+            "The value specifies the type of EVPN instance.";
+        }
+        leaf label-policy {
+          type evpn-apply-label-mode;
+          config false;
+          description
+            "Label policy of the EVPN instance.";
+        }
+        container normal-evpn{
+          when "../type = 'normal'";
+          description
+            "Configure normal mode of EVPN instance.";
+          leaf description {
+            type string {
+              length "1..63";
+              pattern '([^?]*)';
+            }
+          description
+            "The description for EVPN instance.";
+          }
+          leaf rd {
+            ext:operation-exclude update;
+            type string {
+              length "3..21";
+            }
+            description
+              "An EVPN instance address family takes effect only after it is configured with an RD. The RD can be in any of the following formats:
+1. 16-bit AS number:32-bit user-defined number, 101:3 for example. A 16-bit AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0:0.
+2. 32-bit IP address:16-bit user-defined number, 192.168.122.15:1 for example. The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+3. 32-bit AS number:16-bit user-defined number, 10.11:3 for example. A 32-bit AS number ranges from 0.0 to 65535.65535 or from 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0.0:0.";
+          }
+          leaf tunnel-policy-name {
+            when "../rd";
+            type leafref {
+              path "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:name";
+            }
+            must "not(/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv6-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type) and /tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type[tnlm:type!='gre']";
+            description
+              "Tunnel policy name.";
+          }
+          leaf import-policy-name {
+            when "../rd";
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "The name of specify import route policy.";
+          }
+          leaf export-policy-name {
+            when "../rd";
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "The name of specify export route policy.";
+          }
+          leaf local-remote-frr {
+            type local-remote-frr-enable-type;
+            default "default";
+            description
+              "Enable/disable local MAC and remote MAC to form FRR.";
+          }
+          leaf mac-balance-enable {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable MAC balance.";
+          }
+          leaf isolate-spoken {
+            type isolate-spoken-type;
+            default "default";
+            description
+              "Forwarding isolation between AC interfaces under EVPN.";
+          }
+          leaf export-acl-name-or-id {
+            type leafref {
+              path "/acl:acl/acl:groups/acl:group/acl:identity";
+            }
+            description
+              "Name or number of an IPv4 ACL used by a filtering policy to filter the routes to be advertised to a specified peer. The number ranges from 4000 to 4999, and the name must start with a letter.";
+          }
+          leaf import-acl-name-or-id {
+            type leafref {
+              path "/acl:acl/acl:groups/acl:group/acl:identity";
+            }
+            description
+              "Name or number of an IPv4 ACL used by a filtering policy to filter the routes received from a specified peer. The number ranges from 4000 to 4999, and the name must start with a letter. By default, no ACL-based filtering policy is configured, and therefore all EVN BGP routes can be accepted.";
+          }
+          leaf etree-enable {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable EVPN E-Tree.";
+          }
+          leaf control-word {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable EVPN control word.";
+          }
+          leaf nexthop-recursive-lookup-restrain {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable EVPN nexthop recursive lookup restrain.";
+          }
+          container rts {
+            when "../rd";
+            description "List of RTs.";
+            list rt {
+              key "vrf-rt-type vrf-rt-value";
+              description
+                "Configure RTs to control route advertisement between network nodes. Before sending a VPN route to a PE, the local PE adds an Export RT to the route. After receiving a route from another PE, the local PE compares the local Import RT and the Export RT carried in the VPN route and adds the route to the VPN instance only when the two RTs are the same.";
+              leaf vrf-rt-type {
+                type vrf-rt-type;
+                description
+                  "RT type (export-extcommunity or import-extcommunity)
+export-extcommunity: Specifies the value of the extended community attribute of the route from an outbound interface to the destination VPN. 
+import-extcommunity: Specifies the value of the extended community attribute. Routes with such an extended community value can be accepted.";
+              }
+              leaf vrf-rt-value {
+                type string {
+                  length "3..21";
+                }
+                description
+                  "RT value, in any of the following formats:
+1. 16-bit AS number:32-bit user-defined number, 1:3 for example. A 16-bit AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0:0.
+2. 32-bit IP address:16-bit user-defined number, 192.168.122.15:1 for example. The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+3. 32-bit AS number:16-bit user-defined number, 10.11:3 for example. A 32-bit AS number ranges from 0.0 to 65535.65535 or from 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0.0:0.";
+              }
+            }
+          }
+          container mac-duplication {
+            presence "normal MAC duplication";
+            description
+              "Enable/disable MAC duplication.";
+            leaf period {
+              type uint8 {
+                range "3..10";
+              }
+              must "(../period and ../cycle) or (not(../period) and not(../cycle))";
+              description
+                "Number of times that MAC duplication is detected in a period.";
+            }
+            leaf cycle {
+              type uint16 {
+                range "60..900";
+              }
+              units "s";
+              must "(../cycle mod 10 = 0) and ((../period and ../cycle) or (not(../period) and not(../cycle)))";
+              description
+                "Interval at which MAC duplication is detected. The value must be a multiple of 10.";
+            }
+            leaf recycle {
+              type uint16 {
+                range "120..3600";
+              }
+              units "s";
+              must "../recycle mod 10 = 0";
+              description
+                "Period after which suppression on MAC duplication is removed. The value must be a multiple of 10.";
+            }
+            leaf blackhole {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable a blackhole flag.";
+            }
+          }
+          container mac-duplication-infos {
+            config false;
+            description
+              "Operational state of information aggregation about MAC addresses that are duplicate in an EVPN instance.";
+            uses mac-duplication-infos-type;
+          }
+        }
+        container b-evpn{
+          when "../type = 'b-evpn'";
+          description
+            "Configure backbone mode of EVPN instance.";
+          leaf description {
+            type string {
+              length "1..63";
+              pattern '([^?]*)';
+            }
+            description
+              "The description for EVPN instance.";
+            }
+          leaf rd {
+            ext:operation-exclude update;
+            type string {
+              length "3..21";
+            }
+            description
+              "An EVPN instance address family takes effect only after it is configured with an RD. The RD can be in any of the following formats:
+1. 16-bit AS number:32-bit user-defined number, 101:3 for example. A 16-bit AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0:0.
+2. 32-bit IP address:16-bit user-defined number, 192.168.122.15:1 for example. The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+3. 32-bit AS number:16-bit user-defined number, 10.11:3 for example. A 32-bit AS number ranges from 0.0 to 65535.65535 or from 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0.0:0.";
+          }
+          leaf bmac {
+            when "../rd";
+            type pub-type:mac-address {
+              length "0..255";
+            }
+            description
+              "Backbone bridging source MAC.";
+          }
+          leaf tunnel-policy-name {
+            when "../rd";
+            type leafref {
+              path "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:name";
+            }
+            must "not(/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv6-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type) and /tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type[tnlm:type!='gre'] and /tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type[tnlm:type!='sr-te-policy'] and /tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type[tnlm:type!='bgp']";
+            description
+              "Tunnel policy name.";
+          }
+          leaf nexthop-recursive-lookup-restrain {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable EVPN nexthop recursive lookup restrain.";
+          }
+          container rts {
+            when "../rd";
+            description "List of RTs.";
+            list rt {
+              key "vrf-rt-type vrf-rt-value";
+              description
+                "Configure RTs to control route advertisement between network nodes. Before sending a VPN route to a PE, the local PE adds an Export RT to the route. After receiving a route from another PE, the local PE compares the local Import RT and the Export RT carried in the VPN route and adds the route to the VPN instance only when the two RTs are the same.";
+              leaf vrf-rt-type {
+                type vrf-rt-type;
+                description
+                  "RT type (export-extcommunity or import-extcommunity)
+export-extcommunity: Specifies the value of the extended community attribute of the route from an outbound interface to the destination VPN. 
+import-extcommunity: Specifies the value of the extended community attribute. Routes with such an extended community value can be accepted.";
+              }
+              leaf vrf-rt-value {
+                type string {
+                  length "3..21";
+                }
+                description
+                  "RT value, in any of the following formats:
+1. 16-bit AS number:32-bit user-defined number, 1:3 for example. A 16-bit AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0:0.
+2. 32-bit IP address:16-bit user-defined number, 192.168.122.15:1 for example. The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+3. 32-bit AS number:16-bit user-defined number, 10.11:3 for example. A 32-bit AS number ranges from 0.0 to 65535.65535 or from 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0.0:0.";
+              }
+            }
+          }
+        }
+        container i-evpn {
+          when "../type = 'i-evpn'";
+          description
+            "Configure PBB EVPN instance.";
+          leaf description {
+            type string {
+              length "1..63";
+              pattern '([^?]*)';
+            }
+            description
+              "The description for EVPN instance.";
+          }
+          leaf tag {
+            ext:operation-exclude update;
+            type uint32 {
+              range "0..16777215";
+            }
+            description
+              "Specify an I-SID.";
+          }
+          leaf b-evpn-name {
+            ext:operation-exclude update;
+            when "../tag";
+            type leafref {
+              path "/evpn:evpn/evpn:instances/evpn:instance/evpn:name";
+            }
+            must "/evpn:evpn/evpn:instances/evpn:instance[evpn:name=current()]/evpn:type='b-evpn'";
+            description
+              "Binding an I-EVPN instance with a B-EVPN instance.";
+          }
+          leaf bmac {
+            when "../tag";
+            type pub-type:mac-address {
+              length "0..255";
+            }
+            description
+              "Backbone bridging source MAC.";
+          }
+        }
+        container bd-evpn {
+          when "../type = 'bd-evpn'";
+          description
+            "Configure BD exclusive mode of EVPN instance.";
+          leaf description {
+            type string {
+              length "1..63";
+              pattern '([^?]*)';
+            }
+            description
+              "The description for EVPN instance.";
+          }
+          leaf rd {
+            ext:operation-exclude update;
+            type string {
+              length "3..21";
+            }
+            description
+              "An EVPN instance address family takes effect only after it is configured with an RD. The RD can be in any of the following formats:
+1. 16-bit AS number:32-bit user-defined number, 101:3 for example. A 16-bit AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0:0.
+2. 32-bit IP address:16-bit user-defined number, 192.168.122.15:1 for example. The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+3. 32-bit AS number:16-bit user-defined number, 10.11:3 for example. A 32-bit AS number ranges from 0.0 to 65535.65535 or from 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0.0:0.";
+          }
+          leaf import-policy-name {
+            when "../rd";
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "The name of specify import route policy.";
+          }
+          leaf export-policy-name {
+            when "../rd";
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "The name of specify export route policy.";
+          }
+          leaf tunnel-policy-name {
+            when "../rd";
+            type leafref {
+              path "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:name";
+            }
+            must "(not(/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv6-set/tnlm:select-sequence) or (/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv6-set/tnlm:select-sequence and /tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv6-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type[tnlm:type!='srv6-te-flow-group'])) and (not(/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence) or (/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence and /tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type[tnlm:type!='gre']))";
+            description
+              "Tunnel policy name.";
+          }
+          leaf local-remote-frr {
+            type local-remote-frr-enable-type;
+            default "default";
+            description
+              "Enable local MAC and remote MAC to form FRR.";
+          }
+          leaf default-color {
+            when "../rd";
+            type uint32 {
+            range "0..4294967295";
+            }
+            description
+              "Set default color for nexthop iteration.";
+          }
+          leaf mac-balance-enable {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable MAC balance.";
+          }
+          leaf export-acl-name-or-id {
+            type leafref {
+              path "/acl:acl/acl:groups/acl:group/acl:identity";
+            }
+            description
+              "Name or number of an IPv4 ACL used by a filtering policy to filter the routes to be advertised to a specified peer. The number ranges from 4000 to 4999, and the name must start with a letter. By default, no ACL-based filtering policy is configured, and therefore all EVN BGP routes can be advertised.";
+          }
+          leaf import-acl-name-or-id {
+            type leafref {
+              path "/acl:acl/acl:groups/acl:group/acl:identity";
+            }
+            description
+              "Name or number of an IPv4 ACL used by a filtering policy to filter the routes received from a specified peer. The number ranges from 4000 to 4999, and the name must start with a letter. By default, no ACL-based filtering policy is configured, and therefore all EVN BGP routes can be accepted.";
+          }
+          leaf bypass-vxlan {
+            type bypass-vxlan-enable-type;
+            default "default";
+            description
+              "Enable bypass VXLAN capability.";
+          }
+          leaf etree-enable {
+            type boolean;
+            must "(../etree-enable='true' and not(../inclusive-provider-tunnel)) or (../etree-enable='false')";
+            default "false";
+            description
+              "Enable/disable EVPN E-Tree.";
+          }
+          leaf srv6-mode {
+            when "../rd";
+            type srv6-mode;
+            must "../control-word!='true'";
+            description
+              "SRv6 iteration mode.";
+          }
+          leaf down-switch {
+            when "../rd and ../srv6-mode='te'";
+            type boolean;
+            default "false";
+            description
+              "Enable/disable switch TE to BE if the associated TE tunnel goes down.";
+          }
+          leaf control-word {
+            type boolean;
+            must "(../control-word='true' and not(../srv6-mode)) or ../control-word!='true'";
+            default "false";
+            description
+              "Enable/disable EVPN control word.";
+          }
+          leaf mac-route-advertise {
+            type mac-route-no-advertise-type;
+            default "enable";
+            description
+              "Enable/disable local MAC routes from being advertised.";
+          }
+          leaf arp-route-generate-mac {
+            type mac-route-no-advertise-type;
+            default "disable";
+            description
+              "Enable/disable MAC/IP route to generate MAC.";
+          }
+          leaf mac-only-route-generate {
+            type mac-route-no-advertise-type;
+            default "enable";
+            description
+              "Enable/disable the function of generating EVPN MAC routes when both MAC address entries and ARP/ND entries contain local MAC addresses.";
+          }
+          leaf mac-frr-keep {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable the function of keeping MAC to form FRR.";
+          }
+          leaf nexthop-recursive-lookup-restrain {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable EVPN nexthop recursive lookup restrain.";
+          }
+          container rts {
+            when "../rd";
+            description "List of RTs.";
+            list rt {
+              key "vrf-rt-type vrf-rt-value";
+              description
+                "Configure RTs to control route advertisement between network nodes. Before sending a VPN route to a PE, the local PE adds an Export RT to the route. After receiving a route from another PE, the local PE compares the local Import RT and the Export RT carried in the VPN route and adds the route to the VPN instance only when the two RTs are the same.";
+              leaf vrf-rt-type {
+                type vrf-rt-type;
+                description
+                  "RT type (export-extcommunity or import-extcommunity)
+export-extcommunity: Specifies the value of the extended community attribute of the route from an outbound interface to the destination VPN. 
+import-extcommunity: Specifies the value of the extended community attribute. Routes with such an extended community value can be accepted.";
+              }
+              leaf vrf-rt-value {
+                type string {
+                  length "3..21";
+                }
+                description
+                  "RT value, in any of the following formats:
+1. 16-bit AS number:32-bit user-defined number, 1:3 for example. A 16-bit AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0:0.
+2. 32-bit IP address:16-bit user-defined number, 192.168.122.15:1 for example. The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+3. 32-bit AS number:16-bit user-defined number, 10.11:3 for example. A 32-bit AS number ranges from 0.0 to 65535.65535 or from 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0.0:0.";
+              }
+            }
+          }
+          container mac-duplication {
+            presence "bd MAC duplication";
+            description
+              "Enable/disable MAC duplication.";
+            leaf period {
+              type uint8 {
+                range "3..10";
+              }
+              must "(../period and ../cycle) or (not(../period) and not(../cycle))";
+              description
+                "Number of times that MAC duplication is detected in a period.";
+            }
+            leaf cycle {
+              type uint16 {
+                range "60..900";
+              }
+              units "s";
+              must "(../cycle mod 10 = 0) and ((../period and ../cycle) or (not(../period) and not(../cycle)))";
+              description
+                "Interval at which MAC duplication is detected. The value must be a multiple of 10.";
+            }
+            leaf recycle {
+              type uint16 {
+                range "120..3600";
+              }
+              units "s";
+              must "../recycle mod 10 = 0";
+              description
+                "Period after which suppression on MAC duplication is removed. The value must be a multiple of 10.";
+            }
+            leaf blackhole {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable a blackhole flag.";
+            }
+            leaf source-blackhole {
+              when "../blackhole='true'";
+              type boolean;
+              default "false";
+              description
+                "Enable/disable blackhole flag. After MAC duplication is suppressed, if a blackhole flag is set, the source port is blocked. If no blackhole flag is set, the source port is not blocked.";
+            }
+          }
+          container mac-duplication-infos {
+            config false;
+            description
+              "Operational state of information aggregation about MAC addresses that are duplicate in an EVPN instance.";
+            uses mac-duplication-infos-type;
+          }
+          container inclusive-provider-tunnel {
+            must "(../control-word!='true' and ../etree-enable!='true' and not(../srv6-mode)) or not(../inclusive-provider-tunnel)";
+            presence "EVI-IPMSI view";
+            description
+                "Enable/disable mLDP P2MP configuration.";
+            container root {
+              presence "EVI-IPMSI view";
+              description
+                "Enable/disable mLDP P2MP root configuration.";
+              leaf data-switch-disable {
+                type boolean;
+                default "false";
+                description
+                  "Enable/disable data switch configuration.";
+              }
+              leaf data-delay-time {
+                type uint32 {
+                  range "1..300";
+                }
+                units "s";
+                description
+                  "Set a hold-off time for an mLDP P2MP tunnel to go Up.";
+              }
+              container p2mp {
+                presence "MLDP P2MP view";
+                description
+                  "Enable/disable mLDP P2MP configuration.";
+                leaf root-ip {
+                  type inet:ipv4-address-no-zone;
+                  description
+                  "Root address of P2MP tunnel.";
+                }
+                leaf opaque-value {
+                  type string {
+                    length "1..4096";
+                  }
+                  config false;
+                  description
+                    "Opaque value (in the TLV format) that is carried in packets and is not decoded.";
+                }
+                leaf state {
+                  type evpn-state;
+                  config false;
+                  description
+                    "P2MP tunnel status.";
+                }
+              }
+            }
+            container leaf {
+              presence "EVI-IPMSI view";
+              description
+                "Enable/disable mLDP P2MP leaf configuration.";
+              leaf opaque-value {
+                type string {
+                  length "1..4096";
+                }
+                config false;
+                description
+                  "Original opaque value in a message. The value is displayed in the format of TLV.";
+              }
+              leaf state {
+                type evpn-state;
+                config false;
+                description
+                  "P2MP tunnel status.";
+              }
+              container use-next-hops {
+                description
+                "List of root addresses for leaf node.";
+                list use-next-hop {
+                  key "root-ip";
+                  description
+                  "Configure root address for leaf node.";
+                  leaf root-ip {
+                    type inet:ipv4-address-no-zone;
+                    description
+                      "Root address for leaf node.";
+                  }
+                }
+              }
+            }
+          }
+        }
+        container vpws-evpn{
+          when "../type = 'vpws-evpn'";
+          description
+            "Configure VPWS mode of EVPN instance.";
+          leaf description {
+            type string {
+              length "1..63";
+              pattern '([^?]*)';
+            }
+            description
+              "The description for EVPN instance.";
+          }
+          leaf rd {
+            ext:operation-exclude update;
+            type string {
+              length "3..21";
+            }
+            description
+              "An EVPN instance address family takes effect only after it is configured with an RD. The RD can be in any of the following formats:
+1. 16-bit AS number:32-bit user-defined number, 101:3 for example. A 16-bit AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0:0.
+2. 32-bit IP address:16-bit user-defined number, 192.168.122.15:1 for example. The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+3. 32-bit AS number:16-bit user-defined number, 10.11:3 for example. A 32-bit AS number ranges from 0.0 to 65535.65535 or from 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0.0:0.";
+          }
+          leaf import-policy-name {
+            when "../rd";
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "The name of specify import route policy.";
+          }
+          leaf export-policy-name {
+            when "../rd";
+            type leafref {
+              path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+            }
+            description
+              "The name of specify export route policy.";
+          }
+          leaf tunnel-policy-name {
+            when "../rd";
+            type leafref {
+              path "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:name";
+            }
+            must "(not(/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv6-set/tnlm:select-sequence) or (/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv6-set/tnlm:select-sequence and /tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv6-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type[tnlm:type!='srv6-te-flow-group'])) and (not(/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence) or (/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence and /tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy[tnlm:name=current()]/tnlm:ipv4-set/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type[tnlm:type!='gre']))";
+            description
+              "Tunnel policy name.";
+          }
+          leaf local-remote-frr {
+            type local-remote-frr-enable-type;
+            default "default";
+            description
+              "Enable local MAC and remote MAC to form FRR.";
+          }
+          leaf remote-frr {
+            type local-remote-frr-enable-type;
+            default "default";
+            description
+              "Enable remote MAC to form FRR.";
+          }
+          leaf default-color {
+            when "../rd";
+            type uint32 {
+            range "0..4294967295";
+            }
+            description
+              "Set default color for nexthop iteration.";
+          }
+          leaf export-acl-name-or-id {
+            type leafref {
+              path "/acl:acl/acl:groups/acl:group/acl:identity";
+            }
+            description
+              "Name or number of an IPv4 ACL used by a filtering policy to filter the routes to be advertised to a specified peer. The number ranges from 4000 to 4999, and the name must start with a letter. By default, no ACL-based filtering policy is configured, and therefore all EVN BGP routes can be advertised.";
+          }
+          leaf import-acl-name-or-id {
+            type leafref {
+              path "/acl:acl/acl:groups/acl:group/acl:identity";
+            }
+            description
+              "Name or number of an IPv4 ACL used by a filtering policy to filter the routes received from a specified peer. The number ranges from 4000 to 4999, and the name must start with a letter. By default, no ACL-based filtering policy is configured, and therefore all EVN BGP routes can be accepted.";
+          }
+          leaf timer-revert-delay {
+            when "../rd";
+            type uint32 {
+              range "0..3600";
+            }
+            units "s";
+            default "0";
+            description
+              "Set delay time of selecting routes in production.";
+          }
+          leaf srv6-mode {
+            when "../rd";
+            type srv6-mode;
+            description
+              "SRv6 iteration mode.";
+          }
+          leaf down-switch {
+            when "../rd and ../srv6-mode='te'";
+            type boolean;
+            default "false";
+            description
+              "Enable/disable TE to BE if the associated TE tunnel goes down.";
+          }
+          leaf nexthop-recursive-lookup-restrain {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable EVPN nexthop recursive lookup restrain.";
+          }
+          leaf nexthop-priority {
+            type nexthop-priority-address-type;
+            description
+              "Routes with next-hop IPv4 addresses and routes with next-hop IPv6 addresses coexist. If the next-hop address type is set to IPv4, routes with next-hop IPv4 addresses have a higher priority. If the next-hop address type is set to IPv6, routes with next-hop IPv6 addresses have a higher priority.";
+          }
+          container rts {
+            when "../rd";
+            description "List of RTs.";
+            list rt {
+              key "vrf-rt-type vrf-rt-value";
+              description
+                "Configure RTs to control route advertisement between network nodes. Before sending a VPN route to a PE, the local PE adds an Export RT to the route. After receiving a route from another PE, the local PE compares the local Import RT and the Export RT carried in the VPN route and adds the route to the VPN instance only when the two RTs are the same.";
+              leaf vrf-rt-type {
+                type vrf-rt-type;
+                description
+                  "RT type (export-extcommunity or import-extcommunity)
+export-extcommunity: Specifies the value of the extended community attribute of the route from an outbound interface to the destination VPN. 
+import-extcommunity: Specifies the value of the extended community attribute. Routes with such an extended community value can be accepted.";
+              }
+              leaf vrf-rt-value {
+                type string {
+                  length "3..21";
+                }
+                description
+                  "RT value, in any of the following formats:
+1. 16-bit AS number:32-bit user-defined number, 1:3 for example. A 16-bit AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0:0.
+2. 32-bit IP address:16-bit user-defined number, 192.168.122.15:1 for example. The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+3. 32-bit AS number:16-bit user-defined number, 10.11:3 for example. A 32-bit AS number ranges from 0.0 to 65535.65535 or from 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0.0:0.";
+              }
+            }
+          }
+        }
+        container tunnel-infos {
+          config false;
+          description
+            "List of tunnel informations.";
+          list tunnel-info {
+            key "type peer-ip id";
+            description
+              "Operational state of tunnel informations.";
+            leaf type {
+              type tunnel-type;
+              description
+                "Tunnel's type.";
+            }
+            leaf peer-ip {
+              type inet:ip-address-no-zone;
+              description
+                "Nexthop address through which the packet has to be sent.";
+            }
+            leaf id {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Tunnel's ID.";
+            }
+            leaf color {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Color information for tunnel.";
+            }
+            leaf name {
+              type string {
+                length "0..256";
+              }
+              description
+                "Tunnel's name.";
+            }
+          }
+        }
+        container mac-route-infos {
+          config false;
+          description
+            "List of MAC routes.";
+          list mac-route-info {
+            key "prefix";
+            description
+              "Statistics of of MAC routes.";
+            leaf prefix {
+              type mac-prefix;
+              description
+                "MAC route prefix.";
+            }
+            container label-stacks {
+              description
+                "Statistics of EVPN label stacks.";
+              uses evpn:label-stacks-type;
+            }
+          }
+        }
+        container per-instance-label {
+          config false;
+          description
+            "Operational data of label shared by all private network routes in the EVPN instance.";
+          leaf unicast-label {
+            type uint32;
+            description
+              "Label shared by unicast routes in the EVPN instance.";
+          }
+          leaf bum-label {
+            type uint32;
+            description
+              "Label shared by bum routes in the EVPN instance.";
+          }
+          leaf bypass-label {
+            type uint32;
+            description
+              "Label shared by bypass routes in the EVPN instance.";
+          }
+        }
+        container df-infos {
+          config false;
+          description
+            "List of DF info.";
+          list df-info {
+            key "esi";
+            description
+              "Operational data of the Df information.";
+            leaf esi {
+              type esi;
+              description
+                "ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx or 01xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+            }
+            leaf df-result {
+              type df-result;
+              description
+                "DF result.";
+            }
+            container pref-elec-infos {
+              config false;
+              description
+                "List of information about DF election.";
+              list pref-elec-info {
+                key "origin-ip";
+                description
+                  "Operational data of DF election information.";
+                leaf origin-ip {
+                  type inet:ip-address-no-zone;
+                  description
+                    "Source IP address of a PE.";
+                }
+                leaf df-result {
+                  type df-election-result;
+                  description
+                    "DF election result, which can be DF or buckup DF.";
+                }
+                leaf preference {
+                  type uint16 {
+                    range "1..65535";
+                  }
+                  default "32767";
+                  description
+                    "Preference of ESI.";
+                }
+                leaf dp {
+                  type uint8;
+                  description
+                    "The non-preemption mode is used for DF election.";
+                }
+                leaf ac-df {
+                  type uint8;
+                  description
+                    "The AC status affects DF election.";
+                }
+              }
+            }
+          }
+        }
+        container df-timer-info {
+          config false;
+          description
+            "Operational data of Df timer information.";
+          container esi-infos { 
+            description
+              "List of displaying the information of the ESI Df timer.";
+            list esi-info {
+              key "esi";
+              description
+                "Operational data of the ESI Df timer information.";
+              leaf esi {
+                type esi;
+                description
+                  "ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx or 01xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+              }
+              leaf timer-type {
+                type df-timer-type;
+                description
+                  "Timer type.";
+              }
+              leaf timer-state {
+                type df-timer-mode;
+                description
+                  "DF timer status.";
+              }
+              leaf time-left {
+                type uint32;
+                description
+                  "Remaining time in second before the DF timer expires.";
+              }
+            }
+          }
+          container interface-infos {
+            config false;
+            description
+              "List of displaying the information of the interface Df timer.";
+            list interface-info {
+              key "interface-name";
+              description
+                "Operational data of the interface Df timer information.";
+              leaf interface-name {
+                type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                }
+                description
+                  "The interface name.";
+              }
+              leaf bd-id {
+                type uint32;
+                description
+                 "BD ID.";
+              }
+              leaf timer-type {
+                type df-timer-type;
+                description
+                  "Timer type.";
+              }
+              leaf timer-state {
+                type df-timer-mode;
+                description
+                  "DF timer status.";
+              }
+              leaf time-left {
+                type uint32;
+                description
+                  "Remaining time in second before the DF timer expires.";
+              }
+            }
+          }
+           container pw-infos {
+            config false;
+            description
+              "List of displaying the information of the PW Df timer.";
+            list pw-info {
+              key "peer-ip vc-id vc-type";
+              description
+                "Operational data of the PW Df timer information.";
+              leaf peer-ip {
+                type leafref {
+                  path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/l2vpn:peer-ip";
+                }
+                description
+                  "Peer IP address.";
+              }
+              leaf vc-id {
+                type leafref {
+                  path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/l2vpn:negotiation-vc-id";
+                }
+                description
+                  "PW ID used to uniquely identify a VC.";
+              }
+              leaf vc-type {
+                type leafref {
+                  path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/l2vpn:encapsulation-type";
+                }
+                description
+                  "Encapsulation type of a VPLS PW.";
+              }
+              leaf timer-type {
+                type df-timer-type;
+                description
+                  "Timer type.";
+              }
+              leaf timer-state {
+                type df-timer-mode;
+                description
+                  "DF timer status.";
+              }
+              leaf time-left {
+                type uint32;
+                description
+                  "Remaining time in second before the DF timer expires.";
+              }
+            }
+          }
+        }
+        container esi-advance {
+          config false;
+          description
+            "Operational data of the advanced information of an ESI.";
+          container locals {
+            description
+              "List of displaying the advanced information for a local ESI.";
+            list local {
+              key "esi";
+              description
+                "Operational data of the advanced information of a local ESI.";
+              leaf esi {
+                type esi;
+                description
+                  "ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx or 01xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+              }
+              leaf topology {
+                type topology;
+                description
+                  "Network topology identified by an ESI.";
+              }
+            }
+          }
+          container remotes {
+            description
+              "List of displaying the advanced information for a remote ESI.";
+            list remote {
+              key "esi remote-peer";
+              description
+                "Operational data of the advanced information of a remote ESI.";
+              leaf esi {
+                type esi;
+                description
+                  "ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx or 01xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+              }
+              leaf remote-peer {
+                type inet:ip-address-no-zone;
+                description
+                  "IP address of a peer PE.";
+              }
+              leaf topology {
+                type topology;
+                description
+                  "Network topology identified by an ESI.";
+              }
+            }
+          }
+        }
+        container mac-routes {
+          config false;
+          description
+            "List of MAC routes.";
+          list mac-route {
+            key "prefix rd from route-type-flag";
+            config false;
+            description
+              "Statistics of MAC routes.";
+            leaf prefix {
+              type mac-prefix;
+              description
+                "MAC route prefix.";
+            }
+            leaf rd {
+              type string {
+                length "3..21";
+              }
+              description
+                "Route distinguisher.";
+            }
+            leaf from {
+              type inet:ip-address-no-zone;
+              description
+                "Source peer that sends a route.";
+            }
+            leaf route-type-flag {
+              type best-flag-type;
+              description
+                "Route type.";
+            }
+            leaf source-address-family {
+              type evpn:address-family-type;
+              description
+                "Source address family.";
+            }
+            leaf mpls-label1 {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Label1, it means L2 VNI for MAC Route and L3 VNI for Prefix Route.";
+            }
+            leaf mpls-label2 {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Label2, it means L3 VNI for MAC Route.";
+            }
+            leaf frr-out-interface {
+              type string {
+                length "1..64";
+              }
+              description
+                "Local-remote frr direct out-interface.";
+            }
+            leaf frr-nexthop {
+              type inet:ip-address-no-zone;
+              description
+                "Local-remote frr nexthop.";
+            }
+            leaf frr-out-tunnel-name {
+              type string {
+                length "1..64";
+              }
+              description
+                "Local-Remote Frr Tunnel Out-Interface.";
+            }
+            leaf prefix-sid {
+              type inet:ipv6-address-no-zone;
+              description
+                "Prefix-SID attribute.";
+            }
+            leaf bypass-prefix-sid {
+              type inet:ipv6-address-no-zone;
+              description
+                "Bypass Prefix-SID attribute.";
+            }
+            leaf effect-nexthop {
+              type inet:ip-address-no-zone;
+              description
+                "Effective nexthop.";
+            }
+            leaf redirect-out-interface {
+              type string {
+                length "1..64";
+              }
+              description
+                "Redirect out-interface.";
+            }
+            uses routing-table-type {
+              description
+                "Routing table infomation.";
+            }
+            container direct-pw-info {
+              description
+                "Operational data of direct outbound interface.";
+              leaf peer-ip {
+                type inet:ipv4-address-no-zone;
+                description
+                  "Peer IP address of a PW.";
+              }
+              leaf vc-id {
+                type uint32 {
+                  range "1..4294967295";
+                }
+                description
+                  "VC ID.";
+              }
+              leaf vc-type {
+                type evpn:l2vpn-encapsulate-type;
+                description
+                  "Encapsulation type of a PW.";
+              }
+            }
+          }
+        }
+        container ad-routes {
+          config false;
+          description
+            "List of AD routes.";
+          list ad-route {
+            key "prefix rd from route-type-flag";
+            config false;
+            description
+              "Statistics of AD routes.";
+            leaf prefix {
+              type ad-prefix;
+              description
+                "AD route prefix.";
+            }
+            leaf rd {
+              type string {
+                length "3..21";
+              }
+              description
+                "Route distinguisher.";
+            }
+            leaf from {
+              type inet:ip-address-no-zone;
+              description
+                "Source peer that sends a route.";
+            }
+            leaf route-type-flag {
+              type best-flag-type;
+              description
+                "Route type.";
+            }
+            leaf prefix-sid {
+              type inet:ipv6-address-no-zone;
+              description
+                "Prefix-SID attribute.";
+            }
+            leaf bypass-prefix-sid {
+              type inet:ipv6-address-no-zone;
+              description
+                "Bypass Prefix-SID attribute.";
+            }
+            uses routing-table-type {
+              description
+                "Routing table infomation.";
+            }
+          }
+        }
+        container es-routes {
+          config false;
+          description
+            "List of ES routes.";
+          list es-route {
+            key "prefix rd from route-type-flag";
+            config false;
+            description
+              "Statistics of ES routes.";
+            leaf prefix {
+              type es-prefix;
+              description
+                "ES route prefix.";
+            }
+            leaf rd {
+              type string {
+                length "3..21";
+              }
+              description
+                "Route distinguisher.";
+            }
+            leaf from {
+              type inet:ip-address-no-zone;
+              description
+                "Source peer that sends a route.";
+            }
+            leaf route-type-flag {
+              type best-flag-type;
+              description
+                "Route type.";
+            }
+            uses routing-table-type {
+              description
+                "Routing table infomation.";
+            }
+          }
+        }
+        container inclusive-routes {
+          config false;
+          description
+            "List of inclusive routes.";
+          list inclusive-route {
+            key "prefix rd from route-type-flag";
+            config false;
+            description
+              "Statistics of inclusive routes.";
+            leaf prefix {
+              type inclusive-prefix;
+              description
+                "Inclusive route prefix.";
+            }
+            leaf rd {
+              type string {
+                length "3..21";
+              }
+              description
+                "Route distinguisher.";
+            }
+            leaf from {
+              type inet:ip-address-no-zone;
+              description
+                "Source peer that sends a route.";
+            }
+            leaf route-type-flag {
+              type best-flag-type;
+              description
+                "Route type.";
+            }
+            leaf prefix-sid {
+              type inet:ipv6-address-no-zone;
+              description
+                "Prefix-SID attribute.";
+            }
+            uses routing-table-type {
+              description
+                "Routing table infomation.";
+            }
+          }
+        }
+      }
+    }
+    container remote-sids {
+      config false;
+      description
+        "List of remote SID.";
+      list remote-sid {
+        key "remote-sid";
+        description
+            "Operational data of remote SID.";
+        leaf remote-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "Remote SID attribute.";
+        }
+        leaf locator-sid {
+            type inet:ipv6-address-no-zone;
+            description
+              "Locator SID.";
+        }
+        leaf locator-mask-length {
+            type uint8 {
+              range "0..128";
+            }
+            description
+              "Specify the mask length of a locator SID.";
+        }
+        leaf evpn-type {
+            type evpn-type;
+            description
+              "The value specifies the Type of EVPN instance. The value must be normal/i-evpn/b-evpn/bd-evpn/vpws-evpn.";
+        }
+        leaf evpn-name {
+            type name-type {
+              length "1..31";
+            }
+            description
+              "EVPN instance name.";
+        }
+        leaf bd-id {
+            type uint32 {
+              range "0..16777215";
+            }
+            description
+              "The identification of the BD.";
+        }
+        leaf evpl-id {
+            type uint32 {
+              range "1..16777215";
+            }
+            description
+              "The identification of the EVPL instance.";
+        }
+      }
+    }
+    container default-parameter {
+      config false;
+      description
+        "Operational data of EVPN initial configuration information.";
+      leaf access-mode {
+        type access-mode;
+        description
+          "EVPN access Mode.";
+      }
+      leaf service-mode {
+        type service-mode;
+        description
+          "EVPN interface service Mode.";
+      }
+      leaf apply-label-mode {
+        type apply-label-mode;
+        description
+          "EVPN apply label Mode.";
+      }
+    }
+    container recover-timers {
+      config false;
+      description
+        "List of EVPN recover timer informations.";
+      list recover-timer {
+        key "name";
+        description
+          "Operational state of EVPN recover timer informations.";
+        leaf name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "The interface name.";
+        }
+        leaf mode {
+          type timer-mode;
+          description
+            "Mode of EVPN recover timer.";
+        }
+        leaf begin-time {
+          type yang:date-and-time;
+          description
+            "Begin time of EVPN recover timer.";
+        }
+        leaf end-time {
+          type yang:date-and-time;
+          description
+            "End time of EVPN recover timer.";
+        }
+        leaf time-left {
+          type uint32;
+          units "s";
+          description
+            "Time left of EVPN recover timer.";
+        }
+      }
+    }
+    container track-peer-timer-infos {
+      config false;
+      description
+        "List of EVPN track peer timer informations.";
+      list track-peer-timer-info {
+        key "esi";
+        description
+          "Operational state of EVPN track peer timer informations.";
+        leaf esi {
+          type esi;
+          description
+            "ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx or 01xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+        }
+        leaf timer-type {
+          type timer-type;
+          description
+            "Timer type.";
+        }
+        leaf timer-state {
+          type timer-mode;
+          description
+            "Timer status.";
+        }
+        leaf time-left {
+          type uint32;
+          units "s";
+          description
+            "Remaining time.";
+        }
+      }
+    }
+    container sticky-mac-confliction-infos {
+      config false;
+      description
+        "List of EVPN sticky/static mac conflicting informations.";
+      list sticky-mac-confliction-info {
+        key "mac-address bd-id vid";
+        description
+          "Operational data of EVPN sticky/static mac conflicting informations.";
+        leaf mac-address {
+          type pub-type:mac-address;
+          description
+            "MAC address.";
+        }
+        leaf bd-id {
+            type uint32 {
+              range "1..16777215";
+            }
+            description
+              "The identification of the BD.";
+        }
+        leaf vid {
+            type uint16 {
+              range "0..4094";
+            }
+            description
+              "VLAN ID.";
+        }
+        leaf interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Interface name.";
+        }
+        leaf peer-ip {
+          type inet:ip-address-no-zone;
+          description
+            "Peer IP address.";
+        }
+      }
+    }
+  }
+  rpc reset-evpn-mac-duplication {
+    description
+      "Reset EVPN MAC duplication.";
+    ext:node-ref "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn:mac-duplication-infos";
+    ext:node-ref "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:mac-duplication-infos";
+    input {
+      leaf name {
+        type name-type {
+          length "1..31";
+        }
+        mandatory true;
+        description
+          "EVPN instance name.";
+      }
+      leaf bd-id {
+        type uint32 {
+          range "1..16777215";
+        }
+        description
+         "BD ID.";
+      }
+      leaf mac-address {
+        type pub-type:mac-address {
+          length "1..255";
+        }
+        description
+          "MAC address.";
+      }
+      leaf vlan-id {
+        type uint32 {
+          range "1..4094";
+        }
+        description
+         "VLAN ID.";
+      }
+    }
+  }
+  augment "/bd:bd/bd:instances/bd:instance" {
+    description
+    "BD bound to an EVPN instance.";
+    container evpn {
+      description
+        "Configure BD bound to an EVPN instance.";
+      leaf name {
+        type leafref {
+          path "/evpn:evpn/evpn:instances/evpn:instance/evpn:name";
+        }
+        must "(/evpn:evpn/evpn:instances/evpn:instance[evpn:name = current()]/evpn:type='bd-evpn') and not(/bd:bd/bd:instances/bd:instance[bd:id != current()/../../bd:id]/evpn:evpn[evpn:name = current()] and /bd:bd/bd:instances/bd:instance[bd:id != current()/../../bd:id]/evpn:evpn[evpn:tag = current()/../evpn:tag])";
+        description
+          "Configure BD instances bound to an BD exclusive mode EVPN instance.";
+      }
+      leaf esi {
+        when "../name";
+        type esi {
+          length "1..24";
+        }
+        must "(../../nvo3:nvo3/nvo3:vni-list/nvo3:vni[../nvo3:split-horizon='true']) or ((../umr-originate='true') and not(/evpn:evpn/evpn:site/evpn:static-esis/evpn:static-esi[evpn:esi = current()]/evpn:redundancy-mode ='single-active'))";
+        description
+          "Static ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+      }
+      leaf tag {
+        when "../name";
+        type uint16 {
+          range "1..4094";
+        }
+        must "../../bd:mac-learn-style!='qualify'";
+        ext:operation-exclude update;
+        description
+          "Specify the BD tag.";
+      }
+      leaf umr-originate {
+        when "../name";
+        type boolean;
+        must "(../umr-originate='true' and not(../../nvo3:nvo3/nvo3:vni-list/nvo3:vni) and not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bds/l2vpn:bd[l2vpn:id=current()/../../bd:id]) and (../../bd:mac-learn-style!='qualify')) or (../umr-originate='false')";
+        default "false";
+        description
+          "Enable/disable originate Unknown-MAC-Route.";
+      }
+      leaf detail-suppressed {
+        when "../umr-originate ='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable suppresse detail MAC route.";
+      }
+      leaf umr-forward {
+        when "../name";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable process all-0 MAC route as Unknown-MAC-Route.";
+      }
+      leaf dci-ac-access {
+        when "../name";
+        type boolean;
+        must "(../dci-ac-access='true' and ../../nvo3:nvo3/nvo3:vni-list/nvo3:vni[../nvo3:split-horizon='true']) or (../dci-ac-access='false')";
+        default "false";
+        description
+          "Enable/disable evpn-dci support ac-access.";
+      }
+      container interface-track-peers {
+        when "(../name and ../../nvo3:nvo3/nvo3:vni-list/nvo3:vni[../nvo3:split-horizon='true'])";
+        description "List of track peer.";
+        list interface-track-peer {
+          key "es-track-address";
+          description "Configure track peer information.";
+          leaf es-track-address {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:address";
+            }
+            must "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer[bgp:address=current()]/bgp:afs/bgp:af[bgp:type='evpn']";
+            description
+              "Track peer address.";
+          }
+        }
+      }
+    }
+  }
+  augment "/bd:bd/bd:instances/bd:instance/bd:service-points/bd:service-point" {
+    description
+    "Configure the E-Tree leaf attribute of BD.";
+    container evpn {
+      description
+        "Configure the E-Tree leaf attribute of BD.";
+      leaf e-tree-leaf {
+        type boolean;
+        must "(../e-tree-leaf = 'true' and ../../../../evpn:evpn/evpn:name and /evpn:evpn/evpn:instances/evpn:instance[evpn:name=current()/../../../../evpn:evpn/evpn:name]/evpn:bd-evpn/evpn:etree-enable = 'true') or (../e-tree-leaf = 'false')";
+        default false;
+        description
+            "Enable/disable the E-Tree leaf attribute of BD.";
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af" {
+    description
+      "Configure EVPN.";
+    container evpn {
+      when "../../../ni:name!='_public_' and (../l3vpn:route-distinguisher or ../../../../../ni:global/ni:route-distinguisher-auto-ip)";
+      description
+        "Configure EVPN.";
+      leaf import-policy-name {
+        type leafref {
+          path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+        }
+        description
+          "Specifies the name of an import routing policy.";
+      }
+      leaf export-policy-name {
+        type leafref {
+          path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+        }
+        description
+          "Specifies the name of an export routing policy.";
+      }
+      leaf mpls-routing {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the EVPN MPLS layer 3 routing function.";
+      }
+      leaf tunnel-policy-name {
+        type leafref {
+          path "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:name";
+        }
+        description
+          "Specify tunnel policy name for EVPN.";
+      }
+      leaf default-color {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Set default color for nexthop iteration.";
+      }
+      leaf irb2ip {
+        type irb2ip-enable-type;
+        default "default";
+        description
+          "Enable/disable IRB routing rebirth into prefix routing.";
+      }
+      container extend-vpn-targets {
+        description
+          "List of extended RTs.";
+        list extend-vpn-target {
+          key "vrf-rt-value vrf-rt-type";
+          description
+            "Configure RT (VPN Target) to control route advertisement between network nodes. Before sending a VPN route to a PE, the local PE adds an Export RT to the route. After receiving a route from another PE, the local PE determines whether the route will be added to the VPN instance based on the local Import RT and the Export RT that is added to the VPN route.";
+          leaf vrf-rt-value {
+            type string {
+              length "3..21";
+            }
+            description
+              "The formats of a VPN target value are as follows:
+(1) 16-bit AS number : 32-bit user-defined number, for example, 1:3. An AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0:0.
+(2) 32-bit IP address: 16-bit user-defined number, for example: 192.168.122.15:1.The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+(3) 32-bit AS number :16-bit user-defined number, for example, 10.11:3. An AS number ranges from 0.0 to 65535.65535 or 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0.0:0.";
+          }
+          leaf vrf-rt-type {
+            type vrf-rt-type;
+            description
+              "RT types are as follows:
+export-extcommunity: Specifies the value of the extended community attribute of the route from an outbound interface to the destination VPN. import-extcommunity: Receives routes that carry the specified extended community attribute value.";
+          }
+        }
+      }
+      container state {
+        config false;
+        description
+          "Operational state of EVPN attribute.";
+        leaf label {
+          type uint32;
+          config false;
+          description
+            "EVPN label of the VPN instance address family.";
+        }
+      }
+    }
+  }
+  augment "/evpl:evpl/evpl:instances/evpl:instance" {
+    description
+      "EVPL instance bound to an EVPN instance.";
+    container evpn {
+      description
+        "Configure EVPL instance bound to an EVPN instance.";
+      leaf name {
+        type leafref {
+          path "/evpn:evpn/evpn:instances/evpn:instance/evpn:name";
+        }
+        must "/evpn:evpn/evpn:instances/evpn:instance[name=current()]/evpn:type='vpws-evpn' and /evpn:evpn/evpn:instances/evpn:instance[name=current()]/evpn:vpws-evpn/evpn:rd and ../../evpl:mode!='vxlan-mode'";
+        description
+          "Configure EVPL instances bound to an EVPN instance.";
+      }
+      leaf local-service-id {
+        ext:operation-exclude update;
+        when "../name";
+        type uint32 {
+          range "1..16777215";
+        }
+        must "(../local-service-id and ../remote-service-id) or (not(../local-service-id) and not(../remote-service-id))";
+        description
+          "Configure the local SID.";
+      }
+      leaf remote-service-id {
+        ext:operation-exclude update;
+        when "../name";
+        type uint32 {
+          range "1..16777215";
+        }
+        must "(../local-service-id and ../remote-service-id) or (not(../local-service-id) and not(../remote-service-id))";
+        description
+          "Configure the remote SID.";
+      }
+      leaf ignore-match-mtu {
+        when "../name";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the ignore flag of matching MTU from peer device.";
+      }
+      leaf balancing-ignore-esi {
+        when "../name";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the ignore flag of ESI for load balance.";
+      }
+      leaf control-word {
+        when "../name";
+        type boolean;
+        must "(../control-word='true' and ../../evpl:mode!='vxlan-mode') or ../control-word!='true'";
+        default "false";
+        description
+          "Enable/disable EVPL control word.";
+      }
+      container vrrp {
+        when "../name";
+        presence "Configure associated VRRP group.";
+        description
+          "Configure associated VRRP group.";
+        leaf id {
+          ext:operation-exclude update;
+          type uint8 {
+            range "1..255";
+          }
+          mandatory true;
+          description
+            "ID of the associated VRRP group.";
+        }
+        leaf interface-name {
+          ext:operation-exclude update;
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          mandatory true;
+          description
+            "Name of the interface where the associated VRRP group resides.";
+        }
+        leaf version {
+          ext:operation-exclude update;
+          type evpl-vrrp-version;
+          mandatory true;
+          description
+            "The VRRP version, which includes vrrp and vrrp6.";
+        }
+      }
+      container evpl-info {
+        config false;
+        description
+          "Operational state of EVPL info.";
+        leaf ac-interface {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "The AC interface bound to EVPL instance.";
+        }
+        leaf evpl-state {
+            type evpl-state;
+            description
+              "The state of EVPL instance.";
+        }
+        leaf local-ctrl-word {
+            type boolean;
+            description
+              "The local control word.";
+        }
+        leaf local-mtu {
+            type uint16 {
+              range "0..65535";
+            }
+            units Byte;
+            description
+              "The value of local MTU, just from the interface which bound to the EVPL instance. If MTU is 0, it means the ignore flag of checking MTU is enabled.";
+        }
+        leaf local-reduancy-mode {
+            type redundancy-mode;
+            description
+              "The local reduancy mode, which includes single-active and all-active modes.";
+        }
+        leaf local-df-state {
+            type df-state;
+            description
+              "The local DF state.";
+        }
+        leaf local-df-elec-type {
+          type decide-primary-type;
+          description
+            "Type of determining the primary/backup status of local DF.";
+        }
+        leaf remote-reduancy-mode {
+            type redundancy-mode;
+            description
+              "The remote reduancy mode, which includes single-active and all-active modes.";
+        }
+        leaf remote-pri-df-num {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of primary DFs.";
+        }
+        leaf remote-back-df-num {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of backup DFs.";
+        }
+        leaf remote-none-df-num {
+            type uint32 {
+              range "0..4294967295";
+            }
+            description
+              "Number of none DFs.";
+        }
+        leaf tunnel-type {
+            type evpn-tunnel-type;
+            description
+              "The tunnel type of EVPN network.";
+        }
+        leaf evpl-type {
+            type evpn-evpl-type;
+            description
+              "The type of EVPL.";
+        }
+        leaf if-last-up-time {
+            type yang:date-and-time;
+            description
+              "The last up time of AC interface.";
+        }
+        leaf last-pri-time {
+            type yang:date-and-time;
+            description
+              "The last time to be primary DF.";
+        }
+        leaf last-backup-time {
+            type yang:date-and-time;
+            description
+              "The last time to be backup DF.";
+        }
+
+      }
+      container evpl-peer-infos {
+        config false;
+        description
+          "List of EVPL peer info.";
+        list evpl-peer-info {
+          key "peer-ip nexthop-ip";
+          description
+            "Operational state of EVPL peer info.";
+          leaf peer-ip {
+            type inet:ip-address-no-zone;
+            description
+              "Peer IP address.";
+          }
+          leaf nexthop-ip {
+            type inet:ip-address-no-zone;
+            description
+              "Original nexthop IP address.";
+          }
+          leaf remote-df-state {
+            type df-state;
+            description
+              "Remote DF status.";
+          }
+          leaf remote-mtu {
+            type uint32 {
+              range "1..4294967295";
+            }
+            units Byte;
+            description
+              "The value of remote MTU, just from the interface which bound to the EVPL instance. If MTU is 0, it means the ignore flag of checking MTU is enabled.";
+          }
+          leaf remote-ctrl-word {
+            type boolean;
+            description
+              "The remote control word.";
+          }
+          leaf remote-esi {
+            type esi {
+              length "1..24";
+            }
+            description
+              "Remote ESI.";
+          }
+          leaf eline-role {
+            type eline-role;
+            description
+              "The E-Line role.";
+          }
+          container tunnel-infos {
+            config false;
+            description
+              "List of EVPL peer tunnel informations.";
+            list tunnel-info {
+              key "id";
+              description
+                "Operational state of EVPL peer tunnel informations.";
+              leaf id {
+                type string {
+                  length "1..20";
+                }
+                description
+                  "Tunnel ID.";
+              }
+              leaf type {
+                type evpl-tunnel-type;
+                description
+                  "Tunnel type.";
+              }
+            }
+          }
+        }
+      }
+      container label-stacks {
+        config false;
+        description
+          "Statistics of EVPN label stacks.";
+        uses evpn:label-stacks-type;
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "Configure EVPN with the interface.";
+    container evpn {
+      description
+        "Configure ESI interface.";
+      leaf name {
+        type leafref {
+          path "/evpn:evpn/evpn:instances/evpn:instance/evpn:name";
+        }
+        must "/evpn:evpn/evpn:instances/evpn:instance[evpn:name=current()]/evpn:type='i-evpn' or /evpn:evpn/evpn:instances/evpn:instance[evpn:name=current()]/evpn:type='normal'";
+        description
+          "Configure EVPL instances bound to an EVPN instance.";
+      }
+      leaf pbb-source-mac {
+        when "../name";
+        type pub-type:mac-address {
+        }
+        must "/evpn:evpn/evpn:instances/evpn:instance[evpn:name=current()/../evpn:name]/evpn:type='i-evpn'";
+        description
+          "Specifies a B-MAC address."; 
+      }
+      leaf esi {
+        when "(../../ifm:type='Ethernet') or (../../ifm:type='GigabitEthernet') or (../../ifm:type='Eth-Trunk') or (../../ifm:type='100GE') or (../../ifm:type='200GE') or (../../ifm:type='40GE') or (../../ifm:type='10GE') or (../../ifm:type='25GE') or (../../ifm:type='50GE') or (../../ifm:type='PW-VE') or (../../ifm:type='400GE') or (../../ifm:type='MultiGE') or (../../ifm:type='Virtual-Ethernet')";
+        type esi {
+          length "1..24";
+          pattern '( *(00([0-9a-fA-F]){2}\.(([0-9a-fA-F]){4}\.){3}(([0-9a-fA-F]){4}))? *)';
+        }
+        description
+          "Static ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+      }
+      leaf esi-name {
+        when "../../ifm:type='Eth-Trunk'";
+        type leafref {
+          path "/evpn:evpn/evpn:site/evpn:dynamic-esis/evpn:dynamic-esi/evpn:esi-name";
+        }
+        description
+          "Dynamic ESI name is a string of 1 to 31 characters, which begins with a-z or A-Z.";
+      }
+      leaf es-recovery-timer {
+        when "(../../ifm:type='Ethernet') or (../../ifm:type='GigabitEthernet') or (../../ifm:type='Eth-Trunk') or (../../ifm:type='100GE') or (../../ifm:type='200GE') or (../../ifm:type='40GE') or (../../ifm:type='10GE') or (../../ifm:type='25GE') or (../../ifm:type='50GE') or (../../ifm:type='PW-VE') or (../../ifm:type='400GE') or (../../ifm:type='MultiGE')";
+        type uint32 {
+          range "3..1200";
+        }
+        units "s";
+        description
+          "ES recovery timer.";
+      }
+      leaf track-bfd-name {
+        when "(../../ifm:type='Ethernet') or (../../ifm:type='GigabitEthernet') or (../../ifm:type='Eth-Trunk') or (../../ifm:type='100GE') or (../../ifm:type='200GE') or (../../ifm:type='40GE') or (../../ifm:type='10GE') or (../../ifm:type='25GE') or (../../ifm:type='50GE') or (../../ifm:type='PW-VE') or (../../ifm:type='400GE') or (../../ifm:type='MultiGE')";
+        type leafref {
+          path "/bfd:bfd/bfd:sessions/bfd:session/bfd:name";
+        }
+        description
+          "Specify the BFD that track ESI peer.";
+      }
+      leaf e-tree-leaf {
+        when "../name";
+        type boolean;
+        must "(../e-tree-leaf = 'true' and /evpn:evpn/evpn:instances/evpn:instance[evpn:name=current()/../evpn:name]/evpn:normal-evpn/evpn:etree-enable='true') or (../e-tree-leaf = 'false')";
+        default "false";
+        description
+            "Enable/disable the E-Tree leaf attribute of interface.";
+      }
+      leaf state {
+        type evpn:interface-state;
+        config false;
+        description
+          "Interface state.";
+      }
+      leaf vc-state {
+        type evpn:vc-state;
+        config false;
+        description
+          "VC state.";
+      }
+      leaf ring-id {
+        when "../esi";
+        type uint32 {
+          range "1..16777215";
+        }
+        must "not (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name != current()/../../ifm:name]/evpn:evpn[evpn:ring-id = current()])";
+        description
+          "Evpn ring id of interface.";
+      }
+    }
+    container evpn-attribute {
+      description
+        "Configure EVPN attribute of interface.";
+      container track-peers {
+        when "(../../ifm:type='Eth-Trunk') or (../../ifm:type='PW-VE')";
+        description
+            "List of track peer.";
+        list track-peer {
+          key "es-track-address";
+          description
+            "Configure the track peer info.";
+          leaf es-track-address {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:address";
+            }
+            must "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer[bgp:address=current()]/bgp:afs/bgp:af[bgp:type='evpn']";
+            description
+              "Track peer address.";
+          }
+        }
+      }
+    }
+  }
+  augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw" {
+    description
+      "Configure the EVPN attributes of a PW.";
+    container evpn {
+      description
+        "Configure the EVPN attributes of a PW.";
+      leaf etree-leaf-enable {
+        when "../../../../../l2vpn:work-mode='bd-mode' and ../../l2vpn:upe='true' and ../../l2vpn:name";
+        type boolean;
+        must "(../etree-leaf-enable='true' and ../../../../../l2vpn:bds/l2vpn:bd/l2vpn:id and /bd:bd/bd:instances/bd:instance[bd:id=current()/../../../../../l2vpn:bds/l2vpn:bd/l2vpn:id]/evpn:evpn/evpn:name and /evpn:evpn/evpn:instances/evpn:instance[evpn:name=/bd:bd/bd:instances/bd:instance[bd:id=current()/../../../../../l2vpn:bds/l2vpn:bd/l2vpn:id]/evpn:evpn/evpn:name]/evpn:type='bd-evpn' and /evpn:evpn/evpn:instances/evpn:instance[evpn:name=/bd:bd/bd:instances/bd:instance[bd:id=current()/../../../../../l2vpn:bds/l2vpn:bd/l2vpn:id]/evpn:evpn/evpn:name]/evpn:bd-evpn/evpn:etree-enable='true') or ../etree-leaf-enable='false'";
+        default "false";
+        description
+          "Enable/disable the E-Tree leaf attribute of a PW.";
+      }
+      leaf esi {
+        when "../../../../../l2vpn:work-mode='bd-mode' and ../../l2vpn:upe='true' and ../../l2vpn:name";
+        type leafref {
+          path "/evpn:evpn/evpn:site/evpn:static-esis/evpn:static-esi/evpn:esi";
+        }
+        must "/evpn:evpn/evpn:site/evpn:static-esis/evpn:static-esi[evpn:esi=current()/../evpn:esi]/evpn:redundancy-mode='single-active'";
+        description
+          "Static ESI, in the format of 00xx.xxxx.xxxx.xxxx.xxxx, in which x ranges from 0 to F. A static ESI cannot be all 0s.";
+      }
+      leaf state {
+        type l2vpn:l2vpn-pw-state;
+        config false;
+        description
+          "PW state.";
+      }
+    }
+  }
+ }

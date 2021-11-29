@@ -1,0 +1,65 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifit-common-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-ifit-common-deviations-NE8000M8M14";
+  prefix ifit-common-devs-NE8000M8M14;
+
+  import huawei-ifit {
+    prefix ifit;
+  }
+  import huawei-ifit-common {
+    prefix ifit-common;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions IFIT feature.";
+
+  revision 2020-04-02 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:whitelist-rules/ifit-common:whitelist-rule/ifit-common:address-type/ifit-common:ipv6-condition/ifit-common:source-ipv6-mask" {
+    deviate replace {
+      type uint8 {
+        range "32..96";
+      }
+    }
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:whitelist-rules/ifit-common:whitelist-rule/ifit-common:address-type/ifit-common:ipv6-condition/ifit-common:destination-ipv6-mask" {
+    deviate replace {
+      type uint8 {
+        range "32..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ifit-common:ifit-learning/ifit-common:per-packet-delay-measure" {
+    deviate not-supported;
+  }
+  ext:deviation-ext "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:whitelist-rules/ifit-common:whitelist-rule/ifit-common:address-type/ifit-common:ipv6-condition/ifit-common:source-ipv6-mask" {
+    ext:deviate-ext "replace" {
+      ext:dynamic-default {
+        ext:default-value "96" {
+          when '../source-ipv6-address';
+        }
+      }
+    }
+  }
+}

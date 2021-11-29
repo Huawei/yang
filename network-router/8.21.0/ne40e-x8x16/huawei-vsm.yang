@@ -1,0 +1,246 @@
+/******************************************************
+* Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-vsm {
+  namespace "urn:huawei:yang:huawei-vsm";
+  prefix vsm;
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of value-added service management module.";
+
+  revision 2021-07-20 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef engine-id {
+    type enumeration {
+      enum "engine0" {
+        value 1;
+        description
+          "Engine ID 0.";
+      }
+      enum "engine1" {
+        value 2;
+        description
+          "Engine ID 1.";
+      }
+      enum "engine2" {
+        value 3;
+        description
+          "Engine ID 2.";
+      }
+      enum "engine3" {
+        value 4;
+        description
+          "Engine ID 3.";
+      }
+    }
+    description
+      "CGN engine ID.";
+  }
+
+  typedef card-id {
+    type enumeration {
+      enum "card0" {
+        value 1;
+        description
+          "Card ID 0.";
+      }
+      enum "card1" {
+        value 2;
+        description
+          "Card ID 1.";
+      }
+    }
+    description
+      "CGN card ID.";
+  }
+  container vsm {
+    description
+      "Value-added service management.";
+    container service-locations {
+      description
+        "List of service-location.";
+      list service-location {
+        key "service-id";
+        description
+          "Configure service location.";
+        leaf service-id {
+          type uint16{
+            range "1..255";
+          }
+          description
+            "Service location Id.";
+        }
+        container location {
+          presence "Enable/Disable the location configuration for the service.";
+          description
+            "Configure location.";
+          leaf slot {
+            type string{
+              length "1..16";
+            }
+            mandatory true;
+            description
+              "Slot ID. If the slot is a VSU, you must specify the engine or card. If backup-slot is configured, backup-slot must be a VSU and backup-engine or backup-card must be specified. If the slot is a LPU, the engine and card cannot be specified. If backup-slot is configured, backup-slot must be a LPU and backup-engine and backup-card cannot be specified.";
+          }
+          choice location {
+            description "Location on slot.";
+            case engine {  
+              description "Engine type.";
+              leaf engine-id {
+                type engine-id;
+                description
+                  "Engine ID.";
+              }
+            }
+            case card {
+              description "Card type.";
+              leaf card-id {
+                type card-id;
+                description
+                  "Card ID.";
+              }
+            }
+          }
+          leaf backup-slot {
+            type string{
+              length "1..16";
+            }
+            description
+              "Backup Slot ID.";
+          }
+          choice backup-location{
+            when "backup-slot and (engine-id or card-id)";
+            description "Location on backup slot.";
+            case engine {
+              description "Engine type.";
+              leaf backup-engine-id {
+                type engine-id;
+                description
+                  "Backup engine ID.";
+              }
+            }
+            case card {
+              description "Card type.";
+              leaf backup-card-id {
+                type card-id;
+                description
+                  "Backup card ID.";
+              }
+            }
+          }
+        }
+      }
+    }
+    container service-instance-groups {
+      description
+        "List of service instance group.";
+      list service-instance-group {
+        key "group-name";
+        description
+          "Configure service-instance-group, used to bind VSMHA and remote-backup-service.";
+        leaf group-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Service-instance-group name.";
+        }
+        container binded-service-locations {
+          description
+            "List of service-location binded.";
+          list binded-service-location {
+            key "service-id";
+            description
+              "Configure service-location binded.";
+            leaf service-id {
+              type leafref {
+                path "/vsm:vsm/vsm:service-locations/vsm:service-location/vsm:service-id";
+              }
+              must "/vsm:vsm/vsm:service-locations/vsm:service-location[vsm:service-id=current()]/vsm:location/vsm:slot";
+              description
+                "Service location Id.";
+            }
+            leaf weight {
+              type uint8 {
+                range "1..40";
+              }
+              description
+                "Service location weight.";
+            }
+          }
+        }
+      }
+    }
+
+    container on-board-mode {
+      description "Configure vsm-on-board mode.";
+      leaf mode {
+        type enumeration {
+          enum "centralized-board" {
+            value 0;
+            description
+              "Centralized-board.";
+          }
+          enum "on-board" {
+            value 1;
+            description
+              "On-board.";
+          }
+        }
+        default "centralized-board";
+        description
+          "Specify vsm mode.";
+      }
+    }
+    container ha {
+      description "Configure ha.";
+      leaf hot-backup {
+        type enumeration {
+          enum "warm-backup" {
+            value 0;
+            description
+              "Warm backup.";
+          }
+          enum "hot-backup" {
+            value 1;
+            description
+              "Hot backup.";
+          }
+        }
+        default "warm-backup";
+        description
+          "Specify HA backup mode in the inter-board or inter-chassis hot backup scenario.";
+      }
+      leaf preempt-time {
+        type uint16 {
+          range "120..3600";
+        }
+        units "s";
+        default "360";
+        description
+          "Specifies the switchback period for inter-board backup.";
+      }
+    }
+  }
+  ext:task-name "nat";
+}

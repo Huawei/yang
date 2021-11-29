@@ -1,0 +1,90 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lldp-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-lldp-deviations-ATN-980B";
+  prefix lldp-devs-ATN-980B;
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-lldp {
+    prefix lldp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Link layer discovery protocol.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:ddp" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:identity" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:identity-tlv" {
+    deviate not-supported;
+  }
+  deviation "/lldp:lldp/lldp:global-attribute/lldp:mdn-status" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:ddp-tlv" {
+    deviate not-supported;
+  }
+  deviation "/lldp:lldp/lldp:global-attribute/lldp:management-address-mode/lldp:global-mode/lldp:management-address-ipv4-bind-if" {
+    deviate not-supported;
+  }
+  deviation "/lldp:lldp/lldp:global-attribute/lldp:management-address-mode/lldp:interface-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:identity-tlv" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:sub-interface-lldp/lldp:session/lldp:local-info/lldp:management-addresss" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:management-addresss" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:med-tlv" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:med-tlv" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:med-tlv" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:tlv-enable/lldp:power-tlv" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:local-info/lldp:power" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:power" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:neighbors/lldp:neighbor/lldp:legacy-power-capability" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:lldp/lldp:session/lldp:statistics/lldp:received-network-card-id-tlvs" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lldp:sub-interface-lldp/lldp:session/lldp:statistics/lldp:received-network-card-id-tlvs" {
+    deviate not-supported;
+  }
+}

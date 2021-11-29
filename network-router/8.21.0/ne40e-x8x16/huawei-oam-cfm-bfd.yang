@@ -1,0 +1,102 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-bfd {
+  namespace "urn:huawei:yang:huawei-oam-cfm-bfd";
+  prefix oam-cfm-bfd;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-bfd-static-mpls-te {
+    prefix bfd-static-mpls-te;
+  }
+  import huawei-bfd-static-vpws {
+    prefix bfd-static-vpws;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+  revision 2020-09-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "oammgr";
+  typedef cfm-bind-bfd-type {
+    type enumeration {
+      enum "CFM-BFD" {
+        value 1;
+        description
+          "Type that CFM transfers fault information to BFD.";
+      }
+      enum "BFD-CFM" {
+        value 2;
+        description
+          "Type that BFD transfers fault information to CFM.";
+      }
+    }
+    description
+      "Binding type.";
+  }
+  augment "/oammgr:oammgr" {
+    description
+      "Configure the operation, administration and maintenance (OAM) association function.";
+    container cfm-bind-bfds {
+      description
+        "List of associations between CFM and BFD.";
+      list cfm-bind-bfd {
+        key "md-name ma-name bfd-session-id bind-type";
+        unique "md-name ma-name bind-type";
+        unique "bfd-session-id bind-type";
+        description
+          "Configure an instance of an association between CFM and BFD.";
+        leaf md-name {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+          }
+          description
+            "Configure a MD name.";
+        }
+        leaf ma-name {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma/y1731:name";
+          }
+          description
+            "Configure a MA name.";
+        }
+        leaf bfd-session-id {
+          type uint32 {
+            range "1..16384";
+          }
+          must "/bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-multicast-ipv4=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-static-ldp-lsp=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd-static-mpls-te:local-discriminator-static-te-lsp=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd-static-mpls-te:local-discriminator-static-te-tunnel=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd-static-vpws:local-discriminator-static-vll-pw=current()]";
+          description
+            "Configure the local discriminator of a BFD session.";
+        }
+        leaf bind-type {
+          type cfm-bind-bfd-type;
+          description
+            "Configure a binding type.";
+        }
+      }
+    }
+  }
+}

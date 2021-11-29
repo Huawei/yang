@@ -1,0 +1,163 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-diagnostic-tools-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-diagnostic-tools-deviations-ATN-980B";
+  prefix diagnostic-tools-devs-ATN-980B;
+
+  import huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-segment-routing {
+    prefix sr;
+  }
+  import huawei-srpolicy {
+    prefix srpolicy;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-diagnostic-tools module.";
+
+  revision 2020-08-28 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/diagnostic-tools:pwe3-start-ping/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:vpws-bgp-vpn-instance/diagnostic-tools:vpws-bgp-vpn-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:common/l2vpn:vpws-bgp-vpns/l2vpn:vpws-bgp-vpn/l2vpn:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:pwe3-start-trace/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:vpws-bgp-vpn-instance/diagnostic-tools:vpws-bgp-vpn-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:common/l2vpn:vpws-bgp-vpns/l2vpn:vpws-bgp-vpn/l2vpn:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lsp-ping/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srbe/diagnostic-tools:flex-algo-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lsp-trace/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srbe/diagnostic-tools:flex-algo-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-start-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-stop-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-delete-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-start-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-stop-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-delete-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lb-test/diagnostic-tools:input/diagnostic-tools:md-name" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lb-test/diagnostic-tools:input/diagnostic-tools:ma-name" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma/y1731:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lb-test/diagnostic-tools:input/diagnostic-tools:mep-id" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:meps/y1731:mep/y1731:id";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lb-test/diagnostic-tools:input/diagnostic-tools:remote/diagnostic-tools:remote-mep-id/diagnostic-tools:rmep-id" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:rmeps/y1731:rmep/y1731:id";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lt-test/diagnostic-tools:input/diagnostic-tools:md-name" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lt-test/diagnostic-tools:input/diagnostic-tools:ma-name" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma/y1731:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lt-test/diagnostic-tools:input/diagnostic-tools:mep-id" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:meps/y1731:mep/y1731:id";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lt-test/diagnostic-tools:input/diagnostic-tools:remote/diagnostic-tools:remote-mep-id/diagnostic-tools:rmep-id" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:rmeps/y1731:rmep/y1731:id";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:vpls-start-vsi-ping/diagnostic-tools:input/diagnostic-tools:vsi-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lsp-ping/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srte-policy/diagnostic-tools:probe-type/diagnostic-tools:policy-name/diagnostic-tools:policy-name" {
+    deviate replace {
+      type leafref {
+        path "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lsp-trace/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srte-policy/diagnostic-tools:probe-type/diagnostic-tools:policy-name/diagnostic-tools:policy-name" {
+    deviate replace {
+      type leafref {
+        path "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:name";
+      }
+    }
+  }
+}

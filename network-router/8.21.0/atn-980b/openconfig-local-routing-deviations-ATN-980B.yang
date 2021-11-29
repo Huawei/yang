@@ -1,0 +1,34 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module openconfig-local-routing-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:openconfig-local-routing-deviations-ATN-980B";
+  prefix oc-loc-rt-devs-ATN-980B;
+
+  import openconfig-local-routing {
+    prefix oc-loc-rt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deviations for openconfig-local-routing model.";
+
+  revision 2021-06-04 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-loc-rt:local-routes" {
+    deviate not-supported;
+  }
+}

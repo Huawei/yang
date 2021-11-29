@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-flexe-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-flexe-deviations-ATN-980B";
+  prefix flexe-devs-ATN-980B;
+
+  import huawei-flexe {
+    prefix flexe;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-flexe module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/flexe:flexe/flexe:groups/flexe:group/flexe:padding-enable" {
+    deviate delete {
+      default "false";
+    }
+  }
+
+}

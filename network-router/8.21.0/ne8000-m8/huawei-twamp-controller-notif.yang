@@ -1,0 +1,529 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-twamp-controller-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-twamp-controller-notif";
+  prefix twamp-controller-notif;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of twamp controller.";
+  revision 2021-01-12 {
+    description
+      "Add session information of TWAMP alarm.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-10-30 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name  "twampclient";
+  
+  /*
+   * grouping
+   */
+  grouping session-info{
+      description
+        "Session information of TWAMP alarm.";
+      leaf sender-address {
+        type inet:ip-address-no-zone;
+        description
+          "Sender IP.";
+      }
+      leaf reflector-address {
+        type inet:ip-address-no-zone;
+        description
+          "Reflector IP.";
+      }
+      leaf sender-port {
+        type uint32;
+        description
+          "Sender Port.";
+      }
+      leaf reflector-port {
+        type uint32;
+        description
+          "Reflector port.";
+      }
+      leaf vpn-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "VPN instance name.";
+      }
+  }
+ 
+  notification sender-session-num-exceed {
+    description
+      "The number of TWAMP sender session is out of device capability.";
+  }
+  notification sender-session-num-recovery {
+    description
+      "The number of TWAMP sender session is under device capability.";
+  }
+  notification twoway-delay-exceed {
+    description
+      "The two-way delay of the TWAMP test instance exceeded the upper threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Delay value.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The Delay trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm Delay threshold value.";
+    }
+    uses session-info;
+  }
+  notification twoway-delay-recovery {
+    description
+      "The two-way delay of the TWAMP test instance was under the lower threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Delay value.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The Delay trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm Delay threshold value.";
+    }
+    uses session-info;
+  }
+  notification twoway-jitter-exceed {
+    description
+      "The two-way jitter of the TWAMP test instance exceeded the upper threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Jitter value.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The jitter trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm jitter threshold value.";
+    }
+    uses session-info;
+  }
+  notification twoway-jitter-recovery {
+    description
+      "The two-way jitter of the TWAMP test instance was under the lower threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Jitter value.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The jitter trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm jitter threshold value.";
+    }
+    uses session-info;
+  }
+  notification twoway-loc-exceed {
+    description
+      "The two-way loss ratio of the TWAMP test instance reached the LOC threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Packet loss rate.";
+    }
+    uses session-info;
+  }
+  notification twoway-loc-recovery {
+    description
+      "The two-way loss ratio of the TWAMP test instance was under the LOC threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Packet loss rate.";
+    }
+    uses session-info;
+  }
+  notification twoway-lossratio-exceed {
+    description
+      "The two-way loss ratio of the TWAMP test instance exceeded the upper threshold in the 1-minute statistics period.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Packet loss rate.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The Loss trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm Loss threshold value.";
+    }
+    uses session-info;
+  }
+  notification twoway-lossratio-recovery {
+    description
+      "The two-way loss ratio of the TWAMP test instance was under the lower threshold in the 1-minute statistics period.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Packet loss rate.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The Loss trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm Loss threshold value.";
+    }
+    uses session-info;
+  }
+  notification member-twoway-delay-exceed {
+    description
+      "The two-way delay of the TWAMP test instance exceeded the upper threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf member-id {
+      type uint32;
+      description
+        "TWAMP Light test session member ID.";
+    }
+    leaf member-name {
+      type pub-type:if-name;
+      description
+        "TWAMP Light test session member name.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Delay value.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The Delay trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm Delay threshold value.";
+    }
+    uses session-info;
+  }
+  notification member-twoway-delay-recovery {
+    description
+      "The two-way delay of the TWAMP test instance was under the lower threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf member-id {
+      type uint32;
+      description
+        "TWAMP Light test session member ID.";
+    }
+    leaf member-name {
+      type pub-type:if-name;
+      description
+        "TWAMP Light test session member name.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Delay value.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The Delay trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm Delay threshold value.";
+    }
+    uses session-info;
+  }
+  notification member-twoway-lossratio-exceed {
+    description
+      "The two-way loss ratio of the TWAMP test instance exceeded the upper threshold in the 1-minute statistics period.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf member-id {
+      type uint32;
+      description
+        "TWAMP Light test session member ID.";
+    }
+    leaf member-name {
+      type pub-type:if-name;
+      description
+        "TWAMP Light test session member name.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Packet loss rate.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The Loss trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm Loss threshold value.";
+    }
+    uses session-info;
+  }
+  notification member-twoway-lossratio-recovery {
+    description
+      "The two-way loss ratio of the TWAMP test instance was under the lower threshold in the 1-minute statistics period.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf member-id {
+      type uint32;
+      description
+        "TWAMP Light test session member ID.";
+    }
+    leaf member-name {
+      type pub-type:if-name;
+      description
+        "TWAMP Light test session member name.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Packet loss rate.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The Loss trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm Loss threshold value.";
+    }
+    uses session-info;
+  }
+  notification member-twoway-jitter-exceed {
+    description
+      "The two-way jitter of the TWAMP test instance exceeded the upper threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf member-id {
+      type uint32;
+      description
+        "TWAMP Light test session member ID.";
+    }
+    leaf member-name {
+      type pub-type:if-name;
+      description
+        "TWAMP Light test session member name.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Jitter value.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The jitter trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm jitter threshold value.";
+    }
+    uses session-info;
+  }
+  notification member-twoway-jitter-recovery {
+    description
+      "The two-way jitter of the TWAMP test instance was under the lower threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf member-id {
+      type uint32;
+      description
+        "TWAMP Light test session member ID.";
+    }
+    leaf member-name {
+      type pub-type:if-name;
+      description
+        "TWAMP Light test session member name.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Jitter value.";
+    }
+    leaf upper-limit-threshold {
+      type uint32;
+      description
+        "The jitter trigger-alarm threshold value.";
+    }
+    leaf lower-limit-threshold {
+      type uint32;
+      description
+        "The clear-alarm jitter threshold value.";
+    }
+    uses session-info;
+  }
+  notification member-twoway-loc-exceed {
+    description
+      "The two-way loss ratio of the TWAMP test instance reached the LOC threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf member-id {
+      type uint32;
+      description
+        "TWAMP Light test session member ID.";
+    }
+    leaf member-name {
+      type pub-type:if-name;
+      description
+        "TWAMP Light test session member name.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Packet loss rate.";
+    }
+    uses session-info;
+  }
+  notification member-twoway-loc-recovery {
+    description
+      "The two-way loss ratio of the TWAMP test instance was under the LOC threshold in three consecutive test intervals.";
+    leaf session-id {
+      type uint32;
+      description
+        "TWAMP Light test session ID.";
+    }
+    leaf member-id {
+      type uint32;
+      description
+        "TWAMP Light test session member ID.";
+    }
+    leaf member-name {
+      type pub-type:if-name;
+      description
+        "TWAMP Light test session member name.";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Packet loss rate.";
+    }
+    uses session-info;
+  }
+}

@@ -1,0 +1,80 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-evpn-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bgp-evpn-deviations-NE8000M8M14";
+  prefix bgp-evpn-devs-NE8000M8M14;
+
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp-evpn {
+    prefix bgp-evpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "BGP EVPN configuration.";
+
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef advertise-encap-type-deviations {
+    type enumeration {
+      enum vxlan {
+        value 1;
+        description
+          "VXLAN.";
+      }
+      enum mpls {
+        value 2;
+        description
+          "MPLS.";
+      }
+      enum srv6 {
+        value 4;
+        description
+          "SRv6.";
+      }
+    }
+    description
+      "Encapsulation type of packets.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:advertise-encap-type" {
+    deviate replace {
+      type bgp-evpn-devs-NE8000M8M14:advertise-encap-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:advertise-encap-type" {
+    deviate replace {
+      type bgp-evpn-devs-NE8000M8M14:advertise-encap-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp-evpn:evpn/bgp-evpn:irb-asymmetric/bgp-evpn:policy-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp-evpn:evpn/bgp-evpn:irb-asymmetric/bgp-evpn:policy-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:dampening-routes/bgp-evpn:dampening-route/bgp-evpn:policy-type/bgp-evpn:xpl-ref" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn" {
+    deviate not-supported;
+  }
+}

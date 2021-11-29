@@ -1,0 +1,105 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-diagnostic-tools {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-diagnostic-tools";
+  prefix diagnostic-tools;
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-diagnostic-tools-ipv4;
+  include huawei-diagnostic-tools-ipv6;
+  include huawei-diagnostic-tools-lsp;
+  include huawei-diagnostic-tools-type;
+  include huawei-diagnostic-tools-srv6;
+  include huawei-diagnostic-tools-evpn;
+  include huawei-diagnostic-tools-common;
+  include huawei-diagnostic-tools-tcp;
+  include huawei-diagnostic-tools-gmac;
+  include huawei-diagnostic-tools-bier;
+  include huawei-diagnostic-tools-vxlan;
+  include huawei-diagnostic-tools-vpls;
+  include huawei-diagnostic-tools-8021ag;
+  include huawei-diagnostic-tools-pwe3;
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+     "Diagnosis tool.";
+
+  revision 2021-08-05 {
+    description
+      "Add container segment-lists for SRV6 ping-results and trace-results.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-06-11 {
+    description
+      "Add VPLS VSI ping.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-05-11 {
+    description
+      "Add pwe3 ping/tracert.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-01-20 {
+    description
+      "Add lblt submodule.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-01-11 {
+    description
+      "Add vpls mac ping.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-01-04 {
+    description
+      "Add VXLAN ping/tracert.";
+    reference
+      "Huawei private.";
+  } 
+  revision 2020-09-10 {
+    description
+      "Add fast reply inbound node.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-08-24 {
+    description
+      "Modify BIER description.";
+    reference
+      "Huawei private.";
+  } 
+  revision 2020-07-04 {
+    description
+      "Add BIER IPv6 Ping.";
+    reference
+      "Huawei private.";
+  } 
+  revision 2020-01-14 {
+    description
+      "Modify of evpn.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-05 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "sla";
+}

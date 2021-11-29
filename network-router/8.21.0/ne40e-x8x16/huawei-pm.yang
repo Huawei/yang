@@ -1,0 +1,774 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pm {
+  namespace "urn:huawei:yang:huawei-pm";
+  prefix pm;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Performance management module.";
+  revision 2019-12-16 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "perf-mgr";
+  
+  typedef pm-indicator-type {
+    type enumeration {
+      enum "CUR" {
+        value 0;
+        description
+          "The indicator type is actual.";
+      }
+      enum "AVG" {
+        value 1;
+        description
+          "The indicator type is average.";
+      }
+      enum "MAX" {
+        value 2;
+        description
+          "The indicator type is maximum.";
+      }
+      enum "MIN" {
+        value 3;
+        description
+          "The indicator type is minimum.";
+      }
+      enum "RATE" {
+        value 4;
+        description
+          "The indicator type is rate.";
+      }
+      enum "INCREASE" {
+        value 5;
+        description
+          "The indicator type is increase.";
+      }
+      enum "EXPRESS" {
+        value 6;
+        description
+          "The indicator type is express.";
+      }
+      enum "SUM" {
+        value 7;
+        description
+          "The indicator type is sum.";
+      }
+      enum "SDH-ES" {
+        value 8;
+        description
+          "The indicator type is sdh_es.";
+      }
+      enum "SDH-SES" {
+        value 9;
+        description
+          "The indicator type is sdh_ses.";
+      }
+      enum "SDH-UAT" {
+        value 10;
+        description
+          "The indicator type is sdh_uat.";
+      }
+      enum "SDH-CSES" {
+        value 11;
+        description
+          "The indicator type is sdh_cses.";
+      }
+      enum "SDH-BBE" {
+        value 12;
+        description
+          "The indicator type is sdh_bbe.";
+      }
+      enum "SDH-OFS" {
+        value 13;
+        description
+          "The indicator type is sdh_ofs.";
+      }
+      enum "SDH-FEES" {
+        value 14;
+        description
+          "The indicator type is sdh_fees.";
+      }
+      enum "SDH-FESES" {
+        value 15;
+        description
+          "The indicator type is sdh_feses.";
+      }
+      enum "SDH-FEBBE" {
+        value 16;
+        description
+          "The indicator type is sdh_febbe.";
+      }
+      enum "SDH-FECSES" {
+        value 17;
+        description
+          "The indicator type is sdh_fecses.";
+      }
+      enum "SDH-FEUAS" {
+        value 18;
+        description
+          "The indicator type is sdh_feuas.";
+      }
+      enum "THRSEC" {
+        value 20;
+        description
+          "The indicator type is thrsec.";
+      }
+    }
+    description
+      "The type of indicator.";
+  }
+  typedef pm-indicator-counter-type {
+    type enumeration {
+      enum "counter8" {
+        value 1;
+        description
+          "The 8-bit indicator counter.";
+      }
+      enum "counter16" {
+        value 2;
+        description
+          "The 16-bit indicator counter.";
+      }
+      enum "counter32" {
+        value 3;
+        description
+          "The 32-bit indicator counter.";
+      }
+      enum "counter64" {
+        value 4;
+        description
+          "The 64-bit indicator counter.";
+      }
+    }
+    description
+      "The type of indicator counter.";
+  }
+  typedef pm-file-format-type {
+    type enumeration {
+      enum "pm-txt-file-type" {
+        value 1;
+        description
+          "Text file format.";
+      }
+      enum "pm-xml-file-type" {
+        value 3;
+        description
+          "XML file format.";
+      }
+    }
+    description
+      "The type of file format.";
+  }
+  typedef pm-taskt-type {
+    type enumeration {
+      enum "pm-statistics" {
+        value 3;
+        description
+          "PM statistics task.";
+      }
+      enum "sdh" {
+        value 6;
+        description
+          "PM SDH task.";
+      }
+      enum "sdh-short" {
+        value 10;
+        description
+          "PM SDH short cycle task.";
+      }
+      enum "rmon-history" {
+        value 7;
+        description
+          "PM RMON historical task.";
+      }
+      enum "rmon-statistics" {
+        value 8;
+        description
+          "PM RMON statistics task.";
+      }
+    }
+    description
+      "The type of task.";
+  }
+  typedef pm-instance-type-name-type {
+    type string {
+      length "1..63";
+    }
+    description
+      "The type of instance type name.";
+  }
+  typedef pm-instance-name-type {
+    type string {
+      length "1..255";
+    }
+    description
+      "The type of instance name.";
+  }
+  typedef pm-task-name-type {
+    type string {
+      length "1..31";
+      pattern '[a-z0-9][a-z0-9_]*';
+    }
+    description
+      "The type of task name.";
+  }
+  typedef pm-task-run-state-type {
+    type enumeration {
+      enum "READY" {
+        value 1;
+        description
+          "The task is ready.";
+      }
+      enum "RUNNING" {
+        value 2;
+        description
+          "The task is running.";
+      }
+      enum "STOP" {
+        value 3;
+        description
+          "The tasks stops.";
+      }
+      enum "TERMINAL" {
+        value 4;
+        description
+          "The task is terminated.";
+      }
+    }
+    description
+      "Task run state type.";
+  }
+  typedef pm-is-enable-type {
+    type enumeration {
+      enum "enable" {
+        value 1;
+        description
+          "PM is enabled.";
+      }
+      enum "disable" {
+        value 2;
+        description
+          "PM is disabled.";
+      }
+    }
+    description
+      "PM state type.";
+  }
+  typedef pm-upload-type {
+    type enumeration {
+      enum "active" {
+        value 1;
+        description
+          "Upload active.";
+      }
+      enum "passive" {
+        value 2;
+        description
+          "Upload passive.";
+      }
+    }
+    description
+      "PM upload type.";
+  }
+  typedef pm-upload-request-name-type {
+    type string {
+      length "1..31";
+      pattern '[A-Za-z0-9][A-Za-z0-9_]*';
+    }
+    description
+      "The type of upload request name.";
+  }
+  typedef pm-file-server-name-type {
+    type string {
+      length "1..31";
+      pattern '[A-Za-z0-9][A-Za-z0-9_]*';
+    }
+    description
+      "The type of file server name.";
+  }
+  typedef pm-transfer-protocol-type {
+    type enumeration {
+      enum "ftp" {
+        value 1;
+        description
+          "File Transfer Protocol (FTP).";
+      }
+      enum "sftp" {
+        value 3;
+        description
+          "Secure File Transfer Protocol (SFTP).";
+      }
+    }
+    description
+      "Protocol type.";
+  }
+  typedef pm-vpn-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None. A public instance is used.";
+      }
+      enum "manage-vpn" {
+        value 1;
+        description
+          "Management VPN.";
+      }
+      enum "vpn-instance" {
+        value 2;
+        description
+          "VPN instance.";
+      }
+    }
+    description
+      "VPN type.";
+  }
+  typedef pm-sample-interval-type {
+    type enumeration {
+      enum "1-minute" {
+        value 1;
+        description
+          "Sets the sampling cycle to 1 minute.";
+      }
+      enum "2-minutes" {
+        value 2;
+        description
+          "Sets the sampling cycle to 2 minute.";
+      }
+      enum "3-minutes" {
+        value 3;
+        description
+          "Sets the sampling cycle to 3 minutes.";
+      }
+      enum "5-minutes" {
+        value 5;
+        description
+          "Sets the sampling cycle to 5 minutes.";
+      }
+      enum "10-minutes" {
+        value 10;
+        description
+          "Sets the sampling cycle to 10 minutes.";
+      }
+      enum "15-minutes" {
+        value 15;
+        description
+          "Sets the sampling cycle to 15 minutes.";
+      }
+      enum "30-minutes" {
+        value 30;
+        description
+          "Sets the sampling cycle to 30 minutes.";
+      }
+      enum "60-minutes" {
+        value 60;
+        description
+          "Sets the sampling cycle to 60 minutes.";
+      }
+      enum "not-support" {
+        value 0;
+        description
+          "Sampling interval is less than 1 minute.";
+      }
+    }
+    description
+      "PM sampling interval value.";
+  }
+  typedef pm-statistic-cycle-type {
+    type enumeration {
+      enum "1-minute" {
+        value 1;
+        description
+          "Sets the statistics cycle to 1 minute.";
+      }
+      enum "5-minutes" {
+        value 5;
+        description
+          "Sets the statistics cycle to 5 minutes.";
+      }
+      enum "10-minutes" {
+        value 10;
+        description
+          "Sets the statistics cycle to 10 minutes.";
+      }
+      enum "15-minutes" {
+        value 15;
+        description
+          "Sets the statistics cycle to 15 minutes.";
+      }
+      enum "30-minutes" {
+        value 30;
+        description
+          "Sets the statistics cycle to 30 minutes.";
+      }
+      enum "60-minutes" {
+        value 60;
+        description
+          "Sets the statistics cycle to 60 minutes.";
+      }
+      enum "1440-minutes" {
+        value 1440;
+        description
+          "Sets the statistics cycle to 1440 minutes.";
+      }
+      enum "not-support" {
+        value 0;
+        description
+          "Statistics cycle is out of range.";
+      }
+    }
+    description
+      "PM statistic cycle value.";
+  }
+  typedef pm-elaborate-sample-type {
+    type enumeration {
+      enum "default" {
+        value 0;
+        description
+          "Sets the value to the default one, which is disable.";
+      }
+      enum "second" {
+        value 1;
+        description
+          "Sets the time unit to seconds.";
+      }
+      enum "millisecond" {
+        value 2;
+        description
+          "Sets the time unit to milliseconds.";
+      }
+    }
+    description
+      "PM elaborate sample type.";
+  }
+  container pm {
+    description
+      "Performance management module.";
+    container global {
+      description
+        "Configure global PM configuration.";
+      leaf statistics-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the statistics function.";
+      }
+      leaf statistics-max-tasks {
+        type int32;
+        config false;
+        description
+          "Maximum number of statistics tasks.";
+      }
+      leaf max-statistics-files-per-task {
+        type int32;
+        default "4";
+        config false;
+        description
+          "Maximum number of statistics files for each task.";
+      }
+      leaf current-statistics-task-number {
+        type int32;
+        config false;
+        description
+          "Number of current statistics tasks.";
+      }
+    }
+    container statistics-tasks {
+      description
+        "List of performance statistics task.";
+      list statistics-task {
+        key "task-name";
+        description
+          "Configure performance statistics task.";
+        leaf task-name {
+          type pm-task-name-type;
+		  ext:case-sensitivity lower-only;
+          description
+            "Name of a statistics task.";
+        }
+        leaf task-type {
+          type pm-taskt-type;
+          default "rmon-history";
+          description
+            "Type of a statistics task.";
+        }
+
+        leaf threshold-enable {
+          type pm-is-enable-type;
+          default "disable";
+          description
+            "Enable the threshold alarm function of a statistics task.";
+        }
+        leaf record-file-enable {
+          type pm-is-enable-type;
+          default "enable";
+          description
+            "Enable the record file function of a statistics task.";
+        }
+        leaf transfer-mode {
+          type pm-upload-type;
+          must "(../transfer-mode = 'active' and ../request-name) or (../transfer-mode!='active')";
+          default "passive";
+          description
+            "File transfer mode.";
+        }
+        leaf upload-request-name {
+          type leafref {
+            path "../../../uploads/upload/request-name";
+          }
+          must "../transfer-mode = 'active'";
+          description
+            "Upload request name.";
+        }
+        leaf elaborate-sample {
+          type pm-elaborate-sample-type;
+          default "default";
+          description
+            "Configures and delivers refined sampling.";
+        }
+        leaf statistic-cycle {
+          type pm-statistic-cycle-type;
+          default "15-minutes";
+          description
+            "Sets a statistics cycle.";
+        }
+        leaf record-interval {
+          type uint32 {
+            range "1..16";
+          }
+          default "4";
+          description
+            "Specify the interval for recording data.";
+        }
+        leaf sample-interval {
+          type pm-sample-interval-type;
+          description
+            "Sets a sampling cycle.";
+        }
+        leaf task-file-format {
+          type pm-file-format-type;
+          default "pm-xml-file-type";
+          description
+            "The file format of a statistics task.";
+        }
+        leaf task-state {
+          type pm-task-run-state-type;
+          config false;
+          description
+            "Status of a statistics task.";
+        }
+        leaf request-name {
+          type leafref {
+            path "../../../uploads/upload/request-name";
+          }
+          must "../transfer-mode = 'active'";
+          description
+            "Upload request name.";
+        }
+        container task-instances {
+          description
+            "List of statistical task instances.";
+          list task-instance {
+            key "instance-type-name instance-name";
+            description
+              "Configure statistical task instance.";
+            leaf instance-type-name {
+              type pm-instance-type-name-type;
+              description
+                "Instance type name.";
+            }
+            leaf instance-name {
+              type pm-instance-name-type;
+              description
+                "Statistical instance name.";
+            }
+          }
+        }
+      }
+    }
+    container servers {
+      description
+        "List of server to upload files.";
+      list server {
+        key "name";
+        description
+          "Configure server to upload files.";
+        leaf name {
+          type pm-file-server-name-type;
+          description
+            "Name of a server.";
+        }
+        leaf transfer-protocol {
+          type pm-transfer-protocol-type;
+          default "sftp";
+          description
+            "Protocol to upload files.";
+        }
+        leaf host-address {
+          type inet:ip-address-no-zone;
+          default "0.0.0.0";
+          description
+            "IP address.";
+        }
+        leaf port {
+          type int32 {
+            range "1..65535";
+          }
+          description
+            "Port number.";
+        }
+        leaf user-name {
+          type string {
+            length "1..255";
+          }
+          must "../password";
+          description
+            "User name of a server.";
+        }
+        leaf password {
+          type pub-type:password-extend {
+            length "1..268";
+          }
+          must "../user-name";
+          description
+            "Password of a server.";
+        }
+        leaf dest-path {
+          type string {
+            length "1..63";
+          }
+          description
+            "Destination path to upload files.";
+        }
+        leaf retry-times {
+          type uint32 {
+            range "1..3";
+          }
+          default "3";
+          description
+            "Number of attempts to re-upload files.";
+        }
+        leaf vpn-type {
+          type pm-vpn-type;
+          must "(../vpn-type='vpn-instance' and ../vpn-name) or (../vpn-type!='vpn-instance')";
+          default "none";
+          description
+            "VPN type used to upload a file.";
+        }
+        leaf vpn-name {
+          type string {
+            length "1..31";
+          }
+          must "../vpn-type='vpn-instance'";
+          description
+            "VPN instance name.";
+        }
+      }
+    }
+    container uploads {
+      description
+        "List of upload file channel to this server.";
+      list upload {
+        key "request-name";
+        description
+          "Configure upload file channel to this server.";
+        leaf request-name {
+          type pm-upload-request-name-type;
+          description
+            "Upload request name.";
+        }
+        leaf server-name {
+          type leafref {
+            path "../../../servers/server/name";
+          }
+          mandatory true;
+          description
+            "Server name used by the channel along which a file is uploaded.";
+        }
+      }
+    }
+    container indicators {
+      config false;
+      description
+        "List of information on indicators.";
+      list indicator {
+        key "instance-type-name indicator-name";
+        config false;
+        description
+          "Operational data of information on indicator.";
+        leaf instance-type-name {
+            type string {
+            length "1..63";
+          }
+          description
+            "Instance type name.";
+        }
+        leaf indicator-name {
+            type string {
+            length "1..63";
+          }
+          description
+            "Indicator name.";
+        }
+        leaf indicator-type {
+          type pm-indicator-type;
+          description
+            "Indicator type.";
+        }
+        leaf indicator-counter-type {
+          type pm-indicator-counter-type;
+          description
+            "Type of a counter.";
+        }
+        leaf indicator-max-value {
+          type uint64;
+          description
+            "Maximum indicator value.";
+        }
+        leaf indicator-min-value {
+          type int64;
+          description
+            "Minimum indicator value.";
+        }
+      }
+    }
+    container instance-types {
+      config false;
+      description
+        "List of instance type name.";
+      list instance-type {
+        key "instance-type-name";
+        config false;
+        description
+          "Operational data of instance type.";
+        leaf instance-type-name {
+          type pm-instance-type-name-type;
+          description
+            "Instance type name.";
+        }
+      }
+    }
+  }
+}

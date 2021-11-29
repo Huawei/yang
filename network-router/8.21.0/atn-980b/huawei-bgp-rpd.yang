@@ -1,0 +1,89 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-rpd {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bgp-rpd";
+  prefix bgp-rpd;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+  revision 2020-08-30 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bgp";
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af" {
+    description
+      "BGP RPD address family configuration.";
+    container rpd {
+      when "../bgp:type='rpd'";
+      description
+        "Configure RPD address family.";
+      container common {
+        description
+          "Configure BGP RPD common options.";
+        leaf router-id-filter {
+          type boolean;
+          default "true";
+          description
+          "Enable/disable router ID filter.";
+        }
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af" {
+    description
+      "BGP RPD address family configuration.";
+    container rpd {
+      when "../bgp:type = 'rpd'";
+      description
+        "Configure RPD options.";
+      leaf graceful-restart-static-timer {
+        type uint32 {
+          range "3600..2147483647";
+        }
+        units s;
+        description
+          "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+      }
+      uses bgp:path-attr-map-type;
+    }
+  }
+  augment "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route" {
+    description
+      "BGP RPD address family routes information.";
+    container rpd {
+      config false;
+      description
+        "Statistics of RPD routes.";
+      container statistic {
+        description
+          "Statistics of BGP routes information of RPD address family.";
+        uses bgp-rt:route-total-st-type;
+      }
+    }
+  }
+}

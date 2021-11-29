@@ -1,0 +1,1342 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-bgp-common-multiprotocol {
+  yang-version 1;
+  belongs-to huawei-bgp {
+    prefix bgp;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  import huawei-xpl {
+    prefix xpl;
+  }
+  import huawei-acl {
+    prefix acl;
+  }
+  include huawei-bgp-type;
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+  revision 2021-02-03 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+  grouping advertise-dependent-filter-type {
+    description
+      "The advertise-dependent-filter-type configuration.";
+    container advertise-dependent-filter {
+      presence "Enable peer advertising dependent filter.";
+      description
+        "Configure peer advertising dependent filter.";
+      leaf dependent-filter-switch {
+        type bgp:peer-attr-enable-type;
+        mandatory true; 
+        description
+          "Specify a switch type.";
+      }
+      leaf dependent-filter {
+        when "../dependent-filter-switch='enable'";
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        mandatory true; 
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        when "../dependent-filter-switch='enable'";
+        type bgp:dependent-prefix-filter-type;
+        mandatory true;       
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter {
+        when "../dependent-filter-switch='enable'";
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+    container advertise-dependent-filter-state {
+      config false; 
+      description
+        "Peer advertising dependent filter state.";
+      leaf dependent-filter {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        type bgp:dependent-prefix-filter-type;
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter {
+       type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+  }
+  grouping advertise-dependent-filter-group-type {
+    description
+      "The advertise-dependent-filter-group-type configuration.";
+    container advertise-dependent-filter {
+      presence "Enable peer group advertising dependent filter.";
+      description
+        "Configure peer group advertising dependent filter.";
+      leaf dependent-filter {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        mandatory true;
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        type bgp:dependent-prefix-filter-type;
+        mandatory true;       
+        description
+          "Specify a depentent route-filter mode.";
+      }
+      leaf condition-filter {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-lists/rtp:ipv4-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+  }
+  grouping advertise-dependent-filter6-type {
+    description
+      "The advertise-dependent-filter-type configuration.";
+    container advertise-dependent-filter6 {
+      presence "Enable peer advertising dependent filter.";
+      description
+        "Configure peer advertising dependent filter.";
+      leaf dependent-filter-switch {
+        type bgp:peer-attr-enable-type;
+        mandatory true; 
+        description
+          "Specify a switch type.";
+      }
+      leaf dependent-filter6 {
+        when "../dependent-filter-switch='enable'";
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        mandatory true; 
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        when "../dependent-filter-switch='enable'";
+        type bgp:dependent-prefix-filter-type;
+        mandatory true;       
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter6 {
+        when "../dependent-filter-switch='enable'";
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+    container advertise-dependent-filter6-state {
+      config false; 
+      description
+        "Peer advertising dependent filter state.";
+      leaf dependent-filter6 {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        type bgp:dependent-prefix-filter-type;
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter6 {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+  }
+  grouping advertise-dependent-filter6-group-type {
+    description
+      "The advertise-dependent-filter-group-type configuration.";
+    container advertise-dependent-filter6 {
+      presence "Enable peer group advertising dependent filter.";
+      description
+        "Configure peer group advertising dependent filter.";
+      leaf dependent-filter6 {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        mandatory true;
+        description
+          "Specify a dependent route-filter name.";
+      }
+      leaf dependent-filter-type {
+        type bgp:dependent-prefix-filter-type;
+        mandatory true;
+        description
+          "Specify a dependent route-filter mode.";
+      }
+      leaf condition-filter6 {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-lists/rtp:ipv6-prefix-list/rtp:name";
+        }
+        description
+          "Specify a condition route-filter name.";
+      }
+    }
+  }
+  grouping ipv4-hierarchy-convergence {
+    description
+      "Configure unicast route hierarchy convergence.";
+    container common {
+      presence "Configure hierarchy convergence.";
+      description
+        "Configure hierarchy convergence parameters.";
+      leaf enable {
+        type empty;
+        mandatory true;
+        description
+          "Enable the hierarchy convergence.";
+      }
+    }
+    container hierarchy-convergence-routes {
+      description
+        "List of hierarchy convergence routes.";
+      list hierarchy-convergence-route {
+        key "base-route-address base-route-mask-length";
+        max-elements 1;
+        description
+          "Configure the hierarchy convergence route.";
+        leaf base-route-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Set the base ip address. Base ip address will be higher convergence when processed.";
+        }
+        leaf base-route-mask-length {
+          type uint8 {
+            range "1..32";
+          }
+          description
+            "Specify the mask length of a summarized address.";
+        }
+        choice hierarchy-route {
+          mandatory true;
+          description
+            "Set hierarchy route.";
+          case all {
+            description
+              "All route without hierarchy attribute will be set to current base route.";
+            leaf all-route {
+              type empty;
+              description
+                "All routes.";
+            }
+          }
+          case route-policy {
+            description
+              "The route without hierarchy attribute and match the policy will be set to current base route.";
+            leaf route-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify an route policy.";
+            }
+          }
+        }
+      }
+    }
+  }
+  grouping ipv6-hierarchy-convergence {
+    description
+      "Configure unicast route hierarchy convergence.";
+    container common {
+      presence "Configure hierarchy convergence.";
+      description
+        "Configure hierarchy convergence parameters.";
+      leaf enable {
+        type empty;
+        mandatory true;
+        description
+          "Enable the hierarchy convergence.";
+      }
+    }
+    container hierarchy-convergence-routes {
+      description
+        "List of hierarchy convergence routes.";
+      list hierarchy-convergence-route {
+        key "base-route-address base-route-mask-length";
+        max-elements 1;
+        description
+          "Configure the hierarchy convergence route.";
+        leaf base-route-address {
+          type inet:ipv6-address-no-zone;
+          description
+            "Set the base ip address. Base ip address will be higher convergence when processed.";
+        }
+        leaf base-route-mask-length {
+          type uint8 {
+            range "1..128";
+          }
+          description
+            "Specify the mask length of a summarized address.";
+        }
+        choice hierarchy-route {
+          mandatory true;
+          description
+            "Set hierarchy route.";
+          case all {
+            description
+              "All route without hierarchy attribute will be set to current base route.";
+            leaf all-route {
+              type empty;
+              description
+                "All routes.";
+            }
+          }
+          case route-policy {
+            description
+              "The route without hierarchy attribute and match the policy will be set to current base route.";
+            leaf route-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify an route policy.";
+            }
+          }
+        }
+      }
+    }
+  }
+  grouping peer-hierarchy-convergence {
+    description
+      "Configure the current peer's hierarchy convergence capablity.";
+    leaf advertise-hierarchy-convergence {
+      type peer-attr-enable-type;
+      description
+        "Hierarchy convergence configuration.";
+    }
+    leaf effect-advertise-hierarchy-convergence {
+      type boolean;
+      config false;
+      description
+        "Hierarchy convergence state.";
+    }
+  }
+  grouping group-hierarchy-convergence {
+    description
+      "Configure the current peer group's hierarchy convergence capablity.";
+    leaf advertise-hierarchy-convergence {
+      type boolean;
+      default "true";
+      description
+        "Enable/disable advertise the hierarchy convergence attribute to a peer group.";
+    }
+  }
+  grouping common-configure {
+    description
+    "Configure common options.";
+    leaf route-select-delay {
+      type uint16 {
+        range "0..3600";
+      }
+      units "s";
+      default "0";
+      description
+        "Route selection delay.";
+    }
+    uses reflector-cluster-type;
+    uses reflect-type;
+    leaf always-compare-med {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP to compare the MEDs of routes from peers in different ASs in route selection. If 
+          there are multiple reachable routes to the same destination, the route with the smallest MED is preferred. Do not use this option unless different ASs use the same IGP and route selection mode.";
+    }
+    leaf default-med {
+      type uint32;
+      default "0";
+      description
+        "Specify the Multi-Exit-Discriminator (MED) of BGP routes. The value is an integer. This value is valid only for the imported routes and BGP summarized routes on the local router.";
+    }
+    leaf nexthop-third-party {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP third-party next hop.";
+    }
+    leaf default-local-preference {
+      type uint32 {
+        range "0..4294967295";
+      }
+      default "100";
+      description
+        "The local preference of BGP routes.";
+    }
+    leaf default-route-import {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to import default routes into the BGP routing table. Default-route-imported must be used with import-routes so that default routes can be imported to the BGP routing table. If only import-routes is used, no default routes can be added to the BGP routing table. In addition, default-route-imported can only import the default routes in the routing table into the BGP routing table.";
+    }
+    leaf routerid-neglect {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP to ignore router IDs when selecting the optimal route. Comparing router IDs is the last resort in route selection. This means that if one optimal route must be selected and no other parameters can be used to break the tie, router IDs can be used. If this option is selected, the first received route will be selected as the optimal route, and BGP will ignore the router ID and peer address in route selection.";
+    }
+    leaf reflect-between-client {
+      type boolean;
+      default "true";
+      description
+        "Enable/disable route reflection between clients. If clients of a route reflector (RR) are fully meshed, you can disable route reflection among clients to reduce the cost.";
+    }
+    leaf ext-community-change {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to change the extended community attribute.";
+    }
+    leaf active-route-advertise {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to advertise the optimal routes in the RM module to peers.";
+    }
+    leaf ebgp-interface-sensitive {
+      type boolean;
+      default "true";
+      description
+        "Enable/disable the function of EBGP interface fast sensing. If this function is enabled, the sessions of directly connected EBGP peers are immediately cleared from the associated interface when the interface becomes down.";
+    }
+  }
+  grouping ipv4-common-configure {
+    description
+    "Configure IPv4 unicast common options.";
+    leaf auto-frr {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP Auto FRR. If IP FRR, VPN FRR, and Auto FRR are all enabled, IP FRR and VPN FRR take precedence over Auto FRR. If a route fails to match the routing policy of IP FRR or VPN FRR, Auto FRR takes effect.";
+    }
+    leaf nexthop-resolve-aigp {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable route with AIGP attribute for route selection.";
+    }
+    leaf summary-automatic {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable automatic summarization for imported routes. Manual summarization takes precedence over automatic summarization. After automatic summarization is enabled, BGP summarizes routes based on the natural network segment (for example, 10.1.1.1/24 and 10.2.1.1/24 are summarized into 10.0.0.0/8, a Class A address), and sends only the summarized route to peers. This reduces the number of routes.";
+    }
+    uses label-configuration-for-ipv4;
+    uses ipv4-attribute-set-configuration;
+    uses ipv4-bestroute-configuration;
+    uses ipv4-load-balancing-configuration;
+    leaf advertise-route-mode {
+      type bgp-advertise-route-mode;
+      default "all";
+      description
+        "VPN advertise route mode.";
+    }
+    leaf import-rib-nexthop-invariable {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to advertise the route without modifying the next-hop.";
+    }
+    leaf determin-med {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable deterministic MED so that the route selection result is relevant to the sequence in which routes are received.";
+    }
+ }
+  grouping ipv6-common-configure {
+    description
+    "Configure IPv6 unicast common options.";
+    leaf router-id-auto-select {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable router ID auto select. If a BGP VPN instance is not enabled to select a router ID, a router ID can be configured for the BGP VPN instance. If no router ID is configured for the BGP VPN instance, the BGP VPN instance inherits the router ID of the public network instance. If a BGP VPN instance is enabled to select a router ID, it uses the address of an interface bound to a VPN as the router ID based on the following rules:
+        1. If Loopback interfaces configured with IP addresses exist, the largest IP address among the IP addresses of the Loopback interfaces is selected as the router ID.
+        2. If there is no Loopback interface configured with an IP address, the largest IP address among the IP addresses of other interfaces is selected as the router ID, regardless of whether the interface is Up.";
+    }
+    leaf router-id {
+      when "../router-id-auto-select = 'false'";
+      type inet:ipv4-address-no-zone;
+      description
+        "ID of a router that is in IPv4 address format. Certain dynamic routing protocols require a router ID. If no router ID is specified for a router when these protocols are enabled, the router ID in the RM module is used by default. The default router ID in the RM module is 0.0.0.0 when the router is not configured with any interface.
+
+          The rules for selecting a router ID are as follows:
+          1. If a router ID is set through this configuration, the set router ID is used. If the router ID is not set, a router ID is selected according to the following rules:
+          (1) If loopback interfaces configured with IP addresses exist, the largest IP address among the IP addresses of the loopback interfaces is selected as the router ID.
+          (2) If no loopback interface configured with an IP address exists, the largest IP address among the IP addresses of other interfaces is selected as the router ID, regardless of whether the interface is Up.
+          The router ID is reselected only when the interface address that is selected as the router ID is deleted or changed. The router ID is not reselected in any of the following cases:
+          a. The interface is Down.
+          b. A loopback interface is configured when the IP address of a non-loopback interface is selected as the router ID.
+          c. A larger IP address of an interface is configured.
+          2. Each VPN instance selects the router ID from the addresses of the interfaces of the VPN instance according to the preceding rules.
+          3. When both the AMB and SMB exist on the router, the system backs up the router ID set through the related command and the router ID that is selected from IP addresses of the interfaces. After the active/standby switchover is performed, the system checks the validity of the router ID selected from the interface addresses. If the router ID is invalid, the system reselects a router ID.";
+    }
+    leaf supernet-unicast-advertise {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to advertise supernet unicast routes.";
+    }
+    uses ipv6-bestroute-configuration;
+    uses ipv6-load-balancing-configuration;
+    leaf import-rib-nexthop-invariable {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to advertise the route without modifying the next-hop.";
+    }
+    leaf determin-med {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable deterministic MED so that the route selection result is relevant to the sequence in which routes are received.";
+    }
+ }
+  grouping label-configuration-for-ipv4 {
+    description
+      "Configure label function.";
+    leaf supernet-unicast-advertise {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to advertise supernet unicast routes.";
+    }
+    leaf supernet-label-advertise {
+      type boolean;
+      default "true";
+      description
+        "Enable/disable the function to advertise supernet labeled routes.";
+    }
+    leaf label-free-delay {
+      type uint8 {
+        range "0..180";
+      }
+      units "s";
+      default "0";
+      description
+        "Label Free Delay.";
+    }
+  }
+  grouping ipv4-bestroute-configuration {
+    description
+      "Configure best route.";
+    leaf best-route-bit-error-detection {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to reroute traffic when a bit error event occurs.";
+    }
+    uses ipv4-bestroute-med-plus-igp;
+    uses ipv4-bestroute-router-id-prior-clusterlist;
+    leaf bestroute-med-none-as-maximum {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP considers its MED as the largest MED value (4294967295). If a route does not carry MED, BGP considers its MED as the default value (0) during route selection.";
+    }
+  }
+  grouping ipv4-bestroute-med-plus-igp {
+    description
+      "Use the sum of MED multiplied by a MED multiplier and IGP cost multiplied by an IGP cost multiplier to select routes.";
+    leaf bestroute-med-plus-igp {
+      type boolean;
+      must "not(../bestroute-igp-metric-ignore='true' and ../bestroute-med-plus-igp='true')";
+      default "false";
+      description
+        "Enable/disable the function to add the IGP cost to the next-hop destination to the MED before comparing MED values for path selection.";
+    }
+    leaf bestroute-med-multiplier {
+      when "../bestroute-med-plus-igp='true'";
+      type uint16 {
+        range "1..1000";
+      }
+      default "1";
+      description
+        "Value of med product factor.";
+    }
+    leaf bestroute-igp-multiplier {
+      when "../bestroute-med-plus-igp='true'";
+      type uint16 {
+        range "1..1000";
+      }
+      default "1";
+      description
+        "Value of IGP cost product factor.";
+    }
+    leaf bestroute-igp-metric-ignore {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP to ignore the IGP cost of each BGP route to the next hop in route selection. By default, a BGP route with a smaller IGP cost to the next hop is preferred.";
+    }
+  }
+  grouping ipv4-bestroute-router-id-prior-clusterlist {
+    description
+      "Router ID prior CLUSTER_LIST during the best route selection.";
+    leaf bestroute-router-id-prior-clusterlist {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP to compare originator before clusterlist in route selection.";
+    }
+  }
+  grouping ipv4-attribute-set-configuration {
+    description
+      "Configure attribute set.";
+    leaf attribute-set-enable {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the capability of processing attribute set.";
+    }
+    leaf attribute-set-mode {
+      when "../attribute-set-enable='true'";
+      type bgp:attribute-set-type;
+      default "both";
+      description
+        "The processing mode of attribute set.";
+    }
+  }
+  grouping ipv4-load-balancing-configuration {
+    description
+      "Configure load balancing.";
+    leaf maximum-load-balancing-ibgp {
+      type uint16 {
+        range "1..65535";
+      }
+      must "not (../maximum-load-balancing>1 or ../maximum-load-balancing-eibgp or ../load-balancing-eibgp-enable='true') or ../maximum-load-balancing-ibgp=1";
+      default "1";
+      description
+        "Specify the maximum number of equal-cost IBGP routes. The value range and default value are controlled by the PAF.";
+    }
+    leaf maximum-load-balancing-ebgp {
+      type uint16 {
+        range "1..65535";
+      }
+      must "not (../maximum-load-balancing>1 or ../maximum-load-balancing-eibgp or ../load-balancing-eibgp-enable='true') or ../maximum-load-balancing-ebgp=1";
+      default "1";
+      description
+        "Specify the maximum number of equal-cost EBGP routes. The value range and default value are controlled by the PAF.";
+    }
+    leaf bestroute-as-path-ignore {
+      type boolean;
+      must "../bestroute-as-path-ignore = 'false' or ../load-balanc-as-path-ignore ='false'";
+      default "false";
+      description
+        "Enable/disable BGP to ignore the AS_Path attribute when selecting the optimal route. By default, BGP uses the AS_Path attribute as one of route selection rules, and a route with a shorter AS_Path is preferred. After bestroute-as-path-ignore is selected, BGP does not compare the AS_Path length.";
+    }
+    leaf load-balanc-igp-metric-ignore {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP to ignore the IGP cost of each BGP route to the next hop when selecting routes for load balancing. By default, only the routes with the same IGP cost can participate in load balancing.";
+    }
+    leaf load-balanc-as-path-ignore {
+      type boolean;
+      must "../load-balanc-as-path-ignore ='false' or (../load-balanc-as-path-relax ='false' and ../bestroute-as-path-ignore ='false')";
+      default "false";
+      description
+        "Enable/disable BGP to ignore the AS_Path of each BGP route to the next hop when selecting routes for load balancing. By default, only the routes with the same AS_Path can participate in load balancing.";
+    }
+    leaf load-balanc-as-path-relax {
+      type boolean;
+      must "../load-balanc-as-path-relax ='false' or ../load-balanc-as-path-ignore ='false'";
+      default "false";
+      description
+        "Enable/disable BGP to ignore comparison of AS_Path attributes with the same length. By default, only the routes with the same AS_Path can participate in load balancing.";
+    }
+    leaf maximum-load-balancing {
+      type uint16 {
+        range "1..65535";
+      }
+      must "not (../maximum-load-balancing-ibgp>1 or ../maximum-load-balancing-ebgp>1 or ../maximum-load-balancing-eibgp) or ../maximum-load-balancing=1";
+      default "1";
+      description
+        "Specify the maximum number of equal-cost routes in the BGP routing table. The value can be 1 or an integer greater than 1. The value depends on the associated license. Equal-cost BGP routes can be generated for load balancing only when the BGP routes meet the first nine rules of the route-selection policy and have the same AS-Path attribute. The value range and default value are controlled by the PAF.";
+    }
+    leaf ebgp-ecmp-nexthop-changed {
+      when "../maximum-load-balancing-ebgp and ../maximum-load-balancing-ebgp>1";
+      type boolean;
+      default "false";
+      description
+        "Enable/disable next hop of equal-cost EBGP routes is changed. When equal-cost EBGP routes are load-balancing traffic, the next hop of these routes is changed to a local interface before these routes are advertised. This function can be enabled only when the maximum number of equal-cost EBGP routes is greater than 1.";
+    }
+    leaf ibgp-ecmp-nexthop-changed {
+      when "../maximum-load-balancing-ibgp and ../maximum-load-balancing-ibgp>1";
+      type boolean;
+      default "false";
+      description
+        "Enable/disable next hop of equal-cost IBGP routes is changed. When equal-cost IBGP routes are load-balancing traffic, the next hop of these routes is changed to a local interface before these routes are advertised. This function can be enabled only when the maximum number of equal-cost IBGP routes is greater than 1.";
+    }
+    leaf ecmp-nexthop-changed {
+      when "../maximum-load-balancing and ../maximum-load-balancing>1";
+      type boolean;
+      default "false";
+      description
+        "Enable/disable next hop of equal-cost routes is changed. When equal-cost BGP routes are load-balancing traffic, the next hop of these routes is changed to a local interface before these routes are advertised. This function can be enabled only when the maximum number of equal-cost BGP routes is greater than 1.";
+    }
+    leaf maximum-load-balancing-eibgp {
+      type uint16 {
+        range "1..65535";
+      }
+      must "../maximum-load-balancing-ibgp=1 and ../maximum-load-balancing-ebgp=1 and ../maximum-load-balancing=1 and ../load-balancing-eibgp-enable='false'";
+      description
+        "Specify the maximum number of equal-cost EBGP routes and IBGP routes. After the attribute is set, load balancing is performed among equal-cost BGP VPN routes, regardless of the route type, EBGP or IBGP. The value range and default value are controlled by the PAF.";
+    }
+    leaf eibgp-ecmp-nexthop-changed {
+      when "../maximum-load-balancing-eibgp";
+      type boolean;
+      default "false";
+      description
+        "Enable/disable next hop of equal-cost EBGP and IBGP routes is changed. When equal-cost EBGP and IBGP routes are load-balancing traffic, the next hop of these routes is changed to a local interface before these routes are advertised.";
+    }
+    leaf load-balancing-eibgp-enable {
+      type boolean;
+      must "not (../maximum-load-balancing-ibgp>1 or ../maximum-load-balancing-ebgp>1 or ../maximum-load-balancing-eibgp) or ../load-balancing-eibgp-enable='false'";
+      default "false";
+      description
+      "Enable/disable EIBGP route load balancing.";
+    }
+  }
+  grouping ipv6-load-balancing-configuration {
+    description
+      "Configure load balancing.";
+    leaf maximum-load-balancing-ibgp {
+      type uint16 {
+        range "1..65535";
+      }
+      must "not (../maximum-load-balancing>1 or ../maximum-load-balancing-eibgp ) or ../maximum-load-balancing-ibgp=1";
+      default "1";
+      description
+        "Specify the maximum number of equal-cost IBGP routes. The value range and default value are controlled by the PAF.";
+    }
+    leaf maximum-load-balancing-ebgp {
+      type uint16 {
+        range "1..65535";
+      }
+      must "not (../maximum-load-balancing>1 or ../maximum-load-balancing-eibgp) or ../maximum-load-balancing-ebgp=1";
+      default "1";
+      description
+        "Specify the maximum number of equal-cost EBGP routes. The value range and default value are controlled by the PAF.";
+    }
+    leaf bestroute-as-path-ignore {
+      type boolean;
+      must "../bestroute-as-path-ignore = 'false' or ../load-balanc-as-path-ignore ='false'";
+      default "false";
+      description
+        "Enable/disable BGP to ignore the AS_Path attribute when selecting the optimal route. By default, BGP uses the AS_Path attribute as one of route selection rules, and a route with a shorter AS_Path is preferred. After bestroute-as-path-ignore is selected, BGP does not compare the AS_Path length.";
+    }
+    leaf load-balanc-as-path-ignore {
+      type boolean;
+      must "../load-balanc-as-path-ignore ='false' or (../load-balanc-as-path-relax ='false' and ../bestroute-as-path-ignore ='false')";
+      default "false";
+      description
+        "Enable/disable BGP to ignore the AS_Path of each BGP route to the next hop when selecting routes for load balancing. By default, only the routes with the same AS_Path can participate in load balancing.";
+    }
+    leaf load-balanc-as-path-relax {
+      type boolean;
+      must "../load-balanc-as-path-relax ='false' or ../load-balanc-as-path-ignore ='false'";
+      default "false";
+      description
+        "Enable/disable BGP to ignore comparison of AS_Path attributes with the same length. By default, only the routes with the same AS_Path can participate in load balancing.";
+    }
+    leaf maximum-load-balancing {
+      type uint16 {
+        range "1..65535";
+      }
+      must "not (../maximum-load-balancing-ibgp>1 or ../maximum-load-balancing-ebgp>1 or ../maximum-load-balancing-eibgp) or ../maximum-load-balancing=1";
+      default "1";
+      description
+        "Specify the maximum number of equal-cost routes in the BGP routing table. The value can be 1 or an integer greater than 1. The value depends on the associated license. Equal-cost BGP routes can be generated for load balancing only when the BGP routes meet the first nine rules of the route-selection policy and have the same AS-Path attribute. The value range and default value are controlled by the PAF.";
+    }
+    leaf ebgp-ecmp-nexthop-changed {
+      when "../maximum-load-balancing-ebgp and ../maximum-load-balancing-ebgp>1";
+      type boolean;
+      default "false";
+      description
+        "Enable/disable next hop of equal-cost EBGP routes is changed. When equal-cost EBGP routes are load-balancing traffic, the next hop of these routes is changed to a local interface before these routes are advertised. This function can be enabled only when the maximum number of equal-cost EBGP routes is greater than 1.";
+    }
+    leaf ibgp-ecmp-nexthop-changed {
+      when "../maximum-load-balancing-ibgp and ../maximum-load-balancing-ibgp>1";
+      type boolean;
+      default "false";
+      description
+        "Enable/disable next hop of equal-cost IBGP routes is changed. When equal-cost IBGP routes are load-balancing traffic, the next hop of these routes is changed to a local interface before these routes are advertised. This function can be enabled only when the maximum number of equal-cost IBGP routes is greater than 1.";
+    }
+    leaf ecmp-nexthop-changed {
+      when "../maximum-load-balancing and ../maximum-load-balancing>1";
+      type boolean;
+      default "false";
+      description
+        "Enable/disable next hop of equal-cost routes is changed. When equal-cost BGP routes are load-balancing traffic, the next hop of these routes is changed to a local interface before these routes are advertised. This function can be enabled only when the maximum number of equal-cost BGP routes is greater than 1.";
+    }
+    leaf maximum-load-balancing-eibgp {
+      type uint16 {
+        range "1..65535";
+      }
+      must "../maximum-load-balancing-ibgp=1 and ../maximum-load-balancing-ebgp=1 and ../maximum-load-balancing=1";
+      description
+        "Specify the maximum number of equal-cost EBGP routes and IBGP routes. After the attribute is set, load balancing is performed among equal-cost BGP VPN routes, regardless of the route type, EBGP or IBGP. The value range and default value are controlled by the PAF.";
+    }
+    leaf eibgp-ecmp-nexthop-changed {
+      when "../maximum-load-balancing-eibgp";
+      type boolean;
+      default "false";
+      description
+        "Enable/disable next hop of equal-cost EBGP and IBGP routes is changed. When equal-cost EBGP and IBGP routes are load-balancing traffic, the next hop of these routes is changed to a local interface before these routes are advertised.";
+    }
+  }
+  grouping ipv4-import-route {
+    description
+      "Configure imported routes.";
+    container import-routes {
+      description
+        "List of imported routes.";
+      list import-route {
+        key "protocol process-id";
+        description
+          "Configure route import. Routes of other protocol types can be imported by BGP. By default, BGP does not import routes of other protocol types.";
+        leaf protocol {
+          type bgp:ipv4-import-route-protocol-type;
+          description
+            "Routing protocol from which routes can be imported.";
+        }
+        leaf process-id {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Process ID of an imported routing protocol. The process ID is 0, if the imported routing protocol is direct routes, static routes, UNRs, or OP-routes. The process ID must be specified range from 1 to 4294967295, if the imported routing protocol is RIP, OSPF, ISIS.";
+        }
+        leaf med {
+          type uint32;
+          description
+            "Specifies the MED metric of the imported route.";
+        }
+        choice policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf policy-name {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "When routes are imported from other routing protocols, the route-policy filter can be used to filter the routes and change route attributes.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            uses ipv4-route-filter;
+          }
+        }
+      }
+    }
+  }
+  grouping ipv6-import-route {
+    description
+      "Configure imported routes.";
+    container import-routes {
+      description
+        "List of imported routes.";
+      list import-route {
+        key "protocol process-id";
+        description
+          "Configure route import. Routes of other protocol types can be imported by BGP. By default, BGP does not import routes of other protocol types.";
+        leaf protocol {
+          type bgp:ipv6-import-route-protocol-type;
+          description
+            "Routing protocol from which routes can be imported.";
+        }
+        leaf process-id {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Process ID of an imported routing protocol. The process ID is 0, if the imported routing protocol is direct routes, static routes, UNRs, or OP-routes. The process ID must be specified range from 1 to 4294967295, if the imported routing protocol is ISIS, RIPng, or OSPFv3.";
+        }
+        leaf med {
+          type uint32;
+          description
+            "Specifies the MED metric of the imported route.";
+        }
+        choice policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf policy-name {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "When routes are imported from other routing protocols, the route-policy filter can be used to filter the routes and change route attributes.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            uses ipv4-route-filter;
+          }
+        }
+      }
+    }
+  }
+  grouping ipv4-route-filter {
+    description
+      "The route filter configuration.";
+    leaf filter-name {
+      type leafref {
+        path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+      }
+      description
+        "Specify a route-filter name.";
+    }
+    leaf filter-parameter {
+      when "../filter-name";
+      type xpl:filter-parameter-type;
+      description
+        "Specify a route-filter parameter.";
+    }
+  }
+  grouping unicast-aggregate-routes-type {
+    description
+      "BGP IPv4/IPv6 unicast aggregate routes.";
+    leaf address {
+      type inet:ip-address-no-zone;
+      description
+        "Specify the IPv4 address or IPv6 address of a summarized route. Only IPv4 summarized routes can be configured in the IPv4 address family and only IPv6 summarized routes can be configured in the IPv6 address family.";
+    }
+    leaf mask-length {
+      type uint8 {
+        range "1..128";
+      }
+      description
+        "Specify the mask length of a summarized address.";
+    }
+    leaf as-set {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the generation of routes with the AS-SET attribute. This option can be used to create a summarized route. The AS_Path attribute of the summarized route contains the AS-Path attributes of the specific routes for the route summarization. Exercise caution when using this option if multiple AS_Paths need to be summarized to prevent route flapping.";
+    }
+    leaf detail-suppressed {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable detail-suppressed. Suppress the advertisement of specific routes for the route summarization. Only the summarized route is advertised.";
+    }
+    choice policy-type {
+      description
+        "Set route policy or filter.";
+      case rtp-ref {
+        description
+          "Route policy.";
+        leaf attribute-policy {
+          type leafref {
+            path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+          }
+          description
+            "Specify an attribute of summarized routes. If apply as-path is used to configure the AS_Path attribute that is used in the route Summarization policy, and the as-set keyword is set, the AS_Path attribute in the policy does not take effect. This parameter and any of the following parameters overwrite each other: suppressFilter, originFilter, and attributeFilter.";
+        }
+        leaf origin-policy {
+          type leafref {
+            path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+          }
+          description
+            "Specify the name of a policy for generating summarized routes. Summarized routes are generated only when the routes match route-policy. This parameter and any of the following parameters overwrite each other: suppressFilter, originFilter, and attributeFilter.";
+        }
+        leaf suppress-policy {
+          type leafref {
+            path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+          }
+          description
+            "Specify a policy for suppressing the advertisement of specified routes. The routes matching the policy are not advertised, and other routes are advertised. This parameter and any of the following parameters overwrite each other: suppressFilter, originFilter, and attributeFilter.";
+        }
+      }
+      case xpl-ref {
+        description
+          "Route filter.";
+        leaf attribute-filter-name {
+          type leafref {
+            path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+          }
+          description
+            "Specify a route-filter name.";
+        }
+        leaf attribute-filter-parameter {
+          when "../attribute-filter-name";
+          type xpl:filter-parameter-type;
+          description
+            "Specify a route-filter parameter.";
+        }
+        leaf origin-filter-name {
+          type leafref {
+            path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+          }
+          description
+            "Specify a route-filter name.";
+        }
+        leaf origin-filter-parameter {
+          when "../origin-filter-name";
+          type xpl:filter-parameter-type;
+          description
+            "Specify a route-filter parameter.";
+        }
+        leaf suppress-filter-name {
+          type leafref {
+            path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+          }
+          description
+            "Specify a route-filter name.";
+        }
+        leaf suppress-filter-parameter {
+          when "../suppress-filter-name";
+          type xpl:filter-parameter-type;
+          description
+            "Specify a route-filter parameter.";
+        }
+      }
+    }
+  }
+  grouping ipv4-aggregate-routes {
+    description
+      "Configure aggregate routes.";
+    container aggregate-routes {
+      description
+        "List of summarized routes.";
+      list aggregate-route {
+        key "address mask-length";
+        description
+          "Configure a summarized route in the BGP routing table. The local outbound interface of the summarized route is Null0. When another router receives the route, the route adds an outbound interface to the route. If the Origin attributes of the specific routes for the route summarization are different, the Origin attribute of the summarized route is that with the highest priority. Origin attributes are arranged in the priority order of complete > egp > igp. A summarized route carries the community attribute of each specific route.";
+        uses unicast-aggregate-routes-type {
+          refine address {
+            must "not(contains(../address,':'))";
+          }
+          refine mask-length {
+            must "../mask-length<=32";
+          }
+        }
+      }
+    }
+  }
+  grouping ipv4-aggregate-default-route {
+    description
+      "Configure aggregate default route.";
+    container aggregate-default-route {
+      description
+        "Configure aggregate default route.";
+      leaf origin-ip-prefix {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv4-prefix-filters/rtp:ipv4-prefix-filter/rtp:name";
+       }
+        description
+         "Specify the name of an IPv4 prefix list for a summary default route. Only the name of an IPv4 prefix list can be configured in a BGP IPv4 address family.";
+      }
+      leaf attribute-policy {
+        when "../origin-ip-prefix";
+        type leafref {
+          path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+        }
+        description
+         "Specify an attribute policy of a summary default route.";
+      }
+   }
+  }
+  grouping reflector-cluster-type {
+    description
+      "BGP reflector cluster-id.";
+    choice reflector-type {
+      description
+        "Set IPv4 address or id.";
+      case address {
+        description
+          "IPv4 address.";
+        leaf reflector-cluster-ipv4 {
+          type inet:ipv4-address-no-zone;
+          description
+            "Set a cluster ID. The value is expressed in the format of an IPv4 address. Configuring multiple RRs in a cluster can enhance the stability of the network. If a cluster has more than one RR, select this option to set the same cluster ID for all the RRs to avoid routing loops. To allow clients to receive routes from RRs, ensure that the cluster ID of the RRs is different from the router ID of any client. If the cluster ID of the RRs is the same as the router ID of a client, the client will discard received routes.";
+        }
+      }
+      case id {
+        description
+          "Set value.";
+        leaf reflector-cluster-id {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Set a cluster ID. Configuring multiple RRs in a cluster can enhance the stability of the network. If a cluster has more than one RR, select this option to set the same cluster ID for all the RRs to avoid routing loops. To allow clients to receive routes from RRs, ensure that the cluster ID of the RRs is different from the router ID of any client. If the cluster ID of the RRs is the same as the router ID of a client, the client will discard received routes.";
+        }
+      }
+    }
+  }
+  grouping reflect-type {
+    description
+      "Set reflect client or change path-attribute.";
+    leaf reflect-change-path {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable an RR to use an export policy to change route AS_Path.";
+    }
+  }
+ grouping ipv4-filter-protocol-policy-choice-type {
+    description
+      "IPv4 filter protocol policy choice type configuration.";
+    choice ipv4-filter-protocol-policy-type {
+      mandatory true;
+      description
+        "Set IPv4 filter protocol policy.";
+      case acl-ref {
+        description
+          "ACL Route Policy.";
+        leaf acl-name-or-num {
+          type leafref {
+            path "/acl:acl/acl:groups/acl:group/acl:identity";
+          }
+          description
+            "Specify the name or number of an ACL Rule. The number value ranges from 2000 to 2999 and is used by basic ACL rules. The name must start with a letter, and the name is case-sensitive.";
+        }
+      }
+      case ip-prefix-ref {
+        description
+          "IP prefix Policy.";
+        leaf ipv4-prefix-filter {
+          type leafref {
+            path "/rtp:routing-policy/rtp:ipv4-prefix-filters/rtp:ipv4-prefix-filter/rtp:name";
+          }
+          description
+            "Specify the IPv4 prefix list name.";
+        }
+      }
+      case xpl-ref {
+        description
+          "Route filter.";
+        uses ipv4-route-filter;
+      }
+    }
+  }
+  grouping ipv4-export-filter-policys {
+    description
+      "Configure aggregate default route.";
+    container export-filter-policys {
+      description
+        "List of filtering policies.";
+      list export-filter-policy {
+        key "protocol process-id";
+        description
+          "Apply a filtering policy. It is used to filter the routes to be advertised to the peer. By default, routes are not filtered.";
+        leaf protocol {
+          type bgp:ipv4-export-filter-protocol-type;
+          description
+            "Specify the name of a routing protocol. The routing protocol takes effect only on the routes to be advertised. The IPv4 address family supports the direct, IS-IS, OSPF, RIP, and static routing protocols. The IPv6 unicast address family of a public network instance supports the direct, IS-IS, OSPFv3, RIPng, and static routing protocols. The IPv6 address family of a VPNv6 instance supports the direct, IS-IS, RIPng, and static routing protocols.";
+        }
+        leaf process-id {
+          type uint32 {
+          range "0..4294967295";
+          }
+          description
+            "Specify the process ID required to be matched. The value is an integer ranging from 0 to 4294967295. If direct or static routes need to be filtered, no process ID is required.";
+        }
+        uses ipv4-filter-protocol-policy-choice-type;
+      }
+    }
+  }
+  grouping load-balancing-configuration {
+    description
+      "The load-balancing configuratin.";
+    leaf load-balancing-eibgp-enable {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable EIBGP route load balancing.";
+    }
+    leaf load-balanc-igp-metric-ignore {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP to ignore the IGP cost of each BGP route to the next hop when selecting routes for load balancing. By default, only the routes with the same IGP cost can participate in load balancing.";
+    }
+    leaf load-balanc-as-path-ignore {
+      type boolean;
+      must "../load-balanc-as-path-ignore ='false' or ../load-balanc-as-path-relax ='false'";
+      default "false";
+      description
+        "Enable/disable BGP to ignore the AS_Path of each BGP route to the next hop when selecting routes for load balancing. By default, only the routes with the same AS_Path can participate in load balancing.";
+    }
+    leaf load-balanc-as-path-relax {
+      type boolean;
+      must "../load-balanc-as-path-relax ='false' or ../load-balanc-as-path-ignore ='false'";
+      default "false";
+      description
+        "Enable/disable BGP to ignore comparison of AS_Path attributes with the same length. By default, only the routes with the same AS_Path can participate in load balancing.";
+    }
+  }
+
+  grouping ipv6-bestroute-configuration {
+    description
+      "Configure best route.";
+    uses ipv4-bestroute-med-plus-igp;
+    uses ipv4-bestroute-router-id-prior-clusterlist;
+    leaf bestroute-med-none-as-maximum {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable BGP considers its MED as the largest MED value (4294967295). If a route does not carry MED, BGP considers its MED as the default value (0) during route selection.";
+    }
+  }
+  grouping ipv6-aggregate-routes {
+    description
+      "Configure aggregate routes.";
+    container aggregate-routes {
+      description
+        "List of summarized routes.";
+      list aggregate-route {
+        key "address mask-length";
+        description
+          "Configure a summarized route in the BGP routing table. The local outbound interface of the summarized route is Null0. When another router receives the route, the route adds an outbound interface to the route. By default, route summarization is not performed. If the Origin attributes of the specific routes for the route summarization are different, the Origin attribute of the summarized route is that with the highest priority. Origin attributes are arranged in the priority order of complete > egp > igp. A summarized route carries the community attribute of each specific route.";
+        uses unicast-aggregate-routes-type {
+          refine address {
+            must "contains(../address,':')";
+          }
+          refine mask-length {
+            must "../mask-length<=128";
+          }
+        }
+      }
+    }
+  }
+  grouping ipv6-aggregate-default-route {
+    description
+      "Configure aggregate default route.";
+    container aggregate-default-route {
+      description
+        "Configure aggregate default route.";
+      leaf origin-ipv6-prefix {
+        type leafref {
+          path "/rtp:routing-policy/rtp:ipv6-prefix-filters/rtp:ipv6-prefix-filter/rtp:name";
+       }
+        description
+         "Specify the name of an IPv6 prefix list for a summary default route. Only the name of an IPv6 prefix list can be configured in a BGP IPv6 address family.";
+      }
+      leaf attribute-policy {
+        when "../origin-ipv6-prefix";
+        type leafref {
+          path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+        }
+        description
+         "Specify an attribute policy of a summary default route.";
+      }
+    }
+  }
+  grouping ipv6-nexthop-recursive-lookup-restrain {
+    description
+      "Next hop iteration restrain configuration.";
+    leaf restrain {
+      type boolean;
+        default "true";
+        description
+        "Enable/disable the function to restrain next hop iteration in case of next hop flapping.";
+    }
+    leaf route-policy {
+      type leafref {
+        path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+      }
+      description
+        "Specify the name of a routing policy.";
+    }
+  }
+  grouping region-validation-grp {
+    description
+      "Enable the BGP region validation.";
+    container region-validation {
+      presence "Enable the BGP region validation.";
+      description
+        "Configure BGP region validation.";
+      leaf region-confederation-check-strict {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable strict check on BGP region confederation routes.";
+      }
+      leaf bestroute {
+        type region-validation-bestroute-type;
+        description
+          "BGP region validation result applied to route selection.";
+      }
+    }
+  }
+  grouping peer-link-bandwidth-type {
+    description
+      "Configure link bandwidth attribute.";
+    leaf advertise {
+      type peer-attr-enable-type;
+      description
+        "Enable/disable advertise the link bandwidth attribute to an EBGP peer.";
+    }
+    leaf transitive {
+      type peer-attr-enable-type;
+      description
+        "Enable/disable transitive the link bandwidth attribute.";
+    }
+    leaf generate {
+      type peer-attr-enable-type;
+      description
+        "Enable/disable generate the link bandwidth attribute to an EBGP peer.";
+    }
+  }
+}

@@ -1,0 +1,2187 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mplstpoam {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-mplstpoam";
+  prefix mplstpoam;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-te-cr-static {
+    prefix mpls-te-cr-static;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Multiprotocol Label Switching-Transport Profile (MPLS-TP), operations, administration and maintenance (OAM), mainly provides functions: fault management, performance monitoring, and protection switching.";
+  revision 2021-01-13 {
+    description
+      "Solve some errors.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-14 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-27 {
+    description
+      "Solve some errors.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-04-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  /*****************************************************************
+  * type definitions
+  *****************************************************************/
+  typedef standard-type {
+    type enumeration {
+      enum "y1711" {
+        value 0;
+        description
+          "Protocol is Y.1711.";
+      }
+      enum "y1731" {
+        value 1;
+        description
+          "Protocol is Y.1731.";
+      }
+    }
+    description
+      "Standard type.";
+  }
+  typedef channel-type {
+    type enumeration {
+      enum "0x7ffa" {
+        value 0;
+        description
+          "ACH is 0x7FFA.";
+      }
+      enum "0x8902" {
+        value 1;
+        description
+          "ACH is 0x8902.";
+      }
+    }
+    description
+      "Channel type.";
+  }
+  typedef pw-mode {
+    type enumeration {
+      enum "standard" {
+        value 0;
+        description
+          "The MPLS-TP PW mode is standard.";
+      }
+      enum "private" {
+        value 1;
+        description
+          "The MPLS-TP PW mode is private.";
+      }
+    }
+    description
+      "PW mode.";
+  }
+  typedef ccm-interval {
+    type enumeration {
+      enum "3.3ms" {
+        value 1;
+        description
+          "CCM interval of 3.3ms.";
+      }
+      enum "10ms" {
+        value 2;
+        description
+          "CCM interval of 10ms.";
+      }
+      enum "100ms" {
+        value 3;
+        description
+          "CCM interval of 100ms.";
+      }
+      enum "1000ms" {
+        value 4;
+        description
+          "CCM interval of 1s.";
+      }
+      enum "10000ms" {
+        value 5;
+        description
+          "CCM interval of 10000ms.";
+      }
+      enum "60000ms" {
+        value 6;
+        description
+          "CCM interval of 60000ms.";
+      }
+      enum "600000ms" {
+        value 7;
+        description
+          "CCM interval of 600000ms.";
+      }
+    }
+    description
+      "CCM interval.";
+  }
+  typedef me-direction {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "The ME direction is none.";
+      }
+      enum "ingress" {
+        value 1;
+        description
+          "The ME direction is ingress.";
+      }
+      enum "egress" {
+        value 2;
+        description
+          "The ME direction is egress.";
+      }
+      enum "dual" {
+        value 3;
+        description
+          "The ME direction is dual.";
+      }
+    }
+    description
+      "ME direction.";
+  }
+  typedef me-state {
+    type enumeration {
+      enum "init" {
+        value 0;
+        description
+          "The ME status is init.";
+      }
+      enum "up" {
+        value 1;
+        description
+          "The ME status is up.";
+      }
+      enum "down" {
+        value 2;
+        description
+          "The ME status is down.";
+      }
+    }
+    description
+      "ME state.";
+  }
+  typedef dm-interval {
+    type enumeration {
+      enum "1000ms" {
+        value 4;
+        description
+          "DM interval of 1s.";
+      }
+      enum "10000ms" {
+        value 5;
+        description
+          "DM interval of 10s.";
+      }
+    }
+    description
+      "DM interval.";
+  }
+  typedef slm-interval {
+    type enumeration {
+      enum "1000ms" {
+        value 4;
+        description
+          "Single-ended loss measurement interval of 1s.";
+      }
+      enum "10000ms" {
+        value 5;
+        description
+          "Single-ended loss measurement interval of 10s.";
+      }
+    }
+    description
+      "Single-ended loss measurement interval.";
+  }
+  typedef measure-mode {
+    type enumeration {
+      enum "on-demand" {
+        value 0;
+        description
+          "The measurement mode is on-demand.";
+      }
+      enum "proactive" {
+        value 1;
+        description
+          "The measurement mode is proactive.";
+      }
+    }
+    description
+      "Measure mode.";
+  }
+  typedef vc-type {
+    type enumeration {
+      enum "fr" {
+        value 1;
+        description
+          "The VC type is FR.";
+      }
+      enum "atm-aal5-sdu" {
+        value 2;
+        description
+          "The VC type is ATM-AAL5-SDU.";
+      }
+      enum "atm-trans-cell" {
+        value 3;
+        description
+          "The VC type is ATM-TRANS-CELL.";
+      }
+      enum "vlan" {
+        value 4;
+        description
+          "The VC type is VLAN.";
+      }
+      enum "ethernet" {
+        value 5;
+        description
+          "The VC type is ethernet.";
+      }
+      enum "hdlc" {
+        value 6;
+        description
+          "The VC type is HDLC.";
+      }
+      enum "ppp" {
+        value 7;
+        description
+          "The VC type is PPP.";
+      }
+      enum "cem" {
+        value 8;
+        description
+          "The VC type is CEM.";
+      }
+      enum "atm-nto1-vcc" {
+        value 9;
+        description
+          "The VC type is ATM-Nto1-VCC.";
+      }
+      enum "atm-nto1-vpc" {
+        value 10;
+        description
+          "The VC type is ATM-Nto1-VPC.";
+      }
+      enum "ip-layer2" {
+        value 11;
+        description
+          "The VC type is IP-Layer2.";
+      }
+      enum "atm-1to1-vcc" {
+        value 12;
+        description
+          "The VC type is ATM-1to1-VCC.";
+      }
+      enum "atm-1to1-vpc" {
+        value 13;
+        description
+          "The VC type is ATM-1to1-VPC.";
+      }
+      enum "atm-aal5-pdu" {
+        value 14;
+        description
+          "The VC type is ATM-AAL5-PDU.";
+      }
+      enum "fr-port-mode" {
+        value 15;
+        description
+          "The VC type is FR-PORT-MODE.";
+      }
+      enum "cep" {
+        value 16;
+        description
+          "The VC type is CEP.";
+      }
+      enum "satop-e1" {
+        value 17;
+        description
+          "The VC type is SAToP-E1.";
+      }
+      enum "satop-t1" {
+        value 18;
+        description
+          "The VC type is SAToP-T1.";
+      }
+      enum "satop-e3" {
+        value 19;
+        description
+          "The VC type is SAToP-E3.";
+      }
+      enum "satop-t3" {
+        value 20;
+        description
+          "The VC type is SAToP-T3.";
+      }
+      enum "cesopsn-basic" {
+        value 21;
+        description
+          "The VC type is CESoPSN-BASIC.";
+      }
+      enum "tdmoip-aal1" {
+        value 22;
+        description
+          "The VC type is TDMoIP-AAL1.";
+      }
+      enum "cesopsn-tdm" {
+        value 23;
+        description
+          "The VC type is CESoPSN-TDM.";
+      }
+      enum "tdmoip-aal2" {
+        value 24;
+        description
+          "The VC type is TDMoIP-AAL2.";
+      }
+      enum "fr-dlci" {
+        value 25;
+        description
+          "The VC type is FR-DLCI.";
+      }
+      enum "ip-interworking" {
+        value 64;
+        description
+          "The VC type is IP interworking.";
+      }
+      enum "unsupport" {
+        value 255;
+        description
+          "This VC type is unsupport.";
+      }
+    }
+    description
+      "VC type.";
+  }
+  typedef node-type {
+    type enumeration {
+      enum "mep" {
+        value 1;
+        description
+          "Node type of LB is MEP.";
+      }
+      enum "mip" {
+        value 2;
+        description
+          "Node type of LB is MIP.";
+      }
+    }
+    description
+      "Node type.";
+  }
+  typedef statistics-status {
+    type enumeration {
+      enum "finished" {
+        value 1;
+        description
+          "The statistics is finished.";
+      }
+      enum "working" {
+        value 2;
+        description
+          "The statistics is working.";
+      }
+    }
+    description
+      "Statistics status.";
+  }
+  typedef error-info {
+    type enumeration {
+      enum "valid" {
+        value 0;
+        description
+          "The data is valid.";
+      }
+      enum "invalid-loss" {
+        value 1;
+        description
+          "The packet loss is invalid.";
+      }
+      enum "invalid-delay" {
+        value 2;
+        description
+          "The delay is invalid.";
+      }
+    }
+    description
+      "Error info.";
+  }
+  typedef meg-mode {
+    type enumeration {
+      enum "ipbase" {
+        value 0;
+        description
+          "The detect mode is IP-based.";
+      }
+      enum "custom" {
+        value 1;
+        description
+          "The detect mode is customer-based.";
+      }
+      enum "icc" {
+        value 2;
+        description
+          "The detect mode is ICC.";
+      }
+    }
+    description
+      "MEG mode.";
+  }
+  typedef loss-measure-mode {
+    type enumeration {
+      enum "standard" {
+        value 0;
+        description
+          "The type of loss measure is on-demand.";
+      }
+      enum "private" {
+        value 1;
+        description
+          "The type of loss measure is proactive.";
+      }
+    }
+    description
+      "Loss measure mode.";
+  }
+  typedef single-lm-mode {
+    type enumeration {
+      enum "standard" {
+        value 0;
+        description
+          "The type of single-ended lost measure is standard.";
+      }
+      enum "private" {
+        value 1;
+        description
+          "The type of single-ended lost measure is private.";
+      }
+    }
+    description
+      "Single loss measure mode.";
+  }
+  typedef state {
+    type enumeration {
+      enum "near-end-available" {
+        value 0;
+        description
+          "The local or remote status is near-end available.";
+      }
+      enum "near-end-defect-unavailable" {
+        value 1;
+        description
+          "The local or remote state is near-end defect-unavailable.";
+      }
+      enum "far-end-available" {
+        value 2;
+        description
+          "The local or remote state is far-end available.";
+      }
+      enum "far-end-defect-unavailable" {
+        value 3;
+        description
+          "The local or remote state is far-end defect-unavailable.";
+      }
+      enum "error-state" {
+        value 4;
+        description
+          "The local or remote state is error state.";
+      }
+    }
+    description
+      "State.";
+  }
+  typedef detect-mode {
+    type enumeration {
+      enum "manu" {
+        value 0;
+        description
+          "The detect mode is manual.";
+      }
+      enum "auto" {
+        value 1;
+        description
+          "The detect mode is adaptive.";
+      }
+    }
+    description
+      "Detect mode.";
+  }
+  typedef ping-status-type {
+    type enumeration {
+      enum "testing" {
+        value 0;
+        description
+          "The test is testing.";
+      }
+      enum "finished" {
+        value 1;
+        description
+          "The test is finished.";
+      }
+      enum "stopped" {
+        value 2;
+        description
+          "The test is stopped.";
+      }
+    }
+    description
+      "Ping status type.";
+  }
+  typedef ping-error-type {
+    type enumeration {
+      enum "ok" {
+        value 0;
+        description
+          "The test is success.";
+      }
+    }
+    description
+      "Ping error type.";
+  }
+  typedef ping-result-type {
+    type enumeration {
+      enum "ok" {
+        value 0;
+        description
+          "The test packets are successfully received.";
+      }
+      enum "timeout" {
+        value 1;
+        description
+          "The receiving of test packets times out.";
+      }
+    }
+    description
+      "Ping result type.";
+  }
+  typedef gal-pw {
+    type enumeration {
+      enum "label-13" {
+        value 1;
+        description
+          "The Gal is 13.";
+      }
+      enum "label-14" {
+        value 2;
+        description
+          "The Gal is 14.";
+      }
+      enum "disable" {
+        value 3;
+        description
+          "The GAL type is disable.";
+      }
+      enum "route-mode" {
+        value 4;
+        description
+          "The GAL type is route-mode.";
+      }
+      enum "ptn-mode" {
+        value 5;
+        description
+          "The GAL type is ptn-mode.";
+      }
+    }
+    description
+      "Gal PW type.";
+  }
+  typedef detail-result-type {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "The test packets are successfully received.";
+      }
+      enum "timeout" {
+        value 1;
+        description
+          "The receiving of test packets times out.";
+      }
+      enum "failed" {
+        value 2;
+        description
+          "The receiving of test packets failed.";
+      }
+    }
+    description
+      "Detail result type.";
+  }
+  typedef protocol-state-type {
+    type enumeration {
+      enum "no-config" {
+        value 0;
+        description
+          "No OAM is configured.";
+      }
+      enum "y1711" {
+        value 1;
+        description
+          "Only configure Y.1711.";
+      }
+      enum "y1731" {
+        value 2;
+        description
+          "Only configure Y.1731.";
+      }
+      enum "y1711-y1731" {
+        value 3;
+        description
+          "Mixed mode is configured.";
+      }
+    }
+    description
+      "Protocol state type.";
+  }
+  typedef statistics-type {
+    type enumeration {
+      enum "dual-ended-lm" {
+        value 1;
+        description
+          "Lost measure dual-ended.";
+      }
+      enum "single-ended-lm" {
+        value 2;
+        description
+          "Lost measure single-ended.";
+      }
+      enum "one-way-dm" {
+        value 3;
+        description
+          "One way delay measure.";
+      }
+      enum "two-way-dm" {
+        value 4;
+        description
+          "Two way delay measure.";
+      }
+    }
+    description
+      "Statistics type.";
+  }
+  typedef tunnel-type {
+    type enumeration {
+      enum "ingress" {
+        value 0;
+        description
+          "The tunnel type is ingress.";
+      }
+      enum "egress" {
+        value 1;
+        description
+          "The tunnel type is egress.";
+      }
+      enum "bidirectional" {
+        value 2;
+        description
+          "The tunnel type is bidirectional.";
+      }
+    }
+    description
+      "Tunnel type.";
+  }
+  typedef tunnel-direction {
+    type enumeration {
+      enum "undirectional" {
+        value 0;
+        description
+          "The tunnel direction is undirectional.";
+      }
+      enum "bidirectional" {
+        value 1;
+        description
+          "The tunnel direction is bidirectional.";
+      }
+    }
+    description
+      "Tunnel direction.";
+  }
+  typedef pw-role {
+    type enumeration {
+      enum "primary" {
+        value 1;
+        description
+          "Vpws PW role is primary.";
+      }
+      enum "backup" {
+        value 2;
+        description
+          "Vpws PW role is backup.";
+      }
+      enum "bypass" {
+        value 3;
+        description
+          "Vpws PW role is bypass.";
+      }
+      enum "left-primary" {
+        value 4;
+        description
+          "Vpws PW role is left-primary.";
+      }
+      enum "right-primary" {
+        value 5;
+        description
+          "Vpws PW role is right-primary.";
+      }
+      enum "right-backup" {
+        value 6;
+        description
+          "Vpws PW role is right-backup.";
+      }
+      enum "ac-bypass" {
+        value 7;
+        description
+          "Vpws PW role is ac-bypass.";
+      }
+      enum "pw-bypass" {
+        value 8;
+        description
+          "Vpws PW role is pw-bypass.";
+      }
+    }
+    description
+      "Vpws PW role type.";
+  }
+  grouping pw-status {
+    leaf remote-peer-ip {
+      ext:operation-exclude update;
+      type inet:ipv4-address-no-zone;
+      description
+        "Configure the remote peer IP of an ME bound to a static PW.";
+    }
+    leaf remote-vc-id {
+      type uint32 {
+        range "0..4294967295";
+      }
+      description
+      "Configure the remote VC ID of an ME bound to a static PW.";
+    }
+    leaf remote-vc-type {
+      type vc-type;
+      description
+        "Configure the remote VC type of an ME bound to a static PW.";
+    }
+    leaf mep-id {
+      ext:operation-exclude update;
+      type uint32 {
+        range "1..8191";
+      }
+      mandatory true;
+      description
+        "Configure the MEP ID of an ME bound to a static PW.";
+    }
+    leaf remote-mep-id {
+      ext:operation-exclude update;
+      type uint32 {
+        range "1..8191";
+      }
+      mandatory true;
+      description
+        "Configure the remote MEP ID of an ME bound to a static PW.";
+    }
+    leaf ttl {
+      ext:operation-exclude update;
+      type uint8 {
+        range "1..255";
+      }
+      default "255";
+      description
+        "Configure the TTL of an ME bound to a static PW.";
+    }
+    leaf gal-mode {
+      ext:operation-exclude update|delete;
+      type gal-pw;
+      default "disable";
+      description
+        "Whether GAL is enabled.";
+    }
+    leaf lm-mode {
+      type loss-measure-mode;
+      default "standard";
+      description
+      "Lost measure packet mode.";
+    }
+    leaf rdi-enable {
+      type boolean;
+      default "true";
+      description
+        "Enable/disable RDI.";
+    }
+    leaf slm-mode {
+      type single-lm-mode;
+        default "standard";
+        description
+          "Single-ended lost measure packet mode.";
+    }
+    description
+      "PW status.";
+  }
+  grouping session-status {
+    leaf me-index {
+      type uint32;
+      config false;
+      description
+        "ME index.";
+    }
+    leaf me-direction {
+      type me-direction;
+      config false;
+      description
+        "ME direction.";
+    }
+    leaf select-board-slot {
+      type string {
+        length "1..19";
+      }
+      config false;
+      description
+        "Board where the state machine resides.";
+    }
+    leaf me-status {
+      type me-state;
+      config false;
+      description
+        "ME status.";
+    }
+    leaf local-status {
+      type state;
+      config false;
+      description
+        "Local ME status.";
+    }
+    leaf remote-status {
+      type state;
+      config false;
+      description
+        "Remote ME status.";
+    }
+    leaf alarm-indicate {
+      type string {
+        length "1..26";
+      }
+      config false;
+      description
+        "Warning indication of a ME.";
+    }
+    leaf hardware-resource {
+      type string {
+        length "1..16";
+      }
+      config false;
+      description
+        "Hardware resource of a ME.";
+    }
+    leaf hardware-error {
+      type string {
+        length "1..128";
+      }
+      config false;
+      description
+        "Hardware error of a ME.";
+    }
+    description
+      "Session status.";
+  }
+  /*****************************************************************
+  * data
+  *****************************************************************/
+  ext:task-name  "tpoam";
+  container mplstpoam {
+    description
+      "MPLStpoam.";
+    container global {
+      description
+        "Configure global MPLS-TP OAM attribute.";
+      leaf oam-standard {
+        type standard-type;
+        default "y1711";
+        description
+          "Default OAM standard protocol.";
+      }
+      leaf icc-string {
+        type string {
+          length "1..6";
+        }
+        description
+          "MPLS-TP OAM ICC ID.";
+      }
+      leaf ais-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MPLS-TP OAM AIS.";
+      }
+      leaf channel-type {
+        type channel-type;
+        default "0x7ffa";
+        description
+          "0x7ffa identifies MPLS-TP OAM packets in compliance with Y.1731. 0x8902 identifies MPLS-TP OAM packets in compliance with relevant standards.";
+      }
+      leaf csf-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable MPLS-TP OAM CSF.";
+      }
+      leaf mpls-tp-mode {
+        type pw-mode;
+        default "standard";
+        description
+          "PW mode of MPLS-TP OAM.";
+      }
+      leaf gal-mode {
+        type gal-pw;
+        default "ptn-mode";
+        description
+          "PW GAL mode of MPLS-TP OAM.";
+      }
+      leaf protocol-status {
+        type protocol-state-type;
+        default "no-config";
+        config false;
+        description
+          "OAM status.";
+      }
+      leaf oam-num {
+        type uint32;
+        config false;
+        description
+          "Total number of OAM instances, including MPLS OAM and MPLS-TP OAM instances.";
+      }
+    }
+    container megs {
+      description
+        "List of the configuration of all MEGs.";
+      list meg {
+        key "name";
+        unique "co-route-tunnel/tunnel-name";
+        unique "vll-mip/l2vpn-name";
+        unique "te-mip/lsp-name";
+        unique "pw/pw-vll/l2vpn-name pw/pw-vll/l2vpn-type pw/pw-vll/l2vpn-role";
+        unique "pw/pw-vpls/vpls-peer-ip pw/pw-vpls/vpls-vc-id pw/pw-vpls/vpls-vc-type";
+        description
+          "Configure a MEG.";
+        leaf name {
+          type string {
+            length "1..14";
+          }
+          description
+            "Configure a MEG resource ID.";
+        }
+        leaf id {
+          ext:operation-exclude delete;
+          type string {
+            length "1..96";
+          }
+          description
+            "Configure the ID of a MEG. In ICC mode, the ID is a string of 1 to 13 characters. In CUSTOMER mode, the ID is a 96-byte hexadecimal number.";
+        }
+        container pw {
+          description
+            "Configure an ME to monitor a PW.";
+          container pw-vll {
+            must "not(../../vll-mip/l2vpn-name) and not(../../te-mip/lsp-name) and not(../../co-route-tunnel/tunnel-name) and not(../pw-vpls/vpls-peer-ip)";
+            presence "pw-vll presence container";
+            description
+              "Configure an ME to monitor a Vll PW.";
+            leaf l2vpn-name {
+              ext:operation-exclude update;
+              type leafref {
+                path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+              }
+              mandatory true;
+              description
+                "Configure L2VPN name of MPLS OAM binded static PW.";
+            }
+            leaf l2vpn-type {
+              ext:operation-exclude update;
+              type leafref {
+                path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name]/l2vpn:type";
+              }
+              mandatory true;
+              description
+                "Configure L2VPN type of MPLS OAM binded static PW.";
+            }
+            leaf l2vpn-role {
+              ext:operation-exclude update;
+              type pw-role;
+              must "(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw[l2vpn:role=current()]/l2vpn:role) or (/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-switch/l2vpn:pws/l2vpn:pw[l2vpn:role=current()]/l2vpn:role)";
+              mandatory true;
+              description
+                "Configure PW role of MPLS OAM binded static PW.";
+            }
+            uses pw-status {
+              refine remote-peer-ip {
+                ext:dynamic-default {
+                  ext:default-value "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:peer-ip" {
+                    when "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:peer-ip";
+                    description "The default value is pw peer ip when L2VPN pw peer ip is configured.";
+                  }
+                  ext:default-value "/l2vpn:l2vpn/l2vpn:common/l2vpn:pw-templates/l2vpn:pw-template[l2vpn:name=/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:pw-template]/l2vpn:peer-address" {
+                    when "not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:peer-ip) and /l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:pw-template";
+                    description "The default value is template peer address when L2VPN pw-template is configured.";
+                  }
+                  ext:default-value "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-switch/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:peer-ip" {
+                    when "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-switch/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:peer-ip";
+                    description "The default value is template peer address when L2VPN pw-template is configured.";
+                  }
+                }
+              }
+              refine ttl {
+                must "(../ttl=255) or (not(../ttl=255) and ((/l2vpn:l2vpn/l2vpn:common/l2vpn:pw-templates/l2vpn:pw-template[l2vpn:name=/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:pw-template]/l2vpn:peer-address=../remote-peer-ip) or (/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-ldp/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:peer-ip=../remote-peer-ip) or (/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()/../l2vpn-name][l2vpn:type=current()/../l2vpn-type]/l2vpn:vpws-switch/l2vpn:pws/l2vpn:pw[l2vpn:role=current()/../l2vpn-role]/l2vpn:peer-ip=../remote-peer-ip)))";
+              }
+            }
+            uses session-status;
+          }
+          container pw-vpls {
+            must "not(../../vll-mip/l2vpn-name) and not(../../te-mip/lsp-name) and not(../../co-route-tunnel/tunnel-name) and not(../pw-vll/l2vpn-name)";
+            presence "pw-vpls presence container";
+            description
+              "Configure an ME to monitor a VPLS PW.";
+            leaf vpls-peer-ip {
+              ext:operation-exclude update;
+              type leafref {
+                path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/l2vpn:peer-ip";
+              }
+              mandatory true;
+              description
+                "Configure the peer IP of an ME bound to a static PW.";
+            }
+            leaf vpls-vc-id {
+              ext:operation-exclude update;
+              type leafref {
+                path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw[l2vpn:peer-ip=current()/../vpls-peer-ip]/l2vpn:negotiation-vc-id";
+              }
+              mandatory true;
+              description
+                "Configure the VC ID of an ME bound to a static PW.";
+            }
+            leaf vpls-vc-type {
+              ext:operation-exclude update;
+              type leafref {
+                path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw[l2vpn:peer-ip=current()/../vpls-peer-ip][l2vpn:negotiation-vc-id=current()/../vpls-vc-id]/l2vpn:encapsulation-type";
+              }
+              must "not(../vpls-vc-type='unsupport')";
+              mandatory true;
+              description
+                "Configure the VC type of an ME bound to a static PW.";
+            }
+            uses pw-status {
+              refine remote-peer-ip {
+                ext:dynamic-default {
+                  ext:default-value "../vpls-peer-ip";
+                }
+              }
+              refine ttl {
+                must "(../ttl=255) or (not(../ttl=255) and (../vpls-peer-ip=../remote-peer-ip))";
+              }
+            }
+            uses session-status;
+          }
+        }
+        container co-route-tunnel {
+          must "not(../vll-mip/l2vpn-name) and not(../te-mip/lsp-name) and not(../pw/pw-vll/l2vpn-name) and not(../pw/pw-vpls/vpls-peer-ip)";
+          presence "co-route-tunnel presence container";
+          description
+            "Configure an ME to monitor a co-route tunnel.";
+          leaf tunnel-name {
+            ext:operation-exclude update;
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='cr-static'";
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te-cr-static:cr-static/mpls-te-cr-static:direction";
+            mandatory true;
+            description
+              "Name of a static tunnel.";
+          }
+          leaf mep-id {
+            ext:operation-exclude update;
+            type uint32 {
+              range "1..8191";
+            }
+            mandatory true;
+            description
+              "Configure the MEP ID of an ME.";
+          }
+          leaf remote-mep-id {
+            ext:operation-exclude update;
+            type uint32 {
+              range "1..8191";
+            }
+            mandatory true;
+            description
+              "Configure the remote MEP ID of an ME.";
+          }
+          leaf lm-mode {
+            type loss-measure-mode;
+            default "standard";
+            description
+              "Lost measure packet mode.";
+          }
+          leaf rdi-enable {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable RDI.";
+          }
+          leaf slm-mode {
+            type single-lm-mode;
+            default "standard";
+            description
+              "Single-ended lost measure packet mode.";
+          }
+          leaf tunnel-description {
+            type string {
+              length "1..32";
+            }
+            config false;
+            description
+              "Description of a tunnel.";
+          }
+          leaf tunnel-type {
+            type tunnel-type;
+            config false;
+            description
+              "Type of a tunnel.";
+          }
+          leaf tunnel-direction {
+            type tunnel-direction;
+            config false;
+            description
+              "Direction of a tunnel.";
+          }
+          uses session-status;
+        }
+        container vll-mip {
+          must "not(../co-route-tunnel/tunnel-name) and not(../te-mip/lsp-name) and not(../pw/pw-vll/l2vpn-name) and not(../pw/pw-vpls/vpls-peer-ip)";
+          presence "vll-mip presence container";
+          description
+            "Configure an ME to monitor a static switch L2VC PW.";
+          leaf l2vpn-name {
+            ext:operation-exclude update;
+            type leafref {
+              path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+            }
+            must "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name = current()]/l2vpn:vpws-switch/l2vpn:pws/l2vpn:pw/l2vpn:pw-id";
+            mandatory true;
+            description
+              "Configure L2VPN name of MPLS OAM binded static PW.";
+          }
+          leaf mip-id {
+            ext:operation-exclude update;
+            type uint32 {
+              range "1..8191";
+            }
+            description
+              "Configure the MIP ID of an ME.";
+          }
+          leaf me-index {
+            type uint32;
+            config false;
+            description
+              "ME index.";
+          }
+          leaf me-direction {
+            type me-direction;
+            config false;
+            description
+              "ME direction.";
+          }
+          leaf select-board-slot {
+            type string {
+              length "1..19";
+            }
+            config false;
+            description
+              "Board where the state machine resides.";
+          }
+          leaf me-status {
+            type me-state;
+            config false;
+            description
+              "The status of an ME.";
+          }
+        }
+        container te-mip {
+          must "not(../co-route-tunnel/tunnel-name) and not(../vll-mip/l2vpn-name) and not(../pw/pw-vll/l2vpn-name) and not(../pw/pw-vpls/vpls-peer-ip)";
+          presence "te-mip presence container";
+          description
+            "Configure an ME to monitor a static bidirectional co-routed transit LSP.";
+          leaf lsp-name {
+            ext:operation-exclude update;
+            type leafref {
+              path "/mpls:mpls/mpls-te:te/mpls-te-cr-static:bidirection-static-cr-lsps/mpls-te-cr-static:bidirection-static-cr-lsp/mpls-te-cr-static:lsp-name";
+            }
+            must "/mpls:mpls/mpls-te:te/mpls-te-cr-static:bidirection-static-cr-lsps/mpls-te-cr-static:bidirection-static-cr-lsp[mpls-te-cr-static:lsp-name = current()]/mpls-te-cr-static:transit";
+            mandatory true;
+            description
+              "Configure the LSP name of an ME bound to a static bidirectional co-routed transit LSP.";
+          }
+          leaf mip-id {
+            ext:operation-exclude update;
+            type uint32 {
+              range "1..8191";
+            }
+            description
+              "Configure the MIP ID of an ME.";
+          }
+          leaf me-index {
+            type uint32;
+            config false;
+            description
+              "ME index.";
+          }
+          leaf me-direction {
+            type me-direction;
+            config false;
+            description
+              "ME direction.";
+          }
+          leaf select-board-slot {
+            type string {
+              length "1..19";
+            }
+            config false;
+            description
+              "Board where the state machine resides.";
+          }
+          leaf me-status {
+            type me-state;
+            config false;
+            description
+              "The status of an ME.";
+          }
+        }
+        container cc {
+          when "(../co-route-tunnel/tunnel-name) or (../pw/pw-vll/l2vpn-name) or (../pw/pw-vpls/vpls-peer-ip)";
+          description
+            "Configure the CC function.";
+          leaf exp {
+            type uint8 {
+              range "0..7";
+            }
+            default "7";
+            description
+              "Configure the CCM exp.";
+          }
+          leaf interval {
+            type ccm-interval;
+            units "ms";
+            must "(not (../interval='3.3ms') and not (../interval='10ms') and ../../test-instance/dual-lm/dlm-enable='true') or (../../test-instance/dual-lm/dlm-enable='false')";
+            must "(../interval='600000ms' and ../detect-mode='manu') or not (../interval='600000ms')";
+            default "1000ms";
+            description
+              "Configure the CCM interval.";
+          }
+          leaf send-enable {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable to configure the CC send enable flag.";
+          }
+          leaf receive-enable {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable to configure the CC receive enable flag.";
+          }
+          leaf detect-mode {
+            type detect-mode;
+            must "(../detect-mode='auto' and ../receive-enable='true' and not (../interval='600000ms')) or ../detect-mode='manu'";
+            default "manu";
+            description
+              "Configure the detect mode of CC.";
+          }
+        }
+        container oam-lm {
+          when "../co-route-tunnel/tunnel-name or ../pw/pw-vll/l2vpn-name or ../pw/pw-vpls/vpls-peer-ip";
+          must "sd<=sf";
+          description
+            "Configure the OAM loss measurement function.";
+          leaf sd {
+            type uint32 {
+              range "0..100";
+            }
+            default "0";
+            description
+              "Configure the SD threshold of loss measurement.";
+          }
+          leaf sf {
+            type uint32 {
+              range "0..100";
+            }
+            default "0";
+            description
+              "Configure the SF threshold of loss Measurement.";
+          }
+        }
+        container test-instance {
+          when "(../co-route-tunnel/tunnel-name) or (../pw/pw-vll/l2vpn-name) or (../pw/pw-vpls/vpls-peer-ip)";
+          description
+            "Configure test instances.";
+          container one-way-dm-send {
+            presence "Enable one-way delay measurement send";
+            description
+              "Configure a one-way delay measurement send instance.";
+            leaf one-dm-interval {
+              ext:operation-exclude update|delete;
+              type dm-interval;
+              units "ms";
+              default "1000ms";
+              description
+                "Configure the interval of proactive one-way delay measurement.";
+            }
+            leaf one-dm-exp {
+              ext:operation-exclude update|delete;
+              type uint8 {
+                range "0..7";
+              }
+              default "7";
+              description
+                "Configure the exp value of proactive one-way delay measurement.";
+            }
+          }
+          container one-way-dm-rcv {
+            description
+              "Configure a one-way delay measurement receive instance.";
+            leaf one-dm-rcv-enable {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable one-way delay measurement receive instance.";
+            }
+          }
+          container two-way-dm-send {
+            presence "Enable two-way delay measurement receive";
+            description
+              "Configure a two-way delay measurement send instance.";
+            leaf two-dm-interval {
+              ext:operation-exclude update|delete;
+              type dm-interval;
+              units "ms";
+              default "1000ms";
+              description
+                "Configure the interval of proactive two-way delay measurement.";
+            }
+            leaf two-dm-exp {
+              ext:operation-exclude update|delete;
+              type uint8 {
+                range "0..7";
+              }
+              default "7";
+              description
+                "Configure the exp value of proactive two-way delay measurement.";
+            }
+            leaf two-dm-timestamp {
+              ext:operation-exclude update|delete;
+              type boolean;
+              default "false";
+              description
+                "Enable/disable to configure the two times stamp of proactive two-way delay measurement.";
+            }
+          }
+          container single-lm-send {
+            when "../dual-lm/dlm-enable='false'";
+            presence "Enable single-end loss measurement";
+            description
+              "Configure a single-ended loss measurement send instance.";
+            leaf slm-interval {
+              ext:operation-exclude update|delete;
+              type slm-interval;
+              units "ms";
+              default "1000ms";
+              description
+                "Configure a message transmit interval for proactive single-ended frame loss measurement.";
+            }
+            leaf slm-exp {
+              ext:operation-exclude update|delete;
+              type uint8 {
+                range "0..7";
+              }
+              default "7";
+              description
+                "Configure the priority value of proactive single-end loss measurement.";
+            }
+          }
+          container single-lm-rcv {
+            description
+              "Configure a single-ended loss measurement send instance.";
+            leaf slm-rcv-enable {
+              type boolean;
+              must "(../slm-rcv-enable='true' and ../../dual-lm/dlm-enable='false') or ../slm-rcv-enable='false'";
+              default "false";
+              description
+                "Enable/disable to configure proactive single-end loss measurement.";
+            }
+          }
+          container dual-lm {
+            description
+              "Configure a dual-ended loss measurement send instance.";
+            leaf dlm-enable {
+              type boolean;
+              must "(../dlm-enable='true' and not(../../single-lm-send/slm-interval) and (../../single-lm-rcv/slm-rcv-enable='false') and not(../../../cc/interval='3.3ms') and not(../../../cc/interval='10ms')) or (../dlm-enable='false')";
+              default "false";
+              description
+                "Enable/disable to configure dual-end loss measurement.";
+            }
+          }
+          container one-way-dm-result {
+            config false;
+            description
+              "Statistics of one-way delay measurement.";
+            leaf send-pkt-num {
+              type uint32;
+              description
+                "Total number of sent packets.";
+            }
+            leaf recv-pkt-num {
+              type uint32;
+              description
+                "Total number of received packets.";
+            }
+            leaf delay-min {
+              type uint32;
+              units "ms";
+              description
+                "Minimum RTT value of all test packets. RTT is the round trip time of test packets.";
+            }
+            leaf delay-max {
+              type uint32;
+              units "ms";
+              description
+                "Maximum RTT value of all test packets. RTT is the round trip time of test packets.";
+            }
+            leaf delay-avg {
+              type uint32;
+              units "ms";
+              description
+                "Average RTT value of all test packets. RTT is the round trip time of test packets.";
+            }
+            leaf jitter-min {
+              type uint32;
+              description
+                "Minimum jitter value of all test packets.";
+            }
+            leaf jitter-max {
+              type uint32;
+              description
+                "Maximum jitter value of all test packets.";
+            }
+            leaf jitter-avg {
+              type uint32;
+              description
+                "Average jitter value of all test packets.";
+            }
+            container one-way-dm-datas {
+              description
+                "List of one-way delay measurement.";
+              list one-way-dm-data {
+                key "index";
+                description
+                  "Statistics of data instance of one-way delay measurement.";
+                leaf index {
+                  type uint32;
+                  description
+                    "Index of one-way delay measurement.";
+                }
+                leaf one-delay {
+                  type uint32;
+                  description
+                    "Result of one-way delay.";
+                }
+                leaf one-delay-var {
+                  type uint32;
+                  description
+                    "Result of one-way variation.";
+                }
+                leaf error-info {
+                  type error-info;
+                  description
+                    "Error code of one-way delay measurement.";
+                }
+              }
+            }
+          }
+          container one-way-send-result {
+            config false;
+            description
+              "Statistics of one-way delay measurement send.";
+            leaf measure-mode {
+              type measure-mode;
+              description
+                "The measure mode of one-way delay.";
+            }
+            leaf status {
+              type statistics-status;
+              description
+                "The status of one-way delay.";
+            }
+          }
+          container two-way-dm-result {
+            config false;
+            description
+              "Statistics of two-way delay measurement.";
+            leaf measure-mode {
+              type measure-mode;
+              default "on-demand";
+              description
+                "The measure mode of two-way delay.";
+            }
+            leaf status {
+              type statistics-status;
+              default "finished";
+              description
+                "The status of two-way delay.";
+            }
+            leaf send-pkt-num {
+              type uint32;
+              description
+                "Total number of sent packets.";
+            }
+            leaf recv-pkt-num {
+              type uint32;
+              description
+                "Total number of received packets.";
+            }
+            leaf delay-min {
+              type uint32;
+              units "ms";
+              description
+                "Minimum RTT value of all test packets. RTT is the round trip time of test packets.";
+            }
+            leaf delay-max {
+              type uint32;
+              units "ms";
+              description
+                "Maximum RTT value of all test packets. RTT is the round trip time of test packets.";
+            }
+            leaf delay-avg {
+              type uint32;
+              units "ms";
+              description
+                "Average RTT value of all test packets. RTT is the round trip time of test packets.";
+            }
+            leaf jitter-min {
+              type uint32;
+              description
+                "Minimum jitter value of all test packets.";
+            }
+            leaf jitter-max {
+              type uint32;
+              description
+                "Maximum jitter value of all test packets.";
+            }
+            leaf jitter-avg {
+              type uint32;
+              description
+                "Average jitter value of all test packets.";
+            }
+            container two-way-dm-datas {
+              description
+                "List of two-way delay measurement.";
+              list two-way-dm-data {
+                key "index";
+                description
+                  "Statistics of data instance of two-way delay measurement.";
+                leaf index {
+                  type uint32;
+                  description
+                    "Index of two-way delay measurement.";
+                }
+                leaf two-delay {
+                  type uint32;
+                  description
+                    "Result of two-way delay.";
+                }
+                leaf two-delay-var {
+                  type uint32;
+                  description
+                    "Result of two-way variation.";
+                }
+                leaf error-code {
+                  type error-info;
+                  description
+                    "Error code of two-way delay measurement.";
+                }
+              }
+            }
+          }
+          container single-lm-result {
+            config false;
+            description
+              "Statistics of single-ended loss measurement.";
+            leaf measure-mode {
+              type measure-mode;
+              default "on-demand";
+              description
+                "The measure mode of single-end loss measurement.";
+            }
+            leaf status {
+              type statistics-status;
+              default "finished";
+              description
+                "The status of single-end loss measurement.";
+            }
+            leaf send-pkt-num {
+              type uint32;
+              description
+                "Total number of sent packets.";
+            }
+            leaf recv-pkt-num {
+              type uint32;
+              description
+                "Total number of received packets.";
+            }
+            leaf remote-loss-ratio-min {
+              type uint32;
+              description
+                "Minimum remote loss ratio value of all test packets.";
+            }
+            leaf remote-loss-ratio-max {
+              type uint32;
+              description
+                "Maximum remote loss ratio value of all test packets.";
+            }
+            leaf remote-loss-ratio-avg {
+              type uint32;
+              description
+                "Average remote loss ratio value of all test packets.";
+            }
+            leaf remote-loss-count-min {
+              type uint32;
+              description
+                "Minimum remote loss count of all test packets.";
+            }
+            leaf remote-loss-count-max {
+              type uint32;
+              description
+                "Maximum remote loss count of all test packets.";
+            }
+            leaf remote-loss-count-avg {
+              type uint32;
+              description
+                "Average remote loss count of all test packets.";
+            }
+            leaf local-loss-ratio-min {
+              type uint32;
+              description
+                "Minimum local loss ratio value of all test packets.";
+            }
+            leaf local-loss-ratio-max {
+              type uint32;
+              description
+                "Maximum local loss ratio value of all test packets.";
+            }
+            leaf local-loss-ratio-avg {
+              type uint32;
+              description
+                "Average local loss ratio value of all test packets.";
+            }
+            leaf local-loss-count-min {
+              type uint32;
+              description
+                "Minimum local loss count of all test packets.";
+            }
+            leaf local-loss-count-max {
+              type uint32;
+              description
+                "Maximum local loss count of all test packets.";
+            }
+            leaf local-loss-count-avg {
+              type uint32;
+              description
+                "Average local loss count of all test packets.";
+            }
+            container single-ended-loss-datas {
+              description
+                "List of single-ended loss measurement.";
+              list single-ended-loss-data {
+                key "index";
+                description
+                  "Statistics of data instance of single-ended loss measurement.";
+                leaf index {
+                  type uint32;
+                  description
+                    "Index of single-ended loss measurement statistics.";
+                }
+                leaf loss-local-num {
+                  type uint32;
+                  description
+                    "Result of single-ended local loss packet number.";
+                }
+                leaf loss-local-ratio {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Result of single-ended local loss ratio.";
+                }
+                leaf loss-remote-num {
+                  type uint32;
+                  description
+                    "Result of single-ended remote loss packet number.";
+                }
+                leaf loss-remote-ratio {
+                  type string {
+                    length "1..24";
+                  }
+                  description
+                    "Result of single-ended remote loss ratio.";
+                }
+                leaf error-code {
+                  type error-info;
+                  description
+                    "Error code of single-ended loss measurement.";
+                }
+              }
+            }
+          }
+          container dual-lm-datas {
+            config false;
+            description
+              "List of dual-ended loss measurement.";
+            list dual-lm-data {
+              key "index";
+              description
+                "Statistics of data instance of dual-ended loss measurement.";
+              leaf index {
+                type uint64;
+                description
+                  "Index of dual-ended loss measurement statistics.";
+              }
+              leaf dlm-loss-local {
+                type uint32;
+                description
+                  "Result of dual ended local loss packet number.";
+              }
+              leaf dlm-loss-local-rat {
+                type string {
+                  length "1..24";
+                }
+                description
+                  "Result of dual ended local loss ratio.";
+              }
+              leaf dlm-loss-remote {
+                type uint32;
+                description
+                  "Result of dual ended remote loss packet number.";
+              }
+              leaf dlm-loss-remote-rat {
+                type string {
+                  length "1..24";
+                }
+                description
+                  "Result of dual ended remote loss ratio.";
+              }
+              leaf error-info {
+                type error-info;
+                description
+                  "Error info of dual-ended loss measurement.";
+              }
+            }
+          }
+        }
+        container lb-result {
+          config false;
+          description
+            "Statistics of LB test result.";
+          leaf send-pkt-num {
+            type uint32;
+            description
+              "Total number of sent packets.";
+          }
+          leaf recv-pkt-num {
+            type uint32;
+            description
+              "Total number of received packets.";
+          }
+          leaf packet-loss-ratio {
+            type string {
+              length "0..6";
+            }
+            description
+              "Packet loss ratio of a test.";
+          }
+          leaf delay-min {
+            type uint32;
+            units "ms";
+            description
+              "Minimum RTT value of all test packets. RTT is the round trip time of test packets.";
+          }
+          leaf delay-max {
+            type uint32;
+            units "ms";
+            description
+              "Maximum RTT value of all test packets. RTT is the round trip time of test packets.";
+          }
+          leaf delay-avg {
+            type uint32;
+            units "ms";
+            description
+              "Average RTT value of all test packets. RTT is the round trip time of test packets.";
+          }
+          leaf status {
+            type ping-status-type;
+            description
+              "Test result status.";
+          }
+          leaf error-type {
+            type ping-error-type;
+            description
+              "Test result error type.";
+          }
+          container lb-datas {
+            description
+              "List of detail result.";
+            list lb-data {
+              key "index";
+              description
+                "Statistics of result of a single packet in a test.";
+              leaf index {
+                type uint32;
+                description
+                  "Number of test packets.";
+              }
+              leaf bytes {
+                type uint32;
+                description
+                  "Number of bytes of received response packets.";
+              }
+              leaf rtt {
+                type uint32;
+                description
+                  "Round trip time of the packet.";
+              }
+              leaf ttl {
+                type uint8 {
+                  range "1..255";
+                }
+                description
+                  "TTL value of received response packets.";
+              }
+              leaf sub-code {
+                type uint32;
+                description
+                  "Subcode in packets.";
+              }
+              leaf return-code {
+                type ping-result-type;
+                description
+                  "Return code of the packet.";
+              }
+              leaf is-delete {
+                type boolean;
+                description
+                  "Flag indicating whether it is deleted.";
+              }
+              leaf result-type {
+                type detail-result-type;
+                description
+                  "Result of packet sending, which is either successful or timed out.";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc one-way-dm {
+    description
+      "Configure an on-demand one-way delay measurement send instance.";
+    ext:node-ref "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:test-instance";
+    input {
+      leaf meg-name {
+        type leafref {
+          path "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:name";
+        }
+        mandatory true;
+        description
+          "Configure a MEG resource ID.";
+      }
+      leaf one-dm-count {
+        type uint32 {
+          range "1..60";
+        }
+        default "5";
+        description
+          "Configure the count of on-demand one-way delay measurement.";
+      }
+      leaf one-dm-interval {
+        type dm-interval;
+        units "ms";
+        default "1000ms";
+        description
+          "Configure interval of on-demand one-way delay measurement packet.";
+      }
+      leaf one-dm-exp {
+        type uint32 {
+          range "0..7";
+        }
+        default "7";
+        description
+          "Configure the exp value of on-demand one-way delay measurement.";
+      }
+    }
+  }
+  rpc two-way-dm {
+    description
+      "Configure an on-demand two-way delay measurement send instance.";
+    ext:node-ref "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:test-instance";
+    input {
+      leaf meg-name {
+        type leafref {
+          path "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:name";
+        }
+        mandatory true;
+        description
+          "Configure a MEG resource ID.";
+      }
+      leaf two-dm-count {
+        type uint32 {
+          range "1..60";
+        }
+        default "5";
+        description
+          "Configure the count of sent packets in on-demand two-way delay measurement.";
+      }
+      leaf two-dm-interval {
+        type dm-interval;
+        units "ms";
+        default "1000ms";
+        description
+          "Configure Interval of on-demand two-way delay measurement packet.";
+      }
+      leaf two-dm-exp {
+        type uint32 {
+          range "0..7";
+        }
+        default "7";
+        description
+          "Configure the exp value of sent packets in on-demand one-way delay measurement.";
+      }
+      leaf two-dm-timestamp {
+        type boolean;
+        default "false";
+        description
+          "Configure the time stamp of on-demand two-way delay measurement.";
+      }
+    }
+  }
+  rpc reset-statistics {
+    description
+      "Reset statistics.";
+    ext:node-ref "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:test-instance";
+    input {
+      leaf meg-name {
+        type leafref {
+          path "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:name";
+        }
+        mandatory true;
+        description
+          "Configure a MEG resource ID.";
+      }
+      leaf statistics-type {
+        type statistics-type;
+        description
+          "Configure a MEG statistics type.";
+      }
+    }
+  }
+  rpc single-lm {
+    description
+      "Configure an on-demand single-ended loss measurement send instance.";
+    ext:node-ref "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:test-instance";
+    input {
+      leaf meg-name {
+        type leafref {
+          path "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:name";
+        }
+        mandatory true;
+        description
+          "Configure a MEG resource ID.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..60";
+        }
+        default "5";
+        description
+          "Configure the count of sent packets on-demand single-end loss measurement.";
+      }
+      leaf interval {
+        type slm-interval;
+        default "1000ms";
+        description
+          "Configure the interval at which packets are sent for on-demand single-end loss measurement.";
+      }
+      leaf exp {
+        type uint32 {
+          range "0..7";
+        }
+        default "7";
+        description
+          "Configure the exp value of sent packets in on-demand single-end loss measurement.";
+      }
+    }
+  }
+  rpc start-lb {
+    description
+      "Create LB test instance.";
+    ext:node-ref "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:lb-result";
+    input {
+      leaf meg-name {
+        type leafref {
+          path "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:name";
+        }
+        mandatory true;
+        description
+          "Configure a MEG resource ID.";
+      }
+      leaf node-type {
+        type node-type;
+        mandatory true;
+        description
+          "Configure the node type of LB.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..65535";
+        }
+        default "3";
+        description
+          "Specify the number of sent LB packets.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "1..65535";
+        }
+        default "5000";
+        description
+          "Specify the timeout of sent LB packets.";
+      }
+      leaf node-id {
+        type inet:ipv4-address-no-zone;
+        description
+          "Configure the node ID of LB.";
+      }
+      leaf mip-id {
+        type uint32 {
+          range "1..8191";
+        }
+        description
+          "Configure the MIP ID of LB.";
+      }
+      leaf if-number {
+        type uint32;
+        description
+          "Configure the If Number of LB.";
+      }
+      leaf ttl {
+        type uint32 {
+          range "1..255";
+        }
+        default "255";
+        description
+          "Configure the TTL of LB.";
+      }
+      leaf packet-size {
+        type uint32 {
+          range "128..1450";
+        }
+        default "128";
+        description
+          "Specify the number of bytes of the sent LB packets.";
+      }
+      leaf is-request-tlv {
+        type boolean;
+        default "false";
+        description
+          "Configure the flag of LB with request-TLV.";
+      }
+    }
+  }
+  rpc stop-lb-lt {
+    description
+      "Delete LB test instance.";
+    ext:node-ref "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:lb-result";
+    input {
+      leaf meg-name {
+        type leafref {
+          path "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:name";
+        }
+        mandatory true;
+        description
+          "Configure a MEG resource ID.";
+      }
+    }
+  }
+  rpc clear-lb {
+    description
+      "Clear LB test instance.";
+    ext:node-ref "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:lb-result";
+    input {
+      leaf meg-name {
+        type leafref {
+          path "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:name";
+        }
+        mandatory true;
+        description
+          "Configure a MEG resource ID.";
+      }
+    }
+  }
+  rpc clear-lt {
+    description
+      "Clear LT test instance.";
+    ext:node-ref "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:lb-result";
+    input {
+      leaf meg-name {
+        type leafref {
+          path "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:name";
+        }
+        mandatory true;
+        description
+          "Configure a MEG resource ID.";
+      }
+    }
+  }
+}

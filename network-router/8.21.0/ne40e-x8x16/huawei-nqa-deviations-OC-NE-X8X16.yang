@@ -1,0 +1,204 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nqa-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-nqa-deviations-OC-NE-X8X16";
+  prefix nqa-devs-OC-NE-X8X16;
+
+  import huawei-nqa {
+    prefix nqa;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-segment-routing {
+    prefix sr;
+  }
+  import huawei-srpolicy {
+    prefix srpolicy;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Network quality analysis.";
+
+  revision 2019-11-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef pw-type-deviations {
+    type enumeration {
+      enum atm-cell-transport {
+        value 3;
+        description
+          "ATM cell transport.";
+      }
+      enum vlan {
+        value 4;
+        description
+          "VLAN.";
+      }
+      enum ethernet {
+        value 5;
+        description
+          "Ethernet.";
+      }
+      enum hdlc {
+        value 6;
+        description
+          "High - level Data Link Control.";
+      }
+      enum ppp {
+        value 7;
+        description
+          "Point - to - Point Protocol.";
+      }
+      enum atm-nto1-vcc {
+        value 9;
+        description
+          "ATM n to one VCC cell mode.";
+      }
+      enum atm-nto1-vpc {
+        value 10;
+        description
+          "ATM n to one VPC cell mode.";
+      }
+      enum ip-layer2 {
+        value 11;
+        description
+          "IP layer 2.";
+      }
+      enum atm-1to1-vcc {
+        value 12;
+        description
+          "ATM one to one VCC cell mode.";
+      }
+      enum atm-1to1-vpc {
+        value 13;
+        description
+          "ATM one to one VPC cell mode.";
+      }
+      enum satop-e1 {
+        value 17;
+        description
+          "Satop e1.";
+      }
+      enum cesopsn-basic {
+        value 21;
+        description
+          "Cesopsn basi.";
+      }
+      enum ip-interworking {
+        value 64;
+        description
+          "IP interworking.";
+      }
+    }
+    description
+      "Description of pw-type.";
+  }
+
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:pwe3-ping/nqa:pwe3-ping-input/nqa:local-pw-type" {
+    deviate replace {
+      type nqa-devs-OC-NE-X8X16:pw-type-deviations;
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:pwe3-trace/nqa:pwe3-trace-input/nqa:local-pw-type" {
+    deviate replace {
+      type nqa-devs-OC-NE-X8X16:pw-type-deviations;
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:lsp-jitter/nqa:lsp-jitter-input/nqa:lsp-protocol/nqa:te/nqa:te-lsp-jitter/nqa:tunnel-name" {
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='rsvp-te' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='cr-static'";
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:lsp-ping/nqa:lsp-ping-input/nqa:lsp-protocol/nqa:te/nqa:te-lsp-ping/nqa:tunnel-name" {
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='rsvp-te' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='cr-static'";
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:lsp-ping/nqa:lsp-ping-input/nqa:lsp-protocol/nqa:srte/nqa:srte-lsp-ping/nqa:tunnel-name" {
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='segment-routing'";
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:lsp-ping/nqa:lsp-ping-input/nqa:lsp-protocol/nqa:srte-policy/nqa:srte-policy-lsp-ping/nqa:probe-type/nqa:policy-name/nqa:policy-name" {
+    deviate replace {
+      type leafref {
+        path "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:name";
+      }
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:lsp-trace/nqa:lsp-trace-input/nqa:lsp-protocol/nqa:te/nqa:te-lsp-trace/nqa:tunnel-name" {
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='rsvp-te' or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='cr-static'";
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:lsp-trace/nqa:lsp-trace-input/nqa:lsp-protocol/nqa:srte/nqa:srte-lsp-trace/nqa:tunnel-name" {
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol='segment-routing'";
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:lsp-trace/nqa:lsp-trace-input/nqa:lsp-protocol/nqa:srte-policy/nqa:srte-policy-lsp-trace/nqa:probe-type/nqa:policy-name/nqa:policy-name" {
+    deviate replace {
+      type leafref {
+        path "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:name";
+      }
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:arp-ping-ip" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:record/nqa:arp-ping-ip-results" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:trace/nqa:trace-input" {
+    deviate add {
+      must "not(ni-name != '_public_' and (ipv6-next-hop or ipv4-next-hop))";
+    }
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:nqa-execution-policy" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:instances/nqa:instance/nqa:type/nqa:ethernet-service/nqa:ethernet-service-input/nqa:test-packet-size-mode/nqa:profile" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:testflows/nqa:test-flow/nqa:range-type/nqa:dest-mac/nqa:dest-mac-range-type/nqa:increment-dest-mac" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:testflows/nqa:test-flow/nqa:range-type/nqa:source-mac/nqa:src-mac-range-type/nqa:increment-src-mac" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:testflows/nqa:test-flow/nqa:range-type/nqa:dest-ipv4/nqa:dest-ipv4-range-type/nqa:increment-dest-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:testflows/nqa:test-flow/nqa:range-type/nqa:source-ipv4/nqa:src-ipv4-range-type/nqa:increment-src-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:record/nqa:ethernet-service-results/nqa:ethernet-service-result/nqa:test-steps/nqa:test-step/nqa:unavail-count" {
+    deviate not-supported;
+  }
+  deviation "/nqa:nqa/nqa:record/nqa:ethernet-service-results/nqa:ethernet-service-result/nqa:test-steps/nqa:test-step/nqa:avail-ratio" {
+    deviate not-supported;
+  }
+}

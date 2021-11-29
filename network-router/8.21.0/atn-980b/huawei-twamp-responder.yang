@@ -1,0 +1,637 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-twamp-responder {
+  namespace "urn:huawei:yang:huawei-twamp-responder";
+  prefix twamp-responder;
+  import huawei-acl {
+    prefix acl;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Two Way Active Measurement Protocol.";
+  revision 2020-03-14 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-27 {
+    description
+      "Solve some errors.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-05-05 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  
+  ext:task-name  "twamp"; 
+ 
+  typedef auth-mode {
+    type enumeration {
+      enum "unauthenticated" {
+        value 0;
+        description
+          "The authentication mode is unauthenticated.";
+      }
+      enum "authenticated" {
+        value 1;
+        description
+          "The authentication mode is authenticated.";
+      }
+      enum "encrypted" {
+        value 2;
+        description
+          "The authentication mode is encrypted.";
+      }
+      enum "unknown" {
+        value 3;
+        description
+          "The authentication mode is unknown.";
+      }
+    }
+    description
+      "Authentication mode.";
+  }
+
+  typedef ctrl-session-state {
+    type enumeration {
+      enum "initial" {
+        value 0;
+        description
+          "The state of ctrolle session is initial.";
+      }
+      enum "connecting" {
+        value 1;
+        description
+          "The state of ctrolle session is connecting.";
+      }
+      enum "established" {
+        value 2;
+        description
+          "The state of ctrolle session is established.";
+      }
+      enum "inactive" {
+        value 3;
+        description
+          "The state of ctrolle session is inactive.";
+      }
+      enum "active" {
+        value 4;
+        description
+          "The state of ctrolle session is active.";
+      }
+      enum "unknown" {
+        value 5;
+        description
+          "The state of ctrolle session is unknown.";
+      }
+    }
+    description
+      "Ctroller session state.";
+  }
+
+  typedef test-session-state {
+    type enumeration {
+      enum "inactive" {
+        value 0;
+        description
+          "The state of test session state is inactive.";
+      }
+      enum "active" {
+        value 1;
+        description
+          "The state of test session state is active.";
+      }
+      enum "unknown" {
+        value 2;
+        description
+          "The state of test session state is unknown.";
+      }
+    }
+    description
+      "Test session state.";
+  } 
+  
+  typedef test-state {
+    type enumeration {
+      enum "initial" {
+        value 0;
+        description
+          "Test session state is initial.";
+      }
+      enum "inactive" {
+        value 1;
+        description
+          "Test session state is inactive.";
+      }
+      enum "active" {
+        value 2;
+        description
+          "Test session state is active.";
+      }
+      enum "inconsistent" {
+        value 3;
+        description
+          "Test session state is inconsistent.";
+      }
+    }
+    description
+      "Test session state.";
+  }
+  container twamp-responder {
+    description
+      "Two Way Active Measurement Protocol.";
+    container server {
+      presence "Server Enable.";
+      description
+        "Configure server role.";
+      leaf tcp-port {
+        type uint16 {
+          range "862|1024..65535";
+        }
+        default "862";
+        description
+          "The TCP port of server.";
+      }
+      leaf ctrl-session-timeout {
+        type uint32 {
+          range "1..6000";
+        }
+        units "s";
+        default "900";
+        description
+          "The timeout of control session.";
+      }  
+      leaf acl-identity {
+        type leafref {
+          path "/acl:acl/acl:groups/acl:group/acl:identity";
+        }
+        description
+          "Configure TWAMP by specifying ACL name.";
+      }
+      choice vpn {
+        description
+          "VPN instance of TWAMP.";
+        case vpn-all {
+          description
+            "Specify all VPN instance.";
+          leaf all-vpn {
+            type empty;
+            description
+              "IP and all VPN instances.";
+          }
+        }
+        case vpn-instance {
+          description
+            "Specify any VPN instance.";
+          leaf vrf-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+            description
+              "VPN instance name.";
+          }
+        }
+      }
+      container control-sessions {
+        config false;
+        description
+          "List of control session objects.";
+        list control-session {
+          key "ctl-session-id";
+          description
+            "Statistics of the object of control session.";
+          leaf ctl-session-id {
+            type uint32;
+            description
+              "The control session ID.";
+          }
+          leaf ni-name {
+            type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "The VRF name of control session.";
+            ext:support-filter "true";
+          }
+          leaf client-ipv4-addr {
+            type inet:ipv4-address-no-zone;
+            description
+              "The client IPv4 address of control session.";
+            ext:support-filter "true";
+          }
+          leaf client-port {
+            type uint16;
+            description
+              "The client port of control session.";
+            ext:support-filter "true";
+          }
+          leaf server-ipv4-addr {
+            type inet:ipv4-address-no-zone;
+            description
+              "The server IPv4 address of control session.";
+          }
+          leaf server-port {
+            type uint16;
+            description
+              "The server port of control session.";
+          }
+          leaf inactivity-time {
+            type uint32;
+            description
+              "The inactivity time of control session.";
+          }
+          leaf state {
+            type ctrl-session-state;
+            description
+              "The state of control session.";
+          }
+          leaf mode {
+            type auth-mode;
+            description
+              "The mode of control session.";
+          }
+          leaf created-time {
+            type yang:date-and-time;
+            description
+              "The created time of control session.";
+          }
+          leaf test-session-number {
+            type uint32;
+            description
+              "The total of test session in control session.";
+          }
+          leaf test-session-completed-number {
+            type uint32;
+            description
+              "The total of test session completed in control session.";
+          }
+          leaf test-session-aborted-number {
+            type uint32;
+            description
+              "The total of test session aborted in control session.";
+          }
+        }
+      }
+      container mode {
+        description
+          "Configure listening range of TWAMP.";
+        choice mode {
+          description
+            "Listening range of TWAMP.";
+          case listening-all {
+            description
+              "All-zero listening.";
+            leaf listening-all {
+              type empty;
+              description
+                "All-zero listening.";
+            }
+          }
+          case listening-address {
+            description
+              "Listen for the specified address.";
+            container server-addresses {
+              description
+                "List of server IP addresses.";
+              list server-address {
+                key "address";
+                description
+                  "Configure server IP address.";
+                leaf address {
+                type inet:ipv4-address-no-zone;
+                description
+                  "Server IP address.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    container reflector {
+      presence "Reflector Enable.";
+      description
+        "Configure the reflector of TWAMP.";
+      leaf test-session-timeout {
+        type uint32 {
+          range "1..604800";
+        }
+        units "s";
+        default "900";
+        description
+          "The timeout of test session.";
+      }
+      container test-sessions {
+        config false;
+        description
+          "List of test session.";
+        list test-session {
+          key "id";
+          description
+            "Statistics of the object of test session.";
+          leaf id {
+            type uint32;
+            description
+              "The test session index.";
+          }
+          leaf ni-name {
+            type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "The VRF name of test session.";
+            ext:support-filter "true";
+          }
+          leaf ref-ipv4-addr {
+            type inet:ipv4-address-no-zone;
+            description
+              "The reflector IPv4 address of test session.";
+            ext:support-filter "true";
+          }
+          leaf ref-port {
+            type uint16;
+            description
+              "The reflector port of test session.";
+            ext:support-filter "true";
+          }
+          leaf sender-ipv4-addr {
+            type inet:ipv4-address-no-zone;
+            description
+              "The sender IPv4 address of test session.";
+          }
+          leaf sender-port {
+            type uint16;
+            description
+              "The sender port of test session.";
+          }
+          leaf mode {
+            type auth-mode;
+            description
+              "The mode of test session.";
+          }
+          leaf state {
+            type test-session-state;
+            description
+              "The state of test session.";
+          }
+          leaf session-id {
+            type string {
+              length "36";
+            }
+            description
+              "The session ID of test session.";
+          }
+          leaf dscp-value {
+            type uint8;
+            description
+              "The DSCP value of test session.";
+          }
+          leaf padding-length {
+            type uint32;
+            description
+              "The padding length of test session.";
+          }
+          leaf ctl-session-id {
+            type uint32;
+            description
+              "The control session ID.";
+          }
+          leaf created-time {
+            type yang:date-and-time;
+            description
+              "The created time of test session.";
+          }
+          leaf start-time {
+            type yang:date-and-time;
+            description
+              "The started time of test session.";
+          }
+          leaf last-stop-time {
+            type yang:date-and-time;
+            description
+              "The last stop time of test session.";
+          }
+          leaf seq-number {
+            type uint32;
+            description
+              "The sequence number of test session.";
+          }
+          leaf tx-test-number {
+            type uint32;
+            description
+              "The test tx number of test session.";
+          }
+          leaf rx-test-number {
+            type uint32;
+            description
+              "The test rx number of test session.";
+          }
+          leaf test-discard-number {
+            type uint32;
+            description
+              "The test discard number of test session.";
+          }
+        }
+      }
+    }
+    container responder {
+      presence "Enable responder of TWAMP.";
+      description
+        "Configure the responder of TWAMP light.";
+      container test-sessions {
+        description
+          "List of TWAMP light responder test session.";
+        list test-session {
+          must "not(vrf-name) or not(if-name)";
+          key "session-id";
+          unique "source-ip dest-ip source-port dest-port vrf-name";
+          description
+            "Configure TWAMP light test session.";
+          leaf session-id {
+            type uint32 {
+              range "1..65535";
+            }
+            description
+              "Test session ID.";
+          }
+          leaf source-ip {
+            type inet:ip-address-no-zone;
+            must "((../source-ip) != (../dest-ip))";
+            mandatory true;
+            description
+              "Source IP address.";
+          }
+          leaf dest-ip {
+            type inet:ip-address-no-zone;
+            must "((../source-ip) != (../dest-ip))";
+            mandatory true;
+            description
+              "Dest IP address.";
+          }
+          leaf source-port {
+            type uint16 {
+              range "862..863|1025..65535";
+            }
+            mandatory true;
+            description
+              "Source UDP port, This UDP port cannot used by other protocol.";
+          }
+          leaf dest-port {
+            type uint16 {
+              range "862..863|1025..65535";
+            }
+            mandatory true;
+            description
+              "Dest UDP Port, This UDP Port cannot used by other protocol.";
+          }
+          leaf vrf-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            must "(contains(../source-ip,':') and /ni:network-instance/ni:instances/ni:instance[ni:name = current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']) or (not(contains(../source-ip,':'))and /ni:network-instance/ni:instances/ni:instance[ni:name = current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast'])";
+            description
+              "VPN Instance name.";
+          }
+          leaf if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Interface name.";
+          }
+          leaf anti-loop {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable anti loop.";
+          }
+          leaf description {
+            type string {
+              length "3..32";
+            }
+            description
+              "Session description.";
+          }
+          leaf link-bundle-if {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()]/ifm:type='Eth-Trunk'";
+            must "not(../if-name)";
+            description
+              "Link-bundle interface that the session binds.";
+          }
+          container session-detail {
+            config false;
+            description
+              "Statistics of the running session information.";
+            leaf state {
+              type test-state;
+              description
+                "The state of configuration session.";
+            }
+            container member-interface-infos {
+              description
+                "List of member interface information.";
+              list member-interface-info {
+                key "member-if";
+                description
+                  "Statistics of the member interface information.";
+                leaf member-if {
+                  type leafref {
+                    path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                  }
+                  description
+                    "Member interface name.";
+                }
+                leaf state {
+                  type test-state;
+                  description
+                    "The state of configuration session.";
+                }    
+              }
+            }            
+          }
+        }
+      }
+    }
+    container session-statistic {
+      config false;
+      description
+        "Statistics of the history information of TWAMP.";
+      leaf server-start-time {
+        type yang:date-and-time;
+        description
+          "The time of server startup.";
+      }
+      leaf ctrl-session-number {
+        type uint32;
+        description
+          "The total of control session in history.";
+      }
+      leaf ctrl-session-rejected-number {
+        type uint32;
+        description
+          "The total of control session rejected in history.";
+      }
+      leaf test-session-number {
+        type uint32;
+        description
+          "The total of test session in history.";
+      }
+      leaf test-session-completed-number {
+        type uint32;
+        description
+          "The total of test session completed in history.";
+      }
+      leaf test-session-aborted-number {
+        type uint32;
+        description
+          "The total of test session aborted in history.";
+      }
+      leaf tx-test-number {
+        type uint64;
+        description
+          "The total of Tx test packet in history.";
+      }
+      leaf rx-test-number {
+        type uint64;
+        description
+          "The total of rx test packet in history.";
+      }
+    } 
+  }
+}

@@ -1,0 +1,73 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-ptpadapt-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-clocksync-ptpadapt-deviations-OC-NE-X8X16";
+  prefix clocksync-ptpadapt-devs-OC-NE-X8X16;
+
+  import huawei-clocksync-ptpadapt {
+    prefix clocksync-ptpadapt;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-ptpadapt module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/clocksync-ptpadapt:clocksync-ptpadapt/clocksync-ptpadapt:ptpa-common/clocksync-ptpadapt:domain" {
+    deviate delete {
+      must "(../freq-profile='part' and (../domain>=0 and ../domain<=255)) or (../freq-profile='all' and ../device-type!='server-and-client' and (../domain>=4 and ../domain<=23)) or (../freq-profile='timeprofile' and (../domain>=44 and ../domain<=63))";
+    }
+    deviate add {
+      must "((../freq-profile='part' or ((../device-type='client' or ../device-type='none') and ../freq-profile='timeprofile' and ../hop-by-hop-mode='true')) and (../domain>=0 and ../domain<=255)) or (../freq-profile='all' and ../device-type!='server-and-client' and (../domain>=4 and ../domain<=23)) or (../freq-profile='timeprofile' and (((../device-type='client' or ../device-type='none') and ../hop-by-hop-mode='false') or ../device-type='server' or ../device-type='server-and-client') and (../domain>=44 and ../domain<=63))";
+    }
+  }
+  ext:deviation-ext "/clocksync-ptpadapt:clocksync-ptpadapt/clocksync-ptpadapt:ptpa-common/clocksync-ptpadapt:domain" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "0" {
+          when "../freq-profile='part' or ((../device-type='client' or ../device-type='none') and ../freq-profile='timeprofile' and ../hop-by-hop-mode='true')";
+          description 
+            "The default value is 0 when freq-profile is part.";
+        }
+        ext:default-value "4" {
+          when "../freq-profile='all' and ../device-type!='server-and-client'";
+          description 
+            "The default value is 4 when freq-profile is all.";
+        }
+        ext:default-value "44" {
+          when "../freq-profile='timeprofile' and (((../device-type='client' or ../device-type='none') and ../hop-by-hop-mode='false') or ../device-type='server' or ../device-type='server-and-client')";
+          description
+            "The default value is 44 when freq-profile is timeprofile.";
+        }
+      }
+    }
+  }
+  deviation "/clocksync-ptpadapt:reset-ptpa-server-pkt" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-ptpadapt:reset-ptpa-client-pkt" {
+    deviate not-supported;
+  }
+
+}

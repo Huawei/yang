@@ -1,0 +1,1986 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-radius-type {
+  belongs-to huawei-radius {
+    prefix radius;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Radius.";
+  revision 2020-03-05 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-11-04 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef bras-radius-server-type {
+    type enumeration {
+      enum "authentication" {
+        value 0;
+        description
+          "Server type as authentication server.";
+      }
+      enum "accounting" {
+        value 1;
+        description
+          "Server type as accounting server.";
+      }
+    }
+    description
+      "Radius server type.";
+  }
+  typedef radius-attribute-table {
+    type enumeration {
+      enum "user-name" {
+        value 1;
+        description
+          "User name. The attribute type is STRING.";
+      }
+      enum "user-password" {
+        value 2;
+        description
+          "User password. The attribute type is password.";
+      }
+      enum "chap-password" {
+        value 3;
+        description
+          "Only valid for the CHAP authentication. The attribute type is password.";
+      }
+      enum "nas-ip-address" {
+        value 4;
+        description
+          "Device address. The attribute type is IPv4 address.";
+      }
+      enum "nas-port" {
+        value 5;
+        description
+          "Physical port for user access. The attribute type is UINT32.";
+      }
+      enum "service-type" {
+        value 6;
+        description
+          "Service type. The attribute type is UINT32.";
+      }
+      enum "framed-protocol" {
+        value 7;
+        description
+          "The value of Framed-Protocol is set to 1 for non-administrator users, indicating the PPP type. The value of Framed-Protocol is set to 6 for the administrator. The attribute type is UINT32.";
+      }
+      enum "framed-ip-address" {
+        value 8;
+        description
+          "IP address of the user. The attribute type is IPv4 address.";
+      }
+      enum "framed-ip-netmask" {
+        value 9;
+        description
+          "Subnet mask delivered by the RADIUS server to PPP users. The attribute type is IPv4 address.";
+      }
+      enum "filter-id" {
+        value 11;
+        description
+          "This attribute is used to carry a user group name. The attribute type is STRING.";
+      }
+      enum "framed-mtu" {
+        value 12;
+        description
+          "It indicates the maximum transmission unit delivered by the RADIUS server. The attribute type is UINT32.";
+      }
+      enum "login-ip-host" {
+        value 13;
+        description
+          "It indicates the IP address of an administrator. The attribute type is IPv4 address.";
+      }
+      enum "login-service" {
+        value 14;
+        description
+          "The type of the service used by the login user. The attribute type is UINT32.";
+      }
+      enum "reply-message" {
+        value 15;
+        description
+          "This attribute can be carried in RADIUS Access-Accept packets to indicate an authentication success or RADIUS Access-Reject packets to indicate an authentication failure. The attribute type is STRING.";
+      }
+      enum "callback-number" {
+        value 16;
+        description
+          "The information delivered from the authentication server can be displayed to users, such as the mobile numbers. The attribute type is STRING.";
+      }
+      enum "framed-route" {
+        value 17;
+        description
+          "Routing information provided by the RADIUS server to users through the NAS. The attribute type is STRING.";
+      }
+      enum "state" {
+        value 18;
+        description
+          "If the RADIUS Access-Challenge packet sent by the RADIUS server carries the State attribute, it must be carried in subsequent RADIUS Access-Request packets. The attribute type is STRING.";
+      }
+      enum "class" {
+        value 19;
+        description
+          "If the RADIUS Access-Accept packet sent by the RADIUS server to the NAS carries the Class attribute, the Class attribute must also be carried in the subsequent RADIUS Accounting-Request packets sent from the NAS to the RADIUS server. A RADIUS Access-Accept packet can carry zero to eight Class attributes. The attribute type is STRING.";
+      }
+      enum "vendor-specific" {
+        value 20;
+        description
+          "The attribute specified by a vendor. The attribute type is STRING.";
+      }
+      enum "session-timeout" {
+        value 21;
+        description
+          "In Access-Accept packets, the attribute indicates the remaining online time of users, in seconds. The attribute type is UINT32.";
+      }
+      enum "idle-timeout" {
+        value 22;
+        description
+          "Idle-cut time of a user, in seconds. The attribute type is UINT32.";
+      }
+      enum "termination-action" {
+        value 23;
+        description
+          "The specified mode for terminating the NAS service, such as re-authentication or forcing a user to log out. The attribute type is UINT32.";
+      }
+      enum "called-station-id" {
+        value 24;
+        description
+          "The attribute is valid only for LNS users. The attribute type is STRING.";
+      }
+      enum "calling-station-id" {
+        value 25;
+        description
+          "The attribute is used by the NAS to carry user information. The attribute type is STRING.";
+      }
+      enum "nas-identifier" {
+        value 26;
+        description
+          "Name of the NAS or the sysname (host name). The attribute type is STRING.";
+      }
+      enum "proxy-state" {
+        value 27;
+        description
+          "The attribute is carried in CoA and DM Request and Response packets. The attribute type is BIN.";
+      }
+      enum "acct-status-type" {
+        value 28;
+        description
+          "Type of the Accounting-Request packet. The attribute type is UINT32.";
+      }
+      enum "acct-delay-time" {
+        value 29;
+        description
+          "Time spent to send an Accounting Request packet, excluding the network transmission duration, in seconds. The attribute type is UINT32.";
+      }
+      enum "acct-input-octets" {
+        value 30;
+        description
+          "Number of upstream bytes. The attribute type is UINT32.";
+      }
+      enum "acct-output-octets" {
+        value 31;
+        description
+          "Number of downstream bytes. The attribute type is UINT32.";
+      }
+      enum "acct-session-id" {
+        value 32;
+        description
+          "Session id of the Accounting-Request packet. The attribute type is STRING.";
+      }
+      enum "acct-authentic" {
+        value 33;
+        description
+          "The attribute indicates the authentication type. The attribute type is UINT32.";
+      }
+      enum "acct-session-time" {
+        value 34;
+        description
+          "Online time of a user, in seconds. The attribute type is UINT32.";
+      }
+      enum "acct-input-packets" {
+        value 35;
+        description
+          "Number of upstream packets. The attribute type is UINT32.";
+      }
+      enum "acct-output-packets" {
+        value 36;
+        description
+          "Number of downstream packets. The attribute type is UINT32.";
+      }
+      enum "acct-terminate-cause" {
+        value 37;
+        description
+          "Reason for session interruption. The attribute type is UINT32.";
+      }
+      enum "acct-multi-session-id" {
+        value 38;
+        description
+          "If tunnel users are configured in the system, the attribute indicates the accounting ID of an L2TP tunnel user. The attribute type is STRING.";
+      }
+      enum "acct-input-gigawords" {
+        value 39;
+        description
+          "Number of upstream bytes. The attribute type is UINT32.";
+      }
+      enum "acct-output-gigawords" {
+        value 40;
+        description
+          "Number of downstream bytes. The attribute type is UINT32.";
+      }
+      enum "event-timestamp" {
+        value 41;
+        description
+          "Time when an Accounting-Request packet was generated. The attribute type is UINT32.";
+      }
+      enum "chap-challenge" {
+        value 42;
+        description
+          "Indicates the value of Challenge. Only valid for the CHAP authentication. The attribute type is BIN.";
+      }
+      enum "nas-port-type" {
+        value 43;
+        description
+          "NAS port type, which can be configured in the BAS interface. The attribute type is UINT32.";
+      }
+      enum "port-limit" {
+        value 44;
+        description
+          "Number of port users. The attribute type is UINT32.";
+      }
+      enum "tunnel-type" {
+        value 45;
+        description
+          "Tunnel protocol type. The attribute type is UINT32.";
+      }
+      enum "tunnel-medium-type" {
+        value 46;
+        description
+          "Type of the tunnel bearer medium. The attribute type is UINT32.";
+      }
+      enum "tunnel-client-endpoint" {
+        value 47;
+        description
+          "IP address of the local end of the tunnel. The attribute type is STRING.";
+      }
+      enum "tunnel-server-endpoint" {
+        value 48;
+        description
+          "IP address of the tunnel server. The attribute type is STRING.";
+      }
+      enum "acct-tunnel-connection" {
+        value 49;
+        description
+          "Accounting ID of the tunnel server. The attribute type is STRING.";
+      }
+      enum "tunnel-password" {
+        value 50;
+        description
+          "Authentication password of the tunnel. The attribute type is BIN.";
+      }
+      enum "connect-info" {
+        value 51;
+        description
+          "When the device functions as the LNS, the RADIUS Connect-Info attribute is used to report the L2TP Tx Connect Speed (avp24) and Rx Connect Speed (avp38). The attribute type is STRING.";
+      }
+      enum "eap-message" {
+        value 52;
+        description
+          "Used to carry the EAP packet. The attribute type is BIN.";
+      }
+      enum "message-authenticator" {
+        value 53;
+        description
+          "Encryption information about EAP packets in EAPoR authentication. The attribute type is BIN.";
+      }
+      enum "remanent-volume" {
+        value 54;
+        description
+          "Remaining traffic (in KB) available to a user. The attribute type is UINT32.";
+      }
+      enum "tariff-switch-interval" {
+        value 55;
+        description
+          "Interval between the latest tariff switching time and the current time, in seconds. The attribute type is UINT32.";
+      }
+      enum "tunnel-assignment-id" {
+        value 56;
+        description
+          "Tunnel ID. The attribute type is STRING.";
+      }
+      enum "tunnel-preference" {
+        value 57;
+        description
+          "Tunnel preference. The attribute type is UINT32.";
+      }
+      enum "acct-interim-interval" {
+        value 58;
+        description
+          "Real-time accounting interval, in seconds. The attribute type is UINT32.";
+      }
+      enum "acct-tunnel-packets-lost" {
+        value 59;
+        description
+          "Number of packets lost on a given link. The attribute type is UINT32.";
+      }
+      enum "nas-port-id" {
+        value 60;
+        description
+          "Slot ID, subslot ID, port number, and VLAN ID of the user access interface. The attribute type is STRING.";
+      }
+      enum "framed-pool" {
+        value 61;
+        description
+          "Address pool delivered to PPP and DHCP users. The attribute type is STRING.";
+      }
+      enum "chargeable-user-identity" {
+        value 62;
+        description
+          "The attribute is used to identify a user. The attribute type is STRING.";
+      }
+      enum "tunnel-client-auth-id" {
+        value 63;
+        description
+          "Name of the local end of a tunnel delivered in tunnel authentication. The attribute type is STRING.";
+      }
+      enum "tunnel-server-auth-id" {
+        value 64;
+        description
+          "Name of the remote end of a tunnel delivered in tunnel authentication. The attribute type is STRING.";
+      }
+      enum "nas-ipv6-address" {
+        value 65;
+        description
+          "IPv6 address of the NAS. The attribute type is IPv6 address.";
+      }
+      enum "framed-interface-id" {
+        value 66;
+        description
+          "Interface ID assigned to a user. The attribute type is BIN.";
+      }
+      enum "framed-ipv6-prefix" {
+        value 67;
+        description
+          "IPv6 prefix assigned to a user in NDRA mode. The attribute type is IPv6 address.";
+      }
+      enum "framed-ipv6-route" {
+        value 69;
+        description
+          "IPv6 routing information provided by the RADIUS server to users through the NAS. The attribute type is BIN.";
+      }
+      enum "framed-ipv6-pool" {
+        value 70;
+        description
+          "Pool name of an IPv6 user. The attribute type is STRING.";
+      }
+      enum "error-cause" {
+        value 71;
+        description
+          "Logout cause. The attribute type is UINT32.";
+      }
+      enum "in-kb-before-t-switch" {
+        value 72;
+        description
+          "Number of bytes (in KB) received by a user before tariff switching. The attribute type is UINT32.";
+      }
+      enum "out-kb-before-t-switch" {
+        value 73;
+        description
+          "Number of bytes (in KB) received by a user before tariff switching. The attribute type is UINT32.";
+      }
+      enum "in-pkts-before-t-switch" {
+        value 74;
+        description
+          "Number of bytes (in KB) received by a user before tariff switching. The attribute type is UINT32.";
+      }
+      enum "out-pkts-before-t-switch" {
+        value 75;
+        description
+          "Number of packets received by a user before tariff switching. The attribute type is UINT32.";
+      }
+      enum "in-kb-after-t-switch" {
+        value 76;
+        description
+          "Number of bytes (in KB) sent by a user after tariff switching. The attribute type is UINT32.";
+      }
+      enum "out-kb-after-t-switch" {
+        value 77;
+        description
+          "Number of bytes (in KB) received by a user after tariff switching. The attribute type is UINT32.";
+      }
+      enum "in-pkts-after-t-switch" {
+        value 78;
+        description
+          "Number of packets sent by a user after tariff switching. The attribute type is UINT32.";
+      }
+      enum "out-pkts-after-t-switch" {
+        value 79;
+        description
+          "Number of packets received by a user after tariff switching. The attribute type is UINT32.";
+      }
+      enum "input-peak-rate" {
+        value 80;
+        description
+          "Upstream burst rate (PIR), in bit/s. The attribute type is UINT32.";
+      }
+      enum "input-average-rate" {
+        value 81;
+        description
+          "Upstream average rate (CIR), in bit/s. The attribute type is UINT32.";
+      }
+      enum "delegated-ipv6-prefix" {
+        value 82;
+        description
+          "IPv6 PD prefixes assigned to routed CPEs. The attribute type is IPv6 address.";
+      }
+      enum "output-peak-rate" {
+        value 83;
+        description
+          "Downstream burst rate (PIR), in bit/s. The attribute type is UINT32.";
+      }
+      enum "output-average-rate" {
+        value 84;
+        description
+          "Downstream average rate (CIR), in bit/s. The attribute type is UINT32.";
+      }
+      enum "connect-port" {
+        value 86;
+        description
+          "Feature of a physical port for user access. The attribute type is STRING.";
+      }
+      enum "ascend-client-primary-dns" {
+        value 87;
+        description
+          "IP address of the primary DNS server delivered after user authentication is successful. The attribute type is IPv4 address.";
+      }
+      enum "ascend-client-secondary-dns" {
+        value 88;
+        description
+          "IP address of the secondary DNS delivered after user authentication is successful. The attribute type is IPv4 address.";
+      }
+      enum "ds-lite-tunnel-name" {
+        value 89;
+        description
+          "IPv6 tunnel name in a CGN scenario. The attribute type is STRING.";
+      }
+      enum "hw-input-committed-burst-size" {
+        value 90;
+        description
+          "Upstream CBS, in bits. The attribute type is UINT32.";
+      }
+      enum "hw-input-committed-information-rate" {
+        value 91;
+        description
+          "Upstream CIR, in bit/s. The attribute type is UINT32.";
+      }
+      enum "hw-input-peak-information-rate" {
+        value 92;
+        description
+          "Upstream PIR, in bit/s. The attribute type is UINT32.";
+      }
+      enum "hw-output-committed-burst-size" {
+        value 93;
+        description
+          "Downstream CBS, in bits. The attribute type is UINT32.";
+      }
+      enum "hw-output-committed-information-rate" {
+        value 94;
+        description
+          "Downstream CIR, in bit/s. The attribute type is UINT32.";
+      }
+      enum "hw-output-peak-information-rate" {
+        value 95;
+        description
+          "Downstream PIR, in bit/s. The attribute type is UINT32.";
+      }
+      enum "hw-input-kilobytes-before-tariff-switch" {
+        value 96;
+        description
+          "Number of bytes sent by a user before tariff switching, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-output-kilobytes-before-tariff-switch" {
+        value 97;
+        description
+          "Number of bytes received by a user before tariff switching, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-input-packets-before-tariff-switch" {
+        value 98;
+        description
+          "Number of packets sent by a user before tariff switching. The attribute type is UINT32.";
+      }
+      enum "hw-output-packets-before-tariff-switch" {
+        value 99;
+        description
+          "Number of packets received by a user before tariff switching. The attribute type is UINT32.";
+      }
+      enum "hw-input-kilobytes-after-tariff-switch" {
+        value 100;
+        description
+          "Number of bytes sent by a user after tariff switching, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-output-kilobytes-after-tariff-switch" {
+        value 101;
+        description
+          "Number of bytes received by a user after tariff switching, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-input-packets-after-tariff-switch" {
+        value 102;
+        description
+          "Number of packets sent by a user after tariff switching. The attribute type is UINT32.";
+      }
+      enum "hw-output-packets-after-tariff-switch" {
+        value 103;
+        description
+          "Number of packets received by a user after tariff switching. The attribute type is UINT32.";
+      }
+      enum "hw-remanent-volume" {
+        value 104;
+        description
+          "In Access-Accept packet, the attribute indicates the remaining traffic volume available to a user, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-tariff-switch-interval" {
+        value 105;
+        description
+          "Interval between the latest tariff switching time and the current time, in seconds. The attribute type is UINT32.";
+      }
+      enum "hw-subscriber-qos-profile" {
+        value 106;
+        description
+          "Home QoS profile. The attribute type is STRING.";
+      }
+      enum "hw-command" {
+        value 107;
+        description
+          "Currently, the attribute value can only be Terminate-Request (value=2), indicating user logoff. The attribute type is UINT32.";
+      }
+      enum "hw-priority" {
+        value 108;
+        description
+          "Service priority of a user. The attribute type is UINT32.";
+      }
+      enum "hw-connect-id" {
+        value 111;
+        description
+          "Connection index of a user. The attribute type is UINT32.";
+      }
+      enum "hw-portal-url" {
+        value 112;
+        description
+          "URL to which user is redirected after being authenticated. The attribute type is STRING.";
+      }
+      enum "hw-ftp-directory" {
+        value 113;
+        description
+          "Initial directory of an FTP user. The attribute type is STRING.";
+      }
+      enum "hw-exec-privilege" {
+        value 114;
+        description
+          "Authorized level of administrative users, such as Telnet users. The attribute type is UINT32.";
+      }
+      enum "hw-qos-profile-name" {
+        value 115;
+        description
+          "QoS profile delivered by the RADIUS server. The attribute type is STRING.";
+      }
+      enum "hw-sip-server" {
+        value 116;
+        description
+          "SIP server address or name delivered to DHCP users. The attribute type is STRING.";
+      }
+      enum "hw-user-password" {
+        value 117;
+        description
+          "Re-authentication password contained in HW-Command-Mode delivered through CoA packets. PAP and CHAP modes are supported. The attribute type is BIN.";
+      }
+      enum "hw-command-mode" {
+        value 118;
+        description
+          "Command mode, which is differentiated by the first character. The attribute type is STRING.";
+      }
+      enum "hw-renewal-time" {
+        value 119;
+        description
+          "Interval at which addresses of DHCP users are renewed. The attribute type is UINT32.";
+      }
+      enum "hw-rebinding-time" {
+        value 120;
+        description
+          "Rebinding time of addresses of DHCP users. The attribute type is UINT32.";
+      }
+      enum "hw-igmp-enable" {
+        value 121;
+        description
+          "Whether IGMP is enabled for users. The attribute type is UINT32.";
+      }
+      enum "hw-nas-startup-time-stamp" {
+        value 122;
+        description
+          "Time when the device was started. The attribute type is UINT32.";
+      }
+      enum "hw-ip-host-address" {
+        value 123;
+        description
+          "User IP address and MAC address carried in the authentication request packet and accounting request packet. The attribute type is STRING.";
+      }
+      enum "hw-up-priority" {
+        value 124;
+        description
+          "Priority of upstream services. The attribute type is UINT32.";
+      }
+      enum "hw-down-priority" {
+        value 125;
+        description
+          "Priority of downstream services. The attribute type is UINT32.";
+      }
+      enum "hw-tunnel-vpn-instance" {
+        value 126;
+        description
+          "Name of the VPN instance on the local end of a tunnel. The attribute type is STRING.";
+      }
+      enum "hw-user-date" {
+        value 127;
+        description
+          "Date when a user account was opened. The attribute type is STRING.";
+      }
+      enum "hw-user-class" {
+        value 128;
+        description
+          "User level. The attribute type is STRING.";
+      }
+      enum "hw-subnet-mask" {
+        value 129;
+        description
+          "Subnet mask. The attribute type is IPv4 address.";
+      }
+      enum "hw-gateway-address" {
+        value 130;
+        description
+          "Gateway IP address. The attribute type is IPv4 address.";
+      }
+      enum "hw-lease-time" {
+        value 131;
+        description
+          "Lease time. The attribute type is UINT32.";
+      }
+      enum "hw-ascend-client-primary-wins" {
+        value 132;
+        description
+          "Primary WINS address. The attribute type is IPv4 address.";
+      }
+      enum "hw-ascend-client-second-win" {
+        value 133;
+        description
+          "Secondary WINS address. The attribute type is IPv4 address.";
+      }
+      enum "hw-input-peak-burst-size" {
+        value 134;
+        description
+          "Upstream PBS. The attribute type is UINT32.";
+      }
+      enum "hw-output-peak-burst-size" {
+        value 135;
+        description
+          "Downstream PBS. The attribute type is UINT32.";
+      }
+      enum "hw-tunnel-session-limit" {
+        value 136;
+        description
+          "Number of sessions over a tunnel. The attribute type is UINT32.";
+      }
+      enum "hw-data-filter" {
+        value 137;
+        description
+          "Dynamically delivered ACL rule. The attribute type is STRING.";
+      }
+      enum "hw-access-service" {
+        value 138;
+        description
+          "Access service template. The attribute type is STRING.";
+      }
+      enum "hw-accounting-level" {
+        value 139;
+        description
+          "Accounting level. The attribute type is UINT32.";
+      }
+      enum "hw-portal-mode" {
+        value 140;
+        description
+          "Portal modes. The attribute type is UINT32.";
+      }
+      enum "hw-policy-route" {
+        value 141;
+        description
+          "Next hop address in the policy-based routing. The attribute type is IPv4 address.";
+      }
+      enum "hw-framed-pool" {
+        value 142;
+        description
+          "Same as the standard No. 88 attribute. The attribute type is STRING.";
+      }
+      enum "hw-l2tp-terminate-cause" {
+        value 143;
+        description
+          "L2TP user logout cause. The attribute type is BIN.";
+      }
+      enum "hw-multicast-profile-name" {
+        value 144;
+        description
+          "Name of a multicast profile. The attribute type is STRING.";
+      }
+      enum "hw-vpn-instance" {
+        value 145;
+        description
+          "Name of a VPN instance to which a user belongs. The attribute type is STRING.";
+      }
+      enum "hw-policy-name" {
+        value 146;
+        description
+          "Name of a value-added service policy. The attribute type is STRING.";
+      }
+      enum "hw-tunnel-group-name" {
+        value 147;
+        description
+          "Name of an L2TP or GRE group. The attribute type is STRING.";
+      }
+      enum "hw-client-primary-dns" {
+        value 148;
+        description
+          "Primary DNS server's IP address delivered after a user is authenticated. The attribute type is IPv4 address.";
+      }
+      enum "hw-client-secondary-dns" {
+        value 149;
+        description
+          "Secondary DNS server's IP address delivered after a user is authenticated. The attribute type is IPv4 address.";
+      }
+      enum "hw-domain-name" {
+        value 150;
+        description
+          "Domain name used in user authentication. The attribute type is STRING.";
+      }
+      enum "hw-http-redirect-url" {
+        value 152;
+        description
+          "URL of a page where a user will be redirected if the user fails to be authenticated. The attribute type is STRING.";
+      }
+      enum "hw-qos-profile-type" {
+        value 153;
+        description
+          "Type of the QoS profile delivered by the RADIUS server, valid only for LNS users. The attribute type is UINT32.";
+      }
+      enum "hw-max-list-num" {
+        value 154;
+        description
+          "Maximum number of multicast programs that a user can order. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-input-octets" {
+        value 155;
+        description
+          "Volume of IPv6 upstream traffic. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-output-octets" {
+        value 156;
+        description
+          "Volume of IPv6 downstream traffic. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-input-packets" {
+        value 157;
+        description
+          "Number of IPv6 upstream packets. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-output-packets" {
+        value 158;
+        description
+          "Number of IPv6 downstream packets. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-input-gigawords" {
+        value 159;
+        description
+          "Number of IPv6 upstream bytes. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-output-gigawords" {
+        value 160;
+        description
+          "Number of IPv6 downstream bytes. The attribute type is UINT32.";
+      }
+      enum "hw-dhcpv6-option37" {
+        value 161;
+        description
+          "The attribute identifies user location information. The attribute type is STRING.";
+      }
+      enum "hw-dhcpv6-option38" {
+        value 162;
+        description
+          "Content of DHCPv6 Option 38. The attribute type is STRING.";
+      }
+      enum "hw-user-mac" {
+        value 163;
+        description
+          "The attribute carries a user MAC address or Option 61 information. The attribute type is STRING.";
+      }
+      enum "hw-dns-server-ipv6-address" {
+        value 164;
+        description
+          "IPv6 address of the DNS server. The attribute type is BIN.";
+      }
+      enum "hw-dhcpv4-option121" {
+        value 165;
+        description
+          "Routing information of IPoE users. The attribute type is STRING.";
+      }
+      enum "hw-dhcpv4-option43" {
+        value 166;
+        description
+          "The attribute carries the Option 43 information in the DHCP reply packet sent to the DHCPv4 user, and is delivered in the Access-Accept packet. The attribute type is STRING.";
+      }
+      enum "hw-framed-pool-group" {
+        value 167;
+        description
+          "The attribute carries the name of the address pool group and is delivered in the Access-Accept packet. The attribute type is STRING.";
+      }
+      enum "hw-framed-ipv6-address" {
+        value 168;
+        description
+          "Carries an address assigned by a DHCPv6 server using identity association for non-temporary addresses (IA_NA). The attribute type is IPv6 address.";
+      }
+      enum "hw-acct-update-address" {
+        value 169;
+        description
+          "The attribute is carried in accounting update packets. The attribute type is UINT32.";
+      }
+      enum "hw-nat-policy-name" {
+        value 170;
+        description
+          "NAT policy template delivered in the user authentication response packet. This template is saved locally. The attribute type is STRING.";
+      }
+      enum "hw-nat-ip-address" {
+        value 171;
+        description
+          "Public network IP address after network address translation (NAT). The attribute type is IPv4 address.";
+      }
+      enum "hw-nat-start-port" {
+        value 172;
+        description
+          "Start port of the public network IP address after NAT in a centralized BRAS scenario. The attribute type is UINT32.";
+      }
+      enum "hw-nat-end-port" {
+        value 173;
+        description
+          "End port of the public network IP address after NAT in a centralized BRAS scenario. The attribute type is UINT32.";
+      }
+      enum "hw-nat-port-forwarding" {
+        value 174;
+        description
+          "Port-Forwarding delivered and reported by the RADIUS server in a centralized BRAS scenario. The attribute type is STRING.";
+      }
+      enum "hw-nat-port-range-update" {
+        value 175;
+        description
+          "Port-Forwarding delivered and reported by the RADIUS server in a centralized BRAS scenario. The attribute type is UINT32.";
+      }
+      enum "hw-ds-lite-tunnel-name" {
+        value 176;
+        description
+          "IPv6 tunnel name in a CGN scenario. The attribute type is STRING.";
+      }
+      enum "hw-pcp-server-name" {
+        value 177;
+        description
+          "PCP Server Name. The attribute type is STRING.";
+      }
+      enum "hw-public-ip-addr-state" {
+        value 178;
+        description
+          "Status of the public IP address pool in a NAT444 scenario. The attribute type is UINT32.";
+      }
+      enum "hw-auth-type" {
+        value 179;
+        description
+          "Authentication type. The attribute type is UINT32.";
+      }
+      enum "hw-acct-terminate-subcause" {
+        value 180;
+        description
+          "Sub-code for a session disconnection. The attribute type is UINT32.";
+      }
+      enum "hw-down-qos-profile-name" {
+        value 181;
+        description
+          "QoS profile delivered by the RADIUS server. The attribute type is STRING.";
+      }
+      enum "hw-port-mirror" {
+        value 182;
+        description
+          "Upstream and downstream interface mirroring enabling flag delivered by the RADIUS server, which is used to control whether interface mirroring is enabled in the upstream and downstream directions. The attribute type is UINT32.";
+      }
+      enum "hw-account-info" {
+        value 183;
+        description
+          "Account information. The attribute type is STRING.";
+      }
+      enum "hw-service-info" {
+        value 184;
+        description
+          "Service information. The attribute type is STRING.";
+      }
+      enum "hw-avpair" {
+        value 185;
+        description
+          "Attribute-value pair, which is the framework attribute of extensible sub-attributes. The attribute type is STRING.";
+      }
+      enum "hw-dhcp-option" {
+        value 186;
+        description
+          "DHCP options delivered by the RADIUS server after a user is being authenticated. The attribute type is BIN.";
+      }
+      enum "hw-delegated-ipv6-prefix-pool" {
+        value 187;
+        description
+          "Address pool from which PD prefixes are allocated. The attribute type is STRING.";
+      }
+      enum "hw-ipv6-prefix-lease" {
+        value 188;
+        description
+          "IPv6 prefix lease. The attribute type is BIN.";
+      }
+      enum "hw-ipv6-address-lease" {
+        value 189;
+        description
+          "IPv6 address lease. The attribute type is IPv6 address.";
+      }
+      enum "hw-ipv6-policy-route" {
+        value 190;
+        description
+          "IPv6 policy-based routing. The attribute type is BIN.";
+      }
+      enum "hw-mng-ipv6" {
+        value 191;
+        description
+          "Whether IPv6 address management is used for users is determined by the RADIUS server based on the authentication result (whether IPv6 addresses are assigned) and CPE information (that specifies IPv6 address management). The attribute type is UINT32.";
+      }
+      enum "hw-web-url" {
+        value 192;
+        description
+          "URL to which a web authentication user is redirected. The attribute type is STRING.";
+      }
+      enum "hw-version" {
+        value 193;
+        description
+          "Version of a device. The attribute type is STRING.";
+      }
+      enum "hw-product-id" {
+        value 194;
+        description
+          "Product ID of a device. The attribute type is STRING.";
+      }
+      enum "ms-chap-response" {
+        value 195;
+        description
+          "Response to the MS-CHAP authentication challenge. The attribute type is BIN.";
+      }
+      enum "ms-chap-error" {
+        value 196;
+        description
+          "Error information that is carried in an MS-CHAP Access-Reject packet. The attribute type is STRING.";
+      }
+      enum "ms-chap-cpw-2" {
+        value 197;
+        description
+          "Changed MS-CHAP V2 password. The attribute type is BIN.";
+      }
+      enum "ms-chap-nt-enc-pw" {
+        value 198;
+        description
+          "New MS-CHAP password, which is obtained by encrypting the old MS-CHAP password. The attribute type is BIN.";
+      }
+      enum "ms-chap-challenge" {
+        value 199;
+        description
+          "MS-CHAP challenge. The attribute type is BIN.";
+      }
+      enum "ms-mppe-send-key" {
+        value 200;
+        description
+          "A RADIUS server delivers an Microsoft Point-to-Point Encryption (MPPE) key to a NAS. The attribute type is BIN.";
+      }
+      enum "ms-mppe-recv-key" {
+        value 201;
+        description
+          "A RADIUS server delivers an Microsoft Point-to-Point Encryption (MPPE) key to a NAS. The attribute type is BIN.";
+      }
+      enum "ms-chap2-response" {
+        value 202;
+        description
+          "Response to the MS-CHAP2 authentication challenge. The attribute type is BIN.";
+      }
+      enum "ms-chap2-success" {
+        value 203;
+        description
+          "Authentication success code. The attribute type is STRING.";
+      }
+      enum "ms-chap2-cpw" {
+        value 204;
+        description
+          "Changed MS-CHAP2 password. The attribute type is BIN.";
+      }
+      enum "ms-primary-dns-server" {
+        value 205;
+        description
+          "Address of the primary DNS server of a specified user after user authentication is successful. The attribute type is IPv4 address.";
+      }
+      enum "ms-secondary-dns-server" {
+        value 206;
+        description
+          "Address of the secondary DNS server of a specified user after user authentication is successful. The attribute type is IPv4 address.";
+      }
+      enum "forward-policy" {
+        value 207;
+        description
+          "This attribute is used to carry a user group name. The attribute type is STRING.";
+      }
+      enum "bb-caller-id" {
+        value 208;
+        description
+          "The original option82. The attribute type is STRING.";
+      }
+      enum "npm-service-id" {
+        value 209;
+        description
+          "Indicates service name. The attribute type is STRING.";
+      }
+      enum "http-redirect-profile-name" {
+        value 210;
+        description
+          "Configured user URL profile name. The attribute type is STRING.";
+      }
+      enum "http-redirect-url" {
+        value 211;
+        description
+          "Redirection URL. The attribute type is STRING.";
+      }
+      enum "hw-own-nas-identify-sim" {
+        value 212;
+        description
+          "Own attribute. Name of the NAS or the sysname (host name). The attribute type is STRING.";
+      }
+      enum "hw-own-nas-port-new" {
+        value 213;
+        description
+          "Own attribute. Physical port for user access. The attribute type is STRING.";
+      }
+      enum "hw-own-nas-port-identify-old" {
+        value 214;
+        description
+          "Own attribute. Slot ID, subslot ID, port number, and VLAN ID of the user access interface. The attribute type is STRING.";
+      }
+      enum "hw-own-calling-station-id-old" {
+        value 215;
+        description
+          "Own attribute. The attribute is used by the NAS to carry user information. The attribute type is STRING.";
+      }
+      enum "hw-own-nas-port-id-uppercase" {
+        value 216;
+        description
+          "Own attribute. Slot ID, subslot ID, port number, and VLAN ID of the user access interface. The attribute type is STRING.";
+      }
+      enum "hw-own-nas-port-cid" {
+        value 217;
+        description
+          "Own attribute. Physical port for user access. The attribute type is UINT32.";
+      }
+      enum "connect-port-new" {
+        value 218;
+        description
+          "Own attribute. Feature of a physical port for user access. The attribute type is STRING.";
+      }
+      enum "hw-own-nas-port-qinq" {
+        value 219;
+        description
+          "Own attribute. Physical port for user access. The attribute type is UINT32.";
+      }
+      enum "nas-port-id-qinq-reverse" {
+        value 220;
+        description
+          "Own attribute. Slot ID, subslot ID, port number, and VLAN ID of the user access interface. The attribute type is STRING.";
+      }
+      enum "agent-circuit-id" {
+        value 221;
+        description
+          "ID of the line from an online user to the access device. The attribute type is STRING.";
+      }
+      enum "agent-remote-id" {
+        value 222;
+        description
+          "Unique identifier for the association between an online user and the line. The attribute type is STRING.";
+      }
+      enum "actual-data-rate-upstream" {
+        value 223;
+        description
+          "Actual upstream rate of the line corresponding to the online user. The attribute type is UINT32.";
+      }
+      enum "actual-data-rate-downstream" {
+        value 224;
+        description
+          "Actual downstream rate of the line corresponding to the online user. The attribute type is UINT32.";
+      }
+      enum "minimum-data-rate-upstream" {
+        value 225;
+        description
+          "Minimum upstream rate configured for the online user. The attribute type is UINT32.";
+      }
+      enum "minimum-data-rate-downstream" {
+        value 226;
+        description
+          "Minimum downstream rate configured for the online user. The attribute type is UINT32.";
+      }
+      enum "attainable-data-rate-upstream" {
+        value 227;
+        description
+          "Attainable upstream rate for the online user. The attribute type is UINT32.";
+      }
+      enum "attainable-data-rate-downstream" {
+        value 228;
+        description
+          "Attainable downstream rate for the online user. The attribute type is UINT32.";
+      }
+      enum "maximum-data-rate-upstream" {
+        value 229;
+        description
+          "Maximum upstream rate configured for the online user. The attribute type is UINT32.";
+      }
+      enum "maximum-data-rate-downstream" {
+        value 230;
+        description
+          "Maximum downstream rate configured for the online user. The attribute type is UINT32.";
+      }
+      enum "minimum-data-rate-upstream-low-power" {
+        value 231;
+        description
+          "Minimum upstream rate for the online user at low voltage. The attribute type is UINT32.";
+      }
+      enum "minimum-data-rate-downstream-low-power" {
+        value 232;
+        description
+          "Minimum downstream rate for the online user at low voltage. The attribute type is UINT32.";
+      }
+      enum "maximum-interleaving-delay-upstream" {
+        value 233;
+        description
+          "Maximum delay for the upstream traffic per channel. The attribute type is UINT32.";
+      }
+      enum "actual-interleaving-delay-upstream" {
+        value 234;
+        description
+          "Actual delay for the upstream traffic per channel. The attribute type is UINT32.";
+      }
+      enum "maximum-interleaving-delay-downstream" {
+        value 235;
+        description
+          "Maximum delay for the downstream traffic per channel. The attribute type is UINT32.";
+      }
+      enum "actual-interleaving-delay-downstream" {
+        value 236;
+        description
+          "Actual delay for the downstream traffic per channel. The attribute type is UINT32.";
+      }
+      enum "access-loop-encapsulation" {
+        value 237;
+        description
+          "Line encapsulation type for the access user. The attribute type is UINT32.";
+      }
+      enum "hw-usr-group-name" {
+        value 238;
+        description
+          "User group name which is applicable for the user. The attribute type is STRING.";
+      }
+      enum "hw-usr-service-type" {
+        value 239;
+        description
+          "The service type of the user. The attribute type is UINT32.";
+      }
+      enum "cmcc-nas-type" {
+        value 240;
+        description
+          "Carrier-defined attribute, used to distinguish between a non-forwarding-control separation device and a forwarding-control separation device. The attribute type is UINT32.";
+      }
+      enum "cisco-avpair" {
+        value 241;
+        description
+          "Carrier-defined attribute, used to distinguish between a non-forwarding-control separation device and a forwarding-control separation device. The attribute type is STRING.";
+      }
+      enum "cmcc-up-identifier" {
+        value 242;
+        description
+          "Carrier-defined attribute, specifies the ID of the vBRAS-UP to which a user belongs. The attribute type is STRING.";
+      }
+      enum "cmcc-up-ip" {
+        value 243;
+        description
+          "Carrier-defined attribute, specifies the IP address of the CUSP channel corresponding to the vBRAS-UP used to forward user traffic. The attribute type is IPv4 address.";
+      }
+    }
+    description
+      "Radius attribute.";
+  }
+  typedef bras-radius-aaa-route-infos-type {
+    type enumeration {
+      enum "no" {
+        value 0;
+        description
+          "State type as no.";
+      }
+      enum "yes" {
+        value 1;
+        description
+          "State type as yes.";
+      }
+    }
+    description
+      "State type.";
+  }
+  typedef bras-radius-encap-method {
+    type enumeration {
+      enum "version1" {
+        value 0;
+        description
+          "Indicates that a user address is encapsulated in version 1 mode by default, which means only an effective address can be encapsulated into the attributes of the RADIUS server.";
+      }
+      enum "version2" {
+        value 1;
+        description
+          "Indicates that encapsulating attributes in version 2 mode requires an effective address for encapsulation. Without an effective address, use the ineffective address delivered by a RADIUS server for encapsulation. Without either address, the attributes will not be delivered by the RADIUS server.";
+      }
+    }
+    description
+      "Indicates the mode of encapsulating the attributes of IP addresses.";
+  }
+  typedef bras-radius-attr-ext-type {
+    type enumeration {
+      enum "access-loop-encapsulation" {
+        value 1;
+        description
+          "Line encapsulation type for the access user. The attribute type is UINT32.";
+      }
+      enum "actual-data-rate-downstream" {
+        value 2;
+        description
+          "Actual downstream rate of the line corresponding to the online user. The attribute type is UINT32.";
+      }
+      enum "actual-data-rate-upstream" {
+        value 3;
+        description
+          "Actual upstream rate of the line corresponding to the online user. The attribute type is UINT32.";
+      }
+      enum "actual-interleaving-delay-downstream" {
+        value 4;
+        description
+          "Actual delay for the downstream traffic per channel. The attribute type is UINT32.";
+      }
+      enum "actual-interleaving-delay-upstream" {
+        value 5;
+        description
+          "Actual delay for the upstream traffic per channel. The attribute type is UINT32.";
+      }
+      enum "agent-circuit-id" {
+        value 6;
+        description
+          "ID of the line from an online user to the access device. The attribute type is STRING.";
+      }
+      enum "agent-remote-id" {
+        value 7;
+        description
+          "Unique identifier for the association between an online user and the line. The attribute type is STRING.";
+      }
+      enum "attainable-data-rate-downstream" {
+        value 8;
+        description
+          "Attainable downstream rate for the online user. The attribute type is UINT32.";
+      }
+      enum "attainable-data-rate-upstream" {
+        value 9;
+        description
+          "Attainable upstream rate for the online user. The attribute type is UINT32.";
+      }
+      enum "bb-caller-id" {
+        value 10;
+        description
+          "The original option82. The attribute type is STRING.";
+      }
+      enum "forward-policy" {
+        value 11;
+        description
+          "This attribute is used to carry a user group name. The attribute type is STRING.";
+      }
+      enum "http-redirect-profile-name" {
+        value 12;
+        description
+          "Configured user URL profile name. The attribute type is STRING.";
+      }
+      enum "http-redirect-url" {
+        value 13;
+        description
+          "Redirection URL. The attribute type is STRING.";
+      }
+      enum "hw-access-service" {
+        value 14;
+        description
+          "Access service template. The attribute type is STRING.";
+      }
+      enum "hw-account-info" {
+        value 15;
+        description
+          "Account information. The attribute type is STRING.";
+      }
+      enum "hw-accounting-level" {
+        value 16;
+        description
+          "Accounting level. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-input-gigawords" {
+        value 17;
+        description
+          "Number of IPv6 upstream bytes. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-input-octets" {
+        value 18;
+        description
+          "Volume of IPv6 upstream traffic. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-input-packets" {
+        value 19;
+        description
+          "Number of IPv6 upstream packets. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-output-gigawords" {
+        value 20;
+        description
+          "Number of IPv6 downstream bytes. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-output-octets" {
+        value 21;
+        description
+          "Volume of IPv6 downstream traffic. The attribute type is UINT32.";
+      }
+      enum "hw-acct-ipv6-output-packets" {
+        value 22;
+        description
+          "Number of IPv6 downstream packets. The attribute type is UINT32.";
+      }
+      enum "hw-acct-terminate-subcause" {
+        value 23;
+        description
+          "Sub-code for a session disconnection. The attribute type is UINT32.";
+      }
+      enum "hw-acct-update-address" {
+        value 24;
+        description
+          "The attribute is carried in accounting update packets. The attribute type is UINT32.";
+      }
+      enum "hw-ascend-client-primary-wins" {
+        value 26;
+        description
+          "Primary WINS address. The attribute type is IPv4 address.";
+      }
+      enum "hw-ascend-client-second-win" {
+        value 27;
+        description
+          "Secondary WINS address. The attribute type is IPv4 address.";
+      }
+      enum "hw-auth-type" {
+        value 28;
+        description
+          "Authentication type. The attribute type is UINT32.";
+      }
+      enum "hw-avpair" {
+        value 29;
+        description
+          "Attribute-value pair, which is the framework attribute of extensible sub-attributes. The attribute type is STRING.";
+      }
+      enum "hw-client-primary-dns" {
+        value 30;
+        description
+          "Primary DNS server's IP address delivered after a user is authenticated. The attribute type is IPv4 address.";
+      }
+      enum "hw-client-secondary-dns" {
+        value 31;
+        description
+          "Secondary DNS server's IP address delivered after a user is authenticated. The attribute type is IPv4 address.";
+      }
+      enum "hw-command" {
+        value 32;
+        description
+          "Currently, the attribute value can only be Terminate-Request (value=2), indicating user logoff. The attribute type is UINT32.";
+      }
+      enum "hw-command-mode" {
+        value 33;
+        description
+          "Command mode, which is differentiated by the first character. The attribute type is STRING.";
+      }
+      enum "hw-connect-id" {
+        value 34;
+        description
+          "Connection index of a user. The attribute type is UINT32.";
+      }
+      enum "hw-data-filter" {
+        value 36;
+        description
+          "Dynamically delivered ACL rule. The attribute type is STRING.";
+      }
+      enum "hw-delegated-ipv6-prefix-pool" {
+        value 37;
+        description
+          "Address pool from which PD prefixes are allocated. The attribute type is STRING.";
+      }
+      enum "hw-dhcp-option" {
+        value 38;
+        description
+          "DHCP options delivered by the RADIUS server after a user is being authenticated. The attribute type is BIN.";
+      }
+      enum "hw-dhcpv4-option121" {
+        value 39;
+        description
+          "Routing information of IPoE users. The attribute type is STRING.";
+      }
+      enum "hw-dhcpv4-option43" {
+        value 40;
+        description
+          "The attribute carries the Option 43 information in the DHCP reply packet sent to the DHCPv4 user, and is delivered in the Access-Accept packet. The attribute type is STRING.";
+      }
+      enum "hw-dhcpv6-option37" {
+        value 41;
+        description
+          "The attribute identifies user location information. The attribute type is STRING.";
+      }
+      enum "hw-dhcpv6-option38" {
+        value 42;
+        description
+          "Content of DHCPv6 Option 38. The attribute type is STRING.";
+      }
+      enum "hw-dns-server-ipv6-address" {
+        value 43;
+        description
+          "IPv6 address of the DNS server. The attribute type is IPv6 address.";
+      }
+      enum "hw-domain-name" {
+        value 44;
+        description
+          "Domain name used in user authentication. The attribute type is STRING.";
+      }
+      enum "hw-down-priority" {
+        value 45;
+        description
+          "Priority of downstream services. The attribute type is UINT32.";
+      }
+      enum "hw-down-qos-profile-name" {
+        value 46;
+        description
+          "QoS profile delivered by the RADIUS server. The attribute type is STRING.";
+      }
+      enum "hw-ds-lite-tunnel-name" {
+        value 47;
+        description
+          "IPv6 tunnel name in a CGN scenario. The attribute type is STRING.";
+      }
+      enum "hw-exec-privilege" {
+        value 48;
+        description
+          "Authorized level of administrative users, such as Telnet users. The attribute type is UINT32.";
+      }
+      enum "hw-framed-ipv6-address" {
+        value 49;
+        description
+          "Carries an address assigned by a DHCPv6 server using identity association for non-temporary addresses (IA_NA). The attribute type is IPv6 address.";
+      }
+      enum "hw-framed-pool" {
+        value 50;
+        description
+          "Same as the standard No. 88 attribute. The attribute type is STRING.";
+      }
+      enum "hw-framed-pool-group" {
+        value 51;
+        description
+          "The attribute carries the name of the address pool group and is delivered in the Access-Accept packet. The attribute type is STRING.";
+      }
+      enum "hw-ftp-directory" {
+        value 52;
+        description
+          "Initial directory of an FTP user. The attribute type is STRING.";
+      }
+      enum "hw-gateway-address" {
+        value 53;
+        description
+          "Gateway IP address. The attribute type is IPv4 address.";
+      }
+      enum "hw-http-redirect-url" {
+        value 54;
+        description
+          "URL of a page where a user will be redirected if the user fails to be authenticated. The attribute type is STRING.";
+      }
+      enum "hw-igmp-enable" {
+        value 55;
+        description
+          "Whether IGMP is enabled for users. The attribute type is UINT32.";
+      }
+      enum "hw-input-committed-burst-size" {
+        value 56;
+        description
+          "Upstream CBS, in bits. The attribute type is UINT32.";
+      }
+      enum "hw-input-committed-information-rate" {
+        value 57;
+        description
+          "Upstream PIR, in bit/s. The attribute type is UINT32.";
+      }
+      enum "hw-input-kilobytes-after-tariff-switch" {
+        value 58;
+        description
+          "Number of bytes sent by a user after tariff switching, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-input-kilobytes-before-tariff-switch" {
+        value 59;
+        description
+          "Number of bytes sent by a user before tariff switching, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-input-packets-after-tariff-switch" {
+        value 60;
+        description
+          "Number of packets sent by a user after tariff switching. The attribute type is UINT32.";
+      }
+      enum "hw-input-packets-before-tariff-switch" {
+        value 61;
+        description
+          "Number of packets sent by a user before tariff switching. The attribute type is UINT32.";
+      }
+      enum "hw-input-peak-burst-size" {
+        value 62;
+        description
+          "Upstream PBS. The attribute type is UINT32.";
+      }
+      enum "hw-input-peak-information-rate" {
+        value 63;
+        description
+          "Upstream PIR, in bit/s. The attribute type is UINT32.";
+      }
+      enum "hw-ip-host-address" {
+        value 64;
+        description
+          "User IP address and MAC address carried in the authentication request packet and accounting request packet. The attribute type is STRING.";
+      }
+      enum "hw-ipv6-address-lease" {
+        value 65;
+        description
+          "IPv6 address lease. The attribute type is IPv6 address.";
+      }
+      enum "hw-ipv6-policy-route" {
+        value 66;
+        description
+          "IPv6 policy-based routing. The attribute type is BIN.";
+      }
+      enum "hw-ipv6-prefix-lease" {
+        value 67;
+        description
+          "IPv6 prefix lease. The attribute type is BIN.";
+      }
+      enum "hw-l2tp-terminate-cause" {
+        value 68;
+        description
+          "L2TP user logout cause. The attribute type is BIN.";
+      }
+      enum "hw-lease-time" {
+        value 69;
+        description
+          "Lease time. The attribute type is UINT32.";
+      }
+      enum "hw-max-list-num" {
+        value 70;
+        description
+          "Maximum number of multicast programs that a user can order. The attribute type is UINT32.";
+      }
+      enum "hw-mng-ipv6" {
+        value 71;
+        description
+          "Whether IPv6 address management is used for users is determined by the RADIUS server based on the authentication result (whether IPv6 addresses are assigned) and CPE information (that specifies IPv6 address management). The attribute type is UINT32.";
+      }
+      enum "hw-multicast-profile-name" {
+        value 72;
+        description
+          "Name of a multicast profile. The attribute type is STRING.";
+      }
+      enum "hw-nas-startup-time-stamp" {
+        value 73;
+        description
+          "Time when the device was started. The attribute type is UINT32.";
+      }
+      enum "hw-nat-end-port" {
+        value 74;
+        description
+          "End port of the public network IP address after NAT in a centralized BRAS scenario. The attribute type is UINT32.";
+      }
+      enum "hw-nat-ip-address" {
+        value 75;
+        description
+          "Public network IP address after network address translation (NAT). The attribute type is IPv4 address.";
+      }
+      enum "hw-nat-policy-name" {
+        value 76;
+        description
+          "NAT policy template delivered in the user authentication response packet. This template is saved locally. The attribute type is STRING.";
+      }
+      enum "hw-nat-port-forwarding" {
+        value 77;
+        description
+          "Port-Forwarding delivered and reported by the RADIUS server in a centralized BRAS scenario. The attribute type is STRING.";
+      }
+      enum "hw-nat-port-range-update" {
+        value 78;
+        description
+          "Port-Forwarding delivered and reported by the RADIUS server in a centralized BRAS scenario. The attribute type is UINT32.";
+      }
+      enum "hw-nat-start-port" {
+        value 79;
+        description
+          "Start port of the public network IP address after NAT in a centralized BRAS scenario. The attribute type is UINT32.";
+      }
+      enum "hw-output-committed-burst-size" {
+        value 80;
+        description
+          "Downstream CBS, in bits. The attribute type is UINT32.";
+      }
+      enum "hw-output-committed-information-rate" {
+        value 81;
+        description
+          "Downstream CIR, in bit/s. The attribute type is UINT32.";
+      }
+      enum "hw-output-kilobytes-after-tariff-switch" {
+        value 82;
+        description
+          "Number of bytes received by a user after tariff switching, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-output-kilobytes-before-tariff-switch" {
+        value 83;
+        description
+          "Number of bytes received by a user before tariff switching, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-output-packets-after-tariff-switch" {
+        value 84;
+        description
+          "Number of packets received by a user after tariff switching. The attribute type is UINT32.";
+      }
+      enum "hw-output-packets-before-tariff-switch" {
+        value 85;
+        description
+          "Number of packets received by a user before tariff switching. The attribute type is UINT32.";
+      }
+      enum "hw-output-peak-burst-size" {
+        value 86;
+        description
+          "Downstream PBS. The attribute type is UINT32.";
+      }
+      enum "hw-output-peak-information-rate" {
+        value 87;
+        description
+          "Downstream PIR, in bit/s. The attribute type is UINT32.";
+      }
+      enum "hw-pcp-server-name" {
+        value 88;
+        description
+          "PCP Server Name. The attribute type is STRING.";
+      }
+      enum "hw-policy-name" {
+        value 89;
+        description
+          "Name of a value-added service policy. The attribute type is STRING.";
+      }
+      enum "hw-policy-route" {
+        value 90;
+        description
+          "Next hop address in the policy-based routing. The attribute type is IPv4 address.";
+      }
+      enum "hw-port-mirror" {
+        value 91;
+        description
+          "Upstream and downstream interface mirroring enabling flag delivered by the RADIUS server, which is used to control whether interface mirroring is enabled in the upstream and downstream directions. The attribute type is UINT32.";
+      }
+      enum "hw-portal-mode" {
+        value 92;
+        description
+          "Portal modes. The attribute type is UINT32.";
+      }
+      enum "hw-portal-url" {
+        value 93;
+        description
+          "URL to which user is redirected after being authenticated. The attribute type is STRING.";
+      }
+      enum "hw-priority" {
+        value 94;
+        description
+          "Service priority of a user. The attribute type is UINT32.";
+      }
+      enum "hw-product-id" {
+        value 95;
+        description
+          "Product ID of a device. The attribute type is STRING.";
+      }
+      enum "hw-public-ip-addr-state" {
+        value 96;
+        description
+          "Status of the public IP address pool in a NAT444 scenario. The attribute type is UINT32.";
+      }
+      enum "hw-qos-profile-name" {
+        value 97;
+        description
+          "QoS profile delivered by the RADIUS server. The attribute type is STRING.";
+      }
+      enum "hw-qos-profile-type" {
+        value 98;
+        description
+          "Type of the QoS profile delivered by the RADIUS server, valid only for LNS users. The attribute type is UINT32.";
+      }
+      enum "hw-rebinding-time" {
+        value 99;
+        description
+          "Rebinding time of addresses of DHCP users. The attribute type is UINT32.";
+      }
+      enum "hw-remanent-volume" {
+        value 100;
+        description
+          "In Access-Accept packet, the attribute indicates the remaining traffic volume available to a user, in KB. The attribute type is UINT32.";
+      }
+      enum "hw-renewal-time" {
+        value 101;
+        description
+          "Interval at which addresses of DHCP users are renewed. The attribute type is UINT32.";
+      }
+      enum "hw-service-info" {
+        value 103;
+        description
+          "Service information. The attribute type is STRING.";
+      }
+      enum "hw-sip-server" {
+        value 104;
+        description
+          "SIP server address or name delivered to DHCP users. The attribute type is STRING.";
+      }
+      enum "hw-subnet-mask" {
+        value 105;
+        description
+          "Subnet mask. The attribute type is IPv4 address.";
+      }
+      enum "hw-subscriber-qos-profile" {
+        value 106;
+        description
+          "Home QoS profile. The attribute type is STRING.";
+      }
+      enum "hw-tariff-switch-interval" {
+        value 107;
+        description
+          "Interval between the latest tariff switching time and the current time, in seconds. The attribute type is UINT32.";
+      }
+      enum "hw-tunnel-group-name" {
+        value 108;
+        description
+          "Name of an L2TP or GRE group. The attribute type is STRING.";
+      }
+      enum "hw-tunnel-session-limit" {
+        value 109;
+        description
+          "Number of sessions over a tunnel. The attribute type is UINT32.";
+      }
+      enum "hw-tunnel-vpn-instance" {
+        value 110;
+        description
+          "Name of the VPN instance on the local end of a tunnel. The attribute type is STRING.";
+      }
+      enum "hw-up-priority" {
+        value 111;
+        description
+          "Priority of upstream services. The attribute type is UINT32.";
+      }
+      enum "hw-user-class" {
+        value 112;
+        description
+          "User level. The attribute type is STRING.";
+      }
+      enum "hw-user-date" {
+        value 113;
+        description
+          "Date when a user account was opened. The attribute type is STRING.";
+      }
+      enum "hw-user-mac" {
+        value 114;
+        description
+          "The attribute carries a user MAC address or Option 61 information. The attribute type is STRING.";
+      }
+      enum "hw-user-password" {
+        value 115;
+        description
+          "Re-authentication password contained in HW-Command-Mode delivered through CoA packets. PAP and CHAP modes are supported. The attribute type is BIN.";
+      }
+      enum "hw-version" {
+        value 116;
+        description
+          "Version of a device. The attribute type is STRING.";
+      }
+      enum "hw-vpn-instance" {
+        value 117;
+        description
+          "Name of a VPN instance to which a user belongs. The attribute type is STRING.";
+      }
+      enum "hw-web-url" {
+        value 118;
+        description
+          "URL to which a web authentication user is redirected. The attribute type is STRING.";
+      }
+      enum "maximum-data-rate-downstream" {
+        value 119;
+        description
+          "Maximum downstream rate configured for the online user. The attribute type is UINT32.";
+      }
+      enum "maximum-data-rate-upstream" {
+        value 120;
+        description
+          "Maximum upstream rate configured for the online user. The attribute type is UINT32.";
+      }
+      enum "maximum-interleaving-delay-downstream" {
+        value 121;
+        description
+          "Maximum delay for the downstream traffic per channel. The attribute type is UINT32.";
+      }
+      enum "maximum-interleaving-delay-upstream" {
+        value 122;
+        description
+          "Maximum delay for the upstream traffic per channel. The attribute type is UINT32.";
+      }
+      enum "minimum-data-rate-downstream" {
+        value 123;
+        description
+          "Minimum downstream rate configured for the online user. The attribute type is UINT32.";
+      }
+      enum "minimum-data-rate-downstream-low-power" {
+        value 124;
+        description
+          "Minimum downstream rate for the online user at low voltage. The attribute type is UINT32.";
+      }
+      enum "minimum-data-rate-upstream" {
+        value 125;
+        description
+          "Minimum upstream rate configured for the online user. The attribute type is UINT32.";
+      }
+      enum "minimum-data-rate-upstream-low-power" {
+        value 126;
+        description
+          "Minimum upstream rate for the online user at low voltage. The attribute type is UINT32.";
+      }
+      enum "ms-chap-challenge" {
+        value 127;
+        description
+          "MS-CHAP challenge. The attribute type is BIN.";
+      }
+      enum "ms-chap-cpw-2" {
+        value 128;
+        description
+          "Changed MS-CHAP V2 password. The attribute type is BIN.";
+      }
+      enum "ms-chap-error" {
+        value 129;
+        description
+          "Error information that is carried in an MS-CHAP Access-Reject packet. The attribute type is STRING.";
+      }
+      enum "ms-chap-nt-enc-pw" {
+        value 130;
+        description
+          "New MS-CHAP password, which is obtained by encrypting the old MS-CHAP password. The attribute type is BIN.";
+      }
+      enum "ms-chap-response" {
+        value 131;
+        description
+          "Response to the MS-CHAP authentication challenge. The attribute type is BIN.";
+      }
+      enum "ms-chap2-cpw" {
+        value 132;
+        description
+          "Changed MS-CHAP2 password. The attribute type is BIN.";
+      }
+      enum "ms-chap2-response" {
+        value 133;
+        description
+          "Response to the MS-CHAP2 authentication challenge. The attribute type is BIN.";
+      }
+      enum "ms-chap2-success" {
+        value 134;
+        description
+          "Authentication success code. The attribute type is STRING.";
+      }
+      enum "ms-mppe-recv-key" {
+        value 135;
+        description
+          "A RADIUS server delivers an Microsoft Point-to-Point Encryption (MPPE) key to a NAS. The attribute type is BIN.";
+      }
+      enum "ms-mppe-send-key" {
+        value 136;
+        description
+          "A RADIUS server delivers an Microsoft Point-to-Point Encryption (MPPE) key to a NAS. The attribute type is BIN.";
+      }
+      enum "ms-primary-dns-server" {
+        value 137;
+        description
+          "Address of the primary DNS server of a specified user after user authentication is successful. The attribute type is IPv4 address.";
+      }
+      enum "ms-secondary-dns-server" {
+        value 138;
+        description
+          "Address of the secondary DNS server of a specified user after user authentication is successful. The attribute type is IPv4 address.";
+      }
+      enum "npm-service-id" {
+        value 139;
+        description
+          "Indicates service name. The attribute type is STRING.";
+      }
+      enum "remanent-volume" {
+        value 140;
+        description
+          "Remaining traffic (in KB) available to a user. The attribute type is STRING.";
+      }
+      enum "tariff-switch-interval" {
+        value 141;
+        description
+          "Interval between the latest tariff switching time and the current time, in seconds. The attribute type is UINT32.";
+      }
+      enum "vendor-specific" {
+        value 142;
+        description
+          "The attribute specified by a vendor. The attribute type is STRING.";
+      }
+      enum "cmcc-nas-type" {
+        value 143;
+        description
+          "Carrier-defined attribute, used to distinguish between a non-forwarding-control separation device and a forwarding-control separation device. The attribute type is UINT32.";
+      }
+      enum "cmcc-up-identifier" {
+        value 144;
+        description
+          "Carrier-defined attribute, specifies the ID of the vBRAS-UP to which a user belongs. The attribute type is STRING.";
+      }
+      enum "cmcc-up-ip" {
+        value 145;
+        description
+          "Carrier-defined attribute, specifies the IP address of the CUSP channel corresponding to the vBRAS-UP used to forward user traffic. The attribute type is IPv4 address.";
+      }
+    }
+    description
+      "Radius attribute translate extend list.";
+  }
+}

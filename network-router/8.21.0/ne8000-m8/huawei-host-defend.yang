@@ -1,0 +1,2117 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-host-defend {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-host-defend";
+  prefix host-defend;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-acl {
+    prefix acl;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Host Defend.";
+  revision 2019-11-17 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ip-stack";
+  typedef management-plane-defend-action {
+    type enumeration {
+      enum "default" {
+        value 0;
+        description
+          "Not configured, the default is to permit packet sending.";
+      }
+      enum "deny" {
+        value 1;
+        description
+          "To deny packet sending.";
+      }
+      enum "permit" {
+        value 2;
+        description
+          "To permit packet sending.";
+      }
+    }
+    description
+      "Action for global management and service plane protection.";
+  }
+  typedef gtsm-protocol {
+    type enumeration {
+      enum "bgp" {
+        value 0;
+        description
+          "BGP protocol.";
+      }
+      enum "bgpv6" {
+        value 1;
+        description
+          "BGPv6 protocol.";
+      }
+      enum "ospf" {
+        value 2;
+        description
+          "OSPF protocol.";
+      }
+      enum "ldp" {
+        value 3;
+        description
+          "LDP protocol.";
+      }
+      enum "ospfv3" {
+        value 4;
+        description
+          "OSPFv3 protocol.";
+      }
+      enum "rip" {
+        value 5;
+        description
+          "RIP protocol.";
+      }
+    }
+    description
+      "GTSM protocol.";
+  }
+  typedef isolate-status {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable isolate.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable isolate.";
+      }
+    }
+    description
+      "Isolate status.";
+  }
+  typedef host-defend-status {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable isolate.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable isolate.";
+      }
+    }
+    description
+      "Isolate status.";
+  }
+  typedef gtsm-action {
+    type enumeration {
+      enum "pass" {
+        value 0;
+        description
+          "Pass.";
+      }
+      enum "drop" {
+        value 1;
+        description
+          "Drop.";
+      }
+    }
+    description
+      "GTSM action.";
+  }
+  typedef protocol-type {
+    type enumeration {
+      enum "arp" {
+        value 1;
+        description
+          "ARP protocol.";
+      }
+      enum "stp" {
+        value 2;
+        description
+          "STP protocol.";
+      }
+      enum "lacp" {
+        value 3;
+        description
+          "LACP protocol.";
+      }
+      enum "lldp" {
+        value 4;
+        description
+          "LLDP protocol.";
+      }
+      enum "isis" {
+        value 5;
+        description
+          "ISIS protocol.";
+      }
+      enum "link-other" {
+        value 6;
+        description
+          "Other link protocol.";
+      }
+      enum "icmp" {
+        value 7;
+        description
+          "ICMP protocol.";
+      }
+      enum "ospf" {
+        value 8;
+        description
+          "OSPF protocol.";
+      }
+      enum "pim" {
+        value 9;
+        description
+          "PIM protocol.";
+      }
+      enum "igmp" {
+        value 10;
+        description
+          "IGMP protocol.";
+      }
+      enum "vrrp" {
+        value 11;
+        description
+          "VRRP protocol.";
+      }
+      enum "rawip-other" {
+        value 12;
+        description
+          "Other RAWIP protocol.";
+      }
+      enum "snmp" {
+        value 13;
+        description
+          "SNMP protocol.";
+      }
+      enum "dhcp" {
+        value 14;
+        description
+          "DHCP protocol.";
+      }
+      enum "udp-other" {
+        value 15;
+        description
+          "Other UDP protocol.";
+      }
+      enum "bgp" {
+        value 16;
+        description
+          "BGP protocol.";
+      }
+      enum "ldp" {
+        value 17;
+        description
+          "LDP protocol.";
+      }
+      enum "tcp-other" {
+        value 18;
+        description
+          "Other TCP protocol.";
+      }
+      enum "icmpv6" {
+        value 19;
+        description
+          "ICMPV6 protocol.";
+      }
+      enum "ospfv3" {
+        value 20;
+        description
+          "OSPFV3 protocol.";
+      }
+      enum "ipv6-pim" {
+        value 21;
+        description
+          "IPv6 PIM protocol.";
+      }
+      enum "mld" {
+        value 22;
+        description
+          "MLD protocol.";
+      }
+      enum "ipv6-vrrp" {
+        value 23;
+        description
+          "IPv6 VRRP protocol.";
+      }
+      enum "ipv6-rawip-other" {
+        value 24;
+        description
+          "Other IPv6 RAWIP protocol.";
+      }
+      enum "ipv6-snmp" {
+        value 25;
+        description
+          "IPv6 SNMP protocol.";
+      }
+      enum "ipv6-dhcp" {
+        value 26;
+        description
+          "IPv6 DHCP protocol.";
+      }
+      enum "ipv6-udp-other" {
+        value 27;
+        description
+          "Other IPv6 UDP protocol.";
+      }
+      enum "bgp4-plus" {
+        value 28;
+        description
+          "BGP4 plus protocol.";
+      }
+      enum "ipv6-ldp" {
+        value 29;
+        description
+          "IPv6 ldp protocol.";
+      }
+      enum "ipv6-tcp-other" {
+        value 30;
+        description
+          "Other IPv6 TCP protocol.";
+      }
+      enum "all" {
+        value 31;
+        description
+          "All protocol.";
+      }
+    }
+    description
+      "Protocal type.";
+  }
+  typedef service-security-rule-action {
+    type enumeration {
+      enum "permit" {
+        value 0;
+        description
+          "Permit packet.";
+      }
+      enum "deny" {
+        value 1;
+        description
+          "Deny packet.";
+      }
+    }
+    description
+      "Service security rule action.";
+  }
+  typedef service-security-protocol-family {
+    type enumeration {
+      enum "ipv4" {
+        value 1;
+        description
+          "IPv4 protocol.";
+      }
+      enum "ipv6" {
+        value 2;
+        description
+          "IPv6 protocol.";
+      }
+    }
+    description
+      "Service security protocol family.";
+  }
+  typedef service-security-protocol-type {
+    type enumeration {
+      enum "number" {
+        value 1;
+        description
+          "IP protocol number.";
+      }
+      enum "name" {
+        value 2;
+        description
+          "Protocol name.";
+      }
+      enum "extension-head" {
+        value 3;
+        description 
+          "Routing extension header.";
+      }
+    }
+    description
+      "Service security protocol type.";
+  }
+  typedef service-security-protocol-name-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "Not configure protocol.";
+      }
+      enum "bgp" {
+        value 1;
+        description
+          "BGP protocol.";
+      }
+      enum "ospf" {
+        value 2;
+        description
+          "OSPF protocol.";
+      }
+      enum "rsvp" {
+        value 3;
+        description
+          "RSVP protocol.";
+      }
+      enum "pim" {
+        value 4;
+        description
+          "PIM protocol.";
+      }
+      enum "tcp" {
+        value 5;
+        description
+          "All TCP protocol.";
+      }
+      enum "udp" {
+        value 6;
+        description
+          "All UDP protocol.";
+      }
+      enum "dhcp-client" {
+        value 8;
+        description
+          "Dhcp-client protocol.";
+      }
+      enum "dhcp-server" {
+        value 9;
+        description
+          "Dhcp-server protocol.";
+      }
+      enum "ftp" {
+        value 10;
+        description
+          "FTP protocol.";
+      }
+      enum "ldp" {
+        value 11;
+        description
+          "LDP protocol.";
+      }
+      enum "lsp-ping" {
+        value 12;
+        description
+          "Lsp-ping protocol.";
+      }
+      enum "ntp" {
+        value 13;
+        description
+          "NTP protocol.";
+      }
+      enum "rip" {
+        value 14;
+        description
+          "RIP protocol.";
+      }
+      enum "snmp" {
+        value 15;
+        description
+          "SNMP protocol.";
+      }
+      enum "ssh" {
+        value 16;
+        description
+          "SSH protocol.";
+      }
+      enum "telnet" {
+        value 17;
+        description
+          "TELNET protocol.";
+      }
+      enum "tftp" {
+        value 18;
+        description
+          "TFTP protocol.";
+      }
+      enum "igmp" {
+        value 19;
+        description
+          "IGMP Protocol.";
+      }
+      enum "isis" {
+        value 20;
+        description
+          "ISIS protocol.";
+      }
+      enum "any" {
+        value 21;
+        description
+          "All protocol, include ISIS and all IP protocol.";
+      }
+    }
+    description
+      "Service security protocol name type.";
+  }
+  typedef service-security-extern-header-type {  
+    type enumeration {
+      enum "none" {
+        value 65535;
+        description
+          "Not configure protocol.";
+      }
+      enum "srh" {
+        value 4;
+        description
+          "SRH header.";
+      }
+    }
+    description 
+      "MPAC extension header type.";
+  }
+  typedef protocol-layer-type {
+    type enumeration {
+      enum "link" {
+        value 1;
+        description
+          "Link protocol.";
+      }
+      enum "rawip" {
+        value 2;
+        description
+          "RAWIP protocol.";
+      }
+      enum "udp" {
+        value 3;
+        description
+          "IPv4 UDP protocol.";
+      }
+      enum "tcp" {
+        value 4;
+        description
+          "IPv4 tcp protocol.";
+      }
+      enum "ipv6-rawip" {
+        value 5;
+        description
+          "IPv6 RAWIP protocol.";
+      }
+      enum "ipv6-udp" {
+        value 6;
+        description
+          "IPv6 UDP protocol.";
+      }
+      enum "ipv6-tcp" {
+        value 7;
+        description
+          "IPv6 TCP protocol.";
+      }
+    }
+    description
+      "Layer type.";
+  }
+  typedef anti-attack-type {
+    type enumeration {
+      enum "abnormal" {
+        value 1;
+        description
+          "Abnormal packet.";
+      }
+      enum "fragment" {
+        value 2;
+        description
+          "Fragment packet.";
+      }
+      enum "tcp-synchronize" {
+        value 4;
+        description
+          "Tcp synchronize packet.";
+      }
+      enum "udp-flood" {
+        value 5;
+        description
+          "Udp flood packet.";
+      }
+      enum "icmp-flood" {
+        value 3;
+        description
+          "Icmp flood packet.";
+      }
+    }
+    description
+      "Anti attack type.";
+  }
+  typedef management-plane-defend-protocol {
+    type enumeration {
+      enum "ftp-server" {
+        value 1;
+        description
+          "FTP server protocol.";
+      }
+      enum "ssh-server" {
+        value 2;
+        description
+          "SSH server protocol.";
+      }
+      enum "snmp" {
+        value 3;
+        description
+          "SNMP protocol.";
+      }
+      enum "telnet-server" {
+        value 4;
+        description
+          "TELNET server protocol.";
+      }
+      enum "tftp" {
+        value 5;
+        description
+          "TFTP protocol.";
+      }
+      enum "bgp" {
+        value 6;
+        description
+          "BGP protocol.";
+      }
+      enum "ldp" {
+        value 7;
+        description
+          "LDP protocol.";
+      }
+      enum "rsvp" {
+        value 8;
+        description
+          "RSVP protocol.";
+      }
+      enum "ospf" {
+        value 9;
+        description
+          "OSPF protocol.";
+      }
+      enum "rip" {
+        value 10;
+        description
+          "RIP protocol.";
+      }
+      enum "isis" {
+        value 11;
+        description
+          "ISIS protocol.";
+      }
+      enum "pim" {
+        value 12;
+        description
+          "PIM protocol.";
+      }
+      enum "bgp4-plus" {
+        value 13;
+        description
+          "BGP4 plus protocol.";
+      }
+      enum "ipv6-ftp-server" {
+        value 14;
+        description
+          "IPv6 FTP server protocol.";
+      }
+      enum "ospfv3" {
+        value 15;
+        description
+          "OSPFv3 protocol.";
+      }
+      enum "ipv6-pim" {
+        value 16;
+        description
+          "IPv6 PIM protocol.";
+      }
+      enum "ipv6-ssh-server" {
+        value 17;
+        description
+          "IPv6 SSH server protocol.";
+      }
+      enum "ipv6-telnet-server" {
+        value 18;
+        description
+          "IPv6 TELNET server protocol.";
+      }
+    }
+    description
+      "Management plane defend protocol.";
+  }
+  typedef packet-header-link-type {
+    type enumeration {
+      enum "ethernet" {
+        value 1;
+        description
+          "Ethernet of link type.";
+      }
+      enum "ppp" {
+        value 2;
+        description
+          "PPP protocol of link type.";
+      }
+      enum "hdlc" {
+        value 3;
+        description
+          "HDLC protocol of link type.";
+      }
+      enum "atm" {
+        value 4;
+        description
+          "ATM of link type.";
+      }
+    }
+    description
+      "Packet header link type.";
+  }
+  typedef packet-header-link-type-show {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "Interface of linktype.";
+      }
+      enum "ethernet" {
+        value 1;
+        description
+          "Ethernet of link type.";
+      }
+      enum "ppp" {
+        value 2;
+        description
+          "PPP protocol of link type.";
+      }
+      enum "hdlc" {
+        value 3;
+        description
+          "HDLC protocol of link type.";
+      }
+      enum "atm" {
+        value 4;
+        description
+          "ATM of link type.";
+      }
+    }
+    description
+      "Packet header link type.";
+  }
+  typedef packet-header-status {
+    type enumeration {
+      enum "stopped" {
+        value 0;
+        description
+          "Stop.";
+      }
+      enum "running" {
+        value 1;
+        description
+          "Running.";
+      }
+    }
+    description
+      "Packet header instance status.";
+  }
+  typedef l2-protocol-type {
+    type enumeration {
+      enum "unknow" {
+        value 0;
+        description
+          "Unknow protocol.";
+      }
+      enum "ethernet" {
+        value 1;
+        description
+          "Ethernet protocol.";
+      }
+      enum "ppp" {
+        value 2;
+        description
+          "PPP protocol.";
+      }
+      enum "hdlc" {
+        value 3;
+        description
+          "HDLC protocol.";
+      }
+      enum "atm" {
+        value 4;
+        description
+          "ATM protocol.";
+      }
+      enum "tag" {
+        value 5;
+        description
+          "TAG protocol.";
+      }
+    }
+    description
+      "L2 protocol type.";
+  }
+  typedef l3-protocol-type {
+    type enumeration {
+      enum "unknow" {
+        value 0;
+        description
+          "Unknow protocol.";
+      }
+      enum "ipv4" {
+        value 1;
+        description
+          "IPv4 protocol.";
+      }
+      enum "ipv6" {
+        value 2;
+        description
+          "IPv6 protocol.";
+      }
+    }
+    description
+      "L3 protocol type.";
+  }
+  typedef l4-protocol-type {
+    type enumeration {
+      enum "unknow" {
+        value 0;
+        description
+          "Unknow protocol.";
+      }
+      enum "tcp" {
+        value 1;
+        description
+          "TCP protocol.";
+      }
+      enum "udp" {
+        value 2;
+        description
+          "UDP protocol.";
+      }
+      enum "icmp" {
+        value 3;
+        description
+          "ICMP protocol.";
+      }
+      enum "icmp6" {
+        value 4;
+        description
+          "ICMP6 protocol.";
+      }
+      enum "igmp" {
+        value 5;
+        description
+          "IGMP protocol.";
+      }
+    }
+    description
+      "L4 protocol type.";
+  }
+  container host-defend {
+    description
+      "Configure host packet security attack defense configuration.";
+    container global-management-plane-defend {
+      description
+        "Configure policy for global management and service plane protection.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the function of global management and service plane protection.";
+      }
+      leaf bgp-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending BGP packets.";
+      }
+      leaf ftp-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending FTP protocol packets.";
+      }
+      leaf ldp-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending LDP protocol packets.";
+      }
+      leaf ospf-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending OSPF protocol packets.";
+      }
+      leaf rip-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending RIP protocol packets.";
+      }
+      leaf rsvp-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending RSVP protocol packets.";
+      }
+      leaf snmp-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending SNMP protocol packets.";
+      }
+      leaf ssh-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending SSH protocol packets.";
+      }
+      leaf telnet-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending Telnet protocol packets.";
+      }
+      leaf tftp-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending TFTP protocol packets.";
+      }
+      leaf isis-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending IS-IS protocol packets.";
+      }
+      leaf pim-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending PIM protocol packets.";
+      }
+      leaf bgp4-plus-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending BGP4Plus packets.";
+      }
+      leaf ipv6-ftp-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending IPv6 FTP protocol packets.";
+      }
+      leaf ospfv3-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending OSPFv3 protocol packets.";
+      }
+      leaf ipv6-pim-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending IPv6 PIM protocol packets.";
+      }
+      leaf ipv6-ssh-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending IPv6 SSH protocol packets.";
+      }
+      leaf ipv6-telnet-action {
+        type management-plane-defend-action;
+        default "default";
+        description
+          "Policy for sending IPv6 Telnet protocol packets.";
+      }
+    }
+    container management-plane-defend {
+      description
+        "Configure management and service plane protection.";
+      container slot-plys {
+        description
+          "List of slot-based policies for management and service plane protection.";
+        list slot-ply {
+          key "policy-id";
+          description
+            "Configure slot-based policy for management and service plane protection.";
+          leaf policy-id {
+            type uint32 {
+              range "1..16";
+            }
+            description
+              "ID of a slot-based policy for management and service plane protection.";
+          }
+          leaf bgp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending BGP packets.";
+          }
+          leaf ftp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending FTP packets.";
+          }
+          leaf ldp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending LDP packets.";
+          }
+          leaf ospf-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending OSPF packets.";
+          }
+          leaf rip-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending RIP packets.";
+          }
+          leaf rsvp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending RSVP packets.";
+          }
+          leaf snmp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending SNMP packets.";
+          }
+          leaf ssh-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending SSH packets.";
+          }
+          leaf telnet-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending Telnet packets.";
+          }
+          leaf tftp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending TFTP packets.";
+          }
+          leaf isis-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IS-IS packets.";
+          }
+          leaf pim-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending PIM SM packets.";
+          }
+          leaf bgp4-plus-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending BGP4Plus packets.";
+          }
+          leaf ipv6-ftp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IPv6 FTP protocol packets.";
+          }
+          leaf ospfv3-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending OSPFv3 protocol packets.";
+          }
+          leaf ipv6-pim-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IPv6 PIM protocol packets.";
+          }
+          leaf ipv6-ssh-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IPv6 SSH protocol packets.";
+          }
+          leaf ipv6-telnet-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IPv6 Telnet protocol packets.";
+          }
+        }
+      }
+      container if-plys {
+        description
+          "List of interface-level policies for management and service plane protection.";
+        list if-ply {
+          key "policy-id";
+          description
+            "Configure interface-level policy for management and service plane protection.";
+          leaf policy-id {
+            type uint32 {
+              range "1..64";
+            }
+            description
+              "ID of an interface-level policy for management and service plane protection.";
+          }
+          leaf bgp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending BGP packets.";
+          }
+          leaf ftp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending FTP packets.";
+          }
+          leaf ldp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending LDP packets.";
+          }
+          leaf ospf-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending OSPF packets.";
+          }
+          leaf rip-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending RIP packets.";
+          }
+          leaf rsvp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending RSVP packets.";
+          }
+          leaf snmp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending SNMP packets.";
+          }
+          leaf ssh-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending SSH packets.";
+          }
+          leaf telnet-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending Telnet packets.";
+          }
+          leaf tftp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending TFTP packets.";
+          }
+          leaf isis-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IS-IS packets.";
+          }
+          leaf pim-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending PIM SM packets.";
+          }
+          leaf bgp4-plus-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending BGP4Plus packets.";
+          }
+          leaf ipv6-ftp-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IPv6 FTP protocol packets.";
+          }
+          leaf ospfv3-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending OSPFv3 protocol packets.";
+          }
+          leaf ipv6-pim-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IPv6 PIM protocol packets.";
+          }
+          leaf ipv6-ssh-action {
+           type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IPv6 SSH protocol packets.";
+          }
+          leaf ipv6-telnet-action {
+            type management-plane-defend-action;
+            default "default";
+            description
+              "Policy for sending IPv6 Telnet protocol packets.";
+          }
+        }
+      }
+      container slot-stats {
+        config false;
+        description
+          "List of management plane defend slot policy statistics.";
+        list slot-stat {
+          key "slot-id protocol-type";
+          description
+            "Configure management plane defend slot policy statistics.";
+          leaf slot-id {
+            type string {
+              length "0..32";
+            }
+            description
+              "Slot number.";
+          }
+          leaf protocol-type {
+            type management-plane-defend-protocol;
+            description
+              "Protocol number.";
+          }
+          leaf recv-total-pkt-num {
+            type uint64;
+            description
+              "Total packet number of management plane defend.";
+          }
+          leaf pass-pkt-num {
+            type uint64;
+            description
+              "Packet number passed by management plane defend.";
+          }
+          leaf drop-pkt-num {
+            type uint64;
+            description
+              "Packet number discarded by management plane defend.";
+          }
+        }
+      }
+      container if-stats {
+        config false;
+        description
+          "List of management plane defend interface policy statistics.";
+        list if-stat {
+          key "if-name protocol-type";
+        description
+          "Configure management plane defend interface policy statistics.";
+          leaf if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Name of the interface when obtain packet headers.";
+          }
+          leaf protocol-type {
+            type management-plane-defend-protocol;
+            description
+              "Protocol number.";
+          }
+          leaf recv-total-pkt-num {
+            type uint64;
+            description
+              "Total packet number of management plane defend.";
+          }
+          leaf pass-pkt-num {
+            type uint64;
+            description
+              "Packet number passed by management plane defend.";
+          }
+          leaf drop-pkt-num {
+            type uint64;
+            description
+              "Packet number discarded by management plane defend.";
+          }
+        }
+      }
+    }
+    container gtsm {
+      description
+        "Configure statistics function about GTSM.";
+      leaf gtsm-policy-action {
+        type gtsm-action;
+        default "pass";
+        description
+          "GTSM policy.";
+      }
+      container gtsm-stats {
+        config false;
+        description
+          "List of statistics about GTSM.";
+        list gtsm-stat {
+          key "slot-id protocol";
+          description
+            "Statistics of GTSM.";
+          leaf slot-id {
+            type string {
+              length "1..31";
+            }
+            description
+              "Slot number.";
+          }
+          leaf protocol {
+            type gtsm-protocol;
+            description
+              "Protocol number.";
+          }
+          leaf total-count {
+            type uint64;
+            description
+              "Total counters.";
+          }
+          leaf drop-count {
+            type uint64;
+            description
+              "Drop counters.";
+          }
+          leaf pass-count {
+            type uint64;
+            description
+              "Pass counters.";
+          }
+        }
+      }
+    }
+    container fragment-car-stats {
+      config false;
+      description
+        "List of statistics about fragment CAR.";
+      list fragment-car-stat {
+        key "slot-id";
+        description
+          "Statistics of fragment CAR.";
+        leaf slot-id {
+          type string {
+            length "1..31";
+          }
+          description
+            "Slot number.";
+        }
+        leaf total-pkt-num {
+          type uint64;
+          description
+            "Total packet number of fragment CAR.";
+        }
+        leaf drop-pkt-num {
+          type uint64;
+          description
+            "Fragment packet number discarded by CAR.";
+        }
+        leaf pass-pkt-num {
+          type uint64;
+          description
+            "Fragment packet number passed by CAR.";
+        }
+      }
+    }
+    container host-packet-header-obtains {
+      config false;
+      description
+        "List of obtain packet headers instance table.";
+      list host-packet-header-obtain {
+        key "instance-id";
+        description
+          "Operational data of obtain packet headers instance.";
+        leaf instance-id {
+          type uint8 {
+            range "1..8";
+          }
+          description
+            "Instance ID.";
+        }
+        leaf status {
+          type packet-header-status;
+          description
+            "Obtain packet headers status.";
+        }
+        leaf timeout {
+          type uint32 {
+            range "1..86400";
+          }
+          units "s";
+          description
+            "Timeout.";
+        }
+        leaf remain-time {
+          type uint32 {
+            range "1..86400";
+          }
+          units "s";
+          description
+            "Remain time.";
+        }
+        leaf record-packet-number {
+          type uint32 {
+            range "1..6000";
+          }
+          description
+            "Record packet number.";
+        }
+        leaf file-length {
+          type uint8;
+          units "Mbit";
+          description
+            "File length.";
+        }
+        leaf total-memory-size {
+          type uint32;
+          units "Mbit";
+          description
+            "Record packet size.";
+        }
+        leaf obtain-packet-number {
+          type uint32;
+          description
+            "Obtain packet number.";
+        }
+        leaf obtain-packet-size {
+          type uint32;
+          units "Byte";
+          description
+            "Obtain packet size.";
+        }
+        leaf saved-packet-number {
+          type uint32;
+          description
+            "Saved packet number.";
+        }
+        leaf saved-packet-size {
+          type uint32;
+          units "Byte";
+          description
+            "Saved packet size.";
+        }
+        leaf delete-packet-number {
+          type uint32;
+          description
+            "Delete packet number.";
+        }
+        leaf delete-packet-size {
+          type uint32;
+          units "Byte";
+          description
+            "Delete packet size.";
+        }
+        leaf first-packet-time {
+          type yang:date-and-time;
+          description
+            "First packet time.";
+        }
+        leaf last-packet-time {
+          type yang:date-and-time;
+          description
+            "Last packet time.";
+        }
+        leaf acl {
+          type string {
+            length "1..64";
+          }
+          description
+            "Acl number or name.";
+        }
+        leaf memory-packet-number {
+          type uint32;
+          description
+            "Memory packet number.";
+        }
+        leaf remain-time-delete {
+          type uint32 {
+            range "1..86400";
+          }
+          units "s";
+          description
+            "Remain time.";
+        }
+        leaf packet-device-name {
+          type string {
+            length "5..64";
+          }
+          description
+            "Packet device name.";
+        }
+        leaf file-name {
+          type string {
+            length "5..64";
+          }
+          description
+            "File name.";
+        }
+        leaf link-type {
+          type packet-header-link-type-show;
+          description
+            "Link type.";
+        }
+        leaf if-name {
+          type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Interface name.";
+        }
+        leaf inner-protocol {
+          type string {
+            length "1..64";
+          }
+          description
+            "Protocol type of the host packet headers to be obtained.";
+        }
+      }
+    }
+  }
+  rpc start-packet-header-obtain {
+    description
+      "To start packet header obtain.";
+    input {
+      leaf inner-protocol {
+        type uint16 {
+          range "0..1658";
+          ext:value-meaning {
+            ext:item  "0" {
+              ext:meaning "ftp-server";
+            }
+            ext:item  "1" {
+              ext:meaning "ssh-server";
+            }
+            ext:item  "2" {
+              ext:meaning "snmp";
+            }
+            ext:item  "3" {
+              ext:meaning "telnet-server";
+            }
+            ext:item  "4" {
+              ext:meaning "tftp";
+            }
+            ext:item  "5" {
+              ext:meaning "bgp";
+            }
+            ext:item  "6" {
+              ext:meaning "ldp";
+            }
+            ext:item  "7" {
+              ext:meaning "rsvp";
+            }
+            ext:item  "8" {
+              ext:meaning "ospf";
+            }
+            ext:item  "9" {
+              ext:meaning "rip";
+            }
+            ext:item  "10" {
+              ext:meaning "isis";
+            }
+            ext:item  "11" {
+              ext:meaning "sftp-server";
+            }
+            ext:item  "12" {
+              ext:meaning "icmp";
+            }
+            ext:item  "13" {
+              ext:meaning "msdp";
+            }
+            ext:item  "14" {
+              ext:meaning "pim";
+            }
+            ext:item  "15" {
+              ext:meaning "arp";
+            }
+            ext:item  "17" {
+              ext:meaning "dhcp";
+            }
+            ext:item  "18" {
+              ext:meaning "lacp";
+            }
+            ext:item  "19" {
+              ext:meaning "ntp";
+            }
+            ext:item  "20" {
+              ext:meaning "radius";
+            }
+            ext:item  "21" {
+              ext:meaning "hwtacacs";
+            }
+            ext:item  "22" {
+              ext:meaning "lspping";
+            }
+            ext:item  "23" {
+              ext:meaning "igmp";
+            }
+            ext:item  "24" {
+              ext:meaning "vgmp";
+            }
+            ext:item  "25" {
+              ext:meaning "rrpp";
+            }
+            ext:item  "26" {
+              ext:meaning "vrrp";
+            }
+            ext:item  "27" {
+              ext:meaning "bfd";
+            }
+            ext:item  "28" {
+              ext:meaning "mplsoam";
+            }
+            ext:item  "29" {
+              ext:meaning "ieee-8021ag";
+            }
+            ext:item  "30" {
+              ext:meaning "ftp-client";
+            }
+            ext:item  "31" {
+              ext:meaning "telnet-client";
+            }
+            ext:item  "32" {
+              ext:meaning "ssh-client";
+            }
+            ext:item  "33" {
+              ext:meaning "sftp-client";
+            }
+            ext:item  "34" {
+              ext:meaning "dns-client";
+            }
+            ext:item  "48" {
+              ext:meaning "tcp-syn";
+            }
+            ext:item  "164" {
+              ext:meaning "eapol";
+            }
+            ext:item  "567" {
+              ext:meaning "esmc";
+            }
+          }
+        }
+        description
+          "Protocol type of the host packet headers to be obtained.";
+      }
+      choice interface-or-link-type {
+        mandatory true;
+        description
+          "Physical type of packet header obtaining: interface-based or link type-based packet header obtaining.";
+        case interface-based {
+          description
+            "Parameters for the interface of packet header obtain.";
+          leaf interface-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            mandatory true;
+            description
+              "Parameters for the interface of packet header obtain.";
+          }
+          choice vlan {
+            description
+              "Parameters for the VLAN of packet header obtain.";
+            case single {
+              description
+                "Parameters for the single VLAN of packet header obtain.";
+              leaf begin-vlan-id {
+                type vlan:vlan-id;
+                mandatory true;
+                description
+                  "Parameters for the begin VLAN value of packet header obtain.";
+              }
+              leaf end-vlan-id {
+                type vlan:vlan-id;
+                description
+                  "Parameters for the end VLAN value of packet header obtain.";
+              }
+            }
+            case double {
+              description
+                "Parameters for the double VLAN of packet header obtain.";
+              leaf pe-begin-vlan-id {
+                type vlan:vlan-id;
+                mandatory true;
+                description
+                  "Parameters for the begin VLAN value of packet header obtain.";
+              }
+              leaf pe-end-vlan-id {
+                type vlan:vlan-id;
+                description
+                  "Parameters for the end VLAN value of packet header obtain.";
+              }
+              leaf ce-begin-vlan-id {
+                type vlan:vlan-id;
+                mandatory true;
+                description
+                  "Parameters for the end VLAN value of packet header obtain.";
+              }
+              leaf ce-end-vlan-id {
+                type vlan:vlan-id;
+                description
+                  "Parameters for the end VLAN value of packet header obtain.";
+              }
+            }
+          }
+        }
+        case link-type-based {
+          description
+            "Parameters for the link-type of packet header obtain.";
+          leaf link-type {
+            type packet-header-link-type;
+          description
+            "Parameters for link type of obtain packet headers.";
+          }
+        }
+      }
+      choice acl-type {
+        description
+          "Parameters for the acl of packet header obtain.";
+        case acl4 {
+          description
+            "Parameters for the v4 acl of packet header obtain.";
+          leaf acl-v4 {
+            type leafref {
+              path "/acl:acl/acl:groups/acl:group/acl:identity";
+            }
+            mandatory true;
+            description
+              "Parameters for the acl4 value of packet header obtain.";
+          }
+        }
+        case acl6 {
+          description
+            "Parameters for the v6 acl of packet header obtain.";
+          leaf acl-v6 {
+            type leafref {
+              path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+            }
+            mandatory true;
+            description
+              "Parameters for the acl6 value of packet header obtain.";
+          }
+        }
+      }
+      choice destination {
+        description
+          "Parameters for the destination of packet header obtain.";
+        case file {
+          description
+            "Save packet information to file.";
+          leaf file-name {
+            type string {
+              length "5..64";
+            }
+            mandatory true;
+            description
+              "File name.";
+          }
+          leaf file-size {
+            type uint8{
+              range "1..10";
+            }
+            units "MB";
+            default "2";
+            description
+              "File size.";
+          }
+        }
+        case buffer {
+          description
+            "Save packet information to buffer only.";
+          leaf buffer-only {
+            type empty;
+            mandatory true;
+            description
+              "Type buffer only.";
+          }
+        }
+      }
+      leaf packet-number {
+        type uint32 {
+          range "1..6000";
+        }
+        default "10";
+        description
+          "Parameters for the number of packet header obtain.";
+      }
+      leaf packet-length {
+        type uint16 {
+          range "20..64";
+        }
+        default "20";
+        description
+          "Parameters for the lenth of packet header obtain.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "1..86400";
+        }
+        units "s";
+        default "15";
+        description
+          "Parameters for the timer of packet header obtain.";
+      }
+      leaf overwrite {
+        type boolean;
+        description
+          "Overwrite the buffer.";
+      }
+    }
+  }
+  rpc stop-packet-header-obtain {
+    description
+      "To stop packet header obtain.";
+    input {
+      choice type {
+        description
+          "The type of stop for packet header obtaining: instance-based or condition-based.";
+        case instance-base {
+          description
+            "Parameters for the instance type of packet header obtain.";
+          leaf instance-id {
+            type uint8 {
+              range "1..8";
+            }
+            description
+              "Parameters for the instance id of packet header obtain.";
+          }
+        }
+        case condition-based {
+          description
+            "Parameters for the conditio-type of packet header obtain.";
+          leaf inner-protocol {
+            type uint32 {
+              range "0..1658";
+              ext:value-meaning {
+                ext:item  "0" {
+                  ext:meaning "ftp-server";
+                }
+                ext:item  "1" {
+                  ext:meaning "ssh-server";
+                }
+                ext:item  "2" {
+                  ext:meaning "snmp";
+                }
+                ext:item  "3" {
+                  ext:meaning "telnet-server";
+                }
+                ext:item  "4" {
+                  ext:meaning "tftp";
+                }
+                ext:item  "5" {
+                  ext:meaning "bgp";
+                }
+                ext:item  "6" {
+                  ext:meaning "ldp";
+                }
+                ext:item  "7" {
+                  ext:meaning "rsvp";
+                }
+                ext:item  "8" {
+                  ext:meaning "ospf";
+                }
+                ext:item  "9" {
+                  ext:meaning "rip";
+                }
+                ext:item  "10" {
+                  ext:meaning "isis";
+                }
+                ext:item  "11" {
+                  ext:meaning "sftp-server";
+                }
+                ext:item  "12" {
+                  ext:meaning "icmp";
+                }
+                ext:item  "13" {
+                  ext:meaning "msdp";
+                }
+                ext:item  "14" {
+                  ext:meaning "pim";
+                }
+                ext:item  "15" {
+                  ext:meaning "arp";
+                }
+                ext:item  "17" {
+                  ext:meaning "dhcp";
+                }
+                ext:item  "18" {
+                  ext:meaning "lacp";
+                }
+                ext:item  "19" {
+                  ext:meaning "ntp";
+                }
+                ext:item  "20" {
+                  ext:meaning "radius";
+                }
+                ext:item  "21" {
+                  ext:meaning "hwtacacs";
+                }
+                ext:item  "22" {
+                  ext:meaning "lspping";
+                }
+                ext:item  "23" {
+                  ext:meaning "igmp";
+                }
+                ext:item  "24" {
+                  ext:meaning "vgmp";
+                }
+                ext:item  "25" {
+                  ext:meaning "rrpp";
+                }
+                ext:item  "26" {
+                  ext:meaning "vrrp";
+                }
+                ext:item  "27" {
+                  ext:meaning "bfd";
+                }
+                ext:item  "28" {
+                  ext:meaning "mplsoam";
+                }
+                ext:item  "29" {
+                  ext:meaning "ieee-8021ag";
+                }
+                ext:item  "30" {
+                  ext:meaning "ftp-client";
+                }
+                ext:item  "31" {
+                  ext:meaning "telnet-client";
+                }
+                ext:item  "32" {
+                  ext:meaning "ssh-client";
+                }
+                ext:item  "33" {
+                  ext:meaning "sftp-client";
+                }
+                ext:item  "34" {
+                  ext:meaning "dns-client";
+                }
+                ext:item  "48" {
+                  ext:meaning "tcp-syn";
+                }
+                ext:item  "164" {
+                  ext:meaning "eapol";
+                }
+                ext:item  "567" {
+                  ext:meaning "esmc";
+                }
+              }
+            }
+            description
+              "Protocol type of the host packet headers to be obtained.";
+          }
+          choice interface-or-link-type {
+            mandatory true;
+            description
+              "Physical type of packet header obtaining: interface-based or link type-based packet header obtaining.";
+            case interface-based {
+              description
+                "Parameters for the interface of packet header obtain.";
+              leaf interface-name {
+                type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                }
+                mandatory true;
+                description
+                  "Parameters for the interface of packet header obtain.";
+              }
+              choice vlan {
+                description
+                  "Parameters for the VLAN of packet header obtain.";
+                case single {
+                  description
+                    "Parameters for the single VLAN of packet header obtain.";
+                  leaf begin-vlan-id {
+                    type vlan:vlan-id;
+                    mandatory true;
+                    description
+                      "Parameters for the begin VLAN value of packet header obtain.";
+                  }
+                  leaf end-vlan-id {
+                    type vlan:vlan-id;
+                    description
+                      "Parameters for the end VLAN value of packet header obtain.";
+                  }
+                }
+                case double {
+                  description
+                    "Parameters for the double VLAN of packet header obtain.";
+                  leaf pe-begin-vlan-id {
+                    type vlan:vlan-id;
+                    mandatory true;
+                    description
+                      "Parameters for the begin VLAN value of packet header obtain.";
+                  }
+                  leaf pe-end-vlan-id {
+                    type vlan:vlan-id;
+                  description
+                      "Parameters for the end VLAN value of packet header obtain.";
+                  }
+                  leaf ce-begin-vlan-id {
+                    type vlan:vlan-id;
+                    mandatory true;
+                    description
+                      "Parameters for the end VLAN value of packet header obtain.";
+                  }
+                  leaf ce-end-vlan-id {
+                    type vlan:vlan-id;
+                    description
+                       "Parameters for the end VLAN value of packet header obtain.";
+                  }
+                }
+              }
+            }
+            case link-type-based {
+              description
+                "Parameters for the link-type of packet header obtain.";
+              leaf link-type {
+                type packet-header-link-type;
+              description
+                "Link type of obtain packet headers.";
+              }
+            }
+          }
+          choice acl-type {
+            description
+              "Parameters for the acl of packet header obtain.";
+            case acl4 {
+              description
+                "Parameters for the v4 acl of packet header obtain.";
+              leaf acl-v4 {
+                type leafref {
+                  path "/acl:acl/acl:groups/acl:group/acl:identity";
+                }
+                mandatory true;
+                description
+                  "Parameters for the acl4 value of packet header obtain.";
+              }
+            }
+            case acl6 {
+              description
+                "Parameters for the v6 acl of packet header obtain.";
+              leaf acl-v6 {
+                type leafref {
+                  path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+                }
+                mandatory true;
+                description
+                  "Parameters for the acl6 value of packet header obtain.";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc free-packet-header-obtain {
+    description
+      "To free packet header obtain.";
+    input {
+      leaf instance-id {
+        type uint8 {
+          range "1..8";
+        }
+        description
+          "Parameters for the instance id of packet header obtain.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "All configurations of the host defend under the interface.";
+    container if-8021p-priority {
+      when "../ifm:type='Ethernet' or ../ifm:type='GigabitEthernet' or ../ifm:type='100GE' or ../ifm:type='40GE' or ../ifm:type='25GE' or ../ifm:type='4x10GE' or ../ifm:type='10x10GE' or ../ifm:type='3x40GE' or ../ifm:type='4x25GE' or ../ifm:type='200GE' or ../ifm:type='FlexE' or ../ifm:type='50GE' or ../ifm:type='50|100GE' or ../ifm:type='10GE' or ../ifm:type='MultiGE' or ../ifm:type='400GE' or ../ifm:type='Vlanif' or ../ifm:type='XGigabitEthernet' or ../ifm:type='Eth-Trunk' or ../ifm:type='PW-VE' or ../ifm:type='Cellular' or ../ifm:type='Virtual-Ethernet' or ../ifm:class='sub-interface'";
+      presence "Present if 8021p priority function.";
+      description
+        "Configure 8021p priority under the interface.";
+      leaf value {
+        type uint32 {
+          range "0..7";
+        }
+        mandatory true;
+        description
+          "8021p value.";
+      }
+    }
+    container management-plane-defend-if {
+       when "../ifm:type='Ethernet' or ../ifm:type='GigabitEthernet' or ../ifm:type='GEBrief' or ../ifm:type='10GE' or ../ifm:type='MultiGE' or ../ifm:type='40GE' or ../ifm:type='100GE' or ../ifm:type='25GE' or ../ifm:type='400GE' or ../ifm:type='XGigabitEthernet' or ../ifm:type='200GE' or ../ifm:type='50GE' or ../ifm:type='50|100GE' or ../ifm:type='ATM' or ../ifm:type='Pos' or ../ifm:type='Cellular'";
+      presence "Present if management plane defend function.";
+      description
+        "Configure applications of interface-level policies for management and service plane protection.";
+      leaf policy-id {
+        type leafref {
+          path "/host-defend:host-defend/host-defend:management-plane-defend/host-defend:if-plys/host-defend:if-ply/host-defend:policy-id";
+        }
+        mandatory true;
+        description
+          "ID of an interface-level policy for management and service plane protection.";
+      }
+    }
+  }
+  augment "/devm:devm/devm:mpu-boards/devm:mpu-board" {
+    description
+      "All configurations of the host defend under the mpu-board.";
+    container management-plane-defend-slot {
+      presence "Present slot management plane defend function.";
+      description
+        "Configure applications of slot-based policies for management and service plane protection.";
+      leaf slot-policy-id {
+        type leafref {
+          path "/host-defend:host-defend/host-defend:management-plane-defend/host-defend:slot-plys/host-defend:slot-ply/host-defend:policy-id";
+        }
+        mandatory true;
+        description
+          "ID of a slot-based policy for management and service plane protection.";
+      }
+    }
+  }
+  augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
+    description
+      "All configurations of the host defend under the lpu-board.";
+    container management-plane-defend-slot {
+      presence "Present slot management plane defend function.";
+      description
+        "Configure applications of slot-based policies for management and service plane protection.";
+      leaf slot-policy-id {
+        type leafref {
+          path "/host-defend:host-defend/host-defend:management-plane-defend/host-defend:slot-plys/host-defend:slot-ply/host-defend:policy-id";
+        }
+        mandatory true;
+        description
+          "ID of a slot-based policy for management and service plane protection.";
+      }
+    }
+  }
+}
