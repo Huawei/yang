@@ -4,7 +4,7 @@ This directory contains platform-specific YANG models for Huawei's products. The
 
 # **Integration with Huawei YANG**
 
-## **download huawei yang files**
+## **Download huawei yang files**
 You can use git to clone huawei yang's repository and select product and version according your requirement.
 
 `git clone https://github.com/Huawei/yang.git`
