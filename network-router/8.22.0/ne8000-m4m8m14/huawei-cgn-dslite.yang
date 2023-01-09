@@ -1,0 +1,501 @@
+/******************************************************
+* Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn-dslite {
+  namespace "urn:huawei:yang:huawei-cgn-dslite";
+  prefix cgn-dslite;
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-cgn-common {
+    prefix cgn-common;
+  }
+  import huawei-cgn {
+    prefix cgn;
+  }
+  import huawei-acl {
+    prefix acl;
+  }
+  import huawei-license {
+    prefix lcs;
+  }
+  import huawei-qos {
+    prefix qos;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn DS-Lite.";
+  revision 2022-10-15 {
+    description
+      "Modify statistics enable.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-10-13 {
+    description
+      "Add contianer port-reuse.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-09-22 {
+    description
+      "Add container bind-service-instance-group, port-range, address-groups, dslite-translate, alg, pcp, filter-mode, session-log, user-log, dslite-tunnel, active-dslite, bind-dslite.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-06-17 {
+    description
+      "Add container statistics.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-02-22 {
+    description
+      "Add mandatory for host-name.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-26 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  container cgn-dslite {
+    description
+      "DS-Lite.";
+    container dslite-instances {
+      description
+        "List of DS-Lite-instance.";
+      list dslite-instance {
+        key "instance-name instance-id";
+        unique "instance-id";
+        unique "instance-name";
+        description
+          "Configure DS-Lite instance, used to translate network address.";
+        leaf instance-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Specify the name of a DS-Lite instance.";
+        }
+        leaf instance-id {
+          type uint16 {
+            range "1..4095";
+          }
+          description
+            "Specify the id of a DS-Lite instance.";
+        }
+        container bind-service-instance-group {
+          uses cgn-common:bind-serv-inst-group;
+          description "Configure the binded service-instance-group for ds-lite instance.";
+        }
+        container port-range {
+          presence "Enable/Disable the port-range configuration for the ds-lite instance.";
+          uses cgn-common:port-range-set;
+          description
+            "Configure DS-LITE port-range initial and extend.";
+        }
+        container address-groups {
+          description "List of address-group.";
+          list address-group {
+            key "group-name group-id";
+            unique "group-name";
+            unique "group-id";
+            description "Configure nat address-group, used to set public address.";
+            leaf group-name {
+              type string {
+                length "1..31";
+              }
+              description "Address group name.";
+            }
+            leaf group-id {
+              type uint8 {
+                range "0..127";
+              }
+              description "Address group id.";
+            }
+            leaf vpn-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+              }
+              must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+              description "VPN instance name.";
+            }
+            choice address {
+              description "Specify address parameters.";
+              case address-segment {
+                description "Specify address segment.";
+                leaf start-address {
+                  type inet:ipv4-address-no-zone;
+                  mandatory true;
+                  description "Specify the start address of the section.";
+                }
+                choice end {
+                  mandatory true;
+                  description "Specify the end in a address segment.";
+                  case address {
+                    description "Specify the end address.";
+                    leaf end-address {
+                      type inet:ipv4-address-no-zone;
+                      description "Specify the end address of the section.";
+                    }
+                  }
+                  case mask {
+                    description "Specify the mask.";
+                    leaf mask-length {
+                      type uint8 {
+                        range "1..32";
+                      }
+                      description "Specifies the mask length of public IP addresses.";
+                    }
+                  }
+                }
+              }
+              case bind-ip-pool {
+                description "Bind global nat ip pool.";
+                leaf ip-pool {
+                  when "not(../vpn-name)";
+                  type leafref {
+                    path "/cgn:cgn/cgn:nat-ip-pools/cgn:nat-ip-pool/cgn:pool-name";
+                  }
+                  description "Specifies NAT ip pool name.";
+                }
+              }
+              case multi-sections {
+                description "Multiple sections for ds-lite address-group.";
+                container sections {
+                  description "List of multi-section.";
+                  list section {
+                    key "section-id";
+                    description "Configure public address in a section.";
+                    leaf section-id {
+                      type uint8 {
+                        range "0..15";
+                      }
+                      description "Specify the id of a section.";
+                    }
+                    choice address {
+                      mandatory true;
+                      description "Specify address parameters.";
+                      case address-segment {
+                        description "Specify address segment.";
+                        leaf start-address {
+                          type inet:ipv4-address-no-zone;
+                          mandatory true;
+                          description "Specify the start address of the section.";
+                        }
+                        choice end {
+                          mandatory true;
+                          description "Specify the end in a address segment.";
+                          case address {
+                            description "Specify the end address of the section.";
+                            leaf end-address {
+                              type inet:ipv4-address-no-zone;
+                              description "Specify the end address of the section.";
+                            }
+                          }
+                          case mask {
+                            description "Specify the mask.";
+                            leaf mask-length {
+                              type uint8 {
+                                range "20..32";
+                              }
+                              description "Specifies the mask length of public IP addresses.";
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        container dslite-translate {
+          description
+            "Configure the translation policy of a DS-Lite address pool.";
+          choice rule-type {
+            description
+              "Specifies ACL.";
+            case acl-rule {
+              description "Basic or advanced ACL.";
+              container bind-acls {
+                description "List of binded acls.";
+                list bind-acl {
+                  key "acl-number address-group-name";
+                  unique "acl-number";
+                  unique "address-group-name";
+                  description "Configure bind ACL.";
+                  leaf acl-number {
+                    type leafref {
+                      path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+                    }
+                    must "(/acl:acl/acl:group6s/acl:group6[acl:identity=current()][acl:type='basic']) or (/acl:acl/acl:group6s/acl:group6[acl:identity=current()][acl:type='advance'])";
+                    description
+                      "Specifies the number of a basic or advanced IPv6 ACL.";
+                  }
+                  leaf address-group-name {
+                    type leafref {
+                        path "../../../../address-groups/address-group/group-name";
+                    }
+                    description 
+                      "Specifies the name of a public IP address pool.";
+                  }
+                }
+              }
+            }
+            case any-rule {
+              description
+                "Ignore ACL rules.";
+              container address-group {
+                description "Configure any acl rule of a NAT address pool.";
+                leaf address-group-name {
+                  type leafref {
+                    path "../../../address-groups/address-group/group-name";
+                  }
+                  description 
+                    "Specifies the name of a public IP address pool.";
+                }
+              }
+            }
+          }
+        }
+        uses cgn-common:alg;
+        uses cgn-common:pcp-common {
+          augment "pcp" {
+            description "Configure pcp-port-set.";
+            container pcp-port-set {
+              description "Configure the maximum size of a port set.";
+              leaf max-size {
+                type uint8 {
+                  range "2..64";
+                }
+                description
+                  "Specifies a maximum port set size.";
+              }
+            }
+          }
+        }
+        container filter-mode {
+          description "Configure the filter mode for ds-lite.";
+          uses cgn-common:nat-filter-mode;
+        }
+        container log {
+          description "Configure DS-Lite log.";
+          uses cgn-common:log-host {
+            refine "hosts/host/host-name" {
+                mandatory true;
+            }
+            refine "hosts/host/secondary" {
+                must "not (../secondary='true' and ../../../send-mode/mode='concurrent')";
+            }
+          }
+          container send-mode {
+            description "Configure nat session log send mode.";
+            uses cgn-common:session-log-send-mode;
+          }
+          container session-log {
+            description "Configure DS-Lite session log.";
+            leaf enable {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable session log.";
+            }
+            leaf log-type {
+              when "../enable='true'";
+              type enumeration {
+                enum "elog" {
+                  value 1;
+                  description
+                    "Elog format.";
+                }
+                enum "syslog" {
+                  value 2;
+                  description
+                    "Syslog format.";
+                }
+              }
+              default "elog";
+              description "Specify the format of session log.";
+            }
+          }
+          container user-log {
+            description "Configure DS-Lite user log.";
+            leaf enable {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable user log.";
+            }
+            leaf log-type {
+              when "../enable='true'";
+              type enumeration {
+                enum "syslog" {
+                  value 2;
+                  description
+                    "Syslog format.";
+                }
+                enum "netstream" {
+                  value 3;
+                  description
+                    "Netstream format.";
+                }
+              }
+              default "syslog";
+              description "Specify the format of user log.";
+            }
+          }
+        }
+        container statistics-enable{
+          description "Configure DS-Lite statistics.";
+          container usage-statistics-enable {
+            description "Configure DS-Lite usage statistics.";
+            leaf port-usage {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable port-usage statistics.";
+            }
+            leaf session-usage {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable session-usage statistics.";
+            }
+            leaf address-pool-usage {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable address-pool statistics.";
+            }
+          }
+          container fast-forwarding {
+            description "Configure the fast-forwarding statistics enable of the instance.";
+            uses cgn-common:fast-forwarding-statistics;
+          }
+        }
+        container dslite-tunnel {
+          description "Configure the DS-Lite tunnel.";
+          container local-ipv6-address {
+            presence "Configure the local IPv6 address.";
+            description "Configure the local IPv6 address of a DS-Lite tunnel.";
+            leaf ipv6-address {
+              type inet:ipv6-address-no-zone;
+              mandatory true;
+              description
+                "Specifies the IPv6 address of the tunnel.";
+            }
+            leaf prefix-length {
+              type uint16 {
+                range "1..128";
+              }
+              mandatory true;
+              description "Specifies the prefix-length of the tunnel.";
+            }
+          }
+          container remote-ipv6-addresss {
+            description "List of remote IPv6 address.";
+            list remote-ipv6-address {
+              key "ipv6-address prefix-length";
+              unique "ipv6-address";
+              max-elements 16;
+              description "Configure the remote IPv6 address of a DS-Lite tunnel.";
+              leaf ipv6-address {
+                type inet:ipv6-address-no-zone;
+                description
+                  "Specifies the IPv6 address of the tunnel.";
+              }
+              leaf prefix-length {
+                type uint16 {
+                  range "1..128";
+                }
+                description "Specifies the prefix-length of the tunnel.";
+              }
+            }
+          }
+          container tunnel-prefix-length {
+            description "Configure the tunnel prefix length of a DS-Lite instance.";
+            leaf prefix-length {
+              type uint16 {
+                range "1..128";
+              }
+              default "128";
+              description "Specifies the prefix-length of the tunnel.";
+            }
+          }
+          container dscp-copy-enable {
+            description "Configure the dscp-copy function for DS-Lite instance.";
+            leaf dscp-copy {
+              type boolean;
+              default "false";
+              description "Enable/disable the dscp-copy function.";
+            }
+          }
+        }
+        container port-reuse {
+          description "Configure the port reuse for ds-lite instance.";
+          uses cgn-common:port-reuse;
+        }
+      }
+    }
+  }
+  augment "/lcs:license" {
+    description
+      "Configure DS-Lite license for CGN board.";
+    container active-dslites {
+      description
+        "List of active dslite for CGN board.";
+      list active-dslite {
+        key "slot";
+        description
+          "Configure active dslite for CGN board.";
+        leaf slot {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot ID.";
+        }
+      }
+    }
+  }
+  augment "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior" {
+    description "Configure binding a traffic behavior to a DS-Lite instance.";
+    container bind-dslite {
+      description
+        "Configure binding a traffic behavior to a DS-Lite instance.";
+      leaf dslite-instance {
+        type leafref {
+          path "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:instance-name";
+        }
+        description
+          "Specifies the name of a DS-Lite instance.";
+      }
+    }
+  }
+  ext:task-name "nat";
+}

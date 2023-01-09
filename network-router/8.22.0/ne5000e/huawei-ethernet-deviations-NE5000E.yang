@@ -1,0 +1,236 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ethernet-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-ethernet-deviations-NE5000E";
+  prefix ethernet-devs-NE5000E;
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Ethernet Interface.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef tag-type-deviations {
+    type enumeration {
+      enum none {
+        value 0;
+        description
+          "None.";
+      }
+      enum rt-protocol {
+        value 2;
+        description
+          "Enable the termination sub-interface to support routing protocols.";
+      }
+    }
+    description
+      "Tag Type.";
+  }
+
+  typedef action-type-deviations {
+    type enumeration {
+      enum pop-outer {
+        value 0;
+        description
+          "Pop the outer VLAN tag.";
+      }
+      enum push1-layer {
+        value 1;
+        description
+          "Push one VLAN tag.";
+      }
+      enum swap {
+        value 2;
+        description
+          "Swap the inner and outer VLAN tags.";
+      }
+      enum map-offset-increase {
+        value 3;
+        description
+          "Offset increasing.";
+      }
+      enum map-1-to-1 {
+        value 4;
+        description
+          "Map one VLAN tag to a specified VLAN tag.";
+      }
+      enum map-2-to-1 {
+        value 5;
+        description
+          "Map two VLAN tags to a specified VLAN tag.";
+      }
+      enum map-1-to-2 {
+        value 6;
+        description
+          "Map one VLAN tag to two VLAN tags.";
+      }
+      enum map-2-to-2 {
+        value 7;
+        description
+          "Map two VLAN tags to two VLAN tags.";
+      }
+      enum pop-double {
+        value 8;
+        description
+          "Pop double VLAN tags.";
+      }
+      enum push2-layer {
+        value 9;
+        description
+          "Push two VLAN tags.";
+      }
+      enum map-offset-decrease {
+        value 10;
+        description
+          "Offset decreasing.";
+      }
+    }
+    description
+      "Traffic action type.";
+  }
+
+  deviation "/ethernet:ethernet" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:port-isolate-groups" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:port-am-isolates" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-termination/ethernet:qinq-termination/ethernet:tag" {
+    deviate replace {
+      type ethernet-devs-NE5000E:tag-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:dot1q-termination/ethernet:dot1q-termination/ethernet:tag" {
+    deviate replace {
+      type ethernet-devs-NE5000E:tag-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:vlan-swap" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-stacking" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:user-vlan-comm" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:user-vlan-any" {
+    deviate not-supported;
+  }
+  deviation "/ethernet:create-user-vlan-qinq" {
+    deviate not-supported;
+  }
+  deviation "/ethernet:delete-user-vlan-qinq" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-termination/ethernet:qinq-termination/ethernet:symmetry-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:flow-type/ethernet:untag/ethernet:untag" {
+    deviate delete {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../ifm:parent-name]/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/ethernet:vlan-stackings/ethernet:vlan-stacking/ethernet:ce-default)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:flow-type/ethernet:qinq/ethernet:qinqs/ethernet:qinq-with-pe-segments" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:dot1q-termination/ethernet:dot1q-termination/ethernet:pwtag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-termination/ethernet:qinq-termination/ethernet:pwtag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:dot1q-termination/ethernet:dot1q-termination/ethernet:dot1q-vlans-policy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:dot1q-termination/ethernet:dot1q-termination" {
+    deviate delete {
+      must 'not(dot1q-vlans/dot1q-vlans-group or dot1q-vlans/dot1q-vlans/vlan-list) or not(dot1q-vlans-policy/policy-vlans/policy-vlan or dot1q-vlans-policy/policy-vlan-groups/policy-vlan-group)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:untag-policy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:vlan-type-policy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-termination/ethernet:qinq-termination/ethernet:remark-8021p/ethernet:remark-type" {
+    deviate add {
+      must "(../remark-type='trust-pe-8021p') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../../../ifm:name]/ifm:type!='PW-VE')";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-mapping" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:flow-action/ethernet:action-type" {
+    deviate replace {
+      type ethernet-devs-NE5000E:action-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:flow-action/ethernet:action-type" {
+    deviate delete {
+      must "(../action-type='push1-layer' ) or (../../dot1q and (../action-type='pop-outer' or ../action-type='map-offset-increase' or ../action-type='map-1-to-1' or ../action-type='map-1-to-2' or ../action-type='push2-layer' or ../action-type='map-offset-decrease' or ../action-type='map-single-outbound') ) or (../../qinqs and not(../../qinqs/qinq-vid-ce-default/pe-vlan-list) and ../action-type!='push2-layer') or (../../qinqs/qinq-vid-ce-default/pe-vlan-list and ../action-type!='pop-double' and ../action-type!='map-2-to-1' and ../action-type!='map-2-to-2' and ../action-type!='push2-layer') or (../../untag and (../action-type='push2-layer')) or not(../../default or ../../dot1q or ../../qinqs or ../../untag)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l2-sub-interface/ethernet:flow-action/ethernet:action-type" {
+    deviate add {
+      must "(../action-type='push1-layer' ) or (../../dot1q and (../action-type='pop-outer' or ../action-type='map-offset-increase' or ../action-type='map-1-to-1' or ../action-type='map-1-to-2' or ../action-type='push2-layer' or ../action-type='map-offset-decrease') ) or (../../qinqs and not(../../qinqs/qinq-vid-ce-default/pe-vlan-list) and ../action-type!='push2-layer') or (../../qinqs/qinq-vid-ce-default/pe-vlan-list and ../action-type!='pop-double' and ../action-type!='map-2-to-1' and ../action-type!='map-2-to-2' and ../action-type!='push2-layer') or (../../untag and (../action-type='push2-layer')) or not(../../default or ../../dot1q or ../../qinqs or ../../untag)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:encapsulation" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:flow-type/ethernet:qinq-stacking-policy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-mode" {
+    deviate not-supported;
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-groups/ethernet:vlan-group/ethernet:mode" {
+    ext:deviate-ext "delete" {
+      ext:operation-exclude "update" {
+        when '(../../../qinq-termination/qinq-vids/qinq-vid/group-id[.=current()/../id]) or (../../../dot1q-termination/dot1q-vlans/dot1q-vlans-group/group-id[.=current()/../id]) or (../../../dot1q-termination/dot1q-vlans-policy/policy-vlan-groups/policy-vlan-group/group-id[.=current()/../id]) or (../../../qinq-mapping/mapping-vids/mapping-vid/group-id[.=current()/../id]) or (../../../qinq-stacking/stacking-vid/group-id[.=current()/../id]) or (../../../stacking-policy/policy-vlan-groups/policy-vlan-group/group-id[.=current()/../id])';
+        description
+          "The mode cannot be modified after the VLAN group is referenced.";
+      }
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-groups/ethernet:vlan-group/ethernet:mode" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        when '(../../../qinq-termination/qinq-vids/qinq-vid/group-id[.=current()/../id]) or (../../../dot1q-termination/dot1q-vlans/dot1q-vlans-group/group-id[.=current()/../id])';
+        description
+          "The mode cannot be modified after the VLAN group is referenced.";
+      }
+    }
+  }
+}

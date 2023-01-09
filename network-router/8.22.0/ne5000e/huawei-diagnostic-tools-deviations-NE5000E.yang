@@ -1,0 +1,375 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-diagnostic-tools-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-diagnostic-tools-deviations-NE5000E";
+  prefix diagnostic-tools-devs-NE5000E;
+
+  import huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-srpolicy {
+    prefix srpolicy;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-segment-routing {
+    prefix sr;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-diagnostic-tools module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef pw-type-deviations {
+    type enumeration {
+      enum vlan {
+        value 4;
+        description
+          "VLAN encapsulation.";
+      }
+      enum ethernet {
+        value 5;
+        description
+          "Ethernet encapsulation.";
+      }
+      enum hdlc {
+        value 6;
+        description
+          "HDLC encapsulation.";
+      }
+      enum ppp {
+        value 7;
+        description
+          "PPP encapsulation.";
+      }
+      enum ip-layer2 {
+        value 11;
+        description
+          "IP-layer2 encapsulation.";
+      }
+      enum ip-interworking {
+        value 64;
+        description
+          "MPLS L2VPN IP interworking.";
+      }
+    }
+    description
+      "Description of pw-type.";
+  }
+
+  typedef reply-mode-pwe3-deviations {
+    type enumeration {
+      enum no-reply {
+        value 1;
+        description
+          "No reply.";
+      }
+      enum udp {
+        value 2;
+        description
+          "Reply with an IPv4/IPv6 UDP packet.";
+      }
+    }
+    description
+      "Description of reply mode.";
+  }
+
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:gmac" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:details/diagnostic-tools:detail/diagnostic-tools:response-vrf-name" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:trace-results/diagnostic-tools:trace-result/diagnostic-tools:hops/diagnostic-tools:hop/diagnostic-tools:probes/diagnostic-tools:probe/diagnostic-tools:response-vrf-name" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vpls/diagnostic-tools:mac-ping-results" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-ping/diagnostic-tools:input/diagnostic-tools:response-vrf" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-trace/diagnostic-tools:input/diagnostic-tools:response-vrf" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lsp-ping/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:bgp" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lsp-ping/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srbe/diagnostic-tools:flex-algo-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lsp-trace/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:bgp/diagnostic-tools:bgp-loopback-address" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lsp-trace/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:bgp/diagnostic-tools:bgp-reply-mode" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lsp-trace/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srbe/diagnostic-tools:flex-algo-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:evpn-start-mac-ping/diagnostic-tools:input/diagnostic-tools:access-type/diagnostic-tools:bd/diagnostic-tools:vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:evpn-start-mac-trace/diagnostic-tools:input/diagnostic-tools:access-type/diagnostic-tools:bd/diagnostic-tools:vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:gmac-start-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:gmac-stop-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:gmac-delete-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-start-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-stop-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-delete-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-start-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-stop-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-delete-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vpls-start-mac-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vpls-stop-mac-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vpls-delete-mac-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vpls-start-vsi-ping/diagnostic-tools:input/diagnostic-tools:signal-type/diagnostic-tools:ldp/diagnostic-tools:remote-address" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vpls-start-vsi-ping/diagnostic-tools:input/diagnostic-tools:signal-type/diagnostic-tools:ldp/diagnostic-tools:remote-pw-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vpls-start-vsi-ping/diagnostic-tools:input/diagnostic-tools:signal-type/diagnostic-tools:ldp/diagnostic-tools:sender-address" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vpls-start-vsi-trace/diagnostic-tools:input/diagnostic-tools:signal-type/diagnostic-tools:ldp/diagnostic-tools:label-type" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vpls-start-vsi-trace/diagnostic-tools:input/diagnostic-tools:signal-type/diagnostic-tools:ldp/diagnostic-tools:ttl-mode" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:pwe3-start-ping/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:pw-id/diagnostic-tools:remote-pw-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:pwe3-start-ping/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:pw-id/diagnostic-tools:remote-address" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:pwe3-start-ping/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:pw-id/diagnostic-tools:sender-address" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:pwe3-start-trace/diagnostic-tools:input/diagnostic-tools:remote-address" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:pwe3-start-trace/diagnostic-tools:input/diagnostic-tools:ptn-mode" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-ip-start-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-ip-stop-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-ip-delete-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-mac-start-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-mac-stop-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-mac-delete-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:ce-start-ping/diagnostic-tools:input/diagnostic-tools:l2-protocol/diagnostic-tools:evpn" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:ce-start-ping/diagnostic-tools:input/diagnostic-tools:l2-protocol/diagnostic-tools:bd" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-ping/diagnostic-tools:input/diagnostic-tools:bypass-source-if-name" {
+    deviate add {
+      must "not(../bypass-source-if-name and (../if-name or ../inbound-reply-fast='true' or ../inbound-if-name or ../peer-address or ../debug-option))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-ping/diagnostic-tools:input/diagnostic-tools:peer-address" {
+    deviate add {
+      must 'not(../peer-address and (../service-class or ../te-class))';
+    }
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-ping/diagnostic-tools:input/diagnostic-tools:routing-mode/diagnostic-tools:outbound/diagnostic-tools:inbound-reply-fast" {
+    deviate add {
+      must "not((../inbound-reply-fast='true') and (not(../if-name) or ../peer-address or ../bypass-source-if-name))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv6-start-ping/diagnostic-tools:input/diagnostic-tools:peer-address" {
+    deviate add {
+      must "not(../peer-address and (../te-class or ../service-class or (../inbound-reply-fast='true') or ../sid1 or ../sid2 or ../sid3 or ../sid4 or ../sid5 or ../sid6 or ../sid7 or ../sid8 or ../sid9 or ../sid10 or ../sid11 or ../network-slice-id or ../force-match-slice))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv6-start-trace/diagnostic-tools:input/diagnostic-tools:peer-address" {
+    deviate add {
+      must "not(../peer-address and (../service-class or ../te-class or (../overlay='true') or ../sid1 or ../sid2 or ../sid3 or ../sid4 or ../sid5 or ../sid6 or ../sid7 or ../sid8 or ../sid9 or ../sid10 or ../sid11 or ../network-slice-id or ../force-match-slice))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv6-start-trace/diagnostic-tools:input/diagnostic-tools:priority/diagnostic-tools:tc-value/diagnostic-tools:tc" {
+    deviate add {
+      must "not(../tc and ((../overlay='true') or ../sid1 or ../sid2 or ../sid3 or ../sid4 or ../sid5 or ../sid6 or ../sid7 or ../sid8 or ../sid9 or ../sid10 or ../sid11 or ../network-slice-id or ../force-match-slice))";
+    }
+  }
+  deviation "/diagnostic-tools:start-lsp-ping/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srte-policy/diagnostic-tools:probe-type/diagnostic-tools:policy-name/diagnostic-tools:policy-name" {
+    deviate replace {
+      type leafref {
+        path "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lsp-trace/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srte-policy/diagnostic-tools:probe-type/diagnostic-tools:policy-name/diagnostic-tools:policy-name" {
+    deviate replace {
+      type leafref {
+        path "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:vpls-start-vsi-ping/diagnostic-tools:input/diagnostic-tools:vsi-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lb-test/diagnostic-tools:input/diagnostic-tools:md-name" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lb-test/diagnostic-tools:input/diagnostic-tools:ma-name" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma/y1731:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lb-test/diagnostic-tools:input/diagnostic-tools:mep-id" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:meps/y1731:mep/y1731:id";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lb-test/diagnostic-tools:input/diagnostic-tools:remote/diagnostic-tools:remote-mep-id/diagnostic-tools:rmep-id" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:rmeps/y1731:rmep/y1731:id";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lt-test/diagnostic-tools:input/diagnostic-tools:md-name" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lt-test/diagnostic-tools:input/diagnostic-tools:ma-name" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma/y1731:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lt-test/diagnostic-tools:input/diagnostic-tools:mep-id" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:meps/y1731:mep/y1731:id";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:start-lt-test/diagnostic-tools:input/diagnostic-tools:remote/diagnostic-tools:remote-mep-id/diagnostic-tools:rmep-id" {
+    deviate replace {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:rmeps/y1731:rmep/y1731:id";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:pwe3-start-ping/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:pw-id/diagnostic-tools:pw-type" {
+    deviate replace {
+      type diagnostic-tools-devs-NE5000E:pw-type-deviations;
+    }
+  }
+  deviation "/diagnostic-tools:pwe3-start-ping/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:vpws-bgp-vpn-instance/diagnostic-tools:vpws-bgp-vpn-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:common/l2vpn:vpws-bgp-vpns/l2vpn:vpws-bgp-vpn/l2vpn:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:pwe3-start-ping/diagnostic-tools:input/diagnostic-tools:reply-mode" {
+    deviate replace {
+      type diagnostic-tools-devs-NE5000E:reply-mode-pwe3-deviations;
+    }
+  }
+  deviation "/diagnostic-tools:pwe3-start-trace/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:pw-id/diagnostic-tools:pw-type" {
+    deviate replace {
+      type diagnostic-tools-devs-NE5000E:pw-type-deviations;
+    }
+  }
+  deviation "/diagnostic-tools:pwe3-start-trace/diagnostic-tools:input/diagnostic-tools:detection-type/diagnostic-tools:vpws-bgp-vpn-instance/diagnostic-tools:vpws-bgp-vpn-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:common/l2vpn:vpws-bgp-vpns/l2vpn:vpws-bgp-vpn/l2vpn:name";
+      }
+    }
+  }
+  deviation "/diagnostic-tools:pwe3-start-trace/diagnostic-tools:input/diagnostic-tools:reply-mode" {
+    deviate replace {
+      type diagnostic-tools-devs-NE5000E:reply-mode-pwe3-deviations;
+    }
+  }
+}

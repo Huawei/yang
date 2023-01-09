@@ -1,0 +1,69 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-bier-deviations-ATN-980B";
+  prefix bier-devs-ATN-980B;
+
+  import huawei-bier {
+    prefix bier;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-if-ip {
+    prefix if-ip;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-srv6 {
+    prefix srv6;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bier module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:routings/bier:routing/bier:prefix-igp-attribute/bier:ospf-protocol" {
+    deviate not-supported;
+  }
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:routings/bier:routing/bier:nexthops/bier:nexthop/bier:igp-attribute/bier:ospf-protocol" {
+    deviate not-supported;
+  }
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:routings/bier:routing/bier:invalid-nexthops/bier:invalid-nexthop/bier:igp-attribute/bier:ospf-protocol" {
+    deviate not-supported;
+  }
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:ipv6-specified-address" {
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:vrf-name='_public_'][current()/../bfr-prefix-interface=ifm:name]/ip:ipv6/ip:addresses/ip:address[ip:ip=current()]/ip:prefix-length=128 or /ni:network-instance/ni:instances/ni:instance[ni:name='_public_']/if-ip:ipv6-ifs/if-ip:ipv6-if[current()/../bfr-prefix-interface=if-ip:name]/if-ip:addresses/if-ip:address[if-ip:ip=current()]/if-ip:prefix-length=128";
+    }
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:vrf-name='_public_'][current()/../bfr-prefix-interface=ifm:name]/ip:ipv6/ip:addresses/ip:address[ip:ip=current()]/ip:type='global' or /ni:network-instance/ni:instances/ni:instance[ni:name='_public_']/if-ip:ipv6-ifs/if-ip:ipv6-if[current()/../bfr-prefix-interface=if-ip:name]/if-ip:addresses/if-ip:address[if-ip:ip=current()]/if-ip:type='global'";
+    }
+  }
+  deviation "/bier:bier/bier:sub-domains/bier:sub-domain/bier:end-bier-address/bier:srv6-locator/bier:srv6-locator/bier:locator" {
+    deviate replace {
+      type leafref {
+        path "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator/srv6:name";
+      }
+    }
+  }
+}

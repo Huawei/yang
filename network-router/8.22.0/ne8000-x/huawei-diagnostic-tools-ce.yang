@@ -1,0 +1,215 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-ce {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-diagnostic-tools-common;
+  include huawei-diagnostic-tools-type;
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "CE diagnosis tool.";
+
+  revision 2022-02-23 {
+    description
+      "Remediation of description content.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-02-22 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+
+  grouping ce-ping-result-type {
+    description
+      "CE ping result.";
+    container ping-results {
+      description
+        "List of CE ping results.";
+      list ping-result {
+        key "test-name";
+        description
+          "Statistics of CE ping result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf mac {
+          type pub-type:mac-address;
+          description
+          "MAC address.";
+        }
+        leaf ip-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "IP address.";
+        }
+        leaf result-type {
+          type detail-result-type;
+          description
+            "Result of packet sending, which is either success or timeout.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status.";
+        }
+      }
+    }
+  }
+  rpc ce-start-ping {
+    description
+      "Start CE ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ce/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf dest-address {
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+        description
+          "Destination IP address.";
+      }
+      choice l2-protocol {
+        mandatory true;
+        description
+          "L2 protocol.";
+        case vsi {
+          description
+            "VSI.";
+          leaf vsi-name {
+            type string {
+              length "1..31";
+            }
+            mandatory true;
+            description
+              "VSI name.";
+          }
+        }
+        case evpn {
+          description
+            "EVPN.";
+          leaf evpn-name {
+            type string {
+              length "1..31";
+            }
+            mandatory true;
+            description
+              "EVPN name.";
+          }
+        }
+        case bd {
+          description
+            "Bridge domain.";
+          leaf bd-id {
+            type uint32 {
+              range "1..16777215";
+            }
+            mandatory true;
+            description
+              "BD ID.";
+          }
+        }
+      }
+      leaf source-address {
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+        description
+          "Source IP address used by ce-ping.";
+      }
+      leaf source-mac {
+        type pub-type:mac-address;
+        description
+          "Source MAC address (e024-7fa4-d2cb ~ e024-7fa4-d2da).";
+      }
+      leaf count {
+        type uint32 {
+          range "1..255";
+        }
+        description
+          "Number of ce-ping request to be sent.";
+      }
+      leaf interval {
+        type uint32 {
+          range "1..10";
+        }
+        units "s";
+        description
+          "Packet send interval.";
+      }
+    }
+  }
+
+  rpc ce-stop-ping {
+    description
+      "Stop CE ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ce/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ce/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:test-name";
+        }
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc ce-delete-ping {
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ce/diagnostic-tools:ping-results";
+    description
+      "Delete CE ping.";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ce/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:test-name";
+        }
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  augment "/diagnostic-tools:diagnostic-tools" {
+    description
+      "List of CE ping tests.";
+    container ce {
+      description
+        "Statistics of CE ping tests.";
+      uses diagnostic-tools:ce-ping-result-type;
+    }
+  }
+}

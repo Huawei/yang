@@ -1,0 +1,177 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-radius-proxy {
+  namespace urn:huawei:yang:huawei-radius-proxy;
+  prefix radius-proxy;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-aaa {
+    prefix aaa;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-radius {
+    prefix radius;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "RADIUS proxy.";
+  revision 2022-04-01 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bras-radius";
+
+  container radius-proxy {
+    description
+      "RADIUS proxy.";
+    container clients {
+      description
+        "List of RADIUS Client.";
+      list client {
+        key "ip-address mask-length vpn-name";
+        max-elements "1024";
+        description
+          "Configure a RADIUS Client.";
+        leaf ip-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "IPv4 address of the RADIUS client.";
+        }
+        leaf mask-length {
+          type uint32 {
+            range "0..32";
+          }
+          description
+            "The mask length of the RADIUS client.";
+        }
+        leaf vpn-name {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+          description
+            "RADIUS client-owned VPN instance.";
+        }
+        leaf encrypt-secret {
+          type pub-type:password-extend {
+            length "1..268";
+          }
+          mandatory true;
+          description
+            "Configure the ciphertext shared secret key when the RADIUS client and server are exchanging messages. The simple password length ranges from 1 to 128, and the cipher password length ranges from 1 to 268.";
+        }
+        leaf radius-server-group-name {
+          type leafref {
+            path "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:name";
+          }
+          mandatory true;
+          description
+            "Configure RADIUS server groups for RADIUS clients.";
+        }
+        leaf roam-domain {
+          type leafref {
+            path "/aaa:aaa/aaa:domains/aaa:domain/aaa:name";
+          }
+          description
+            "Specify a roaming domain for a RADIUS proxy authenticated user.";
+        }
+        leaf author-authen-domain {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the authorized authentication domain for users.";
+        }
+        leaf trigger-web {
+          type enumeration {
+            enum "authentication" {
+              value 1;
+              description
+                "Equipment in the processing of the AC-initiated certification request, the success of the certification process to trigger the heavy certification processes.";
+            }
+            enum "accounting" {
+              value 2;
+              description
+                "The device triggers a heavy certification when handling AC-initiated accounting messages.";
+            }
+            enum "none" {
+              value 3;
+              description
+                "Disable Trigger-web Configuration.";
+            }
+          }
+          default "accounting";
+          description
+            "Configure the authentication opportunity for a RADIUS proxy for a web-authenticated.";
+        }
+      }
+    }
+    container dscp-priority {
+      description
+        "Configure the DSCP value for RADIUS packets sent from the BRAS to a RADIUS proxy.";
+      leaf priority {
+        type uint8 {
+          range "0..63";
+        }
+        description
+          "DSCP priority value.";
+      }
+    }
+    container check-attribute-length {
+      description
+        "Configure the check method of RADIUS message attribute length.";
+      leaf loose-check {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable loose check for RADIUS message attribute length.";
+      }
+      leaf correct-forwarding {
+        when "../loose-check='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the function of changing the total length of packets to ensure that packets can be normally parsed and forwarded.";
+      }
+    }
+    container global {
+      description
+        "Configure the global RADIUS proxy function.";
+      container user-aging {
+        description
+          "Configure the aging time of a RADIUS proxy user.";
+        leaf time {
+          type uint32 {
+            range "10..240";
+          }
+          units s;
+          description
+            "Indicates the aging time of a RADIUS proxy user.";
+        }
+      }
+    }
+  }
+}

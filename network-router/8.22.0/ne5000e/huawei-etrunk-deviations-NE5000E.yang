@@ -1,0 +1,64 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-etrunk-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-etrunk-deviations-NE5000E";
+  prefix etrunk-devs-NE5000E;
+
+  import huawei-etrunk {
+    prefix etrunk;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-etrunk module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:bfd-session/etrunk:dyn-bfd/etrunk:e-trunkbfd/etrunk:if-name" {
+    deviate not-supported;
+  }
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:id" {
+    deviate replace {
+      type uint16 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:bfd-session/etrunk:dyn-bfd/etrunk:e-trunkbfd/etrunk:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..1000";
+      }
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:bfd-session/etrunk:dyn-bfd/etrunk:e-trunkbfd/etrunk:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "3..1000";
+      }
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:security-key-type" {
+    deviate add {
+      must '../security-key and ../security-key-type';
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:security-key" {
+    deviate add {
+      must '../security-key and ../security-key-type';
+    }
+  }
+}

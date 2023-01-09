@@ -1,0 +1,60 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2vpn-notification-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-l2vpn-notification-deviations-ATN-950D980C";
+  prefix l2vpn-notification-devs-ATN-950D980C;
+
+  import huawei-l2vpn-notification {
+    prefix l2vpn-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-l2vpn-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/l2vpn-notification:pw-oam-client-signal-failue" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-client-signal-failue-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-local-lock" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-local-lock-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-sd2-near" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-oam-sd2-near-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-bypass-pw-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-bypass-pw-mismatch-clear" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-id-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn-notification:pw-aps-id-mismatch-clear" {
+    deviate not-supported;
+  }
+}

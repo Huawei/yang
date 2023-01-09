@@ -1,0 +1,345 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-arp {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  include huawei-diagnostic-tools-common;
+  include huawei-diagnostic-tools-type;
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+description
+     "ARP diagnosis tool.";
+
+  revision 2021-10-11 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  grouping arp-ping-result-type {
+    description
+      "ARP ping test result.";
+    container ip-ping-results {
+      config false;
+      description
+        "List of ARP IP ping test results.";
+      list ip-ping-result {
+        key "test-name";
+        config false;
+        description
+          "Statistics of ARP IP ping test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          config false;
+          description
+            "Test name.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          config false;
+          description
+            "Test status.";
+        }
+        leaf is-used {
+          type boolean;
+          config false;
+          description
+            "The IP address is being used by another device.";
+        }
+        leaf ip-addr {
+          type inet:ipv4-address-no-zone;
+          config false;
+          description
+            "IP address.";
+        }
+        leaf mac-address {
+          type pub-type:mac-address;
+          config false;
+          description
+            "MAC address.";
+        }
+        leaf packet-recv {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of received packets.";
+        }
+        leaf packet-send {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of sent packets.";
+        }
+      }
+    }
+
+    container mac-ping-results {
+      config false;
+      description
+        "List of ARP MAC ping test results.";
+      list mac-ping-result {
+        key "test-name";
+        config false;
+        description
+          "Statistics of ARP MAC ping test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          config false;
+          description
+            "Test name.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          config false;
+          description
+            "Test status.";
+        }
+        leaf is-used {
+          type boolean;
+          config false;
+          description
+            "The MAC address is being used by another device.";
+        }
+        leaf ip-address {
+          type inet:ipv4-address-no-zone;
+          config false;
+          description
+            "IP address.";
+        }
+        leaf mac-address {
+          type pub-type:mac-address;
+          config false;
+          description
+            "MAC address.";
+        }
+        leaf packet-recv {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of received packets.";
+        }
+        leaf packet-send {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of sent packets.";
+        }
+      }
+    }
+  }
+
+  rpc arp-ip-start-ping {
+    description
+      "Start ARP IP ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:ip-ping-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf destination {
+        type pub-type:host-name;
+        mandatory true;
+        description
+          "Destination address of the string type.";
+      }
+      leaf if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Interface name.";
+      }
+      leaf vlan-id {
+        type uint32 {
+          range "1..4094";
+        }
+        description
+          "VLAN ID.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "1..10";
+        }
+        units "s";
+        description
+          "Time to wait for a response packet after a test packet is sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+    }
+  }
+
+  rpc arp-ip-stop-ping {
+    description
+      "Stop ARP IP ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:ip-ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:ip-ping-results/diagnostic-tools:ip-ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc arp-ip-delete-ping {
+    description
+      "Delete ARP IP ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:ip-ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:ip-ping-results/diagnostic-tools:ip-ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc arp-mac-start-ping {
+    description
+      "Start ARP MAC ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:mac-ping-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf mac-address {
+        type pub-type:mac-address;
+        mandatory true;
+        description
+          "MAC address.";
+      }
+      choice test-constraints {
+        description
+          "Specify the constraints for detection.";
+        case address {
+          description
+            "Specify local LAN in which to find.";
+          leaf ip-address {
+            type inet:ipv4-address-no-zone;
+            mandatory true;
+            description
+              "Destination address of the string type.";
+          }
+          leaf vrf-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "Name of a VPN instance.";
+          }
+        }
+        case interface {
+          description
+            "Specify the outbound interface.";
+          leaf if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            mandatory true;
+            description
+              "Interface name.";
+          }
+        }
+      }
+    }
+  }
+
+  rpc arp-mac-stop-ping {
+    description
+      "Stop ARP MAC ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:mac-ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:mac-ping-results/diagnostic-tools:mac-ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc arp-mac-delete-ping {
+    description
+      "Delete ARP MAC ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:mac-ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp/diagnostic-tools:mac-ping-results/diagnostic-tools:mac-ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  augment "/diagnostic-tools:diagnostic-tools" {
+    description
+      "List of ARP tests.";
+    container arp {
+      config false;
+      description
+        "Statistics of ARP tests.";
+      uses arp-ping-result-type;
+    }
+  }
+}

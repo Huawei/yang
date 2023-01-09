@@ -1,0 +1,195 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifit-common-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-ifit-common-deviations-NE8000";
+  prefix ifit-common-devs-NE8000;
+
+  import huawei-ifit-common {
+    prefix ifit-common;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ifit {
+    prefix ifit;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ifit-common module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef flow-direction-deviations {
+    type enumeration {
+      enum ingress {
+        value 1;
+        description
+          "Ingress of an IFIT flow.";
+      }
+      enum transit-input {
+        value 2;
+        description
+          "Transit input of an IFIT flow.";
+      }
+      enum transit-output {
+        value 3;
+        description
+          "Transit output of an IFIT flow.";
+      }
+      enum egress {
+        value 4;
+        description
+          "Egress of an IFIT flow.";
+      }
+      enum egress-to-cpu {
+        value 7;
+        description
+          "Egress to cpu of an IFIT flow.";
+      }
+      enum egress-normal-drop {
+        value 8;
+        description
+          "Normal drop of an IFIT flow.";
+      }
+      enum egress-bum {
+        value 11;
+        description
+          "Egress BUM of an IFIT flow.";
+      }
+    }
+    description
+      "Flow direction.";
+  }
+
+  typedef flow-type-deviations {
+    type enumeration {
+      enum unidirection {
+        value 2;
+        description
+          "An unidirection IFIT flow.";
+      }
+    }
+    description
+      "Flow type.";
+  }
+
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:global/ifit-common:clock-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:global/ifit-common:period-clock-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:mode" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:whitelist-rules/ifit-common:whitelist-rule/ifit-common:source-port-end" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:whitelist-rules/ifit-common:whitelist-rule/ifit-common:destination-port-end" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:native-ip-learning" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ifit-common:ifit-learning/ifit-common:per-packet-delay-measure" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ifit-common:ifit-learning/ifit-common:mapping-color-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifit-common:ifit/ifit-common:mapping-color-flag-egress" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:static-instances/ifit-common:static-instance" {
+    deviate delete {
+      must "../../global/clock-mode='common' or (disorder-measure-enable='false' and gtpu-sn-measure-enable='false')";
+    }
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:static-instances/ifit-common:static-instance/ifit-common:flow" {
+    deviate delete {
+      must "../../../global/clock-mode!='precision-full' or ../interval=10";
+    }
+    deviate delete {
+      must "../../../global/clock-mode='common' or (not(address-type) and not(peer-evpl-id) and not(peer-ip) and not(peer-locator-prefix))";
+    }
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:static-instances/ifit-common:static-instance/ifit-common:flow/ifit-common:flow-type" {
+    deviate delete {
+      must "../../../../global/clock-mode='common' or ../flow-type='unidirection'";
+    }
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:instance-ht16s/ifit-common:instance-ht16/ifit-common:flow/ifit-common:flow-type" {
+    deviate replace {
+      type ifit-common-devs-NE8000:flow-type-deviations;
+    }
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:dynamic-flow-hops/ifit-common:dynamic-flow-hop/ifit-common:direction" {
+    deviate replace {
+      type ifit-common-devs-NE8000:flow-direction-deviations;
+    }
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:whitelist-rules/ifit-common:whitelist-rule/ifit-common:address-type/ifit-common:ipv6-condition/ifit-common:source-ipv6-mask" {
+    deviate replace {
+      type uint8 {
+        range "32..96";
+      }
+    }
+  }
+  deviation "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:whitelist-rules/ifit-common:whitelist-rule/ifit-common:address-type/ifit-common:ipv6-condition/ifit-common:destination-ipv6-mask" {
+    deviate replace {
+      type uint8 {
+        range "32..128";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ifit-common:ifit-learning" {
+    deviate delete {
+      must "/ifit:ifit/ifit-common:ifit-common/ifit-common:global/ifit-common:clock-mode='common'";
+    }
+  }
+  ext:deviation-ext "/ifit:ifit/ifit-common:ifit-common/ifit-common:global/ifit-common:node-id" {
+    ext:deviate-ext "delete" {
+      ext:operation-exclude "update" {
+        when '../../static-instances/static-instance';
+        description
+          "The 'node-id' cannot be updated, when static-instance exists.";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        when '../../static-instances/static-instance or ../../instance-ht16s/instance-ht16';
+        description
+          "The 'node-id' cannot be updated, when static-instance or instance-ht16 exists.";
+      }
+    }
+  }
+  ext:deviation-ext "/ifit:ifit/ifit-common:ifit-common/ifit-common:whitelist-groups/ifit-common:whitelist-group/ifit-common:whitelist-rules/ifit-common:whitelist-rule/ifit-common:address-type/ifit-common:ipv6-condition/ifit-common:source-ipv6-mask" {
+    ext:deviate-ext "replace" {
+      ext:dynamic-default {
+        ext:default-value "96" {
+          when '../source-ipv6-address';
+        }
+      }
+    }
+  }
+}

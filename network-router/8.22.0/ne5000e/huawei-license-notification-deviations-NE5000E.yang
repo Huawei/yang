@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-license-notification-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-license-notification-deviations-NE5000E";
+  prefix license-notification-devs-NE5000E;
+
+  import huawei-license-notification {
+    prefix license-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-license-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/license-notification:license-state-changed" {
+    deviate not-supported;
+  }
+  deviation "/license-notification:cloud-server-offline" {
+    deviate not-supported;
+  }
+  deviation "/license-notification:cloud-server-offline-resume" {
+    deviate not-supported;
+  }
+  deviation "/license-notification:cloud-server-offline-locked" {
+    deviate not-supported;
+  }
+  deviation "/license-notification:cloud-server-offline-locked-resume" {
+    deviate not-supported;
+  }
+}

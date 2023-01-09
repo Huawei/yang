@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-dhcpv6-server-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-bras-dhcpv6-server-deviations-ATN-950D980C";
+  prefix bras-dhcpv6-server-devs-ATN-950D980C;
+
+  import huawei-bras-dhcpv6-server {
+    prefix bras-dhcpv6-server;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-dhcpv6-server module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-dhcpv6-server:bras-dhcpv6-server" {
+    deviate not-supported;
+  }
+
+}

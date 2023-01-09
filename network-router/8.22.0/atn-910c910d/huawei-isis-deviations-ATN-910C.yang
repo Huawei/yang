@@ -1,0 +1,181 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-isis-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-isis-deviations-ATN-910C";
+  prefix isis-devs-ATN-910C;
+
+  import huawei-isis {
+    prefix isis;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-isis module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/isis:isis/isis:global-stat" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/isis:isis-import-rts" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:ipv4-prefix-ipv6-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:te-set-subtlv" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:extern-ability/isis:virtual-access" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:circuits/isis:circuit/isis:p2p/isis:peer-ip-ignore" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:apply-link-cost" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:peers/isis:peer/isis:ipv6-adj-sid" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:virtual-accesss" {
+    deviate not-supported;
+  }
+  deviation "/isis:isis/isis:global/isis:session-car/isis:cir" {
+    deviate replace {
+      default "1";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:session-car/isis:cbs" {
+    deviate replace {
+      default "100";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:session-car/isis:pir" {
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:session-car/isis:pbs" {
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:micro-isolation-car/isis:cir" {
+    deviate replace {
+      default "1";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:micro-isolation-car/isis:cbs" {
+    deviate replace {
+      default "100";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:micro-isolation-car/isis:pir" {
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/isis:isis/isis:global/isis:micro-isolation-car/isis:pbs" {
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:circuits/isis:circuit/isis:level" {
+    deviate replace {
+      default "level-2";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:circuits/isis:circuit/isis:hello-mode" {
+    deviate replace {
+      default "small";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:circuits/isis:circuit/isis:silent-enable" {
+    deviate add {
+      must "../silent-enable='false' or not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../isis:name]/tnlm:tunnel-protocol/mpls-te:te-tunnel)";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:ipv6-base-topo" {
+    deviate delete {
+      must "not(../ipv6-base-topo='ipv6' and ../../../ipv4-prefix-ipv6-nexthop='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:max-load-balancing" {
+    deviate replace {
+      type uint32 {
+        range "1..8";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:mpls-ldp-global/isis:auto-flag" {
+    deviate add {
+      must "../auto-flag='false' or (../../../../../../../ni:name='_public_' and /mpls:mpls/mpls-ldp:ldp/mpls-ldp:enable='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af/isis:topologys/isis:topology/isis:max-load-balancing" {
+    deviate replace {
+      type uint32 {
+        range "1..8";
+      }
+    }
+  }
+}

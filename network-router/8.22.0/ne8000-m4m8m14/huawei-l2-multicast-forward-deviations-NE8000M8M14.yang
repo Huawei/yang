@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2-multicast-forward-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-l2-multicast-forward-deviations-NE8000M8M14";
+  prefix l2-multicast-forward-devs-NE8000M8M14;
+
+  import huawei-l2-multicast-forward {
+    prefix l2-multicast-forward;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-l2-multicast-forward module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/l2-multicast-forward:l2-multicast-forward" {
+    deviate not-supported;
+  }
+
+}

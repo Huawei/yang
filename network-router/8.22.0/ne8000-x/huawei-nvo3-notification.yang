@@ -1,0 +1,136 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nvo3-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-nvo3-notification";
+  prefix nvo3-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of nov3-notification.";
+  revision 2022-02-23 {
+    description
+      "Improve VXLAN tunnel state node description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-02-07 {
+    description
+      "Change description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-24 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "nvo3";
+  typedef vxlan-tunnel-state {
+    type enumeration {
+      enum "DOWN" {
+        value 2;
+        description
+          "The VXLAN tunnel state is down.";
+      }
+      enum "UP" {
+        value 1;
+        description
+          "The VXLAN tunnel state is up.";
+      }
+    }
+    description
+      "The state for VXLAN tunnel.";
+  }
+  notification nvo3-ipv4-vxlan-tunnel-down {
+    description
+      "IPv4 VXLAN tunnel down.";
+    leaf source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Source VTEP address of an IPv4 VXLAN tunnel.";
+    }
+    leaf destination-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Remote VTEP address of an IPv4 VXLAN tunnel.";
+    }
+    leaf tunnel-state {
+      type vxlan-tunnel-state;
+      description
+        "IPv4 VXLAN tunnel status.";
+    }
+  }
+  notification nvo3-ipv4-vxlan-tunnel-up {
+    description
+      "IPv4 VXLAN tunnel up.";
+    leaf source-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Source VTEP address of an IPv4 VXLAN tunnel.";
+    }
+    leaf destination-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "Remote VTEP address of an IPv4 VXLAN tunnel.";
+    }
+    leaf tunnel-state {
+      type vxlan-tunnel-state;
+      description
+        "IPv4 VXLAN tunnel status.";
+    }
+  }
+  notification nvo3-ipv6-vxlan-tunnel-down {
+    description
+      "IPv6 VXLAN tunnel down.";
+    leaf source-address {
+      type inet:ipv6-address-no-zone;
+      description
+        "Source VTEP address of an IPv6 VXLAN tunnel.";
+    }
+    leaf destination-address {
+      type inet:ipv6-address-no-zone;
+      description
+        "Remote VTEP address of an IPv6 VXLAN tunnel.";
+    }
+    leaf tunnel-state {
+      type vxlan-tunnel-state;
+      description
+        "IPv6 VXLAN tunnel status.";
+    }
+  }
+  notification nvo3-ipv6-vxlan-tunnel-up {
+    description
+      "IPv6 VXLAN tunnel up.";
+    leaf source-address {
+      type inet:ipv6-address-no-zone;
+      description
+        "Source VTEP address of an IPv6 VXLAN tunnel.";
+    }
+    leaf destination-address {
+      type inet:ipv6-address-no-zone;
+      description
+        "Remote VTEP address of an IPv6 VXLAN tunnel.";
+    }
+    leaf tunnel-state {
+      type vxlan-tunnel-state;
+      description
+        "IPv6 VXLAN tunnel status.";
+    }
+  }
+}

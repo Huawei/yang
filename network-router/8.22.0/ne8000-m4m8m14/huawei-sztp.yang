@@ -1,0 +1,75 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-sztp {
+  namespace "urn:huawei:yang:huawei-sztp";
+  prefix sztp;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "SZTP (Secure Zero Touch Provisioning) refers to the function of an automatically loading of version file (including system software, configuration files and patch files) used for powering on a new factory device or an empty configuration device.";
+
+  revision 2020-12-22 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ztp";
+  
+  container sztp {
+    description
+      "SZTP (Secure Zero Touch Provisioning) refers to the function of an automatically loading of version file (including system software, configuration files and patch files) used for powering on a new factory device or an empty configuration device.";
+    container status {
+      config false;
+      description
+        "SZTP function status, the SZTP function for used to query the enabled state and completion state.";
+      leaf config-status {
+        type boolean;
+        description
+          "SZTP config enable or disable status.";
+      }
+      leaf devid-cert {
+        type boolean;
+        description
+          "DevID certificate enable or disable status.";
+      }
+      leaf enable {
+        type boolean;
+        description
+          "SZTP function enable or disable status.";
+      }
+      leaf pre-configuration-name {
+        type string {
+          length "1..65";
+        }
+        description
+          "SZTP function previous configuration file name.";
+      }
+    }
+  }
+
+  rpc set-enable-status {
+    description
+      "Set SZTP enable status.";
+    input {
+      leaf enable {
+        type boolean;
+        description
+          "Enable status.";
+      }
+    }
+  }
+}

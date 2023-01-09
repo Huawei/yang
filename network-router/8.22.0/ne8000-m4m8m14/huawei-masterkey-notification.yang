@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-masterkey-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-masterkey-notification";
+  prefix masterkey-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of masterkey-notification.";
+  revision 2020-08-25 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "masterkey";
+  notification masterkey-expired-alarm {
+    description
+      "The MasterKey of the user expiration alarm.";
+  }
+  notification masterkey-expired-alarm-resume {
+    description
+      "The MasterKey of the user expiration alarm is cleared.";
+  }
+}

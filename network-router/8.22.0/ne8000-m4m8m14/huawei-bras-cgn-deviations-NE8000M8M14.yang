@@ -1,0 +1,52 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-cgn-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bras-cgn-deviations-NE8000M8M14";
+  prefix bras-cgn-devs-NE8000M8M14;
+
+  import huawei-bras-cgn {
+    prefix bras-cgn;
+  }
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-cgn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-cgn:bras-cgn/bras-cgn:nat-distributed-policy" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-basic-access:bras/bras-cgn:bras-cgn" {
+    deviate not-supported;
+  }
+
+}

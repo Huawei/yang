@@ -1,0 +1,368 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-dhcpv6-server {
+  namespace "urn:huawei:yang:huawei-bras-dhcpv6-server";
+  prefix bras-dhcpv6-server;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the DHCPv6 server.";
+  revision 2020-02-22 {
+    description
+      "Description modification.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-17 {  
+    description  
+      "Second revision.";  
+    reference  
+      "Huawei private.";  
+  }  
+  revision 2019-09-27 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ipv6pool";
+/****************************type definitions*************************************/
+  typedef dhcpv6-server-algorithm-type {
+    type enumeration {
+      enum "master-backup" {
+        value 1;
+        description
+          "Configure the algorithm for selecting DHCPv6 servers as master/backup.";
+      }
+      enum "loading-share" {
+        value 2;
+        description
+          "Configure the algorithm for selecting DHCPv6 servers as load balancing.";
+      }
+      enum "polling" {
+        value 3;
+        description
+          "Configure the algorithm for selecting DHCPv6 servers as polling.";
+      }
+    }
+    description
+      "DHCPv6 server algorithm type.";
+  }
+/****************************type definitions*************************************/
+/********************************groupings***************************************/
+  grouping dhcpv6-server-property {
+    description
+      "Configure a status (Up/Down) switchover for a DHCPv6 server.";
+    leaf dead-count {
+      type uint8 {
+        range "1..64";
+      }
+      default "1";
+      description
+        "Specify the maximum number of times at which the DHCPv6 server does not send response packets.";
+    }
+    leaf time-out {
+      type uint8 {
+        range "1..60";
+      }
+      units "s";
+      default "25";
+      description
+        "Specify a timeout period. If a device receives no response from the DHCPv6 server within the timeout period, it re-sends request packets.";
+    }
+    leaf dead-time {
+      type uint16 {
+        range "1..65535";
+      }
+      units "min";
+      default "3";
+      description
+        "Specify a period within which the DHCPv6 server is down. After the dead-time, the DHCPv6 server is set to up.";
+    }
+  }
+  grouping send-solicit-speed {
+    description
+      "Configure the rate at which Solicit packets are sent to the DHCPv6 server.";
+    container send-solicit-speed {
+      must "(./packet-number and ./time) or (not(./packet-number) and not(./time))";
+      description
+        "Configure the rate at which Solicit packets are sent to the DHCPv6 server.";
+      leaf packet-number {
+        type uint16 {
+          range "1..65535";
+        }
+        description
+          "Specify the number of Solicit packets that can be sent within a period.";
+      }
+      leaf time {
+        type uint8 {
+          range "1..10";
+        }
+        units "s";
+        description
+          "Specify a period of time.";
+      }
+    }
+  }
+/********************************groupings***************************************/
+  container bras-dhcpv6-server {
+    description
+      "Configure the DHCPv6 server.";
+    container dhcpv6-server {
+      must "count(ips/ip) + count(interfaces/interface) <= 4094";
+      description
+        "Configure DHCPv6 server.";
+      container ips {
+        description
+          "List of IPv6 addresses for DHCPv6 server.";
+        list ip {
+          must "/bras-dhcpv6-server:bras-dhcpv6-server/bras-dhcpv6-server:dhcpv6-server-groups/bras-dhcpv6-server:dhcpv6-server-group/bras-dhcpv6-server:bind-servers/bras-dhcpv6-server:destination-ips/bras-dhcpv6-server:destination-ip[ipv6-address=current()/ipv6-address][vpn-instance=current()/vpn-instance]";
+          key "ipv6-address vpn-instance";
+          description
+            "Configure IPv6 addresses for a DHCPv6 server.";
+          leaf ipv6-address {
+            type inet:ipv6-address-no-zone;
+            description
+              "Specify the IPv6 address for a DHCPv6 server.";
+          }
+          leaf vpn-instance {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+            description
+              "Specify the name of a VPN instance. If DHCPv6 server belongs to the public network, vpn-instance can be defined as '_public_'.";
+          }
+          uses send-solicit-speed;
+        }
+      }
+      container interfaces {
+        description
+          "List of outbound interface for DHCPv6 server.";
+        list interface {
+          must "/bras-dhcpv6-server:bras-dhcpv6-server/bras-dhcpv6-server:dhcpv6-server-groups/bras-dhcpv6-server:dhcpv6-server-group/bras-dhcpv6-server:bind-servers/bras-dhcpv6-server:interfaces/bras-dhcpv6-server:interface[name=current()/name]";
+          key "name";
+          description
+            "Configure the outbound interface for DHCPv6 server.";
+          leaf name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10GE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='XGigabitEthernet' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50GE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50|100GE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Ethernet' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='LoopBack' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='PW-VE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='40GE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='200GE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='400GE' or
+                  /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Vlanif'";
+            description
+              "Specify the outbound interface for a DHCPv6 server.";
+          }
+          uses send-solicit-speed;
+        }
+      }
+    }
+    container dhcpv6-server-groups {
+      description
+        "List of DHCPv6 server groups.";
+      list dhcpv6-server-group {
+        key "name";
+        max-elements  "4096";
+        description
+          "Configure a DHCPv6 server group.";
+        leaf name {
+          type string {
+            length "1..32";
+            pattern '[a-z0-9._-]{1,32}';
+          }
+          must "../name != '-' and ../name != '--'";
+          description
+            "Specify the name of the DHCPv6 server group.";
+          ext:case-sensitivity "lower-only";
+        }
+        container bind-servers {
+          must "count(destination-ips/destination-ip) + count(interfaces/interface) <= 8";
+          description
+            "Configure IPv6 addresses or outbound interfaces and the load balancing weight for a DHCPv6 server.";
+          container destination-ips {
+            description
+              "List of IPv6 addresses and the load balancing weight for a DHCPv6 server.";
+            list destination-ip {
+              key "ipv6-address vpn-instance";
+              description
+                "Configure an IPv6 address and the load balancing weight for a DHCPv6 server.";
+              leaf ipv6-address {
+                type leafref {
+                  path "/bras-dhcpv6-server:bras-dhcpv6-server/bras-dhcpv6-server:dhcpv6-server/bras-dhcpv6-server:ips/bras-dhcpv6-server:ip/bras-dhcpv6-server:ipv6-address";
+                }
+                description
+                  "Specify the IPv6 address for a destination DHCPv6 server.";
+              }
+              leaf vpn-instance {
+                type leafref {
+                  path "/bras-dhcpv6-server:bras-dhcpv6-server/bras-dhcpv6-server:dhcpv6-server/bras-dhcpv6-server:ips/bras-dhcpv6-server:ip[ipv6-address=current()/../ipv6-address]/bras-dhcpv6-server:vpn-instance";
+                }
+                description
+                  "Specify the name of a VPN instance. public network vpn-name value is '_public_'.";
+              }
+              leaf weight {
+                type uint8 {
+                  range "0..100";
+                }
+                default "0";
+                description
+                  "Specify the load balancing weight for a DHCPv6 server.";
+              }
+            }
+          }
+          container interfaces {
+            description
+              "List of outbound interface and the load balancing weight for a DHCPv6 server.";
+            list interface {
+              key "name";
+              description
+                "Configure an outbound interface and the load balancing weight for a DHCPv6 server.";
+              leaf name {
+                type leafref {
+                  path "/bras-dhcpv6-server:bras-dhcpv6-server/bras-dhcpv6-server:dhcpv6-server/bras-dhcpv6-server:interfaces/bras-dhcpv6-server:interface/bras-dhcpv6-server:name";
+                }
+                description
+                  "Specify the outbound interface for DHCPv6 packets.";
+              }
+              leaf weight {
+                type uint8 {
+                  range "0..100";
+                }
+                default "0";
+                description
+                  "Specify the load balancing weight for a DHCPv6 server.";
+              }
+            }
+          }
+        }
+        container server-source {
+          description
+            "Configure the source address for packets to be sent to the DHCPv6 server group.";
+          choice source-address {
+            description
+              "Configure the source address for packets to be sent to the DHCPv6 server group.";
+            case link-address {
+              description
+                "Configures the source address, which is a link address of the prefix pool bound to a remote address pool.";
+              leaf link-address {
+                type empty;
+                description
+                  "Indicate that the source address is a link address of the prefix pool bound to a remote address pool.";
+              }
+            }
+            case if-name {
+              description
+                "Configures the type and number of the interface whose address is the source address.";
+              leaf if-name {
+                type leafref {
+                  path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+                }
+                must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='GigabitEthernet' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='10GE' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='XGigabitEthernet' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='100GE' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='400GE' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Virtual-Ethernet' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50GE' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='50|100GE' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='FlexE' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='25GE' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Ethernet' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Eth-Trunk' or
+                      /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='LoopBack'";
+                description
+                  "Indicate the type and number of the interface whose address is the source address.";
+              }
+            }
+          }
+        }
+        container server-algorithm {
+          description
+            "Configure the algorithm for selecting DHCPv6 servers.";
+          leaf type {
+            type dhcpv6-server-algorithm-type;
+            default "master-backup";
+            description
+              "Specify the algorithm type.";
+          }
+          leaf check-loose {
+            when "../type='polling'";
+            type boolean;
+            default "false";
+            description
+              "Enable/disable the loose check function.";
+          }
+        }
+        container retransmit {
+          description
+            "Configure the device to transparently transmit retransmitted messages from users to the DHCPv6 server.";
+          leaf solicit {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable a BRAS to transparently transmit retransmitted Solicit messages from users to a DHCPv6 server while waiting for Advertise messages from the DHCPv6 server.";
+          }
+          leaf request {
+            type boolean;
+            default "false";
+            description
+              "Enable/disable a BRAS to transparently transmit retransmitted Request messages from users to a DHCPv6 server while waiting for Reply messages from the DHCPv6 server.";
+          }
+        }
+        container release-agent {
+          description
+            "Configure the function of sending DHCPv6 release packets.";
+          leaf enable {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable the function of sending DHCPv6 release packets.";
+          }
+        }
+      }
+    }
+    container server-global-property {
+      description
+        "Configure a status (Up/Down) switchover for global DHCPv6 server.";
+      uses dhcpv6-server-property;
+    }
+  }
+}

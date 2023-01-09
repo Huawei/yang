@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-te-interface-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-te-interface-deviations-ATN-950D980C";
+  prefix te-interface-devs-ATN-950D980C;
+
+  import huawei-te-interface {
+    prefix te-interface;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-te {
+    prefix te;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-gre {
+    prefix gre;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-te-interface module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/te:te/te-interface:interfaces/te-interface:interface/te-interface:attribute/te-interface:bandwidth/te-interface:max-reserved" {
+    deviate add {
+      must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/ifm:type!='Tunnel') or ((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/ifm:type='Tunnel') and ((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/ifm:bandwidth and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/ifm:bandwidth*1000>=../max-reserved) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/ifm:bandwidth-kbps and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/ifm:bandwidth-kbps>=../max-reserved) or (not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/ifm:bandwidth) and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/ifm:bandwidth-kbps) and (65536>=../max-reserved*1000))))";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/te:te/te-interface:interfaces/te-interface:interface/te-interface:attribute/te-interface:bandwidth/te-interface:dynamic-max-reserved-percent" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/../../../te-interface:name]/tnlm:tunnel-protocol/gre:gre-tunnel) or (../dynamic-max-reserved-percent>=1 and ../dynamic-max-reserved-percent<=100)';
+    }
+  }
+}

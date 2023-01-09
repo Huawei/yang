@@ -1,0 +1,68 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-devm-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-fim-devm-deviations-NE8000-F1A";
+  prefix fim-devm-devs-NE8000-F1A;
+
+  import huawei-fim-devm {
+    prefix fim-devm;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fim-devm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:fim/fim-devm:forward-mode" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:fim/fim-devm:vlan-miss-enable" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:fim/fim-devm:scan-period" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:fim/fim-devm:cpu-threshold" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:fim/fim-devm:cpu-detect" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:fim/fim-devm:cpu-restore" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:fim/fim-devm:statistics" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:fim/fim-devm:precision" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:macmtu-discard-statistics" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fim-devm:ve-mac-address" {
+    deviate not-supported;
+  }
+
+}

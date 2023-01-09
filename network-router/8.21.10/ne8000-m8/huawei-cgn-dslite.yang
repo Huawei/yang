@@ -1,0 +1,83 @@
+/******************************************************
+* Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn-dslite {
+  namespace "urn:huawei:yang:huawei-cgn-dslite";
+  prefix cgn-dslite;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-cgn-common {
+    prefix cgn-common;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn DS-Lite.";
+  revision 2022-02-22 {
+    description
+      "Add mandatory for host-name.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-26 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  container cgn-dslite {
+    description
+      "DS-Lite.";
+    container dslite-instances {
+      description
+        "List of DS-Lite-instance.";
+      list dslite-instance {
+        key "instance-name instance-id";
+        unique "instance-id";
+        unique "instance-name";
+        description
+          "Configure DS-Lite instance, used to translate network address.";
+        leaf instance-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Specify the name of a DS-Lite instance.";
+        }
+        leaf instance-id {
+          type uint16 {
+            range "1..4095";
+          }
+          description
+            "Specify the id of a DS-Lite instance.";
+        }
+        container log {
+          description "Configure DS-Lite log.";
+          uses cgn-common:log-host {
+            refine "hosts/host/host-name" {
+                mandatory true;
+            }
+            refine "hosts/host/secondary" {
+                must "not (../secondary='true' and ../../../send-mode/mode='concurrent')";
+            }
+          }
+          container send-mode {
+            description "Configure nat session log send mode.";
+            uses cgn-common:session-log-send-mode;
+          }
+        }
+      }
+    }
+  }
+  ext:task-name "nat";
+}

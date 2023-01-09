@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pcc-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-pcc-deviations-ATN-950D980C";
+  prefix pcc-devs-ATN-950D980C;
+
+  import huawei-pcc {
+    prefix pcc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-pcc module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/pcc:pcc/pcc:connect-servers/pcc:connect-server/pcc:authentication/pcc:auth-type-selection/pcc:auth-md5" {
+    deviate not-supported;
+  }
+}

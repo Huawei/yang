@@ -1,0 +1,50 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-esqm-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-esqm-deviations-NE8000-F1A";
+  prefix esqm-devs-NE8000-F1A;
+
+  import huawei-esqm {
+    prefix esqm;
+  }
+
+  import huawei-sflow {
+    prefix sflow;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-esqm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/esqm:esqm/esqm:esqm-enable" {
+    deviate add {
+      must "count(/devm:devm/devm:mpu-boards/devm:mpu-board[sflow:sflow/sflow:slot-sampling/sflow:enable = 'true']) = 0";
+    }
+    deviate add {
+      must "not(/sflow:sflow/sflow:sflow-enable)";
+    }
+  }
+
+}

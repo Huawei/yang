@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-in-udp6-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-mpls-in-udp6-deviations-OC-NE-X8X16";
+  prefix mpls-in-udp6-devs-OC-NE-X8X16;
+
+  import huawei-mpls-in-udp6 {
+    prefix mpls-in-udp6;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "MPLS in UDP6 cut.";
+
+  revision 2022-06-23 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls-in-udp6:mpls-in-udp6" {
+    deviate not-supported;
+  }
+}

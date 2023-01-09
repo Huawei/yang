@@ -1,0 +1,51 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos-apn {
+  namespace "urn:huawei:yang:huawei-qos-apn";
+  prefix qos-apn;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-apn {
+    prefix apn;
+  }
+  import huawei-qos {
+    prefix qos;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Quality of service for apn6 management.";
+  revision 2022-03-05 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "qos";
+  augment "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior" {
+    description
+      "Adds APN ID configuration to traffic behavior model.";
+    container remark-apn-id-ipv6 {
+      presence "create remark-apn-id-ipv6";
+      description
+        "Configure apn ID IPv6 instance.";
+      leaf instance-name {
+        type leafref {
+          path "/apn:apn/apn:ipv6/apn:apn-id-instances/apn:apn-id-instance/apn:name";
+        }
+        mandatory true;
+        description
+          "APN ID IPv6 instance name.";
+      }
+    }
+  }
+}

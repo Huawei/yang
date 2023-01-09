@@ -1,0 +1,64 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cpudefend-notification-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-cpudefend-notification-deviations-ATN-950D980C";
+  prefix cpudefend-notification-devs-ATN-950D980C;
+
+  import huawei-cpudefend-notification {
+    prefix cpudefend-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cpudefend-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cpudefend-notification:application-apperceive-drop-rate-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:application-apperceive-drop-rate-alarm-clear" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:ttl-expired-loop-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:ttl-expired-loop-alarm-clear" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:urpf-discarded-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:urpf-discarded-alarm-clear" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:arpvlancar-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:arpvlancar-alarm-clear" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:ndvlancar-alarm" {
+    deviate not-supported;
+  }
+  deviation "/cpudefend-notification:ndvlancar-alarm-clear" {
+    deviate not-supported;
+  }
+
+}

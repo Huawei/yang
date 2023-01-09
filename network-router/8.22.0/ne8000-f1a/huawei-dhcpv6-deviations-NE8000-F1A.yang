@@ -1,0 +1,80 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dhcpv6-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-dhcpv6-deviations-NE8000-F1A";
+  prefix dhcpv6-devs-NE8000-F1A;
+
+  import huawei-dhcpv6 {
+    prefix dhcpv6;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-dhcpv6 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef dhcpv6-duid-deviations {
+    type enumeration {
+      enum invalid {
+        value 0;
+        description
+          "-";
+      }
+      enum llt {
+        value 1;
+        description
+          "Link-layer address plus time.";
+      }
+      enum user-defined {
+        value 3;
+        description
+          "User-defined.";
+      }
+    }
+    description
+      "Description of dhcp6_dhcpv6Duid_type.";
+  }
+
+  deviation "/dhcpv6:dhcpv6/dhcpv6:relay/dhcpv6:pd-route/dhcpv6:access-limit" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:reset-dhcpv6-snooping-packet-statistics" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:reset-dhcpv6-snooping-discarded-packet-statistics" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:reset-dhcpv6-snooping-dynamic-binding-table" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:rebuild-option" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:dhcpv6/dhcpv6:common/dhcpv6:global/dhcpv6:duid-format" {
+    deviate replace {
+      default "ll";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute" {
+    deviate add {
+      must '(count(destination-addresses/destination-address) + count(destination-ifs/destination-if)) <= 8';
+    }
+  }
+}

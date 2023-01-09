@@ -1,0 +1,44 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pw-atm {
+  namespace "urn:huawei:yang:huawei-pw-atm";
+  prefix pw-atm;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Lspic ATM interfaces configuration management.";
+  revision 2021-11-11 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  container pw-atm {
+    description
+      "Global settings of the ATM interfaces.";
+    container global-attribute {
+      description
+        "Configure global configurations of the ATM interfaces.";
+      leaf llid {
+        type string {
+          length "47";
+          pattern '01(-[0-9]{2}){4}(-[0-9A-F]{2}){11}';
+        }
+        description
+          "Local loopback ID. Such as xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx.";
+      }
+    }
+  }
+  ext:task-name "interface-mgr";
+}

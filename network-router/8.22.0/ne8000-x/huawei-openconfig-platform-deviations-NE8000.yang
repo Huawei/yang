@@ -1,0 +1,94 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-platform-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-openconfig-platform-deviations-NE8000";
+  prefix oc-platform-devs-NE8000;
+
+  import openconfig-platform {
+    prefix oc-platform;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for openconfig-platform module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:subcomponents" {
+    deviate replace {
+      config false;
+    }
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:location" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:part-no" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:removable" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:empty" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:allocated-power" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:used-power" {
+    deviate not-supported;
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:properties" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:chassis" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:fabric" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:storage" {
+    deviate not-supported;
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:integrated-circuit" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:backplane" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:power-supply" {
+    deviate replace {
+      config false;
+    }
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:fan" {
+    deviate replace {
+      config false;
+    }
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:fan/oc-platform:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:power-supply/oc-platform:config" {
+    deviate not-supported;
+  }
+  
+}

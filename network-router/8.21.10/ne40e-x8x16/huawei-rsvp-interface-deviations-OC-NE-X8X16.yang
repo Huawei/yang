@@ -1,0 +1,62 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-rsvp-interface-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-rsvp-interface-deviations-OC-NE-X8X16";
+  prefix rsvp-interface-devs-OC-NE-X8X16;
+
+  import huawei-rsvp-interface {
+    prefix rsvp-interface;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-if-ip {
+    prefix if-ip;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-gre {
+    prefix gre;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-rsvp-interface module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-te:te/rsvp-interface:rsvp-interfaces/rsvp-interface:rsvp-interface/rsvp-interface:distribute-inst-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-te:te/rsvp-interface:rsvp-interfaces/rsvp-interface:rsvp-interface" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/name]/tnlm:tunnel-protocol/gre:gre-tunnel) or not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name = current()/name]/ip:ipv4/ip:unnumbered-address/ip:unnumbered-if-name) or not(/ni:network-instance/ni:instances/ni:instance/if-ip:ipv4-ifs/if-ip:ipv4-if[if-ip:name = current()/name])';
+    }
+  }
+}

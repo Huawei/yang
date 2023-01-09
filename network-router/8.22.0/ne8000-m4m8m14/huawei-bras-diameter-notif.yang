@@ -1,0 +1,75 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-diameter-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bras-diameter-notif";
+  prefix bras-diameter-notif;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of bras diameter.";
+  revision 2022-06-17 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "diameter";
+  notification diameter-enable-fail {
+    description
+      "The diameter enable fail notification.";
+    leaf upmng-instance {
+      type string {
+        length "1..15";
+      }
+      description
+        "UPMNG instance name.";
+    }
+    leaf reason {
+      type string {
+        length "1..256";
+      }
+      description
+        "Indicates the reason of the notification.";
+    }
+    leaf reason-code {
+      type uint32;
+      description
+        "Indicates the reason code of the notification.";
+    }
+  }
+  notification diameter-enable-success {
+    description
+      "The diameter enable success notification.";
+    leaf upmng-instance {
+      type string {
+        length "1..15";
+      }
+      description
+        "UPMNG instance name.";
+    }
+    leaf reason {
+      type string {
+        length "1..256";
+      }
+      description
+        "Indicates the reason of the notification.";
+    }
+    leaf reason-code {
+      type uint32;
+      description
+        "Indicates the reason code of the notification.";
+    }
+  }
+}

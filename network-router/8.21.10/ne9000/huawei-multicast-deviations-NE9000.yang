@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-multicast-deviations-NE9000";
+  prefix mc-devs-NE9000;
+
+  import huawei-multicast {
+    prefix mc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-multicast module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mc:multicast/mc:global/mc:ipv4/mc:bas-igmp-extranet-enable" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,1001 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lmsp {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-lmsp";
+  prefix lmsp;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Liner Multiplex Section Protection configuration and information.";
+  revision 2022-02-25 {
+    description
+      "Modify the must condition for interface-name.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-12 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef lmsp-port-mode {
+    type enumeration {
+      enum "working" {
+        value 1;
+        description
+          "LMSP interface mode: working interface.";
+      }
+      enum "protection" {
+        value 2;
+        description
+          "LMSP interface mode: protection interface.";
+      }
+    }
+    description
+      "LMSP interface mode.";
+  }
+  typedef lmsp-protection-mode {
+    type enumeration {
+      enum "one-plus-one" {
+        value 1;
+        description
+          "LMSP protection type: 1+1.";
+      }
+      enum "one-to-one" {
+        value 2;
+        description
+          "LMSP protection type: 1:1.";
+      }
+    }
+    description
+      "LMSP protection type.";
+  }
+  typedef lmsp-switch-mode {
+    type enumeration {
+      enum "unidirection" {
+        value 1;
+        description
+          "LMSP switching mode: unidirection.";
+      }
+      enum "bidirection" {
+        value 2;
+        description
+          "LMSP switching mode: bidirection.";
+      }
+    }
+    description
+      "LMSP switching mode.";
+  }
+  typedef lmsp-lock-state {
+    type enumeration {
+      enum "unlocked" {
+        value 0;
+        description
+          "LMSP lock state: unlocked.";
+      }
+      enum "locked" {
+        value 1;
+        description
+          "LMSP lock state: locked.";
+      }
+    }
+    description
+      "LMSP lock state.";
+  }
+  typedef signal-priority {
+    type enumeration {
+      enum "high" {
+        value 0;
+        description
+          "Priority of the SF/SD switching: high.";
+      }
+      enum "low" {
+        value 1;
+        description
+          "Priority of the SF/SD switching: low.";
+      }
+    }
+    description
+      "Priority of the SF/SD switching.";
+  }
+  typedef lmsp-authentication-mode {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "LMSP authentication mode: none.";
+      }
+      enum "simple" {
+        value 1;
+        description
+          "LMSP authentication mode: plaintext.";
+      }
+      enum "cipher" {
+        value 2;
+        description
+          "LMSP authentication mode: ciphertext.";
+      }
+      enum "cipher-sha2" {
+        value 3;
+        description
+          "LMSP authentication mode: ciphertext and enable SHA2.";
+      }
+      enum "cipher-hmac" {
+        value 4;
+        description
+          "LMSP authentication mode: ciphertext and enable HMAC.";
+      }
+    }
+    description
+      "LMSP authentication mode.";
+  }
+  typedef enable-status {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable.";
+      }
+    }
+    description
+      "Enable status.";
+  }
+  typedef lmsp-port-state {
+    type enumeration {
+      enum "inactive" {
+        value 0;
+        description
+          "Protection interface status: deactivated.";
+      }
+      enum "active" {
+        value 1;
+        description
+          "Protection interface status: activated.";
+      }
+    }
+    description
+      "Protection interface status.";
+  }
+  typedef switch-type {
+    type enumeration {
+      enum "manual" {
+        value 1;
+        description
+          "Manual.";
+      }
+      enum "force" {
+        value 2;
+        description
+          "Force.";
+      }
+      enum "auto" {
+        value 3;
+        description
+          "Cancel switching configuration.";
+      }
+    }
+    description
+      "Configure a traffic switching mode for a LMSP group. The switching modes are prioritized in descending order: Forcible switching to the working link > Forcible switching to the protection link > Manual switching to the working link > Manual switching to the protection link.";
+  }
+  typedef signal-state {
+    type enumeration {
+      enum "ok" {
+        value 0;
+        description
+          "Correct signal.";
+      }
+      enum "signal-failure" {
+        value 1;
+        description
+          "Signal failure.";
+      }
+      enum "signal-degrade" {
+        value 2;
+        description
+          "Signal degrade.";
+      }
+    }
+    description
+      "Signal running state.";
+  }
+  grouping protection-config {
+    description
+      "LMSP protection interface configuration.";
+    leaf protection-mode {
+      ext:dynamic-default;
+      type lmsp-protection-mode;
+      description
+        "Protection mode (1:1/1+1).";
+    }
+    leaf switch-mode {
+      ext:dynamic-default;
+      type lmsp-switch-mode;
+      must "(../protection-mode='one-to-one' and ../switch-mode='bidirection') or (../protection-mode='one-plus-one')";
+      description
+        "Switching mode: unidirection or bidirection.";
+    }
+    leaf revert-time {
+      ext:dynamic-default;
+      type uint32 {
+        range "1..12";
+      }
+      units "min";
+      description
+        "Revert time.";
+    }
+    leaf lockout-mode {
+      type lmsp-lock-state;
+      default "unlocked";
+      description
+        "Enables protection lockout for a LMSP group to lock traffic on the working link.";
+    }
+    leaf fault-signal-request-priority {
+      type signal-priority;
+      default "high";
+      description
+        "Fault signal request priority.";
+    }
+  }
+  container lmsp {
+    description
+      "Liner Multiplex Section Protection.";
+    container aps-groups {
+      description
+        "List of information about all LMSP groups.";
+      list aps-group {
+        key "group-id";
+        description
+          "Configure information about a LMSP group.";
+        leaf group-id {
+          type uint32 {
+            range "1..192";
+          }
+          description
+            "LMSP Group ID.";
+        }
+        container group-members {
+          must "not(group-member/single-chassis and group-member/multi-chassis)";
+          description
+            "List of information about all member interfaces in a LMSP group.";
+          list group-member {
+            key "interface-name";
+            unique "single-chassis/port-mode";
+            min-elements 1;
+            max-elements 2;
+            description
+              "Configure information on a member interface in a LMSP group.";
+            leaf interface-name {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Pos' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:link-protocol='ppp') or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Cpos'";
+              must "not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type!=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../group-member/interface-name]/ifm:type)";
+              must "not(/lmsp/aps-groups/aps-group[group-id!=current()/../../../group-id]/group-members/group-member[interface-name=current()])";
+              description
+                "Name of a LMSP group's member interface.";
+            }
+            container single-chassis {
+              presence "Single-Chassis configuration.";
+              description
+                "Configure Single-Chassis LMSP.";
+              leaf port-mode {
+                type lmsp-port-mode;
+                must "../port-mode!='protection' or ../../../group-member[interface-name!=current()/../../interface-name]/single-chassis/port-mode='working'";
+                mandatory true;
+                description
+                  "Interface mode: working or protection.";
+              }
+              container protection-attributes {
+                when "../port-mode='protection'";
+                description
+                  "Configure the protection interface.";
+                uses protection-config;
+              }
+            }
+            container multi-chassis {
+              when "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../interface-name]/ifm:type='Cpos'";
+              must "count(../../group-member)=1";
+              must "hold-time >= (keep-alive-time * 3)";
+              presence "Multi-Chassis configuration.";
+              description
+                "Configure Multi-Chassis LMSP.";
+              leaf port-mode {
+                type lmsp-port-mode;
+                mandatory true;
+                description
+                  "Interface mode: working or protection.";
+              }
+              leaf peer-ip {
+                type inet:ipv4-address-no-zone;
+                must "../peer-ip!='0.0.0.0'";
+                mandatory true;
+                description
+                  "Peer IP address in Multi-Chassis LMSP mode.";
+              }
+              leaf local-ip {
+                type inet:ipv4-address-no-zone;
+                must "../local-ip!='0.0.0.0'";
+                mandatory true;
+                description
+                  "Local IP address in Multi-Chassis LMSP mode.";
+              }
+              leaf keep-alive-time {
+                type uint32 {
+                  range "1..60";
+                }
+                units "s";
+                default "1";
+                description
+                  "Specifies the interval at which a local end sends Multi-Chassis LMSP negotiation messages.";
+              }
+              leaf hold-time {
+                type uint32 {
+                  range "3..300";
+                }
+                units "s";
+                default "180";
+                description
+                  "Specifies the hold time of the Multi-Chassis LMSP connection.";
+              }
+              leaf bfd-session-name {
+                type leafref {
+                  path "/bfd:bfd/bfd:sessions/bfd:session/bfd:name";
+                }
+                description
+                  "BFD session name.";
+              }
+              leaf authentication-mode {
+                type lmsp-authentication-mode;
+                default "none";
+                description
+                  "LMSP interface authentication mode.";
+              }
+              leaf authentication-key {
+                when "../authentication-mode and ../authentication-mode!='none'";
+                type pub-type:password {
+                  length "1..48";
+                }
+                mandatory true;
+                description
+                  "Password string. The value is a string of 1 to 16 unencrypted characters or 32 ciphertext characters or 48 ciphertext characters. It is case sensitive, excluding special command line characters, such as spaces and question marks.";
+              }
+              leaf anti-replay {
+                type enable-status;
+                default "disable";
+                description
+                  "PGP anti-replay enable.";
+              }
+              container protection-attributes {
+                when "../port-mode='protection'";
+                description
+                  "Configure the protection interface.";
+                uses protection-config;
+              }
+            }
+          }
+        }
+        container group-state {
+          config false;
+          description
+            "Operational data of information about a LMSP group.";
+          leaf working-interface {
+            type leafref {
+              path "/lmsp:lmsp/lmsp:aps-groups/lmsp:aps-group/lmsp:group-members/lmsp:group-member/lmsp:interface-name";
+            }
+            description
+              "LMSP group working interface.";
+          }
+          leaf working-ip {
+            type inet:ipv4-address-no-zone;
+            description
+              "Peer working IP address in Multi-Chassis LMSP mode.";
+          }
+          leaf protection-interface {
+            type leafref {
+              path "/lmsp:lmsp/lmsp:aps-groups/lmsp:aps-group/lmsp:group-members/lmsp:group-member/lmsp:interface-name";
+            }
+            description
+              "LMSP group protection interface.";
+          }
+          leaf protection-ip {
+            type inet:ipv4-address-no-zone;
+            description
+              "Peer protection IP address in Multi-Chassis LMSP mode.";
+          }
+          leaf protection-mode {
+            type lmsp-protection-mode;
+            description
+              "Protection mode (1:1/1+1).";
+          }
+          leaf switch-mode {
+            type lmsp-switch-mode;
+            description
+              "Switching mode: unidirection or bidirection.";
+          }
+          leaf revert-time {
+            type uint32 {
+              range "1..12";
+            }
+            units "min";
+            description
+              "Revert time.";
+          }
+          leaf working-state {
+            type lmsp-port-state;
+            description
+              "LMSP group working interface active status.";
+          }
+          leaf protection-state {
+            type lmsp-port-state;
+            description
+              "LMSP group protection interface active status.";
+          }
+          leaf working-interface-signal-state {
+            type signal-state;
+            description
+              "Signal status of the working interface.";
+          }
+          leaf protection-interface-signal-state {
+            type signal-state;
+            description
+              "Signal status of the protection interface.";
+          }
+          leaf working-switch-time {
+            type string {
+              length "1..31";
+            }
+            description
+              "LMSP group's working interface switching time. UTC time, accurate to milliseconds.";
+          }
+          leaf protection-switch-time {
+            type string {
+              length "1..31";
+            }
+            description
+              "LMSP group's protection interface switching time. UTC time, accurate to milliseconds.";
+          }
+          leaf switch-action {
+            type enumeration {
+              enum "local-protection-locking" {
+                value 0;
+                description
+                  "Local protection locking.";
+              }
+              enum "local-force-to-protection-link" {
+                value 1;
+                description
+                  "The local end forcibly switches to the protection link.";
+              }
+              enum "local-force-to-work-link" {
+                value 2;
+                description
+                  "The local end forcibly switches to the working link.";
+              }
+              enum "local-manual-to-protection-link" {
+                value 3;
+                description
+                  "The local end manually switches to the protection link.";
+              }
+              enum "local-manual-to-work-link" {
+                value 4;
+                description
+                  "The local end manually switches to the working link.";
+              }
+              enum "remote-protection-locking" {
+                value 5;
+                description
+                  "Remote protection locking.";
+              }
+              enum "remote-force-to-protection-link" {
+                value 6;
+                description
+                  "The remote end forcibly switches to the protection link.";
+              }
+              enum "remote-force-to-work-link" {
+                value 7;
+                description
+                  "The remote end forcibly switches to the working link.";
+              }
+              enum "remote-manual-to-protection-link" {
+                value 8;
+                description
+                  "The remote end manually switches to the protection link.";
+              }
+              enum "remote-manual-to-work-link" {
+                value 9;
+                description
+                  "The remote end manually switches to the working link.";
+              }
+              enum "lockout-to-work-link" {
+                value 10;
+                description
+                  "Services are locked on the working link.";
+              }
+            }
+            description
+              "LMSP group switching action.";
+          }
+          leaf switch-result {
+            type enumeration {
+              enum "switch" {
+                value 0;
+                description
+                  "A traffic switchover is performed.";
+              }
+              enum "idle" {
+                value 1;
+                description
+                  "No traffic switchover is performed.";
+              }
+            }
+            description
+              "LMSP group switching result.";
+          }
+          leaf switch-status {
+            type enumeration {
+              enum "switch-to-protection-link" {
+                value 0;
+                description
+                  "Switch to protection link.";
+              }
+            }
+            description
+              "LMSP group switching status.";
+          }
+          leaf switch-reason {
+            type enumeration {
+              enum "local-work-no-request" {
+                value 0;
+                description
+                  "Local working does not receive the request.";
+              }
+              enum "local-work-no-revert" {
+                value 1;
+                description
+                  "Local working does not revert.";
+              }
+              enum "local-work-reverse-request" {
+                value 2;
+                description
+                  "Local working receives reverse request.";
+              }
+              enum "local-work-wait-to-restore" {
+                value 3;
+                description
+                  "Local working waits to restore.";
+              }
+              enum "local-work-manual-switch" {
+                value 4;
+                description
+                  "Local working manually switches.";
+              }
+              enum "local-work-degrade-low-priority" {
+                value 5;
+                description
+                  "Local working switches for signal degrade low priority.";
+              }
+              enum "local-work-degrade-high-priority" {
+                value 6;
+                description
+                  "Local working switches for signal degrade high priority.";
+              }
+              enum "local-work-fail-low-priority" {
+                value 7;
+                description
+                  "Local working switches for signal fail low priority.";
+              }
+              enum "local-work-fail-high-priority" {
+                value 8;
+                description
+                  "Local working switches for signal fail high priority.";
+              }
+              enum "local-work-force-switch" {
+                value 9;
+                description
+                  "Local working force switches.";
+              }
+              enum "local-work-lockout-of-protection" {
+                value 10;
+                description
+                  "Local working switches for lockout-of-protection.";
+              }
+              enum "local-protection-no-request" {
+                value 11;
+                description
+                  "Local protection does not receive the request.";
+              }
+              enum "local-protection-no-revert" {
+                value 12;
+                description
+                  "Local protection does not revert.";
+              }
+              enum "local-protection-reverse-request" {
+                value 13;
+                description
+                  "Local protection receives reverse request.";
+              }
+              enum "local-protection-wait-to-restore" {
+                value 14;
+                description
+                  "Local protection waits to restore.";
+              }
+              enum "local-protection-manual-switch" {
+                value 15;
+                description
+                  "Local protection manually switches.";
+              }
+              enum "local-protection-degrade-low-priority" {
+                value 16;
+                description
+                  "Local protection switches for signal degrade low priority.";
+              }
+              enum "local-protection-degrade-high-priority" {
+                value 17;
+                description
+                  "Local protection switches for signal degrade high priority.";
+              }
+              enum "local-protection-fail-low-priority" {
+                value 18;
+                description
+                  "Local protection switches for signal fail low priority.";
+              }
+              enum "local-protection-fail-high-priority" {
+                value 19;
+                description
+                  "Local protection switches for signal fail high priority.";
+              }
+              enum "local-protection-force-switch" {
+                value 20;
+                description
+                  "Local protection force switches.";
+              }
+              enum "local-protection-lockout-of-protection" {
+                value 21;
+                description
+                  "Local protection switches for lockout-of-protection.";
+              }
+              enum "remote-work-no-request" {
+                value 22;
+                description
+                  "Remote working does not receive the request.";
+              }
+              enum "remote-work-no-revert" {
+                value 23;
+                description
+                  "Remote working does not revert.";
+              }
+              enum "remote-work-reverse-request" {
+                value 24;
+                description
+                  "Remote working receives reverse request.";
+              }
+              enum "remote-work-wait-to-restore" {
+                value 25;
+                description
+                  "Remote working waits to restore.";
+              }
+              enum "remote-work-manual-switch" {
+                value 26;
+                description
+                  "Remote working manually switches.";
+              }
+              enum "remote-work-degrade-low-priority" {
+                value 27;
+                description
+                  "Remote working switches for signal degrade low priority.";
+              }
+              enum "remote-work-degrade-high-priority" {
+                value 28;
+                description
+                  "Remote working switches for signal degrade high priority.";
+              }
+              enum "remote-work-fail-low-priority" {
+                value 29;
+                description
+                  "Remote working switches for signal fail low priority.";
+              }
+              enum "remote-work-fail-high-priority" {
+                value 30;
+                description
+                  "Remote working switches for signal fail high priority.";
+              }
+              enum "remote-work-force-switch" {
+                value 31;
+                description
+                  "Remote working force switches.";
+              }
+              enum "remote-work-lockout-of-protection" {
+                value 32;
+                description
+                  "Remote working switches for lockout-of-protection.";
+              }
+              enum "remote-protection-no-request" {
+                value 33;
+                description
+                  "Remote protection does not receive the request.";
+              }
+              enum "remote-protection-no-revert" {
+                value 34;
+                description
+                  "Remote protection does not revert.";
+              }
+              enum "remote-protection-reverse-request" {
+                value 35;
+                description
+                  "Remote protection receives reverse request.";
+              }
+              enum "remote-protection-wait-to-restore" {
+                value 36;
+                description
+                  "Remote protection waits to restore.";
+              }
+              enum "remote-protection-manual-switch" {
+                value 37;
+                description
+                  "Remote protection manually switches.";
+              }
+              enum "remote-protection-degrade-low-priority" {
+                value 38;
+                description
+                  "Remote protection switches for signal degrade low priority.";
+              }
+              enum "remote-protection-degrade-high-priority" {
+                value 39;
+                description
+                  "Remote protection switches for signal degrade high priority.";
+              }
+              enum "remote-protection-fail-low-priority" {
+                value 40;
+                description
+                  "Remote protection switches for signal fail low priority.";
+              }
+              enum "remote-protection-fail-high-priority" {
+                value 41;
+                description
+                  "Remote protection switches for signal fail high priority.";
+              }
+              enum "remote-protection-force-switch" {
+                value 42;
+                description
+                  "Remote protection force switches.";
+              }
+              enum "remote-protection-lockout-of-protection" {
+                value 43;
+                description
+                  "Remote protection switches for lockout-of-protection.";
+              }
+            }
+            description
+              "LMSP group switching reason.";
+          }
+          leaf switch-message {
+            type enumeration {
+              enum "aps-lockout" {
+                value 0;
+                description
+                  "APS lockout.";
+              }
+              enum "no-request" {
+                value 1;
+                description
+                  "No request on both Working and Protection Side.";
+              }
+              enum "local-send-no-revert-protection" {
+                value 2;
+                description
+                  "Local sends Do Not Revert on protection side.";
+              }
+              enum "local-send-reverse-protection" {
+                value 3;
+                description
+                  "Local sends Reverse Request on protection side.";
+              }
+              enum "local-send-restore-protection" {
+                value 4;
+                description
+                  "Local sends Wait To Restore on protection side.";
+              }
+              enum "local-send-manual-switch-protection" {
+                value 5;
+                description
+                  "Local sends Manual Switch on protection side.";
+              }
+              enum "local-send-force-switch-protection" {
+                value 6;
+                description
+                  "Local sends Force Switch on protection side.";
+              }
+              enum "local-send-lockout-protection" {
+                value 7;
+                description
+                  "Local sends Lockout on protection side.";
+              }
+              enum "remote-send-no-revert-protection" {
+                value 8;
+                description
+                  "Remote sends Do Not Revert on protection side.";
+              }
+              enum "remote-send-reverse-protection" {
+                value 9;
+                description
+                  "Remote sends Reverse Request on protection side.";
+              }
+              enum "remote-send-restore-protection" {
+                value 10;
+                description
+                  "Remote sends Wait To Restore on protection side.";
+              }
+              enum "remote-send-manual-switch-protection" {
+                value 11;
+                description
+                  "Remote sends Manual Switch on protection side.";
+              }
+              enum "remote-send-force-switch-protection" {
+                value 12;
+                description
+                  "Remote sends Force Switch on protection side.";
+              }
+              enum "remote-send-lockout-protection" {
+                value 13;
+                description
+                  "Remote sends Lockout on protection side.";
+              }
+              enum "local-degrade-low-priority-work" {
+                value 14;
+                description
+                  "Local detects Signal Degrade Low priority on working side.";
+              }
+              enum "local-degrade-low-priority-protection" {
+                value 15;
+                description
+                  "Local detects Signal Degrade Low priority on protection side.";
+              }
+              enum "remote-degrade-low-priority-work" {
+                value 16;
+                description
+                  "Remote detects Signal Degrade Low priority on working side.";
+              }
+              enum "remote-degrade-low-priority-protection" {
+                value 17;
+                description
+                  "Remote detects Signal Degrade Low priority on protection side.";
+              }
+              enum "local-degrade-high-priority-work" {
+                value 18;
+                description
+                  "Local detects Signal Degrade High priority on working side.";
+              }
+              enum "local-degrade-high-priority-protection" {
+                value 19;
+                description
+                  "Local detects Signal Degrade High priority on protection side.";
+              }
+              enum "remote-degrade-high-priority-work" {
+                value 20;
+                description
+                  "Remote detects Signal Degrade High priority on working side.";
+              }
+              enum "remote-degrade-high-priority-protection" {
+                value 21;
+                description
+                  "Remote detects Signal Degrade High priority on protection side.";
+              }
+              enum "local-fail-low-priority-work" {
+                value 22;
+                description
+                  "Local detects Signal Fail Low priority on working side.";
+              }
+              enum "local-fail-low-priority-protection" {
+                value 23;
+                description
+                  "Local detects Signal Fail Low priority on protection side.";
+              }
+              enum "remote-fail-low-priority-work" {
+                value 24;
+                description
+                  "Remote detects Signal Fail Low priority on working side.";
+              }
+              enum "remote-fail-low-priority-protection" {
+                value 25;
+                description
+                  "Remote detects Signal Fail Low priority on protection side.";
+              }
+              enum "local-fail-high-priority-work" {
+                value 26;
+                description
+                  "Local detects Signal Fail High priority on working side.";
+              }
+              enum "local-fail-high-priority-protection" {
+                value 27;
+                description
+                  "Local detects Signal Fail High priority on protection side.";
+              }
+              enum "remote-fail-high-priority-work" {
+                value 28;
+                description
+                  "Remote detects Signal Fail High priority on working side.";
+              }
+              enum "remote-fail-high-priority-protection" {
+                value 29;
+                description
+                  "Remote detects Signal Fail High priority on protection side.";
+              }
+            }
+            description
+              "LMSP group switching message.";
+          }
+        }
+      }
+    }
+  }
+  rpc set-aps-switch-mode {
+    ext:node-ref "/lmsp:lmsp/lmsp:aps-groups/lmsp:aps-group/lmsp:group-members/lmsp:group-member";
+    description
+      "Set APS switching mode.";
+    input  {
+      leaf interface-name {
+        type leafref {
+          path "/lmsp:lmsp/lmsp:aps-groups/lmsp:aps-group/lmsp:group-members/lmsp:group-member/lmsp:interface-name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf switch {
+        type switch-type;
+        mandatory true;
+        description
+          "Switch type.";
+      }
+      leaf section {
+        when "../switch = 'manual' or ../switch = 'force'";
+        type enumeration {
+          enum "working" {
+            value 0;
+            description
+              "Services are switched to the working link.";
+          }
+          enum "protection" {
+            value 1;
+            description
+              "Services are switched to the protection link.";
+          }
+        }
+        default "protection";
+        description
+          "Specifies a service section.";
+      }
+    }
+  }
+  ext:task-name "interface-mgr";
+}

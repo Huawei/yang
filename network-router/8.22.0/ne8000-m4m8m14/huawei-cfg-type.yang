@@ -1,0 +1,66 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cfg-type {
+  yang-version 1.1;
+  namespace "urn:huawei:yang:huawei-cfg-type";
+  prefix cfg-type;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configuration management module.";
+  revision 2022-06-09 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "config";
+  typedef terminal-type {
+    type enumeration {
+      enum "cli" {
+        value 0;
+        description
+          "The terminal type is CLI.";
+      }
+      enum "netconf" {
+        value 1;
+        description
+          "The terminal type is NETCONF.";
+      }
+      enum "snmp" {
+        value 2;
+        description
+          "The terminal type is SNMP.";
+      }
+      enum "mml" {
+        value 3;
+        description
+          "The terminal type is mml.";
+      }
+      enum "system" {
+        value 4;
+        description
+          "The terminal type is system.";
+      }
+      enum "inner" {
+        value 5;
+        description
+          "The terminal type is inner.";
+      }
+    }
+    description
+      "Terminal type.";
+  }
+}

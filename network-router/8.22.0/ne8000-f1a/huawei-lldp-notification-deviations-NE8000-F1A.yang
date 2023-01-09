@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lldp-notification-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-lldp-notification-deviations-NE8000-F1A";
+  prefix lldp-notification-devs-NE8000-F1A;
+
+  import huawei-lldp-notification {
+    prefix lldp-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-lldp-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/lldp-notification:lldp-mdn-port-neighbor-changed" {
+    deviate not-supported;
+  }
+}

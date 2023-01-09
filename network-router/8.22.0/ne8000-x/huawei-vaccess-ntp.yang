@@ -1,0 +1,84 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vaccess-ntp {
+  namespace "urn:huawei:yang:huawei-vaccess-ntp";
+  prefix nmsantp;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "NTP configuration of virtual access.";
+  revision 2022-06-30 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ntp";
+  typedef authentication-mode {
+    type enumeration {
+      enum "HMAC-SHA256" {
+        value 2;
+        description
+          "The NTP authentication mode is HMAC-SHA256.";
+      }
+      enum "AES-128-CMAC" {
+        value 3;
+        description
+          "The NTP authentication mode is AES-128-CMAC.";
+      }
+      enum "AES-256-CMAC" {
+        value 4;
+        description
+          "The NTP authentication mode is AES-256-CMAC.";
+      }
+    }
+    description
+      "Used to identify which mode of authentication, Hmac or AES-CMAC.";
+  }
+  augment "/vaccess:vaccess" {
+    description
+      "The configuration of vaccess.";
+    container ntp-authentication {
+      presence "Enable ntp-authentication";
+      description
+        "Configure NTP authentication in virtual access.";
+      leaf key-id {
+        type uint32 {
+          range "1..4294967295";
+        }
+        mandatory true;
+        description
+          "Specifies the key number used when transmitting messages to the ap.";
+      }
+      leaf mode {
+        type authentication-mode;
+        default "HMAC-SHA256";
+        description
+          "Specify the authentication mode.";
+      }
+      leaf password {
+        type pub-type:password-extend;
+        mandatory true;
+        description
+          "Authentication password, the password is a string ranging from 1 to 255 characters for a simple password and 20 to 432 characters for a ciphertext password.";
+      }
+    }
+  }
+}

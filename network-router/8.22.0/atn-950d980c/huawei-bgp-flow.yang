@@ -1,0 +1,2082 @@
+/*
+Copyright (C) 2019-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-flow {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bgp-flow";
+  prefix bgp-flow;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  import huawei-xpl {
+    prefix xpl;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Inter-AS routing protocol that exchanges Network Layer Reachability Information (NLRI) with other BGP systems.";
+  revision 2022-08-23 {
+    description
+      "Add flowspec IPv6 route policy distribution (RPD) capability. Add flow route attributes.";
+    reference "Huawei private.";
+  }
+  revision 2021-09-07 {
+    description
+      "The YANG descriptions are modified according to new standards.";
+    reference "Huawei private.";
+  }
+  revision 2019-03-22 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+  ext:task-name "bgp";
+  typedef rpd-cap-type {
+    type enumeration {
+      enum "receive" {
+        value 1;
+        description
+          "Converts received BGP FlowSpec routes to common IP routes if these BGP FlowSpec routes carry the RPD attribute.";
+      }
+    }
+    description
+      "The type of FlowSpec Route Policy Distribute.";
+  }
+  typedef flow-validation-result-type {
+    type enumeration {
+      enum "not-enable" {
+        value 0;
+        description
+          "Not enable.";
+      }
+      enum "checking" {
+        value 1;
+        description
+          "Check.";
+      }
+      enum "accept" {
+        value 2;
+        description
+          "Accept.";
+      }
+      enum "discard" {
+        value 3;
+        description
+          "Discard.";
+      }
+    }
+    description
+      "BGP FLOW route validation result.";
+  }
+  typedef flow-operation-code {
+    type enumeration {
+      enum "redirect" {
+        value 0;
+        description
+          "Redirect.";
+      }
+      enum "copy" {
+        value 1;
+        description
+          "Copy.";
+      }
+    }
+    description
+      "Operation type of redirect.";
+  }
+  typedef flow-color {
+    type string {
+      length "1..26";
+      pattern '(0:(([0-9]\d{0,8})|([1-3]\d{9})|(4[0-1]\d{8})|(42[0-8]\d{7})|(429[0-3]\d{6})|(4294[0-8]\d{5})|(42949[0-5]\d{4})|(429496[0-6]\d{3})|(4294967[0-1]\d{2})|(42949672[0-8]\d{1})|(429496729[0-5]))|-:-)';
+    }
+    description
+      "Type of color.";
+  }
+  typedef ipv4-flow-rule-type {
+    type enumeration {
+      enum "destination-prefix" {
+        value 1;
+        description
+          "Destination prefix.";
+      }
+      enum "source-prefix" {
+        value 2;
+        description
+          "Source prefix.";
+      }
+      enum "ip-protocol" {
+        value 3;
+        description
+          "Potocol.";
+      }
+      enum "port" {
+        value 4;
+        description
+          "Port.";
+      }
+      enum "destination-port" {
+        value 5;
+        description
+          "Destination port.";
+      }
+      enum "source-port" {
+        value 6;
+        description
+          "Source Port.";
+      }
+      enum "icmp-type" {
+        value 7;
+        description
+          "Icmp type.";
+      }
+      enum "icmp-code" {
+        value 8;
+        description
+          "Icmp code.";
+      }
+      enum "tcp-flags" {
+        value 9;
+        description
+          "TCP flags.";
+      }
+      enum "packet-length" {
+        value 10;
+        description
+          "Packet length.";
+      }
+      enum "dscp" {
+        value 11;
+        description
+          "DSCP.";
+      }
+      enum "fragment" {
+        value 12;
+        description
+          "Fragment.";
+      }
+      enum "destination-origin-as" {
+        value 201;
+        description
+          "Destination origin AS.";
+      }
+    }
+    description
+      "BGP FLOW route rule.";
+  }
+
+  typedef flow-rule-type {
+    type enumeration {
+      enum "destination-prefix" {
+        value 1;
+        description
+          "Destination prefix.";
+      }
+      enum "source-prefix" {
+        value 2;
+        description
+          "Source prefix.";
+      }
+      enum "ip-protocol" {
+        value 3;
+        description
+          "Potocol.";
+      }
+      enum "port" {
+        value 4;
+        description
+          "Port.";
+      }
+      enum "destination-port" {
+        value 5;
+        description
+          "Destination port.";
+      }
+      enum "source-port" {
+        value 6;
+        description
+          "Source Port.";
+      }
+      enum "icmp-type" {
+        value 7;
+        description
+          "Icmp type.";
+      }
+      enum "icmp-code" {
+        value 8;
+        description
+          "Icmp code.";
+      }
+      enum "tcp-flags" {
+        value 9;
+        description
+          "TCP flags.";
+      }
+      enum "packet-length" {
+        value 10;
+        description
+          "Packet length.";
+      }
+      enum "dscp" {
+        value 11;
+        description
+          "DSCP.";
+      }
+      enum "fragment" {
+        value 12;
+        description
+          "Fragment.";
+      }
+    }
+    description
+      "BGP FLOW route rule.";
+  }
+
+  typedef flow-rule-relation-type {
+    type enumeration {
+      enum "and" {
+        value 1;
+        description
+          "And relation.";
+      }
+      enum "or" {
+        value 2;
+        description
+          "Or relation.";
+      }
+    }
+    description
+      "BGP FLOW route rule relations.";
+  }
+
+  /*
+   * grouping-stmt
+   */  
+  grouping bgp-peer-ipv4flow-cap-type {
+    description
+      "BGP IPv4-flow peer redirect tunnelv6.";
+    leaf redirect-tunnelv6 {
+      type boolean;
+      default "false";
+      description
+        "Enable/disable the function to handle the extended community attribute redirect-tunnelv6.";
+    }
+  }
+  grouping flow-routing-table-key-type {
+    description
+      "BGP FLOW routing-table key attributes.";
+    leaf route-distinguisher {
+      type string {
+        length "1..22";
+      }
+      description
+        "Route distinguisher.";
+    }
+    leaf index {
+      type uint32 {
+        range "1..4294967295";
+      }
+      description
+        "BGP Flow Specification route index. The value is an integer ranging from 1 to 4294967295.";
+    }
+    leaf route-generate-identity {
+      type string {
+        length "1..36";
+      }
+      description
+        "Local BGP Flow route identify, Format:local:<name> or others.";
+    }
+    leaf from {
+      type inet:ip-address-no-zone;
+      description
+        "Source peer that sends a route.";
+    }
+    leaf route-type {
+      type bgp-rt:bgp-route-type-flag;
+      description
+        "Route type.";
+    }
+    leaf path-id {
+      type string {
+        length "1..50";
+      }
+      description
+        "Path ID.";
+    }
+  }
+  
+  grouping redirect-ip-relay-info-type {
+    description
+      "Redirection IP relay information.";
+    container redirect-ip-relay-infos {
+      description
+        "List of redirection IP relay result.";
+      list redirect-ip-relay-info {
+        key "vpn-name route-distinguisher index route-generate-identity from route-type path-id address color";
+        description
+          "Statistics of redirection IP relay information.";
+        uses bgp-rt:routing-table-vpn-name;
+        uses flow-routing-table-key-type;
+        leaf address {
+          type inet:ipv4-address-no-zone;
+          description
+          "Redirection IP address.";
+        }
+        leaf color {
+          type flow-color;
+          description
+          "Color. By default, color is -:-.";
+        }
+        leaf operation-code {
+          type flow-operation-code;
+          description
+          "Operation code.";
+        }
+        leaf relay-ip-next-hop {
+          type inet:ip-address-no-zone;
+          description
+          "IP iteration next hop.";
+        }
+        leaf relay-ip-interface-name {
+          type string {
+          length "1..63";
+          }
+          description
+          "IP iteration outbound interface.";
+        }
+        leaf relay-tunnel-next-hop {
+          type inet:ip-address-no-zone;
+          description
+          "Tunnel iteration next hop.";
+        }
+        leaf relay-tunnel-interface-name {
+          type string {
+          length "1..63";
+          }
+          description
+          "Tunnel iteration outbund interface.";
+        }
+        leaf relay-tunnel-id {
+          type string {
+          length "1..25";
+          }
+          description
+          "Tunnel id.";
+        }
+      }
+    }
+  }
+  grouping redirect-ipv6-relay-info-type {
+    description
+      "Redirection IPv6 relay information.";
+    leaf address {
+      type inet:ipv6-address-no-zone;
+      description
+      "Redirection IP address.";
+    }
+    leaf color {
+      type flow-color;
+      description
+      "Color. By default, color is -:-.";
+    }
+    leaf operation-code {
+      type flow-operation-code;
+      description
+      "Operation code.";
+    }
+    leaf relay-tunnel-interface-name {
+      type string {
+      length "1..63";
+      }
+      description
+      "Tunnel iteration outbund interface.";
+    }
+    leaf relay-tunnel-id {
+      type string {
+      length "1..25";
+      }
+      description
+      "Tunnel id.";
+    }
+    leaf prefix-sid {
+      type inet:ipv6-address-no-zone;
+      description
+      "Prefix SID attribute information of route.";
+    }
+  }
+  grouping flow-routing-table-type {
+    description
+      "BGP FLOW routing-table attributes.";
+    leaf remote-route-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of a peer.";
+    }
+    leaf relay-tunnel-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "Flow Route Redirect Relay Tunnel.";
+    }
+    leaf validation-result {
+      type flow-validation-result-type;
+      description
+        "EBGP redirect IP validate result.";
+    }
+    leaf reflect-client {
+      type boolean;
+      description
+        "The device is an RR.";
+    }
+    leaf unknown-rule {
+      type boolean;
+      description
+        "Unknown rule.";
+    }
+    leaf med {
+      type uint32;
+      description
+        "Route MED.The attribute is only fit for the routes from EBGP peer, not suit for which of IBGP peer.";
+    }
+    leaf preferred-value {
+      type uint32;
+      description
+        "Preferred value of a protocol.";
+    }
+    leaf local-preference {
+      type uint32;
+      description
+        "Local priority. The attribute is only fit for the routes from IBGP peer, not suit for which of EBGP peer.";
+    }
+    leaf origin {
+      type bgp-rt:bgp-origin-type;
+      description
+        "Route origin.";
+    }
+    leaf originator {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of the route initiator.";
+    }
+    leaf time {
+      type pub-type:time-tick;
+      description
+        "Time stamp of a route.";
+    }
+    leaf flag-string {
+      type string {
+        length "1..100";
+      }
+      description
+        "Route flag that contains a string of characters.";
+    }
+    leaf worse-reason {
+      type string {
+        length "1..50";
+      }
+      description
+        "Reason why a route is not selected.";
+    }
+    leaf route-policy-distribute {
+      type boolean;
+      description
+        "RPD flag.";
+    }
+    leaf invalid-reason {
+      type string {
+        length "1..50";
+      }
+      description
+        "Why a route cannot be delivered to the FIB.";
+    }
+    leaf relay-tunnel-id {
+      type string {
+        length "1..25";
+      }
+      description
+        "Tunnel id.";
+    }
+  }
+  grouping flow-peer-base-route-type {
+    description
+      "BGP FLOW routing-table attributes.";
+    leaf remote-route-id {
+      type inet:ipv4-address-no-zone;
+      description
+        "Router ID of a peer.";
+    }
+    leaf relay-tunnel-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "Flow Route Redirect Relay Tunnel.";
+    }
+    leaf validation-result {
+      type flow-validation-result-type;
+      description
+        "EBGP redirect IP validate result.";
+    }
+    leaf reflect-client {
+      type boolean;
+      description
+        "The device is an RR.";
+    }
+    leaf unknown-rule {
+      type boolean;
+      description
+        "Unknown rule.";
+    }
+    leaf time {
+      type pub-type:time-tick;
+      description
+        "Time stamp of a route.";
+    }
+    leaf flag-string {
+      type string {
+        length "1..100";
+      }
+      description
+        "Route flag that contains a string of characters.";
+    }
+    leaf route-policy-distribute {
+      type boolean;
+      description
+        "RPD flag.";
+    }
+    leaf relay-tunnel-id {
+      type string {
+        length "1..25";
+      }
+      description
+        "Tunnel id.";
+    }
+    leaf preferred-value {
+      type uint32;
+      description
+        "Preferred value of a protocol.";
+    }
+  }
+  grouping invalid-reason {
+    description
+      "Why a route cannot be delivered to the FIB.";
+    leaf invalid-reason {
+      type string {
+        length "1..50";
+      }
+      description
+        "Why a route cannot be delivered to the FIB.";
+    }
+  }
+  grouping worse-reason {
+    description
+      "Reason why a route is not selected.";
+    leaf worse-reason {
+      type string {
+        length "1..50";
+      }
+      description
+        "Reason why a route is not selected.";
+    }
+  }
+  grouping ipv4-flow-routing-table-rule-type {
+    description
+      "BGP FLOW routing-table rule.";
+    container rule-indexs {
+      description
+        "List of displayed BGP FLOW route information.";
+      list rule-index {
+        key "type rule-id relation";
+        description
+          "Statistics of BGP FLOW route rule.";
+        leaf type {
+          type ipv4-flow-rule-type;
+          description
+            "Rule type.";
+        }
+        leaf rule-id {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Rule id.";
+        }
+        leaf relation {
+          type flow-rule-relation-type;
+          description
+            "Relation.";
+        }
+      }
+    }
+  }
+
+  grouping flow-routing-table-rule-type {
+    description
+      "BGP FLOW routing-table rule.";
+    container rule-indexs {
+      description
+        "List of displayed BGP FLOW route information.";
+      list rule-index {
+        key "type rule-id relation";
+        description
+          "Statistics of BGP FLOW route rule.";
+        leaf type {
+          type flow-rule-type;
+          description
+            "Rule type.";
+        }
+        leaf rule-id {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Rule id.";
+        }
+        leaf relation {
+          type flow-rule-relation-type;
+          description
+            "Relation.";
+        }
+      }
+    }
+  }
+
+  grouping route-prefix {
+    description
+      "IP address matching condition.";
+    uses bgp-rt:routing-table-vpn-name;
+    leaf rule-id {
+      type uint32 {
+        range "1..4294967295";
+      }
+      description
+        "BGP Flow Specification route rule index.";
+    }
+    leaf address {
+      type inet:ip-address-no-zone;
+      description
+        "IP address.";
+    }
+    leaf mask-length {
+      type uint8 {
+        range "0..128";
+      }
+      description
+        "Mask length.";
+    }
+  }
+
+  grouping route-origin-as {
+    description
+      "Origin AS matching condition.";
+    uses bgp-rt:routing-table-vpn-name;
+    leaf rule-id {
+      type uint32 {
+        range "1..4294967295";
+      }
+      description
+        "BGP Flow Specification route rule index.";
+    }
+    leaf value {
+      type bgp:as-number-validate;
+      description
+        "Specify an AS value for origin AS filtering rule.";
+    }
+  }
+
+  grouping prefix-base-type {
+    description
+      "BGP FLOW IP address matching condition.";
+    container destination-prefixs {
+      description
+        "List of the destination IP address matching condition.";
+      list destination-prefix {
+        key "vpn-name rule-id";
+        description
+          "Statistics of destination IP address.";
+        uses route-prefix;
+      }
+    }
+    container source-prefixs {
+      description
+        "List of the source IP address matching condition.";
+      list source-prefix {
+        key "vpn-name rule-id";
+        description
+          "Statistics of source IP address.";
+        uses route-prefix;
+      }
+    }
+  }
+
+  grouping origin-as-base-type {
+    description
+      "BGP FLOW origin AS rules.";
+    container destination-origin-ass {
+      description
+        "List of the destination origin AS matching condition.";
+      list destination-origin-as {
+        key "vpn-name rule-id";
+        description
+          "Statistics of origin AS.";
+        uses route-origin-as;
+      }
+    }
+  }
+
+  grouping common-type {
+    description
+      "Matching condition common type.";
+    uses bgp-rt:routing-table-vpn-name;
+    leaf rule-id {
+      type uint32 {
+        range "1..4294967295";
+      }
+      description
+        "BGP Flow Specification route rule index.";
+    }
+    leaf range {
+      type string {
+        length "1..50";
+      }
+      description
+        "Specify a value for the filtering rule.";
+    }
+  }
+  grouping tcp-flags-base-type {
+    description
+      "BGP FLOW TCP flags rules.";
+    container tcp-flags {
+      description
+        "List of TCP flags matching condition.";
+      list tcp-flag {
+        key "vpn-name rule-id";
+        description
+          "Statistics of TCP flags.";
+        uses common-type;
+      }
+    }
+  }
+
+  grouping fragment-base-type {
+    description
+      "BGP FLOW fragment rules.";
+    container fragments {
+      description
+        "List of fragment matching condition.";
+      list fragment {
+        key "vpn-name rule-id";
+        description
+          "Statistics of fragment.";
+        uses common-type;
+      }
+    }
+  }
+
+  grouping icmp-base-type {
+    description
+      "BGP FLOW icmp rules.";
+    container icmp-types {
+      description
+        "List of icmp types matching condition.";
+      list icmp-type {
+        key "vpn-name rule-id";
+        description
+          "Statistics of icmp types.";
+        uses common-type;
+      }
+    }
+    container icmp-codes {
+      description
+        "List of icmp codes matching condition.";
+      list icmp-code {
+        key "vpn-name rule-id";
+        description
+          "Statistics of icmp codes.";
+        uses common-type;
+      }
+    }
+  }
+
+  grouping dscp-base-type {
+    description
+      "BGP FLOW dscp rules.";
+    container dscps {
+      description
+        "List of dscp matching condition.";
+      list dscp {
+        key "vpn-name rule-id";
+        description
+          "Statistics of dscp.";
+        uses common-type;
+      }
+    }
+  }
+  grouping protocol-base-type {
+    description
+      "BGP FLOW protocol rules.";
+    container protocols {
+      description
+        "List of protocol matching condition.";
+      list protocol {
+        key "vpn-name rule-id";
+        description
+          "Statistics of protocol.";
+        uses common-type;
+      }
+    }
+  }
+  grouping packet-length-base-type {
+    description
+      "BGP FLOW packet length rules.";
+    container packet-lengths {
+      description
+        "List of packet length matching condition.";
+      list packet-length {
+        key "vpn-name rule-id";
+        description
+          "Statistics of packet length.";
+        uses common-type;
+      }
+    }
+  }
+  grouping port-base-type {
+    description
+      "BGP FLOW port rules.";
+    container ports {
+      description
+        "List of port matching condition.";
+      list port {
+        key "vpn-name rule-id";
+        description
+          "Statistics of port.";
+        uses common-type;
+      }
+    }
+    container destination-ports {
+      description
+        "List of destination port matching condition.";
+      list destination-port {
+        key "vpn-name rule-id";
+        description
+          "Statistics of destination port.";
+        uses common-type;
+      }
+    }
+    container source-ports {
+      description
+        "List of source port matching condition.";
+      list source-port {
+        key "vpn-name rule-id";
+        description
+          "Statistics of source port.";
+        uses common-type;
+      }
+    }
+  }
+
+  grouping bgp-ipv4-flow-rules {
+    description
+      "BGP FLOW address family routes prefix.";
+    container route-rule {
+      description
+        "Statistics of BGP FLOW address family route filtering conditions.";
+      uses prefix-base-type;
+      uses origin-as-base-type;
+      uses tcp-flags-base-type;
+      uses fragment-base-type;
+      uses icmp-base-type;
+      uses dscp-base-type;
+      uses protocol-base-type;
+      uses packet-length-base-type;
+      uses port-base-type;
+    }
+  }
+
+  grouping bgp-flow-route-rules {
+    description
+      "BGP FLOW address family routes prefix.";
+    container route-rule {
+      description
+        "Statistics of BGP FLOW address family route filtering conditions.";
+      uses prefix-base-type;
+      uses tcp-flags-base-type;
+      uses fragment-base-type;
+      uses icmp-base-type;
+      uses dscp-base-type;
+      uses protocol-base-type;
+      uses packet-length-base-type;
+      uses port-base-type;
+    }
+  }
+  grouping flow-route-statistics {
+    description
+      "Flow route statistics information.";
+    container statistics {
+      description
+        "List of BGP routes statistics information of the address family.";
+      list statistic {
+        key "vpn-name";
+        description
+          "BGP address family routes statistics.";
+        uses bgp-rt:routing-table-vpn-name;
+        uses bgp-rt:route-total-st-type;
+      }
+    }
+  }
+  grouping attr-common-type {
+    description
+      "Attribute common type.";
+    leaf enable {
+      type empty;
+      description
+        "Enable the action rule.";
+    }
+  }
+  grouping attr-value-type {
+    description
+      "Attribute value type.";
+    leaf value {
+      type string {
+        length "1..50";
+      }
+      description
+        "Value for the action rule.";
+    }
+  }
+  grouping deny-type {
+    description
+      "BGP FLOW deny action.";
+    container deny {
+      description
+        "Statistics of deny.";
+      uses attr-common-type;
+    }
+  }
+  grouping traffic-sample-type {
+    description
+      "BGP FLOW sample action.";
+    container sample {
+      description
+        "Statistics of sample.";
+      uses attr-common-type;
+    }
+  }
+  grouping traffic-next-terminal-type {
+    description
+      "BGP FLOW next-terminal action.";
+    container next-terminal {
+      description
+        "Statistics of next-terminal.";
+      uses attr-common-type;
+    }
+  }
+  grouping remark-dscp-type {
+    description
+      "BGP FLOW remark-dscp action.";
+    container remark-dscps {
+      description
+        "List of remark-dscp action.";
+      list remark-dscp {
+        key "value";
+        description
+        "Statistics of remark-dscp.";
+        uses attr-value-type;
+      }
+    }
+  }
+  grouping traffic-rate-type {
+    description
+      "BGP FLOW traffic rate action.";
+    container traffic-rates {
+      description
+        "List of traffic rate action.";
+      list traffic-rate {
+        key "value";
+        description
+        "Statistics of traffic rate.";
+        uses attr-value-type;
+      }
+    }
+  }
+  grouping redirect-vpn-target-type {
+    description
+      "Redirect to vpn-target.";
+    container redirect-vpn-targets {
+      description
+        "List of redirect-vpn-target action.";
+      list redirect-vpn-target {
+        key "value";
+        description
+          "Statistics of redirect-vpn-target.";
+        uses attr-value-type;
+      }
+    }
+  }
+  grouping bgp-flow-routes-action {
+    description
+      "BGP FLOW address family route actions.";
+    container route-actions {
+      description
+        "List of BGP FLOW address family route actions.";
+      list route-action {
+        key "index";
+        description
+          "Statistics of route-action.";
+        leaf index {
+          type uint32;
+          description
+            "BGP route attribute id.";
+        }
+        uses deny-type;
+        uses traffic-sample-type;
+        uses traffic-next-terminal-type;
+        uses remark-dscp-type;
+        uses traffic-rate-type;
+        uses redirect-vpn-target-type;
+      }
+    }
+  }
+  /*
+   * augment-stmt
+   */
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af" {
+    description
+      "BGP flow address family configuration.";
+    container ipv4-flow {
+      when "../bgp:type='ipv4flow'";
+      must "../../../../../l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+      description
+        "Configure IPv4-family flow options.";
+      container common {
+        description
+          "Configure BGP IPv4-family flow common options.";
+        leaf route-match-destination {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable matching the route destination.";
+        }
+        leaf validation-mode-as {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable using the route validation-mode include-as command, you can configure flow-route validation mode include as.";
+        }
+        leaf redirect-ip-relay-tnl-enable {
+          when "../../../../../../../ni:name='_public_'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable flow-route recursive-lookup tunnel.";
+        }
+        leaf redirect-ipv6-relay-tnl-sel-name{
+          when "../../../../../../../ni:name='_public_'";
+          type leafref {
+            path "/rtp:routing-policy/rtp:tunnel-selectors/rtp:tunnel-selector/rtp:name";
+          }
+          description
+            "Flow-route tunnel selector name.";
+        }
+        leaf redirect-ip-relay-tunnel-selector-name {
+          when "../redirect-ip-relay-tnl-enable = 'true'";
+          type leafref {
+            path "/rtp:routing-policy/rtp:tunnel-selectors/rtp:tunnel-selector/rtp:name";
+          }
+          description
+            "Specifies the name of a tunnel selector.";
+        }
+        uses bgp:reflector-cluster-type;
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable route reflection between clients. If clients of a route reflector (RR) are fully meshed, you can disable route reflection among clients to reduce the cost.";
+        }
+        leaf check-origin-as-enable {
+          when "../../../../../../../ni:name='_public_'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the received BGP Flow Specification routes carrying a filtering rule that is based on the origin AS number of the destination IP address to be valid.";
+        }
+      }
+      uses bgp:routing-table-rib-only-type;
+    }
+    container ipv6-flow {
+      when "../bgp:type='ipv6flow'";
+      must "../../../../../l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+      description
+        "Configure IPv6-family flow options.";
+      container common {
+        description
+          "Configure BGP IPv6-family flow common options.";
+        leaf route-match-destination {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable matchingatch the route destination.";
+        }
+        leaf validation-mode-as {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable using the route validation-mode include-as command, you can configure flow-route validation mode include as.";
+        }
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+            "Enable/disable route reflection between clients. If clients of a route reflector (RR) are fully meshed, you can disable route reflection among clients to reduce the cost.";
+        }
+        uses bgp:reflector-cluster-type;
+        leaf local-redirect-ipv6-relay-ip {
+          when "../../../../../../../ni:name='_public_'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable local route redirect IPv6 recursive-lookup ip function.";
+        }
+        leaf local-redirect-ipv6-relay-tunnel-seletor {
+          when "../../../../../../../ni:name='_public_'";
+          type leafref {
+            path "/rtp:routing-policy/rtp:tunnel-selectors/rtp:tunnel-selector/rtp:name";
+          }
+          description
+            "Enable/disable local route redirect IPv6 recursive-lookup tunnel by tunnel selector name.";
+        }
+      }
+      uses bgp:routing-table-rib-only-type;
+    }
+    container vpnv4-flow {
+      when "../bgp:type='vpnv4flow'";
+      description
+        "Configure IPv4 VPN flow options.";
+      container common {
+        description
+          "Configure IPv4 VPN flow common options.";
+        uses bgp:vpn-target-type;
+        uses bgp:reflector-cluster-type;
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+          "Enable/disable route reflection between clients.";
+        }
+      }
+    }
+    container vpnv6-flow {
+      when "../bgp:type='vpnv6flow'";
+      description
+        "Configure IPv6 VPN flow options.";
+      container common {
+        description
+          "Configure IPv6 VPN flow common options.";
+        uses bgp:vpn-target-type;
+        uses bgp:reflector-cluster-type;
+        leaf reflect-between-client {
+          type boolean;
+          default "true";
+          description
+          "Enable/disable route reflection between clients.";
+        }
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af" {
+    description
+      "BGP flow address family configuration.";
+    container ipv4-flow {
+      when "../bgp:type='ipv4flow'";
+      must "../../../../../../../l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+      description
+        "Configure IPv4-family flow options.";
+        leaf advertise-community {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertise the community attribute to a peer or a peer group.";
+        }
+        leaf reflect-client {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the local device as a route reflector (RR) and a peer or peer group as its client. This configuration is applicable between IBGP peers only. The configurations of RRs and its clients in an address family are valid only in this address family. Therefore, it is recommended to configure RRs and its clients in the specified address family that is required.";
+        }
+        leaf validation-disable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable route validation.";
+        }
+        leaf redirect-ip {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable peer handle the extended community attribute redirect-ip.";
+       }
+        leaf redirect-ip-vaildation {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the function to indicate whether validation redirect ip, and this command only support IPv4-family flow address family.";
+       }
+        leaf redirect-ip-rfc-compatible {
+          type boolean;
+          must "not(../redirect-ip-rfc-compatible='true' and ../redirect-ip-draft-compatible='true')";
+          default "false";
+          description
+            "Enable/disable sending both number for the apply redirect IPv4 action.";
+       }
+        leaf redirect-ip-draft-compatible {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable sending both number for the apply redirect IPv4 action.";
+       }
+        uses bgp-peer-ipv4flow-cap-type;
+        leaf graceful-restart-static-timer {
+          type uint32 {
+            range "3600..2147483647";
+          }
+          units s;
+          description
+            "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+        }
+        leaf destination-origin-as {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the BGP peer origin validation.";
+        }
+        choice import-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf import-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container import-filter {
+              description
+                "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an import route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an import route-filter parameter.";
+              }
+            }
+          }
+        }
+        choice export-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf export-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container export-filter {
+              description
+                "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an export route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an export route-filter parameter.";
+              }
+            }
+          }
+        }
+        leaf advertise-large-community {
+          type bgp:peer-enable-config-type;
+          default "default";
+          description
+            "Enable large-community attribute advertisement. The Link-state address family and the RPD address family do not support this element.";
+        }
+        leaf route-update-interval {
+          type uint16 {
+            range "0..600";
+          }
+          units "s";
+          description
+            "Specify the minimum interval at which Update packets are sent. By default, the interval at which Update packets are sent to IBGP peers is 15s, 
+            and the interval at which Update packets are sent to EBGP peers is 30s. When routes change, a router will send Update packets to notify its peers. 
+            If a route changes frequently, you can set an interval at which Update packets are sent to prevent the router from sending Update packets each time the route changes. 
+            This configuration is valid only to the routes learned from peers.";
+          ext:dynamic-default;
+        }
+        leaf update-group-independent {
+          type bgp:peer-comm-config-type;
+          default "default";
+          description
+            "Enable/disable the peer which can reside in an independent peer group.";
+        }
+        leaf route-policy-distribute {
+          when "../../../../../../../../ni:name='_public_'";
+          type rpd-cap-type;
+          description
+            "Enable/disable route policy distribution (RPD) on a BGP device.";
+        }
+        uses bgp:route-limit-type;
+        uses bgp:path-attr-map-type;
+    }
+    container ipv6-flow {
+      when "../bgp:type='ipv6flow'";
+      must "../../../../../../../l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+      description
+        "Configure IPv6-family flow options.";
+        leaf advertise-community {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertise the community attribute to a peer or a peer group.";
+        }
+        leaf reflect-client {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the local device as a route reflector (RR) and a peer or peer group as its client. This configuration is applicable between IBGP peers only. The configurations of RRs and its clients in an address family are valid only in this address family. Therefore, it is recommended to configure RRs and its clients in the specified address family that is required.";
+        }
+        leaf validation-disable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable route validation.";
+        }
+        leaf graceful-restart-static-timer {
+          type uint32 {
+            range "3600..2147483647";
+          }
+          units s;
+          description
+            "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+        }
+        choice import-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf import-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container import-filter {
+              description
+                "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an import route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an import route-filter parameter.";
+              }
+            }
+          }
+        }
+        choice export-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf export-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container export-filter {
+              description
+                "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an export route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an export route-filter parameter.";
+              }
+            }
+          }
+        }
+        leaf advertise-large-community {
+          type bgp:peer-enable-config-type;
+          default "default";
+          description
+            "Enable large-community attribute advertisement. The Link-state address family and the RPD address family do not support this element.";
+        }
+        uses bgp:rt-update-interval-type;
+        leaf update-group-independent {
+          type bgp:peer-comm-config-type;
+          default "default";
+          description
+            "Enable/disable the peer which can reside in an independent peer group.";
+        }
+        leaf redirect-ipv6-validation-disable {
+          when "../../../../../../../../ni:name='_public_'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable redirect IPv6 route validation.";
+        }
+        leaf redirect-ipv6-relay-ip {
+          when "../../../../../../../../ni:name='_public_'";
+          type boolean;
+          default "false";
+          description
+            "Enable/disable redirect IPv6 recursive-lookup ip function.";
+        }
+        leaf redirect-ipv6-relay-tunnel-seletor {
+          when "../../../../../../../../ni:name='_public_'";
+          type leafref {
+            path "/rtp:routing-policy/rtp:tunnel-selectors/rtp:tunnel-selector/rtp:name";
+          }
+          description
+            "Enable/disable redirect IPv6 recursive-lookup tunnel by tunnel selector name.";
+        }
+        uses bgp:route-limit-type;
+        uses bgp:path-attr-map-type;
+        leaf route-policy-distribute {
+          when "../../../../../../../../ni:name='_public_'";
+          type rpd-cap-type;
+          description
+            "Enable/disable route policy distribution (RPD) on a BGP device.";
+        }
+    }
+    container vpnv4-flow {
+      when "../bgp:type='vpnv4flow'";
+      description
+        "Configure IPv4 VPN flow options.";
+        leaf advertise-large-community {
+          type bgp:peer-enable-config-type;
+          default "default";
+          description
+            "Enable large-community attribute advertisement.";
+        }
+        uses bgp:reflect-client-type;
+        leaf graceful-restart-static-timer {
+          type uint32 {
+            range "3600..2147483647";
+          }
+          units s;
+          description
+            "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+        }
+        leaf update-group-independent {
+          type bgp:peer-comm-config-type;
+          default "default";
+          description
+            "Enable/disable the peer which can reside in an independent peer group.";
+        }
+        choice import-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf import-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container import-filter {
+              description
+                "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an import route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an import route-filter parameter.";
+              }
+            }
+          }
+        }
+        choice export-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf export-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container export-filter {
+              description
+                "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an export route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an export route-filter parameter.";
+              }
+            }
+          }
+        }
+        leaf advertise-community {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertise the community attribute to a peer or a peer group.";
+        }
+        leaf redirect-ip-rfc-compatible {
+          type boolean;
+          must "not(../redirect-ip-rfc-compatible='true' and ../redirect-ip-draft-compatible='true')";
+          default "false";
+          description
+            "Enable/disable sending both number for the apply redirect IPv4 action.";
+        }
+        leaf redirect-ip-draft-compatible {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable sending both number for the apply redirect IPv4 action.";
+        }
+        uses bgp:route-limit-type;
+        uses bgp:path-attr-map-type;
+    }
+    container vpnv6-flow {
+      when "../bgp:type='vpnv6flow'";
+      description
+        "Configure IPv6 VPN flow options.";
+        leaf advertise-large-community {
+          type bgp:peer-enable-config-type;
+          default "default";
+          description
+            "Enable large-community attribute advertisement.";
+        }
+        uses bgp:reflect-client-type;
+        leaf graceful-restart-static-timer {
+          type uint32 {
+            range "3600..2147483647";
+          }
+          units s;
+          description
+            "Specifies the maximum time during which a peer waits for a BGP session reestablishment.";
+        }
+        choice import-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf import-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes learned from a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container import-filter {
+              description
+                "Configure an import route-filter to filter the routes received from peers. By default, no route-filter is specified to filter the routes imported from peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an import route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an import route-filter parameter.";
+              }
+            }
+          }
+        }
+        choice export-policy-type {
+          description
+            "Set route policy or filter.";
+          case rtp-ref {
+            description
+              "Route policy.";
+            leaf export-policy {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Specify the filtering policy applied to the routes to be advertised to a peer. By default, no such policy is specified.";
+            }
+          }
+          case xpl-ref {
+            description
+              "Route filter.";
+            container export-filter {
+              description
+                "Configure an export route-filter to filter the routes to be advertised to peers. By default, no route-filter is specified to filter the routes to be advertised to peers.";
+              leaf name {
+                type leafref {
+                  path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+                }
+                description
+                  "Specify an export route-filter name.";
+              }
+              leaf parameter {
+                when "../name";
+                type xpl:filter-parameter-type;
+                description
+                  "Specify an export route-filter parameter.";
+              }
+            }
+          }
+        }
+        leaf advertise-community {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable advertise the community attribute to a peer or a peer group.";
+        }
+        uses bgp:route-limit-type;
+        uses bgp:path-attr-map-type;
+    }
+  }
+  augment "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route" {
+    description
+      "BGP flow address family routes information.";
+    container ipv4-flow {
+      config false;
+      description
+        "Statistics of BGP routes information of IPv4 flow address family.";
+      container routes {
+        description
+          "List of displayed BGP FLOW route information.";
+        list route {
+          key "vpn-name route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses flow-routing-table-key-type;
+          uses flow-routing-table-type;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:ipv4-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+          uses ipv4-flow-routing-table-rule-type;
+        }
+      }
+      container peer-advertise-routes {
+        description
+          "List of displayed advertised route information in an address family.";
+        list peer-advertise-route {
+          key "vpn-name remote-peer-address route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses bgp-rt:routing-table-peer-address;
+          uses flow-routing-table-key-type;
+          uses flow-peer-base-route-type;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:ipv4-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+        }
+      }
+      container peer-receive-routes {
+        description
+          "List of displayed received route information in an address family.";
+        list peer-receive-route {
+          key "vpn-name remote-peer-address route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses bgp-rt:routing-table-peer-address;
+          uses flow-routing-table-key-type;
+          uses flow-peer-base-route-type;
+          uses invalid-reason;
+          uses worse-reason;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:ipv4-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+        }
+      }
+      uses flow-route-statistics;
+      uses redirect-ip-relay-info-type;
+      container redirect-ipv6-relay-infos {
+        description
+          "List of redirection IPv6 relay result.";
+        list redirect-ipv6-relay-info {
+          key "vpn-name route-distinguisher index route-generate-identity from route-type path-id address color";
+          description
+            "Statistics of redirection IPv6 relay information.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses flow-routing-table-key-type;
+          uses redirect-ipv6-relay-info-type;
+        }
+      }
+      uses bgp-ipv4-flow-rules;
+      uses bgp-flow-routes-action;
+      uses bgp-rt:route-attribute-info-ext;
+    }
+    container ipv6-flow {
+      config false;
+      description
+        "Statistics of BGP routes information of IPv6 flow address family.";
+      container routes {
+        description
+          "List of displayed BGP FLOW route information.";
+        list route {
+          key "vpn-name route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses flow-routing-table-key-type;
+          uses flow-routing-table-type;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:ipv6-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+          }
+          description
+            "BGP route attribute id.";
+          }
+          uses flow-routing-table-rule-type;
+        }
+      }
+      container peer-advertise-routes {
+        description
+          "List of displayed advertised route information in an address family.";
+        list peer-advertise-route {
+          key "vpn-name remote-peer-address route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses bgp-rt:routing-table-peer-address;
+          uses flow-routing-table-key-type;
+          uses flow-peer-base-route-type;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:ipv6-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+        }
+      }
+      container peer-receive-routes {
+        description
+          "List of displayed received route information in an address family.";
+        list peer-receive-route {
+          key "vpn-name remote-peer-address route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses bgp-rt:routing-table-peer-address;
+          uses flow-routing-table-key-type;
+          uses flow-peer-base-route-type;
+          uses invalid-reason;
+          uses worse-reason;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:ipv6-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+        }
+      }
+      uses flow-route-statistics;
+      container redirect-ipv6-relay-infos {
+        description
+          "List of redirection IPv6 relay result.";
+        list redirect-ipv6-relay-info {
+          key "vpn-name route-distinguisher index route-generate-identity from route-type path-id address color";
+          description
+            "Statistics of redirection IPv6 relay information.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses flow-routing-table-key-type;
+          uses redirect-ipv6-relay-info-type;
+          leaf relay-ip-next-hop {
+            type inet:ip-address-no-zone;
+            description
+            "IP iteration next hop.";
+          }
+          leaf relay-ip-interface-name {
+            type string {
+            length "1..63";
+            }
+            description
+            "IP iteration outbound interface.";
+          }
+          leaf relay-tunnel-next-hop {
+            type inet:ip-address-no-zone;
+            description
+            "Tunnel iteration next hop.";
+          }
+        }
+      }
+      uses bgp-flow-route-rules;
+      uses bgp-flow-routes-action;
+      uses bgp-rt:route-attribute-info-ext;
+    }
+    container vpnv4-flow {
+      config false;
+      description
+        "Statistics of BGP routes information of vpnv4 flow address family.";
+      container routes {
+        description
+          "List of displayed BGP FLOW route information.";
+        list route {
+          key "vpn-name route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses flow-routing-table-key-type;
+          uses flow-routing-table-type;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:vpnv4-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+          uses flow-routing-table-rule-type;
+        }
+      }
+      container peer-advertise-routes {
+        description
+          "List of displayed advertised route information in an address family.";
+        list peer-advertise-route {
+          key "vpn-name remote-peer-address route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses bgp-rt:routing-table-peer-address;
+          uses flow-routing-table-key-type;
+          uses flow-peer-base-route-type;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:vpnv4-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+        }
+      }
+      container peer-receive-routes {
+        description
+          "List of displayed received route information in an address family.";
+        list peer-receive-route {
+          key "vpn-name remote-peer-address route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses bgp-rt:routing-table-peer-address;
+          uses flow-routing-table-key-type;
+          uses flow-peer-base-route-type;
+          uses invalid-reason;
+          uses worse-reason;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:vpnv4-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+        }
+      }
+      uses flow-route-statistics;
+      uses bgp-flow-route-rules;
+      uses bgp-flow-routes-action;
+      uses bgp-rt:route-attribute-info-ext;
+    }
+    container vpnv6-flow {
+      config false;
+      description
+        "Statistics of BGP routes information of vpnv6 flow address family.";
+      container routes {
+        description
+          "List of displayed BGP FLOW route information.";
+        list route {
+          key "vpn-name route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses flow-routing-table-key-type;
+          uses flow-routing-table-type;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:vpnv6-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+          uses flow-routing-table-rule-type;
+        }
+      }
+      container peer-advertise-routes {
+        description
+          "List of displayed advertised route information in an address family.";
+        list peer-advertise-route {
+          key "vpn-name remote-peer-address route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses bgp-rt:routing-table-peer-address;
+          uses flow-routing-table-key-type;
+          uses flow-peer-base-route-type;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:vpnv6-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+        }
+      }
+      container peer-receive-routes {
+        description
+          "List of displayed received route information in an address family.";
+        list peer-receive-route {
+          key "vpn-name remote-peer-address route-distinguisher index route-generate-identity from route-type path-id";
+          description
+            "BGP FLOW route state.";
+          uses bgp-rt:routing-table-vpn-name;
+          uses bgp-rt:routing-table-peer-address;
+          uses flow-routing-table-key-type;
+          uses flow-peer-base-route-type;
+          uses invalid-reason;
+          uses worse-reason;
+          leaf attribute-index {
+            type leafref {
+              path "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:vpnv6-flow/bgp-flow:route-actions/bgp-flow:route-action/bgp-flow:index";
+            }
+            description
+              "BGP route attribute id.";
+          }
+        }
+      }
+      uses flow-route-statistics;
+      uses bgp-flow-route-rules;
+      uses bgp-flow-routes-action;
+      uses bgp-rt:route-attribute-info-ext;
+    }
+  }
+}

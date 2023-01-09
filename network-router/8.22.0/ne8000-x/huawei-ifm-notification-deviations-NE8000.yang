@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifm-notification-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-ifm-notification-deviations-NE8000";
+  prefix ifm-notification-devs-NE8000;
+
+  import huawei-ifm-notification {
+    prefix ifm-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ifm-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm-notification:physical-admin-if-down" {
+    deviate not-supported;
+  }
+  deviation "/ifm-notification:physical-admin-if-up" {
+    deviate not-supported;
+  }
+  deviation "/ifm-notification:if-ipv4-conflict" {
+    deviate not-supported;
+  }
+  deviation "/ifm-notification:if-ipv4-conflict-resume" {
+    deviate not-supported;
+  }
+}

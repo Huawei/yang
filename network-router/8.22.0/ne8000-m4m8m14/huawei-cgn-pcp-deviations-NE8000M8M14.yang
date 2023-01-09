@@ -1,0 +1,47 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-pcp-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-cgn-pcp-deviations-NE8000M8M14";
+  prefix cgn-pcp-devs-NE8000M8M14;
+
+  import huawei-cgn-pcp {
+    prefix cgn-pcp;
+  }
+
+  import huawei-vsm {
+    prefix vsm;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn-pcp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/lcs:license/cgn-pcp:active-pcps" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+
+}

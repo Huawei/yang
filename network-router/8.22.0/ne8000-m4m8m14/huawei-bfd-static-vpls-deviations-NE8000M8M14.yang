@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bfd-static-vpls-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bfd-static-vpls-deviations-NE8000M8M14";
+  prefix bfd-static-vpls-devs-NE8000M8M14;
+
+  import huawei-bfd-static-vpls {
+    prefix bfd-static-vpls;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bfd-static-vpls module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd-static-vpls:vpls-groups" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd-static-vpls:vsi-pw/bfd-static-vpls:is-group-static-vsi-pw" {
+    deviate add {
+      must "../bfd-static-vpls:is-group-static-vsi-pw='false'";
+    }
+  }
+}

@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-trafficmng-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-trafficmng-deviations-NE8000";
+  prefix trafficmng-devs-NE8000;
+
+  import huawei-trafficmng {
+    prefix trafficmng;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-trafficmng module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/trafficmng:trafficmng/trafficmng:board-alarm-sfu-thresholds" {
+    deviate not-supported;
+  }
+  deviation "/trafficmng:trafficmng/trafficmng:board-alarm-lpu-thresholds" {
+    deviate not-supported;
+  }
+  deviation "/trafficmng:trafficmng/trafficmng:packet-loss-alarms" {
+    deviate not-supported;
+  }
+  deviation "/trafficmng:trafficmng/trafficmng:lpu-backpressure-switch" {
+    deviate not-supported;
+  }
+
+}

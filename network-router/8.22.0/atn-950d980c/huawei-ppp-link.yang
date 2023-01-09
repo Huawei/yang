@@ -1,0 +1,258 @@
+/*
+Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ppp-link {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ppp-link";
+  prefix ppp-link;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ppp-net {
+    prefix ppp-net;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "PPP configurations and statistics.";
+  revision 2022-01-20 {
+    description
+      "Modifying the node-ref of the RPC nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-12-07 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef crc-word-length-mode {
+    type enumeration {
+      enum "crc16" {
+        value 16;
+        description
+          "CRC word length 16 bits.";
+      }
+      enum "crc32" {
+        value 32;
+        description
+          "CRC word length 32 bits.";
+      }
+    }
+    description
+      "Set CRC word length.";
+  }
+  rpc clear-port-crc-err-alarm {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-link:ppp-link";
+    description
+      "Clear CRC error alarm of the PPP protocol.";
+    input {
+      leaf if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Name of the interface. For example, Serial3/2/0/2:1.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp" {
+    description
+      "Configure PPP configuration of interface.";
+    container ppp-link {
+      description
+      "Configure PPP link configuration of interface.";
+      container port-alarm {
+        when "(../../../../ifm:type='Serial' or ../../../../ifm:type='Trunk-Serial') and ../../../../ifm:class='main-interface'";
+        description
+          "Configure PPP port alarm information.";
+        leaf crc-error-down {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable CRC error down. The port will shutdown when the number of error packets counted in the time in interval exceeds threshold.";
+        }
+        leaf crc-word-length {
+          type crc-word-length-mode;
+          default "crc32";
+          description
+            "Number of CRC bits.";
+        }
+        choice alarm-type {
+          default "high-low-threshold";
+          description
+              "CRC alarm config.";
+          case high-low-threshold {
+            description
+              "Configure CRC error high low threshold.";
+            container crc-error-threshold {
+              description
+                "Configure CRC error high low threshold.";
+              leaf high-threshold {
+                type uint32 {
+                  range "1..4294967295";
+                }
+                must "../high-threshold >= ../low-threshold";
+                default "3";
+                description
+                  "High threshold value.";
+              }
+              leaf low-threshold {
+                type uint32 {
+                  range "1..4294967295";
+                }
+                must "../high-threshold >= ../low-threshold";
+                default "3";
+                description
+                  "Low threshold value.";
+              }
+              leaf interval {
+                type uint32 {
+                  range "1..65535";
+                }
+                units "s";
+                default "10";
+                description
+                  "Time interval for statistical CRC error alarm.";
+              }
+            }
+          }
+          case bit-error-ratio {
+            description
+              "Configure bit error ratio threshold.";
+            container bit-error-ratio {
+              must "bit-alarm-exponent <= bit-resume-exponent";
+              presence "Enable bit error ratio threshold.";
+              description
+                "Configure bit error ratio threshold.";
+              leaf bit-alarm-coefficient {
+                type uint32 {
+                  range "1";
+                }
+                mandatory true;
+                description
+                  "Bit error ratio alarm coefficient (x of xE-y).";
+              }
+              leaf bit-alarm-exponent {
+                type uint32 {
+                  range "3..6";
+                }
+                mandatory true;
+                description
+                  "Bit error ratio alarm exponent (y of xE-y).";
+              }
+              leaf bit-resume-coefficient {
+                type uint32 {
+                  range "1";
+                }
+                mandatory true;
+                description
+                  "Bit error ratio resume coefficient (x of xE-y).";
+              }
+              leaf bit-resume-exponent {
+                type uint32 {
+                  range "3..6";
+                }
+                mandatory true;
+                description
+                  "Bit error ratio resume exponent (y of xE-y).";
+              }
+            }
+          }
+          case packet-error-ratio {
+            description
+              "Configure packet error ratio threshold.";
+            container packet-error-ratio {
+              must "(packet-alarm-exponent < packet-resume-exponent) or ((packet-alarm-exponent = packet-resume-exponent) and (packet-alarm-coefficient > packet-resume-coefficient))";
+              presence "Enable packet error ratio threshold.";
+              description
+                "Configure packet error ratio threshold.";
+              leaf packet-alarm-coefficient {
+                type uint32 {
+                  range "1..9";
+                }
+                mandatory true;
+                description
+                  "Packet error ratio alarm coefficient (x of xE-y).";
+              }
+              leaf packet-alarm-exponent {
+                type uint32 {
+                  range "1..5";
+                }
+                mandatory true;
+                description
+                  "Packet error ratio alarm exponent (y of xE-y).";
+              }
+              leaf packet-resume-coefficient {
+                type uint32 {
+                  range "1..9";
+                }
+                mandatory true;
+                description
+                  "Packet error ratio resume coefficient (x of xE-y).";
+              }
+              leaf packet-resume-exponent {
+                type uint32 {
+                  range "1..6";
+                }
+                mandatory true;
+                description
+                  "Packet error ratio resume exponent (y of xE-y).";
+              }
+              container crc-sample {
+                must "(child-window-max-number > child-window-alarm-number) and (child-window-max-number > child-window-resume-number)";
+                description
+                  "Configure CRC error windows.";
+                leaf sample-window-factor {
+                  type uint32 {
+                    range "10..100";
+                  }
+                  default "50";
+                  description
+                    "Sample window factor.";
+                }
+                leaf child-window-max-number {
+                  type uint32 {
+                    range "10..100";
+                  }
+                  default "50";
+                  description
+                    "Maximum number of child windows.";
+                }
+                leaf child-window-alarm-number {
+                  type uint32 {
+                    range "1..100";
+                  }
+                  default "5";
+                  description
+                    "Minimum number of child windows for alarm generation.";
+                }
+                leaf child-window-resume-number {
+                  type uint32 {
+                    range "1..100";
+                  }
+                  default "30";
+                  description
+                    "Minimum number of child windows for alarm clearance.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  ext:task-name "interface-mgr";
+}

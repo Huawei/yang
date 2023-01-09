@@ -1,0 +1,227 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-apn {
+  namespace "urn:huawei:yang:huawei-apn";
+  prefix apn;
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-apn-type;
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "APN.";
+  revision 2022-06-15 {
+    description
+      "Modify APN ID template's app-group-length and user-group-length range from 0...128 to 0...64.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-04-28 {
+    description
+      "Modify must condition for APN ID template.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-04-24 {
+    description
+      "Add APN ID inherit node.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-04-19 {
+    description
+      "Modify APN ID template field length range.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-03-20 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name "apn-base";
+  container apn {
+    presence "Enable Application-aware Networking.";
+    description
+      "Configure Application-aware Networking.";
+    container ipv6 {
+      presence "Enable Application-aware IPv6 Networking.";
+      description
+        "Configure Application-aware Networking IPv6.";
+      leaf apn-id-inherit {
+        type apn-inherit-type;
+        description
+          "Enable APN ID inherit mode.";
+      }
+      container apn-id-templates {
+        description
+          "List of APN ID templates.";
+        list apn-id-template {
+          must "(app-group-length or user-group-length)";
+          key "name";
+          unique "total-length";
+          description
+            "Configure an APN ID template."; 
+          leaf name {
+            type string {
+              length "1..31";
+              pattern '[^ \?]*';
+            }
+            description
+              "Template name.";
+          }
+          leaf total-length {
+            type uint8 {
+              range "64";
+            }
+            mandatory true;
+            description
+              "Total length.";
+          }
+          leaf app-group-length {
+            type uint8 {
+              range "1..64";
+            }
+            must "((../user-group-length and (../user-group-length + ../app-group-length <= ../total-length)) or (not(../user-group-length) and ../app-group-length <= ../total-length))";
+            description
+              "Application group length.";
+          }
+          leaf user-group-length {
+            type uint8 {
+              range "1..64";
+            }
+            must "((../app-group-length and (../user-group-length + ../app-group-length <= ../total-length)) or (not(../app-group-length) and ../user-group-length <= ../total-length))";
+            description
+              "User group length.";
+          }
+          container apn-id-fields {
+            description
+              "List of APN ID template fields.";
+            list apn-id-field {
+              key "field-type index";
+              unique "name";
+              max-elements "8";
+              description
+                "Configure an APN field.";
+              leaf field-type {
+                type apn-field-type;
+                description
+                  "Field type.";
+              }
+              leaf index {
+                type uint32 {
+                  range "1..4294967294";
+                }
+                description
+                  "Field index.";
+              }
+              leaf name {
+                type string {
+                  length "1..31";
+                  pattern '[^ \?]*';
+                }
+                mandatory true;
+                description
+                  "Field name.";
+              }
+              leaf field-length {
+                type uint8 {
+                  range "1..32";
+                }
+                must "((../field-type='app-group' and ../field-length <= ../../../app-group-length) or ((../field-type='user-group' and ../field-length <= ../../../user-group-length)))";
+                mandatory true;
+                description
+                  "Field length.";
+              }
+            }
+          }
+        }
+      }
+      container apn-id-instances {
+        description
+          "List of APN ID instances.";
+        list apn-id-instance {
+          key "name";
+          description
+            "Configure an APN ID instance."; 
+          leaf name {
+            type string {
+              length "1..31";
+              pattern '[^ \?]*';
+            }
+            description
+              "Instance name.";
+          }
+          leaf template-name {
+            type leafref {
+              path "../../../apn-id-templates/apn-id-template/name";
+            }
+            description
+              "Template name.";
+          }
+          container instance-fields {
+            description
+              "List of APN ID instance fields.";
+            list instance-field {
+              must "../../template-name";
+              key "field-name";
+              description
+                "Configure an APN ID instance field and its value."; 
+              leaf field-name {
+                type string {
+                  length "1..31";
+                  pattern '[^ \?]*';
+                }
+                must "(../../../../../apn-id-templates/apn-id-template/apn-id-fields/apn-id-field[name=current()])";
+                description
+                  "Field name.";
+              }
+              leaf field-value {
+                type uint32 {
+                range "0..4294967295";
+                }
+                mandatory true;
+                description
+                  "Field value.";
+              }
+            }
+          }
+          leaf apn-id-length {
+            type uint8;
+            config false;
+            description
+               "APN ID length.";
+          }
+          leaf apn-id-value {
+            type string {
+              length "1..39";
+            }
+            config false;
+            description
+              "APN ID value.";
+          }
+          leaf apn-id-mask {
+            type string {
+              length "1..39";
+            }
+            config false;
+            description
+              "APN ID mask.";
+          }
+        }
+      }
+    }
+  }
+}

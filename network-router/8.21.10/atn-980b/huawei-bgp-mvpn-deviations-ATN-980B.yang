@@ -1,0 +1,69 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-mvpn-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-bgp-mvpn-deviations-ATN-980B";
+  prefix bgp-mvpn-devs-ATN-980B;
+
+  import huawei-bgp-mvpn {
+    prefix bgp-mvpn;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-mvpn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-mvpn:ipv6-mvpn" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af/bgp-mvpn:ipv6-mvpn" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp-mvpn:ipv6-mvpn" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-mvpn:ipv4-mvpn/bgp-mvpn:ng-type1-routes/bgp-mvpn:ng-type1-route/bgp-mvpn:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-mvpn:ipv4-mvpn/bgp-mvpn:ng-type3-routes/bgp-mvpn:ng-type3-route/bgp-mvpn:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-mvpn:ipv4-mvpn/bgp-mvpn:ng-type4-routes/bgp-mvpn:ng-type4-route/bgp-mvpn:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-mvpn:ipv4-mvpn/bgp-mvpn:ng-type5-routes/bgp-mvpn:ng-type5-route/bgp-mvpn:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-mvpn:ipv4-mvpn/bgp-mvpn:ng-type6-routes/bgp-mvpn:ng-type6-route/bgp-mvpn:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-mvpn:ipv4-mvpn/bgp-mvpn:ng-type7-routes/bgp-mvpn:ng-type7-route/bgp-mvpn:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-mvpn:ipv6-mvpn" {
+    deviate not-supported;
+  }
+}

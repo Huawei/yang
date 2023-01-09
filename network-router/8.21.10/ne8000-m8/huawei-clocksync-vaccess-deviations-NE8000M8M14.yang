@@ -1,0 +1,75 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-vaccess-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-clocksync-vaccess-deviations-NE8000M8M14";
+  prefix clocksync-vaccess-devs-NE8000M8M14;
+
+  import huawei-clocksync-vaccess {
+    prefix clocksync-vaccess;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-vaccess module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef phy-ssm-level-deviations {
+    type enumeration {
+      enum "unk" {
+        value 0;
+        description
+          "Unknown SSM level.";
+      }
+      enum "prc" {
+        value 2;
+        description
+          "G.811 clock.";
+      }
+      enum "ssua" {
+        value 4;
+        description
+          "G.812 transit node clock.";
+      }
+      enum "ssub" {
+        value 8;
+        description
+          "G.812 local node clock.";
+      }
+      enum "sec" {
+        value 11;
+        description
+          "SDH.";
+      }
+      enum "dnu" {
+        value 15;
+        description
+          "The clock source is unavailable.";
+      }
+    }
+    description
+      "SSM Level Type.";
+  }
+
+  deviation "/clocksync-vaccess:clocksync-vaccess/clocksync-vaccess:nvclock-sync/clocksync-vaccess:va-remote-clocks/clocksync-vaccess:va-remote-clock/clocksync-vaccess:cfg-ssm" {
+    deviate replace {
+      type clocksync-vaccess-devs-NE8000M8M14:phy-ssm-level-deviations;
+    }
+  }
+}

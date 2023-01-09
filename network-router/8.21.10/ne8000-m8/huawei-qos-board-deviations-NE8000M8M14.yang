@@ -1,0 +1,135 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos-board-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-qos-board-deviations-NE8000M8M14";
+  prefix qos-board-devs-NE8000M8M14;
+
+  import huawei-qos-board {
+    prefix qos-board;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-qos-board module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef policy-match-type-deviations {
+    type enumeration {
+      enum "ip-layer-push" {
+        value 0;
+        description 
+          "Ip-layer-push.";
+      }
+      enum "ip-layer-pop" {
+        value 7;
+        description 
+          "Ip-layer-pop.";
+      }
+      enum "mpls-layer-push" {
+        value 3;
+        description 
+          "MPLS-layer-push.";
+      }
+      enum "mpls-layer-pop" {
+        value 6;
+        description 
+          "MPLS-layer-pop.";
+      }
+      enum "mpls-layer-l2-inbound" {
+        value 4;
+        description 
+          "MPLS-layer-l2-inbound.";
+      }
+      enum "protocol-mc-reserved" {
+        value 2;
+        description 
+          "Protocol-mc-reserved.";
+      }
+      enum "rule-packet" {
+        value 5;
+        description 
+          "Rule-packet.";
+      }
+    }
+    description 
+      "Ip-layer-push/ip-layer-pop/MPLS-layer-push/MPLS-layer-pop/MPLS-layer-l2-inbound/protocol-mc-reserved/rule-packet.";
+  }
+
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/qos-board:qos" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:pq-schedule-priority-on-cards" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:user-queue-pir-precision" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:packet-block-thresholds" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:channel-alarms" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:channel-profile-precision" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:channel-profile-apply" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:access-user-board-schedule-enable" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:global-buffer-share-thresholds" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:global-buffer-share-queues" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:flow-queue-backpressure-off" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:user-queue-resource-4cos" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/qos-board:vm-bandwidths" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos/qos-board:traffic-policy-matchs/qos-board:traffic-policy-match/qos-board:type" {
+    deviate replace {
+      type qos-board-devs-NE8000M8M14:policy-match-type-deviations;
+    }
+  }
+
+}

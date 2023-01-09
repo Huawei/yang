@@ -1,0 +1,72 @@
+/******************************************************
+* Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn-nat64 {
+  namespace "urn:huawei:yang:huawei-cgn-nat64";
+  prefix cgn-nat64;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-cgn-common {
+    prefix cgn-common;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn NAT64.";
+
+  revision 2022-01-26 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  container cgn-nat64 {
+    description
+      "NAT64.";
+    container nat64-instances {
+      description
+        "List of nat64-instance.";
+      list nat64-instance {
+        key "instance-name instance-id";
+        unique "instance-id";
+        unique "instance-name";
+        description
+          "Configure nat64 instance, used to translate network address.";
+        leaf instance-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Specify the name of a NAT64 instance.";
+        }
+        leaf instance-id {
+          type uint16 {
+            range "1..4095";
+          }
+          description
+            "Specify the id of a NAT64 instance.";
+        }
+        container log {
+          description "Configure nat64 log.";
+          uses cgn-common:log-host;
+          container send-mode {
+            description "Configure nat session log send mode.";
+            uses cgn-common:session-log-send-mode;
+          }
+        }
+      }
+    }
+  }
+  ext:task-name "nat";
+}

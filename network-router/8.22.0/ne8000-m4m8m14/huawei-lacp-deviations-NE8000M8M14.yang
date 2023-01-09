@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lacp-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-lacp-deviations-NE8000M8M14";
+  prefix lacp-devs-NE8000M8M14;
+
+  import huawei-lacp {
+    prefix lacp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ifm-trunk {
+    prefix ifm-trunk;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-lacp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/lacp:lacp/lacp:global/lacp:m-lag" {
+    deviate not-supported;
+  }
+  deviation "/lacp:lacp/lacp:global/lacp:force-down" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/lacp:lacp/lacp:m-lag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/lacp:lacp-force-up/lacp:extension-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/lacp:lacp/lacp:max-active-num" {
+    deviate replace {
+      type uint32 {
+        range "1..64";
+      }
+    }
+  }
+}

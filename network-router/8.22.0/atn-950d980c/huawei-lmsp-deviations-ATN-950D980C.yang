@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lmsp-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-lmsp-deviations-ATN-950D980C";
+  prefix lmsp-devs-ATN-950D980C;
+
+  import huawei-lmsp {
+    prefix lmsp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-lmsp module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/lmsp:lmsp/lmsp:aps-groups/lmsp:aps-group/lmsp:group-id" {
+    deviate replace {
+      type uint32 {
+        range "1..12";
+      }
+    }
+  }
+
+}

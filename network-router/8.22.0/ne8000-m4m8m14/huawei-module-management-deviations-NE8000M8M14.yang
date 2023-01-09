@@ -1,0 +1,69 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-module-management-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-module-management-deviations-NE8000M8M14";
+  prefix module-management-devs-NE8000M8M14;
+
+  import huawei-module-management {
+    prefix module-management;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-module-management module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/module-management:module-management/module-management:operation-schedules/module-management:operation-schedule/module-management:name" {
+    deviate not-supported;
+  }
+  deviation "/module-management:module-management/module-management:download-package-schedule" {
+    deviate not-supported;
+  }
+  deviation "/module-management:module-management/module-management:download-package-load-path" {
+    deviate not-supported;
+  }
+  deviation "/module-management:module-management/module-management:loaded-plug-package-infos" {
+    deviate not-supported;
+  }
+  deviation "/module-management:module-management/module-management:activated-plug-package-version-infos" {
+    deviate not-supported;
+  }
+  deviation "/module-management:module-management/module-management:next-plug-package-version-infos" {
+    deviate not-supported;
+  }
+  deviation "/module-management:module-management/module-management:plug-package-action-results" {
+    deviate not-supported;
+  }
+  deviation "/module-management:download-module-file" {
+    deviate not-supported;
+  }
+  deviation "/module-management:download-and-load-plug-package" {
+    deviate not-supported;
+  }
+  deviation "/module-management:activate-plug-package" {
+    deviate not-supported;
+  }
+  deviation "/module-management:delete-plug-package" {
+    deviate not-supported;
+  }
+  deviation "/module-management:startup-plug-package" {
+    deviate not-supported;
+  }
+  deviation "/module-management:reset-startup-plug-package" {
+    deviate not-supported;
+  }
+}

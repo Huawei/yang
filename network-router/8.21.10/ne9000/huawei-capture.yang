@@ -1,0 +1,629 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-capture {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-capture";
+  prefix capture;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import huawei-acl {
+    prefix acl;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Network capture.";
+  revision 2020-01-11 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "capture";
+  typedef tag-format {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "VXLAN overlay packets without VLAN tag.";
+      }
+      enum "single" {
+        value 1;
+        description
+          "VXLAN overlay packets with single VLAN tag.";
+      }
+    }
+    description
+      "Tag format of VXLAN overlay packets.";
+  }
+  typedef result {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "The packet obtain result is successful.";
+      }
+      enum "fail" {
+        value 1;
+        description
+          "The packet obtain result is fail.";
+      }
+    }
+    description
+      "Packet obtain result.";
+  }
+  typedef capture-index {
+    type uint32 {
+      range "1..8";
+    }
+    description
+      "Index of the packet obtain instance.";
+  }
+  typedef direction {
+    type enumeration {
+      enum "inbound" {
+        value 1;
+        description
+          "Inbound.";
+      }
+      enum "outbound" {
+        value 2;
+        description
+          "Outbound.";
+      }
+      enum "both" {
+        value 3;
+        description
+          "Both.";
+      }
+    }
+    description
+      "Packet obtain direction.";
+  }
+  typedef packet-header-status {
+    type enumeration {
+      enum "stopped" {
+        value 0;
+        description
+          "Stop.";
+      }
+      enum "running" {
+        value 1;
+        description
+          "Running.";
+      }
+    }
+    description
+      "Packet obtain status.";
+  }
+  typedef packet-header-link-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "Interface of linktype.";
+      }
+      enum "ethernet" {
+        value 1;
+        description
+          "Ethernet of link type.";
+      }
+      enum "ppp" {
+        value 2;
+        description
+          "PPP protocol of link type.";
+      }
+      enum "hdlc" {
+        value 3;
+        description
+          "HDLC protocol of link type.";
+      }
+      enum "atm" {
+        value 4;
+        description
+          "ATM of link type.";
+      }
+    }
+    description
+      "Packet header link type.";
+  }
+  container capture {
+    description
+      "Forwarding packet headers information.";
+    container capture-instances {
+      config false;
+      description
+        "List of obtain packet headers instance.";
+      list capture-instance {
+        key "instance-id";
+        description
+          "Operational data of obtain packet headers instance.";
+        leaf instance-id {
+          type uint8 {
+            range "1..8";
+          }
+          description
+            "Instance ID.";
+        }
+        leaf inbound-instance {
+          type uint32;
+          description
+            "Inbound instance.";
+        }
+        leaf outbound-instance {
+          type uint32;
+          description
+            "Outbound instance.";
+        }
+        leaf total-instance {
+          type uint32;
+          description
+            "Total instance statistic.";
+        }
+        leaf status {
+          type packet-header-status;
+          description
+            "Obtain packet headers status.";
+        }
+        leaf timeout {
+          type uint32 {
+            range "1..86400";
+          }
+          units "s";
+          description
+            "Timeout.";
+        }
+        leaf record-packet-number {
+          type uint32 {
+            range "1..6000";
+          }
+          description
+            "Record packet number.";
+        }
+        leaf total-memory-size {
+          type uint32;
+          units "MB";
+          description
+            "Record packet size.";
+        }
+        leaf obtain-packet-number {
+          type uint32;
+          description
+            "Obtain packet number.";
+        }
+        leaf obtain-packet-size {
+          type uint32;
+          units "Byte";
+          description
+            "Obtain packet size.";
+        }
+        leaf saved-packet-number {
+          type uint32;
+          description
+            "Saved packet number.";
+        }
+        leaf saved-packet-size {
+          type uint32;
+          units "Byte";
+          description
+            "Saved packet size.";
+        }
+        leaf delete-packet-number {
+          type uint32;
+          description
+            "Delete packet number.";
+        }
+        leaf delete-packet-size {
+          type uint32;
+          units "Byte";
+          description
+            "Delete packet size.";
+        }
+        leaf first-packet-time {
+          type yang:date-and-time;
+          description
+            "First packet time.";
+        }
+        leaf last-packet-time {
+          type yang:date-and-time;
+          description
+            "Last packet time.";
+        }
+        leaf acl {
+          type string {
+            length "1..63";
+          }
+          description
+            "Acl number or name.";
+        }
+        leaf memory-packet-number {
+          type uint32;
+          description
+            "Memory packet number.";
+        }
+        leaf remain-time {
+          type uint32 {
+            range "1..86400";
+          }
+          units "s";
+          description
+            "Remain time.";
+        }
+        leaf remain-time-delete {
+          type uint32 {
+            range "1..86400";
+          }
+          units "s";
+          description
+            "Remain time.";
+        }
+        leaf packet-device-name {
+          type string {
+            length "5..64";
+          }
+          description
+            "Packet device name.";
+        }
+        leaf file-name {
+          type string {
+            length "5..64";
+          }
+          description
+            "File name.";
+        }
+        leaf file-length {
+          type uint8;
+          units "MB";
+          default "2";
+          description
+            "File length.";
+        }
+        leaf link-type {
+          type packet-header-link-type;
+          description
+            "Link type.";
+        }
+        leaf interface-name {
+          type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Interface name.";
+        }
+        leaf direction {
+          type direction;
+          description
+            "Direction.";
+        }
+      }
+    }
+  }
+  rpc capture-packet {
+    description
+      "To start capture.";
+    ext:node-ref "/capture:capture/capture:capture-instances";
+    input  {
+      leaf local-host {
+        type boolean;
+        default "false";
+        description
+          "Obtain packets sent to the CPU.";
+      }
+      choice tunnel {
+        description
+          "Configure the tunnel type for packet obtain.";
+        case normal {
+          description
+            "Normal packet.";
+          leaf vlan-id {
+            type vlan:vlan-id;
+            description
+              "Outer VLAN ID.";
+          }
+          leaf cvlan-id {
+            type vlan:vlan-id;
+            description
+              "Inner VLAN ID.";
+          }
+        }
+        case vxlan {
+          description
+            "Vxlan packet.";
+          leaf vxlan {
+            type empty;
+            mandatory true;
+            description
+              "Indicates that only VXLAN packets are captured.";
+          }
+          leaf vni-id {
+            type uint32 {
+              range "1..16777215";
+            }
+            description
+              "VXLAN network identifier value.";
+          }
+          leaf tag-format {
+            type tag-format;
+            description
+              "Tag format for vxlan packet.";
+          }
+        }
+      }
+      choice acl {
+        description
+          "Configure the acl for packet obtain.";
+        case acl {
+          description
+            "IPv4 acl.";
+          leaf acl-name {
+            type leafref {
+              path "/acl:acl/acl:groups/acl:group/acl:identity";
+            }
+            description
+              "Acl number or name.";
+          }
+        }
+        case acl6 {
+          description
+            "IPv6 acl.";
+          leaf acl6-name {
+            type leafref {
+              path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+            }
+            description
+              "Acl number or name.";
+          }
+        }
+      }
+      leaf-list interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Interface name for packet obtain.";
+      }
+      leaf packet-number {
+        type uint32 {
+          range "1..5000";
+        }
+        default "100";
+        description
+          "Maximum number of packets to be captured.";
+      }
+      leaf packet-length {
+        type uint16 {
+          range "20..64";
+        }
+        units "Byte";
+        default "64";
+        description
+          "Maximum packet length to be captured.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "1..86400";
+        }
+        units "s";
+        default "60";
+        description
+          "Timeout interval.";
+      }
+      leaf file-name {
+        type string {
+          length "5..64";
+        }
+        default "capture.cap";
+        description
+          "Name of the file for saving the obtain packets.";
+      }
+      leaf clear-payload {
+        type boolean;
+        default "false";
+        description
+          "Sets the data content of captured packets to 0. Only the data content of TCP and UDP packets can be set to 0.";
+      }
+      leaf direction {
+        type direction;
+        description
+          "Packet obtain direction.";
+      }
+      choice vlan-mode {
+        description
+          "VLAN for packet obtain.";
+        case vlan {
+          description
+            "VLAN for packet obtain.";
+          leaf vlan-begin {
+            type vlan:vlan-id;
+            mandatory true;
+            description
+              "Begin VLAN ID for packet obtain.";
+          }
+          leaf vlan-end {
+            type vlan:vlan-id;
+            mandatory true;
+            description
+              "End VLAN ID for packet obtain.";
+          }
+        }
+        case pe-and-ce {
+          description
+            "Pe and Ce VLAN for packet obtain.";
+          leaf pe-vlan {
+            type vlan:vlan-id;
+            mandatory true;
+            description
+              "Pe VLAN ID for packet obtain.";
+          }
+          leaf ce-vlan-begin {
+            type vlan:vlan-id;
+            mandatory true;
+            description
+              "Begin inner VLAN ID for packet obtain.";
+          }
+          leaf ce-vlan-end {
+            type vlan:vlan-id;
+            mandatory true;
+            description
+              "End inner VLAN ID for packet obtain.";
+          }
+        }
+      }
+      leaf file-size {
+        type uint8;
+        units "MB";
+        default "2";
+        description
+          "File size.";
+      }
+      leaf buffer-only {
+        type boolean;
+        default "false";
+        description
+          "Type buffer only.";
+      }
+      leaf overwrite {
+        type boolean;
+        default "false";
+        description
+          "Overwrite the buffer.";
+      }
+    }
+    output  {
+      leaf capture-index {
+        type capture-index;
+        description
+          "Index of the packet obtain instance.";
+      }
+    }
+  }
+  rpc stop-capture {
+    description
+      "To stop capure.";
+    ext:node-ref "/capture:capture/capture:capture-instances";
+    input  {
+      choice mode {
+        mandatory true;
+        description
+          "Stop mode.";
+        case all {
+          description
+            "All the packet obtain instance.";
+          leaf all {
+            type empty;
+            description
+              "All the packet obtain instance.";
+          }
+        }
+        case index {
+          description
+            "The packet obtain instance with a specified index.";
+          leaf capture-index {
+            type capture-index;
+            description
+              "Index of the packet obtain instance.";
+          }
+        }
+        case interface {
+          description
+            "The packet obtain instance with a specified interface.";
+          leaf-list interface-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            min-elements 1;
+            max-elements 8;
+            description
+              "Interface name for packet obtain.";
+          }
+          leaf direction {
+            type direction;
+            description
+              "Packet obtain direction.";
+          }
+        }
+      }
+    }
+  }
+  rpc free-packet-header-obtain {
+    description
+      "To free instance.";
+    ext:node-ref "/capture:capture/capture:capture-instances";
+    input {
+      leaf instance-id {
+        type uint8;
+        description
+          "Instance ID.";
+      }
+    }
+  }
+  notification capture-end-notification {
+    description
+      "This notification is used to report the event of the end of captureing and get the captureing file from the device to controller.";
+    leaf capture-index {
+      type capture-index;
+      mandatory true;
+      description
+        "Index of the packet obtain instance.";
+    }
+    leaf esn {
+      type string {
+        length "1..256";
+      }
+      mandatory true;
+      description
+        "The device name.";
+    }
+    leaf file-name {
+      type string {
+        length "1..60";
+      }
+      mandatory true;
+      description
+        "Name of the file for saving the obtain packets.";
+    }
+    leaf type {
+      type string {
+        length "1..256";
+      }
+      description
+        "File type.";
+    }
+    leaf result {
+      type result;
+      default "success";
+      description
+        "Packet obtain result.";
+    }
+    leaf error-code {
+      type uint32;
+      description
+        "Error code of the packet obtain result.";
+    }
+    leaf error-detail {
+      type string {
+        length "1..256";
+      }
+      description
+        "Error details of the packet obtain result.";
+    }
+  }
+}

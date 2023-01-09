@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-tunnel6-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-tunnel6-deviations-ATN-910C";
+  prefix tunnel6-devs-ATN-910C;
+
+  import huawei-tunnel6 {
+    prefix tunnel6;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-tunnel6 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/tunnel6:ipip-6rd" {
+    deviate not-supported;
+  }
+}

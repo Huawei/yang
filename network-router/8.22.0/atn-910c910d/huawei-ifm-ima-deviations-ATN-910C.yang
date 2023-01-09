@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifm-ima-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-ifm-ima-deviations-ATN-910C";
+  prefix ifm-ima-devs-ATN-910C;
+
+  import huawei-ifm-ima {
+    prefix ifm-ima;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ifm-ima module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-ima:ima/ifm-ima:ima-group/ifm-ima:diff-delay" {
+    deviate replace {
+      type uint32 {
+        range "1..120";
+      }
+    }
+  }
+}

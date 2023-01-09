@@ -1,0 +1,49 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nd-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-nd-deviations-ATN-980B";
+  prefix nd-devs-ATN-980B;
+
+  import huawei-nd {
+    prefix nd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-nd module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/nd:nd/nd:ipv6-neighbors/nd:ipv6-neighbor/nd:nickname" {
+    deviate not-supported;
+  }
+  deviation "/nd:nd/nd:ipv6-neighbors/nd:ipv6-neighbor/nd:vni" {
+    deviate not-supported;
+  }
+  deviation "/nd:nd/nd:ipv6-neighbors/nd:ipv6-neighbor/nd:source-addr" {
+    deviate not-supported;
+  }
+  deviation "/nd:nd/nd:ipv6-neighbors/nd:ipv6-neighbor/nd:peer-addr" {
+    deviate not-supported;
+  }
+  deviation "/nd:nd/nd:ipv6-neighbors/nd:ipv6-neighbor/nd:bd-id" {
+    deviate replace {
+      type uint32 {
+        range "1..16777215";
+      }
+    }
+  }
+}

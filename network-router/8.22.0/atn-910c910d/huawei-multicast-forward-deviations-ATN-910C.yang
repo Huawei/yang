@@ -1,0 +1,174 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-forward-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-multicast-forward-deviations-ATN-910C";
+  prefix multicast-forward-devs-ATN-910C;
+
+  import huawei-multicast-forward {
+    prefix multicast-forward;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-multicast-forward module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef frr-type-deviations {
+    type enumeration {
+      enum "ngmvpn" {
+        value 2;
+        description 
+          "NGMVPN type.";
+      }
+    }
+    description 
+      "Fast re-router type.";
+  }
+
+  deviation "/multicast-forward:multicast-forward/multicast-forward:global/multicast-forward:shaping-enable" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:global/multicast-forward:bw-car-enable" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:global/multicast-forward:reliability-enhance-enable" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:multicast-shaping" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:egress-forward-mode" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:mcfwd-entrys/multicast-forward:mcfwd-entry/multicast-forward:forward-infors/multicast-forward:forward-infor/multicast-forward:bas-flag" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:mcfwd-entrys/multicast-forward:mcfwd-entry/multicast-forward:forward-infors/multicast-forward:forward-infor/multicast-forward:clone-source-adress" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:spatial-multicast" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:l3-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:l2-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:random-detect" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:static-frr/multicast-forward:static-frr-enables" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:static-frr/multicast-forward:static-frr-statuss/multicast-forward:static-frr-status/multicast-forward:primary-interface-name" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:static-frr/multicast-forward:static-frr-statuss/multicast-forward:static-frr-status/multicast-forward:backup-interface-name" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:static-frr/multicast-forward:static-frr-statuss/multicast-forward:static-frr-status/multicast-forward:primary-source-address" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:static-frr/multicast-forward:static-frr-statuss/multicast-forward:static-frr-status/multicast-forward:backup-source-address" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:send-igmp-packet" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-l3-egress-all-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-l3-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-l2-egress-all-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-vlan-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-vsi-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:reset-bd-egress-statistics" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:set-stream-learn" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:set-stream-learn-global" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:single-2022d7-reset" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:single-fast-switch" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:group-fast-switch" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:single-2022d7-restore" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:single-2022d7-switch" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:single-fast-switch-in-batches" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:group-2022d7-switch" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:group-fast-switch-in-batches" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/multicast-forward:multicast-forward" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/multicast-forward:multicast-forward" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/multicast-forward:behavior-bind-multicast-nat-instance" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:static-frr/multicast-forward:static-frr-statuss/multicast-forward:static-frr-status/multicast-forward:frr-type" {
+    deviate replace {
+      type multicast-forward-devs-ATN-910C:frr-type-deviations;
+    }
+  }
+
+}

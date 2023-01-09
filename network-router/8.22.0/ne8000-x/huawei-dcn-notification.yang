@@ -1,0 +1,90 @@
+/*
+Copyright (C) 2019-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dcn-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-dcn-notification";
+  prefix dcn-notification;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of dcn-notification.";
+  revision 2022-05-25 {
+    description
+      "The number of dcn serial interfaces reached the maximum value.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-26 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "dcn";
+  notification dcn-insecure-algorithm {
+    description
+      "An insecure encryption algorithm is used, which has security risks.";
+    leaf feature-name {
+      type string {
+        length "0..255";
+      }
+      description
+        "Feature Name.";
+    }
+    leaf algorithm-name {
+      type string {
+        length "0..255";
+      }
+      description
+        "Algorithm Name.";
+    }
+  }
+  notification dcn-insecure-algorithm-resume {
+    description
+      "The insecure encryption algorithm alarm is cleared.";
+    leaf feature-name {
+      type string {
+        length "0..255";
+      }
+      description
+        "Feature Name.";
+    }
+    leaf algorithm-name {
+      type string {
+        length "0..255";
+      }
+      description
+        "Algorithm Name.";
+    }
+  }
+  notification dcn-serial-reach-limit {
+    description
+      "The number of DCN serial interfaces has reached the maximum value.";
+    leaf serial-if-number {
+      type uint32;
+      description
+        "The number of DCN serial interfaces.";
+    }
+  }
+  notification dcn-serial-reach-limit-clear {
+    description
+      "The alarm indicating that the number of DCN serial interfaces has reached the maximum value is cleared.";
+    leaf serial-if-number {
+      type uint32;
+      description
+        "The number of DCN serial interfaces.";
+    }
+  }
+}

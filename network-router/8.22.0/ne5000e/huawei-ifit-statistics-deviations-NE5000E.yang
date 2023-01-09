@@ -1,0 +1,92 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifit-statistics-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-ifit-statistics-deviations-NE5000E";
+  prefix ifit-statistics-devs-NE5000E;
+
+  import huawei-ifit-statistics {
+    prefix ifit-statistics;
+  }
+
+  import huawei-ifit {
+    prefix ifit;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-ifit-statistics module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifit:ifit/ifit-statistics:flow-statistics/ifit-statistics:flow-statistic/ifit-statistics:if-name" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-statistics/ifit-statistics:flow-statistic/ifit-statistics:error-info-ext" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-statistics/ifit-statistics:flow-statistic/ifit-statistics:tunnel-if-index" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-statistics/ifit-statistics:flow-statistic/ifit-statistics:cfg-id" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-statistics/ifit-statistics:flow-statistic/ifit-statistics:vuni-if-index" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-statistics/ifit-statistics:flow-statistic/ifit-statistics:service-type" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-peer-ip-statistics/ifit-statistics:flow-peer-ip-statistic/ifit-statistics:error-info-ext" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-peer-ip-statistics/ifit-statistics:flow-peer-ip-statistic/ifit-statistics:ttl" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-locator-statistics/ifit-statistics:flow-locator-statistic/ifit-statistics:error-info-ext" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-locator-statistics/ifit-statistics:flow-locator-statistic/ifit-statistics:ttl" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-hop-statistics/ifit-statistics:flow-hop-statistic/ifit-statistics:if-name" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-hop-statistics/ifit-statistics:flow-hop-statistic/ifit-statistics:error-info-ext" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-hop-statistics/ifit-statistics:flow-hop-statistic/ifit-statistics:tunnel-if-index" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-hop-statistics/ifit-statistics:flow-hop-statistic/ifit-statistics:cfg-id" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-hop-statistics/ifit-statistics:flow-hop-statistic/ifit-statistics:total-count" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-hop-statistics/ifit-statistics:flow-hop-statistic/ifit-statistics:map-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-vpws-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifit:ifit/ifit-statistics:flow-native-ip-statistics" {
+    deviate not-supported;
+  }
+
+}

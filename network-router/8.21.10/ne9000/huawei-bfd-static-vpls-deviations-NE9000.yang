@@ -1,0 +1,43 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bfd-static-vpls-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-bfd-static-vpls-deviations-NE9000";
+  prefix bfd-static-vpls-devs-NE9000;
+
+  import huawei-bfd-static-vpls {
+    prefix bfd-static-vpls;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bfd-static-vpls module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd-static-vpls:vpls-groups/bfd-static-vpls:vpls-group/bfd-static-vpls:sub-select-slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-license-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-license-deviations-NE8000";
+  prefix lcs-devs-NE8000;
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-license module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/lcs:license/lcs:global-states/lcs:global-state/lcs:startup-filename" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:license-sale-items/lcs:license-sale-item/lcs:sub-sale-items" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:stack-sale-items/lcs:stack-sale-item/lcs:license-sale-items/lcs:license-sale-item/lcs:license-items" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license-startup" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license-revoke-chassis" {
+    deviate not-supported;
+  }
+}

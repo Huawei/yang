@@ -1,0 +1,82 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-virtual-system-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-virtual-system-deviations-NE8000M8M14";
+  prefix vs-devs-NE8000M8M14;
+
+  import huawei-virtual-system {
+    prefix vs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-virtual-system module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef port-mode-deviations {
+    type enumeration {
+      enum port {
+        value 1;
+        description
+          "Port mode.";
+      }
+      enum none {
+        value 3;
+        description
+          "None port mode.";
+      }
+    }
+    description
+      "Port mode of VS.";
+  }
+
+  deviation "/vs:virtual-system/vs:global" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:admin-status" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:resource/vs:vlan-number" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:resource/vs:mpls-switch" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:resource/vs:mcast-switch" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:resource/vs:trill-switch" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:resource/vs:cpu-weight" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:resource/vs:memory-weight" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:resource/vs:disk-weight" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:global-resources" {
+    deviate not-supported;
+  }
+  deviation "/vs:virtual-system/vs:vs-instances/vs:vs-instance/vs:port-mode" {
+    deviate replace {
+      type vs-devs-NE8000M8M14:port-mode-deviations;
+    }
+  }
+}

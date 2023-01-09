@@ -1,0 +1,110 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-system-event-mgmt-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-system-event-mgmt-notif";
+  prefix system-event-mgmt-notif;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  
+  import huawei-devm {
+    prefix devm;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of system-event-mgmt.";
+  revision 2020-01-20 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  
+  ext:task-name  "device-mgr";
+  notification omu-sync-failed {
+    description
+      "Data failed to be synchronized from the master OMU to the slave OMU.";
+    leaf board-position {
+      type string {
+        length "1..63";
+      }
+      description
+        "Board position.";
+    }
+  }
+  notification omu-sync-failed-resume {
+    description
+      "A master/slave OMU data synchronization failure was removed, or the slave OMU became absent after a master/slave OMU data synchronization failure occurred.";
+    leaf board-position {
+      type string {
+        length "1..63";
+      }
+      description
+        "Board position.";
+    }
+  }
+  notification board-leave-master {
+    description
+      "The board exits the master state.";
+    leaf entity-index {
+      type uint32;
+      description
+        "Index of physical.";
+    }
+    leaf entity-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "Entity name.";
+    }
+    leaf entity-type {
+      type devm:notification-entity-type;
+      description
+        "Entity type.";
+    }
+    leaf fault-id {
+      type devm:notification-probable-cause-type;
+      description
+        "Fault id of a trap.";
+    }
+  }
+  notification board-become-master {
+    description
+      "The board is changed to the master state.";
+    leaf entity-index {
+      type uint32;
+      description
+        "Index of physical.";
+    }
+    leaf entity-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "Entity name.";
+    }
+    leaf entity-type {
+      type devm:notification-entity-type;
+      description
+        "Entity type.";
+    }
+    leaf fault-id {
+      type devm:notification-probable-cause-type;
+      description
+        "Fault id of a trap.";
+    }
+  }
+}

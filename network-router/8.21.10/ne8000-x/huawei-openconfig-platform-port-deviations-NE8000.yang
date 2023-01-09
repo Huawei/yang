@@ -1,0 +1,38 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-platform-port-deviations-NE8000 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-platform-port-deviations-NE8000";
+  prefix oc-port-devs-NE8000;
+
+  import openconfig-interfaces {
+    prefix oc-if;
+  }
+  import openconfig-platform-port {
+    prefix oc-port;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for openconfig-platform-port module.";
+
+  revision 2020-05-12 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:state/oc-port:hardware-port" {
+    deviate not-supported;
+  }
+}

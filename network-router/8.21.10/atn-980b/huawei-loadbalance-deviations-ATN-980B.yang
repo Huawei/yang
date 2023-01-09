@@ -1,0 +1,205 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-loadbalance-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-loadbalance-deviations-ATN-980B";
+  prefix loadbalance-devs-ATN-980B;
+
+  import huawei-loadbalance {
+    prefix loadbalance;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-loadbalance module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef cfg-type-deviations {
+    type enumeration {
+      enum "all" {
+        value 0;
+        description
+          "Query load balancing hash information on all boards.";
+      }
+    }
+    description
+	  "Query mode.";
+}
+
+  typedef cx-hash-arithmetic-deviations {
+    type enumeration {
+      enum "arithmetic1" {
+        value 1;
+        description 
+          "Arithmetic 1.";
+      }
+      enum "arithmetic2" {
+        value 2;
+        description 
+          "Arithmetic 2.";
+      }
+      enum "arithmetic3" {
+        value 3;
+        description 
+          "Arithmetic 3.";
+      }
+      enum "arithmetic4" {
+        value 4;
+        description 
+          "Arithmetic 4.";
+      }
+      enum "arithmetic5" {
+        value 5;
+        description 
+          "Arithmetic 5.";
+      }
+    }
+    description 
+      "CX load balancing arithmetic.";
+  }
+
+  typedef cx-trunk-ecmp-deviations {
+    type enumeration {
+      enum "ip" {
+        value 5;
+        description 
+          "IP mode.";
+      }
+      enum "mac" {
+        value 6;
+        description 
+          "MAC mode.";
+      }
+      enum "vll" {
+        value 7;
+        description 
+          "VLL mode.";
+      }
+      enum "tunnel-info" {
+        value 8;
+        description 
+          "Tunnel information.";
+      }
+      enum "tunnel-inner-ip" {
+        value 9;
+        description 
+          "Tunnel inner IP information.";
+      }
+      enum "gtp-inner-ip" {
+        value 12;
+        description
+          "GTP tunnel inner IP information.";
+      } 
+    }
+    description 
+      "CX load balancing trunk ecmp.";
+  }
+
+  deviation "/loadbalance:loadbalance/loadbalance:global-attribute/loadbalance:ucmp-enable" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:global-attribute/loadbalance:mpls-ucmp-enable" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:global-attribute/loadbalance:mpls-te-convergence-enable" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:hash-key-ip-slots" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:ecmp-stateful" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/loadbalance:loadbalance/loadbalance:ucmp" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/loadbalance:loadbalance" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/loadbalance:loadbalance/loadbalance:dynamic-adjust" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/loadbalance:loadbalance/loadbalance:hash-arithmetic/loadbalance:second-hash-flag" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/loadbalance:loadbalance" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/loadbalance:hash-instructions/loadbalance:hash-instruction/loadbalance:query-type" {
+    deviate replace {
+      type loadbalance-devs-ATN-980B:cfg-type-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/loadbalance:loadbalance/loadbalance:hash-arithmetic/loadbalance:arithmetic" {
+    deviate replace {
+      type loadbalance-devs-ATN-980B:cx-hash-arithmetic-deviations;
+    }
+    deviate replace {
+      default "arithmetic2";
+    }
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/loadbalance:loadbalance/loadbalance:hash-fields/loadbalance:hash-field/loadbalance:trunk-ecmp" {
+    deviate replace {
+      type loadbalance-devs-ATN-980B:cx-trunk-ecmp-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/loadbalance:loadbalance/loadbalance:hash-fields/loadbalance:hash-field/loadbalance:material" {
+    deviate delete {
+      must "(../trunk-ecmp='ip' and (../material='l2' or ../material='l3' or ../material='l4') ) or (../trunk-ecmp='mac' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') ) or ( (../trunk-ecmp='tunnel-info'  or ../trunk-ecmp='tunnel-inner-ip' or ../trunk-ecmp='gtp' or ../trunk-ecmp='gtp-inner-ip') and (../material='undo-disable' or ../material='disable') ) or (../trunk-ecmp='vll' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip' or ../material='label') )";
+    }
+    deviate add {
+      must "(../trunk-ecmp='ip' and (../material='l2' or ../material='l3' or ../material='l4') ) or (../trunk-ecmp='mac' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') ) or ( (../trunk-ecmp='tunnel-info'  or ../trunk-ecmp='tunnel-inner-ip' or ../trunk-ecmp='gtp-inner-ip') and (../material='undo-disable' or ../material='disable') ) or (../trunk-ecmp='vll' and (../material='l2' or ../material='l3' or ../material='l4' or ../material='label-ip') )";
+    }
+  }
+  ext:deviation-ext "/devm:devm/devm:mpu-boards/devm:mpu-board/loadbalance:loadbalance/loadbalance:hash-fields/loadbalance:hash-field/loadbalance:material" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+          ext:default-value "l4" {
+              when "../trunk-ecmp='ip' or ../trunk-ecmp='mac' or ../trunk-ecmp='vll'";
+              description "The default value is l4 when trunk-ecmp is IP or MAC or VLL.";
+          }
+          ext:default-value "disable" {
+              when "../trunk-ecmp='tunnel-inner-ip'";
+              description "The default value is disable when trunk-ecmp is tunnel-inner-ip.";
+          }
+          ext:default-value "undo-disable" {
+              when "../trunk-ecmp='tunnel-info'";
+              description "The default value is enable when trunk-ecmp is tunnel-info.";
+          }
+      }
+    }
+  }
+
+}

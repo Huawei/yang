@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-l2vpnad-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-bgp-l2vpnad-deviations-NE5000E";
+  prefix bgp-l2vpnad-devs-NE5000E;
+
+  import huawei-bgp-l2vpnad {
+    prefix bgp-l2vpnad;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-l2vpnad module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-l2vpnad:l2vpnad/bgp-l2vpnad:common/bgp-l2vpnad:multi-homing-nonstand" {
+    deviate not-supported;
+  }
+}

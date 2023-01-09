@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-cu-controller-notif-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-bras-cu-controller-notif-deviations-ATN-910C";
+  prefix cu-controller-notif-devs-ATN-910C;
+
+  import huawei-bras-cu-controller-notif {
+    prefix cu-controller-notif;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-cu-controller-notif module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cu-controller-notif:hot-standby-backup-fail" {
+    deviate not-supported;
+  }
+  deviation "/cu-controller-notif:hot-standby-backup-resume" {
+    deviate not-supported;
+  }
+
+}

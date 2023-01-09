@@ -1,0 +1,69 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-macsec-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-macsec-deviations-ATN-910C";
+  prefix macsec-devs-ATN-910C;
+
+  import huawei-macsec {
+    prefix macsec;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-macsec module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef cipher-suite-type-deviations {
+    type enumeration {
+      enum "gcm-aes-128" {
+        value 1;
+        description 
+          "The gcm-aes-128 cipher suite.";
+      }
+      enum "gcm-aes-xpn-128" {
+        value 2;
+        description 
+          "The gcm-aes-xpn-128 cipher suite.";
+      }
+      enum "gcm-aes-256" {
+        value 4;
+        description
+          "The gcm-aes-256 cipher suite.";
+      }
+      enum "gcm-aes-xpn-256" {
+        value 5;
+        description
+          "The gcm-aes-xpn-256 cipher suite.";
+      }
+    }
+    description 
+      "The type of cipher suite.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/macsec:macsec/macsec:cipher-algorithm-suites/macsec:cipher-algorithm-suite/macsec:suite" {
+    deviate replace {
+      type macsec-devs-ATN-910C:cipher-suite-type-deviations;
+    }
+  }
+}

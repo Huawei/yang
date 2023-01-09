@@ -1,0 +1,626 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifm-atm {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ifm-atm";
+  prefix ifm-atm;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Ima group interface.";
+  revision 2021-09-26 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "atm";
+  typedef atm-bool {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable.";
+      }
+    }
+    description
+      "Type of ATM bool.";
+  }
+  typedef interface-type {
+    type enumeration {
+      enum "uni" {
+        value 1;
+        description
+          "User network interface.";
+      }
+      enum "nni" {
+        value 2;
+        description
+          "Network network interface.";
+      }
+    }
+    description
+      "Type of ATM interface.";
+  }
+  typedef intf-state-type {
+    type enumeration {
+      enum "up" {
+        value 0;
+        description
+          "Up.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "Down.";
+      }
+    }
+    description
+      "Type of ATM interface state.";
+  }
+  typedef admin-state-type {
+    type enumeration {
+      enum "up" {
+        value 0;
+        description
+          "Up.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "Down.";
+      }
+    }
+    description
+      "Type of ATM admin State.";
+  }
+  typedef pvc-state-type {
+    type enumeration {
+      enum "up" {
+        value 0;
+        description
+          "Up.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "Down.";
+      }
+    }
+    description
+      "Type of ATM pvc state.";
+  }
+  typedef pvp-state-type {
+    type enumeration {
+      enum "up" {
+        value 0;
+        description
+          "Up.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "Down.";
+      }
+    }
+    description
+      "Type of ATM pvp state.";
+  }
+  typedef map-state-type {
+    type enumeration {
+      enum "up" {
+        value 0;
+        description
+          "Up:";
+      }
+      enum "down" {
+        value 1;
+        description
+          "Down:";
+      }
+    }
+    description
+      "Type of ATM map state.";
+  }
+  typedef encap-type {
+    type enumeration {
+      enum "aal5mux" {
+        value 2;
+        description
+          "Indicates that the AAL5 encapsulation type is aal5mux, that is, the MUX multiplexing encapsulation type.";
+      }
+      enum "aal5nlpid" {
+        value 3;
+        description
+          "Indicates that the AAL5 encapsulation type is aal5nlpid.";
+      }
+      enum "aal5nlpidietf" {
+        value 4;
+        description
+          "Indicates that the AAL5 encapsulation type is aal5nlpidietf. Different from aal5nlpid, aal5nlpidietf supports standard encapsulation for IS-IS.";
+      }
+      enum "aal5snap" {
+        value 1;
+        description
+          "Indicates that the aal5snap encapsulation type is aal5snap, that is, the LLC/SNAP encapsulation type.";
+      }
+      enum "none" {
+        value 0;
+        description
+          "None.";
+      }
+    }
+    description
+      "Type of ATM encap.";
+  }
+  typedef atm-service-template-type {
+    type enumeration {
+      enum "cbr" {
+        value 2;
+        description
+          "Constant bit rate.";
+      }
+      enum "nrt-vbr" {
+        value 4;
+        description
+          "Non-real-time variable bit rate.";
+      }
+      enum "rt-vbr" {
+        value 3;
+        description
+          "Real-time variable bit rate.";
+      }
+      enum "ubr" {
+        value 1;
+        description
+          "Unspecified bit rate.";
+      }
+      enum "ubr-plus" {
+        value 5;
+        description
+          "Enhance Unspecified bit rate.";
+      }
+    }
+    description
+      "Type of ATM service.";
+  }
+  typedef map-type {
+    type enumeration {
+      enum "directional" {
+        value 1;
+        description
+          "Type of directional.";
+      }
+      enum "bidirectional" {
+        value 2;
+        description
+          "Type of bidirectional.";
+      }
+    }
+    description
+      "Type of ATM map.";
+  }
+  typedef cell-trans-bool {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable.";
+      }
+    }
+    description
+      "Type of ATM cell transfer.";
+  }
+
+  augment "/ifm:ifm/ifm:global" {
+      description
+        "Global configuration to ATM.";
+    container atm-global {
+      description
+        "Configure global ATM service.";
+      container atm-global-services {
+        description
+          "List of ATM service template.";
+        list atm-global-service {
+          must "((service-type='cbr' or service-type='nrt-vbr' or service-type='rt-vbr' or service-type='ubr-plus') and cdvt) or service-type='ubr'";
+          key "service-name";
+          max-elements  "1024";
+          description
+            "Configure ATM service template.";
+          leaf service-name {
+            type string {
+              length "1..31";
+            }
+            description
+              "ATM service template name.";
+          }
+          leaf service-type {
+            type atm-service-template-type;
+            mandatory true;
+            description
+              "ATM service template type.";
+          }
+          leaf pcr {
+            type uint32 {
+              range "8..599040";
+            }
+            units "kbit/s";
+            must "(../service-type='ubr-plus' and ../pcr >= 16) or (../service-type != 'ubr-plus')";
+            mandatory true;
+            description
+              "ATM configurate PCR.";
+          }
+          leaf scr {
+            when "../service-type='nrt-vbr' or ../service-type='rt-vbr'";
+            type uint32 {
+              range "8..599040";
+            }
+            units "kbit/s";
+            must "../scr<=../pcr";
+            mandatory true;
+            description
+              "ATM configurate SCR.";
+          }
+          leaf mcr {
+            when "../service-type='ubr-plus'";
+            type uint32 {
+              range "8..599032";
+            }
+            units "kbit/s";
+            must "../mcr<=(../pcr - 8)";
+            mandatory true;
+            description
+              "ATM configurate MCR.";
+          }
+          leaf mbs {
+            when "../service-type='nrt-vbr' or ../service-type='rt-vbr'";
+            type uint32 {
+              range "2..255";
+            }
+            mandatory true;
+            description
+              "ATM configurate MBS.";
+          }
+          leaf cdvt {
+            type uint32 {
+              range "1..10000000";
+            }
+            units "us";
+            description
+              "ATM configurate CDVT. When ATM service template type is ubr, the default value is 1000.";
+            ext:dynamic-default;
+          }
+        }
+      }
+    }
+  }
+
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description 
+      "ATM interface attribute.";
+    container atm {
+      when "../ifm:link-protocol='atm'";
+      description
+        "Configure ATM interface attribute.";
+      leaf interface-type {
+        type interface-type;
+        must "../../ifm:class='main-interface' and (../../ifm:type='ATM' or ../../ifm:type='Global-Ima-Group' or ../../ifm:type='Ima-group' or ../../ifm:type='Serial')";
+        default "uni";
+        description
+          "ATM interface type.";
+      }
+      leaf max-pvc {
+        type uint32 {
+          range "1..4096";
+        }
+        must "../../ifm:class='main-interface' and (../../ifm:type='ATM' or ../../ifm:type='Global-Ima-Group' or ../../ifm:type='Ima-group' or ../../ifm:type='Serial')";
+        description
+          "Maximum number of PVCs for an ATM interface. The value varies according to product subcards, By default, the maximum number of VCs on an interface depends on the interface type.";
+        ext:dynamic-default;
+      }
+      leaf link-check {
+        type atm-bool;
+        must "../../ifm:class='sub-interface' and (../../ifm:type='ATM' or ../../ifm:type='Ima-group' or ../../ifm:type='Serial')";
+        default "enable";
+        description
+          "ATM interface link check.";
+      }
+      leaf cell-trans {
+        type cell-trans-bool;
+        must "not(../ifm-atm:pvcs/ifm-atm:pvc)";
+        must "(../../ifm:type='ATM') or (../../ifm:class='main-interface' and (../../ifm:type='Ima-group' or ../../ifm:type='Serial'))";
+        default "disable";
+        description
+          "ATM Interface Cell Transfer.";
+      }
+      leaf bandwidth-overload {
+        type uint32 {
+          range "0..64000000";
+        }
+        must "../../ifm:class='main-interface' and (../../ifm:type='ATM' or ../../ifm:type='Global-Ima-Group' or ../../ifm:type='Ima-group' or ../../ifm:type='Serial')";
+        default "0";
+        description
+          "ATM interface excess bandwidth (kbit/s).";
+      }
+      leaf interfase-priority {
+        type uint16 {
+          range "1..7";
+        }
+        must "../../ifm:type='ATM'";
+        default "1";
+        description
+          "ATM Interface priority.";
+      }
+      container pvcs {
+        description
+          "List of ATM interface PVCs.";
+        list pvc {
+          must "(../../../ifm:class='sub-interface' and (../../../ifm:type='ATM' or ../../../ifm:type='Ima-group' or ../../../ifm:type='Global-Ima-Group' or ../../../ifm:type='Serial')) or (../../../ifm:class='main-interface' and ../../../ifm:type='ATM' and (not(../../ifm-atm:cell-trans)))";
+          key "vpi vci";
+          max-elements  "32";
+          description
+            "Configure ATM interface PVCs.";
+          leaf vpi {
+            type uint32 {
+              range "0..4095";
+            }
+            must "(../../../../ifm:class='sub-interface' and ((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../../ifm:parent-name]/ifm-atm:atm/ifm-atm:interface-type='uni' and ../vpi <= 255) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../../ifm:parent-name]/ifm-atm:atm/ifm-atm:interface-type='nni'))) or (../../../../ifm:class='main-interface' and ((../../../interface-type='uni' and ../vpi <= 255) or (../../../interface-type='nni')))";
+            description
+              "PVC VPI.";
+          }
+          leaf vci {
+            type uint32 {
+              range "0..2|5..65535";
+            }
+            description
+              "PVC VCI.";
+          }
+          leaf pvc-name {
+            type string {
+              length "1..16";
+            }
+            description
+              "PVC name.";
+          }
+          leaf interface-state {
+            type intf-state-type;
+            config false;
+            description
+              "Interface status.";
+          }
+          leaf pvc-state {
+            type pvc-state-type;
+            config false;
+            description
+              "PVC status.";
+          }
+          leaf bidirectional {
+            type map-type;
+            must "not(../../../../ifm:type='ATM') or (../../../../ifm:type='ATM' and ../bidirectional='directional')";
+            description
+              "PVC mapping type.";
+          }
+          leaf map-vpi {
+            type uint32 {
+              range "0..4095";
+            }
+            must "(../../../../ifm:class='sub-interface' and ((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../../ifm:parent-name]/ifm-atm:atm/ifm-atm:interface-type='uni' and ../map-vpi <= 255) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../../ifm:parent-name]/ifm-atm:atm/ifm-atm:interface-type='nni'))) or (../../../../ifm:class='main-interface' and ((../../../interface-type='uni' and ../map-vpi <= 255) or (../../../interface-type='nni')))";
+            description
+              "Map VPI.";
+          }
+          leaf map-vci {
+            type uint32 {
+              range "0..2|5..65535";
+            }
+            description
+              "Map VCI. The VCI value ranges from 0 to 2 and 5 to 65535.";
+          }
+          leaf intf-service-name {
+            type leafref {
+              path "../../../../../../ifm:global/ifm-atm:atm-global/ifm-atm:atm-global-services/ifm-atm:atm-global-service/ifm-atm:service-name";
+            }
+            description
+              "Name of the input service bound to the PVC.";
+          }
+          leaf out-service-name {
+            type leafref {
+              path "../../../../../../ifm:global/ifm-atm:atm-global/ifm-atm:atm-global-services/ifm-atm:atm-global-service/ifm-atm:service-name";
+            }
+            description
+              "Name of the output service bound to the PVC.";
+          }
+          leaf encapsulation {
+            type encap-type;
+            must "../../../../ifm:type='ATM' and (../../../ifm-atm:cell-trans='disable' or not(../../../ifm-atm:cell-trans))";
+            default "aal5snap";
+            description
+              "PVC encapsulation.";
+          }
+          leaf description {
+            type string {
+              length "1..242";
+            }
+            description
+              "PVC description.";
+          }
+          leaf shutdown {
+            type admin-state-type;
+            default "up";
+            description
+              "PVC admin state.";
+          }
+          leaf priority {
+            type uint16 {
+              range "1..7";
+            }
+            must "../../../../ifm:type='ATM'";
+            default "1";
+            description
+              "PVC priority.";
+          }
+          container map-ip-stats {
+            description
+              "List of static Map IPs.";
+            list map-ip-stat {
+              key "ip-address";
+              max-elements  "512";
+              description
+                "Configure static Map IP.";
+              leaf ip-address {
+                type inet:ipv4-address-no-zone;
+                description
+                  "Remote IP Address.";
+              }
+              leaf broadcast {
+                type atm-bool;
+                description
+                  "Enable broadcast.";
+              }
+              leaf map-state {
+                type map-state-type;
+                config false;
+                description
+                  "Map state.";
+              }
+            }
+          }
+          container inarp-map-ip {
+            description
+              "Configure inarp map IP.";
+            leaf ip-address {
+              type inet:ipv4-address-no-zone;
+              config false;
+              description
+                "Remote IP Address.";
+            }
+            leaf inarp-enable {
+              type atm-bool;
+              description
+                "Enable inarp.";
+            }
+            leaf minutes {
+              when "../inarp-enable='enable'";
+              type uint16 {
+                range "1..600";
+              }
+              description
+                "Inarp timer interval (minutes).";
+            }
+            leaf broadcast {
+              when "../inarp-enable='enable'";
+              type atm-bool;
+              description
+                "Enable broadcast.";
+            }
+            leaf map-state {
+              type map-state-type;
+              config false;
+              description
+                "Map state.";
+            }
+          }
+        }
+      }
+      container pvps {
+        description
+          "List of ATM interface PVPs.";
+        list pvp {
+          must "../../../ifm:class='sub-interface' and (../../../ifm:type='ATM' or ../../../ifm:type='Ima-group' or ../../../ifm:type='Serial' or ../../../ifm:type='Global-Ima-Group')";
+          key "vpi";
+          max-elements  "32";
+          description
+            "Configure ATM interface PVPs.";
+          leaf vpi {
+            type uint32 {
+              range "0..4095";
+            }
+            must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../../ifm:parent-name]/ifm-atm:atm/ifm-atm:interface-type='uni' and ../vpi <= 255) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../../ifm:parent-name]/ifm-atm:atm/ifm-atm:interface-type='nni')";
+            description
+              "PVP channel.";
+          }
+          leaf interface-state {
+            type intf-state-type;
+            config false;
+            description
+              "Interface status.";
+          }
+          leaf pvp-state {
+            type pvp-state-type;
+            config false;
+            description
+              "PVP status.";
+          }
+          leaf bidirectional {
+            type map-type;
+            must "not(../../../../ifm:type='ATM') or (../../../../ifm:type='ATM' and ../bidirectional='directional')";
+            default "directional";
+            description
+              "PVP mapping type.";
+          }
+          leaf map-pvp {
+            type uint16 {
+              range "0..4095";
+            }
+            description
+              "Map PVP.";
+          }
+          leaf intf-service-name {
+            type leafref {
+              path "../../../../../../ifm:global/ifm-atm:atm-global/ifm-atm:atm-global-services/ifm-atm:atm-global-service/ifm-atm:service-name";
+            }
+            description
+              "Name of the input service bound to the PVP.";
+          }
+          leaf out-service-name {
+            type leafref {
+              path "../../../../../../ifm:global/ifm-atm:atm-global/ifm-atm:atm-global-services/ifm-atm:atm-global-service/ifm-atm:service-name";
+            }
+            description
+              "Name of the output service bound to the PVP.";
+          }
+          leaf shutdown {
+            type admin-state-type;
+            default "up";
+            description
+              "PVP admin state.";
+          }
+          leaf priority {
+            type uint16 {
+              range "1..7";
+            }
+            default "1";
+            description
+              "PVP Priority.";
+          }
+        }
+      }
+    }
+  }
+}

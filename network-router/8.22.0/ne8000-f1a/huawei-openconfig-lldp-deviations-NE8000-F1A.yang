@@ -1,0 +1,115 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-lldp-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-openconfig-lldp-deviations-NE8000-F1A";
+  prefix oc-lldp-devs-NE8000-F1A;
+
+  import openconfig-lldp {
+    prefix oc-lldp;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for openconfig-lldp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-lldp:lldp/oc-lldp:config/oc-lldp:suppress-tlv-advertisement" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:config/oc-lldp:system-name" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:config/oc-lldp:system-description" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:config/oc-lldp:chassis-id" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:config/oc-lldp:chassis-id-type" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:state/oc-lldp:suppress-tlv-advertisement" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:state/oc-lldp:counters" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:interfaces/oc-lldp:interface/oc-lldp:state/oc-lldp:counters/oc-lldp:frame-error-out" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:interfaces/oc-lldp:interface/oc-lldp:neighbors/oc-lldp:neighbor/oc-lldp:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:config/oc-lldp:enabled" {
+    deviate replace {
+      default "false";
+    }
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:config/oc-lldp:hello-timer" {
+    deviate replace {
+      type uint64 {
+        range "5..32768";
+      }
+    }
+    deviate add {
+      default "30";
+    }
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:state/oc-lldp:enabled" {
+    deviate replace {
+      default "false";
+    }
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:state/oc-lldp:hello-timer" {
+    deviate replace {
+      type uint64 {
+        range "5..32768";
+      }
+    }
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:state/oc-lldp:system-name" {
+    deviate replace {
+      type string {
+        length "1..246";
+      }
+    }
+  }
+  deviation "/oc-lldp:lldp/oc-lldp:interfaces/oc-lldp:interface/oc-lldp:neighbors/oc-lldp:neighbor/oc-lldp:custom-tlvs/oc-lldp:tlv/oc-lldp:state/oc-lldp:value" {
+    deviate replace {
+      type string {
+        length "1..4094";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-lldp:lldp/oc-lldp:interfaces/oc-lldp:interface" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "create|delete" {
+        description
+          "The LLDP interface instances cannot be created or deleted when LLDP is enabled.";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        description
+          "The LLDP interface instances are generated automatically when LLDP is enabled.";
+      }
+    }
+  }
+}

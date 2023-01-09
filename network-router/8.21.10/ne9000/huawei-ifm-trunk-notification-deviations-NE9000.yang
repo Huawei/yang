@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifm-trunk-notification-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-ifm-trunk-notification-deviations-NE9000";
+  prefix ifm-trunk-notification-devs-NE9000;
+
+  import huawei-ifm-trunk-notification {
+    prefix ifm-trunk-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ifm-trunk-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm-trunk-notification:all-member-up" {
+    deviate not-supported;
+  }
+  deviation "/ifm-trunk-notification:trunk-status-change" {
+    deviate not-supported;
+  }
+  deviation "/ifm-trunk-notification:trunk-bandwidth-change" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,69 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+
+module huawei-ietf-subscribed-notif-ext {
+  namespace "urn:huawei:yang:huawei-ietf-subscribed-notif-ext";
+  prefix sn-ext;
+
+  import ietf-subscribed-notifications {
+    prefix sn;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Extension of Subscription to YANG Notifications that were used privately for Huawei device.";
+  revision 2021-07-12 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";  
+  }
+
+  ext:task-name "netconf";
+  augment "/sn:establish-subscription/sn:input" {
+    description
+      "Adds the 'collect-depth' parameter to
+      the input of the Subscription to YANG Notifications 'establish-subscription' operation.";
+    leaf collect-depth {
+      type uint32;
+      description
+        "Specifies the sub-tree depth of xpath to sample. The initial xpath collect depth is 1.
+        Based on the current xpath, the collect depth increases by 1 for each additional layer of xpath depth.";
+    }
+  }
+
+  augment "/sn:modify-subscription/sn:input" {
+    description
+      "Adds the 'collect-depth' parameter to
+      the input of the Subscription to YANG Notifications 'modify-subscription' operation.";
+    leaf collect-depth {
+      type uint32;
+      description
+        "Specifies the sub-tree depth of xpath to sample. The initial xpath collect depth is 1.
+        Based on the current xpath, the collect depth increases by 1 for each additional layer of xpath depth.";
+    }
+  }
+
+    augment "/sn:subscriptions/sn:subscription" {
+    description
+      "Adds the 'collect-depth' parameter to
+      the subscriptions of the Subscription to YANG Notifications 'get' operation.";
+    leaf collect-depth {
+      type uint32;
+      description
+        "Specifies the sub-tree depth of xpath to sample. The initial xpath collect depth is 1.
+        Based on the current xpath, the collect depth increases by 1 for each additional layer of xpath depth.";
+    }
+  }
+}

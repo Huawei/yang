@@ -1,0 +1,43 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-nat64-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-cgn-nat64-deviations-NE8000M8M14";
+  prefix cgn-nat64-devs-NE8000M8M14;
+
+  import huawei-cgn-nat64 {
+    prefix cgn-nat64;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn-nat64 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:log/cgn-nat64:send-mode" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:log/cgn-nat64:hosts/cgn-nat64:host/cgn-nat64:inside-vpn-name" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:log/cgn-nat64:hosts/cgn-nat64:host/cgn-nat64:secondary" {
+    deviate not-supported;
+  }
+
+}

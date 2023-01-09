@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vsm-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-vsm-deviations-OC-NE-X8X16";
+  prefix vsm-devs-OC-NE-X8X16;
+
+  import huawei-vsm {
+    prefix vsm;
+  }
+
+  import huawei-rbs {
+    prefix rbs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-vsm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/vsm:vsm/vsm:on-board-mode" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:service-instance-groups/vsm:service-instance-group/vsm:remote-backup-service/vsm:rbs-name" {
+    deviate replace {
+      type leafref {
+        path "/rbs:rbs/rbs:services/rbs:service/rbs:name";
+      }
+    }
+  }
+
+}

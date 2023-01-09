@@ -1,0 +1,152 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dhcp-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-dhcp-deviations-NE5000E";
+  prefix dhcp-devs-NE5000E;
+
+  import huawei-dhcp {
+    prefix dhcp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-dhcp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/dhcp:dhcp/dhcp:common/dhcp:global/dhcp:ignore-hostname" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:common/dhcp:global-packet-statistics" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:relay/dhcp:global/dhcp:user-detect-interval" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:relay/dhcp:global/dhcp:user-autosave-flag" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:relay/dhcp:global/dhcp:user-store-interval" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:relay/dhcp:global/dhcp:distribute-flag" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:relay/dhcp:global/dhcp:opt82-inner-vlan-insert-flag" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:relay/dhcp:global/dhcp:source-ip" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:relay/dhcp:global/dhcp:route-isolation-vpns" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:server" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:snooping" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:client" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:reset-address-state" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:reset-pool-maxusage" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:reset-client-ip" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:set-if-dynamic-bind-table" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:set-vlan-dynamic-bind-table" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-if/dhcp:dhcp-packet-setting/dhcp:server-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-if/dhcp:option82-formats" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-if/dhcp:option82-insert-setting" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-client-if" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-snooping-if" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/dhcp:dhcp-vlan" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/dhcp:dhcp-snooping-vlan" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/dhcp:dhcp-bd" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/dhcp:dhcp-snooping-bd" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-relay-attribute/dhcp:option82" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-relay-attribute/dhcp:relay-source-address" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-relay-attribute/dhcp:opt82-vendor-specifics" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:dhcp/dhcp:common/dhcp:global/dhcp:enable" {
+    deviate replace {
+      default "true";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-if/dhcp:dhcp-packet-setting/dhcp:ip-ttl" {
+    deviate delete {
+      must 'not(../../../dhcp:dhcp-client-if/dhcp:address-allocation)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-if/dhcp:dhcp-packet-setting/dhcp:dscp-outbound" {
+    deviate delete {
+      must 'not(../../../dhcp:dhcp-client-if/dhcp:address-allocation)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcp:dhcp-relay-attribute/dhcp:relay-source-option-addresses/dhcp:relay-source-option-address" {
+    deviate delete {
+      must 'not(../../relay-source-address)';
+    }
+  }
+  deviation "/dhcp:start-force-renew" {
+    deviate not-supported;
+  }
+  deviation "/dhcp:stop-force-renew" {
+    deviate not-supported;
+  }
+}

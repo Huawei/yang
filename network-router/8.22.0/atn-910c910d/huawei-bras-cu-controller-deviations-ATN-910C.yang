@@ -1,0 +1,50 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-cu-controller-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-bras-cu-controller-deviations-ATN-910C";
+  prefix bras-cu-controller-devs-ATN-910C;
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-cu-controller module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-cu-controller:bras-cu-controller" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:reset-south-conflict-by-up" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:reset-south-conflict-all-up" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/bras-cu-controller:cp-cpu-defend" {
+    deviate not-supported;
+  }
+
+}

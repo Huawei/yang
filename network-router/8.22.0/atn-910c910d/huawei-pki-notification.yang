@@ -1,0 +1,262 @@
+/******************************************************
+ * Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+ ***************************************************/
+module huawei-pki-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-pki-notification";
+  prefix pki-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+
+  import huawei-pki {
+    prefix pki;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions for configuring PKI certificate notification.";
+  revision 2022-01-17 {
+    description
+      "Add result of obtaining certificate by CMPv2 protocol.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-08-23 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef cmp-result {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "Indicate that obtaining certificate succeed.";
+      }
+      enum "fail" {
+        value 1;
+        description
+          "Indicate that obtaining certificate failed.";
+      }
+    }
+    description
+      "Indicate the result of obtaining a certificate.";
+  }
+
+  typedef cmp-fail-reason {
+    type enumeration {
+      enum "other-reason" {
+        value 0;
+        description
+          "Other reason.";
+      }
+      enum "server-unreachable" {
+        value 1;
+        description
+          "CA server unreachable.";
+      }
+    }
+    description
+      "Indicate the reason why obtaining certificate failed.";
+  }
+
+  notification ca-certificate-invalid {
+    description
+      "The CA certificate is invalid.";
+    leaf issuer {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the issuer of the CA certificate.";
+    }
+    leaf subject {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the subject of the CA certificate.";
+    }
+    leaf start-time {
+      type yang:date-and-time;
+      description
+        "Indicate the start time of the CA certificate.";
+    }
+    leaf finish-time {
+      type yang:date-and-time;
+      description
+        "Indicate the end time of the CA certificate.";
+    }
+  }
+  notification ca-certificate-nearly-expired {
+    description
+      "The CA certificate is about to expire.";
+    leaf issuer {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the issuer of the CA certificate.";
+    }
+    leaf subject {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the subject of the CA certificate.";
+    }
+    leaf start-time {
+      type yang:date-and-time;
+      description
+        "Indicate the start time of the CA certificate.";
+    }
+    leaf finish-time {
+      type yang:date-and-time;
+      description
+        "Indicate the end time of the CA certificate.";
+    }
+  }
+  notification local-certificate-invalid {
+    description
+      "The local certificate is invalid.";
+    leaf issuer {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the issuer of the local certificate.";
+    }
+    leaf subject {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the subject of the local certificate.";
+    }
+    leaf start-time {
+      type yang:date-and-time;
+      description
+        "Indicate the start time of the local certificate.";
+    }
+    leaf finish-time {
+      type yang:date-and-time;
+      description
+        "Indicate the end time of the local certificate.";
+    }
+  }
+  notification local-certificate-nearly-expired {
+    description
+      "The local certificate is about to expire.";
+    leaf issuer {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the issuer of the local certificate.";
+    }
+    leaf subject {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the subject of the local certificate.";
+    }
+    leaf start-time {
+      type yang:date-and-time;
+      description
+        "Indicate the start time of the local certificate.";
+    }
+    leaf finish-time {
+      type yang:date-and-time;
+      description
+        "Indicate the end time of the local certificate.";
+    }
+  }
+  notification crl-invalid {
+    description
+      "The CRL is invalid.";
+    leaf issuer {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the issuer of the CRL.";
+    }
+    leaf start-time {
+      type yang:date-and-time;
+      description
+        "Indicate the start time of the CRL.";
+    }
+    leaf finish-time {
+      type yang:date-and-time;
+      description
+        "Indicate the end time of the CRL.";
+    }
+  }
+  notification crl-nearly-expired {
+    description
+      "The CRL is about to expire.";
+    leaf issuer {
+      type string {
+	    length "1..512";
+	  }
+      description
+        "Indicate the issuer of the CRL.";
+    }
+    leaf start-time {
+      type yang:date-and-time;
+      description
+        "Indicate the start time of the CRL.";
+    }
+    leaf finish-time {
+      type yang:date-and-time;
+      description
+        "Indicate the end time of the CRL.";
+    }
+  }
+
+  notification cmp-session-result {
+    description
+      "The result of cmp certificate request.";
+    leaf session-name {
+      type string {
+	    length "1..64";
+	  }
+      description
+        "Indicate the name of the cmp session.";
+    }
+
+    leaf type {
+      type pki:cmp-request-type;
+      description
+        "The type of cmp certificate request.";
+    }
+
+    leaf result {
+      type cmp-result;
+      description
+        "Indicate the result of cmp certificate request.";
+    }
+
+    leaf reason {
+      type cmp-fail-reason;
+      description
+        "Indicate the result of cmp certificate request.";
+    }
+  }
+
+  ext:task-name "pki";
+}

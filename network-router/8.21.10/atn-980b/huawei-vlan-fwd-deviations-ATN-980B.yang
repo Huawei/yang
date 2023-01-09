@@ -1,0 +1,47 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vlan-fwd-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-vlan-fwd-deviations-ATN-980B";
+  prefix vlan-fwd-devs-ATN-980B;
+
+  import huawei-vlan-fwd {
+    prefix vlan-fwd;
+  }
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-vlan-fwd module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/vlan-fwd:vlan-isolate-attribute/vlan-fwd:isolate-vlanlist" {
+    deviate add {
+      must "(../../ethernet:trunk-vlans) or (../../ethernet:pvid) or (../../ethernet:vlan-mappings) or (../../ethernet:vlan-stackings) or not(../isolate-vlanlist)";
+    }
+  }
+
+}

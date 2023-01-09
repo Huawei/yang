@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-system-notification-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-system-notification-deviations-ATN-910C";
+  prefix system-notification-devs-ATN-910C;
+
+  import huawei-system-notification {
+    prefix system-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-system-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/system-notification:security-risk" {
+    deviate not-supported;
+  }
+  deviation "/system-notification:security-risk-clear" {
+    deviate not-supported;
+  }
+}

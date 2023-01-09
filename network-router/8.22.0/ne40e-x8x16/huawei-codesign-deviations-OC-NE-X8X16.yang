@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-codesign-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-codesign-deviations-OC-NE-X8X16";
+  prefix codesign-devs-OC-NE-X8X16;
+
+  import huawei-codesign {
+    prefix codesign;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-codesign module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/codesign:check-software" {
+    deviate not-supported;
+  }
+}

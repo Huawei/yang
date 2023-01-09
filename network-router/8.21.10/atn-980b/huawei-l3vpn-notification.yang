@@ -1,0 +1,115 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l3vpn-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-l3vpn-notification";
+  prefix l3vpn-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of l3vpn.";
+  revision 2020-12-03 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "l3vpn";
+  notification vpn-route-label-num-reach-maximum {
+    description
+      "The number of vpn route labels reached the maximum value.";
+    leaf addr-family-afi {
+      type uint32;
+      description
+        "Address family.";
+    }
+    leaf addr-family-safi {
+      type uint32;
+      description
+        "Sub-address family.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "VPN route label limit number.";
+    }
+  }
+  notification vpn-route-label-num-reach-maximum-clear {
+    description
+      "The number of vpn route labels fell below the maximum value.";
+    leaf addr-family-afi {
+      type uint32;
+      description
+        "Address family.";
+    }
+    leaf addr-family-safi {
+      type uint32;
+      description
+        "Sub-address family.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "VPN route label limit number.";
+    }
+  }
+  notification vpn-route-label-num-reach-threshold {
+    description
+      "The number of vpn route labels reached the alarm threshold.";
+    leaf addr-family-afi {
+      type uint32;
+      description
+        "Address family.";
+    }
+    leaf addr-family-safi {
+      type uint32;
+      description
+        "Sub-address family.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "VPN route label limit number.";
+    }
+    leaf label-limit-threshold {
+      type uint32;
+      description
+        "The threshold number of BGP labels.";
+    }
+  }
+  notification vpn-route-label-num-reach-threshold-clear {
+    description
+      "The number of vpn route labels fell below the alarm threshold.";
+    leaf addr-family-afi {
+      type uint32;
+      description
+        "Address family.";
+    }
+    leaf addr-family-safi {
+      type uint32;
+      description
+        "Sub-address family.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "VPN route label limit number.";
+    }
+    leaf label-limit-threshold {
+      type uint32;
+      description
+        "The threshold number of BGP labels.";
+    }
+  }
+}

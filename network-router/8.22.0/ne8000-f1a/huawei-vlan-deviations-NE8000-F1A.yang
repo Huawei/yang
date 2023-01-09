@@ -1,0 +1,72 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vlan-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-vlan-deviations-NE8000-F1A";
+  prefix vlan-devs-NE8000-F1A;
+
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-vlan module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef vlan-type-deviations {
+    type enumeration {
+      enum common {
+        value 1;
+        description
+          "VLAN type is common VLAN.";
+      }
+      enum super {
+        value 2;
+        description
+          "VLAN type is super-VLAN.";
+      }
+      enum sub {
+        value 3;
+        description
+          "VLAN type is sub-VLAN.";
+      }
+    }
+    description
+      "VLAN type.";
+  }
+
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:unknown-flow-drop" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:management-vlan" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:ip-subnet-vlans" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:member-ports/vlan:member-port/vlan:tag-mode" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:mux-principal-vlan" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:type" {
+    deviate replace {
+      type vlan-devs-NE8000-F1A:vlan-type-deviations;
+    }
+  }
+}

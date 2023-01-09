@@ -1,0 +1,51 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-network-instance-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-ietf-network-instance-deviations-ATN-950D980C";
+  prefix ni-devs-ATN-950D980C;
+
+  import ietf-network-instance {
+    prefix ni;
+  }
+  import ietf-ip {
+    prefix ip;
+  }
+  import ietf-interfaces {
+    prefix if;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-network-instance module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instances" {
+    deviate not-supported;
+  }
+  deviation "/ni:bind-ni-name-failed" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces/if:interface/ni:bind-ni-name" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv4/ni:bind-ni-name" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv6/ni:bind-ni-name" {
+    deviate not-supported;
+  }
+}

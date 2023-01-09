@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pki-notification-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-pki-notification-deviations-NE8000M8M14";
+  prefix pki-notification-devs-NE8000M8M14;
+
+  import huawei-pki-notification {
+    prefix pki-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-pki-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/pki-notification:ca-certificate-invalid" {
+    deviate not-supported;
+  }
+  deviation "/pki-notification:ca-certificate-nearly-expired" {
+    deviate not-supported;
+  }
+  deviation "/pki-notification:local-certificate-invalid" {
+    deviate not-supported;
+  }
+  deviation "/pki-notification:local-certificate-nearly-expired" {
+    deviate not-supported;
+  }
+  deviation "/pki-notification:crl-invalid" {
+    deviate not-supported;
+  }
+  deviation "/pki-notification:crl-nearly-expired" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,35 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-keychain-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-keychain-deviations-ATN-950D980C";
+  prefix keychain-devs-ATN-950D980C;
+
+  import huawei-keychain {
+    prefix keychain;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-keychain module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/keychain:keychain/keychain:keychains/keychain:keychain/keychain:abs-key-ids" {
+    deviate add {
+      must "count(abs-key-id[default-send-key-id='true'])<=1";
+    }
+  }
+}

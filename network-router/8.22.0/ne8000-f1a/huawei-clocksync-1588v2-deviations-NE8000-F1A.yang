@@ -1,0 +1,120 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-1588v2-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-clocksync-1588v2-deviations-NE8000-F1A";
+  prefix clocksync-1588v2-devs-NE8000-F1A;
+
+  import huawei-clocksync-1588v2 {
+    prefix clocksync-1588v2;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-1588v2 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+typedef ptp-bits-direction-deviations {
+  type enumeration {
+    enum "in" {
+      value 0;
+      description
+        "In.";
+    }
+    enum "out" {
+      value 1;
+      description
+        "Out.";
+    }
+  }
+  description
+    "Direction of ptp bits.";
+}
+
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-active-lic-slots" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile" {
+    deviate add {
+      must "((../uhpc-enable='false' and ../profile='SMPTE2059-2') or ../profile!='SMPTE2059-2')";
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:std-time-port" {
+    deviate replace {
+      type leafref {
+        path "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-name";
+      }
+    }
+    deviate add {
+      must "((../../ptp-bits-srcs/ptp-bits-src[clocksync-1588v2:bits-name=current()]/clocksync-1588v2:bits-direction='in') and (../../ptp-bits-srcs/ptp-bits-src[clocksync-1588v2:bits-name=current()]/clocksync-1588v2:bits-signal='1pps')) or ((../../ptp-bits-srcs/ptp-bits-src[clocksync-1588v2:bits-name=current()]/clocksync-1588v2:bits-signal='dcls') and (../../ptp-bits-srcs/ptp-bits-src[clocksync-1588v2:bits-name=current()]/clocksync-1588v2:bits-direction!='out'))";
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:offset-sum-alm-thd" {
+    deviate replace {
+      type uint32 {
+        range "0..1000000000";
+      }
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-signal" {
+    deviate add {
+      must "(../bits-signal='1pps' and (../bits-direction='in' or ../bits-direction='out')) or (../bits-signal='dcls')";
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-direction" {
+    deviate replace {
+      type clocksync-1588v2-devs-NE8000-F1A:ptp-bits-direction-deviations;
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-send-delay" {
+    deviate replace {
+      type int32 {
+        range "0..10000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-port-advance/clocksync-1588v2:clk-step" {
+    deviate add {
+      must "((../clocksync-1588v2:clk-step='onestep') and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:uhpc-enable='false')) or ((../clocksync-1588v2:clk-step='twostep') and ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='oc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='bc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='tcandbc' and ../clocksync-1588v2:port-type-set!='tc')))";
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-port-advance/clocksync-1588v2:clk-step" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+          ext:default-value "twostep" {
+              when "(/ifm:ifm/ifm:interfaces/ifm:interface/ifm:type = 'HP-GE' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:uhpc-enable = 'true')";
+              description "The default value is twostep when interface is hgpe or uhpc is enabled.";
+          }
+          ext:default-value "onestep" {
+              when "(/ifm:ifm/ifm:interfaces/ifm:interface/ifm:type != 'HP-GE' and /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:uhpc-enable = 'false')";
+              description "The default value is onestep when interface is not hgpe and uhpc is disabled.";
+          }
+      }
+    }
+  }
+
+}

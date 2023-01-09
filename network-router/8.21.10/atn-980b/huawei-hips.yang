@@ -1,0 +1,143 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-hips {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-hips";
+  prefix hw-hips;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "This module contains a collection definitions for configuring HIPS.";
+  revision 2020-07-20 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef policy-state-enum {
+    type enumeration {
+      enum "success" {
+        value 0;
+        description
+          "The policy activated successfully.";
+      }
+      enum "activating" {
+        value 1;
+        description
+          "The policy is being activated.";
+      }
+      enum "failure" {
+        value 2;
+        description
+          "The policy activated unsuccessful.";
+      }
+    }
+    default "success";
+    description
+      "The state of action policy.";
+  }
+  container hips {
+    description
+      "The container of hips.";
+    container global {
+      description
+        "Configure hips enable.";
+      leaf enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable hips.";
+      }
+    }
+    container state {
+      config false;
+      description
+        "Hips running state.";
+      leaf file-privilege-escalation {
+        type boolean;
+        description
+          "The state of file-privilege-escalation.";
+      }
+      leaf shell-file-tampering {
+        type boolean;
+        description
+          "The state of shell-file-tampering.";
+      }
+      leaf rootkit-attack {
+        type boolean;
+        description
+          "The state of rootkit-attack.";
+      }
+      leaf key-file-tampering {
+        type boolean;
+        description
+          "The state of key-file-tampering.";
+      }
+      leaf unauthorized-root-user {
+        type boolean;
+        description
+          "The state of unauthorized-root-user.";
+      }
+    }
+    container policy {
+      description
+        "Configure policy file.";
+      leaf policy-file-name {
+        type string {
+          length "1..255";
+        }
+        description
+          "The policy file name.";
+      }
+      leaf policy-file-hash {
+        type string {
+          length "1..128";
+        }
+        description
+          "The policy file hash.";
+      }
+      leaf task-id {
+        type string {
+          length "1..40";
+        }
+        description
+          "The task id of activation policy.";
+      }
+    }
+    container policy-states {
+      config false;
+      description
+        "List of history activation policy state information.";
+      list policy-state {
+        key "task-id";
+        max-elements 10;
+        description
+          "History activation policy state.";
+        leaf task-id {
+          type string {
+            length "1..40";
+          }
+          description
+            "The task id of history activation policy.";
+        }
+        leaf state {
+          type policy-state-enum;
+          description
+            "The state of history activation policy.";
+        }
+      }
+    }
+  }
+  ext:task-name "hips";
+}

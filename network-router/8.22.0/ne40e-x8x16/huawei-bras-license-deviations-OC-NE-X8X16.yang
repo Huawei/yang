@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-license-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-bras-license-deviations-OC-NE-X8X16";
+  prefix bras-license-devs-OC-NE-X8X16;
+
+  import huawei-bras-license {
+    prefix bras-license;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-license module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/lcs:license/bras-license:bras-license/bras-license:feature-resource-usages" {
+    deviate not-supported;
+  }
+
+}

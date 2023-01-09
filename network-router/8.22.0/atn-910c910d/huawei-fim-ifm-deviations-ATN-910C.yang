@@ -1,0 +1,108 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-ifm-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-fim-ifm-deviations-ATN-910C";
+  prefix fim-ifm-devs-ATN-910C;
+
+  import huawei-fim-ifm {
+    prefix fim-ifm;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fim-ifm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef ve-interface-type-deviations {
+    type enumeration {
+      enum "L2VE" {
+        value 1;
+        description 
+          "Layer 2 Terminate Virtual-Ethernet interface.";
+      }
+      enum "L3VE" {
+        value 2;
+        description 
+          "Layer 3 Access Virtual-Ethernet interface.";
+      }
+    }
+    description 
+      "VE Interface Type.";
+  }
+
+  deviation "/fim-ifm:rst-macmtu-intf" {
+    deviate not-supported;
+  }
+  deviation "/fim-ifm:rst-macmtu-slot" {
+    deviate not-supported;
+  }
+  deviation "/fim-ifm:rst-mru-discard" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim/fim-ifm:mac-statistic-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-ifm-mru" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp6-mss" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-ifm-veint" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:mru-discard-statistic" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:macmtu-discard-stat" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:global/fim-ifm:fim-ifm-global/fim-ifm:trunk-adjust-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:global/fim-ifm:fim-ifm-global/fim-ifm:qinq-transport-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:global/fim-ifm:fim-trunk-localfwd" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp-mss/fim-ifm:tcp-mss" {
+    deviate delete {
+      must "(not(/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute) and not(/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-ifm-mru/fim-ifm:mru))";
+    }
+    deviate add {
+      must "(not(/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute))";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:ve-group/fim-ifm:type" {
+    deviate replace {
+      type fim-ifm-devs-ATN-910C:ve-interface-type-deviations;
+    }
+  }
+
+}

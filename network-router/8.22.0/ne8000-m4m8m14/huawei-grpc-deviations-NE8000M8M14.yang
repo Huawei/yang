@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-grpc-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-grpc-deviations-NE8000M8M14";
+  prefix hw-grpc-devs-NE8000M8M14;
+
+  import huawei-grpc {
+    prefix hw-grpc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-grpc module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/hw-grpc:grpc/hw-grpc:client/hw-grpc:destination-groups" {
+    deviate not-supported;
+  }
+}

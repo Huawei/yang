@@ -1,0 +1,140 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-multicast-deviations-ATN-910C";
+  prefix mc-devs-ATN-910C;
+
+  import huawei-multicast {
+    prefix mc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-multicast module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mc:multicast/mc:global/mc:ipv4/mc:bas-igmp-extranet-enable" {
+    deviate not-supported;
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim/mc:cir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim/mc:cbs-interval" {
+    deviate replace {
+      default "1000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim/mc:pir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim/mc:pbs-interval" {
+    deviate replace {
+      default "1000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim-ipv6/mc:cir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim-ipv6/mc:cbs-interval" {
+    deviate replace {
+      default "1000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim-ipv6/mc:pir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/mc:pim-ipv6/mc:pbs-interval" {
+    deviate replace {
+      default "1000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:micro-isolation-car/mc:igmp/mc:cir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:micro-isolation-car/mc:igmp/mc:cbs-interval" {
+    deviate replace {
+      default "500";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:micro-isolation-car/mc:igmp/mc:pir-interval" {
+    deviate replace {
+      default "500";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:micro-isolation-car/mc:igmp/mc:pbs-interval" {
+    deviate replace {
+      default "2000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:micro-isolation-car/mc:mld/mc:cir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:micro-isolation-car/mc:mld/mc:cbs-interval" {
+    deviate replace {
+      default "400";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:micro-isolation-car/mc:mld/mc:pir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:micro-isolation-car/mc:mld/mc:pbs-interval" {
+    deviate replace {
+      default "500";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+}

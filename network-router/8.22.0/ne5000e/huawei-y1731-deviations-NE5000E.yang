@@ -1,0 +1,291 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-y1731-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-y1731-deviations-NE5000E";
+  prefix y1731-devs-NE5000E;
+
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-y1731 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef measurement-type-deviations {
+    type enumeration {
+      enum one-way-delay {
+        value 3;
+        description
+          "Type of one-way delay measure.";
+      }
+      enum two-way-delay {
+        value 4;
+        description
+          "Type of two-way delay measure.";
+      }
+      enum synthetic-loss {
+        value 5;
+        description
+          "The type of synthetic loss measure.";
+      }
+    }
+    description
+      "Measurement type.";
+  }
+
+  typedef sslm-interval-deviations {
+    type enumeration {
+      enum 1000ms {
+        value 1000;
+        description
+          "Interval of 1000 ms.";
+      }
+      enum 10000ms {
+        value 10000;
+        description
+          "Interval of 10000 ms.";
+      }
+    }
+    description
+      "SSLM interval.";
+  }
+
+  typedef test-loss-type-deviations {
+    type enumeration {
+      enum single-ended-synthetic-local-loss {
+        value 5;
+        description
+          "Threshold of local loss of single-ended synthetic loss measurement.";
+      }
+      enum single-ended-synthetic-remote-loss {
+        value 6;
+        description
+          "Threshold of remote loss of single-ended syntheticloss measurement.";
+      }
+    }
+    description
+      "Test threshold type.";
+  }
+
+  typedef trigger-type-deviations {
+    type enumeration {
+      enum if-down {
+        value 1;
+        description
+          "Shutdown the interface.";
+      }
+    }
+    description
+      "Trigger if type.";
+  }
+
+  deviation "/y1731:y1731/y1731:global-enable/y1731:clear-mac-vlan" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:map-service/y1731:bind-vlan" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:map-service/y1731:bind-ccc" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:map-service/y1731:bind-l2tpv3-pw" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:map-service/y1731:bind-l2tpv3-ccc" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:unexpected-mep-alarm" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:alarm-rdi-oam-mgr-disable" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:measure-point" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:clear-arp" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:eth-bn-receive" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:port-link" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:loss-thresholds" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:loss-threshold-prioritys" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:pw-mep" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:vlan-if-mep" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:peer-ip" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:vc-id" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:single-loss-send" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:single-loss-recv" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:dual-loss" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:single-loss-result" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:dual-loss-datas" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:single-loss-period-results" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:default-md" {
+    deviate not-supported;
+  }
+  deviation "/y1731:single-loss-measurement" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/y1731:y1731/y1731:measure-granularity" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/y1731:y1731/y1731:if-down-ccm-send-stop" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:level" {
+    deviate delete {
+      must 'not(../../../default-md/level) or (../../../default-md/level> ../level)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep" {
+    deviate delete {
+      must '(direction and (if-name or peer-ip)) or (not(direction) and not(if-name) and not(peer-ip))';
+    }
+    deviate add {
+      must '(y1731:direction and y1731:if-name ) or (not(y1731:direction) and not(y1731:if-name))';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:test-enable" {
+    deviate delete {
+      must "../test-enable='false' or (not(../../../l2tp-ccc-name) and not(../../../tnl-name))";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:delay-thresholds/y1731:delay-threshold" {
+    deviate delete {
+      must 'not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind)';
+    }
+    deviate add {
+      must 'not(../../../../y1731:no-bind)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:delay-threshold-prioritys/y1731:delay-threshold-priority" {
+    deviate delete {
+      must 'not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind)';
+    }
+    deviate add {
+      must 'not(../../../../y1731:no-bind)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:cc-send-enable" {
+    deviate delete {
+      must "../cc-send-enable='false' or (../if-name or ../vlan-mep)";
+    }
+    deviate add {
+      must "../y1731:cc-send-enable='false' or (../y1731:if-name)";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:rdi-alarm-disabled" {
+    deviate delete {
+      must "../rdi-alarm-disabled='false' or (../if-name or ../peer-ip or ../vlan-mep)";
+    }
+    deviate add {
+      must "../y1731:rdi-alarm-disabled='false' or (../y1731:if-name)";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:ais-alarm-disabled" {
+    deviate delete {
+      must "../ais-alarm-disabled='false' or (../if-name or ../peer-ip or ../vlan-mep)";
+    }
+    deviate add {
+      must "../y1731:ais-alarm-disabled='false' or ../y1731:if-name";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance" {
+    deviate delete {
+      must '(vc-id and peer-ip and not(priority)) or (not(vc-id) and not(peer-ip))';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:remote/y1731:remote-mac/y1731:rmep-mac" {
+    deviate delete {
+      must 'not(../../../y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma[y1731:name=current()/../ma-name]/y1731:meps/y1731:mep[y1731:id=current()/../mep-id]/vlan-mep)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:synthetic-loss-send/y1731:interval" {
+    deviate replace {
+      type y1731-devs-NE5000E:sslm-interval-deviations;
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:delay-thresholds/y1731:delay-threshold" {
+    deviate delete {
+      must '(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/l2tp-ccc-name) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/tnl-name)';
+    }
+    deviate add {
+      must '(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:loss-thresholds/y1731:loss-threshold" {
+    deviate delete {
+      must '(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/l2tp-ccc-name) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/tnl-name)';
+    }
+    deviate add {
+      must '(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:loss-thresholds/y1731:loss-threshold/y1731:loss-type" {
+    deviate replace {
+      type y1731-devs-NE5000E:test-loss-type-deviations;
+    }
+  }
+  deviation "/y1731:reset-stats/y1731:input/y1731:statistic-type" {
+    deviate replace {
+      type y1731-devs-NE5000E:measurement-type-deviations;
+    }
+  }
+  deviation "/y1731:reset-all-stats/y1731:input/y1731:statistic-type" {
+    deviate replace {
+      type y1731-devs-NE5000E:measurement-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/y1731:y1731/y1731:trigger-if/y1731:trigger-type" {
+    deviate replace {
+      type y1731-devs-NE5000E:trigger-type-deviations;
+    }
+  }
+}

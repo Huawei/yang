@@ -1,0 +1,69 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpn-ext-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-evpn-ext-deviations-ATN-910C";
+  prefix evpn-ext-devs-ATN-910C;
+
+  import huawei-evpn-ext {
+    prefix evpn-ext;
+  }
+
+  import huawei-evpn {
+    prefix evpn;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-evpn-ext module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/evpn:evpn/evpn-ext:system/evpn-ext:port-select" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn-ext:system/evpn-ext:self-board" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn-ext:pipe/evpn-ext:color" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn-ext:reserve-if-switch" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn-ext:pipe/evpn-ext:color" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:license-items/lcs:license-item/evpn-ext:lcs-port-evpns" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:license-items/lcs:license-item/evpn-ext:lcs-port-vxlans" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/evpn-ext:lcs-port-evpns" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/evpn-ext:lcs-port-vxlans" {
+    deviate not-supported;
+  }
+
+}

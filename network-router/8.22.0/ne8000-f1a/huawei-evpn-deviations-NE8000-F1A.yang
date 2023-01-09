@@ -1,0 +1,130 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpn-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-evpn-deviations-NE8000-F1A";
+  prefix evpn-devs-NE8000-F1A;
+
+  import huawei-evpn {
+    prefix evpn;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-evpl {
+    prefix evpl;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-vrrp {
+    prefix vrrp;
+  }
+  import huawei-mac {
+    prefix mac;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-evpn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/evpn:evpn/evpn:base-process/evpn:evpn-overlay" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:ad-per-es-split" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:irb-reoriginated" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:alm-threshold" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:recovery-percentage" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:irb-split-group" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:l3-reoriginate-diff-split-grp" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:reflect-same-split-group" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:global-suppressed-statistics" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:mac-duplication-statistics" {
+    deviate not-supported;
+  }
+  deviation "/evpn:reset-all-evpn-mac-duplication" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/evpn:evpn/evpn:irb2ip" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:profiles/bd:profile/evpn:evpn" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:umr-originate" {
+    deviate delete {
+      must "(../umr-originate='true' and not(../../nvo3:nvo3/nvo3:vni-list/nvo3:vni) and not(../df-result-spread='true') and not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bds/l2vpn:bd[l2vpn:id=current()/../../bd:id])) or (../umr-originate='false')";
+    }
+    deviate add {
+      must "(../umr-originate='true' and not(../../nvo3:nvo3/nvo3:vni-list/nvo3:vni) and not(../df-result-spread='true') and not(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:bds/l2vpn:bd[l2vpn:id=current()/../../bd:id]) and not(../../mac:mac-addresss/mac:mac-address[mac:address = '0000-0000-0000'])) or (../umr-originate='false')";
+    }
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpn:evpn/evpn:ignore-match-mtu" {
+    deviate add {
+      must "(../ignore-match-mtu='true' and ../../evpl:mode!='static-mode') or ../ignore-match-mtu!='true'";
+    }
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpn:evpn/evpn:balancing-ignore-esi" {
+    deviate add {
+      must "(../balancing-ignore-esi='true' and ../../evpl:mode!='static-mode') or ../balancing-ignore-esi!='true'";
+    }
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpn:evpn/evpn:control-word" {
+    deviate add {
+      must "(../control-word='true' and ../../evpl:mode!='static-mode') or ../control-word!='true'";
+    }
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpn:evpn/evpn:vrrp" {
+    deviate add {
+      must "(not(../../evpl:interfaces/evpl:interface/evpl:name) or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../evpl:interfaces/evpl:interface/evpl:name]/ifm:type = 'Virtual-Ethernet')) and ((current()/version='vrrp' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/interface-name]/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group[vrrp:id=current()/id]) or (current()/version='vrrp6' and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/interface-name]/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6[vrrp:id=current()/id]))";
+    }
+    deviate add {
+      must "../../evpl:mode!='vxlan-mode'";
+    }
+  }
+}

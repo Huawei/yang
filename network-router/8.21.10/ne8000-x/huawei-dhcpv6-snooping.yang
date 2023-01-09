@@ -1,0 +1,403 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-dhcpv6-snooping {
+  yang-version 1;
+  belongs-to huawei-dhcpv6 {
+    prefix dhcpv6;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions for managing DHCPv6 snooping.";
+  revision 2020-03-09 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  grouping dhcpv6-snooping-type {
+    description
+      "DHCPv6 snooping.";
+    container global {
+      description
+        "Configure global attributes of DHCPv6 snooping.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable DHCPv6 snooping globally.";
+      }
+      leaf alarm-threshold {
+        when "../enable='true'";
+        type uint16 {
+          range "1..1000";
+        }
+        default "100";
+        description
+          "Global alarm threshold for DHCPv6 packets.";
+      }
+      leaf user-bind-auto-save-enable {
+        when "../enable='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable automatic saving of DHCPv6 snooping binding entries.";
+      }
+      leaf nd-detect-enable {
+        when "../enable='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable DHCPv6 ND detection.";
+      }
+      leaf nomatch-packet-forward-policy {
+        when "../enable='true'";
+        type boolean;
+        default "true";
+        description
+          "Enable/disable forward policy for checking the DHCPv6 snooping binding table.";
+      }
+    }
+    container packet-statistics {
+      config false;
+      description
+        "DHCPv6 snooping packet statistics.";
+      leaf received-client {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received packets from clients.";
+      }
+      leaf received-solicit {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received solicit packets from clients.";
+      }
+      leaf received-request {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received request packets from clients.";
+      }
+      leaf received-confirm {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received confirm packets from clients.";
+      }
+      leaf received-renew {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received renew packets from clients.";
+      }
+      leaf received-rebind {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received rebind packets from clients.";
+      }
+      leaf received-decline {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received decline packets from clients.";
+      }
+      leaf received-release {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received release packets from clients.";
+      }
+      leaf received-information-request {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received information-request packets from clients.";
+      }
+      leaf received-relay-server {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received packets from relay agents or servers.";
+      }
+      leaf received-advertise {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received advertise packets from relay agents or servers.";
+      }
+      leaf received-reply {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received reply packets from relay agents or servers.";
+      }
+      leaf received-relay-forward {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received relay-forward packets from relay agents or servers.";
+      }
+      leaf received-relay-reply {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of received relay-reply packets from relay agents or servers.";
+      }
+      leaf sent-client {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent packets to clients.";
+      }
+      leaf sent-advertise {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent advertise packets to clients.";
+      }
+      leaf sent-reply {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent reply packets to clients.";
+      }
+      leaf sent-relay-server {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent packets to relay agents or servers.";
+      }
+
+      leaf sent-solicit {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent solicit packets to relay agents or servers.";
+      }
+      leaf sent-request {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent request packets to relay agents or servers.";
+      }
+      leaf sent-confirm {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent confirm packets to relay agents or servers.";
+      }
+      leaf sent-renew {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent renew packets to relay agents or servers.";
+      }
+      leaf sent-rebind {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent rebind packets to relay agents or servers.";
+      }
+      leaf sent-decline {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent decline packets to relay agents or servers.";
+      }
+      leaf sent-release {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent release packets to relay agents or servers.";
+      }
+      leaf sent-information-request {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent information-request packets to relay agents or servers.";
+      }
+      leaf sent-relay-forward {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent relay-forward packets to relay agents or servers.";
+      }
+      leaf sent-relay-reply {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent relay-reply packets to relay agents or servers.";
+      }
+      leaf local-release {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of sent local release packets to relay agents or servers.";
+      }
+      leaf total-drop-packet {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of discarded packets.";
+      }
+      leaf drop-by-static-bind-table-exceeded {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of packets discarded when the number of static binding table exceeds the limit.";
+      }
+      leaf drop-by-authentication-fail {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of discarded packets due to authentication failures.";
+      }
+      leaf drop-by-general-error {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of discarded packets due to general errors.";
+      }
+      leaf drop-by-untrusted-interface {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of discarded packets due to untrusted interfaces.";
+      }
+      leaf drop-by-bad-packet {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of discarded packets due to bad packets.";
+      }
+      leaf drop-by-dynamic-bind-table-exceeded {
+        type uint32 {
+          range "0..4294967295";
+        }
+        description
+          "Number of packets discarded when the number of dynamic binding table exceeds the limit.";
+      }
+    }
+    container dynamic-binds {
+      config false;
+      description
+        "List of dynamic binding tables.";
+      list dynamic-bind {
+        key "if-name vpn-name ipv6-addr ipv6-mask pe-vlan ce-vlan";
+        description
+          "Operational data of dynamic binding table.";
+        leaf if-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Interface name.";
+        }
+        leaf vpn-name {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          description
+            "Name of the VPN instance.";
+        }
+        leaf ipv6-addr {
+          type inet:ipv6-address-no-zone;
+          description
+            "IPv6 address.";
+        }
+        leaf ipv6-mask {
+          type uint8 {
+            range "16..128";
+          }
+          description
+            "IPv6 mask.";
+        }
+        leaf pe-vlan {
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "ID of the outer VLAN.";
+        }
+        leaf ce-vlan {
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "ID of the inner VLAN.";
+        }
+        leaf mac-addr {
+          type pub-type:mac-address;
+          description
+            "MAC address.";
+        }
+        leaf lease-time {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units s;
+          description
+            "Indicates the lease of a binding table.";
+        }
+      }
+    }
+  }
+}

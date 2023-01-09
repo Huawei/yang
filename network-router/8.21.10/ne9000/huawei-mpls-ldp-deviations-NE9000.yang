@@ -1,0 +1,71 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-ldp-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-mpls-ldp-deviations-NE9000";
+  prefix mpls-ldp-devs-NE9000;
+
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mpls-ldp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ldp-peer-group-auth-mode-deviations {
+    type enumeration {
+      enum md5 {
+        value 1;
+        description
+          "Specifies mode for cipher or plain MD5 password.";
+      }
+      enum keychain {
+        value 2;
+        description
+          "Specifies mode for keychain password.";
+      }
+    }
+    description
+      "LDP Peer Authentication Type.";
+  }
+
+  deviation "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:mldp/mpls-ldp:p2mp/mpls-ldp:attributes/mpls-ldp:bgp-native-ip" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:mldp/mpls-ldp:p2mp/mpls-ldp:attributes" {
+    deviate delete {
+      must "not(recursive-fec='true' and bgp-native-ip='true')";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:remote-peers/mpls-ldp:remote-peer/mpls-ldp:status/mpls-ldp:manual-configuration-effect" {
+    deviate add {
+      default "false";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:auth-peer-groups/mpls-ldp:auth-peer-group/mpls-ldp:authen-mode" {
+    deviate replace {
+      type mpls-ldp-devs-NE9000:ldp-peer-group-auth-mode-deviations;
+    }
+  }
+}

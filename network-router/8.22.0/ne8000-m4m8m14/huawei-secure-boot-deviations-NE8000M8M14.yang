@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-secure-boot-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-secure-boot-deviations-NE8000M8M14";
+  prefix secure-boot-devs-NE8000M8M14;
+
+  import huawei-secure-boot {
+    prefix secure-boot;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-secure-boot module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/secure-boot:secure-boot/secure-boot:secure-versions" {
+    deviate not-supported;
+  }
+  deviation "/secure-boot:refresh-startup-secure-version" {
+    deviate not-supported;
+  }
+}

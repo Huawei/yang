@@ -1,0 +1,51 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ppp-net-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-ppp-net-deviations-NE8000-F1A";
+  prefix ppp-net-devs-NE8000-F1A;
+
+  import huawei-ppp-net {
+    prefix ppp-net;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-ppp-net module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ppp-net:ppp-net" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/ppp-net:ppp-net" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net" {
+    deviate not-supported;
+  }
+
+}

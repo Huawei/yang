@@ -1,0 +1,224 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-sshs-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-sshs-deviations-ATN-910C";
+  prefix sshs-devs-ATN-910C;
+
+  import huawei-sshs {
+    prefix sshs;
+  }
+  import huawei-sm2 {
+    prefix sm2;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-sshs module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef sshs-user-auth-deviations {
+    type enumeration {
+      enum not-set {
+        value 0;
+        description
+          "The user authentication type is not set.";
+      }
+      enum password {
+        value 1;
+        description
+          "User authentication type password.";
+      }
+      enum rsa {
+        value 2;
+        description
+          "User authentication type rsa.";
+      }
+      enum all {
+        value 3;
+        description
+          "User authentication type all.";
+      }
+      enum password-rsa {
+        value 4;
+        description
+          "User authentication type password-rsa.";
+      }
+      enum dsa {
+        value 5;
+        description
+          "User authentication type dsa.";
+      }
+      enum password-dsa {
+        value 6;
+        description
+          "User authentication type password dsa.";
+      }
+      enum ecc {
+        value 7;
+        description
+          "User authentication type ecc.";
+      }
+      enum password-ecc {
+        value 8;
+        description
+          "User authentication type password ecc.";
+      }
+      enum x509v3-rsa {
+        value 11;
+        description
+          "User authentication type is x509v3-rsa.";
+      }
+      enum password-x509v3-rsa {
+        value 12;
+        description
+          "User authentication type is password-x509v3-rsa.";
+      }
+    }
+    description
+      "SSH server user authentication type list.";
+  }
+
+  typedef sshs-user-pubkey-type-deviations {
+    type enumeration {
+      enum not-set {
+        value 0;
+        description
+          "Server public key is not set.";
+      }
+      enum RSA {
+        value 1;
+        description
+          "RSA server public key.";
+      }
+      enum DSA {
+        value 2;
+        description
+          "DSA server public key.";
+      }
+      enum ECC {
+        value 3;
+        description
+          "ECC server public key.";
+      }
+      enum PKI {
+        value 6;
+        description
+          "PKI server public key.";
+      }
+    }
+    description
+      "SSH server public key encryption type list for user.";
+  }
+
+  deviation "/sshs:sshs/sshs:server/sshs:sm2-host-key" {
+    deviate not-supported;
+  }
+  deviation "/sshs:sshs/sshs:key-exc-alg/sshs:dh-group18-sha512" {
+    deviate not-supported;
+  }
+  deviation "/sshs:sshs/sshs:pubkey-alg/sshs:sm2" {
+    deviate not-supported;
+  }
+  deviation "/sshs:sshs/sshs:pubkey-alg/sshs:x509v3-rsa2048-sha256" {
+    deviate not-supported;
+  }
+  deviation "/sshs:sshs/sshs:call-homes/sshs:call-home/sshs:end-points/sshs:end-point/sshs:address-hostname/sshs:host-name" {
+    deviate not-supported;
+  }
+  deviation "/sshs:sshs/sshs:call-homes/sshs:call-home/sshs:end-points/sshs:end-point/sshs:enabled" {
+    deviate not-supported;
+  }
+  deviation "/sshs:sshs/sshs:users/sshs:user/sshs:auth-type" {
+    deviate replace {
+      type sshs-devs-ATN-910C:sshs-user-auth-deviations;
+    }
+  }
+  deviation "/sshs:sshs/sshs:users/sshs:user/sshs:key-name" {
+    deviate delete {
+      must "(../pub-key-type = 'SM2' and ../key-name = /sm2:sm2/sm2:sm2-peer-keys/sm2:sm2-peer-key[sm2:key-name=current()]/sm2:key-name) or ../pub-key-type != 'SM2'";
+    }
+    deviate delete {
+      must "../pub-key-type = 'RSA' or ../pub-key-type = 'SM2' or ../pub-key-type = 'DSA' or ../pub-key-type = 'ECC'";
+    }
+    deviate add {
+      must "../pub-key-type = 'RSA' or ../pub-key-type = 'DSA' or ../pub-key-type = 'ECC'";
+    }
+  }
+  deviation "/sshs:sshs/sshs:users/sshs:user/sshs:pub-key-type" {
+    deviate replace {
+      type sshs-devs-ATN-910C:sshs-user-pubkey-type-deviations;
+    }
+  }
+  deviation "/sshs:sshs/sshs:key-exc-alg" {
+    deviate delete {
+      must "../key-exc-alg/dh-group14-sha1 = 'true' or ../key-exc-alg/dh-group1-sha1 = 'true' or ../key-exc-alg/ecdh-sha2-nistp521 = 'true' or ../key-exc-alg/ecdh-sha2-nistp384 = 'true' or ../key-exc-alg/ecdh-sha2-nistp256 = 'true' or ../key-exc-alg/dh-group-exchange-sha256 = 'true' or ../key-exc-alg/dh-group-exchange-sha1 = 'true' or ../key-exc-alg/sm2-kep-sha2-nistp256 = 'true' or ../key-exc-alg/dh-group16-sha512 = 'true' or ../key-exc-alg/dh-group18-sha512 = 'true' or ../key-exc-alg/curve25519-sha256 = 'true'";
+    }
+    deviate add {
+      must "../key-exc-alg/dh-group14-sha1 = 'true' or ../key-exc-alg/dh-group1-sha1 = 'true' or ../key-exc-alg/ecdh-sha2-nistp521 = 'true' or ../key-exc-alg/ecdh-sha2-nistp384 = 'true' or ../key-exc-alg/ecdh-sha2-nistp256 = 'true' or ../key-exc-alg/dh-group-exchange-sha256 = 'true' or ../key-exc-alg/dh-group-exchange-sha1 = 'true' or ../key-exc-alg/sm2-kep-sha2-nistp256 = 'true' or ../key-exc-alg/dh-group16-sha512 = 'true' or ../key-exc-alg/curve25519-sha256 = 'true'";
+    }
+  }
+  deviation "/sshs:sshs/sshs:pubkey-alg" {
+    deviate delete {
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/sm2 = 'true' or ../pubkey-alg/x509v3-ssh-rsa = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true' or ../pubkey-alg/x509v3-rsa2048-sha256 = 'true'";
+    }
+    deviate add {
+      must "../pubkey-alg/dsa = 'true' or ../pubkey-alg/ecc = 'true' or ../pubkey-alg/rsa = 'true' or ../pubkey-alg/x509v3-ssh-rsa = 'true' or ../pubkey-alg/rsa-sha2-256 = 'true' or ../pubkey-alg/rsa-sha2-512 = 'true'";
+    }
+  }
+  deviation "/sshs:sshs/sshs:netconf/sshs:max-sessions" {
+    deviate replace {
+      type int32 {
+        range "0..15";
+      }
+    }
+    deviate replace {
+      default "15";
+    }
+  }
+  deviation "/sshs:sshs/sshs:session-car/sshs:cir-interval" {
+    deviate replace {
+      default "800";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/sshs:sshs/sshs:session-car/sshs:cbs-interval" {
+    deviate replace {
+      default "3600";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/sshs:sshs/sshs:session-car/sshs:pir-interval" {
+    deviate replace {
+      default "32000";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/sshs:sshs/sshs:session-car/sshs:pbs-interval" {
+    deviate replace {
+      default "72000";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+}

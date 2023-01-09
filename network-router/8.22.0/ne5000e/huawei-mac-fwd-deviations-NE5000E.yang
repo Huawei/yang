@@ -1,0 +1,71 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mac-fwd-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mac-fwd-deviations-NE5000E";
+  prefix mac-fwd-devs-NE5000E;
+
+  import huawei-mac-fwd {
+    prefix mac-fwd;
+  }
+
+  import huawei-mac-flapping {
+    prefix mac-flapping;
+  }
+
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-mac-fwd module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/mac-fwd:reset-vlan-machop" {
+    deviate not-supported;
+  }
+  deviation "/mac-fwd:reset-vlan-machop-all" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/mac-fwd:mac-sync" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/mac-fwd:mac-hops" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/mac-fwd:loop-detect-suppression" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac-fwd:loop-detect-suppression" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:mac-flapping/mac-flapping:global-attribute/mac-fwd:alarm-para" {
+    deviate not-supported;
+  }
+
+}

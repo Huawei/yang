@@ -1,0 +1,60 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ssl-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-ssl-deviations-NE5000E";
+  prefix ssl-devs-NE5000E;
+
+  import huawei-ssl {
+    prefix ssl;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ssl module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ssl-version-deviations {
+    type enumeration {
+      enum tls1.1 {
+        value 3;
+        description
+          "SSL version tls1.1.";
+      }
+      enum tls1.2 {
+        value 4;
+        description
+          "SSL version tls1.2.";
+      }
+      enum tls1.3 {
+        value 5;
+        description
+          "SSL version tls1.3.";
+      }
+    }
+    description
+      "SSL version type list.";
+  }
+
+  deviation "/ssl:ssl/ssl:ssl-policys/ssl:ssl-policy/ssl:cert-loads/ssl:cert-load/ssl:is-cert-file-encrypted" {
+    deviate not-supported;
+  }
+  deviation "/ssl:ssl/ssl:ssl-policys/ssl:ssl-policy/ssl:mini-version" {
+    deviate replace {
+      type ssl-devs-NE5000E:ssl-version-deviations;
+    }
+  }
+}

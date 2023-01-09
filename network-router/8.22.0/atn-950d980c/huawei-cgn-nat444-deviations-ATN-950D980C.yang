@@ -1,0 +1,82 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-nat444-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-cgn-nat444-deviations-ATN-950D980C";
+  prefix cgn-nat444-devs-ATN-950D980C;
+
+  import huawei-cgn-nat444 {
+    prefix cgn-nat444;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn-nat444 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:bind-service-instance-group" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:port-range" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:address-groups/cgn-nat444:address-group/cgn-nat444:address/cgn-nat444:bind-ip-pool/cgn-nat444:ip-pool" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:nat-translate" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:filter-mode" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:send-mode" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:session-log/cgn-nat444:secondary-log-type" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:user-log" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:hosts/cgn-nat444:host/cgn-nat444:inside-vpn-name" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:hosts/cgn-nat444:host/cgn-nat444:secondary" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:statistics-enable/cgn-nat444:usage-statistics-enable/cgn-nat444:port-usage" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:statistics-enable/cgn-nat444:usage-statistics-enable/cgn-nat444:session-usage" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:statistics-enable/cgn-nat444:fast-forwarding" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:inter-chassis-distributing" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:port-reuse" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:pcp" {
+    deviate not-supported;
+  }
+
+}

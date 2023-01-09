@@ -1,0 +1,799 @@
+/*
+Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lspic-connectivity-test {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-lspic-connectivity-test";
+  prefix lspic-connectivity-test;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Connectivity tests and statistics.";
+  revision 2022-01-24 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-17 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-12-05 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef direction-type {
+    type enumeration {
+      enum "uni" {
+        value 0;
+        description
+          "User-to-network interface side.";
+      }
+      enum "nni" {
+        value 1;
+        description
+          "Network-to-network interface side.";
+      }
+    }
+    description
+      "Test direction type.";
+  }
+  typedef pattern-type {
+    type enumeration {
+      enum "prbs15" {
+        value 0;
+        description
+          "Pattern type: prbs15.";
+      }
+      enum "prbs20" {
+        value 1;
+        description
+          "Pattern type: prbs20.";
+      }
+      enum "prbs23" {
+        value 2;
+        description
+          "Pattern type: prbs23.";
+      }
+      enum "qrss" {
+        value 3;
+        description
+          "Pattern type: qrss.";
+      }
+      enum "0s" {
+        value 4;
+        description
+          "Pattern type: 0s.";
+      }
+      enum "alt-0-1" {
+        value 5;
+        description
+          "Pattern type: alt-0-1.";
+      }
+      enum "1in8" {
+        value 6;
+        description
+          "Pattern type: 1in8.";
+      }
+      enum "3in24" {
+        value 7;
+        description
+          "Pattern type: 3in24.";
+      }
+      enum "prbs6" {
+        value 8;
+        description
+          "Pattern type: prbs6.";
+      }
+      enum "prbs9" {
+        value 9;
+        description
+          "Pattern type: prbs9.";
+      }
+      enum "prbs11" {
+        value 10;
+        description
+          "Pattern type: prbs11.";
+      }
+      enum "qrw" {
+        value 11;
+        description
+          "Pattern type: qrw.";
+      }
+    }
+    description
+      "Pattern type.";
+  }
+  typedef test-operation-type {
+    type enumeration {
+      enum "start-prbs-test" {
+        value 1;
+        description
+          "Start PRBS connectivity.";
+      }
+      enum "abort-prbs-test" {
+        value 2;
+        description
+          "Abort PRBS connectivity.";
+      }
+      enum "start-error-insert" {
+        value 3;
+        description
+          "Start PRBS insert.";
+      }
+      enum "abort-error-insert" {
+        value 4;
+        description
+          "Abort PRBS insert.";
+      }
+      enum "reset-history-record" {
+        value 6;
+        description
+          "Reset interface history records.";
+      }
+    }
+    description
+      "PRBS connectivity operation type.";
+  }
+  typedef virtual-circuit-type {
+    type enumeration {
+      enum "pvc" {
+        value 1;
+        description
+          "Permanent virtual channel identifier.";
+      }
+      enum "pvp" {
+        value 2;
+        description
+          "Permanent virtual path identifier.";
+      }
+    }
+    description
+      "Permanent virtual circuit type.";
+  }
+
+  rpc test-prbs-connectivity {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface";
+    description
+      "PRBS test connectivity. CES services have been deployed on the tested serial interface. This means that the serial interface has used TDM as the encapsulation protocol and joined the PW. The physical layer status and protocol layer status on the serial interface are Up. The PW which the serial interface joins is Up. Local loopback has been configured on the corresponding interface, which is connected to the serial interface, on the other end of the PW.";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf test-operation {
+        type test-operation-type;
+        mandatory true;
+        description
+          "PRBS connectivity operation.";
+      }
+      leaf direction {
+        when "../test-operation='start-prbs-test'";
+        type direction-type;
+        mandatory true;
+        description
+          "PRBS test instance direction.";
+      }
+      leaf test-pattern {
+        when "../test-operation='start-prbs-test'";
+        type pattern-type;
+        mandatory true;
+        description
+          "PRBS test instance patterns.";
+      }
+      leaf interval-unit {
+        when "../test-operation='start-prbs-test'";
+        type enumeration {
+          enum hour {
+            value 0;
+            description
+              "Test interval unit: hour.";
+          }
+          enum minute {
+            value 1;
+            description
+              "Test interval unit: minute.";
+          }
+          enum second {
+            value 2;
+            description
+              "Test interval unit: second.";
+          }
+        }
+        mandatory true;
+        description
+          "Unit of the interval at which a PRBS test instance is run.";
+      }
+      leaf interval-hour {
+        when "../interval-unit='hour'";
+        type uint32 {
+          range "1..4";
+        }
+        units "h";
+        mandatory true;
+        description
+          "Interval (in hours) at which a PRBS test instance is run.";
+      }
+      leaf interval-minute {
+        when "../interval-unit='minute'";
+        type uint32 {
+          range "1..240";
+        }
+        units "min";
+        mandatory true;
+        description
+          "Interval (in minutes) at which a PRBS test instance is run.";
+      }
+      leaf interval-second {
+        when "../interval-unit='second'";
+        type uint32 {
+          range "1..14400";
+        }
+        units "s";
+        mandatory true;
+        description
+          "Interval (in seconds) at which a PRBS test instance is run.";
+      }
+      leaf repeat-count {
+        when "../test-operation='start-prbs-test'";
+        type uint32 {
+          range "1..60";
+        }
+        mandatory true;
+        description
+          "Number of times that a PRBS test instance is run.";
+      }
+      leaf error-insert-type {
+        when "../test-operation='start-error-insert'";
+        type enumeration {
+          enum "single-bit" {
+            value 0;
+            description
+              "Type of inserted error bits: single error bits.";
+          }
+          enum "insert-ratio" {
+            value 1;
+            description
+              "Type of inserted error bits: consecutive error bits.";
+          }
+        }
+        mandatory true;
+        description
+          "Type of the error bits that are inserted into a PRBS stream.";
+      }
+      leaf error-bit-ratio {
+        when "../error-insert-type='insert-ratio'";
+        type uint32 {
+          range "2..10";
+        }
+        mandatory true;
+        description
+          "Rate of the error bits that are inserted into a PRBS stream.";
+      }
+    }
+  }
+
+  rpc get-prbs-connectivity-results {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface";
+    description
+      "Statistics of PRBS test connectivity.";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf record-index {
+        type uint32 {
+          range "1..50";
+        }
+        description
+          "Index of a PRBS test record.";
+      }
+    }
+    output {
+      container prbs-connectivity-results {
+        description
+          "List of PRBS connectivity results.";
+        list prbs-connectivity-result {
+          key "record-index";
+          description
+            "PRBS connectivity result.";
+          leaf record-index {
+            type uint32;
+            description
+              "Index of a PRBS test record.";
+          }
+          leaf physical-port-name {
+            type string {
+              length "1..63";
+            }
+            description
+              "Name of a physical interface on which a PRBS test is performed.";
+          }
+          leaf direction {
+            type direction-type;
+            description
+              "PRBS test instance direction.";
+          }
+          leaf test-pattern {
+            type pattern-type;
+            description
+              "PRBS test instance patterns.";
+          }
+          leaf interval-time {
+            type uint32;
+            units "s";
+            description
+              "Interval at which a PRBS test instance is run.";
+          }
+          leaf repeat-count {
+            type uint32;
+            description
+              "Number of times that a PRBS test instance is run.";
+          }
+          leaf status {
+            type enumeration {
+              enum "finished" {
+                value 1;
+                description
+                  "Finished.";
+              }
+              enum "testing" {
+                value 2;
+                description
+                  "Testing.";
+              }
+            }
+            description
+              "Status of a PRBS test instance.";
+          }
+          leaf start-time {
+            type yang:date-and-time;
+            description
+              "Start time of a PRBS test.";
+          }
+          leaf end-time {
+            type yang:date-and-time;
+            description
+              "End time of a PRBS test.";
+          }
+          leaf progress {
+            type uint32;
+            units "%";
+            description
+              "Execution progress of a PRBS test.";
+          }
+          leaf remain-time {
+            type uint32;
+            units "s";
+            description
+              "Remaining time before a PRBS test ends.";
+          }
+          leaf error-inserted {
+            type boolean;
+            description
+              "Whether error bits have been inserted in a PRBS test.";
+          }
+          leaf total-bit {
+            type uint64;
+            units "bit";
+            description
+              "Total number of bits in a PRBS test.";
+          }
+          leaf error-bit {
+            type uint64;
+            units "bit";
+            description
+              "Total number of error bits in a PRBS test.";
+          }
+          leaf ber-coefficient {
+            type uint32;
+            description
+              "Bit error rate coefficient in a PRBS test.";
+          }
+          leaf ber-power {
+            type uint32;
+            description
+              "Bit error rate power in a PRBS test.";
+          }
+          leaf loss-of-signal-seconds {
+            type uint64;
+            units "s";
+            description
+              "Loss of signal seconds in a PRBS test.";
+          }
+          leaf es {
+            type uint64;
+            units "s";
+            description
+              "Errored seconds in a PRBS test.";
+          }
+          leaf efs {
+            type uint64;
+            units "s";
+            description
+              "Error free seconds in a PRBS test.";
+          }
+          leaf ses {
+            type uint64;
+            units "s";
+            description
+              "Severely errored seconds in a PRBS test.";
+          }
+          leaf uas {
+            type uint64;
+            units "s";
+            description
+              "Unavailable seconds in a PRBS test.";
+          }
+          container details {
+            description
+              "List of PRBS connectivity result details.";
+            list detail {
+              key "index";
+              description
+                "PRBS connectivity result detail.";
+              leaf index {
+                type uint32;
+                description
+                  "Round number of a PRBS test.";
+              }
+              leaf progress {
+                type uint32;
+                units "%";
+                description
+                  "Execution progress in a statistics collection interval.";
+              }
+              leaf total-bit {
+                type uint64;
+                units "bit";
+                description
+                  "Total number of bits in a statistics collection interval.";
+              }
+              leaf error-bit {
+                type uint64;
+                units "bit";
+                description
+                  "Total number of error bits in a statistics collection interval.";
+              }
+              leaf ber-coefficient {
+                type uint32;
+                description
+                  "Bit error rate coefficient in a statistics collection interval.";
+              }
+              leaf ber-power {
+                type uint32;
+                description
+                  "Bit error rate power in a statistics collection interval.";
+              }
+              leaf loss-of-signal-seconds {
+                type uint32;
+                units "s";
+                description
+                  "Loss of signal seconds in a statistics collection interval.";
+              }
+              leaf es {
+                type uint32;
+                units "s";
+                description
+                  "Errored seconds in a statistics collection interval.";
+              }
+              leaf efs {
+                type uint32;
+                units "s";
+                description
+                  "Error free seconds in a statistics collection interval.";
+              }
+              leaf ses {
+                type uint32;
+                units "s";
+                description
+                  "Severely errored seconds in a statistics collection interval.";
+              }
+              leaf uas {
+                type uint32;
+                units "s";
+                description
+                  "Unavailable seconds in a statistics collection interval.";
+              }
+            }
+          }
+          container error-bits-insert-records {
+            description
+              "List of PRBS connectivity error bits insert records.";
+            list error-bits-insert-record {
+              key "index";
+              description
+                "PRBS connectivity error bits insert record.";
+              leaf index {
+                type uint32;
+                description
+                  "Index of error bits insert records.";
+              }
+              leaf start-time {
+                type yang:date-and-time;
+                description
+                  "Start time of a error bits insert.";
+              }
+              leaf insert-type {
+                type enumeration {
+                  enum "single" {
+                    value 0;
+                    description
+                      "Single-bit insertion.";
+                  }
+                  enum "continuous" {
+                    value 1;
+                    description
+                      "Continuous bit error insertion based on a ratio.";
+                  }
+                }
+                description
+                  "Type of injected bit errors.";
+              }
+              leaf ber-coefficient {
+                type uint32;
+                description
+                  "Bit error rate coefficient.";
+              }
+              leaf ber-power {
+                type uint32;
+                description
+                  "Bit error rate power.";
+              }
+              leaf duration {
+                type uint32;
+                units "s";
+                description
+                  "Time during which bit errors are injected.";
+              }
+              leaf insert-in-round {
+                type string {
+                  length "1..15";
+                }
+                description
+                  "Number of the interval in which bit errors are injected.";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  rpc test-tdm-connectivity {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface";
+    description
+      "Start tdm test connectivity.";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf standing-time {
+        type uint32 {
+          range "3..10";
+        }
+        units "s";
+        mandatory true;
+        description
+          "Standing time.";
+      }
+    }
+  }
+
+  rpc get-tdm-connectivity-results {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface";
+    description
+      "Statistics of tdm test connectivity.";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+    }
+    output {
+      container tdm-connectivity-results {
+        description
+          "List of tdm connectivity results.";
+        list tdm-connectivity-result {
+          key "record-index";
+          description
+            "Tdm connectivity result.";
+          leaf record-index {
+            type uint32;
+            description
+              "Index of a tdm test record.";
+          }
+          leaf status {
+            type enumeration {
+              enum "no-test" {
+                value 0;
+                description
+                  "No test has been initiated.";
+              }
+              enum "finish" {
+                value 1;
+                description
+                  "Finished.";
+              }
+              enum "testing" {
+                value 2;
+                description
+                  "Testing.";
+              }
+            }
+            description
+              "Status of an TDM test instance.";
+          }
+          leaf prbs-bit-error-number {
+            type uint32;
+            description
+              "Number of PRBS bit errors in the TDM test.";
+          }
+        }
+      }
+    }
+  }
+
+  rpc test-atm-connectivity {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface";
+    description
+      "Start atm test connectivity.";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf permanent-virtual-circuit-type {
+        type virtual-circuit-type;
+        mandatory true;
+        description
+          "Permanent virtual circuit type.";
+      }
+      leaf vpi {
+        type uint32 {
+          range "0..4095";
+        }
+        mandatory true;
+        description
+          "Virtual path identifier.";
+      }
+      leaf vci {
+        when "../permanent-virtual-circuit-type = 'pvc'";
+        type uint32 {
+          range "0..2|5..65535";
+        }
+        mandatory true;
+        description
+          "Virtual circuit identifier.";
+      }
+      leaf llid {
+        type string {
+          length "47";
+          pattern '01(-[0-9]{2}){4}(-[0-9A-F]{2}){11}';
+        }
+        mandatory true;
+        description
+          "Local loopback ID. The value is a string of 16 characters, in hexadecimal notation. A hyphen (-) is added between each two characters, and the value format is xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx.";
+      }
+    }
+  }
+
+  rpc get-atm-connectivity-results {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface";
+    description
+      "Statistics of atm test connectivity.";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf permanent-virtual-circuit-type {
+        type virtual-circuit-type;
+        mandatory true;
+        description
+          "Permanent virtual circuit type.";
+      }
+      leaf vpi {
+        type uint32 {
+          range "0..4095";
+        }
+        mandatory true;
+        description
+          "Virtual path identifier.";
+      }
+      leaf vci {
+        when "../permanent-virtual-circuit-type = 'pvc'";
+        type uint32 {
+          range "0..2|5..65535";
+        }
+        mandatory true;
+        description
+          "Virtual circuit identifier.";
+      }
+    }
+    output {
+      leaf status {
+        type enumeration {
+          enum "no-test" {
+            value 0;
+            description
+              "No test has been initiated.";
+          }
+          enum "testing" {
+            value 1;
+            description
+              "Testing.";
+          }
+          enum "finish" {
+            value 2;
+            description
+              "Finished.";
+          }
+        }
+        description
+          "Status of an ATM test instance.";
+      }
+      leaf is-success {
+        type boolean;
+        description
+          "Result for ATM test instance.";
+      }
+      leaf error-reason {
+        type string {
+          length "1..256";
+        }
+        description
+          "Reason for ATM test instance errors.";
+      }
+    }
+  }
+  ext:task-name "interface-mgr";
+}

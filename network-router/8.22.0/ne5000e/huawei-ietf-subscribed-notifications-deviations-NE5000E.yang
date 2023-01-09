@@ -1,0 +1,89 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-subscribed-notifications-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-ietf-subscribed-notifications-deviations-NE5000E";
+  prefix sn-devs-NE5000E;
+
+  import ietf-subscribed-notifications {
+    prefix sn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-subscribed-notifications module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/sn:filters" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:notification-message-origin" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:configured-subscription-state" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:receivers" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:transport" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:purpose" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:target/sn:stream/sn:stream-filter/sn:by-reference" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:target/sn:stream/sn:configured-replay" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:dscp" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:weighting" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:dependency" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscription-modified" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscription-started" {
+    deviate not-supported;
+  }
+  deviation "/sn:establish-subscription/sn:input/sn:target/sn:stream/sn:stream-filter/sn:by-reference" {
+    deviate not-supported;
+  }
+  deviation "/sn:establish-subscription/sn:input/sn:dscp" {
+    deviate not-supported;
+  }
+  deviation "/sn:establish-subscription/sn:input/sn:weighting" {
+    deviate not-supported;
+  }
+  deviation "/sn:establish-subscription/sn:input/sn:dependency" {
+    deviate not-supported;
+  }
+  deviation "/sn:modify-subscription/sn:input/sn:target/sn:stream/sn:stream-filter/sn:by-reference" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions" {
+    deviate replace {
+      config false;
+    }
+  }
+}

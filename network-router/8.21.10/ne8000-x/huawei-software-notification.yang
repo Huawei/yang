@@ -1,0 +1,257 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-software-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-software-notification";
+  prefix software-notification;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of software.";
+  revision 2020-10-18 {
+    description
+      "Add package-operation-success and package-version-downgrade.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-23 {
+    description
+      "Add Smart-Upgrade-User-Data-Retention-Period-Expired.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-11 {
+    description
+      "Add system-rollback.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-16 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef package-type {
+    type enumeration {
+      enum "feature-software" {
+        value 1;
+        description
+          "Specify a feature package.";
+      }
+      enum "extended-system-software" {
+        value 2;
+        description
+          "Specify a extended system software package.";
+      }
+    }
+    description
+      "List the type of the software.";
+  }
+  typedef package-operation-type {
+    type enumeration {
+      enum "install" {
+        value 1;
+        description
+          "Install software package.";
+      }
+      enum "uninstall" {
+        value 2;
+        description
+          "Uninstall software package.";
+      }
+      enum "startup" {
+        value 3;
+        description
+          "Restart the software package.";
+      }
+      enum "upgrade" {
+        value 4;
+        description
+          "Upgrade software package.";
+      }
+    }
+    description
+      "List the operation of the software.";
+  }
+  ext:task-name "rpm";
+  notification package-verify-failed {
+    description
+      "Package digital signature verification failed to be verified.";
+    leaf physical-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Entity name.";
+    }
+    leaf package-name {
+      type string {
+        length "4..127";
+      }
+      description
+        "Software package name.";
+    }
+    leaf fail-reason {
+      type string {
+        length "1..127";
+      }
+      description
+        "Error reason.";
+    }
+  }
+  notification package-verify-failed-resume {
+    description
+      "Package digital signature verification succeeded to be verified.";
+    leaf physical-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Entity name.";
+    }
+    leaf package-name {
+      type string {
+        length "4..127";
+      }
+      description
+        "Software package name.";
+    }
+    leaf fail-reason {
+      type string {
+        length "1..127";
+      }
+      description
+        "Error reason.";
+    }
+  }
+  notification startup-secure-version-configuration-need-refresh{
+    description
+      "The secure boot version configuration needs to be updated.";
+        leaf slot-id {
+          type string {
+            length "1..49";
+          }
+          description
+            "Slot ID.";
+        }
+  }
+  notification startup-secure-version-configuration-need-refresh-resume {
+    description
+      "The secure boot version configuration is successfully updated.";
+        leaf slot-id {
+          type string {
+            length "1..49";
+          }
+          description
+            "Slot ID.";
+        }
+  }
+  notification system-rollback{
+    description
+      "Upgraded software fails to start the system, and the software rolls back to the old version.";
+    leaf package-name {
+      type string {
+        length "4..127";
+      }
+      description
+        "The software package name before the rollback.";
+    }
+    leaf version {
+      type string {
+        length "1..63";
+      }
+      description
+        "The version before the rollback.";
+    }
+    leaf fail-reason {
+      type string {
+        length "1..127";
+      }
+      description
+        "Error reason.";
+    }
+  }
+  notification smart-upgrade-user-data-retention-period-expired {
+    description
+      "The smart-upgrade user data retention period has expired.";
+  }
+  notification smart-upgrade-user-data-retention-period-expired-resume {
+    description
+      "The smart-upgrade user data is updated.";
+  }
+  notification package-operation-success {
+    description
+      "Notification about a software package operation success.";
+    leaf package-operation-type {
+      type package-operation-type;
+      description
+        "The operation of the software package.";
+    }
+    leaf package-type {
+      type package-type;
+      description
+        "The type of the software package.";
+    }
+    leaf package-name {
+      type string {
+        length "5..127";
+      }
+      description
+        "The name of the software package.";
+    }
+    leaf package-version {
+      type string {
+        length "1..63";
+      }
+      description
+        "The version of the software package.";
+    }
+  }
+  notification package-version-downgrade {
+    description
+      "Notification about a software package version downgrade.";
+    leaf previous-package-name {
+      type string {
+        length "5..127";
+      }
+      description
+        "The name of the previous software package.";
+    }
+    leaf previous-version {
+      type string {
+        length "1..63";
+      }
+      description
+        "The version of the previous software package.";
+    }
+    leaf current-package-name {
+      type string {
+        length "5..127";
+      }
+      description
+        "The name of the current software package.";
+    }
+    leaf current-version {
+      type string {
+        length "1..63";
+      }
+      description
+        "The version of the current software package.";
+    }
+  }
+}
+
+

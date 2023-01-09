@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-ifm-notification-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-fim-ifm-notification-deviations-NE8000-F1A";
+  prefix fim-ifm-notification-devs-NE8000-F1A;
+
+  import huawei-fim-ifm-notification {
+    prefix fim-ifm-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fim-ifm-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/fim-ifm-notification:mode-flexe-bandwidth-exceed" {
+    deviate not-supported;
+  }
+  deviation "/fim-ifm-notification:mode-flexe-bandwidth-exceed-resume" {
+    deviate not-supported;
+  }
+  deviation "/fim-ifm-notification:mode-flexe-unsupport" {
+    deviate not-supported;
+  }
+  deviation "/fim-ifm-notification:mode-flexe-unsupport-resume" {
+    deviate not-supported;
+  }
+
+}

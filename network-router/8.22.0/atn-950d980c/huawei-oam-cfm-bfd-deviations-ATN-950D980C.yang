@@ -1,0 +1,47 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-bfd-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-oam-cfm-bfd-deviations-ATN-950D980C";
+  prefix oam-cfm-bfd-devs-ATN-950D980C;
+
+  import huawei-oam-cfm-bfd {
+    prefix oam-cfm-bfd;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-bfd-static-vpws {
+    prefix bfd-static-vpws;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-bfd-static-mpls-te {
+    prefix bfd-static-mpls-te;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-oam-cfm-bfd module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oammgr:oammgr/oam-cfm-bfd:cfm-bind-bfds/oam-cfm-bfd:cfm-bind-bfd/oam-cfm-bfd:bfd-session-id" {
+    deviate add {
+      must '/bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-multicast-ipv4=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-static-ldp-lsp=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd-static-mpls-te:local-discriminator-static-te-lsp=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd-static-mpls-te:local-discriminator-static-te-tunnel=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd-static-vpws:local-discriminator-static-vll-pw=current()]';
+    }
+  }
+}

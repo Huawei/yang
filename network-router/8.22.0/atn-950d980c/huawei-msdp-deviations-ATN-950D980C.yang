@@ -1,0 +1,62 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-msdp-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-msdp-deviations-ATN-950D980C";
+  prefix msdp-devs-ATN-950D980C;
+
+  import huawei-msdp {
+    prefix msdp;
+  }
+  import huawei-multicast {
+    prefix mc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-msdp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mc:multicast/mc:session-car/msdp:msdp/msdp:cir-interval" {
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/msdp:msdp/msdp:cbs-interval" {
+    deviate replace {
+      default "50";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/msdp:msdp/msdp:pir-interval" {
+    deviate replace {
+      default "300";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/mc:multicast/mc:session-car/msdp:msdp/msdp:pbs-interval" {
+    deviate replace {
+      default "300";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+}

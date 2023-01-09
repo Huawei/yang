@@ -1,0 +1,203 @@
+/*
+Copyright (C) 2019-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-bas {
+  namespace "urn:huawei:yang:huawei-multicast-bas";
+  prefix mcbas;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-pim {
+    prefix pim;
+  }
+  import huawei-igmp-mld {
+    prefix igmp-mld;
+  }
+  import huawei-l3-multicast {
+    prefix l3mc;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Multicast for BRAS access.";
+  revision 2022-01-26 {
+    description
+      "Modify some restrictions PIM snooping enable.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-12-16 {
+    description
+      "Modify some restriction for multicast-bas. The must condition of multicast-bas is deleted. The when condition of qinq is added.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-16 {
+    description
+      "Modify addr-family-type enumeration name.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-03-30 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "mcast-base";
+  typedef addr-family-type {
+    type enumeration {
+      enum "ipv4-unicast" {
+        value 1;
+        description
+          "IPv4 unicast.";
+      }
+      enum "ipv6-unicast" {
+        value 2;
+        description
+          "IPv6 unicast.";
+      }
+    }
+    description
+      "Address family.";
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description "Add multicast BAS configuration to the ifm module.";
+    container multicast-bas {
+      description
+        "Configure multicast BAS.";
+      choice vlan-type {
+        when "../ifm:type!='Virtual-Template'";
+        description
+          "Specify the VLAN-type of multicast BAS user-aggregation.";
+        case qinq {
+          description
+            "QinQ type.";
+          leaf user-aggregation-pevlan {
+            type uint32 {
+              range "1..4094";
+            }
+            mandatory true;
+            description
+              "QINQ PE ID in an outer VLAN tag.";
+          }
+          leaf user-aggregation-cevlan {
+            type uint32 {
+              range "1..4094";
+            }
+            mandatory true;
+            description
+              "QINQ CE ID in an inner VLAN tag.";
+          }
+        }
+        case vlan {
+          description
+            "VLAN type.";
+          leaf user-aggregation-vlan {
+            type uint32 {
+              range "1..4094";
+            }
+            description
+              "VLAN ID in an outer VLAN tag.";
+          }
+        }
+      }
+      leaf copy-by-session-enable {
+        when "../../bras-basic-access:bas/bras-basic-access:layer2-subscriber or ../../bras-basic-access:bas/bras-basic-access:layer2-leaseline or ../../bras-basic-access:bas/bras-basic-access:layer3-subscriber or ../../bras-basic-access:bas/bras-basic-access:layer3-leaseline or ../../bras-basic-access:bas/bras-basic-access:l2vpn-leaseline";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable multicast copy by-session.";
+      }
+      leaf copy-by-vlan-enable {
+        when "../../bras-basic-access:bas/bras-basic-access:layer2-subscriber or ../../bras-basic-access:bas/bras-basic-access:layer2-leaseline or ../../bras-basic-access:bas/bras-basic-access:layer3-subscriber or ../../bras-basic-access:bas/bras-basic-access:layer3-leaseline or ../../bras-basic-access:bas/bras-basic-access:l2vpn-leaseline";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable multicast copy by-VLAN.";
+      }
+      leaf authorization-enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable authorization.";
+      }
+      leaf igmp-query-auto-send-enable {
+        when "../../bras-basic-access:bas/bras-basic-access:layer2-subscriber or ../../bras-basic-access:bas/bras-basic-access:layer2-leaseline or ../../bras-basic-access:bas/bras-basic-access:layer3-subscriber or ../../bras-basic-access:bas/bras-basic-access:layer3-leaseline or ../../bras-basic-access:bas/bras-basic-access:l2vpn-leaseline";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable IGMP to send query message automatically.";
+      }
+      container binding-vpn-instances {
+        description
+          "List of multicast binding vpn-instance configurations.";
+        list binding-vpn-instance {
+          must "not(/ni:network-instance/ni:instances/ni:instance/l3mc:multicast/l3mc:ipv4/l3mc:interface-boundarys/l3mc:interface-boundary[l3mc:name=current()/../../../ifm:name] and current()/address-family='ipv4-unicast')";
+          key "name address-family";
+          description
+            "Configure multicast binding vpn-instance.";
+          leaf name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            must "../name!='_public_'";
+            description
+              "VPN instance.";
+          }
+          leaf address-family {
+            type addr-family-type;
+            must "../address-family='ipv4-unicast' or ../../../../ifm:type='Virtual-Template'";
+            must "/ni:network-instance/ni:instances/ni:instance[ni:name = current()/../name]/l3vpn:afs/l3vpn:af[l3vpn:type=current()]";
+            description
+              "Address family, which determines whether an address belongs to IPv4 or IPv6.";
+          }
+        }
+      }
+      container pim-snooping-enables {
+        when "(../../ifm:type='Virtual-Template') or (../../bras-basic-access:bas/bras-basic-access:layer2-subscriber or ../../bras-basic-access:bas/bras-basic-access:layer2-leaseline or ../../bras-basic-access:bas/bras-basic-access:layer3-subscriber or ../../bras-basic-access:bas/bras-basic-access:layer3-leaseline or ../../bras-basic-access:bas/bras-basic-access:l2vpn-leaseline)";
+        description
+          "List of PIM configuration snooping.";
+        list pim-snooping-enable {
+          must "/ni:network-instance/ni:instances/ni:instance/pim:pim/pim:protocol/pim:interfaces/pim:interface[pim:if-name=current()/../../../ifm:name][pim:mode='sparse'][pim:sm-enable='true']";
+          must "address-family='ipv6-unicast' or /ni:network-instance/ni:instances/ni:instance/igmp-mld:igmp/igmp-mld:interfaces/igmp-mld:interface[igmp-mld:name=current()/../../../ifm:name][igmp-mld:enable='false']";
+          must "address-family='ipv4-unicast' or /ni:network-instance/ni:instances/ni:instance/igmp-mld:mld/igmp-mld:interfaces/igmp-mld:interface[igmp-mld:name=current()/../../../ifm:name][igmp-mld:enable='false']";
+          must "../../mcbas:igmp-query-auto-send-enable='false'";
+          must "(../../../ifm:type='Virtual-Template') or (../../mcbas:copy-by-session-enable='true')";
+          must "/ni:network-instance/ni:instances/ni:instance/pim:pim/pim:protocol/pim:interfaces/pim:interface[pim:if-name=current()/../../../ifm:name][pim:mode!='dense']";
+          must "/ni:network-instance/ni:instances/ni:instance/pim:pim/pim:protocol/pim:interfaces/pim:interface[pim:if-name=current()/../../../ifm:name][pim:bfd-enable='false']";
+          must "not(../../mcbas:user-aggregation-vlan) and not (../../mcbas:user-aggregation-pevlan) and not(../../mcbas:user-aggregation-cevlan)";
+          must "/ni:network-instance/ni:instances/ni:instance/pim:pim/pim:protocol/pim:interfaces/pim:interface[pim:if-name=current()/../../../ifm:name][pim:is-silent='false']";
+          key "address-family";
+          description
+            "Configure interface PIM snooping.";
+          leaf address-family {
+            type addr-family-type;
+            must "../address-family='ipv4-unicast' or ../../../../ifm:type='Virtual-Template'";
+            description
+              "Address family, which determines whether an address belongs to IPv4 or IPv6.";
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-cu-controller-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bras-cu-controller-notif";
+  prefix cu-controller-notif;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notifies the subscriber of CU controller information.";
+  revision 2022-09-21 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bras-control";
+  notification hot-standby-backup-fail {
+    description
+      "User services fail to be backed up for a long time in UP dual-device hot backup scenarios.";
+    leaf upmng-instance {
+      type string {
+        length "1..15";
+      }
+      description
+        "UPMNG instance name.";
+    }
+  }
+
+  notification hot-standby-backup-resume {
+    description
+      "The backup services of the UP dual-device hot backup user are restored.";
+    leaf upmng-instance {
+      type string {
+        length "1..15";
+      }
+      description
+        "UPMNG instance name.";
+    }
+  }
+}

@@ -1,0 +1,343 @@
+/*
+Copyright (C) 2019-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cli {
+  namespace "urn:huawei:yang:huawei-cli";
+  prefix cli;
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "CLI window configuration.";
+  revision 2022-08-22 {
+    description
+      "A new enumeration item not-ended-truncate is added to enumeration output-status.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-08-16 {
+    description
+      "Add new leaf : sub-sequence.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-02-22 {
+    description
+      "Modify rpc execute-command.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-25 {
+    description
+      "Add rpc execute-command.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-26 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "cli";
+
+  typedef processing-status-type {
+    type enumeration {
+      enum "initial" {
+        value 0;
+        description
+          "The diagnostic information generation has not been performed since this startup.";
+      }
+      enum "processing" {
+        value 1;
+        description
+          "The diagnostic information generation is processing.";
+      }
+      enum "completed" {
+        value 2;
+        description
+          "The diagnostic information generation is completed successfully.";
+      }
+      enum "failed" {
+        value 3;
+        description
+          "The diagnostic information generation is completed unsuccessfully.";
+      }
+    }
+    description
+      "The type of diagnostic information generation processing status.";
+  }
+  typedef fail-reason-type {
+    type enumeration {
+      enum "no-error" {
+        value 0;
+        description
+          "No error.";
+      }
+      enum "prepare-failed" {
+        value 1;
+        description
+          "Failed to prepare for execution.";
+      }
+      enum "command-locked" {
+        value 2;
+        description
+          "Diagnostic information command is being locked now by other method, please wait for a moment.";
+      }
+      enum "diag-source-error" {
+        value 3;
+        description
+          "There are some errors in the diagnostic commands to be executed.";
+      }
+      enum "save-diag-file-failed" {
+        value 4;
+        description
+          "Failed to save the diagnosis file.";
+      }
+      enum "cpu-high-end" {
+        value 5;
+        description
+          "The command execution failed because the CPU usage could not fall below 70% within 300s.";
+      }
+      enum "internal-error" {
+        value 6;
+        description
+          "An error occurred in the internal processing.";
+      }
+    }
+    description
+      "The type of failed reason.";
+  }
+  typedef execute-result {
+    type enumeration {
+      enum "success" {
+        value 1;
+        description
+        "Successful.";
+      }
+      enum "fail" {
+        value 2;
+        description
+        "Failure.";
+      }
+    }
+    description
+    "Execute result.";
+  }
+  typedef output-status {
+    type enumeration {
+      enum "not-ended" {
+        value 1;
+        description
+        "Not ended.";
+      }
+      enum "end" {
+        value 2;
+        description
+        "End.";
+      }
+      enum "end-truncate" {
+        value 3;
+        description
+        "End and truncated.";
+      }
+      enum "output-interrupted" {
+        value 4;
+        description
+        "Output interrupted due to command execution timeout.";
+      }
+    }
+    description
+    "Output result flag.";
+  }
+  container cli {
+    description
+      "CLI window configuration.";
+    container header {
+      description
+        "Configure the header displayed upon user login or session startup.";
+      choice login-information {
+        description
+          "Login authentication header, which is displayed before a user enters the user name and password in the CLI window.";
+        case head-login-text {
+          description
+            "Specify the information of login banner.";
+          leaf login-text {
+            type string {
+              length "1..478";
+            }
+            description
+              "Text of a login authentication header.";
+          }
+        }
+        case head-login-file {
+          description
+            "Specify the filename of login banner.";
+          leaf login-file {
+            type string {
+              length "1..64";
+              pattern '(\w+)(:/)(\w.*)';
+            }
+            description
+              "Name of a login authentication header file.";
+          }
+        }
+      }
+      choice shell-information {
+        description
+          "Session startup header, which is displayed after a user enters the user name and password in the CLI window.";
+        case head-shell-text {
+          description
+            "Specify the information of shell banner.";
+          leaf shell-text {
+            type string {
+              length "1..478";
+            }
+            description
+              "Text of a session startup header.";
+          }
+        }
+        case head-shell-file {
+          description
+            "Specify the filename of shell banner.";
+          leaf shell-file {
+            type string {
+              length "1..64";
+              pattern '(\w+)(:/)(\w.*)';
+            }
+            description
+              "Name of a session startup header file.";
+          }
+        }
+      }
+    }
+
+    container query-diagnose-information-generate-process {
+      config false;
+      description
+        "Operational state of diagnose information generation.";
+      leaf processsing-status {
+        type processing-status-type;
+        description
+          "Processing status.";
+      }
+      leaf fail-reason {
+        type fail-reason-type;
+        must "(../processsing-status='failed')";
+        description
+          "Fail reason of last query diagnose information.";
+      }
+      leaf last-generate-time {
+        type yang:date-and-time;
+        must "(../processsing-status!='initial')";
+        description
+          "Last time of query diagnose information.";
+      }
+    }
+  }
+  rpc generate-diagnose-information {
+    description
+      "Generate diagnose information.";
+  }
+  rpc execute-command {
+    description
+    "Execute cli command.";
+    input {
+      container cli-cmds {
+        description
+        "List of CLI commands.";
+        list cli-cmd {
+          key "sequence command";
+          max-elements "8";
+          description
+          "Specify the CLI command.";
+          leaf sequence {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+            "CLI command sequence.";
+          }
+          leaf command {
+            type string {
+              length "1..3100";
+            }
+            description
+            "CLI command.";
+          }
+          leaf max-output-size {
+            type uint32 {
+              range "0..4194304";
+            }
+            units Byte;
+            default "4194304";
+            description
+            "Maximum output length of the query result.";
+          }
+        }
+      }
+    }
+    output {
+      container cli-results {
+      description
+      "List of CLI command excute results.";
+        list cli-result {
+          key "sequence sub-sequence";
+          description
+          "CLI command excute result.";
+          leaf sequence {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+            "CLI command sequence.";
+          }
+          leaf sub-sequence {
+            type uint32 {
+              range "1..4294967295";
+            }
+            description
+            "Page sequence number.";
+          }
+          leaf command {
+            type string {
+            length "1..3100";
+            }
+            description
+            "CLI command.";
+          }
+          leaf execute-result {
+            type execute-result;
+            description
+            "Execute result.";
+          }
+          leaf cmd-output-info {
+            type string {
+            length "0..20480";
+            }
+            description
+            "CLI command output information.";
+
+          }
+          leaf output-status {
+            type output-status; 
+            description
+            "Output status.";
+          }
+        }
+      }
+    }
+  }
+}

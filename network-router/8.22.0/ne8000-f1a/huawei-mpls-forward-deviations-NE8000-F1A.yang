@@ -1,0 +1,57 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-forward-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-mpls-forward-deviations-NE8000-F1A";
+  prefix mpls-forward-devs-NE8000-F1A;
+
+  import huawei-mpls-forward {
+    prefix mpls-forward;
+  }
+
+  import huawei-loadbalance {
+    prefix loadbalance;
+  }
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-mpls-forward module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/loadbalance:loadbalance/mpls-forward:mpls-hashpacket" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/mpls-forward:mpls-intfmtu" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-forward:ldp-separate" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-forward:disp-convergence-mode" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls:common/mpls-forward:mpls-forward" {
+    deviate not-supported;
+  }
+
+}

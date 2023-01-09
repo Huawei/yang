@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-driver-fm-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-driver-fm-deviations-NE9000";
+  prefix driver-fm-devs-NE9000;
+
+  import huawei-driver-fm {
+    prefix driver-fm;
+  }
+
+  import huawei-fm {
+    prefix fm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-driver-fm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/fm:fm/driver-fm:driver/driver-fm:hardware-alarm-error-codes" {
+    deviate not-supported;
+  }
+
+}

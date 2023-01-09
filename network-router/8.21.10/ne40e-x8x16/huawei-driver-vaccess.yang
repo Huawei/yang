@@ -1,0 +1,738 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-driver-vaccess {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-driver-vaccess";
+  
+  prefix driver-vaccess;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+  import huawei-vaccess-master {
+    prefix vaccess-master;
+  }
+  import huawei-driver {
+    prefix driver;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Virtual Access Entity Management.";
+  revision 2020-09-03 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "device-mgr";
+  
+  container driver-vaccess {
+    description
+      "Configuration of the driver vaccess.";
+    container board-infos {
+      config false;
+      description
+        "List of AP board information.";
+      list board-info {
+        key "ap-id index";
+        description
+          "Operational state of AP board information.";
+        leaf ap-id {
+          type leafref {
+            path "/vaccess:vaccess/vaccess-master:master/vaccess-master:aps/vaccess-master:ap/vaccess-master:ap-id";
+          }
+          description
+            "AP ID.";
+        }
+        leaf index {
+          type uint32;
+          description
+            "Board index.";
+        }
+        leaf host-name {
+          type string {
+            length "1..246";
+          }
+          description
+            "The host name of the system.";
+        }
+        leaf chassis-id {
+          type uint32;
+          description
+            "Chassis ID.";
+        }
+        leaf slot-id {
+          type uint32;
+          description
+            "Slot ID.";
+        }
+        leaf board-type {
+          type string {
+            length "1..19";
+          }
+          description
+            "Board type.";
+        }
+      }
+    }
+  }
+  rpc auto-upgrade-models {
+    ext:node-ref "/vaccess:vaccess/vaccess-master:master/vaccess-master:aps/vaccess-master:ap/driver-vaccess:driver/driver-vaccess:global-attributes";
+    description
+      "Set auto upgrade model.";
+    input {
+      leaf ap-id {
+        type leafref {
+          path "/vaccess:vaccess/vaccess-master:master/vaccess-master:aps/vaccess-master:ap/vaccess-master:ap-id";
+        }
+        mandatory true;
+        description
+          "AP ID.";
+      }
+      leaf auto-upgrade-model {
+        type driver:driver-auto-upgrade-mode;
+        mandatory true;
+        description
+          "Auto Upgrade Model.";
+      }
+    }
+  }
+  augment "/vaccess:vaccess/vaccess-master:master/vaccess-master:aps/vaccess-master:ap" {
+    description
+      "Virtual access driver configuration information augment to module vaccess.";
+  container driver {
+    description
+      "Configure the driver.";
+      container global-attributes {
+        description
+          "Configure the AP device global information of virtural access.";
+        leaf device-name {
+          type string {
+            length "1..32";
+          }
+          config false;
+          description
+            "Device name.";
+        }
+        leaf energy-mode {
+          type driver:energy-mode-type;
+          default "basic";
+          description
+            "Energy saving mode.";
+        }
+        leaf energy-mode-status {
+          type driver:energy-mode-type;
+          config false;
+          description
+            "Energy saving mode status.";
+        }
+        leaf auto-upgrade-model {
+          type driver:driver-upgrade-mode-type;
+          default "open";
+          config false;
+          description
+            "Auto upgrade model.";
+        }
+        leaf high-temp-switch {
+          type driver:driver-bool;
+          default "yes";
+          description
+            "High temperature power-off protection enable.";
+        }
+        leaf high-temp-switch-status {
+          type driver:driver-bool;
+          default "yes";
+          config false;
+          description
+            "High temperature power-off protection enable status.";
+        }
+      }
+
+      container device-infos {
+        config false;
+        description
+          "List of AP device information of virtural access.";
+        list device-info {
+          key "slot-id";
+          description
+            "Statistics of virtural access.";
+          leaf slot-id {
+            type string {
+              length "1..32";
+            }
+            description
+              "Slot ID.";
+          }
+          leaf hardware-type {
+            type string {
+              length "1..32";
+            }
+            description
+              "Hardware type.";
+          }
+          leaf online {
+            type driver:driver-online-status-type;
+            description
+              "Online status.";
+          }
+          leaf register {
+            type driver:driver-register-status-type;
+            description
+              "Register status.";
+          }
+          leaf running-status {
+            type driver:driver-running-status-type;
+            description
+              "Running status.";
+          }
+          leaf role {
+            type driver:driver-role-type;
+            description
+              "Role.";
+          }
+          leaf primary {
+            type driver:driver-primary-status-type;
+            description
+              "Primary status.";
+          }
+        }
+      }
+      container temperatures {
+        config false;
+        description
+          "List of board temperature information of an AP device.";
+        list temperature {
+          key "position i2c address channel";
+          description
+            "Operational state of board temperature information of an AP device.";
+          leaf position {
+            type string {
+              length "0..32";
+            }
+            description
+              "Board position.";
+          }
+          leaf i2c {
+            type uint32;
+            description
+              "I2C bus number.";
+          }
+          leaf address {
+            type string {
+              length "1..50";
+            }            
+            description
+              "Sensor address.";
+          }
+          leaf channel {
+            type uint32;
+            description
+              "Number of a sensor channel.";
+          }
+          leaf pcb-name {
+            type string {
+              length "0..32";
+            }
+            description
+              "Board type.";
+          }
+          leaf state {
+            type driver:driver-sensor-state;
+            description
+              "Sensor state information.";
+          }
+          leaf current-temperature {
+            type int32;
+            units "°C";
+            description
+              "Current temperature.";
+          }
+          leaf minor-alarm-threshold {
+            type uint32;
+            units "°C";
+            description
+              "Minor temperature alarm threshold.";
+          }
+          leaf major-alarm-threshold {
+            type uint32;
+            units "°C";
+            description
+              "Major temperature alarm threshold.";
+          }
+          leaf fatal-alarm-threshold {
+            type uint32;
+            units "°C";
+            description
+              "Fatal temperature alarm threshold.";
+          }
+          leaf fan-tmax {
+            type int32 {
+              range "-50..127";
+            }
+            description
+              "Fan Speed Adjust High Threshold.";
+          }
+          leaf fan-tmin {
+            type int32 {
+              range "-50..127";
+            }
+            description
+              "Fan Speed Adjust Low Threshold.";
+          }
+        }
+      }
+      container voltages {
+        config false;
+        description
+          "List of AP voltage information about a board.";
+        list voltage {
+          key "position i2c address channel";
+          description
+            "Operational state of voltage information about a board of an AP device.";
+          leaf position {
+            type string {
+              length "0..32";
+            }
+            description
+              "Board position.";
+          }
+          leaf i2c {
+            type uint32;
+            description
+              "I2C bus number.";
+          }
+          leaf address {
+            type string {
+              length "1..50";
+            }          
+            description
+              "Sensor address.";
+          }
+          leaf channel {
+            type uint32;
+            description
+              "Sensor channel.";
+          }
+          leaf pcb-name {
+            type string {
+              length "0..32";
+            }
+            description
+              "Board type.";
+          }
+          leaf state {
+            type driver:driver-sensor-state;
+            description
+              "Voltage sensor state.";
+          }
+          leaf current-voltage {
+            type string {
+              length "0..255";
+            }
+            units "V";
+            description
+              "Current voltage value.";
+          }
+          leaf required-voltage {
+            type string {
+              length "0..255";
+            }
+            units "V";
+            description
+              "Required voltage value.";
+          }
+          leaf major-low-threshold {
+            type string {
+              length "0..255";
+            }
+            units "V";
+            description
+              "Major Lower voltage threshold.";
+          }
+          leaf low-threshold {
+            type string {
+              length "0..255";
+            }
+            units "V";
+            description
+              "Fatal Lower voltage threshold.";
+          }
+          leaf major-high-threshold {
+            type string {
+              length "0..255";
+            }
+            units "V";
+            description
+              "Major Upper voltage threshold.";
+          }
+          leaf high-threshold {
+            type string {
+              length "0..255";
+            }
+            units "V";
+            description
+              "Fatal Upper voltage threshold.";
+          }
+          leaf voltage-ratio {
+            type string {
+              length "0..255";
+            }
+            description
+              "Voltage Ratio.";
+          }
+        }
+      }
+      container power-electronic-labels {
+        config false;
+        description
+          "List of manufacture information of an AP device.";
+        list power-electronic-label {
+          key "slot-id";
+          description
+            "Operational state of manufacture information of an AP device.";
+          leaf slot-id {
+            type string {
+              length "0..4";
+            }
+            description
+              "Position.";
+          }
+          leaf archives-info-version {
+            type string {
+              length "0..128";
+            }
+            description
+              "Archives information version.";
+          }
+          leaf board-type {
+            type string {
+              length "0..128";
+            }
+            description
+              "Board type.";
+          }
+          leaf bar-code {
+            type string {
+              length "0..128";
+            }
+            description
+              "BarCode.";
+          }
+          leaf item {
+            type string {
+              length "0..128";
+            }
+            description
+              "BOM ID.";
+          }
+          leaf elb-description {
+            type string {
+              length "0..256";
+            }
+            description
+              "English description of a BOM.";
+          }
+          leaf manufactured {
+            type string {
+              length "0..128";
+            }
+            description
+              "Manufacture date.";
+          }
+          leaf vendor-name {
+            type string {
+              length "0..128";
+            }
+            description
+              "Vendor name.";
+          }
+          leaf issue-number {
+            type string {
+              length "0..128";
+            }
+            description
+              "Issue number.";
+          }
+          leaf clei-code {
+            type string {
+              length "0..128";
+            }
+            description
+              "CLEI code.";
+          }
+          leaf bom {
+            type string {
+              length "0..128";
+            }
+            description
+              "BOM.";
+          }
+          leaf model {
+            type string {
+              length "0..128";
+            }
+            description
+              "Model.";
+          }
+          leaf elabel-extend {
+            type string {
+              length "0..270";
+            }
+            description
+              "Extend information.";
+          }
+          leaf elabel-version {
+            type string {
+              length "0..128";
+            }
+            description
+              "Elabel version.";
+          }
+        }
+      }
+      container powers {
+        config false;
+        description
+          "List of power information about a board of an AP device.";
+        list power {
+          key "slot-id";
+          description
+            "Operational state of power information about a board of an AP device.";
+          leaf slot-id {
+            type string {
+              length "0..4";
+            }
+            description
+              "Power supply position.";
+          }
+          leaf mode {
+            type driver:driver-power-work-mode;
+            description
+              "Working mode of a power supply board.";
+          }
+          leaf present {
+            type driver:driver-bool;
+            description
+              "Power Present.";
+          }
+          leaf power-state {
+            type string {
+              length "0..50";
+            }
+            description
+              "Power Running State.";
+          }
+          leaf normal-number {
+            type string {
+              length "0..4";
+            }
+            description
+              "Normal PowerModule Number.";
+          }
+          leaf abnormal-number {
+            type string {
+              length "0..4";
+            }
+            description
+              "Abnormal PowerModule Number.";
+          }
+          leaf monitor-cable-state {
+            type driver:driver-cable-state;
+            description
+              "State of a power supply monitor cable.";
+          }
+          container power-environments {
+            config false;
+            description
+              "List of environment information of an AP device.";
+            list power-environment {
+              key "pem-index";
+              description
+                "Operational state of environment information of an AP device.";
+              leaf pem-index {
+                type uint32;
+                description
+                  "Pem Index.";
+              }
+              leaf voltage-value {
+                type string {
+                  length "0..50";
+                }
+                units "V";
+                description
+                  "Current voltage value.";
+              }
+              leaf electrical-value {
+                type string {
+                  length "0..50";
+                }
+                units "A";
+                description
+                  "Current electrical value.";
+              }
+              leaf last-down-time {
+                type yang:date-and-time;
+                description
+                  "Last Shutdown Time.";
+              }
+            }
+          }
+        }
+      }
+      container fans {
+        description
+          "Configure fan of an AP device.";
+        container fan-attribute {
+          must "((./workmode='minimum-percent') and ./speed) or ((./workmode!='minimum-percent') and not(./speed))";
+          description
+            "Configure the working mode and speed of the fan.";
+          leaf workmode {
+            type driver:fan-workmode;
+            default "auto";
+            description
+                "Fan working mode.";
+          }
+          leaf speed {
+            ext:dynamic-default;
+            type uint32 {
+                range "0..100";
+            }
+            units "%";
+            description
+              "Fan speed which is a percentage of the highest speed and the range of value changes with the workmode and the hardtype of fan. The current range is determined by combining the minimum and maximum values of all cases.";
+          }
+        }
+        container fan-statuss {
+          config false;
+          description
+            "List of fan configuration of an AP device.";
+          list fan-status {
+            key "position";
+            description
+              "Operational state of fan information of an AP device.";
+            leaf position {
+              type string {
+                length "0..32";
+              }
+              description
+                "Fan position.";
+            }
+            leaf workmode {
+              type driver:fan-workmode;
+              description
+                "Fan working mode.";
+            }
+            leaf present {
+              type driver:driver-bool;
+              description
+                "Fan present.";
+            }
+            leaf register {
+              type driver:driver-bool;
+              description
+                "Register.";
+            }
+            leaf fan-number {
+              type uint32;
+              description
+                "Fan number.";
+            }
+            leaf fan-global-speed {
+              type string {
+                length "0..128";
+              }
+              units "%";
+              description
+                "Fan global speed.";
+            }
+          }
+        }
+      }
+      container area-energyinfos {
+        config false;
+        description
+          "List of area energy information of an AP device.";
+        list area-energyinfo {
+          key "chassis-position area-id";
+          description
+            "Operational state of area energy information of an AP device.";
+          leaf chassis-position {
+            type string {
+              length "0..32";
+            }
+            description
+              "Chassis Position.";
+          }
+          leaf area-id {
+            type uint32;
+            description
+              "Area ID.";
+          }
+          leaf area-rated-power {
+            type string {
+              length "0..255";
+            }
+            units "W";
+            description
+              "Area Rated Power.";
+          }
+          leaf area-used-power {
+            type string {
+              length "0..255";
+            }
+            units "W";
+            description
+              "Area Used Power.";
+          }
+          leaf area-left-power {
+            type string {
+              length "0..255";
+            }
+            units "W";
+            description
+              "Area Left Power.";
+          }
+          container board-energys {
+            description
+              "List of energy information about a board of an AP device.";
+            list board-energy {
+              key "position";
+              description
+                "Operational state of energy information about a board of an AP device.";
+              leaf position {
+                type string {
+                  length "0..32";
+                }
+                description
+                  "Board position.";
+              }
+              leaf rated-power {
+                type string {
+                  length "0..255";
+                }
+                units "W";
+                description
+                  "Rated power value.";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

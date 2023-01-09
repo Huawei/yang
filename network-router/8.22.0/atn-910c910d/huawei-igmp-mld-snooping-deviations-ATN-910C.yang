@@ -1,0 +1,162 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-igmp-mld-snooping-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-igmp-mld-snooping-deviations-ATN-910C";
+  prefix ims-devs-ATN-910C;
+
+  import huawei-igmp-mld-snooping {
+    prefix ims;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import huawei-multicast {
+    prefix mc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-igmp-mld-snooping module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bd:bd/bd:instances/bd:instance/ims:igmp-snooping/ims:global/ims:query-suppress-time" {
+    deviate not-supported;
+  }
+  deviation "/mc:multicast/ims:igmp-snooping/ims:all-vsi-alarm-thresholds" {
+    deviate not-supported;
+  }
+  deviation "/mc:multicast/ims:igmp-snooping/ims:all-listened-user-counts" {
+    deviate not-supported;
+  }
+  deviation "/mc:multicast/ims:igmp-snooping/ims:slot-listened-user-counts" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:global/ims:qinq-stacking-listen" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:global/ims:qinq-stacking-copy-mode" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:global/ims:qinq-mapping-listen" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:global/ims:qinq-mapping-copy-mode" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:global/ims:user-info-delete-delay-time" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:ac-listening-ports" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:listening-users" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:general-query-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:listened-users-in-groups" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:mld-snooping/ims:statistics/ims:v3-report-count" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:mld-snooping/ims:statistics/ims:v3-query-cnt" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/ims:mld-snooping/ims:statistics/ims:v3-report-count" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/ims:mld-snooping/ims:statistics/ims:v3-query-cnt" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/ims:igmp-snooping/ims:report-listening" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ims:igmp-snooping/ims:port-fast-control" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/ims:igmp-snooping/ims:global/ims:source-life-time" {
+    deviate replace {
+      type uint32 {
+        range "60..1000";
+      }
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/ims:igmp-snooping/ims:global/ims:max-response-time" {
+    deviate replace {
+      type uint32 {
+        range "1..25";
+      }
+    }
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/ims:igmp-snooping/ims:global/ims:source-life-time" {
+    deviate replace {
+      type uint32 {
+        range "60..1000";
+      }
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/ims:igmp-snooping/ims:static-groups/ims:static-group" {
+    deviate delete {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:stacking-policy)';
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/ims:igmp-snooping/ims:limit-max-entry/ims:config-entry" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination)';
+    }
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking)';
+    }
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination)';
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/ims:mld-snooping/ims:static-groups/ims:static-group" {
+    deviate delete {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:stacking-policy)';
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/ims:mld-snooping/ims:group-policy/ims:acl" {
+    deviate delete {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:stacking-policy)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ims:igmp-snooping" {
+    deviate add {
+      must 'not(ims:learning-disable-vlans or ims:static-router-port-vlans or ims:limit-max-entry or ims:except-acl) or ../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ims:mld-snooping" {
+    deviate add {
+      must 'not(ims:learning-disable-vlans or ims:static-router-port-vlans) or ../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute';
+    }
+  }
+}

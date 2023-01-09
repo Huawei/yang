@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-twamp-responder-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-twamp-responder-notif";
+  prefix twamp-responder-notif;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of twamp responder.";
+  revision 2021-02-01 {
+    description
+      "Add standard TWAMP alarm.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-10-30 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name  "twamp";
+  
+  notification responder-session-num-exceed {
+    description
+      "The number of TWAMP responder session is out of device capability.";
+  }
+  notification responder-session-num-recovery {
+    description
+      "The number of TWAMP responder session is under device capability.";
+  }
+
+  notification control-session-num-exceed {
+    description
+      "The number of TWAMP control session is out of device capability.";
+  }
+  notification control-session-num-recovery {
+    description
+      "The number of TWAMP control session is under device capability.";
+  }
+}

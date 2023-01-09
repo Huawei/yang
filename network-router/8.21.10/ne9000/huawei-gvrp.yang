@@ -1,0 +1,123 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-gvrp {
+  namespace "urn:huawei:yang:huawei-gvrp";
+  prefix gvrp;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "GVRP management, GARP VLAN registration Protocol (GVRP) is an application of generic attribute registration protocol (GARP) for registering and deregistering VLAN attributes.";
+  revision 2021-09-15 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "gvrp";
+  typedef registration-mode {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description
+          "Normal mode, allows a GVRP interface to register, deregister, and propagate dynamic and static VLANs.";
+      }
+      enum "fixed" {
+        value 1;
+        description
+          "Fixed mode, forbids a GVRP interface to register, deregister, or propagate dynamic VLANs, but allows it to register, deregister, and propagate static VLANs.";
+      }
+      enum "forbidden" {
+        value 2;
+        description
+          "Forbidden mode, forbids a GVRP interface to register or deregister all VLANs. If a trunk interface is set to work in forbidden mode, all VLANs are not allowed to pass.";
+      }
+    }
+    description
+      "GVRP registration mode.";
+  }
+  container gvrp {
+    presence "Enable GVRP.";
+    description
+      "GVRP management.";
+    container global-attribute {
+      description
+        "Configure GVRP global attribute.";
+      leaf leaveall-timer {
+        type uint32 {
+          range "65..32765";
+        }
+        units "10 ms";
+        must "(../leaveall-timer) mod 5 = 0";
+        default "1000";
+        description
+          "Set a value for a GARP LeaveAll timer.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute"{
+    description
+      "GVRP attribute on layer 2 port.";
+    container gvrp-attribute {
+      when "/gvrp:gvrp";
+      must "../ethernet:link-type='trunk'";
+      must "(hold-timer * 2 <= join-timer) and (join-timer * 2 < leave-timer)";
+      presence "Enable GVRP on layer 2 port.";
+      description
+        "Configure GVRP attribute on layer 2 port.";
+      leaf registration-mode {
+        type registration-mode;
+        default "normal";
+        description
+          "Registration mode.";
+      }
+      leaf hold-timer {
+        type uint32 {
+          range "10..8185";
+        }
+        units "10 ms";
+        must "(../hold-timer) mod 5 = 0";
+        default "10";
+        description
+          "Set a value for a GARP Hold timer.";
+      }
+      leaf join-timer {
+        type uint32 {
+          range "20..16375";
+        }
+        units "10 ms";
+        must "(../join-timer) mod 5 = 0";
+        default "20";
+        description
+          "Set a value for a GARP Join timer.";
+      }
+      leaf leave-timer {
+        type uint32 {
+          range "45..32760";
+        }
+        units "10 ms";
+        must "(../leave-timer) mod 5 = 0";
+        must "../leave-timer < /gvrp:gvrp/gvrp:global-attribute/gvrp:leaveall-timer";
+        default "60";
+        description
+          "Set a value for a GARP Leave timer.";
+      }
+    }
+  }
+}

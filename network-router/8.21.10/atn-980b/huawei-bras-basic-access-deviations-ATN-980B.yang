@@ -1,0 +1,166 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-basic-access-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-bras-basic-access-deviations-ATN-980B";
+  prefix bras-basic-access-devs-ATN-980B;
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-ifm-trunk {
+    prefix ifm-trunk;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-basic-access module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-basic-access:bras-basic-access" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:max-user-reauth-time" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:ip-pools" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:accounting-copy-radius" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:dns-server" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:nbns-server" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-group" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-group-list" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:policy-route" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:ip-unr-route-tag" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-detect" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-basic-service-ip-type" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:ip-pool-mode" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:accounting-exclude-vlan" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:redirect-effect-attribute" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:mac-authentication" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:ip-pool-groups" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:framed-ip-urpf" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:map-priority" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:idle-user-control-policy" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:quota-out" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:any-address-release" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:public-ip-address-pool-usage-threshold" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-volume-quato" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:accounting-start-delay" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:radius-no-response" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:ip-usage-threshold" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:llid-first-authentication-radius-server-group" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:non-accouting-time-range" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-cu-controller:remote-up-boards/bras-cu-controller:remote-up-board/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ifm-trunk:trunk/bras-basic-access:bras-nas-logic" {
+    deviate not-supported;
+  }
+
+}

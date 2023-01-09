@@ -1,0 +1,65 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos-eth-bn-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-qos-eth-bn-notif";
+  prefix qos-eth-bn-notif;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of eth-bn.";
+  revision 2022-04-15 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "qos";
+  notification xqos-mode-channel-over-eth-bn-bw {
+    description
+      "The bandwidth sum of sliced sub-interfaces in an interface group is greater than or equal to the ETH-BN bandwidth.";
+    leaf group-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "ETH-BN group name.";
+    }
+    leaf eth-bn-sub-interface {
+      type string {
+        length "1..511";
+      }
+      description
+        "Interface name of ETH-BN bandwidth.";
+    }
+  }
+  notification xqos-mode-channel-over-eth-bn-bw-resume {
+    description
+      "The bandwidth sum of sliced sub-interfaces in an interface group is less than the ETH-BN bandwidth.";
+    leaf group-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "ETH-BN group name.";
+    }
+    leaf eth-bn-sub-interface {
+      type string {
+        length "1..511";
+      }
+      description
+        "Interface name of ETH-BN bandwidth.";
+    }
+  }
+}

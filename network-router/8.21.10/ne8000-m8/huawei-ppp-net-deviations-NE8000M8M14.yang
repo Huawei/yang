@@ -1,0 +1,80 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ppp-net-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-ppp-net-deviations-NE8000M8M14";
+  prefix ppp-net-devs-NE8000M8M14;
+
+  import huawei-ppp-net {
+    prefix ppp-net;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-ppp-net module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef mp-fragment-size-deviations {
+    type enumeration {
+      enum "fragment-128" {
+        value 0;
+        description 
+          "Fragment size 128 bytes.";
+      }
+      enum "fragment-256" {
+        value 1;
+        description 
+          "Fragment size 256 bytes.";
+      }
+      enum "fragment-512" {
+        value 2;
+        description 
+          "Fragment size 512 bytes.";
+      }
+      enum "no-fragment" {
+        value 3;
+        description 
+          "No fragment.";
+      }
+    }
+    description 
+      "MP fragment size.";
+  }
+
+  deviation "/ppp-net:ppp-net/ppp-net:load-balance-identify-pppoe" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/ppp-net:ppp-net" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:multilink-ppp/ppp-net:mp-base/ppp-net:fragment-size" {
+    deviate replace {
+      type ppp-net-devs-NE8000M8M14:mp-fragment-size-deviations;
+    }
+  }
+
+}

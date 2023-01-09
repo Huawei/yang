@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-erps-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-erps-deviations-NE8000M8M14";
+  prefix erps-devs-NE8000M8M14;
+
+  import huawei-erps {
+    prefix erps;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-erps module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/erps:erps/erps:rings/erps:ring/erps:encapsulate-enable" {
+    deviate not-supported;
+  }
+  deviation "/erps:erps/erps:rings/erps:ring/erps:control-vlan" {
+    deviate add {
+      must "/vlan:vlan/vlan:vlans/vlan:vlan[vlan:id=current()]/vlan:mac-learning='disable'";
+    }
+  }
+}

@@ -1,0 +1,204 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-user-manage-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-bras-user-manage-deviations-OC-NE-X8X16";
+  prefix bras-user-manage-devs-OC-NE-X8X16;
+
+  import huawei-bras-user-manage {
+    prefix bras-user-manage;
+  }
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-user-manage module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:ip-userlog/bras-user-manage:ip-userlog-access/bras-user-manage:cu-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:ip-userlog/bras-user-manage:ip-userlog-call-status/bras-user-manage:cu-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:up-backup" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:online-fail-or-offline-records/bras-user-manage:online-fail-or-offline-record/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-user-types" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-domains" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-filters" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-upmng-instances" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-tables/bras-user-manage:access-table/bras-user-manage:access-user-l2tp-or-cu-info/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:max-online-user-statistic/bras-user-manage:ups" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:cu-max-online-user-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:aaa-online-fail-or-offline-cu-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:by-up" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-tables/bras-user-manage:input/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-tables/bras-user-manage:input/bras-user-manage:up-backup-profile-name" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-online-number-by-vlan/bras-user-manage:output/bras-user-manage:access-online-number-by-vlans/bras-user-manage:access-online-number-by-vlan/bras-user-manage:upmng-instance" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:reset-max-online-user/bras-user-manage:input/bras-user-manage:reset-type/bras-user-manage:by-up" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/bras-basic-access:bras/bras-user-manage:ip-unr-host-route" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-cu-controller:remote-up-boards/bras-cu-controller:remote-up-board/bras-basic-access:bras/bras-user-manage:ip-unr-host-route" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:default-user-name-templates/bras-user-manage:default-user-name-template/bras-user-manage:include-types/bras-user-manage:include-type/bras-user-manage:type" {
+    deviate replace {
+      type enumeration {
+        enum "sysname" {
+          value 1;
+          description
+            "User's sysname.";
+        }
+        enum "gateway-address" {
+          value 2;
+          description
+            "User's gateway accress.";
+        }
+        enum "ip-address" {
+          value 3;
+          description
+            "User's IP address.";
+        }
+        enum "mac-address" {
+          value 4;
+          description
+            "User's MAC address.";
+        }
+        enum "option82" {
+          value 5;
+          description
+            "User's option82.";
+        }
+        enum "access-line-id" {
+          value 6;
+          description
+            "User's access-line-id.";
+        }
+        enum "option60" {
+          value 7;
+          description
+            "User's option60.";
+        }
+        enum "vendor-class" {
+          value 8;
+          description
+            "User's vendor-class.";
+        }
+        enum "option61" {
+          value 9;
+          description
+            "User's client-id (dhcpv4 option61).";
+        }
+        enum "client-id" {
+          value 10;
+          description
+            "User's client-id (dhcpv6 option1).";
+        }
+        enum "option12" {
+          value 11;
+          description
+            "User's option12.";
+        }
+        enum "pevlan" {
+          value 12;
+          description
+            "User's outer VLAN ID.";
+        }
+        enum "cevlan" {
+          value 13;
+          description
+            "User's inner VLAN ID.";
+        }
+        enum "port" {
+          value 14;
+          description
+            "User's port.";
+        }
+        enum "slot" {
+          value 15;
+          description
+            "User's slot.";
+        }
+        enum "sub-slot" {
+          value 16;
+          description
+            "User's subslot.";
+        }
+        enum "ipv6-compressed-address" {
+          value 18;
+          description
+            "User's compressed format IPv6 address.";
+        }
+        enum "ipv6-preferred-address" {
+          value 19;
+          description
+            "User's preferred format IPv6 address.";
+        }
+        enum "delegation-prefix" {
+          value 20;
+          description
+            "User's Delegation-prefix.";
+        }
+      }
+    }
+  }
+
+}

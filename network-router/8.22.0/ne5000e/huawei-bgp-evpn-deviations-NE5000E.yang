@@ -1,0 +1,125 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-evpn-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-bgp-evpn-deviations-NE5000E";
+  prefix bgp-evpn-devs-NE5000E;
+
+  import huawei-bgp-evpn {
+    prefix bgp-evpn;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-evpn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef advertise-encap-type-deviations {
+    type enumeration {
+      enum vxlan {
+        value 1;
+        description
+          "VXLAN.";
+      }
+      enum mpls {
+        value 2;
+        description
+          "MPLS.";
+      }
+      enum srv6 {
+        value 4;
+        description
+          "SRv6.";
+      }
+    }
+    description
+      "Encapsulation type of packets.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:mac-detail-route-only" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:mac-detail-route-only-status" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:mac-detail-route-only" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:nexthop-recursive-lookup/bgp-evpn:bit-error-detection" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:option" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:dampening-routes/bgp-evpn:dampening-route/bgp-evpn:policy-type/bgp-evpn:xpl-ref" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp-evpn:evpn/bgp-evpn:irb-asymmetric/bgp-evpn:policy-name" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp-evpn:evpn/bgp-evpn:irb-asymmetric/bgp-evpn:policy-name" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-evpn:l2vpn-evpn/bgp-evpn:statistics/bgp-evpn:statistic/bgp-evpn:smet-route-number" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-evpn:l2vpn-evpn/bgp-evpn:statistics/bgp-evpn:statistic/bgp-evpn:igmp-join-route-number" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-evpn:l2vpn-evpn/bgp-evpn:statistics/bgp-evpn:statistic/bgp-evpn:igmp-leave-route-number" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:afs/bgp:af/bgp:ipv4-unicast/bgp-evpn:evpn" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp-evpn:evpn" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:advertise-encap-type" {
+    deviate replace {
+      type bgp-evpn-devs-NE5000E:advertise-encap-type-deviations;
+    }
+    deviate delete {
+      must "(not(contains(../../../../bgp:address,':')) and (../advertise-encap-type != 'srv6')) or (contains(../../../../bgp:address,':') and (../advertise-encap-type != 'sd-wan'))";
+    }
+    deviate add {
+      must "(not(contains(../../../../bgp:address,':')) and (../advertise-encap-type != 'srv6')) or (contains(../../../../bgp:address,':'))";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peer-groups/bgp:peer-group/bgp:afs/bgp:af/bgp-evpn:l2vpn-evpn/bgp-evpn:advertise-encap-type" {
+    deviate replace {
+      type bgp-evpn-devs-NE5000E:advertise-encap-type-deviations;
+    }
+  }
+}

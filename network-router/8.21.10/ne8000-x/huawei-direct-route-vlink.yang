@@ -1,0 +1,208 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-direct-route-vlink {
+  namespace "urn:huawei:yang:huawei-direct-route-vlink";
+    prefix directrtvlink;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-routing-policy {
+    prefix rtp;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-xpl {
+    prefix xpl;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains a collection of YANG definitions for managing direct route VLINK.";
+
+  revision 2019-07-15 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef vlink-address-family {
+    type enumeration {
+      enum "ipv4uni" {
+      value 0;
+        description
+          "IPv4 unicast.";
+      }
+      enum "ipv6uni" {
+      value 1;
+        description
+          "IPv6 unicast.";
+      }
+    }
+    description
+      "The type of VLINK address family.";
+  }
+
+  ext:task-name "eum";
+  container direct-route-vlink {
+    description
+      "Configure VLINK routes.";
+    container vlink-import-routes {
+      description
+        "List of configuration VLINK import routes.";
+      list vlink-import-route {
+        must "source-vpn-instance!=destination-vpn-instance";
+        key "address-family source-vpn-instance destination-vpn-instance";
+        max-elements 256;
+        description
+          "Configure VLINK import route.";
+        leaf address-family {
+          type vlink-address-family;
+          description
+            "Address family: IPv4 or IPv6 unicast address family.";
+        }
+        leaf source-vpn-instance {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          must "((../address-family = 'ipv4uni') and (/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast'])) or ((../address-family = 'ipv6uni') and (/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']))";
+          description
+            "Source VPN instance.";
+        }
+        leaf destination-vpn-instance {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          must "((../address-family = 'ipv4uni') and (/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast'])) or ((../address-family = 'ipv6uni') and (/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']))";
+          description
+            "Destination VPN instance.";
+        }
+        choice route-configuration {
+          description
+            "Configuring a routing policy or filter.";
+          case route-policy {
+            description
+              "Configuring a routing policy.";
+            leaf route-policy-name {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Set the name of a VLINK routing policy.";
+            }
+          }
+          case route-filter {
+            description
+              "Configuring a routing policy or filter.";
+            leaf route-filter-name {
+              type leafref {
+                path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+              }
+              description
+                "Set the name of a VLINK routing filter.";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description "Extend interface attribute.";
+    container vlink-routes {
+      must "../ifm:type = 'Vlanif' or ../ifm:type = 'Vbdif' or ../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination";
+      description
+        "List of configuration VLINK routes.";
+      list vlink-route {
+        key "address-family";
+        description
+          "Configure VLINK routes.";
+        leaf address-family {
+          type vlink-address-family;
+          must "(../address-family = 'ipv4uni' and not(../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination)) or
+          (../address-family = 'ipv6uni' and ../../../ip:ipv6)";
+          description
+            "Address family: IPv4 or IPv6 unicast address family.";
+        }
+      }
+    }
+    container vlink-configuration {
+      description
+        "Configure direct route attributes.";
+      leaf preference {
+        type uint8 {
+          range "0..255";
+        }
+        description
+          "Preference value for VLINK routes.";
+      }
+    }
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance" {
+    description "Extend VPN attribute.";
+    container vlink-vpns {
+      when "../l3vpn:afs/l3vpn:af";
+      description
+        "List of configuration VLINK routes.";
+      list vlink-vpn {
+        key "address-family";
+        description
+          "Configure VLINK routes.";
+        leaf address-family {
+          type vlink-address-family;
+          must "((../address-family = 'ipv4uni') and (/ni:network-instance/ni:instances/ni:instance[ni:name=current()/../../../ni:name]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast'])) or ((../address-family = 'ipv6uni') and (/ni:network-instance/ni:instances/ni:instance[ni:name=current()/../../../ni:name]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']))";
+          description
+            "Address family: IPv4 or IPv6 unicast address family.";
+        }
+        choice route-configuration {
+          description
+            "Configuring a routing policy or filter.";
+          case route-policy {
+            description
+              "Configuring a routing policy.";
+            leaf route-policy-name {
+              type leafref {
+                path "/rtp:routing-policy/rtp:policy-definitions/rtp:policy-definition/rtp:name";
+              }
+              description
+                "Set the name of a VLINK routing policy.";
+            }
+          }
+          case route-filter {
+            description
+              "Configuring a routing policy or filter.";
+            leaf route-filter-name {
+              type leafref {
+                path "/xpl:xpl/xpl:route-filters/xpl:route-filter/xpl:name";
+              }
+              description
+                "Set the name of a VLINK routing filter.";
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,125 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-tunnel-management-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-tunnel-management-deviations-NE5000E";
+  prefix tnlm-devs-NE5000E;
+
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-tunnel-management module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef sel-seq-tunnel-ipv6-type-deviations {
+    type enumeration {
+      enum srv6-te-policy {
+        value 52;
+        description
+          "SRv6 TE Policy, used to define the selection sequence of tunnel types.";
+      }
+      enum srv6-te-flow-group {
+        value 55;
+        description
+          "SRv6 TE Flow group, used to define the selection sequence of tunnel types.";
+      }
+    }
+    description
+      "Tunnel type of select-sequences.";
+  }
+
+  typedef sel-seq-tunnel-type-deviations {
+    type enumeration {
+      enum lsp {
+        value 1;
+        description
+          "Search for LDP LSPs.";
+      }
+      enum cr-lsp {
+        value 3;
+        description
+          "Search for CR-LSPs.";
+      }
+      enum bgp {
+        value 2;
+        description
+          "Search for BGP LSPs.";
+      }
+      enum srbe-lsp {
+        value 41;
+        description
+          "Search for SR-LSPs.";
+      }
+      enum ldp {
+        value 255;
+        description
+          "Search for LDP LSPs.";
+      }
+      enum te {
+        value 7;
+        description
+          "Search for TE.";
+      }
+      enum sr-te {
+        value 47;
+        description
+          "Search for SR-TE.";
+      }
+      enum sr-te-policy {
+        value 50;
+        description
+          "SR TE policy, used to define the selection sequence of tunnel types.";
+      }
+      enum flex-algo-lsp {
+        value 147;
+        description
+          "Search for FLEX-ALGO LSPs.";
+      }
+      enum colored-sr-te {
+        value 148;
+        description
+          "Search for Colored SR-TE.";
+      }
+    }
+    description
+      "Tunnel type of select-sequences.";
+  }
+
+  deviation "/tnlm:tunnel-management/tnlm:tunnel-infos/tnlm:tunnel-info/tnlm:color-type/tnlm:color-priority" {
+    deviate not-supported;
+  }
+  deviation "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:ipv4-set/tnlm:policy-type/tnlm:select-sequences/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type/tnlm:type" {
+    deviate replace {
+      type tnlm-devs-NE5000E:sel-seq-tunnel-type-deviations;
+    }
+  }
+  deviation "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:ipv6-set/tnlm:policy-type/tnlm:select-sequences/tnlm:select-sequence/tnlm:unmix" {
+    deviate delete {
+      must "(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'] and ../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'] and ../unmix = 'true') or (../unmix = 'false')";
+    }
+    deviate add {
+      must "(count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'])=1 and count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'])=0 and (../unmix = 'false')) or (count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'])=0 and count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'])=1 and (../unmix = 'false')) or (count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'])=1 and count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'])=1 and (../unmix = 'true'))";
+    }
+  }
+  deviation "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:ipv6-set/tnlm:policy-type/tnlm:select-sequences/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type/tnlm:type" {
+    deviate replace {
+      type tnlm-devs-NE5000E:sel-seq-tunnel-ipv6-type-deviations;
+    }
+  }
+}

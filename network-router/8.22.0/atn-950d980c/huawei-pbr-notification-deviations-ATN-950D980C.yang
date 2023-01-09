@@ -1,0 +1,49 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pbr-notification-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-pbr-notification-deviations-ATN-950D980C";
+  prefix pbr-notification-devs-ATN-950D980C;
+
+  import huawei-pbr-notification {
+    prefix pbr-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-pbr-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/pbr-notification:xqos-redirect-nexthop-lack-resource-alarm" {
+    deviate not-supported;
+  }
+  deviation "/pbr-notification:xqos-redirect-nexthop-lack-resource-alarm-resume" {
+    deviate not-supported;
+  }
+  deviation "/pbr-notification:xqos-interface-down-redirect-next-hop-invalid-alarm" {
+    deviate not-supported;
+  }
+  deviation "/pbr-notification:xqos-interface-down-redirect-next-hop-invalid-alarm-clear" {
+    deviate not-supported;
+  }
+  deviation "/pbr-notification:xqos-redirect-next-hop-event-log" {
+    deviate not-supported;
+  }
+
+}

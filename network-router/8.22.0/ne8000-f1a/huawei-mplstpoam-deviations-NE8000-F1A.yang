@@ -1,0 +1,116 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mplstpoam-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-mplstpoam-deviations-NE8000-F1A";
+  prefix mplstpoam-devs-NE8000-F1A;
+
+  import huawei-mplstpoam {
+    prefix mplstpoam;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mplstpoam module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef gal-pw-deviations {
+    type enumeration {
+      enum label-13 {
+        value 1;
+        description
+          "The Gal is 13.";
+      }
+      enum label-14 {
+        value 2;
+        description
+          "The Gal is 14.";
+      }
+      enum disable {
+        value 3;
+        description
+          "The GAL type is disable.";
+      }
+    }
+    description
+      "Gal PW type.";
+  }
+
+  deviation "/mplstpoam:mplstpoam/mplstpoam:global/mplstpoam:oam-standard" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:global/mplstpoam:icc-string" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:global/mplstpoam:csf-enable" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:global/mplstpoam:gal-mode" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:global/mplstpoam:protocol-status" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:global/mplstpoam:oam-num" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:id" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vll/mplstpoam:remote-vc-id" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vll/mplstpoam:remote-vc-type" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vll/mplstpoam:lm-mode" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vll/mplstpoam:slm-mode" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vpls/mplstpoam:remote-vc-id" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vpls/mplstpoam:remote-vc-type" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vpls/mplstpoam:lm-mode" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vpls/mplstpoam:slm-mode" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:co-route-tunnel/mplstpoam:lm-mode" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:co-route-tunnel/mplstpoam:slm-mode" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:oam-lm" {
+    deviate not-supported;
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vll/mplstpoam:gal-mode" {
+    deviate replace {
+      type mplstpoam-devs-NE8000-F1A:gal-pw-deviations;
+    }
+  }
+  deviation "/mplstpoam:mplstpoam/mplstpoam:megs/mplstpoam:meg/mplstpoam:pw/mplstpoam:pw-vpls/mplstpoam:gal-mode" {
+    deviate replace {
+      type mplstpoam-devs-NE8000-F1A:gal-pw-deviations;
+    }
+  }
+}

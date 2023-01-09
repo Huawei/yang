@@ -1,0 +1,108 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ndb-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ndb-notification";
+  prefix ndb-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of network database resources.";
+  reference
+    "Huawei private.";
+  revision 2020-10-19 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ndb";
+  notification ndb-res-threshold-exceed {
+    description
+      "The usage of NDB resources reached the threshold.";
+    leaf slot {
+      type string {
+        length "1..32";
+      }
+      description
+        "Indicates the slot information.";
+    }
+    leaf cpu {
+      type uint32;
+      description
+        "Indicates a CPU ID.";
+    }
+    leaf reason-id {
+      type uint32;
+      description
+        "Indicates the ID of the alarm cause.";
+    }
+    leaf reason {
+      type string {
+        length "1..4096";
+      }
+      description
+        "Indicates the alarm cause.";
+    }
+    leaf threshold {
+      type uint32;
+      description
+        "Indicates the alarm threshold.";
+    }
+    leaf current {
+      type uint32;
+      description
+        "Indicates the current usage.";
+    }
+  }
+  notification ndb-res-threshold-exceed-resume {
+    description
+      "The usage of NDB resources is less than the threshold.";
+    leaf slot {
+      type string {
+        length "1..32";
+      }
+      description
+        "Indicates the slot information.";
+    }
+    leaf cpu {
+      type uint32;
+      description
+        "Indicates a CPU ID.";
+    }
+    leaf reason-id {
+      type uint32;
+      description
+        "Indicates the ID of the alarm cause.";
+    }
+    leaf reason {
+      type string {
+        length "1..4096";
+      }
+      description
+        "Indicates the alarm cause.";
+    }
+    leaf threshold {
+      type uint32;
+      description
+        "Indicates the alarm threshold.";
+    }
+    leaf current {
+      type uint32;
+      description
+        "Indicates the current usage.";
+    }
+  }
+}
+

@@ -1,0 +1,154 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mvpn-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-mvpn-deviations-ATN-910C";
+  prefix mvpn-devs-ATN-910C;
+
+  import huawei-mvpn {
+    prefix mvpn;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-srv6 {
+    prefix srv6;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mvpn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef tunnel-mode-deviations {
+    type enumeration {
+      enum p2mp-te {
+        value 3;
+        description
+          "P2MP TE tunnel.";
+      }
+      enum p2mp-mldp {
+        value 4;
+        description
+          "P2MP mLDP tunnel.";
+      }
+      enum bier {
+        value 7;
+        description
+          "BIER tunnel.";
+      }
+      enum bier-ipv6 {
+        value 8;
+        description
+          "BIER IPv6 tunnel.";
+      }
+    }
+    description
+      "MVPN tunnel type.";
+  }
+
+  deviation "/mvpn:mvpn/mvpn:globals/mvpn:global/mvpn:apply-explicit-null-label" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:local-admin-id" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:frr-acl-name6" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:frr-flow-based-acl-name6" {
+    deviate not-supported;
+  }
+  deviation "/mvpn:mvpn/mvpn:globals/mvpn:global/mvpn:mvpn-id" {
+    deviate add {
+      must "../mvpn:address-family='ipv4-unicast'";
+    }
+  }
+  deviation "/mvpn:mvpn/mvpn:ipv6-underlay-globals/mvpn:ipv6-underlay-global/mvpn:address-family" {
+    deviate add {
+      must "../mvpn:address-family='ipv4-unicast'";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng" {
+    deviate add {
+      must "../../l3vpn:type='ipv4-unicast'";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:src-dt-address/mvpn:srv6-locator/mvpn:srv6-locator/mvpn:locator" {
+    deviate replace {
+      type leafref {
+        path "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator/srv6:name";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:ipmsi-tunnel/mvpn:tunnel-mode" {
+    deviate replace {
+      type mvpn-devs-ATN-910C:tunnel-mode-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:ipmsi-tunnel/mvpn:tunnel-attribute/mvpn:rsvp-te-p2mp/mvpn:rsvp-te-p2mp-template" {
+    deviate replace {
+      type leafref {
+        path "/mpls:mpls/mpls-te:te/mpls-te:p2mp-templates/mpls-te:p2mp-template/mpls-te:name";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:spmsi-tunnels/mvpn:spmsis/mvpn:star-star/mvpn:tunnel-mode" {
+    deviate replace {
+      type mvpn-devs-ATN-910C:tunnel-mode-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:spmsi-tunnels/mvpn:spmsis/mvpn:star-star/mvpn:tunnel-attribute/mvpn:rsvp-te-p2mp/mvpn:rsvp-te-p2mp-template" {
+    deviate replace {
+      type leafref {
+        path "/mpls:mpls/mpls-te:te/mpls-te:p2mp-templates/mpls-te:p2mp-template/mpls-te:name";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:spmsi-tunnels/mvpn:spmsis/mvpn:star-grps/mvpn:star-grp/mvpn:tunnel-mode" {
+    deviate replace {
+      type mvpn-devs-ATN-910C:tunnel-mode-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:spmsi-tunnels/mvpn:spmsis/mvpn:star-grps/mvpn:star-grp/mvpn:tunnel-attribute/mvpn:rsvp-te-p2mp/mvpn:rsvp-te-p2mp-template" {
+    deviate replace {
+      type leafref {
+        path "/mpls:mpls/mpls-te:te/mpls-te:p2mp-templates/mpls-te:p2mp-template/mpls-te:name";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:spmsi-tunnels/mvpn:spmsis/mvpn:src-grps/mvpn:src-grp/mvpn:tunnel-mode" {
+    deviate replace {
+      type mvpn-devs-ATN-910C:tunnel-mode-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/mvpn:mvpn/mvpn:mvpn-type/mvpn:ng-mvpn/mvpn:ng/mvpn:spmsi-tunnels/mvpn:spmsis/mvpn:src-grps/mvpn:src-grp/mvpn:tunnel-attribute/mvpn:rsvp-te-p2mp/mvpn:rsvp-te-p2mp-template" {
+    deviate replace {
+      type leafref {
+        path "/mpls:mpls/mpls-te:te/mpls-te:p2mp-templates/mpls-te:p2mp-template/mpls-te:name";
+      }
+    }
+  }
+}

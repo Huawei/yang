@@ -1,0 +1,90 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cfg-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-cfg-deviations-NE5000E";
+  prefix cfg-devs-NE5000E;
+
+  import huawei-cfg {
+    prefix cfg;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-cfg module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef cfg-server-type-deviations {
+    type enumeration {
+      enum ftp {
+        value 1;
+        description
+          "FTP protocol.";
+      }
+      enum tftp {
+        value 2;
+        description
+          "TFTP protocol.";
+      }
+      enum sftp {
+        value 3;
+        description
+          "SFTP protocol.";
+      }
+    }
+    description
+      "Server type.";
+  }
+
+  deviation "/cfg:cfg/cfg:configuration-backup-to-file" {
+    deviate not-supported;
+  }
+  deviation "/cfg:save/cfg:input/cfg:shareable-mode" {
+    deviate not-supported;
+  }
+  deviation "/cfg:save/cfg:input/cfg:password" {
+    deviate not-supported;
+  }
+  deviation "/cfg:cfg-file-backup-and-recovery/cfg:input/cfg:url" {
+    deviate not-supported;
+  }
+  deviation "/cfg:set-startup/cfg:input/cfg:shareable-mode" {
+    deviate not-supported;
+  }
+  deviation "/cfg:set-startup/cfg:input/cfg:password" {
+    deviate not-supported;
+  }
+  deviation "/cfg:load-configuration-to-candidate" {
+    deviate not-supported;
+  }
+  deviation "/cfg:load-configuration-to-candidate-result" {
+    deviate not-supported;
+  }
+  deviation "/cfg:clear-default-config" {
+    deviate not-supported;
+  }
+  deviation "/cfg:set-default-config" {
+    deviate not-supported;
+  }
+  deviation "/cfg:set-mini-system-startup" {
+    deviate not-supported;
+  }
+  deviation "/cfg:cfg/cfg:backup-servers/cfg:backup-server/cfg:transport-type" {
+    deviate replace {
+      type cfg-devs-NE5000E:cfg-server-type-deviations;
+    }
+  }
+}

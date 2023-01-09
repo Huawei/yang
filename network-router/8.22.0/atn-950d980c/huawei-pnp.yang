@@ -1,0 +1,379 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pnp {
+  namespace "urn:huawei:yang:huawei-pnp";
+  prefix pnp;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Plug and play.";
+  revision 2019-09-27 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "pnp";
+  typedef pnp-mode {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "The disable mode of PNP (Plug and play).";
+      }
+      enum "active-enable" {
+        value 1;
+        description
+          "The active enable mode of PNP (Plug and play).";
+      }
+      enum "passive-enable" {
+        value 2;
+        description
+          "The passive enable mode of PNP (Plug and play).";
+      }
+      enum "ztp-enable" {
+        value 3;
+        description
+          "The ZTP enable mode of PNP (Plug and play).";
+      }
+      enum "pnp-and-ztp-enable" {
+        value 4;
+        description
+          "The PNP (Plug and play) and ZTP (Zero Touch Protocol) enable mode of PNP (Plug and play).";
+      }
+    }
+    description
+      "The type of PNP (Plug and play) mode.";
+  }
+  typedef client-state {
+    type enumeration {
+      enum "init" {
+        value 0;
+        description
+          "The client is in init state.";
+      }
+      enum "discover" {
+        value 1;
+        description
+          "The client is in discover state.";
+      }
+      enum "request" {
+        value 2;
+        description
+          "The client is in request state.";
+      }
+      enum "ack" {
+        value 3;
+        description
+          "The client is in ACK state.";
+      }
+      enum "bound" {
+        value 4;
+        description
+          "The client is in bound state.";
+      }
+    }
+    description
+      "The type of client state.";
+  }
+  container pnp {
+    description
+      "Configure the plug and play.";
+    container global {
+      description
+        "Configure PNP (Plug and play) global attributes.";
+      leaf enable {
+        type boolean;
+        default "true";
+        description
+          "Enable/disable PNP (Plug and play).";
+      }
+      leaf mode {
+        type pnp-mode;
+        default "disable";
+        config false;
+        description
+          "PNP (Plug and play) Mode.";
+      }
+    }
+    container default-routes {
+      description
+        "List of default PNP (Plug and play) routing tables.";
+      list default-route {
+        key "vpn-name gateway";
+        description
+          "Configure a default PNP (Plug and play) route.";
+        leaf vpn-name {
+          type leafref {
+            path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+          }
+          description
+            "Default PNP (Plug and play) route with a VPN name.";
+        }
+        leaf gateway {
+          type inet:ipv4-address-no-zone;
+          description
+            "Default PNP (Plug and play) route with a gateway address.";
+        }
+      }
+    }
+    container dhcp-packet-statistics {
+      config false;
+      description
+        "Statistics of DHCP client packets.";
+      leaf discover-packet-send {
+        type uint32;
+        description
+          "Number of discover packets.";
+      }
+      leaf offer-packet-receive {
+        type uint32;
+        description
+          "Number of offer packets.";
+      }
+      leaf request-packet-send {
+        type uint32;
+        description
+          "Number of request packets.";
+      }
+      leaf ack-packet-receive {
+        type uint32;
+        description
+          "Number of ack packets.";
+      }
+      leaf send-failed {
+        type uint32;
+        description
+          "Number of send fail packets.";
+      }
+      leaf dropped-packet {
+        type uint32;
+        description
+          "Number of dropped packets.";
+      }
+    }
+    container dhcpv6-packet-statistics {
+      config false;
+      description
+        "Statistics of DHCPv6 client packets.";
+      leaf solicit-packet-send {
+        type uint32;
+        description
+          "Number of solicit packets.";
+      }
+      leaf advertise-packet-receive {
+        type uint32;
+        description
+          "Number of advertise packets.";
+      }
+      leaf request-packet-send {
+        type uint32;
+        description
+          "Number of request packets.";
+      }
+      leaf reply-packet-receive {
+        type uint32;
+        description
+          "Number of reply packets.";
+      }
+      leaf send-failed {
+        type uint32;
+        description
+          "Number of send fail packets.";
+      }
+      leaf receive-failed {
+        type uint32;
+        description
+          "Number of dropped packets.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description "Extend interface attribute.";
+    container pnp-if {
+      description
+        "Configure PNP attributes on an interface.";
+      container ipv4-network-provision-info {
+        config false;
+        description
+          "Operational state of IPv4 network provisioning information.";
+        leaf address {
+          type inet:ipv4-address-no-zone;
+          description
+            "IPv4 address.";
+        }
+        leaf mask {
+          type inet:ipv4-address-no-zone;
+          description
+            "IPv4 mask.";
+        }
+        leaf server-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Server address.";
+        }
+        leaf tftp-server-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "TFTP (Trivial File Transfer Protocol) server address.";
+        }
+        leaf tftp-server-name {
+          type string {
+            length "1..255";
+          }
+          description
+            "TFTP (Trivial File Transfer Protocol) server name.";
+        }
+        leaf domain-name {
+          type string {
+            length "1..255";
+          }
+          description
+            "Domain name.";
+        }
+        leaf boot-file-name {
+          type string {
+            length "1..255";
+          }
+          description
+            "Boot file name.";
+        }
+        leaf client-state {
+          type client-state;
+          description
+            "Client state.";
+        }
+        leaf success-flag {
+          type boolean;
+          default "false";
+          description
+            "PNP (Plug and play) success flag.";
+        }
+        leaf stop-flag {
+          type boolean;
+          default "false";
+          description
+            "PNP (Plug and play) stop flag.";
+        }
+        container gateway-lists {
+          description
+            "List of gateways.";
+          list gateway-list {
+            key "gateway";
+            description
+              "Operational state of a gateway.";
+            leaf gateway {
+              type inet:ipv4-address-no-zone;
+              description
+                "Gateway.";
+            }
+          }
+        }
+        container dns-lists {
+          description
+            "List of DNS.";
+          list dns-list {
+            key "dns";
+            description
+              "Operational state of DNS.";
+            leaf dns {
+              type inet:ipv4-address-no-zone;
+              description
+                "Domain name system.";
+            }
+          }
+        }
+        container log-server-lists {
+          description
+            "List of log servers.";
+          list log-server-list {
+            key "log-server";
+            description
+              "Operational state of a log server.";
+            leaf log-server {
+              type inet:ipv4-address-no-zone;
+              description
+                "Log server.";
+            }
+          }
+        }
+      }
+      container ipv6-network-provision-info {
+        config false;
+        description
+          "Operational state of IPv6 network provisioning information.";
+        leaf address {
+          type inet:ipv6-address-no-zone;
+          description
+            "IPv6 address.";
+        }
+        leaf mask {
+          type uint32;
+          description
+            "IPv6 mask.";
+        }
+        leaf boot-file-name {
+          type string {
+            length "1..255";
+          }
+          description
+            "Boot file name.";
+        }
+        leaf stop-flag {
+          type boolean;
+          description
+            "PNP (Plug and play) 6 stop flag.";
+        }
+        container gateway-lists {
+          description
+            "List of operational state of gateways.";
+          list gateway-list {
+            key "gateway";
+            description
+              "Operational state of a gateway.";
+            leaf gateway {
+              type inet:ipv6-address-no-zone;
+              description
+                "IPv6 Gateway.";
+            }
+          }
+        }
+        container dns-lists {
+          description
+            "List of operational state of DNS.";
+          list dns-list {
+            key "dns";
+            description
+              "Operational state of DNS.";
+            leaf dns {
+              type inet:ipv6-address-no-zone;
+              description
+                "Domain name system.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

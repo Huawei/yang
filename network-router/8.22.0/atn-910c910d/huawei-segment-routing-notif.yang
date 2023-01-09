@@ -1,0 +1,167 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-segment-routing-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-segment-routing-notif";
+  prefix segment-routing-notif;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of segment routing.";
+  revision 2022-04-08 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef sr-protocol {
+    type enumeration {
+      enum "ospf" {
+        value 1;
+          description
+            "OSPF.";
+      }
+      enum "isis" {
+        value 2;
+          description
+            "ISIS.";
+      }
+      enum "ospf-sr" {
+        value 3;
+          description
+            "OSPF-SR.";
+      }
+      enum "isis-sr" {
+        value 4;
+          description
+            "ISIS-SR.";
+      }
+      enum "igp-sr" {
+        value 5;
+          description
+            "IGP-SR.";
+      }
+    }
+    description
+      "SR protocol type.";
+  }
+  typedef ipv4-dt {
+    type inet:ipv4-address-no-zone;
+    description
+      "IPv4 type.";
+  }
+  typedef uchar {
+    type uint8;
+    description
+      "Uchar type.";
+  }
+  typedef sr-conflict-type {
+    type enumeration {
+      enum "sr-sid-conflict" {
+        value 1;
+          description
+            "SR SID conflict.";
+      }
+      enum "sr-prefix-conflict" {
+        value 2;
+          description
+            "SR prefix conflict.";
+      }
+    }
+    description
+      "SR conflict type.";
+  }
+  ext:task-name "segr";
+  notification sr-algo-prefix-sid-conflict {
+    description
+      "The prefix-sid conflict is detected.";
+    leaf protocol {
+      type sr-protocol;
+      description
+        "Segment Routing protocol that raised the alarm:1.OSPF 2.ISIS 3.OSPF-SR 4.ISIS-SR. 5.IGP-SR.";
+    }
+    leaf process-id {
+      type uint32;
+      description
+        "Process ID.";
+    }
+    leaf prefix-sid {
+      type uint32;
+      description
+        "Prefix SID.";
+    }
+    leaf prefix-address {
+      type ipv4-dt;
+      description
+        "The prefix address configured in the loopback interface.";
+    }
+    leaf prefix-address-mask {
+      type ipv4-dt;
+      description
+        "Prefix IP address mask.";
+    }
+    leaf algorithm {
+      type uchar;
+      description
+        "Flexible algorithm.";
+    }
+    leaf conflict-type {
+      type sr-conflict-type;
+      description
+        "Conflict type can be prefix sid conflict or prefix conflict.";
+    }
+  }
+  notification sr-algo-prefix-sid-conflict-resume {
+    description
+      "The prefix-sid conflict is resolved.";
+    leaf protocol {
+      type sr-protocol;
+      description
+        "Segment Routing protocol that raised the alarm:1.OSPF 2.ISIS 3.OSPF-SR 4.ISIS-SR. 5.IGP-SR.";
+    }
+    leaf process-id {
+      type uint32;
+      description
+        "Process ID.";
+    }
+    leaf prefix-sid {
+      type uint32;
+      description
+        "Prefix SID.";
+    }
+    leaf prefix-address {
+      type ipv4-dt;
+      description
+        "The prefix address configured in the loopback interface.";
+    }
+    leaf prefix-address-mask {
+      type ipv4-dt;
+      description
+        "Prefix IP address mask.";
+    }
+    leaf algorithm {
+      type uchar;
+      description
+        "Flexible algorithm.";
+    }
+    leaf conflict-type {
+      type sr-conflict-type;
+      description
+        "Conflict type can be prefix sid conflict or prefix conflict.";
+    }
+  }
+}

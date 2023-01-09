@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2pt-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-l2pt-deviations-OC-NE-X8X16";
+  prefix l2pt-devs-OC-NE-X8X16;
+
+  import huawei-l2pt {
+    prefix l2pt;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-l2pt module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/l2pt:l2pt/l2pt:bpdu-attribute/l2pt:tagged-packet-enable" {
+    deviate not-supported;
+  }
+  deviation "/l2pt:l2pt/l2pt:user-defined-protocols" {
+    deviate not-supported;
+  }
+  deviation "/l2pt:reset-well-known-protocol-statistics" {
+    deviate not-supported;
+  }
+  deviation "/l2pt:reset-user-defined-protocol-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/l2pt:l2pt/l2pt:user-defined-protocols" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/l2pt:l2pt/l2pt:user-defined-protocols" {
+    deviate not-supported;
+  }
+}

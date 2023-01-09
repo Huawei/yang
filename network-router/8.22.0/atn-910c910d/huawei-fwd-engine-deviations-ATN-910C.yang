@@ -1,0 +1,44 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fwd-engine-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-fwd-engine-deviations-ATN-910C";
+  prefix fwd-engine-devs-ATN-910C;
+
+  import huawei-fwd-engine {
+    prefix fwd-engine;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fwd-engine module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/fwd-engine:frame-padding-fix" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/fwd-engine:frame-padding-fix" {
+    deviate not-supported;
+  }
+
+}

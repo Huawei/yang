@@ -1,0 +1,110 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-debug-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-debug-deviations-NE8000-F1A";
+  prefix debug-devs-NE8000-F1A;
+
+  import huawei-debug {
+    prefix debug;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-debug module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/debug:debug/debug:cpu-infos/debug:cpu-info/debug:index" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:cpu-infos/debug:cpu-info/debug:system-cpu-usage" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:cpu-infos/debug:cpu-info/debug:monitor-number" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:cpu-infos/debug:cpu-info/debug:monitor-cycle" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:cpu-infos/debug:cpu-info/debug:overload-state-change-time" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:cpu-infos/debug:cpu-info/debug:current-overload-state" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:index" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:os-memory-total" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:os-memory-use" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:os-memory-free" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:os-memory-usage" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:do-memory-total" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:do-memory-use" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:do-memory-free" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:do-memory-usage" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:simple-memory-total" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:simple-memory-use" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:simple-memory-free" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:simple-memory-usage" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:overload-state-change-time" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info/debug:current-overload-state" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:resouce-reliability/debug:memory-reliability-switchover-threshold" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:disk" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:service-cpu-infos" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:board-resouce-states" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:resouce-reliability/debug:memory-reliability/debug:enable" {
+    deviate replace {
+      default "true";
+    }
+  }
+}

@@ -1,0 +1,108 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-vrrp {
+  namespace "urn:huawei:yang:huawei-oam-cfm-vrrp";
+  prefix oam-cfm-vrrp;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-vrrp {
+    prefix vrrp;
+  }
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+  revision 2020-09-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "oammgr";
+  typedef cfm-bind-vrrp-type {
+    type enumeration {
+      enum "CFM-VRRP" {
+        value 1;
+        description
+          "Type that CFM transfers fault information to VRRP.";
+      }
+      enum "VRRP-CFM" {
+        value 2;
+        description
+          "Type that VRRP transfers fault information to CFM.";
+      }
+    }
+    description
+      "Binding type.";
+  }
+  augment "/oammgr:oammgr" {
+    description
+      "Configure the operation, administration and maintenance (OAM) association function.";
+    container cfm-bind-vrrps {
+      description
+        "List of associations between CFM and VRRP.";
+      list cfm-bind-vrrp {
+        key "md-name ma-name vrrp-id if-name bind-type";
+        unique "md-name ma-name bind-type";
+        unique "vrrp-id if-name bind-type";
+        description
+          "Configure an instance of an association between CFM and VRRP.";
+        leaf md-name {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+          }
+          description
+            "Configure a MD name.";
+        }
+        leaf ma-name {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma/y1731:name";
+          }
+          description
+            "Configure a MA name.";
+        }
+        leaf vrrp-id {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../if-name]/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:id";
+          }
+          description
+            "Configure a VRRP ID.";
+        }
+        leaf if-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Configure the name of interface to which a VRRP instance is bound.";
+        }
+        leaf bind-type {
+          type cfm-bind-vrrp-type;
+          description
+            "Configure a binding type.";
+        }
+      }
+    }
+  }
+}

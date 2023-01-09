@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-netconf-nmda-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-ietf-netconf-nmda-deviations-NE8000-F1A";
+  prefix ncds-devs-NE8000-F1A;
+
+  import ietf-netconf-nmda {
+    prefix ncds;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-netconf-nmda module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ncds:get-data/ncds:input/ncds:config-filter" {
+    deviate not-supported;
+  }
+  deviation "/ncds:get-data/ncds:input/ncds:origin-filters" {
+    deviate not-supported;
+  }
+  deviation "/ncds:get-data/ncds:input/ncds:max-depth" {
+    deviate not-supported;
+  }
+  deviation "/ncds:get-data/ncds:input/ncds:with-origin" {
+    deviate not-supported;
+  }
+}

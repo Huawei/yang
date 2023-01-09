@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-notification-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-clocksync-notification-deviations-NE9000";
+  prefix clocksync-notification-devs-NE9000;
+
+  import huawei-clocksync-notification {
+    prefix clocksync-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/clocksync-notification:clock-ces-acr-lock-fail" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-ces-acr-lock-fail-resume" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-fm-switch" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-fm-switch-resume" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-sync-bad" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-sync-bad-resume" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-notification:clock-ces-acr-master-pw-change" {
+    deviate not-supported;
+  }
+
+}

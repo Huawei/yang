@@ -1,0 +1,78 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nvo3-statistics-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-nvo3-statistics-deviations-NE5000E";
+  prefix nvo3-statistics-devs-NE5000E;
+
+  import huawei-nvo3-statistics {
+    prefix nvo3-statistics;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-nvo3-statistics module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef vxlan-mode-deviations {
+    type enumeration {
+      enum l2 {
+        value 0;
+        description
+          "Layer 2.";
+      }
+      enum l3 {
+        value 1;
+        description
+          "Layer 3.";
+      }
+    }
+    description
+      "VXLAN mode.";
+  }
+
+  deviation "/nvo3-statistics:reset-ipv6-vtep-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3-statistics:nvo3-ipv6-vtep-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3-statistics:nvo3-tunnel-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3-statistics:nvo3-ipv6-tunnel-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3-statistics:nvo3-vtep-statistics/nvo3-statistics:nvo3-vtep-statistic/nvo3-statistics:vni" {
+    deviate add {
+      must "not((/bd:bd/bd:instances/bd:instance/nvo3:nvo3/nvo3:vni-list[nvo3:vni = current()]/nvo3:split-horizon = 'false') and (((../nvo3-statistics:mode = 'l2') and ((../nvo3-statistics:direction = 'inbound') or (../nvo3-statistics:direction = 'bidirection'))) or ((../nvo3-statistics:mode = 'l2' and ../nvo3-statistics:direction = 'outbound') and (/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance[nvo3:vni = current()]/nvo3:static-peers/nvo3:static-peer[nvo3:address = current()/../nvo3-statistics:peer]))))";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3-statistics:nvo3-vtep-statistics/nvo3-statistics:nvo3-vtep-statistic/nvo3-statistics:mode" {
+    deviate replace {
+      type nvo3-statistics-devs-NE5000E:vxlan-mode-deviations;
+    }
+  }
+}

@@ -1,0 +1,552 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-bgp-policy-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-openconfig-bgp-policy-deviations-ATN-980B";
+  prefix of-bgp-pol-devs-ATN-980B;
+
+  import openconfig-bgp-policy {
+    prefix oc-bgp-pol;
+  }
+  import openconfig-routing-policy {
+    prefix oc-rpol;
+  }
+  import openconfig-inet-types {
+    prefix oc-inet;
+  }
+  import openconfig-bgp-types {
+    prefix oc-bgp-types;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module contains data definitions for BGP routing policy.
+     It augments the base routing-policy module with BGP-specific
+     options for conditions and actions.";
+
+  revision 2020-10-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ext-community-filter-name-type-deviations {
+    type union {
+      type string {
+        length "1..51";
+        pattern '([^?\s0-9][^?\s]{0,50})|([\d][^?\s]*[^?\s0-9][^?\s]*)';
+      }
+      type uint16 {
+        range "1..399" {
+          description
+            "The ID of a basic extended community attribute filter is an integer ranging from 1 to 199; the ID of an advanced extended community attribute filter is an integer ranging from 200 to 399.";
+        }
+      }
+    }
+    description
+      "Type definition for ext-community filter name.";
+  }
+
+  typedef bgp-community-regexp-type-deviations {
+    type string {
+      length "1..1026";
+    }
+    description
+      "Type definition for communities specified as regular
+       expression patterns";
+  }
+
+  typedef bgp-ext-community-type-deviations {
+    type union {
+      type string {
+        pattern '(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9]):(429496729[0-5]|42949672[0-8][0-9]|4294967[0-1][0-9]{2}|429496[0-6][0-9]{3}|42949[0-5][0-9]{4}|4294[0-8][0-9]{5}|429[0-3][0-9]{6}|4[0-1][0-9]{7}|[1-3][0-9]{9}|[1-9][0-9]{1,8}|[0-9])';
+      }
+      type string {
+        pattern '(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]):(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])';
+      }
+      type string {
+        pattern '(429496729[0-5]|42949672[0-8][0-9]|4294967[0-1][0-9]{2}|429496[0-6][0-9]{3}|42949[0-5][0-9]{4}|4294[0-8][0-9]{5}|429[0-3][0-9]{6}|4[0-1][0-9]{7}|[1-3][0-9]{9}|[1-9][0-9]{1,8}|[0-9]):(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])';
+      }
+      type string {
+        pattern '(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9]).(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9]):(6553[0-5]|655[0-2][0-9]|654[0-9]{2}|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])';
+      }
+    }
+    description
+      "Type definition for extended community attributes. In the case that
+       common communities are utilised, they are represented as a string
+       of the form:
+        - <2b AS>:<4b value> per RFC4360 section 3.1
+        - <4b IPv4>:<2b value> per RFC4360 section 3.2
+        - <4b AS>:<2b value> per RFC5668 section 2.
+        - <2b AS>.<2b AS>:<2b value> per RFC5668 section 2.";
+    reference
+      "RFC 4360 - BGP Extended Communities Attribute
+       RFC 5668 - 4-Octet AS Specific BGP Extended Community
+       draft-ietf-idr-segment-routing-te-policy";
+  }
+
+  typedef match-set-options-type-deviations {
+    type enumeration {
+      enum ANY {
+        value 0;
+        description
+          "match is true if given value matches any member
+           of the defined set";
+      }
+    }
+    default "ANY";
+    description
+      "Options that govern the behavior of a match statement.  The
+       default behavior is ANY, i.e., the given value matches any
+       of the members of the defined set";
+  }
+
+  typedef community-filter-name-type-deviations {
+    type union {
+      type string {
+        length "1..51";
+        pattern '([^?\s0-9][^?\s]{0,50})|([\d][^?\s]*[^?\s0-9][^?\s]*)';
+      }
+      type uint16 {
+        range "1..99" {
+          description
+            "The ID of a basic community attribute filter is an integer ranging from 1 to 99; the ID of an advanced community attribute filter is an integer ranging from 100 to 199.";
+        }
+      }
+    }
+    description
+      "Type definition for community filter name.";
+  }
+
+  typedef bgp-std-community-type-deviations {
+    type union {
+      type string {
+        length "1..19";
+        pattern '((6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{0,3}|0):(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{0,3}|0))';
+      }
+      type uint32 {
+        range "1..4294967040|4294967044..4294967295";
+      }
+    }
+    description
+      "Type definition for standard commmunity attributes represented as a integer value, or a string of the form N:M where N and M are integers between 0 and 65535.";
+  }
+
+  typedef match-community-set-options-type-deviations {
+    type enumeration {
+      enum ALL {
+        value 1;
+        description
+          "match is true if given value matches all
+           members of the defined set";
+      }
+    }
+    default "ALL";
+    description
+      "Options that govern the behavior of a match statement.  The
+       default behavior is ANY, i.e., the given value matches any
+       of the members of the defined set";
+  }
+
+  typedef bgp-origin-attr-type-deviations {
+    type enumeration {
+      enum IGP {
+        value 1;
+        description
+          "Origin of the NLRI is internal";
+      }
+      enum INCOMPLETE {
+        value 2;
+        description
+          "Origin of the NLRI is neither IGP or EGP";
+      }
+    }
+    description
+      "Type definition for standard BGP origin attribute";
+    reference
+      "RFC 4271 - A Border Gateway Protocol 4 (BGP-4),
+       Sec 4.3";
+  }
+
+  typedef as-number-deviations {
+    type uint32 {
+      range "1..max";
+    }
+    description
+      "A numeric identifier for an autonomous system (AS). An AS is a
+       single domain, under common administrative control, which forms
+       a unit of routing policy. Autonomous systems can be assigned a
+       2-byte identifier, or a 4-byte identifier which may have public
+       or private scope. Private ASNs are assigned from dedicated
+       ranges. Public ASNs are assigned from ranges allocated by IANA
+       to the regional internet registries (RIRs).";
+    reference
+      "RFC 1930 Guidelines for creation, selection, and registration
+                of an Autonomous System (AS)
+       RFC 4271 A Border Gateway Protocol 4 (BGP-4)";
+  }
+
+  typedef bgp-set-ext-community-option-type-deviations {
+    type enumeration {
+      enum REPLACE {
+        value 1;
+        description
+          "replace the existing community attribute with
+           the specified communities. If an empty set is
+           specified, this removes the community attribute
+           from the route.";
+      }
+      enum ADD {
+        value 2;
+        description
+          "add the specified communities to the existing
+           community attribute";
+      }
+    }
+    description
+      "Type definition for options when setting the community
+       attribute in a policy action";
+  }
+
+  typedef bgp-set-community-option-type-deviations {
+    type enumeration {
+      enum REMOVE {
+        value 0;
+        description
+          "remove the specified communities from the
+           existing community attribute";
+      }
+      enum REPLACE {
+        value 1;
+        description
+          "replace the existing community attribute with
+           the specified communities. If an empty set is
+           specified, this removes the community attribute
+           from the route.";
+      }
+      enum ADD {
+        value 2;
+        description
+          "add the specified communities to the existing
+           community attribute";
+      }
+    }
+    description
+      "Type definition for options when setting the community
+       attribute in a policy action";
+  }
+
+  typedef bgp-next-hop-type-deviations {
+    type union {
+      type oc-inet:ip-address;
+    }
+    description
+      "type definition for specifying next-hop in policy actions";
+  }
+
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:as-path-sets" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-set-name" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:ext-community-filter-name-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:state/oc-bgp-pol:ext-community-set-name" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:ext-community-filter-name-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-member" {
+    deviate replace {
+      type union {
+        type of-bgp-pol-devs-ATN-980B:bgp-ext-community-type-deviations;
+        type of-bgp-pol-devs-ATN-980B:bgp-community-regexp-type-deviations;
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:state/oc-bgp-pol:ext-community-member" {
+    deviate replace {
+      type union {
+        type of-bgp-pol-devs-ATN-980B:bgp-ext-community-type-deviations;
+        type of-bgp-pol-devs-ATN-980B:bgp-community-regexp-type-deviations;
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-member" {
+    deviate add {
+      min-elements 1;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:match-set-options" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:match-set-options-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:state/oc-bgp-pol:match-set-options" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:match-set-options-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:med-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:origin-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:next-hop-in" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:afi-safi-in" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:config/oc-bgp-pol:local-pref-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:med-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:origin-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:next-hop-in" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:afi-safi-in" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:state/oc-bgp-pol:local-pref-eq" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:community-count" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:as-path-length" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:match-as-path-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:community-sets/oc-bgp-pol:community-set/oc-bgp-pol:config/oc-bgp-pol:community-set-name" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:community-filter-name-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:state/oc-bgp-pol:ext-community-set-name" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:community-filter-name-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:community-sets/oc-bgp-pol:community-set/oc-bgp-pol:config/oc-bgp-pol:community-member" {
+    deviate replace {
+      type union {
+        type of-bgp-pol-devs-ATN-980B:bgp-std-community-type-deviations;
+        type of-bgp-pol-devs-ATN-980B:bgp-community-regexp-type-deviations;
+        type oc-bgp-types:bgp-well-known-community-type;
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:community-sets/oc-bgp-pol:community-set/oc-bgp-pol:state/oc-bgp-pol:community-member" {
+    deviate replace {
+      type union {
+        type of-bgp-pol-devs-ATN-980B:bgp-std-community-type-deviations;
+        type of-bgp-pol-devs-ATN-980B:bgp-community-regexp-type-deviations;
+        type oc-bgp-types:bgp-well-known-community-type;
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:community-sets/oc-bgp-pol:community-set/oc-bgp-pol:config/oc-bgp-pol:community-member" {
+    deviate add {
+      min-elements 1;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:community-sets/oc-bgp-pol:community-set/oc-bgp-pol:config/oc-bgp-pol:match-set-options" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:match-community-set-options-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:community-sets/oc-bgp-pol:community-set/oc-bgp-pol:state/oc-bgp-pol:match-set-options" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:match-community-set-options-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:community-sets/oc-bgp-pol:community-set/oc-bgp-pol:config/oc-bgp-pol:community-set-name" {
+    deviate replace {
+      mandatory false;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:config/oc-bgp-pol:set-med" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:state/oc-bgp-pol:set-med" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:reference" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:config/oc-bgp-pol:set-route-origin" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-origin-attr-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:state/oc-bgp-pol:set-route-origin" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-origin-attr-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:config/oc-bgp-pol:set-next-hop" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-next-hop-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:state/oc-bgp-pol:set-next-hop" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-next-hop-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-as-path-prepend/oc-bgp-pol:config/oc-bgp-pol:repeat-n" {
+    deviate replace {
+      type uint16 {
+        range "1..256";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-as-path-prepend/oc-bgp-pol:state/oc-bgp-pol:repeat-n" {
+    deviate replace {
+      type uint16 {
+        range "1..256";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-as-path-prepend/oc-bgp-pol:config" {
+    deviate add {
+      must '(./repeat-n and ./asn) or ((not (./repeat-n)) and (not (./asn)))';
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-as-path-prepend/oc-bgp-pol:state/oc-bgp-pol:asn" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:as-number-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-as-path-prepend/oc-bgp-pol:config/oc-bgp-pol:asn" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:as-number-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:config/oc-bgp-pol:method" {
+    deviate replace {
+      type enumeration {
+        enum INLINE {
+          description
+            "The extended communities are specified inline as a
+             list";
+        }
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:state/oc-bgp-pol:method" {
+    deviate replace {
+      type enumeration {
+        enum INLINE {
+          description
+            "The extended communities are specified inline as a
+             list";
+        }
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:config/oc-bgp-pol:options" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-set-ext-community-option-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:state/oc-bgp-pol:options" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-set-ext-community-option-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:inline/oc-bgp-pol:config/oc-bgp-pol:communities" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-ext-community-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:inline/oc-bgp-pol:state/oc-bgp-pol:communities" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-ext-community-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-community/oc-bgp-pol:config" {
+    deviate add {
+      must "./options and ./method and ((./method='INLINE' and (./options='ADD' or ./options='REPLACE')) or (./method='REFERENCE' and ./options='REMOVE'))";
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:inline/oc-bgp-pol:config/oc-bgp-pol:communities" {
+    deviate add {
+      min-elements 1;
+      max-elements 16;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:inline/oc-bgp-pol:state/oc-bgp-pol:communities" {
+    deviate add {
+      min-elements 1;
+      max-elements 16;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:config" {
+    deviate add {
+      must './options and ./method';
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-community/oc-bgp-pol:config/oc-bgp-pol:options" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-set-community-option-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-community/oc-bgp-pol:state/oc-bgp-pol:options" {
+    deviate replace {
+      type of-bgp-pol-devs-ATN-980B:bgp-set-community-option-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-community/oc-bgp-pol:inline/oc-bgp-pol:config/oc-bgp-pol:communities" {
+    deviate add {
+      min-elements 1;
+      max-elements 32;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-community/oc-bgp-pol:inline/oc-bgp-pol:state/oc-bgp-pol:communities" {
+    deviate add {
+      min-elements 1;
+      max-elements 32;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-community/oc-bgp-pol:reference/oc-bgp-pol:config" {
+    deviate add {
+      must './community-set-ref';
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-community/oc-bgp-pol:inline/oc-bgp-pol:config/oc-bgp-pol:communities" {
+    deviate replace {
+      type union {
+        type of-bgp-pol-devs-ATN-980B:bgp-std-community-type-deviations;
+        type oc-bgp-types:bgp-well-known-community-type;
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-community/oc-bgp-pol:inline/oc-bgp-pol:state/oc-bgp-pol:communities" {
+    deviate replace {
+      type union {
+        type of-bgp-pol-devs-ATN-980B:bgp-std-community-type-deviations;
+        type oc-bgp-types:bgp-well-known-community-type;
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-in-udp6 {
+  namespace "urn:huawei:yang:huawei-mpls-in-udp6";
+  prefix mpls-in-udp6;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the traffic engineering configuration.";
+  revision 2022-06-23 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "mplsinudp";
+
+  container mpls-in-udp6 {
+    presence "Enter mpls-in-udp6 view.";
+    description
+      "MPLS in UDP6 Configuration.";
+  }
+}

@@ -1,0 +1,121 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-dslite-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-cgn-dslite-deviations-NE8000M8M14";
+  prefix cgn-dslite-devs-NE8000M8M14;
+
+  import huawei-cgn-dslite {
+    prefix cgn-dslite;
+  }
+
+  import huawei-vsm {
+    prefix vsm;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn-dslite module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef dslite-alg-protocol-type-deviations {
+    type enumeration {
+      enum "ftp" {
+          value 1;
+          description "Indicate file transfer protocol.";
+      }
+      enum "rtsp" {
+          value 2;
+          description "Indicate real time streaming protocol.";
+      }
+      enum "pptp" {
+          value 4;
+          description "Indicate point-to-point tunnel protocol.";
+      }
+      enum "sip" {
+          value 8;
+          description "Indicate session initiation protocol.";
+      }
+    }
+    description
+      "ALG Protocol.";
+  }
+
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:log/cgn-dslite:send-mode" {
+    deviate not-supported;
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:log/cgn-dslite:hosts/cgn-dslite:host/cgn-dslite:inside-vpn-name" {
+    deviate not-supported;
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:bind-service-instance-group" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:port-range" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:address-groups/cgn-dslite:address-group" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:dslite-translate" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:log/cgn-dslite:hosts/cgn-dslite:host/cgn-dslite:secondary" {
+    deviate delete {
+      must "not (../secondary='true' and ../../../send-mode/mode='concurrent')";
+    }
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:port-reuse" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:algs" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+  deviation "/cgn-dslite:cgn-dslite/cgn-dslite:dslite-instances/cgn-dslite:dslite-instance/cgn-dslite:algs/cgn-dslite:alg/cgn-dslite:protocol" {
+    deviate replace {
+      type cgn-dslite-devs-NE8000M8M14:dslite-alg-protocol-type-deviations;
+    }
+  }
+  deviation "/lcs:license/cgn-dslite:active-dslites/cgn-dslite:active-dslite/cgn-dslite:slot" {
+    deviate add {
+      must "/vsm:vsm/vsm:on-board-mode/vsm:mode='centralized-board'";
+    }
+  }
+
+}

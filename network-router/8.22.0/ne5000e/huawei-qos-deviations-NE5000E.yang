@@ -1,0 +1,1040 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-qos-deviations-NE5000E";
+  prefix qos-devs-NE5000E;
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+
+  import huawei-fim-ifm {
+    prefix fim-ifm;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-qos module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef action-remark-deviations {
+    type enumeration {
+      enum "8021p" {
+        value 12;
+        description 
+          "Remark 802.1p priority action.";
+      }
+      enum "ipv4-dscp" {
+        value 13;
+        description 
+          "Remark DSCP action.";
+      }
+      enum "tos" {
+        value 19;
+        description 
+          "Remark tos priority action.";
+      }
+      enum "ipv6-dscp" {
+        value 14;
+        description 
+          "Remark IPv6 DSCP action.";
+      }
+      enum "ip-precedence" {
+        value 15;
+        description 
+          "Remark IP precedence action.";
+      }
+      enum "mpls-exp" {
+        value 16;
+        description 
+          "Remark MPLS-EXP action.";
+      }
+      enum "ip-df" {
+        value 21;
+        description 
+          "Remark IP-DF action.";
+      }
+    }
+    description 
+      "8021p/IPv4-dscp/tos/IPv6-dscp/ip-precedence/MPLS-exp/ip-df.";
+  }
+
+  typedef flow-queue-template-type-deviations {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description 
+          "Normal mode.";
+      }
+    }
+    description 
+      "Normal mode.";
+  }
+
+  typedef map-type-deviations {
+    type enumeration {
+      enum "none" {
+        value 1;
+        description 
+          "Notconfig map type.";
+      }
+    }
+    description 
+      "Map type for phb.";
+  }
+
+  typedef member-link-scheduler-type-deviations {
+    type enumeration {
+      enum "traffic-car" {
+        value 1;
+        description 
+          "Traffic car.";
+      }
+      enum "qos-car" {
+        value 2;
+        description 
+          "QoS CAR.";
+      }
+    }
+    description 
+      "Member link scheduler type.";
+  }
+
+  typedef profile-template-type-deviations {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description 
+          "Normal.";
+      }
+    }
+    description 
+      "Normal.";
+  }
+
+  typedef qos-ba-type-deviations {
+    type enumeration {
+      enum "8021p" {
+        value 0;
+        description 
+          "802.1p priority.";
+      }
+      enum "ip-dscp" {
+        value 1;
+        description 
+          "DSCP priority.";
+      }
+      enum "mpls-exp" {
+        value 2;
+        description 
+          "MPLS-EXP priority.";
+      }
+    }
+    description 
+      "Behavior aggregation type.";
+  }
+
+  typedef qos-direction-type-deviations {
+    type enumeration {
+      enum "outbound" {
+        value 1;
+        description 
+          "Outbound.";
+      }
+    }
+    description 
+      "Outbound.";
+  }
+
+  typedef qos-phb-type-deviations {
+    type enumeration {
+      enum "8021p" {
+        value 0;
+        description 
+          "802.1p priority.";
+      }
+      enum "ip-dscp" {
+        value 1;
+        description 
+          "DSCP priority.";
+      }
+      enum "mpls-exp" {
+        value 2;
+        description 
+          "MPLS-EXP priority.";
+      }
+    }
+    description 
+      "Per hop behavior type.";
+  }
+
+  typedef qos-policy-layer-deviations {
+    type enumeration {
+      enum "link-layer-srv6-inner" {
+        value 4;
+        description
+          "Link layer SRv6 inner.";
+      }
+      enum "ip-layer-srv6-inner" {
+        value 5;
+        description
+          "Ip layer SRv6 inner.";
+      }
+    }
+    description
+      "Link layer SRv6 inner/Ip layer SRv6 inner.";
+  }
+
+  typedef qos-traffic-type-deviations {
+    type enumeration {
+      enum "acl" {
+        value 1;
+        description 
+          "Acl.";
+      }
+    }
+    description 
+      "Ucl/acl.";
+  }
+
+  typedef rule-type-deviations {
+    type enumeration {
+      enum "aclv4" {
+        value 1;
+        description 
+          "Aclv4.";
+      }
+      enum "aclv6" {
+        value 2;
+        description 
+          "Aclv6.";
+      }
+      enum "l2acl" {
+        value 3;
+        description 
+          "L2acl.";
+      }
+      enum "mpls" {
+        value 4;
+        description 
+          "MPLS.";
+      }
+    }
+    description 
+      "Qos resource rule type.";
+  }
+
+  typedef trust-type-deviations {
+    type enumeration {
+      enum "8021p" {
+        value 1;
+        description 
+          "Trust 8021p.";
+      }
+      enum "ip-dscp" {
+        value 0;
+        description 
+          "Trust ip-dscp.";
+      }
+    }
+    description 
+      "Trust type.";
+  }
+
+  deviation "/qos:qos/qos:wred-template/qos:port-wreds" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:normal-mode-queues/qos:normal-mode-queue/qos:config-type/qos:shaping-mode/qos:low-jitter" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:share-shape-random-discards" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:normal-mode-random-discards" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:four-cos-mode-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:priority-mode-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:priority-mode-schedules" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:priority-mode-share-shapings" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:eight-cos-mode-queues" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:flow-queue-template-applys/qos:flow-queue-template-apply/qos:flow-queue-template-name" {
+    deviate delete {
+      must "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue[qos:name=current()]/qos:mode='normal' or /qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue[qos:name=current()]/qos:mode='8cos-enhance'";
+    }
+    deviate add {
+      must "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue[qos:name=current()]/qos:mode='normal'";
+    }
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:user-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:user-queue-weights" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:user-queue-time-ranges" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:cars/qos:car/qos:cir-parameters/qos:cir-percentage" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:profile-cars" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:suppressions" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:mpls-tunnel-flow-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:eight-cos-mode-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-mappings" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:queue-4cos-mappings" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:user-group-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:service-templates/qos:service-template/qos:slot-id" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:service-templates/qos:service-template/qos:service-length-on-etm" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:port-queue-templates" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:channel-profiles" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:buffer-policys" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:sub-port-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:priority-templates" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:user-queue-templates" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-classifiers/qos:traffic-classifier/qos:rule-service-classs" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-classifiers/qos:traffic-classifier/qos:rule-eth-types" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-classifiers/qos:traffic-classifier/qos:rule-mac-and-masks" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-classifiers/qos:traffic-classifier/qos:vxlan-local-ids" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-classifiers/qos:traffic-classifier/qos:vxlan-local-id-ipv6s" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:remark-actions/qos:remark-action/qos:after-trust" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:car-actions/qos:car-action/qos:limit-type" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:flow-car-actions" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:suppression-actions" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:match-term-action" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:urpf-action/qos:ignore-default" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:user-queue-action" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:system-log-action" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-policys/qos:traffic-policy/qos:group-mode-policy-nodes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-policys/qos:traffic-policy/qos:vxlan-local-id-switch" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:traffic-policy-matchs" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:remark-vxlan-local-id" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:global-set-queue-stat" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:buffer-policy-applys" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:low-latency-enables" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:scheduling-modes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:convergence-schedule" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:port-convergence-schedule" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:traffic-policy-untag" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:exp-phb-disable" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:packs" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:packet-block-threshold-all" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:burst-sizes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:tm-schedule-traffic-statistics-enables" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:redback-packet-adjustment" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:redback-packet-adjustment-slots" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:link-layer-excludes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:link-layer-exclude-slots" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:l2tp-layer-exclude" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:l2tp-layer-exclude-slots" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:user-queue-resource-8cos-enhances" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/qos:user-queue-pir-exhaust-alarm" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:all-queue-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:mode-flexe-queue-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:user-informations" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:multi-policy-mode" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:unknownunisup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:unknownunisup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:unknownunisup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:unknownunisup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:unknownunisup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:unknownunisup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:unknownunisup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:unknownunisup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:multicastsup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:multicastsup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:multicastsup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:multicastsup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:multicastsup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:multicastsup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:multicastsup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:multicastsup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:broadcastsup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:broadcastsup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:broadcastsup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:broadcastsup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:broadcastsup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:broadcastsup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:broadcastsup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:classifier-statisticss/qos:classifier-statistics/qos:broadcastsup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-traffic-policy-statisticss/qos:interface-traffic-policy-statistics/qos:multi-policy-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:mpls-te-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:user-group-queue-resources" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:port-queue-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:port-queue-default-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:port-queue-onboard-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-profile-statistics/qos:user-queues" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-profile-statistics/qos:share-shapings" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-profile-statistics/qos:priority-cars" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:hard-pipe-abilitys" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:l2vpn-hard-pipe-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:flow-car-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-action-user-queue-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-user-group-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-sub-port-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:interface-hard-pipe-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:sub-port-queue-resources" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:dp-resources" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:sub-port-queue-abnormal-allocations" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:user-group-queue-abnormal-allocations" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:user-queue-abnormal-allocations" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:user-queue-resources" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:fabric-queue-unicast-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:fabric-queue-multicast-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:slot-port-queue-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-query/qos:slot-channel-profile-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-multi-policy-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-mpls-te-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-global-policy-statistics/qos:input/qos:policy-name" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-user-group-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-interface-hard-pipe-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-interface-lv-hard-pipe-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-interface-user-group-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-interface-user-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-interface-action-user-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-interface-port-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-slot-port-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-user-informations" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-interface-sub-port-queue-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-fabric-queue-unicast-statistics" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-fabric-queue-multicast-statistics" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:traffic-policy-multi-applys" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:user-queue-applys" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:port-queues" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:port-queue-states" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:port-queue-template-applys" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:port-queue-alarms" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:port-queue-alarm-states" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:set-queue-stats" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:link-adjustment" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:soft-pipe-alarms" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:mode-channel-bandwidth-maximize" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:default-user-group-queues" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:default-sub-port-queues" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:port-shapings" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:per-hop-behavior-disables/qos:per-hop-behavior-disable/qos:vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:per-hop-behavior-enable-vlans" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:per-hop-behavior" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:convergent-precedence" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:drop-eligible-indicator-vlan" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:trust-untag-ip-precedence" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:trust-ip-precedences" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:share-shaping" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:sub-port-queue-applys" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:user-vlan-user-group-queue-applys" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:bras-member-link-schedulers" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:schedule-tree-distribute-modes" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:loop-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:resource-pools" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:user-group-queue-applys" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:mpls-l2vc" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:member-link-schedulers/qos:member-link-scheduler/qos:direction" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:ldp-traffic" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:buffer-policy-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:hard-pipe-apply" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:channel-adjustment" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:user-vlan-profile-applys" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:service-template-shaping" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:default-service-class-remote" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:trust-remotes" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:source-board-schedule-weights" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:deficit-unit" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:default-user-queue" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:license-items/lcs:license-item/qos:port-hqoss" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:wred-template/qos:flow-wreds/qos:flow-wred/qos:buffer-size/qos:time-mode" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:normal-mode-queues/qos:normal-mode-queue/qos:flow-wred-name" {
+    deviate delete {
+      must "not(../../../../../../wred-template/flow-wreds/flow-wred[name=current()]/buffer-time)";
+    }
+  }
+  deviation "/qos:qos/qos:wred-template/qos:flow-wreds/qos:flow-wred/qos:buffer-size/qos:value-mode/qos:queue-depth" {
+    deviate add {
+      default "1000";
+    }
+    deviate replace {
+      type uint32 {
+        range "1..4294967295";
+      }
+    }
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:mode" {
+    deviate replace {
+      type qos-devs-NE5000E:flow-queue-template-type-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:normal-mode-queues/qos:normal-mode-queue" {
+    deviate add {
+      must "not(./qos:pbs and not(./qos:shaping-value) and not(./qos:shaping-percentage) and not(./qos:car-value) and not(./qos:car-percentage))";
+    }
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:flow-queues/qos:flow-queue/qos:normal-mode-queues/qos:normal-mode-queue/qos:config-type/qos:shaping-mode/qos:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1..4194304";
+      }
+    }
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:mode" {
+    deviate replace {
+      type qos-devs-NE5000E:profile-template-type-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:profiles/qos:profile/qos:cars/qos:car" {
+    deviate add {
+      must "(./qos:pir-value and ./qos:pbs) or (not(./qos:pir-value) and (not(./qos:pbs) or ./qos:pbs>=1))";
+    }
+    deviate add {
+      must "(not(./qos:yellow-action) and (not(./qos:pbs) or ./qos:pbs=0)) or (./qos:yellow-action and ./qos:pbs>0)";
+    }
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:service-templates/qos:service-template" {
+    deviate add {
+      max-elements 256;
+    }
+  }
+  deviation "/qos:qos/qos:queue-scheduler-template/qos:service-templates/qos:service-template/qos:service-lengths/qos:service-length/qos:direction" {
+    deviate replace {
+      type qos-devs-NE5000E:qos-direction-type-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:diffserv-domains/qos:diffserv-domain/qos:behavior-aggregations/qos:behavior-aggregation/qos:type" {
+    deviate replace {
+      type qos-devs-NE5000E:qos-ba-type-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:diffserv-domains/qos:diffserv-domain/qos:per-hop-behaviors/qos:per-hop-behavior/qos:type" {
+    deviate replace {
+      type qos-devs-NE5000E:qos-phb-type-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:remark-actions/qos:remark-action" {
+    deviate add {
+      must "((./qos:action-type='ipv4-dscp' and not (../qos:remark-action[qos:action-type='tos']) and not(../qos:remark-action[qos:action-type='ip-precedence'])) or ((./qos:action-type='tos' or ./qos:action-type='ip-precedence') and not(../qos:remark-action[qos:action-type='ipv4-dscp'])) or (./qos:action-type!='ipv4-dscp' and ./qos:action-type!='tos' and ./qos:action-type!='ip-precedence'))";
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:remark-actions/qos:remark-action/qos:action-type" {
+    deviate replace {
+      type qos-devs-NE5000E:action-remark-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:car-actions/qos:car-action/qos:cir-parameters/qos:cir-percent-mode" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:car-actions/qos:car-action/qos:yellow-action" {
+    deviate delete {
+      must "../pbs>0 or (../pir-percentage and not(../pbs))";
+    }
+    deviate add {
+      must "../pbs and ../pbs!=0";
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:car-actions/qos:car-action/qos:cir-parameters/qos:cir-mode/qos:pir" {
+    deviate replace {
+      type uint32 {
+        range "1..max";
+      }
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:car-actions/qos:car-action/qos:pbs" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/qos:policy-actions/qos:policy-action/qos:layer" {
+    deviate replace {
+      type qos-devs-NE5000E:qos-policy-layer-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-policys/qos:traffic-policy/qos:policy-nodes/qos:policy-node/qos:priority" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/qos:qos/qos:global-config/qos:global-policys/qos:global-policy/qos:up-id" {
+    deviate replace {
+      type uint32 {
+        range "0";
+      }
+    }
+  }
+  deviation "/qos:qos/qos:global-config/qos:global-policys/qos:global-policy/qos:ucl-type" {
+    deviate replace {
+      type qos-devs-NE5000E:qos-traffic-type-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:global-query/qos:qos-resource-rules/qos:qos-resource-rule/qos:rule-type" {
+    deviate replace {
+      type qos-devs-NE5000E:rule-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:trusts/qos:trust" {
+    deviate add {
+      must "./vlan-mode='false' and ./begin-vlan=0 and ./end-vlan=0";
+    }
+    deviate add {
+      must "not(direction!='in-outbound' and vpn-mode='true')";
+    }
+    deviate add {
+      must "not(type='8021p' and vpn-mode='true')";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:trusts/qos:trust/qos:type" {
+    deviate replace {
+      type qos-devs-NE5000E:trust-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:profile-applys/qos:profile-apply" {
+    deviate add {
+      must "(./type='interface' and ((../../../ifm:l2-mode-enable='true' and (./identify-type='vid' or ./identify-type='evc-ce-vid' or ./identify-type='vid-ce-vid' or ./identify-type='none')) or ( ../../../ifm:l2-mode-enable='false' and ./identify-type='none'))) or (./type='pe' and ../../../ifm:l2-mode-enable='false' and (./identify-type='ce-vid' or ./identify-type='pe-ce-vid' or ./identify-type='pe-vid' or ./identify-type='none')) or (./type='vlan' and ../../../ifm:l2-mode-enable='false' and (./identify-type='vlan' or ./identify-type='none'))
+";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:flow-queue-template-applys/qos:flow-queue-template-apply" {
+    deviate add {
+      must "../../../fim-ifm:mode-channel/fim-ifm:mode-channel-enable='enable'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:service-template-applys/qos:service-template-apply" {
+    deviate add {
+      must "../../../fim-ifm:mode-channel/fim-ifm:mode-channel-enable='enable'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:per-hop-behavior-disables/qos:per-hop-behavior-disable" {
+    deviate delete {
+      must "./vlan-mode='false' or (./vlan-mode='true' and ../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute)";
+    }
+    deviate add {
+      must "(./vlan-mode='false')";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:traffic-policy-applys/qos:traffic-policy-apply" {
+    deviate delete {
+      must "./vlan-mode='false' or (./vlan-mode='true' and ../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute) or ../../../ifm:class='sub-interface'";
+    }
+    deviate add {
+      must "./vlan-mode='false' or ../../../ifm:class='sub-interface'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:per-hop-behavior-disables/qos:per-hop-behavior-disable/qos:map-type" {
+    deviate replace {
+      type qos-devs-NE5000E:map-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:cars/qos:car" {
+    deviate add {
+      must "(./qos:cbs and ./qos:pbs) or not(./qos:cbs)";
+    }
+    deviate add {
+      must "(./qos:cir-percent and ./qos:cbs!=0) or not(./qos:cir-percent) or not(./qos:cbs)";
+    }
+    deviate add {
+      must "(./qos:cir-percent and ./qos:pbs!=0) or not(./qos:cir-percent)";
+    }
+    deviate add {
+      must "(./qos:pir-value and ./qos:pbs) or not(./qos:pir-value)";
+    }
+    deviate add {
+      must "(./vlan-mode='true' and ./identifier='no') or ./vlan-mode='false'";
+    }
+    deviate add {
+      must "./vlan-mode='false' and ./begin-vlan=0 and ./end-vlan=0";
+    }
+    deviate add {
+      must "not(./vlan-mode='true' and ../../../ifm:l2-mode-enable='true')";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:cars/qos:car/qos:yellow-action" {
+    deviate add {
+      must "../pbs > 0 or ../pir-percent";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:member-link-schedulers/qos:member-link-scheduler/qos:member-link-scheduler-type" {
+    deviate replace {
+      type qos-devs-NE5000E:member-link-scheduler-type-deviations;
+    }
+  }
+  deviation "/qos:reset-flow-car-tables" {
+    deviate not-supported;
+  }
+  deviation "/qos:reset-flow-car-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/qos:qos/qos:trusts/qos:trust" {
+    deviate delete {
+      must "./vlan-mode='false' or (./vlan-mode='true' and ../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute) or ../../../ifm:class='sub-interface'";
+    }
+    deviate add {
+      must "./vlan-mode='false' or ../../../ifm:class='sub-interface'";
+    }
+  }
+}

@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-flowspec-forward-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-flowspec-forward-notif";
+  prefix flowspec-forward-notif;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of flowspec forward.";
+  revision 2021-03-20 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "qos";
+  notification xqos-destination-origin-as-over-alarm {
+    description
+      "Alarm when the number of BGP FlowSpec rules matching the start AS (Origin-AS) of the destination IP address reaches the upper limit.";
+  }
+  notification xqos-destination-origin-as-over-alarm-clear {
+    description
+      "Alarm clear when delete excess BGP FlowSpec rules matching the start AS of the destination IP address.";
+  }
+}

@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-deterministic-ip-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-deterministic-ip-deviations-NE8000M8M14";
+  prefix deterministic-ip-devs-NE8000M8M14;
+
+  import huawei-deterministic-ip {
+    prefix deterministic-ip;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-deterministic-ip module.";
+
+  revision 2022-02-20 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/deterministic-ip:deterministic-ip" {
+    deviate not-supported;
+  }
+}

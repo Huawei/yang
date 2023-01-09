@@ -1,0 +1,110 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dhcpv6-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-dhcpv6-deviations-ATN-910C";
+  prefix dhcpv6-devs-ATN-910C;
+
+  import huawei-dhcpv6 {
+    prefix dhcpv6;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-dhcpv6 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/dhcpv6:dhcpv6/dhcpv6:relay/dhcpv6:pd-route/dhcpv6:access-limit" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:reset-dhcpv6-snooping-packet-statistics" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:reset-dhcpv6-snooping-discarded-packet-statistics" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:reset-dhcpv6-snooping-dynamic-binding-table" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute/dhcpv6:option" {
+    deviate not-supported;
+  }
+  deviation "/dhcpv6:dhcpv6/dhcpv6:common/dhcpv6:global/dhcpv6:duid-format" {
+    deviate replace {
+      default "ll";
+    }
+  }
+  deviation "/dhcpv6:dhcpv6/dhcpv6:common/dhcpv6:session-car/dhcpv6:cir-value" {
+    deviate replace {
+      type uint32 {
+        range "0..2000";
+      }
+    }
+    deviate replace {
+      default "50";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/dhcpv6:dhcpv6/dhcpv6:common/dhcpv6:session-car/dhcpv6:cbs-value" {
+    deviate replace {
+      type uint32 {
+        range "0..2000";
+      }
+    }
+    deviate replace {
+      default "50";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/dhcpv6:dhcpv6/dhcpv6:common/dhcpv6:session-car/dhcpv6:pir-value" {
+    deviate replace {
+      type uint32 {
+        range "0..2000";
+      }
+    }
+    deviate replace {
+      default "100";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/dhcpv6:dhcpv6/dhcpv6:common/dhcpv6:session-car/dhcpv6:pbs-value" {
+    deviate replace {
+      type uint32 {
+        range "0..2000";
+      }
+    }
+    deviate replace {
+      default "100";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dhcpv6:dhcpv6-relay-attribute" {
+    deviate add {
+      must '(count(destination-addresses/destination-address) + count(destination-ifs/destination-if)) <= 8';
+    }
+  }
+}

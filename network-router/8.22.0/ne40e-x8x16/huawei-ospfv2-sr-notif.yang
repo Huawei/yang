@@ -1,0 +1,126 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ospfv2-sr-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ospfv2-sr-notif";
+  prefix ospfv2-sr-notif;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of ospfv2 segment routing.";
+  revision 2022-04-08 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef ipv4-dt {
+    type inet:ipv4-address-no-zone;
+    description
+      "IPv4 type.";
+  }
+  typedef uchar {
+    type uint8;
+    description
+      "Uchar type.";
+  }
+  typedef sr-conflict-type {
+    type enumeration {
+      enum "ospfv2-sid-conflict" {
+        value 1;
+          description
+            "OSPFv2 SID conflict.";
+      }
+      enum "ospfv2-prefix-conflict" {
+        value 2;
+          description
+            "OSPFv2 prefix conflict.";
+      }
+    }
+    description
+      "SR conflict type.";
+  }
+  ext:task-name "ospf";
+  notification prefix-sid-conflict {
+    description
+      "The OSPF prefix-sid conflict is detected.";
+    leaf process-id {
+      type uint32;
+      description
+        "Process ID.";
+    }
+    leaf prefix-sid {
+      type uint32;
+      description
+        "Prefix SID.";
+    }
+    leaf prefix-address {
+      type ipv4-dt;
+      description
+        "Prefix address.";
+    }
+    leaf prefix-address-mask {
+      type ipv4-dt;
+      description
+        "Prefix mask.";
+    }
+    leaf algorithm {
+      type uchar;
+      description
+        "Flexible algorithm.";
+    }
+    leaf conflict-type {
+      type sr-conflict-type;
+      description
+        "SR conflict type.";
+    }
+  }
+  notification prefix-sid-conflict-resume {
+    description
+      "The OSPF prefix-sid conflict is resolved.";
+    leaf process-id {
+      type uint32;
+      description
+        "Process ID.";
+    }
+    leaf prefix-sid {
+      type uint32;
+      description
+        "Prefix SID.";
+    }
+    leaf prefix-address {
+      type ipv4-dt;
+      description
+        "Prefix address.";
+    }
+    leaf prefix-address-mask {
+      type ipv4-dt;
+      description
+        "Prefix mask.";
+    }
+    leaf algorithm {
+      type uchar;
+      description
+        "Flexible algorithm.";
+    }
+    leaf conflict-type {
+      type sr-conflict-type;
+      description
+        "SR conflict type.";
+    }
+  }
+}

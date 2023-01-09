@@ -1,0 +1,90 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-phy-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-clocksync-phy-deviations-NE8000M8M14";
+  prefix clocksync-phy-devs-NE8000M8M14;
+
+  import huawei-clocksync-phy {
+    prefix clocksync-phy;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-phy module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+ typedef source-selection-mode-deviations {
+    type enumeration {
+      enum "auto" {
+        value 0;
+        description
+          "The source selection mode is the auto mode.";
+      }
+      enum "force" {
+        value 2;
+        description
+          "The physical layer clock source selection mode is forcible selection.";
+      }
+    }
+    description
+      "Clock source selection mode: forced clock source selection, manual clock source selection, and automatic clock source selection.";
+  }
+
+  deviation "/clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:internal-clock-ssm" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source/clocksync-phy:bits-sources/clocksync-phy:force-cutoff-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:e1-sabit" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:cpos-ais-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:cpos-exc-enable" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-phy:clocksync-phy/clocksync-phy:common/clocksync-phy:freq-check-enable" {
+    deviate replace {
+      default "true";
+    }
+  }
+  deviation "/clocksync-phy:clocksync-phy/clocksync-phy:selection-sources/clocksync-phy:selection/clocksync-phy:source-name" {
+    deviate add {
+      must "((../source-type='system') and (../mode='force') and ((/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:sync-enable='true' and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:priority/clocksync-phy:system=0)) or (/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source[clocksync-phy:name=current()]/clocksync-phy:sync-enable='true' and not(/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source[clocksync-phy:name=current()]/clocksync-phy:system-priority=0)))) or ((../source-type='sync2m-1') and (../mode='force') and (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:sync-enable='true' and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:priority/clocksync-phy:sync2m1=0))) or ((../source-type='sync2m-2') and (../mode='force') and (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:sync-enable='true' and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/clocksync-phy:clock-port-sources/clocksync-phy:source/clocksync-phy:priority/clocksync-phy:sync2m2=0)))";
+    }
+  }
+  deviation "/clocksync-phy:clocksync-phy/clocksync-phy:selection-sources/clocksync-phy:selection/clocksync-phy:mode" {
+    deviate replace {
+      type clocksync-phy-devs-NE8000M8M14:source-selection-mode-deviations;
+    }
+  }
+  deviation "/clocksync-phy:clocksync-phy/clocksync-phy:external-clock-sources/clocksync-phy:source/clocksync-phy:bits-sources/clocksync-phy:signal-type" {
+    deviate add {
+      must "(../signal-type='2mhz' or ../signal-type='2mbps')";
+    }
+  }
+
+}

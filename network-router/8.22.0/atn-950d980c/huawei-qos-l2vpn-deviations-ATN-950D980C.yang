@@ -1,0 +1,127 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos-l2vpn-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-qos-l2vpn-deviations-ATN-950D980C";
+  prefix qos-l2vpn-devs-ATN-950D980C;
+
+  import huawei-qos-l2vpn {
+    prefix qos-l2vpn;
+  }
+
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-qos-l2vpn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef ac-mode-layer-type-deviations {
+    type enumeration {
+      enum "link-layer" {
+        value 1;
+        description 
+          "Link layer.";
+      }
+    }
+    description 
+      "Layer type.";
+  }
+
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:unknownunisup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:unknownunisup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:unknownunisup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:unknownunisup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:unknownunisup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:unknownunisup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:unknownunisup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:unknownunisup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:multicastsup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:multicastsup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:multicastsup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:multicastsup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:multicastsup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:multicastsup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:multicastsup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:multicastsup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:broadcastsup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:broadcastsup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:broadcastsup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:broadcastsup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:broadcastsup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:broadcastsup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:broadcastsup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-l2vpn:qos-l2vpn/qos-l2vpn:ac-mode-policy-statisticss/qos-l2vpn:ac-mode-policy-statistics/qos-l2vpn:classifier-statisticss/qos-l2vpn:classifier-statistics/qos-l2vpn:broadcastsup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/qos-l2vpn:qos/qos-l2vpn:ac-mode-policy-applys/qos-l2vpn:ac-mode-policy-apply/qos-l2vpn:layer" {
+    deviate replace {
+      type qos-l2vpn-devs-ATN-950D980C:ac-mode-layer-type-deviations;
+    }
+  }
+
+}

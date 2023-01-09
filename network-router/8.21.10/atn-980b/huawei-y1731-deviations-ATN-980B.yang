@@ -1,0 +1,142 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-y1731-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-y1731-deviations-ATN-980B";
+  prefix y1731-devs-ATN-980B;
+
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-y1731 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:map-service/y1731:bind-l2tpv3-pw" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:map-service/y1731:bind-l2tpv3-ccc" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:alarm-rdi-oam-mgr-disable" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:measure-point" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:pw-mep" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:peer-ip" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:vc-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/y1731:y1731/y1731:measure-granularity" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/y1731:y1731/y1731:if-down-ccm-send-stop" {
+    deviate not-supported;
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep" {
+    deviate delete {
+      must '(direction and (if-name or peer-ip)) or (not(direction) and not(if-name) and not(peer-ip))';
+    }
+    deviate add {
+      must '(y1731:direction and y1731:if-name ) or (not(y1731:direction) and not(y1731:if-name))';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:test-enable" {
+    deviate delete {
+      must "../test-enable='false' or (not(../../../l2tp-ccc-name) and not(../../../tnl-name))";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:delay-thresholds/y1731:delay-threshold" {
+    deviate delete {
+      must 'not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind)';
+    }
+    deviate add {
+      must 'not(../../../../no-bind)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:delay-threshold-prioritys/y1731:delay-threshold-priority" {
+    deviate delete {
+      must 'not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind)';
+    }
+    deviate add {
+      must 'not(../../../../no-bind)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:loss-thresholds/y1731:loss-threshold" {
+    deviate delete {
+      must 'not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind) and not(../../../../evpn-name) and not(../../../../bd-id)';
+    }
+    deviate add {
+      must 'not(../../../../no-bind) and not(../../../../evpn-name) and not(../../../../bd-id)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:type/y1731:if-mep/y1731:loss-threshold-prioritys/y1731:loss-threshold-priority" {
+    deviate delete {
+      must 'not(../../../../l2tp-ccc-name) and not(../../../../tnl-name) and not(../../../../no-bind) and not(../../../../evpn-name) and not(../../../../bd-id)';
+    }
+    deviate add {
+      must 'not(../../../../no-bind) and not(../../../../evpn-name) and not(../../../../bd-id)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:rdi-alarm-disabled" {
+    deviate delete {
+      must "../rdi-alarm-disabled='false' or (../if-name or ../peer-ip or ../vlan-mep)";
+    }
+    deviate add {
+      must "../y1731:rdi-alarm-disabled='false' or (../y1731:if-name or ../y1731:vlan-mep)";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:ais-alarm-disabled" {
+    deviate delete {
+      must "../ais-alarm-disabled='false' or (../if-name or ../peer-ip or ../vlan-mep)";
+    }
+    deviate add {
+      must "../y1731:ais-alarm-disabled='false' or (../y1731:if-name or ../y1731:vlan-mep)";
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance" {
+    deviate delete {
+      must '(vc-id and peer-ip and not(priority)) or (not(vc-id) and not(peer-ip))';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:delay-thresholds/y1731:delay-threshold" {
+    deviate delete {
+      must '(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/l2tp-ccc-name) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/tnl-name)';
+    }
+    deviate add {
+      must '(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind)';
+    }
+  }
+  deviation "/y1731:y1731/y1731:global-enable/y1731:test-instances/y1731:test-instance/y1731:loss-thresholds/y1731:loss-threshold" {
+    deviate delete {
+      must '(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/l2tp-ccc-name) and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/tnl-name)';
+    }
+    deviate add {
+      must '(../../rmep-id or ../../rmep-mac) and ../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/meps/mep[id=current()/../../mep-id]/if-name and not(../../../../mds/md[name=current()/../../md-name]/mas/ma[name=current()/../../ma-name]/no-bind)';
+    }
+  }
+}

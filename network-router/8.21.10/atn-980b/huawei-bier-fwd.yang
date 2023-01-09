@@ -1,0 +1,259 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-fwd {
+  namespace "urn:huawei:yang:huawei-bier-fwd";
+  prefix bier-fwd;
+  
+  import huawei-bier {
+    prefix bier;
+  }
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Bier forward.";
+  revision 2020-02-13 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef bit-string-length {
+    type enumeration {
+      enum "64-bit" {
+        value 1;
+        description
+          "64-bit BitString.";
+      }
+      enum "128-bit" {
+        value 2;
+        description
+          "128-bit BitString.";
+      }
+      enum "256-bit" {
+        value 3;
+        description
+          "256-bit BitString.";
+      }
+    }
+    description
+      "Enumerated values of the BitString length.";
+  }
+
+  ext:task-name "bier";
+  container bier-fwd {
+    description
+      "Global configuration of bier-fwd.";
+    container select-boards {
+      description
+        "Configure boards selected for bier.";
+      leaf-list slot {
+        type leafref {
+          path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+        }
+        max-elements "20";
+        description
+          "Configure slot ID.";
+      }
+    }
+  }
+  rpc reset-bierv6-all-statistics {
+    description
+      "Clear statistics about BIERv6 all flow statistics.";
+    ext:node-ref "/bier:bier/bier:sub-domains/bier:sub-domain/bier-fwd:statistics";
+    input {
+      leaf reset-flow-statistics {
+        type empty;
+        description
+        "Clear all flow statistics.";
+      }
+    }
+  }
+  rpc reset-bier-ipv6-domain-statistics {
+    description
+      "Clear statistics about BIER IPv6 flows by domain.";
+    ext:node-ref "/bier:bier/bier:sub-domains/bier:sub-domain/bier-fwd:statistics";
+    input {
+      leaf sub-domain {
+        type uint16 {
+          range "0..255";
+        }
+        mandatory true;
+        description
+          "BIERv6 sub-domain ID.";
+      }
+      leaf bsl {
+        type bit-string-length;
+        mandatory true;
+          description
+            "BIERv6 BitString length, which is 64/128/256 bits. Multiple devices in a subdomain must have the same BSL.";
+      }
+    }
+  }
+  rpc reset-bier-ipv6-statistics {
+    description
+      "Clear statistics by BIER IPv6 flow.";
+    ext:node-ref "/bier:bier/bier:sub-domains/bier:sub-domain/bier-fwd:statistics";
+    input {
+      leaf sub-domain {
+        type uint16 {
+          range "0..255";
+        }
+        mandatory true;
+        description
+          "BIERv6 sub-domain ID.";
+      }
+      leaf bsl {
+        type bit-string-length;
+        mandatory true;
+          description
+            "BIERv6 BitString length, which is 64/128/256 bits. Multiple devices in a subdomain must have the same BSL.";
+      }
+      leaf flow-label {
+        type uint32;
+        mandatory true;
+        description
+        "Flow label.";
+      }
+      leaf source-address {
+        type inet:ipv6-address-no-zone;
+        mandatory true;
+        description
+        "Source address.";
+      }
+    }
+  }
+  augment "/bier:bier" {
+    description
+      "Configure global attributes to the BIER.";
+    container forward {
+      description
+        "Configure global attributes to the BIER.";
+      container reserve-interface-enhancement {
+        description
+          "Configure reserve-interface enhancement.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable reserve-interface enhancement.";
+        }
+      }
+    }
+  }
+  augment "/bier:bier/bier:sub-domains/bier:sub-domain" {
+    description
+      "Configure pipe mode ttl value.";
+    container pipe-mode-ttl {
+      description
+        "Configure pipe mode ttl value.";
+      leaf ttl-value {
+        type uint8 {
+          range "1..255";
+        }
+        default "255";
+        description
+          "Bier pipe mode ttl value.";
+      }
+    }
+    container load-balance-enhance-factor {
+      when "../bier:address-family = 'ipv6-unicast'";
+      description
+        "Configure load-balance enhance factor.";
+      leaf factor-value {
+        type uint8 {
+          range "1..64";
+        }
+        must "(../bier-fwd:factor-value * ../../bier:load-balance-num) <= 64";
+        description
+          "Configure load-balance enhance factor.";
+      }
+    }
+    container statistics {
+      when "../bier:address-family ='ipv6-unicast'";
+      config false;
+      description
+        "List of BIERv6 flow statistics.";
+      list statistic {
+        key "bsl si flow-label source-dt";
+        description
+          "Operational data of BIERv6 flow information.";
+        leaf bsl {
+          type leafref {
+            path "/bier:bier/bier:sub-domains/bier:sub-domain/bier:encapsulations/bier:encapsulation/bier:bsl";
+          }
+          description
+            "BIERv6 BitString length, which can be 64/128/256 bits.";
+        }
+        leaf si {
+          type uint32 {
+            range "0..255";
+          }
+          description
+            "Specify a set identifier.";
+        }
+        leaf flow-label {
+            type uint32;
+            description
+              "Flow label.";
+            }
+        leaf source-dt {
+          type inet:ipv6-address-no-zone;
+          description
+            "Source address.";
+        }
+        leaf incoming-interface {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Incoming interface name.";
+        }
+        leaf packet-number {
+          type uint64;
+          units packet;
+          description
+            "Number of forwarded BIERv6 packets.";
+        }
+        leaf byte-number {
+          type uint64;
+          units Byte;
+          description
+            "Number of forwarded BIERv6 bytes.";
+        }
+        leaf packet-rate {
+          type uint64;
+          units pps;
+          description
+            "Number of forwarded BIERv6 packets per second.";
+        }
+        leaf byte-rate {
+          type uint64;
+          units Byte/s;
+          description
+            "Number of forwarded BIERv6 bytes per second.";
+        }
+      }
+    }
+  }
+}

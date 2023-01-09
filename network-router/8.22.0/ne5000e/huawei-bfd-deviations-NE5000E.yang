@@ -1,0 +1,561 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bfd-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-bfd-deviations-NE5000E";
+  prefix bfd-devs-NE5000E;
+
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bfd module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef display-type-deviations {
+    type enumeration {
+      enum all {
+        value 0;
+        description
+          "All BFD sessions.";
+      }
+      enum discriminator {
+        value 4;
+        description
+          "Discriminator-specified BFD session.";
+      }
+    }
+    description
+      "BFD session type.";
+  }
+
+  typedef link-type-deviations {
+    type enumeration {
+      enum ip {
+        value 0;
+        description
+          "IP.";
+      }
+      enum ldp-lsp {
+        value 1;
+        description
+          "LDP LSP.";
+      }
+      enum static-lsp {
+        value 2;
+        description
+          "Static LSP.";
+      }
+      enum te-lsp {
+        value 3;
+        description
+          "TE LSP.";
+      }
+      enum te-tunnel {
+        value 4;
+        description
+          "TE tunnel.";
+      }
+      enum ldp-tunnel {
+        value 5;
+        description
+          "LDP tunnel.";
+      }
+      enum vsi-pw {
+        value 7;
+        description
+          "VSI pseudo wire.";
+      }
+      enum p2mp-te {
+        value 8;
+        description
+          "P2MP TE.";
+      }
+      enum bgp-tunnel {
+        value 9;
+        description
+          "BGP tunnel.";
+      }
+      enum p2mp-ldp {
+        value 10;
+        description
+          "P2MP MLDP.";
+      }
+      enum sr-be-tunnel {
+        value 12;
+        description
+          "SR_BE tunnel.";
+      }
+      enum sid-list {
+        value 13;
+        description
+          "SID_LIST.";
+      }
+      enum flex-algo-tunnel {
+        value 14;
+        description
+          "Flex Algo tunnel.";
+      }
+    }
+    description
+      "BFD smp linktype.";
+  }
+
+  typedef session-type-deviations {
+    type enumeration {
+      enum single-hop-ip {
+        value 0;
+        description
+          "Single-hop session.";
+      }
+      enum multi-hop-ip {
+        value 1;
+        description
+          "Multi-hop session.";
+      }
+      enum static-lsp {
+        value 2;
+        description
+          "Static LSP session.";
+      }
+      enum ldp-lsp {
+        value 3;
+        description
+          "LDP LSP session.";
+      }
+      enum te-ldp {
+        value 4;
+        description
+          "TE LSP session.";
+      }
+      enum tunnel {
+        value 5;
+        description
+          "TE tunnel session.";
+      }
+      enum vsi-pw {
+        value 7;
+        description
+          "VSI PW session.";
+      }
+      enum p2mp-te {
+        value 8;
+        description
+          "P2MP TE session.";
+      }
+      enum ldp-tnl {
+        value 9;
+        description
+          "LDP tunnel session.";
+      }
+      enum bgp-tnl {
+        value 10;
+        description
+          "BGP tunnel session.";
+      }
+      enum p2mp-ldp {
+        value 11;
+        description
+          "P2MP MLDP session.";
+      }
+      enum sr-be-tnl {
+        value 13;
+        description
+          "SR_BE tunnel session.";
+      }
+      enum sid-list {
+        value 14;
+        description
+          "SID_LIST session.";
+      }
+      enum flex-algo-tnl {
+        value 15;
+        description
+          "Flex Algo tunnel session.";
+      }
+    }
+    description
+      "BFD session type.";
+  }
+
+  deviation "/bfd:bfd/bfd:global/bfd:echo-passive" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:global/bfd:basic-acl-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:lag-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:dot1q-vid-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:qinq-pe-vid-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:qinq-ce-vid-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:auth-algorithm-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:key-id-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:cipher-string-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:negotiation-timeout-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:unlimited-nego-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:unicast/bfd:one-arm-echo-destination-address-static-unicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:unicast/bfd:per-link-static-unicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:one-arm-echo-destination-address-static-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv4/bfd:per-link-auto-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:vxlan/bfd:min-tx-interval-auto-vxlan" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:vxlan/bfd:min-rx-interval-auto-vxlan" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:vxlan/bfd:destination-address-auto-vxlan" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:vxlan/bfd:source-address-auto-vxlan" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:vxlan/bfd:peer-mac-auto-vxlan" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:running/bfd:remote-demand-mode" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:running/bfd:acl-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:running/bfd:echo-tx-timer-id" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sbfd/bfd:reflector-discriminators/bfd:reflector-discriminator/bfd:track-group-name" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:authentication-keys" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:track-manager" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:statistics/bfd:pw-session-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:statistics/bfd:vxlan-session-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:statistics/bfd:evpn-vpws-session-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:demand-enable" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:pw-secondary" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:dot1q-vid" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:qinq-pe-vid" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:qinq-ce-vid" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:echo-passive" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:basic-acl-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:lag" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:evpl-instance-id" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:track-group-name" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:running/bfd:remote-demand-mode" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:running/bfd:acl-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:running/bfd:echo-tx-timer-id" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:crc-lsp-sessions" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:mul-cast-sessions/bfd:mul-cast-session/bfd:multi-cast-session-running/bfd:re-demand-mode" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:mul-cast-sessions/bfd:mul-cast-session/bfd:multi-cast-session-running/bfd:acl-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:mul-cast-sessions/bfd:mul-cast-session/bfd:multi-cast-session-running/bfd:echo-tx-timer-id" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:bfd-bundle-sessions/bfd:bfd-bundle-session/bfd:pw-secondary" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:track-manager-groups" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bfd:bfd/bfd:enable-trigger-if-down" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:global/bfd:process-central-slot" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:global/bfd:process-central-slot2" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:select-board-slot-static-ipv4" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+    deviate delete {
+      must '../destination-address-static-unicast-ipv4 and not(../out-if-name-static-unicast-ipv4)';
+    }
+    deviate add {
+      must '../destination-address-static-unicast-ipv4';
+    }
+    deviate add {
+      must "../is-set-track-if-static-ipv4='false'";
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:select-board-slot2-static-ipv4" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:min-tx-interval-multicast-ipv4" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:min-rx-interval-multicast-ipv4" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:unicast/bfd:min-tx-interval" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:unicast/bfd:min-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:unicast/bfd:min-echo-rx-interval" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:select-board-slot-static-ipv6" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+    deviate add {
+      must "../is-set-track-if-static-ipv6='false'";
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:select-board-slot2-static-ipv6" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:min-tx-interval-static-ipv6" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:min-rx-interval-static-ipv6" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:min-echo-rx-interval-static-ipv6" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ldp-lsp/bfd:min-tx-interval-static-ldp-lsp" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ldp-lsp/bfd:min-rx-interval-static-ldp-lsp" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv4/bfd:min-tx-interval-auto-ipv4" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv4/bfd:min-rx-interval-auto-ipv4" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv4/bfd:select-board-slot-auto-ipv4" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv4/bfd:select-board-slot2-auto-ipv4" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv6/bfd:min-tx-interval-auto-ipv6" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv6/bfd:min-rx-interval-auto-ipv6" {
+    deviate replace {
+      type uint32 {
+        range "10..1000";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv6/bfd:select-board-slot-auto-ipv6" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv6/bfd:select-board-slot2-auto-ipv6" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv6/bfd:per-link-auto-ipv6" {
+    deviate add {
+      must "../per-link-auto-ipv6='false'";
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:groups/bfd:group/bfd:sub-select-slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bfd:bfd/bfd:sbfd/bfd:authentication-keys/bfd:authentication-key/bfd:session-type" {
+    deviate add {
+      must "(contains(../destination-address,':') and (../session-type='sbfd-ip-multi-hop' or ../session-type='sbfd-sr-te-policy-segment-list')) or (not(contains(../destination-address,':')) and (../session-type='sbfd-lsp-tunnel' or ../session-type='sbfd-sr-te-policy-segment-list'))";
+    }
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:type" {
+    deviate replace {
+      type bfd-devs-NE5000E:session-type-deviations;
+    }
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:link-type" {
+    deviate replace {
+      type bfd-devs-NE5000E:link-type-deviations;
+    }
+  }
+  deviation "/bfd:reset-bfd-statistics/bfd:input/bfd:reset-type" {
+    deviate replace {
+      type bfd-devs-NE5000E:display-type-deviations;
+    }
+  }
+}

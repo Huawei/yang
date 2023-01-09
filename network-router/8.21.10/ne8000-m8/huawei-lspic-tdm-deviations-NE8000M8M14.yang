@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lspic-tdm-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-lspic-tdm-deviations-NE8000M8M14";
+  prefix "lspic-tdm-devs-NE8000M8M14";
+
+  import huawei-lspic-tdm {
+    prefix "lspic-tdm";
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configurations and statistics of time division multiplexing (TDM) interfaces.";
+  revision 2021-01-13 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/lspic-tdm:tdm/lspic-tdm:channel-serial/lspic-tdm:underrun-checktimes {
+    deviate not-supported;
+  }
+
+  deviation /ifm:ifm/ifm:interfaces/ifm:interface/lspic-tdm:tdm/lspic-tdm:channel-serial/lspic-tdm:stream-select-state {
+    deviate not-supported;
+  }
+  deviation /lspic-tdm:select-receiving-stream {
+    deviate not-supported;
+  }
+}

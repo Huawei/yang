@@ -1,0 +1,34 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oammgr {
+  namespace "urn:huawei:yang:huawei-oammgr";
+  prefix oammgr;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+  revision 2020-09-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "oammgr";
+  container oammgr {
+    presence "Enable OAMMGR";
+    description
+      "Configure the operation, administration and maintenance (OAM) association function.";
+  }
+}

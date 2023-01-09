@@ -1,0 +1,150 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-software-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-software-deviations-OC-NE-X8X16";
+  prefix software-devs-OC-NE-X8X16;
+
+  import huawei-software {
+    prefix software;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-software module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/software:software/software:global" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:startup-packages/software:startup-package/software:current-feature-packages" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:startup-packages/software:startup-package/software:next-feature-packages" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:startup-packages/software:startup-package/software:current-extended-system-packages" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:startup-packages/software:startup-package/software:next-extended-system-packages" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:packages/software:package/software:software-name" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:packages/software:package/software:package-type" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:packages/software:package/software:version" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:packages/software:package/software:feature-names" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:checkpoint-infos" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:operation-schedules" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:startup-features" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:upgrade-rollback-versions" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:upgrade-package-infos" {
+    deviate not-supported;
+  }
+  deviation "/software:software/software:upgrade-action-results" {
+    deviate not-supported;
+  }
+  deviation "/software:startup-by-mode/software:input/software:auto-sync" {
+    deviate not-supported;
+  }
+  deviation "/software:install-feature-software" {
+    deviate not-supported;
+  }
+  deviation "/software:uninstall-feature-software" {
+    deviate not-supported;
+  }
+  deviation "/software:upgrade-feature-software" {
+    deviate not-supported;
+  }
+  deviation "/software:startup-feature-software" {
+    deviate not-supported;
+  }
+  deviation "/software:reset-feature-software-next-startup" {
+    deviate not-supported;
+  }
+  deviation "/software:create-startup-checkpoint" {
+    deviate not-supported;
+  }
+  deviation "/software:delete-startup-checkpoint" {
+    deviate not-supported;
+  }
+  deviation "/software:check-startup-checkpoint" {
+    deviate not-supported;
+  }
+  deviation "/software:restore-startup-checkpoint" {
+    deviate not-supported;
+  }
+  deviation "/software:refresh-startup-secure-version-configuration" {
+    deviate not-supported;
+  }
+  deviation "/software:integrate-software-package/software:input/software:signature-backup-file" {
+    deviate not-supported;
+  }
+  deviation "/software:restore-software-package/software:input/software:signature-backup-file" {
+    deviate not-supported;
+  }
+  deviation "/software:in-service-upgrade-feature-software" {
+    deviate not-supported;
+  }
+  deviation "/software:rollback-feature-software" {
+    deviate not-supported;
+  }
+  deviation "/software:install-extended-system-software" {
+    deviate not-supported;
+  }
+  deviation "/software:uninstall-extended-system-software" {
+    deviate not-supported;
+  }
+  deviation "/software:upgrade-extended-system-software" {
+    deviate not-supported;
+  }
+  deviation "/software:startup-extended-system-software" {
+    deviate not-supported;
+  }
+  deviation "/software:reset-extended-system-software-next-startup" {
+    deviate not-supported;
+  }
+  deviation "/software:download-upgrade-package" {
+    deviate not-supported;
+  }
+  deviation "/software:load-upgrade-package" {
+    deviate not-supported;
+  }
+  deviation "/software:activate-upgrade-package" {
+    deviate not-supported;
+  }
+  deviation "/software:rollback-upgrade-package" {
+    deviate not-supported;
+  }
+  deviation "/software:delete-upgrade-package" {
+    deviate not-supported;
+  }
+}

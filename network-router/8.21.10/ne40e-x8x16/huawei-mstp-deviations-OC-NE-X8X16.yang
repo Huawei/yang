@@ -1,0 +1,101 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mstp-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-mstp-deviations-OC-NE-X8X16";
+  prefix mstp-devs-OC-NE-X8X16;
+
+  import huawei-mstp {
+    prefix mstp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-erps {
+    prefix erps;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mstp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef stp-mode-deviations {
+    type enumeration {
+      enum stp {
+        value 0;
+        description
+          "Spanning tree protocol mode.";
+      }
+      enum rstp {
+        value 2;
+        description
+          "Rapid spanning tree protocol mode.";
+      }
+      enum mstp {
+        value 3;
+        description
+          "Multiple ppanning tree protocol mode.";
+      }
+    }
+    description
+      "STP mode.";
+  }
+
+  deviation "/mstp:mstp/mstp:global/mstp:bridge-address" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:global/mstp:vstp-enable" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:default-process/mstp:flush-capability" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:processs/mstp:process/mstp:flush-capability" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:default-process/mstp:mode" {
+    deviate replace {
+      type mstp-devs-OC-NE-X8X16:stp-mode-deviations;
+    }
+  }
+  deviation "/mstp:mstp/mstp:processs/mstp:process/mstp:mode" {
+    deviate replace {
+      type mstp-devs-OC-NE-X8X16:stp-mode-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/mstp:mstp-attribute/mstp:vpls-sub-interface" {
+    deviate add {
+      must "current() = 'false' or not(../../erps:erps-attribute/erps:rings/erps:ring)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/mstp:mstp-attribute/mstp:enable" {
+    deviate add {
+      must "current() = 'false' or not(../../erps:erps-attribute/erps:rings/erps:ring)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/mstp:mstp-attribute/mstp:tc-snooping/mstp:enable" {
+    deviate delete {
+      must "current() = 'false' or ../../enable = 'false'";
+    }
+    deviate add {
+      must "current() = 'false' or (../../enable = 'false' and not(../../../erps:erps-attribute))";
+    }
+  }
+}

@@ -1,0 +1,215 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dhcp-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-dhcp-notification";
+  prefix dhcp-notification;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of DHCP-notification.";
+  revision 2021-02-01 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "dhcp";
+
+  notification relay-ip-unnumbered-table-threshold {
+    description
+      "The number of DHCP relay IP unnumbered entries on the device exceeds 80% of the upper limit.";
+    leaf current-number {
+      type uint32;
+      description
+        "Number of DHCP relay IP unnumbered entries on the device.";
+    }
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCP relay IP unnumbered entries on the device.";
+    }
+  }
+  notification relay-ip-unnumbered-table-threshold-resume {
+    description
+      "The number of DHCP relay IP unnumbered entries on the device falls below 70% of the upper limit.";
+    leaf current-number {
+      type uint32;
+      description
+        "Number of DHCP relay IP unnumbered entries on the device.";
+    }
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCP relay IP unnumbered entries on the device.";
+    }
+  }
+  notification relay-ip-unnumbered-table-exhaust {
+    description
+      "The number of DHCP relay IP unnumbered entries on the device reaches the upper limit.";
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCP relay IP unnumbered entries on the device.";
+    }
+  }
+  notification relay-ip-unnumbered-table-exhaust-resume {
+    description
+      "The number of DHCP relay IP unnumbered entries on the device falls below 90% of the upper limit.";
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCP relay IP unnumbered entries on the device.";
+    }
+  }
+  notification snooping-binding-table-threshold {
+    description
+      "The number of DHCP snooping entries on the device exceeds 80% of the upper limit.";
+    leaf current-number {
+      type uint32;
+      description
+        "Number of DHCP snooping entries on the device.";
+    }
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCP snooping entries on the device.";
+    }
+  }
+  notification snooping-binding-table-threshold-resume {
+    description
+      "The number of DHCP snooping entries on the device falls below 70% of the upper limit.";
+    leaf current-number {
+      type uint32;
+      description
+        "Number of DHCP snooping entries on the device.";
+    }
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCP snooping entries on the device.";
+    }
+  }
+  notification snooping-binding-table-exhaust {
+    description
+      "The number of DHCP snooping entries on the device reaches the upper limit.";
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCP snooping entries on the device.";
+    }
+  }
+  notification snooping-binding-table-exhaust-resume {
+    description
+      "The number of DHCP snooping entries on the device falls below 90% of the upper limit.";
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCP snooping entries on the device.";
+    }
+  }
+  notification v6-relay-table-threshold {
+    description
+      "The number of DHCPv6 relay entries on the device exceeds 80% of the upper limit.";
+    leaf current-number {
+      type uint32;
+      description
+        "Number of DHCPv6 relay entries on the device.";
+    }
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCPv6 relay entries on the device.";
+    }
+  }
+  notification v6-relay-table-threshold-resume {
+    description
+      "The number of DHCPv6 relay entries on the device falls below 70% of the upper limit.";
+    leaf current-number {
+      type uint32;
+      description
+        "Number of DHCPv6 relay entries on the device.";
+    }
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCPv6 relay entries on the device.";
+    }
+  }
+  notification v6-relay-table-exhaust {
+    description
+      "The number of DHCPv6 relay entries on the device reaches the upper limit.";
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCPv6 relay entries on the device.";
+    }
+  }
+  notification v6-relay-table-exhaust-resume {
+    description
+      "The number of DHCPv6 relay entries on the device falls below 90% of the upper limit.";
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCPv6 relay entries on the device.";
+    }
+  }
+  notification v6-relay-ip-table-threshold {
+    description
+      "The number of DHCPv6 relay IP entries on the device exceeds 80% of the upper limit.";
+    leaf current-number {
+      type uint32;
+      description
+        "Number of DHCPv6 relay IP entries on the device.";
+    }
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCPv6 relay IP entries on the device.";
+    }
+  }
+  notification v6-relay-ip-table-threshold-resume {
+    description
+      "The number of DHCPv6 relay IP entries on the device falls below 70% of the upper limit.";
+    leaf current-number {
+      type uint32;
+      description
+        "Number of DHCPv6 relay IP entries on the device.";
+    }
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCPv6 relay IP entries on the device.";
+    }
+  }
+  notification v6-relay-ip-table-exhaust {
+    description
+      "The number of DHCPv6 relay IP entries on the device reaches the upper limit.";
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCPv6 relay IP entries on the device.";
+    }
+  }
+  notification v6-relay-ip-table-exhaust-resume {
+    description
+      "The number of DHCPv6 relay IP entries on the device falls below 90% of the upper limit.";
+    leaf max-number {
+      type uint32;
+      description
+        "Maximum number of DHCPv6 relay IP entries on the device.";
+    }
+  }
+}

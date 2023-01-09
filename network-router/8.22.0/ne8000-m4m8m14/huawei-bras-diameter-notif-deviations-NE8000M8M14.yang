@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-diameter-notif-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bras-diameter-notif-deviations-NE8000M8M14";
+  prefix bras-diameter-notif-devs-NE8000M8M14;
+
+  import huawei-bras-diameter-notif {
+    prefix bras-diameter-notif;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-diameter-notif module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-diameter-notif:diameter-enable-fail/bras-diameter-notif:upmng-instance" {
+    deviate not-supported;
+  }
+  deviation "/bras-diameter-notif:diameter-enable-success/bras-diameter-notif:upmng-instance" {
+    deviate not-supported;
+  }
+
+}

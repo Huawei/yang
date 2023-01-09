@@ -1,0 +1,281 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-forward-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-multicast-forward-deviations-NE8000-F1A";
+  prefix multicast-forward-devs-NE8000-F1A;
+
+  import huawei-multicast-forward {
+    prefix multicast-forward;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-bd {
+    prefix bd;
+  }
+
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-igmp-mld-snooping {
+    prefix ims;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-multicast-forward module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/multicast-forward:multicast-forward/multicast-forward:global/multicast-forward:reliability-enhance-enable" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:global/multicast-forward:fragment-enable" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-softswitchs" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:outbound-softswitchs" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:bind-softswitch" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:egress-forward-mode" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:spatial-multicast" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:random-detect" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/multicast-forward:multicast-forward" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/multicast-forward:multicast-forward/multicast-forward:backup" {
+    deviate not-supported;
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance" {
+    deviate delete {
+      must "count(../instance)+count(../../instance-2022d7s/instance-2022d7)+count(../../instance-softswitchs/instance-softswitch)<=16000";
+    }
+    deviate add {
+      must "count(../instance)+count(../../instance-2022d7s/instance-2022d7)<=16000";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance/multicast-forward:instance-id" {
+    deviate delete {
+      must "not(../../../instance-2022d7s/instance-2022d7[instance-id = current()] or ../../../instance-softswitchs/instance-softswitch[instance-id = current()])";
+    }
+    deviate add {
+      must "not(../../../instance-2022d7s/instance-2022d7[instance-id = current()])";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance/multicast-forward:instance-name" {
+    deviate delete {
+      must "not(../../../instance-2022d7s/instance-2022d7[instance-name = current()] or ../../../instance-softswitchs/instance-softswitch[instance-name = current()])";
+    }
+    deviate add {
+      must "not(../../../instance-2022d7s/instance-2022d7[instance-name = current()])";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7" {
+    deviate delete {
+      must "count(../instance-2022d7)+count(../../instances/instance)+count(../../instance-softswitchs/instance-softswitch)<=16000";
+    }
+    deviate add {
+      must "count(../instance-2022d7)+count(../../instances/instance)<=16000";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7/multicast-forward:instance-id" {
+    deviate delete {
+      must "not(../../../instances/instance[instance-id = current()] or ../../../instance-softswitchs/instance-softswitch[instance-id = current()])";
+    }
+    deviate add {
+      must "not(../../../instances/instance[instance-id = current()])";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7/multicast-forward:instance-name" {
+    deviate delete {
+      must "not(../../../instances/instance[instance-name = current()] or ../../../instance-softswitchs/instance-softswitch[instance-name = current()])";
+    }
+    deviate add {
+      must "not(../../../instances/instance[instance-name = current()])";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:outbounds/multicast-forward:outbound" {
+    deviate delete {
+      must "count(../outbound)+count(../../outbound-softswitchs/outbound-softswitch)<=16000";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:outbounds/multicast-forward:outbound/multicast-forward:outbound-id" {
+    deviate delete {
+      must "not(../../../outbound-softswitchs/outbound-softswitch[outbound-id = current()])";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:outbounds/multicast-forward:outbound/multicast-forward:outbound-name" {
+    deviate delete {
+      must "not(../../../outbound-softswitchs/outbound-softswitch[outbound-name = current()])";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-groups/multicast-forward:instance-group/multicast-forward:part-instances/multicast-forward:part-instance/multicast-forward:instance-id" {
+    deviate delete {
+      must "(../../../../../instances/instance[instance-id=current()] and not(../../../../../instance-2022d7s/instance-2022d7/instance-id[. = current()/../../part-instance/instance-id]) and not(../../../../../instance-softswitchs/instance-softswitch/instance-id[. = current()/../../part-instance/instance-id])) or (../../../../../instance-2022d7s/instance-2022d7[instance-id=current()] and not(../../../../../instances/instance/instance-id[. = current()/../../part-instance/instance-id]) and not(../../../../../instance-softswitchs/instance-softswitch/instance-id[. = current()/../../part-instance/instance-id])) or (../../../../../instance-softswitchs/instance-softswitch[instance-id=current()] and not(../../../../../instances/instance/instance-id[. = current()/../../part-instance/instance-id]) and not(../../../../../instances/instance/instance-id[. = current()/../../part-instance/instance-id]))";
+    }
+    deviate add {
+      must "(../../../../../instances/instance[instance-id=current()] and not(../../../../../instance-2022d7s/instance-2022d7/instance-id[. = current()/../../part-instance/instance-id])) or (../../../../../instance-2022d7s/instance-2022d7[instance-id=current()] and not(../../../../../instances/instance/instance-id[. = current()/../../part-instance/instance-id]))";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-groups/multicast-forward:instance-group/multicast-forward:part-instances/multicast-forward:part-instance/multicast-forward:instance-name" {
+    deviate delete {
+      must "(/multicast-forward/nat/instances/instance[instance-id=current()/../instance-id][instance-name=current()]) or (/multicast-forward/nat/instance-2022d7s/instance-2022d7[instance-id=current()/../instance-id][instance-name = current()]) or (/multicast-forward/nat/instance-softswitchs/instance-softswitch[instance-id=current()/../instance-id][instance-name = current()])";
+    }
+    deviate add {
+      must "(/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance[multicast-forward:instance-id=current()/../multicast-forward:instance-id][multicast-forward:instance-name=current()]) or (/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7[multicast-forward:instance-id=current()/../multicast-forward:instance-id][multicast-forward:instance-name = current()])";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:outbound-groups/multicast-forward:outbound-group/multicast-forward:part-outbounds/multicast-forward:part-outbound/multicast-forward:outbound-id" {
+    deviate replace {
+      type leafref {
+        path "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:outbounds/multicast-forward:outbound/multicast-forward:outbound-id";
+      }
+    }
+    deviate delete {
+      must "(../../../../../outbounds/outbound[outbound-id=current()] and not(../../../../../outbound-softswitchs/outbound-softswitch/outbound-id[. = current()/../../part-outbound/outbound-id])) or (../../../../../outbound-softswitchs/outbound-softswitch[outbound-id=current()] and not(../../../../../outbounds/outbound/outbound-id[. = current()/../../part-outbound/outbound-id]))";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:outbound-groups/multicast-forward:outbound-group/multicast-forward:part-outbounds/multicast-forward:part-outbound/multicast-forward:outbound-name" {
+    deviate replace {
+      type leafref {
+        path "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:outbounds/multicast-forward:outbound[multicast-forward:outbound-id=current()/../multicast-forward:outbound-id]/multicast-forward:outbound-name";
+      }
+    }
+    deviate delete {
+      must "(/multicast-forward/nat/outbounds/outbound[outbound-id=current()/../outbound-id][outbound-name=current()]) or (/multicast-forward/nat/outbound-softswitchs/outbound-softswitch[outbound-id=current()/../outbound-id][outbound-name = current()])";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:stream-learn-features/multicast-forward:instances/multicast-forward:instance/multicast-forward:instance-id" {
+    deviate replace {
+      type leafref {
+        path "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7/multicast-forward:instance-id";
+      }
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:l2-egress-statistics/multicast-forward:vlan-enables/multicast-forward:vlan-enable/multicast-forward:vlan-id" {
+    deviate add {
+      must "(/vlan:vlan/vlan:vlans/vlan:vlan[vlan:id=current()]/ims:igmp-snooping/ims:global/ims:enable = 'true')";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:l2-egress-statistics/multicast-forward:vsi-enables/multicast-forward:vsi-enable/multicast-forward:vsi-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+      }
+    }
+    deviate add {
+      must "(/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance[l2vpn:name=current()][l2vpn:type='vpls']/l2vpn:vpls/ims:igmp-snooping/ims:global/ims:enable = 'true')";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:l2-egress-statistics/multicast-forward:bd-enables/multicast-forward:bd-enable/multicast-forward:bd-id" {
+    deviate replace {
+      type leafref {
+        path "/bd:bd/bd:instances/bd:instance/bd:id";
+      }
+    }
+    deviate add {
+      must "(/bd:bd/bd:instances/bd:instance[bd:id=current()]/ims:igmp-snooping/ims:global/ims:enable = 'true')";
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:l2-egress-statistics/multicast-forward:vsi-statistics/multicast-forward:vsi-statistic/multicast-forward:vsi-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+      }
+    }
+  }
+  deviation "/multicast-forward:multicast-forward/multicast-forward:l2-egress-statistics/multicast-forward:bd-statistics/multicast-forward:bd-statistic/multicast-forward:bd-id" {
+    deviate replace {
+      type leafref {
+        path "/bd:bd/bd:instances/bd:instance/bd:id";
+      }
+    }
+  }
+  deviation "/multicast-forward:reset-vsi-egress-statistics/multicast-forward:input/multicast-forward:vsi-name" {
+    deviate replace {
+      type leafref {
+        path "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:name";
+      }
+    }
+  }
+  deviation "/multicast-forward:reset-bd-egress-statistics/multicast-forward:input/multicast-forward:bd-id" {
+    deviate replace {
+      type leafref {
+        path "/bd:bd/bd:instances/bd:instance/bd:id";
+      }
+    }
+  }
+  deviation "/multicast-forward:set-stream-learn/multicast-forward:input/multicast-forward:set-stream-learn-lists/multicast-forward:set-stream-learn-list/multicast-forward:instance-id" {
+    deviate replace {
+      type leafref {
+        path "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7/multicast-forward:instance-id";
+      }
+    }
+  }
+  deviation "/multicast-forward:set-stream-learn-global/multicast-forward:input/multicast-forward:set-stream-learn-global-lists/multicast-forward:set-stream-learn-global-list/multicast-forward:instance-id" {
+    deviate replace {
+      type leafref {
+        path "/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7/multicast-forward:instance-id";
+      }
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/multicast-forward:behavior-bind-multicast-nat-instance/multicast-forward:behavior-bind-multicast-nat/multicast-forward:instance-id" {
+    deviate delete {
+      must "(/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance[multicast-forward:instance-id=current()]) or (/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7[multicast-forward:instance-id=current()]) or (/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-softswitchs/multicast-forward:instance-softswitch[multicast-forward:instance-id=current()])";
+    }
+    deviate add {
+      must "(/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance[multicast-forward:instance-id=current()]) or (/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7[multicast-forward:instance-id=current()])";
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/multicast-forward:behavior-bind-multicast-nat-instance/multicast-forward:behavior-bind-multicast-nat/multicast-forward:instance-name" {
+    deviate delete {
+      must "(/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance[multicast-forward:instance-id=current()/../multicast-forward:instance-id][multicast-forward:instance-name=current()]) or (/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7[multicast-forward:instance-id=current()/../multicast-forward:instance-id][multicast-forward:instance-name = current()]) or (/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-softswitchs/multicast-forward:instance-softswitch[multicast-forward:instance-id=current()/../multicast-forward:instance-id][multicast-forward:instance-name = current()])";
+    }
+    deviate add {
+      must "(/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instances/multicast-forward:instance[multicast-forward:instance-id=current()/../multicast-forward:instance-id][multicast-forward:instance-name = current()]) or (/multicast-forward:multicast-forward/multicast-forward:nat/multicast-forward:instance-2022d7s/multicast-forward:instance-2022d7[multicast-forward:instance-id=current()/../multicast-forward:instance-id][multicast-forward:instance-name = current()])";
+    }
+  }
+
+}

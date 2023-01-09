@@ -1,0 +1,148 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-acl-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-openconfig-acl-deviations-OC-NE-X8X16";
+  prefix oc-acl-devs-OC-NE-X8X16;
+
+  import openconfig-acl {
+    prefix oc-acl;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import openconfig-packet-match-types {
+    prefix oc-pkt-match-types;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for openconfig-acl module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-acl:acl/oc-acl:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:config/oc-acl:description" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:l2" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config/oc-acl:hop-limit" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv6" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config/oc-acl:tcp-flags" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:input-interface" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config/oc-acl:log-action" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:interfaces" {
+    deviate not-supported;
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:config/oc-acl:name" {
+    deviate replace {
+      type string {
+        length "1..64";
+        pattern '(3[0-9]{3})|([a-zA-Z]([^\s]*))';
+      }
+    }
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:config/oc-acl:type" {
+    deviate replace {
+      type identityref {
+        base oc-acl:ACL_IPV4;
+      }
+    }
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:config/oc-acl:description" {
+    deviate replace {
+      type string {
+        length "1..127";
+      }
+    }
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry" {
+    deviate add {
+      must 'ipv4/config and actions/config';
+    }
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:config/oc-acl:sequence-id" {
+    deviate replace {
+      type uint32 {
+        range "0..4294967294";
+      }
+    }
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config/oc-acl:protocol" {
+    deviate replace {
+      type union {
+        type identityref {
+          base oc-pkt-match-types:IP_PROTOCOL;
+        }
+        type uint8;
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config/oc-acl:source-port" {
+    deviate add {
+      default "ANY";
+    }
+  }
+  deviation "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config/oc-acl:destination-port" {
+    deviate add {
+      default "ANY";
+    }
+  }
+  ext:deviation-ext "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config/oc-acl:source-port" {
+    ext:deviate-ext "add" {
+      when '../../../oc-acl:ipv4/oc-acl:config/oc-acl:protocol=6 or ../../../oc-acl:ipv4/oc-acl:config/oc-acl:protocol=17';
+    }
+  }
+  ext:deviation-ext "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config/oc-acl:destination-port" {
+    ext:deviate-ext "add" {
+      when '../../../oc-acl:ipv4/oc-acl:config/oc-acl:protocol=6 or ../../../oc-acl:ipv4/oc-acl:config/oc-acl:protocol=17';
+    }
+  }
+}

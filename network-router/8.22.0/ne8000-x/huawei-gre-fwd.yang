@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-gre-fwd {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-gre-fwd";
+  prefix gre-fwd;
+  import huawei-gre {
+    prefix gre;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Unicast forward GRE configuration.";
+  revision 2020-08-13 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name "forwarding";
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/gre:gre/gre:gre-tunnel"{
+    description
+      "Unicast forward configuration to the GRE module.";
+    container unicast-forward {
+      description
+        "Configure GRE unicast forward.";
+        leaf tcp-mss {
+          type uint16 {
+            range "32..9500";
+          }
+          units "Byte";
+          description
+            "Maximum Segment Size of an interface.";
+      }
+    }
+  }
+}

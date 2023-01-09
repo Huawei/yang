@@ -1,0 +1,86 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-basic-access-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bras-basic-access-deviations-NE8000M8M14";
+  prefix bras-basic-access-devs-NE8000M8M14;
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-basic-access module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-basic-access:bras-basic-access/bras-basic-access:carry-up-id" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-basic-access:access-delay/bras-basic-access:access-delay/bras-basic-access:backup" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-leaseline/bras-basic-access:layer2-leaseline/bras-basic-access:access-delay/bras-basic-access:access-delay/bras-basic-access:backup" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-cu-controller:remote-up-boards/bras-cu-controller:remote-up-board/bras-basic-access:bras" {
+    deviate not-supported;
+  }
+  deviation "/bras-basic-access:bras-basic-access/bras-basic-access:access-delay-slots/bras-basic-access:access-delay-slot/bras-basic-access:slot" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:mpu-boards/devm:mpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-basic-access:ipv4-basic-access/bras-basic-access:user-max-session/bras-basic-access:number" {
+    deviate replace {
+      type uint32 {
+        range "0..262144";
+      }
+    }
+  }
+
+}

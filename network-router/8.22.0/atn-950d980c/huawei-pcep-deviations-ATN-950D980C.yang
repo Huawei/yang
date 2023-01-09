@@ -1,0 +1,114 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pcep-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-pcep-deviations-ATN-950D980C";
+  prefix pcep-devs-ATN-950D980C;
+
+  import huawei-pcep {
+    prefix pcep;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-pcep module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/pcep:pcep/pcep:session-car/pcep:ipv4/pcep:cir" {
+    deviate replace {
+      default "1";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/pcep:pcep/pcep:session-car/pcep:ipv4/pcep:cbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+    }
+    deviate replace {
+      default "2";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/pcep:pcep/pcep:session-car/pcep:ipv4/pcep:pir" {
+    deviate replace {
+      default "400";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/pcep:pcep/pcep:session-car/pcep:ipv4/pcep:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+    }
+    deviate replace {
+      default "600";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/pcep:pcep/pcep:micro-isolation-car/pcep:ipv4/pcep:cir" {
+    deviate replace {
+      default "1";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/pcep:pcep/pcep:micro-isolation-car/pcep:ipv4/pcep:cbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+    }
+    deviate replace {
+      default "10";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/pcep:pcep/pcep:micro-isolation-car/pcep:ipv4/pcep:pir" {
+    deviate replace {
+      default "400";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/pcep:pcep/pcep:micro-isolation-car/pcep:ipv4/pcep:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+    }
+    deviate replace {
+      default "600";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+}

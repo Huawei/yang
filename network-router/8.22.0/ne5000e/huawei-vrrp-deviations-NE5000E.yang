@@ -1,0 +1,184 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vrrp-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-vrrp-deviations-NE5000E";
+  prefix vrrp-devs-NE5000E;
+
+  import huawei-vrrp {
+    prefix vrrp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-efm {
+    prefix efm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-vrrp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:smooth-switch-enable" {
+    deviate not-supported;
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:smooth-switch-time" {
+    deviate not-supported;
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:unicast-port" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:hold-multi" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/vrrp:vrrp/vrrp:backup-groups/vrrp:arpsend-simple" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/vrrp:vrrp/vrrp:backup-groups/vrrp:advertise-send-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/vrrp:vrrp/vrrp:track-admins" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:hold-multiper" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:vrrp-type/vrrp:member-vrrp/vrrp:arp-copy-to-member" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:vrrp-type/vrrp:unicast" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:virtual-ips/vrrp:virtual-ip/vrrp:mask" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:virtual-ips/vrrp:virtual-ip/vrrp:vgmp-role" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:track-mtgrps" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:track-nqas" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:track-ip-routes/vrrp:track-ip-route/vrrp:track-mode" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:statistics/vrrp:send-timeerr-num" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:statistics/vrrp:receive-timeerr-num" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:statistics/vrrp:send-reply-num" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:statistics/vrrp:receive-reply-num" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:vgmp-role" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:vrrp6-type/vrrp:member/vrrp:na-copy-to-member" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:track-mtgrps" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:track-ipv6-routes/vrrp:track-ipv6-route/vrrp:track-mode" {
+    deviate not-supported;
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:gratuitous-timeout" {
+    deviate replace {
+      default "120";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group" {
+    deviate delete {
+      must "((../../../../ifm:type='LoopBack') and vrrp:peer-addr) or (../../../../ifm:type!='LoopBack')";
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:cir" {
+    deviate replace {
+      type uint32 {
+        range "0..325";
+      }
+    }
+  }
+  deviation "/vrrp:vrrp/vrrp:global/vrrp:vrrp-session-car/vrrp:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..325";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:preempt/vrrp:delay-time" {
+    deviate replace {
+      type uint16 {
+        range "0..3600";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:adver-interval" {
+    deviate replace {
+      type uint32 {
+        range "1000..255000";
+      }
+    }
+    deviate add {
+      must '((../adver-interval) mod 1000 = 0)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:track-3ahs/vrrp:track-3ah" {
+    deviate replace {
+      max-elements 1;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/vrrp:vrrp/vrrp:groups/vrrp:group/vrrp:track-3ahs/vrrp:track-3ah/vrrp:track-if-name" {
+    deviate add {
+      must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/efm:efm/efm:session/efm:state='enable'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6" {
+    deviate add {
+      must "((count(track-bfds/track-bfd[bfd-type='normal'])<=8) and (count(track-bfds/track-bfd[bfd-type='link'])<=8) and (count(track-bfds/track-bfd[bfd-type='peer'])<=1)) or not(track-bfds/track-bfd)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:preempt/vrrp:delay-time" {
+    deviate replace {
+      type uint16 {
+        range "0..3600";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/vrrp:vrrp6/vrrp:group6s/vrrp:group6/vrrp:adver-interval" {
+    deviate replace {
+      type uint32 {
+        range "1000..40950";
+      }
+    }
+    deviate add {
+      must '((../adver-interval) mod 10 = 0)';
+    }
+  }
+}

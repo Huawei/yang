@@ -1,0 +1,493 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-rip-type {
+  belongs-to huawei-rip {
+    prefix rip;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "RIP type defined file.";
+  revision 2020-03-13 {
+    description
+      "Modify the format specification.";
+    reference "Huawei private.";
+  }
+  revision 2020-01-03 {
+    description
+      "Modify description format issues.";
+    reference 
+      "Huawei private.";
+  }
+  revision 2019-12-16 {
+    description
+      "Add rip import protocol type and rip default route type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-04-04 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef rip-def-route {
+    type enumeration {
+      enum "match-default" {
+        value 1;
+        description
+          "Specify that the default route will be originated only if there is a default route learned from another process or protocol in the RM module.";
+      }
+      enum "always" {
+        value 2;
+        description
+          "Specify that the default route is originated always without any condition.";
+      }
+      enum "route-policy" {
+        value 3;
+        description
+          "Specify that the default route will be originated only if a route matching the route-policy exists in the RM module.";
+      }
+      enum "route-filter" {
+        value 5;
+        description
+          "Specify that the default route will be originated only if a route matching the route-filter exists in the RM module.";
+      }
+    }
+    description
+      "RIP default route.";
+  }
+  typedef rip-bfd-type {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "This flag indicates that the BFD type on the interface is None.";
+      }
+      enum "dynamic" {
+        value 1;
+        description
+          "This flag indicates that the BFD type on the interface is Dynamic.";
+      }
+      enum "static" {
+        value 2;
+        description
+          "This flag indicates that the BFD type on the interface is Static.";
+      }
+      enum "block" {
+        value 3;
+        description
+          "This flag indicates that the BFD type on the interface is Block.";
+      }
+    }
+    description
+      "RIP bfd type.";
+  }
+  typedef rip-enable-flag {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "This is used for disabling RIP configurations.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "This is used for enabling RIP configurations.";
+      }
+    }
+    description
+      "RIP enable flag.";
+  }
+  typedef rip-summ-enable-flag {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "This flag indicates that the summary configuration is disabled.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "This flag indicates that the summary configuration is enabled.";
+      }
+      enum "enable-always" {
+        value 2;
+        description
+          "This flag indicates that the summary configuration is enabled always.";
+      }
+    }
+    description
+      "RIP summary enable flag.";
+  }
+  typedef rip-version-type {
+    type enumeration {
+      enum "rip-version-1" {
+        value 1;
+        description
+          "The RIP version of the interface is set to RIP-1, a device sends only RIP-1 packets in broadcast mode and receives the RIP-1 packets that are sent in broadcast mode.";
+      }
+      enum "rip-version-2" {
+        value 2;
+        description
+          "Indicates that RIP-2 packets are sent in multicast mode.";
+      }
+      enum "rip-version-2-comp" {
+        value 3;
+        description
+          "Indicates that RIP-2 packets are sent in broadcast mode.";
+      }
+      enum "rip-version-default" {
+        value 5;
+        description
+          "Default version configuration on an interface.";
+      }
+    }
+    description
+      "RIP version type.";
+  }
+  typedef rip-auth {
+    type enumeration {
+      enum "none" {
+        value 1;
+        description
+          "Specify none authentication.";
+      }
+      enum "simple" {
+        value 2;
+        description
+          "Specify simple authentication.";
+      }
+      enum "usual" {
+        value 3;
+        description
+          "Specify huawei as the authentication password.";
+      }
+      enum "md5-keychain" {
+        value 4;
+        description
+          "Specify keychain as the authentication password.";
+      }
+      enum "md5-keyid" {
+        value 5;
+        description
+          "Specify key ID authentication.";
+      }
+      enum "hmac-sha256" {
+        value 6;
+        description
+          "Specify encrypted authentication.";
+      }
+    }
+    description
+      "RIP authentication.";
+  }
+  typedef rip-proto-type {
+    type enumeration {
+      enum "direct" {
+        value 1;
+        description
+          "Import direct routes.";
+      }
+      enum "ospfv2" {
+        value 2;
+        description
+          "Import OSPFv2 routes.";
+      }
+      enum "isis" {
+        value 3;
+        description
+          "Import ISIS routes.";
+      }
+      enum "static" {
+        value 4;
+        description
+          "Import static routes.";
+      }
+      enum "rip" {
+        value 5;
+        description
+          "Import RIP routes.";
+      }
+      enum "bgp" {
+        value 6;
+        description
+          "Import BGP routes.";
+      }
+      enum "none" {
+        value 9;
+        description
+          "No protocol type is specified.";
+      }
+      enum "unr" {
+        value 11;
+        description
+          "Import UNR routes.";
+      }
+    }
+    description
+      "RIP protocol type.";
+  } 
+  typedef rip-imp-prototype {
+    type enumeration {
+      enum "direct" {
+        value 1;
+        description
+          "Import direct routes.";
+      }
+      enum "ospfv2" {
+        value 2;
+        description
+          "Import OSPFv2 routes.";
+      }
+      enum "isis" {
+        value 3;
+        description
+          "Import ISIS routes.";
+      }
+      enum "static" {
+        value 4;
+        description
+          "Import static routes.";
+      }
+      enum "rip" {
+        value 5;
+        description
+          "Import RIP routes.";
+      }
+      enum "bgp" {
+        value 6;
+        description
+          "Import BGP routes.";
+      }
+      enum "unr" {
+        value 11;
+        description
+          "Import UNR routes.";
+      }
+    }
+    description
+      "RIP import protocol type.";
+  } 
+  typedef rip-interface-state {
+    type enumeration {
+      enum "no-state" {
+        value 0;
+        description
+          "No state.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "Down state.";
+      }
+      enum "up" {
+        value 2;
+        description
+          "Up state.";
+      }
+      enum "board-remove" {
+        value 3;
+        description
+          "Board remove state.";
+      }
+      enum "down-board-remove" {
+        value 4;
+        description
+          "Down for board remove state.";
+      }
+      enum "up-board-remove" {
+        value 5;
+        description
+          "Up for board remove state.";
+      }
+    }
+    description
+      "RIP interface state.";
+  }
+  typedef rip-packet-version-recv {
+    type enumeration {
+      enum "ripv1" {
+        value 1;
+        description
+          "Ripv1.";
+      }
+      enum "ripv2-multicast-and-broadcast" {
+        value 2;
+        description
+          "RIPv2 multicast and broadcast.";
+      }
+      enum "ripv1-packets-ripv2-multicast-and-broadcast" {
+        value 3;
+        description
+          "RIPv1 packets and RIPv2 multicast and broadcast.";
+      }
+      enum "none" {
+        value 4;
+        description
+          "None.";
+      }
+    }
+    description
+      "Type of packets received by the interface.";
+  } 
+  typedef rip-packet-version-send {
+    type enumeration {
+      enum "ripv1" {
+        value 1;
+        description
+          "RIPv1.";
+      }
+      enum "ripv2-multicast" {
+        value 2;
+        description
+          "RIPv2 multicast.";
+      }
+      enum "ripv2-broadcast" {
+        value 3;
+        description
+          "RIPv2 broadcast.";
+      }
+      enum "none" {
+        value 4;
+        description
+          "None.";
+      }
+    }
+    description
+      "Type of packets sent by the interface.";
+  }
+  typedef rip-bfd-state {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown state.";
+      }
+      enum "down" {
+        value 1;
+        description
+          "Down state.";
+      }
+      enum "up" {
+        value 2;
+        description
+          "Up state.";
+      }
+    }
+    description
+      "BFD state for rip.";
+  }
+  typedef ecmp-group-flag {
+    type enumeration {
+      enum "URT" {
+        value 0;
+        description
+          "Unicast route.";
+      }
+      enum "D" {
+        value 1;
+        description
+          "Direct route.";
+      }
+	  enum "URT6" {
+        value 2;
+        description
+          "Unicast IPv6 route.";
+      }
+    }
+    description
+      "Route attribute flag for ecmp group.";
+  }
+  typedef rip-nbr-down-reason {
+    type enumeration {
+      enum "bfd-session-down" {
+        value 0;
+        description
+          "BFD Session Down.";
+      }
+      enum "interface-down" {
+        value 1;
+        description
+          "Interface Down.";
+      }
+      enum "timeout-normal" {
+        value 2;
+        description
+          "Timeout in normal processing.";
+      }
+      enum "timeout-message-processing" {
+        value 3;
+        description
+          "Timeout in message processing.";
+      }
+      enum "configuration-change" {
+        value 4;
+        description
+          "Configuration Change.";
+      }
+      enum "received-worst-metric-routes" {
+        value 5;
+        description
+          "Received Worst Metric Routes.";
+      }
+      enum "unknown" {
+        value 6;
+        description
+          "Unknown reason.";
+      }
+    }
+    description
+      "Reason why a neighbor went Down.";
+  }
+  typedef rip-route-source-type {
+    type enumeration {
+      enum "learnt" {
+        value 1;
+        description
+          "Learnt.";
+      }
+      enum "imported" {
+        value 2;
+        description
+          "Imported.";
+      }
+      enum "rip-interface" {
+        value 3;
+        description
+          "Rip-interface.";
+      }
+      enum "perm" {
+        value 4;
+        description
+          "Perm.";
+      }
+      enum "classful-summary" {
+        value 5;
+        description
+          "Classful summary.";
+      }
+      enum "if-summary" {
+        value 6;
+        description
+          "Interface summary.";
+      }
+      enum "default-route-originate" {
+        value 7;
+        description
+          "Default route originate.";
+      }
+    }
+    description
+      "Route source.";
+  }
+}

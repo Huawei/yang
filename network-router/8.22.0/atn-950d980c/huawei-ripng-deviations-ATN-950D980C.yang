@@ -1,0 +1,53 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ripng-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-ripng-deviations-ATN-950D980C";
+  prefix ripng-devs-ATN-950D980C;
+
+  import huawei-ripng {
+    prefix ripng;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-if-ip {
+    prefix if-ip;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ripng module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/ripng:ripng/ripng:processs/ripng:process/ripng:import-routes/ripng:import-route/ripng:policy-type/ripng:route-filter" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ripng:ripng/ripng:processs/ripng:process/ripng:interfaces/ripng:interface/ripng:name" {
+    deviate delete {
+      must '../../../../../../ni:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name and /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6';
+    }
+    deviate add {
+      must '../../../../../../ni:name=/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name and (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ip:ipv6 or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if[if-ip:name=current()])';
+    }
+  }
+}

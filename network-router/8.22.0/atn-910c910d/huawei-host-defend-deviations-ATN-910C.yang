@@ -1,0 +1,83 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-host-defend-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-host-defend-deviations-ATN-910C";
+  prefix host-defend-devs-ATN-910C;
+
+  import huawei-host-defend {
+    prefix host-defend;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-host-defend module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef packet-header-link-type-deviations {
+    type enumeration {
+      enum ethernet {
+        value 1;
+        description
+          "Ethernet of link type.";
+      }
+      enum ppp {
+        value 2;
+        description
+          "PPP protocol of link type.";
+      }
+      enum hdlc {
+        value 3;
+        description
+          "HDLC protocol of link type.";
+      }
+    }
+    description
+      "Packet header link type.";
+  }
+
+  deviation "/host-defend:host-defend/host-defend:management-plane-defend/host-defend:slot-plys" {
+    deviate not-supported;
+  }
+  deviation "/host-defend:host-defend/host-defend:management-plane-defend/host-defend:slot-stats" {
+    deviate not-supported;
+  }
+  deviation "/host-defend:host-defend/host-defend:fragment-car-stats" {
+    deviate not-supported;
+  }
+  deviation "/host-defend:reset-gtsm-stats/host-defend:input/host-defend:slot-id" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/host-defend:management-plane-defend-slot" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/host-defend:management-plane-defend-slot" {
+    deviate not-supported;
+  }
+  deviation "/host-defend:start-packet-header-obtain/host-defend:input/host-defend:interface-or-link-type/host-defend:link-type-based/host-defend:link-type" {
+    deviate replace {
+      type host-defend-devs-ATN-910C:packet-header-link-type-deviations;
+    }
+  }
+  deviation "/host-defend:stop-packet-header-obtain/host-defend:input/host-defend:type/host-defend:condition-based/host-defend:interface-or-link-type/host-defend:link-type-based/host-defend:link-type" {
+    deviate replace {
+      type host-defend-devs-ATN-910C:packet-header-link-type-deviations;
+    }
+  }
+}

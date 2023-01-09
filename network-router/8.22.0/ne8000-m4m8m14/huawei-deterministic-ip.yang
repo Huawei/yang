@@ -1,0 +1,455 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-deterministic-ip {
+  namespace "urn:huawei:yang:huawei-deterministic-ip";
+  prefix deterministic-ip;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-qos {
+    prefix qos;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Deterministic IP.";
+  revision 2022-10-11 {
+    description
+      "Modify maxsize of fixed-packet-size and max-packet-size.";
+    reference
+      "Huawei private.";
+  }
+
+  revision 2022-02-20 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name "qos";
+  typedef direction-type {
+    type enumeration {
+      enum "inbound" {
+        value 0; 
+        description
+          "Inbound.";
+      }
+    }
+    description
+      "Direction type.";
+  }
+
+  typedef ability-type {
+    type enumeration {
+      enum "supported" {
+        value 0;
+        description
+          "Supported.";
+      }
+      enum "unsupported" {
+        value 1;
+        description
+          "Unsupported.";
+      }
+    }
+    description
+      "Ability type.";
+  }
+
+  typedef enough-type {
+    type enumeration {
+      enum "enough" {
+        value 0;
+        description
+          "Enough.";
+      }
+      enum "not-enough" {
+        value 1;
+        description
+          "Not enough.";
+      }
+    }
+    description
+      "Enough type.";
+  }
+
+  container deterministic-ip {
+    description
+      "Deterministic IP.";
+    container capabilitys {
+      config false;
+      description
+        "List of capability for deterministic IP.";
+      list capability {
+        key "slot-id";
+        description
+          "Operational data of capability for deterministic IP on the slot.";
+        leaf slot-id {
+          type string {
+            length "1..31";
+            pattern '((c[cl]c\d+/)|(\d+/))?\d+';
+          }
+          description
+            "Slot ID. The chassis ID must also be specified when have multi chassis, such as 3, clc1/3 or ccc1/3.";
+        }
+        container capability-state {
+          description
+            "Operational state of capability for deterministic IP.";
+          leaf ability {
+            type ability-type;
+            description
+              "Deterministic IP ability.";
+          }
+          leaf current-resource-status {
+            type enough-type;
+            description
+              "Current deterministic IP resource status.";
+          }
+          leaf resource-status-after-reboot {
+            type enough-type;
+            description
+              "Deterministic IP resource status after reboot.";
+          }
+          leaf maximum-remaining-interfaces {
+            type uint32;
+            description
+              "Maximum number of remaining interfaces that can be configured deterministic IP.";
+          }
+        }
+      }
+    }
+    container interface-statisticss {
+      config false;
+      description
+        "List of deterministic IP interface statistics.";
+      list interface-statistics {
+        key "interface-name";
+        description
+          "Statistics of the interface for deterministic IP.";
+        leaf interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Interface name.";
+        }
+        leaf protocol-pass-packets {
+          type uint64;
+          units "packet";
+          description
+            "Protocol packets pass through this port.";
+        }
+        leaf protocol-pass-bytes {
+          type uint64;
+          units "Byte";
+          description
+            "Protocol bytes pass through this port.";
+        }
+        leaf data-pass-packets {
+          type uint64;
+          units "packet";
+          description
+            "Data packets pass through this port.";
+        }
+        leaf data-pass-bytes {
+          type uint64;
+          units "Byte";
+          description
+            "Data bytes pass through this port.";
+        }
+        leaf data-drop-packets {
+          type uint64;
+          units "packet";
+          description
+            "Data packets discarded by this port.";
+        }
+        leaf data-drop-bytes {
+          type uint64;
+          units "Byte";
+          description
+            "Data bytes discarded by this port.";
+        }
+        leaf data-pass-packet-rate {
+          type uint64;
+          units "pps";
+          description
+            "Rate of the data packets passed during the latest 30 seconds for this port.";
+        }
+        leaf data-pass-byte-rate {
+          type uint64;
+          units "Byte/s";
+          description
+            "Rate of the data bytes passed during the latest 30 seconds for this port.";
+        }
+        leaf data-drop-packet-rate {
+          type uint64;
+          units "pps";
+          description
+            "Rate of the data packets droped during the latest 30 seconds for this port.";
+        }
+        leaf data-drop-byte-rate {
+          type uint64;
+          units "Byte/s";
+          description
+            "Rate of the data bytes droped during the latest 30 seconds for this port.";
+        }
+      }
+    }
+    container interface-shaper-statisticss {
+      config false;
+      description
+        "List of deterministic IP interface shaper statistics.";
+      list interface-shaper-statistics {
+        key "interface-name pe-vlan-id vlan-id direction policy-name classifier-name";
+        description
+          "Statistics of the interface for deterministic IP shaper.";
+        leaf interface-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Interface name.";
+        }
+        leaf pe-vlan-id {
+          type uint16 {
+            range "0..4094";
+          }
+          description
+            "Pe VLAN ID.";
+        }
+        leaf vlan-id {
+          type uint16 {
+            range "0..4094";
+          }
+          description
+            "VLAN ID.";
+        }
+        leaf direction {
+          type direction-type;
+          description
+            "Direction.";
+        }
+        leaf policy-name {
+          type leafref {
+            path "/qos:qos/qos:classifier-template/qos:traffic-policys/qos:traffic-policy/qos:name";
+          }
+          description
+            "Name of a traffic policy.";
+        }
+        leaf classifier-name {
+          type leafref {
+            path "/qos:qos/qos:classifier-template/qos:traffic-classifiers/qos:traffic-classifier/qos:name";
+          }
+          description
+            "Name of a traffic classifier.";
+        }
+        leaf over-packet-size-packets {
+          type uint64;
+          units "packet";
+          description
+            "Number of over max packet size packets.";
+        }
+        leaf over-shaper-packets {
+          type uint64;
+          units "packet";
+          description
+            "Number of over shaper packets.";
+        }
+      }
+    }
+  }
+
+  rpc reset-interface-statistics {
+    description
+      "To clear deterministic IP interface statistics.";
+    ext:node-ref "/deterministic-ip:deterministic-ip/deterministic-ip:interface-statisticss";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+    }
+  }
+
+  rpc reset-interface-shaper-statistics {
+    description
+      "To clear deterministic IP interface statistics.";
+    ext:node-ref "/deterministic-ip:deterministic-ip/deterministic-ip:interface-shaper-statisticss";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf direction {
+        type direction-type;
+        mandatory true;
+        description
+          "Direction.";
+      }
+      leaf policy-name {
+        type leafref {
+          path "/qos:qos/qos:classifier-template/qos:traffic-policys/qos:traffic-policy/qos:name";
+        }
+        mandatory true;
+        description
+          "Name of a traffic policy.";
+      }
+      leaf pe-vlan-id {
+        type uint16 {
+          range "0..4094";
+        }
+        mandatory true;
+        description
+          "Pe VLAN ID.";
+      }
+      leaf vlan-id {
+        type uint16 {
+          range "0..4094";
+        }
+        mandatory true;
+        description
+          "VLAN ID.";
+      }
+    }
+  }
+
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "Adds deterministic IP configuration to ifm interface model.";
+    container deterministic-ip {
+      description
+        "Configure Deterministic IP.";
+      container deterministic-ip-enable {
+        when "../../ifm:class='main-interface' and (../../ifm:type='Ethernet' or ../../ifm:type='GigabitEthernet' or " + 
+"../../ifm:type='10GE' or ../../ifm:type='25GE' or ../../ifm:type='40GE' or ../../ifm:type='50|100GE' or ../../ifm:type='50GE' or " + 
+"../../ifm:type='100GE' or ../../ifm:type='400GE' or ../../ifm:type='4x10GE' or ../../ifm:type='4x25GE' or ../../ifm:type='FlexE')";
+        must "not(../../qos:qos/qos:soft-pipe-alarms) and not(../../qos:qos/qos:hard-pipe-apply)";
+        presence "create deterministic-ip-enable";
+        description
+          "Enable/disable deterministic IP.";
+      }
+    }
+  }
+
+  augment "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior" {
+    description
+      "Adds deterministic IP configuration to traffic behavior model.";
+    container deterministic-ip {
+      description
+        "Configure Deterministic IP.";
+      container shaping {
+        presence "create shaping";
+        description
+          "Configure deterministic IP shaping.";
+        leaf packets-per-cycle {
+          type uint32 {
+            range "1..1000";
+          }
+          units "packet";
+          mandatory true;
+          description
+            "Packets per cycle.";
+        }
+        choice shaping-type {
+          mandatory true;
+          description
+            "Specify config type.";
+          case fixed-length-mode {
+            description
+              "Fixed length mode.";
+            leaf fixed-packet-size {
+              type uint32 {
+                range "46..9000";
+              }
+              units "Byte";
+              description
+                "Fixed packet size.";
+            }
+          }
+          case variable-length-mode {
+            description
+              "Variable length mode.";
+            leaf bytes-per-cycle {
+              type uint32 {
+                range "46..16000";
+              }
+              units "Byte";
+              mandatory true;
+              description
+                "Bytes per cycle.";
+            }
+            leaf max-packet-size {
+              type uint32 {
+                range "46..9000";
+              }
+              units "Byte";
+              mandatory true;
+              description
+                "Max packet size.";
+            }
+          }
+        }
+        leaf burst-multiples {
+          when "../fixed-packet-size";
+          type uint32 {
+            range "2..24";
+          }
+          description
+            "Burst multiple.";
+        }
+      }
+    }
+  }
+
+  augment "/devm:devm/devm:mpu-boards/devm:mpu-board" {
+    description
+      "Adds deterministic IP configuration to the mpu board.";
+    container deterministic-ip {
+      description
+        "Configure Deterministic IP.";
+      container deterministic-ip-enable {
+        presence "create deterministic-ip-enable";
+        description
+          "Enable/disable deterministic IP.";
+      }
+    }
+  }
+
+  augment "/devm:devm/devm:lpu-boards/devm:lpu-board" {
+    description
+      "Adds deterministic IP configuration to the lpu board.";
+    container deterministic-ip {
+      description
+        "Configure Deterministic IP.";
+      container deterministic-ip-enable {
+        presence "create deterministic-ip-enable";
+        description
+          "Enable/disable deterministic IP.";
+      }
+    }
+  }
+}

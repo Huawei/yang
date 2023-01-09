@@ -1,0 +1,231 @@
+/*
+Copyright (C) 2019-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-isis-srv6 {
+  namespace "urn:huawei:yang:huawei-isis-srv6";
+  prefix isis-srv6;
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-isis {
+    prefix isis;
+  }
+  import huawei-srv6 {
+    prefix srv6;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "ISIS segment routing IPv6 management.";
+  revision 2022-07-20 {
+    description
+      "Modify the condition of node locators.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-05-07 {
+    description
+      "Add container auto-sid-advertise etc.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-03-11 {
+    description
+      "Add container inter level protect etc.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-03 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Modify the description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-04-04 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "isis";
+  typedef encap-mode {
+    type enumeration {
+      enum "no-set" {
+        value 0;
+        description
+          "No-set mode.";
+      }
+      enum "insert" {
+        value 1;
+        description
+          "Insert mode.";
+      }
+      enum "encaps" {
+        value 2;
+        description
+          "Encaps mode.";
+      }
+    }
+    description
+      "Encapsulation mode for IS-IS SRv6 SID stack.";
+  }
+  augment /ni:network-instance/ni:instances/ni:instance/isis:isis/isis:sites/isis:site/isis:afs/isis:af {
+    description
+      "ISIS segment routing IPv6 augment to ISIS.";
+    container srv6 {
+      when "../../../../../../ni:name='_public_' and ../isis:type='afipv6'";
+      description
+        "Configure ISIS segment routing IPv6.";
+      container locators {
+        when "../../../../isis:cost-style='wide' or ../../../../isis:cost-style='transition'  or ../../../../isis:cost-style='wtransition'";
+        description
+          "List of segment routing IPv6 locator.";
+          list locator {
+          key "locator-name";
+          description
+          "Configure segment routing IPv6 locator.";
+          leaf locator-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srv6:locators/srv6:locator/srv6:name";
+            }
+            description
+              "Enable ISIS segment routing IPv6 with specified Locator.";
+          }
+          leaf auto-sid {
+            type boolean;
+            default "true";
+            description
+              "Enable/disable automatic application for SID.";
+          }
+        }
+      }
+      container locator-tag {
+        description
+          "Configure IPv6 segment routing default tag.";
+        leaf tag-value {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Set a default tag value for locator.";
+        }
+      }
+      container avoid-microloop {
+        when "../locators/locator";
+        description
+          "Configure IPv6 segment routing avoid microloop.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable IPv6 segment routing avoid microloop.";
+        }
+        leaf delay-value {
+          type uint16 {
+            range "1000..60000";
+          }
+          default "5000";
+          description
+            "Set the route delivery delay for IPv6 segment routing avoid microloop.";
+        }
+      }
+      container inter-level-protect {
+        when "../../isis:frr/isis:enable='true' and ../locators/locator";
+        description
+        "Configure Inter-Level-Protect.";
+        leaf enable-level1 {
+          type boolean;
+          default "false";
+          description
+          "Enable/disable Level 1 Inter-Level-Protect.";
+        }
+        leaf preferred {
+          type boolean;
+          must "../enable-level1='true' or ../preferred='false'";
+          default "false";
+          description
+          "Enable/disable Inter-Level-Protect Preferred.";
+        }
+      }
+      container compress {
+        when "../locators/locator";
+        description
+            "Configure compress mode for IS-IS Srv6 SID stack.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SRv6 compress mode."; 
+        }
+      }
+      container encapsulation-mode {
+        when "../locators/locator";
+        description
+          "Configure encapsulation mode for IS-IS SRv6 SID stack.";
+        leaf mode {
+          type encap-mode;
+          default "no-set";
+          description
+            "Specify insert or encaps mode for IS-IS SRv6 SID stack."; 
+        }
+      }
+      container auto-sid-advertise {
+        description
+          "Configure SRv6 auto-sid advertised flavor for End and EndX.";
+        leaf no-flavor {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SRv6 auto-sid no-flavor advertise."; 
+        }
+        leaf psp {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SRv6 auto-sid psp flavor advertise."; 
+        }
+        leaf psp-usp-usd {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SRv6 auto-sid psp-usp-usd flavor advertise."; 
+        }
+        leaf psp-usp-usd-coc {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SRv6 auto-sid psp-usp-usd-coc flavor advertise."; 
+        }
+        leaf coc {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SRv6 auto-sid coc flavor advertise."; 
+        }
+        leaf psp-coc {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable SRv6 auto-sid psp-coc flavor advertise."; 
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-flow-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-bgp-flow-deviations-ATN-950D980C";
+  prefix bgp-flow-devs-ATN-950D980C;
+
+  import huawei-bgp-flow {
+    prefix bgp-flow;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-flow module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ipv4-flow-rule-type-deviations {
+    type enumeration {
+      enum destination-prefix {
+        value 1;
+        description
+          "Destination prefix.";
+      }
+      enum source-prefix {
+        value 2;
+        description
+          "Source prefix.";
+      }
+      enum ip-protocol {
+        value 3;
+        description
+          "Potocol.";
+      }
+      enum port {
+        value 4;
+        description
+          "Port.";
+      }
+      enum destination-port {
+        value 5;
+        description
+          "Destination port.";
+      }
+      enum source-port {
+        value 6;
+        description
+          "Source Port.";
+      }
+      enum icmp-type {
+        value 7;
+        description
+          "Icmp type.";
+      }
+      enum icmp-code {
+        value 8;
+        description
+          "Icmp code.";
+      }
+      enum tcp-flags {
+        value 9;
+        description
+          "TCP flags.";
+      }
+      enum packet-length {
+        value 10;
+        description
+          "Packet length.";
+      }
+      enum dscp {
+        value 11;
+        description
+          "DSCP.";
+      }
+      enum fragment {
+        value 12;
+        description
+          "Fragment.";
+      }
+    }
+    description
+      "BGP FLOW route rule.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-flow:ipv4-flow/bgp-flow:common/bgp-flow:check-origin-as-enable" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:peers/bgp:peer/bgp:afs/bgp:af/bgp-flow:ipv4-flow/bgp-flow:destination-origin-as" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:ipv4-flow/bgp-flow:route-rule/bgp-flow:destination-origin-ass" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-flow:ipv4-flow/bgp-flow:routes/bgp-flow:route/bgp-flow:rule-indexs/bgp-flow:rule-index/bgp-flow:type" {
+    deviate replace {
+      type bgp-flow-devs-ATN-950D980C:ipv4-flow-rule-type-deviations;
+    }
+  }
+}

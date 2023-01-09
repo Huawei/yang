@@ -1,0 +1,43 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l3vpn-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-l3vpn-deviations-NE8000";
+  prefix l3vpn-devs-NE8000;
+
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-l3vpn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:parameter/l3vpn:vn-id" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/l3vpn:static-label" {
+    deviate replace {
+      type uint32 {
+        range "16..32783";
+      }
+    }
+  }
+}

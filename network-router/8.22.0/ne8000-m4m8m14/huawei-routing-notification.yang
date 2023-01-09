@@ -1,0 +1,239 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-routing-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-routing-notification";
+  prefix rt-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of route management.";
+  revision 2021-02-21 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "route-base";
+  notification public-ipv6-prefix-exceed {
+    description
+      "The number of public IPv6 prefixes exceeded the maximum value.";
+    leaf prefix-count {
+      type uint32;
+      description
+        "Number of IPv6 public route prefixes in the routing table.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "Maximum number of IPv6 public route prefixes that is allowed.";
+    }
+  }
+  notification public-ipv6-prefix-exceed-clear {
+    description
+      "The number of public IPv6 prefixes falls below the maximum value.";
+    leaf prefix-count {
+      type uint32;
+      description
+        "Number of IPv6 public route prefixes in the routing table.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "Maximum number of IPv6 public route prefixes that is allowed.";
+    }
+  }
+  notification vpn-ipv6-prefix-exceed {
+    description
+      "The number of IPv6 prefixes in the VPN instance exceeded the maximum value.";
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Name of a VPN instance.";
+    }
+    leaf prefix-count {
+      type uint32;
+      description
+        "Current number of IPv6 route prefixes in the VPN instance.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "Maximum number of IPv6 route prefixes in the VPN instance.";
+    }
+  }
+  notification vpn-ipv6-prefix-exceed-clear {
+    description
+      "The number of IPv6 prefixes in the VPN instance fell below the maximum value.";
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Name of a VPN instance.";
+    }
+    leaf prefix-count {
+      type uint32;
+      description
+        "Current number of IPv6 route prefixes in the VPN instance.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "Maximum number of IPv6 route prefixes in the VPN instance.";
+    }
+  }
+  notification vpn-ipv4-route-exceed {
+    description
+      "The number of IPv4 routes in the VPN instance exceeded the maximum value.";
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Name of a VPN instance.";
+    }
+    leaf current-count {
+      type uint32;
+      description
+        "Current number of IPv4 routes in the VPN instance.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "Maximum number of IPv4 routes in the VPN instance.";
+    }
+  }
+  notification vpn-ipv4-route-exceed-clear {
+    description
+      "The number of IPv4 routes in the VPN instance fell below the maximum number.";
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Name of a VPN instance.";
+    }
+    leaf current-count {
+      type uint32;
+      description
+        "Current number of IPv4 routes in the VPN instance.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "Maximum number of IPv4 routes in the VPN instance.";
+    }
+  }
+  notification vpn-ipv6-route-exceed {
+    description
+      "The number of IPv6 routes in the VPN instance exceeded the maximum value.";
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Name of a VPN instance.";
+    }
+    leaf current-count {
+      type uint32;
+      description
+        "Current number of IPv6 routes in the VPN instance.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "Maximum number of IPv6 routes in the VPN instance.";
+    }
+  }
+  notification vpn-ipv6-route-exceed-clear {
+    description
+      "The number of IPv6 routes in the VPN instance fell below the maximum number.";
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Name of a VPN instance.";
+    }
+    leaf current-count {
+      type uint32;
+      description
+        "Current number of IPv6 routes in the VPN instance.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "Maximum number of IPv6 routes in the VPN instance.";
+    }
+  }
+  notification ipv4-prefix-exceed {
+    description
+      "The number of IPv4 prefixes exceeded the maximum value.";
+    leaf prefix-count {
+      type uint32;
+      description
+        "The current number of IPv4 prefixes.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "The max value of IPv4 prefixes.";
+    }
+  }
+  notification ipv4-prefix-exceed-clear {
+    description
+      "The number of IPv4 prefixes fell below the maximum value.";
+    leaf prefix-count {
+      type uint32;
+      description
+        "The current number of IPv4 prefixes.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "The max value of IPv4 prefixes.";
+    }
+  }
+  notification ipv6-prefix-exceed {
+    description
+      "The number of IPv6 prefixes exceeded the maximum value.";
+    leaf prefix-count {
+      type uint32;
+      description
+        "The current number of IPv6 prefixes.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "The max value of IPv6 prefixes.";
+    }
+  }
+  notification ipv6-prefix-exceed-clear {
+    description
+      "The number of IPv6 prefixes fell below the maximum value.";
+    leaf prefix-count {
+      type uint32;
+      description
+        "The current number of IPv6 prefixes.";
+    }
+    leaf max-value {
+      type uint32;
+      description
+        "The max value of IPv6 prefixes.";
+    }
+  }
+}

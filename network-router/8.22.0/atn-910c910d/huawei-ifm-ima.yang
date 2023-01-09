@@ -1,0 +1,143 @@
+/*
+Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifm-ima {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ifm-ima";
+  prefix ifm-ima;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "IMA-group interface.";
+  revision 2022-03-21 {
+    description
+      "Add unit to diff-type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-09-26 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "atm";
+  typedef frame-len-type {
+    type enumeration {
+      enum "frame-length-32" {
+        value 32;
+        description
+          "Frame Length 32.";
+      }
+      enum "frame-length-64" {
+        value 64;
+        description
+          "Frame Length 64.";
+      }
+      enum "frame-length-128" {
+        value 128;
+        description
+          "Frame Length 128.";
+      }
+      enum "frame-length-256" {
+        value 256;
+        description
+          "Frame Length 256.";
+      }
+    }
+    description
+      "Type of IMA frame length.";
+  }
+  typedef clock-mode {
+    type enumeration {
+      enum "ctc" {
+        value 0;
+        description
+          "CTC mode.";
+      }
+      enum "itc" {
+        value 1;
+        description
+          "ITC mode.";
+      }
+    }
+    description
+      "Type of IMA clock mode.";
+  }
+  
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description 
+      "ATM interface attribute.";
+    container ima {
+      description
+        "Configure the IMA-group.";
+      container ima-group {
+        when "../../ifm:type='Global-Ima-Group' or ../../ifm:type='Ima-group'";
+        description
+          "Configure the IMA group bundling technology that bundles multiple physical ATM interfaces into a logical interface.";
+        leaf min-active {
+          type uint32 {
+            range "1..32";
+          }
+          default "1";
+          description
+            "Minimum number of active links in an IMA-group interface.";
+        }
+        leaf frame-len {
+          type frame-len-type;
+          default "frame-length-128";
+          description
+            "IMA-group frame length.";
+        }
+        leaf diff-delay {
+          type uint32 {
+            range "25..120";
+          }
+          units ms;
+          default "25";
+          description
+            "IMA-group differential delay (millisecond).";
+        }
+        leaf clock-mode {
+          type clock-mode;
+          default "ctc";
+          description
+            "IMA-group clock mode.";
+        }
+        container members {
+          description
+            "List of IMA-group member interfaces.";
+          list member {
+            key "member-name";
+            max-elements 32;
+            description
+              "Configure IMA-group member interfaces.";
+            leaf member-name {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Serial' and ../../../../../ifm:type='Ima-group') or (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type='Trunk-Serial' and ../../../../../ifm:type='Global-Ima-Group')";
+              must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:link-protocol='atm')";
+              description
+                "The name of a IMA-group member interface.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

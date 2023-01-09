@@ -1,0 +1,626 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lspic-tdm {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-lspic-tdm";
+  prefix lspic-tdm;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Configurations and statistics of time division multiplexing (TDM) interfaces.";
+  revision 2021-05-05 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef enable-status {
+    type enumeration {
+      enum "disable" {
+        value 0;
+        description
+          "Disable.";
+      }
+      enum "enable" {
+        value 1;
+        description
+          "Enable.";
+      }
+    }
+    description
+      "Enable status.";
+  }
+  typedef block-state {
+    type enumeration {
+      enum "active" {
+        value 0;
+        description
+          "The interface is in the normal state.";
+      }
+      enum "block" {
+        value 1;
+        description
+          "The blocked interface discards the traffic received from the network side and sends all-one code streams to its downstream device.";
+      }
+    }
+    description
+      "The blocking state.";
+  }
+  typedef pw-failed-type {
+    type enumeration {
+      enum "pw-protect-group-not-bound" {
+        value 1;
+        description
+          "Administrative PW protection group not bound.";
+      }
+      enum "pw-aps-not-request-state" {
+        value 2;
+        description
+          "PW APS not in the no request state.";
+      }
+      enum "inactive-pw-down" {
+        value 3;
+        description
+          "Inactive PW Down.";
+      }
+      enum "switching-timeout" {
+        value 4;
+        description
+          "Switching timeout.";
+      }
+      enum "other" {
+        value 5;
+        description
+          "Other reason.";
+      }
+    }
+    description
+      "PW Failed Reasion.";
+  }
+  typedef block-reason {
+    type enumeration {
+      enum "block-ac-outbound-configured" {
+        value 0;
+        description
+          "The interface is blocked after the related command is used.";
+      }
+      enum "clock-out-of-lock" {
+        value 1;
+        description
+          "The interface is blocked because the clock is out of lock.";
+      }
+      enum "improper-delay-compensation-value" {
+        value 2;
+        description
+          "The interface is blocked because the link delay exceeds the configured threshold.";
+      }
+    }
+    description
+      "Block ac reason.";
+  }
+  typedef active-pw {
+    type enumeration {
+      enum "master" {
+        value 1;
+        description
+          "Select master PW.";
+      }
+      enum "secondary" {
+        value 2;
+        description
+          "Select secondary PW.";
+      }
+    }
+    description
+      "Current activated PW.";
+  }
+  typedef pw-state {
+    type enumeration {
+      enum "normal" {
+        value 0;
+        description
+          "PW state is normal.";
+      }
+      enum "abnormal" {
+        value 1;
+        description
+          "PW state is abnormal.";
+      }
+    }
+    description
+      "State of PW.";
+  }
+  rpc time-delay-measurement-start {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface/lspic-tdm:tdm";
+    description
+      "Time delay measurements.";
+    input {
+      leaf instance-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+    }
+  }
+  rpc select-receiving-stream {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface/lspic-tdm:tdm";
+    description
+      "Selecting the traffic receiving PW in a dual fed and selective receiving scenario.";
+    input {
+      leaf instance-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name. Only specific card supports selecting receiving stream.";
+      }
+      leaf select-receiving-pw {
+        type enumeration {
+          enum "cancel-select" {
+            value 0;
+            description
+              "Not Switch.";
+          }
+          enum "master" {
+            value 1;
+            description
+              "Select master PW.";
+          }
+          enum "secondary" {
+            value 2;
+            description
+              "Select secondary PW.";
+          }
+        }
+        mandatory true;
+        description
+          "Select or cancel selecting receiving PW.";
+      }
+    }
+  }
+  augment /ifm:ifm/ifm:interfaces/ifm:interface {
+    when "ifm:link-protocol='tdm'";
+    description
+      "TDM settings on a certain interface and Statistics information.";
+    container tdm {
+      must "not (channel-serial and phy-serial)";
+      description
+        "Configure TDM settings on a certain interface.";
+      container channel-serial {
+        description
+          "Configure TDM settings on a serial interface channelized by an e1 or cpos card.";
+        leaf pw-ctrl-word-rml-bit {
+          when "../../../ifm:type='Serial' or ../../../ifm:type='Trunk-Serial'";
+          type enable-status;
+          ext:dynamic-default {
+            ext:default-value "enable" {
+              when "../../../ifm:type='Serial'";
+              description
+                "Transparent RML bit transmission is enabled by default when interface type is serial.";
+            }
+            ext:default-value "disable" {
+              when "../../../ifm:type='Trunk-Serial'";
+              description
+                "Transparent RML bit transmission is disabled by default when interface type is trunk-serial.";
+            }
+          }
+          description
+            "Whether transparent RML bit transmission is enabled.";
+        }
+        leaf cep-soh-transport {
+          when "../../../ifm:type='Serial' or ../../../ifm:type='Trunk-Serial'";
+          type enable-status;
+          ext:dynamic-default;
+          description
+            "Enable or disable transparent section overhead transmission for CEP services.";
+        }
+        leaf underrun-checktimes {
+          when "../../../ifm:type='Serial' or ../../../ifm:type='Trunk-Serial'";
+          type uint32 {
+            range "3..50";
+          }
+          ext:dynamic-default;
+          description
+            "Configure an underrun alarm threshold for continuous frame loss of TDM services.";
+        }
+        leaf fast-alarm-detect {
+          when "../../../ifm:type='Serial'";
+          type enable-status;
+          ext:dynamic-default;
+          description
+            "Fast alarm detect enable or disable.";
+        }
+        container alarm-threshold {
+          when "../../../ifm:type='Serial' or ../../../ifm:type='Trunk-Serial'";
+          must "lost-pkt-trigger-threshold > lost-pkt-resume-threshold";
+          must "misorder-pkt-trigger-threshold > misorder-pkt-resume-threshold";
+          must "stray-pkt-trigger-threshold > stray-pkt-resume-threshold";
+          must "malformed-pkt-trigger-threshold > malformed-pkt-resume-threshold";
+          must "jitter-buffer-under-trigger-threshold > jitter-buffer-under-resume-threshold";
+          must "jitter-buffer-over-trigger-threshold > jitter-buffer-over-resume-threshold";
+          description
+            "Configure TDM alarm-threshold.";
+          leaf lost-pkt-trigger-threshold {
+            type uint32 {
+              range "1..1000";
+            }
+            units "pps";
+            default "5";
+            description
+              "When the number of lost packets reaches the alarm generation threshold, an alarm is generated.";
+          }
+          leaf lost-pkt-resume-threshold {
+            type uint32 {
+              range "0..999";
+            }
+            units "pps";
+            default "0";
+            description
+              "When the number of lost packets reaches the alarm clearance threshold, a clear alarm is generated.";
+          }
+          leaf misorder-pkt-trigger-threshold {
+            type uint32 {
+              range "1..1000";
+            }
+            units "pps";
+            default "5";
+            description
+              "When the number of disordered packets reaches the alarm generation threshold, an alarm is generated.";
+          }
+          leaf misorder-pkt-resume-threshold {
+            type uint32 {
+              range "0..999";
+            }
+            units "pps";
+            default "0";
+            description
+              "When the number of disordered packets reaches the alarm clearance threshold, a clear alarm is generated.";
+          }
+          leaf stray-pkt-trigger-threshold {
+            type uint32 {
+              range "1..1000";
+            }
+            units "pps";
+            default "5";
+            description
+              "When the number of error packets reaches the alarm generation threshold, an alarm is generated.";
+          }
+          leaf stray-pkt-resume-threshold {
+            type uint32 {
+              range "0..999";
+            }
+            units "pps";
+            default "0";
+            description
+              "When the number of error packets reaches the alarm clearance threshold, a clear alarm is generated.";
+          }
+          leaf malformed-pkt-trigger-threshold {
+            type uint32 {
+              range "1..1000";
+            }
+            units "pps";
+            default "5";
+            description
+              "When the number of malformed frames whose lengths are different from the length of the checksum packet reaches the alarm generation threshold, an alarm is generated.";
+          }
+          leaf malformed-pkt-resume-threshold {
+            type uint32 {
+              range "0..999";
+            }
+            units "pps";
+            default "0";
+            description
+              "When the number of malformed frames whose lengths are different from the length of the checksum packet reaches the alarm clearance threshold, a clear alarm is generated.";
+          }
+          leaf jitter-buffer-under-trigger-threshold {
+            type uint32 {
+              range "1..1000";
+            }
+            default "1";
+            description
+              "When the jitter buffer underflow alarm generation threshold is reached, an alarm is generated.";
+          }
+          leaf jitter-buffer-under-resume-threshold {
+            type uint32 {
+              range "0..999";
+            }
+            default "0";
+            description
+              "When the jitter buffer underflow alarm clearance threshold is reached, a clear alarm is generated.";
+          }
+          leaf jitter-buffer-over-trigger-threshold {
+            type uint32 {
+              range "1..1000";
+            }
+            default "1";
+            description
+              "When the jitter buffer overflow alarm generation threshold is reached, an alarm is generated.";
+          }
+          leaf jitter-buffer-over-resume-threshold {
+            type uint32 {
+              range "0..999";
+            }
+            default "0";
+            description
+              "When the jitter buffer overflow alarm clearance threshold is reached, a clear alarm is generated.";
+          }
+          leaf continuous-loss-pkt-trigger-threshold {
+            type uint32 {
+              range "2..65535";
+            }
+            units "ms";
+            ext:dynamic-default;
+            description
+              "When the number of packets that are continuously lost reaches the alarm generation threshold, an alarm is generated.";
+          }
+          leaf continuous-loss-pkt-resume-threshold {
+            type uint32 {
+              range "32..65535";
+            }
+            units "ms";
+            ext:dynamic-default;
+            description
+              "When the number of packets that are continuously lost reaches the alarm clearance threshold, a clear alarm is generated.";
+          }
+        }
+        container stream-select-state {
+          config false;
+          description
+            "Stream-select-receiving state.";
+          leaf active-pw {
+            type active-pw;
+            description
+              "Current selected PW.";
+          }
+          leaf master-pw-state {
+            type pw-state;
+            description
+              "Master PW state.";
+          }
+          leaf secondary-pw-state {
+            type pw-state;
+            description
+              "Secondary PW state.";
+          }
+        }
+      }
+      container phy-serial {
+        description
+          "Configure TDM settings on a physical serial interface.";
+        container time-delay-compensation {
+          when "../../../ifm:type='Serial'";
+          description
+            "Configure and display time delay real time information.";
+          container time-delay-compensation-attr {
+            description
+              "Configure time delay real time information.";
+            leaf block-ac-state {
+              type enumeration {
+                enum "block" {
+                  value 1;
+                  description
+                    "The blocked interface discards the traffic received from the network side and sends all-1 code streams to its downstream device.";
+                }
+              }
+              description
+                "Block ac state.";
+            }
+            leaf main-pw-delay-value {
+              type uint32 {
+                range "1000..10000";
+              }
+              units "us";
+              description
+                "Main pw channel time delay value. Step: 100 us.";
+            }
+            leaf second-pw-delay-value {
+              type uint32 {
+                range "1000..10000";
+              }
+              units "us";
+              must "../main-pw-delay-value";
+              description
+                "Second pw channel time delay value. Step: 100 us.";
+            }
+          }
+          container time-delay-compensation-state {
+            config false;
+            description
+              "Statistics of time delay compensation status of the current interface.";
+            leaf block-ac-state {
+              type block-state;
+              description
+                "Status of whether the interface is blocked.";
+            }
+            leaf block-ac-reason {
+              type block-reason;
+              description
+                "Reason of why the current interface is blocked.";
+            }
+            leaf pw-delay-real-time-sample-1 {
+              type uint32;
+              units "us";
+              description
+                "Real-time sample 1 for the delay measurement of the currently activated PW.";
+            }
+            leaf pw-delay-real-time-sample-2 {
+              type uint32;
+              units "us";
+              description
+                "Real-time sample 2 for the delay measurement of the currently activated PW.";
+            }
+            leaf pw-delay-real-time-sample-3 {
+              type uint32;
+              units "us";
+              description
+                "Real-time sample 3 for the delay measurement of the currently activated PW.";
+            }
+          }
+          container time-delay-results {
+            config false;
+            description
+              "Statistics of delay measurement result of a PW.";
+            leaf test-time {
+              type yang:date-and-time;
+              description
+                "Time when a delay measurement starts.";
+            }
+            leaf active-pw {
+              type enumeration {
+                enum "main" {
+                  value 0;
+                  description
+                    "The primary PW is activated.";
+                }
+                enum "second" {
+                  value 1;
+                  description
+                    "The secondary PW is activated.";
+                }
+              }
+              description
+                "Activated PW, either primary or secondary PW.";
+            }
+            leaf main-pw-failed {
+              type pw-failed-type;
+              description
+                "Cause of the failure to measure the delay of the primary PW.";
+            }
+            leaf main-pw-delay-sample-1 {
+              type uint32;
+              units "us";
+              description
+                "Sample 1 of the delay measurement result of the primary PW.";
+            }
+            leaf main-pw-delay-sample-2 {
+              type uint32;
+              units "us";
+              description
+                "Sample 2 of the delay measurement result of the primary PW.";
+            }
+            leaf main-pw-delay-sample-3 {
+              type uint32;
+              units "us";
+              description
+                "Sample 3 of the delay measurement result of the primary PW.";
+            }
+            leaf secondary-pw-failed {
+              type pw-failed-type;
+              description
+                "Cause of the failure to measure the delay of the secondary PW.";
+            }
+            leaf secondary-pw-delay-sample-1 {
+              type uint32;
+              units "us";
+              description
+                "Sample 1 of the delay measurement result of the secondary PW.";
+            }
+            leaf secondary-pw-delay-sample-2 {
+              type uint32;
+              units "us";
+              description
+                "Sample 2 of the delay measurement result of the secondary PW.";
+            }
+            leaf secondary-pw-delay-sample-3 {
+              type uint32;
+              units "us";
+              description
+                "Sample 3 of the delay measurement result of the secondary PW.";
+            }
+          }
+        }
+      }
+      container statistics {
+        config false;
+        description
+          "TDM interface statistics.";
+        leaf input-packets {
+          type uint64;
+          units "packet";
+          description
+            "Number of received packets.";
+        }
+        leaf output-packets {
+          type uint64;
+          units "packet";
+          description
+            "Number of sent packets.";
+        }
+        leaf los-packets {
+          type uint64;
+          units "packet";
+          description
+            "Number of discarded packets.";
+        }
+        leaf misorder-packets {
+          type uint64;
+          units "packet";
+          description
+            "Number of disordered packets.";
+        }
+        leaf malformed-packets {
+          type uint64;
+          units "packet";
+          description
+            "Number of malformed frames whose lengths are different from the length of the checksum packet.";
+        }
+        leaf dummy-packets {
+          type uint64;
+          units "packet";
+          description
+            "Number of dummy packets.";
+        }
+        leaf underrun-count {
+          type uint64;
+          description
+            "Number of underflows caused by network congestion.";
+        }
+        leaf overrun-count {
+          type uint64;
+          description
+            "Number of overflows caused by network congestion.";
+        }
+        leaf es {
+          type uint64;
+          units "s";
+          description
+            "Errored seconds (ESs).";
+        }
+        leaf ses {
+          type uint64;
+          units "s";
+          description
+            "Severely errored seconds (SESs).";
+        }
+        leaf uas {
+          type uint64;
+          units "s";
+          description
+            "Unavailable seconds (UASs).";
+        }
+      }
+    }
+  }
+  ext:task-name "interface-mgr";
+}

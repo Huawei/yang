@@ -1,0 +1,1129 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cpudefend-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-cpudefend-notification";
+  prefix cpudefend-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of CPU defend.";
+  revision 2020-08-24 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "cpudefend";
+  notification application-apperceive-drop-rate-alarm {
+    description
+      "Security application apperceive drop packets alarmed.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Indicates the chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf protocol {
+      type uint32 {
+        ext:value-meaning { 
+            ext:item 1 {
+                ext:meaning FTP-SERVER;
+                description "Value 1 means FTP server protocol.";
+            }
+            ext:item 2 {
+                ext:meaning SSH-SERVER;
+                description "Value 2 means SSH server protocol.";
+            }
+            ext:item 3 {
+                ext:meaning SNMP;
+                description "Value 3 means SNMP protocol.";
+            }
+            ext:item 4 {
+                ext:meaning TELNET-SERVER;
+                description "Value 4 means TELNET server protocol.";
+            }
+            ext:item 5 {
+                ext:meaning TFTP;
+                description "Value 5 means TFTP protocol.";
+            }
+            ext:item 6 {
+                ext:meaning BGP;
+                description "Value 6 means BGP protocol.";
+            }
+            ext:item 7 {
+                ext:meaning LDP;
+                description "Value 7 means LDP protocol.";
+            }
+            ext:item 8 {
+                ext:meaning RSVP;
+                description "Value 8 means RSVP protocol.";
+            }
+            ext:item 9 {
+                ext:meaning OSPF;
+                description "Value 9 means OSPF protocol.";
+            }
+            ext:item 10 {
+                ext:meaning RIP;
+                description "Value 10 means RIP protocol.";
+            }
+            ext:item 11 {
+                ext:meaning ISIS;
+                description "Value 11 means ISIS protocol.";
+            }
+            ext:item 12 {
+                ext:meaning SFTP-SERVER;
+                description "Value 12 means SFTP server protocol.";
+            }
+            ext:item 13 {
+                ext:meaning ICMP;
+                description "Value 13 means MSDP protocol.";
+            }
+            ext:item 14 {
+                ext:meaning MSDP;
+                description "Value 14 means MSDP protocol.";
+            }
+            ext:item 15 {
+                ext:meaning PIM;
+                description "Value 15 means PIM protocol.";
+            }
+            ext:item 16 {
+                ext:meaning IPv4-ARP;
+                description "Value 16 means IPv4 Arp protocol.";
+            }
+            ext:item 17 {
+                ext:meaning BPDU;
+                description "Value 17 means BPDU protocol..";
+            }
+            ext:item 18 {
+                ext:meaning DHCP;
+                description "Value 18 means DHCP protocol.";
+            }
+            ext:item 19 {
+                ext:meaning LACP;
+                description "Value 19 means LACP packet.";
+            }
+            ext:item 20 {
+                ext:meaning NTP;
+                description "Value 20 means NTP protocol.";
+            }
+            ext:item 21 {
+                ext:meaning RADIUS;
+                description "Value 21 means Radius protocol.";
+            }
+            ext:item 22 {
+                ext:meaning HWTACACS;
+                description "Value 22 means Hwtacacs protocol.";
+            }
+            ext:item 23 {
+                ext:meaning LSPPING;
+                description "Value 23 means Lspping protocol.";
+            }
+            ext:item 24 {
+                ext:meaning IGMP;
+                description "Value 24 means IGMP protocol.";
+            }
+            ext:item 25 {
+                ext:meaning VGMP;
+                description "Value 25 means VGMP protocol.";
+            }
+            ext:item 26 {
+                ext:meaning RRPP;
+                description "Value 26 means RRPP protocol.";
+            }
+            ext:item 27 {
+                ext:meaning VRRPP;
+                description "Value 27 means VRRPP protocol.";
+            }
+            ext:item 28 {
+                ext:meaning BFD;
+                description "Value 28 means BFD protocol.";
+            }
+            ext:item 29 {
+                ext:meaning MPLSOAM;
+                description "Value 29 means MPLSOAM protocol.";
+            }
+            ext:item 30 {
+                ext:meaning ETH-802LGA;
+                description "Value 30 means Eth-802lag protocol.";
+            }
+            ext:item 31 {
+                ext:meaning FTP-CLIENT;
+                description "Value 21 means FTP client protocol.";
+            }
+            ext:item 32 {
+                ext:meaning TELNET-CLIENT;
+                description "Value 32 means SSH Telnet protocol.";
+            }
+            ext:item 33 {
+                ext:meaning SSH-CLIENT;
+                description "Value 32 means SSH client protocol.";
+            }
+            ext:item 34 {
+                ext:meaning SFTP-CLIENT;
+                description "Value 33 means SFTP client protocol.";
+            }
+            ext:item 35 {
+                ext:meaning DNS-CLIENT;
+                description "Value 34 means DNS client protocol.";
+            }
+            ext:item 64 {
+                ext:meaning TELNETv6-SERVER;
+                description "Value 35 means TELNETv6 server protocol.";
+            }
+            ext:item 65 {
+                ext:meaning TELNETv6-CLIENT;
+                description "Value 65 means TELNETv6 client protocol.";
+            }
+            ext:item 67 {
+                ext:meaning ICMPv6;
+                description "Value 67 means ICMPv6 protocol.";
+            }
+            ext:item 69 {
+                ext:meaning PIMv6;
+                description "Value 69 means PIMv6 protocol.";
+            }
+            ext:item 70 {
+                ext:meaning SSHv6-SERVER;
+                description "Value 70 means SSHv6 server protocol.";
+            }
+            ext:item 71 {
+                ext:meaning OSPFv3;
+                description "Value 71 means OSPFv3 protocol.";
+            }
+            ext:item 72 {
+                ext:meaning BGPv6;
+                description "Value 72 means BGPv6 protocol.";
+            }
+            ext:item 73 {
+                ext:meaning FTPv6-CLIENT;
+                description "Value 73 means FTPv6 client protocol.";
+            }
+            ext:item 74 {
+                ext:meaning FTPv6-SERVER;
+                description "Value 74 means FTPv6 server protocol.";
+            }
+		}
+	  }
+      description
+        "Indicates the protocol number of a discarded packet.";
+    }
+
+    leaf current-rate-low {
+      type uint32;
+      description
+        "Indicates the low 32 bits of traffic statistics.";
+    }
+    leaf current-rate-high {
+      type uint32;
+      description
+        "Indicates the high 32 bits of traffic statistics.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Indicates the current alarm threshold.";
+    }
+    leaf interval {
+      type uint32;
+      units "s";
+      description
+        "Indicates the current alarm interval.";
+    }
+    leaf protocol-description {
+      type string {
+        length "1..128";
+      }
+      description
+        "Indicates the description of protocol.";
+    }
+  }
+  notification application-apperceive-drop-rate-alarm-clear {
+    description
+      "Security application apperceive drop packets alarm cleared.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Indicates the chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf protocol {
+      type uint32 {
+        ext:value-meaning { 
+            ext:item 1 {
+                ext:meaning FTP-SERVER;
+                description "Value 1 means FTP server protocol.";
+            }
+            ext:item 2 {
+                ext:meaning SSH-SERVER;
+                description "Value 2 means SSH server protocol.";
+            }
+            ext:item 3 {
+                ext:meaning SNMP;
+                description "Value 3 means SNMP protocol.";
+            }
+            ext:item 4 {
+                ext:meaning TELNET-SERVER;
+                description "Value 4 means TELNET server protocol.";
+            }
+            ext:item 5 {
+                ext:meaning TFTP;
+                description "Value 5 means TFTP protocol.";
+            }
+            ext:item 6 {
+                ext:meaning BGP;
+                description "Value 6 means BGP protocol.";
+            }
+            ext:item 7 {
+                ext:meaning LDP;
+                description "Value 7 means LDP protocol.";
+            }
+            ext:item 8 {
+                ext:meaning RSVP;
+                description "Value 8 means RSVP protocol.";
+            }
+            ext:item 9 {
+                ext:meaning OSPF;
+                description "Value 9 means OSPF protocol.";
+            }
+            ext:item 10 {
+                ext:meaning RIP;
+                description "Value 10 means RIP protocol.";
+            }
+            ext:item 11 {
+                ext:meaning ISIS;
+                description "Value 11 means ISIS protocol.";
+            }
+            ext:item 12 {
+                ext:meaning SFTP-SERVER;
+                description "Value 12 means SFTP server protocol.";
+            }
+            ext:item 13 {
+                ext:meaning ICMP;
+                description "Value 13 means MSDP protocol.";
+            }
+            ext:item 14 {
+                ext:meaning MSDP;
+                description "Value 14 means MSDP protocol.";
+            }
+            ext:item 15 {
+                ext:meaning PIM;
+                description "Value 15 means PIM protocol.";
+            }
+            ext:item 16 {
+                ext:meaning IPv4-ARP;
+                description "Value 16 means IPv4 Arp protocol.";
+            }
+            ext:item 17 {
+                ext:meaning BPDU;
+                description "Value 17 means BPDU protocol..";
+            }
+            ext:item 18 {
+                ext:meaning DHCP;
+                description "Value 18 means DHCP protocol.";
+            }
+            ext:item 19 {
+                ext:meaning LACP;
+                description "Value 19 means LACP packet.";
+            }
+            ext:item 20 {
+                ext:meaning NTP;
+                description "Value 20 means NTP protocol.";
+            }
+            ext:item 21 {
+                ext:meaning RADIUS;
+                description "Value 21 means Radius protocol.";
+            }
+            ext:item 22 {
+                ext:meaning HWTACACS;
+                description "Value 22 means Hwtacacs protocol.";
+            }
+            ext:item 23 {
+                ext:meaning LSPPING;
+                description "Value 23 means Lspping protocol.";
+            }
+            ext:item 24 {
+                ext:meaning IGMP;
+                description "Value 24 means IGMP protocol.";
+            }
+            ext:item 25 {
+                ext:meaning VGMP;
+                description "Value 25 means VGMP protocol.";
+            }
+            ext:item 26 {
+                ext:meaning RRPP;
+                description "Value 26 means RRPP protocol.";
+            }
+            ext:item 27 {
+                ext:meaning VRRPP;
+                description "Value 27 means VRRPP protocol.";
+            }
+            ext:item 28 {
+                ext:meaning BFD;
+                description "Value 28 means BFD protocol.";
+            }
+            ext:item 29 {
+                ext:meaning MPLSOAM;
+                description "Value 29 means MPLSOAM protocol.";
+            }
+            ext:item 30 {
+                ext:meaning ETH-802LGA;
+                description "Value 30 means Eth-802lag protocol.";
+            }
+            ext:item 31 {
+                ext:meaning FTP-CLIENT;
+                description "Value 21 means FTP client protocol.";
+            }
+            ext:item 32 {
+                ext:meaning TELNET-CLIENT;
+                description "Value 32 means SSH Telnet protocol.";
+            }
+            ext:item 33 {
+                ext:meaning SSH-CLIENT;
+                description "Value 32 means SSH client protocol.";
+            }
+            ext:item 34 {
+                ext:meaning SFTP-CLIENT;
+                description "Value 33 means SFTP client protocol.";
+            }
+            ext:item 35 {
+                ext:meaning DNS-CLIENT;
+                description "Value 34 means DNS client protocol.";
+            }
+            ext:item 64 {
+                ext:meaning TELNETv6-SERVER;
+                description "Value 35 means TELNETv6 server protocol.";
+            }
+            ext:item 65 {
+                ext:meaning TELNETv6-CLIENT;
+                description "Value 65 means TELNETv6 client protocol.";
+            }
+            ext:item 67 {
+                ext:meaning ICMPv6;
+                description "Value 67 means ICMPv6 protocol.";
+            }
+            ext:item 69 {
+                ext:meaning PIMv6;
+                description "Value 69 means PIMv6 protocol.";
+            }
+            ext:item 70 {
+                ext:meaning SSHv6-SERVER;
+                description "Value 70 means SSHv6 server protocol.";
+            }
+            ext:item 71 {
+                ext:meaning OSPFv3;
+                description "Value 71 means OSPFv3 protocol.";
+            }
+            ext:item 72 {
+                ext:meaning BGPv6;
+                description "Value 72 means BGPv6 protocol.";
+            }
+            ext:item 73 {
+                ext:meaning FTPv6-CLIENT;
+                description "Value 73 means FTPv6 client protocol.";
+            }
+            ext:item 74 {
+                ext:meaning FTPv6-SERVER;
+                description "Value 74 means FTPv6 server protocol.";
+            }
+		}
+	  }
+      description
+        "Indicates the protocol number of a discarded packet.";
+    }
+
+    leaf current-rate-low {
+      type uint32;
+      description
+        "Indicates the low 32 bits of traffic statistics.";
+    }
+    leaf current-rate-high {
+      type uint32;
+      description
+        "Indicates the high 32 bits of traffic statistics.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Indicates the current alarm threshold.";
+    }
+    leaf interval {
+      type uint32;
+      units "s";
+      description
+        "Indicates the current alarm interval.";
+    }
+    leaf protocol-description {
+      type string {
+        length "1..128";
+      }
+      description
+        "Indicates the description of protocol.";
+    }
+  }
+  notification tcpip-attack-rate-alarm {
+    description
+      "Security TCP-IP drop packets alarmed.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Indicates a chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf type {
+      type uint32 {
+        ext:value-meaning { 
+            ext:item 1 {
+                ext:meaning TCP;
+                description "Value 1 means TCP malformed packet.";
+            }
+            ext:item 2 {
+                ext:meaning UDP;
+                description "Value 2 means UDP flooding packet.";
+            }
+            ext:item 3 {
+                ext:meaning TCPSYN;
+                description "Value 3 means TCPSYN packet.";
+            }
+            ext:item 4 {
+                ext:meaning Fragmented;
+                description "Value 4 means Fragmented packet.";
+            }
+		}
+	  }
+      description
+        "Indicates a traffic model.";
+    }
+
+    leaf current-rate-low {
+      type uint32;
+      description
+        "Rightmost 32 bits of statistics about dropped packets.";
+    }
+    leaf current-rate-high {
+      type uint32;
+      description
+        "Leftmost 32 bits of statistics about dropped packets.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Indicates the threshold of a current alarm.";
+    }
+    leaf interval {
+      type uint32;
+      units "s";
+      description
+        "Indicates the interval of a current alarm.";
+    }
+    leaf protocol-description {
+      type string {
+        length "1..128";
+      }
+      description
+        "Indicates the description of protocol.";
+    }
+  }
+  notification tcpip-attack-rate-alarm-clear {
+    description
+      "Security TCP-IP drop packets alarm cleared.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Indicates a chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf type {
+      type uint32 {
+        ext:value-meaning { 
+            ext:item 1 {
+                ext:meaning TCP;
+                description "Value 1 means TCP malformed packet.";
+            }
+            ext:item 2 {
+                ext:meaning UDP;
+                description "Value 2 means UDP flooding packet.";
+            }
+            ext:item 3 {
+                ext:meaning TCPSYN;
+                description "Value 3 means TCPSYN packet.";
+            }
+            ext:item 4 {
+                ext:meaning Fragmented;
+                description "Value 4 means Fragmented packet.";
+            }
+		}
+	  }
+      description
+        "Indicates a traffic model.";
+    }
+    leaf current-rate-low {
+      type uint32;
+      description
+        "Rightmost 32 bits of statistics about dropped packets.";
+    }
+    leaf current-rate-high {
+      type uint32;
+      description
+        "Leftmost 32 bits of statistics about dropped packets.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Indicates the threshold of a current alarm.";
+    }
+    leaf interval {
+      type uint32;
+      units "s";
+      description
+        "Indicates the interval of a current alarm.";
+    }
+    leaf protocol-description {
+      type string {
+        length "1..128";
+      }
+      description
+        "Indicates the description of protocol.";
+    }
+  }
+  notification ttl-expired-loop-alarm {
+    description
+      "TTL-expired loop detect alarmed, a loop may occur on the slot.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf last-rate-low {
+      type uint32;
+      description
+        "Rightmost 32 bits collected during the previous period.";
+    }
+    leaf last-rate-high {
+      type uint32;
+      description
+        "Leftmost 32 bits collected during the previous period.";
+    }
+    leaf current-rate-low {
+      type uint32;
+      description
+        "Rightmost 32 bits collected during the current period.";
+    }
+    leaf current-rate-high {
+      type uint32;
+      description
+        "Leftmost 32 bits collected during the current period.";
+    }
+    leaf interval {
+      type uint32;
+      units "s";
+      description
+        "Interval at which alarms are collected.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Alarm threshold.";
+    }
+  }
+  notification ttl-expired-loop-alarm-clear {
+    description
+      "TTL-expired loop detect alarm cleared.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf last-rate-low {
+      type uint32;
+      description
+        "Rightmost 32 bits collected during the previous period.";
+    }
+    leaf last-rate-high {
+      type uint32;
+      description
+        "Leftmost 32 bits collected during the previous period.";
+    }
+    leaf current-rate-low {
+      type uint32;
+      description
+        "Rightmost 32 bits collected during the current period.";
+    }
+    leaf current-rate-high {
+      type uint32;
+      description
+        "Leftmost 32 bits collected during the current period.";
+    }
+    leaf interval {
+      type uint32;
+      units "s";
+      description
+        "Interval at which alarms are collected.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Alarm threshold.";
+    }
+  }
+  notification urpf-discarded-alarm {
+    description
+      "Security URPF drop packets alarmed.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Indicates a chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf current-rate-low {
+      type uint32;
+      description
+        "Indicates the low 32 bits of traffic statistics.";
+    }
+    leaf current-rate-high {
+      type uint32;
+      description
+        "Indicates the high 32 bits of traffic statistics.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Indicates the threshold of a current alarm.";
+    }
+    leaf interval {
+      type uint32;
+      units "s";
+      description
+        "Indicates the interval of a current alarm.";
+    }
+  }
+  notification urpf-discarded-alarm-clear {
+    description
+      "Security URPF drop packets alarm cleared.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Indicates a chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf current-rate-low {
+      type uint32;
+      description
+        "Indicates the low 32 bits of traffic statistics.";
+    }
+    leaf current-rate-high {
+      type uint32;
+      description
+        "Indicates the high 32 bits of traffic statistics.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Indicates the threshold of a current alarm.";
+    }
+    leaf interval {
+      type uint32;
+      units "s";
+      description
+        "Indicates the interval of a current alarm.";
+    }
+  }
+  notification cpcar-discard-alarm {
+    description
+      "Security cpu-defend drop packets alarmed.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Indicates the chassis number.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf object-index {
+      type uint32;
+      description
+        "Indicates the index of service traffic. The value 159 indicates the alarm that is generated when the number of packets dropped by total CAR exceeds the threshold.";
+    }
+    leaf discarded-packets {
+      type uint64;
+      units "packet";
+      description
+        "Indicates the number of discarded packets.";
+    }
+    leaf discarded-threshold {
+      type uint32;
+      units "%";
+      description
+        "Indicates the number of discarded threshod.";
+    }
+    leaf protocol-description {
+      type string {
+        length "1..128";
+      }
+      description
+        "Indicates the description of protocol.";
+    }
+  }
+  notification cpcar-discard-alarm-clear {
+    description
+      "Security cpu-defend drop packets alarm cleared.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Indicates the chassis number.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf object-index {
+      type uint32;
+      description
+        "Indicates the index of service traffic. The value 159 indicates the alarm that is generated when the number of packets dropped by total CAR exceeds the threshold.";
+    }
+    leaf discarded-packets {
+      type uint64;
+      units "packet";
+      description
+        "Indicates the number of discarded packets.";
+    }
+    leaf discarded-threshold {
+      type uint32;
+      units "%";
+      description
+        "Indicates the number of discarded threshod.";
+    }
+    leaf protocol-description {
+      type string {
+        length "1..128";
+      }
+      description
+        "Indicates the description of protocol.";
+    }
+  }
+  notification portcar-alarm {
+    description
+      "The number of packets sent to the CPU exceeded the threshold.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis number.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf object-index {
+      type uint32;
+      description
+        "Index of service traffic.";
+    }
+    leaf interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of interface.";
+    }
+    leaf passed-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of packets sent to the CPU.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Alarm threshold.";
+    }
+  }
+  notification portcar-alarm-clear {
+    description
+      "The number of packets sent to the CPU fell below the threshold.";
+    leaf chassis-id {
+      type uint32;
+      units "%";
+      description
+        "Chassis number.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf object-index {
+      type uint32;
+      description
+        "Index of service traffic.";
+    }
+    leaf interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of interface.";
+    }
+    leaf passed-packets {
+      type uint64;
+      units "packet";
+      description
+        "Number of packets sent to the CPU.";
+    }
+    leaf threshold {
+      type uint32;
+      units "%";
+      description
+        "Alarm threshold.";
+    }
+  }
+  notification arpvlancar-enhance-alarm {
+    description
+      "ARP VLAN CAR became effective on an interface, which was probably due to a loop on the interface.";
+    leaf logical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Logical interface.";
+    }
+    leaf physical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Physical interface.";
+    }
+    leaf pe-vlan {
+      type uint32;
+      description
+        "Outer VLAN ID.";
+    }
+    leaf ce-vlan {
+      type uint32;
+      description
+        "Inner VLAN tag.";
+    }
+    leaf sample-rate {
+      type uint32;
+      description
+        "Rate at which packets are sampled.";
+    }
+  }
+  notification arpvlancar-enhance-alarm-clear {
+    description
+      "ARP VLAN CAR became ineffective on an interface.";
+    leaf logical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Logical interface.";
+    }
+    leaf physical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Physical interface.";
+    }
+    leaf pe-vlan {
+      type uint32;
+      description
+        "Outer VLAN ID.";
+    }
+    leaf ce-vlan {
+      type uint32;
+      description
+        "Inner VLAN tag.";
+    }
+    leaf sample-rate {
+      type uint32;
+      description
+        "Rate at which packets are sampled.";
+    }
+  }
+  notification arpvlancar-alarm {
+    description
+      "ARP VLAN CAR took effect on an interface,which was probably due to a loop on the interface.";
+    leaf logical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Logical interface.";
+    }
+    leaf physical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Physical interface.";
+    }
+    leaf vlan {
+      type uint32;
+      description
+        "VLAN information.";
+    }
+  }
+  notification arpvlancar-alarm-clear {
+    description
+      "ARP VLAN CAR become ineffective on an interface.";
+    leaf logical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Logical interface.";
+    }
+    leaf physical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Physical interface.";
+    }
+    leaf vlan {
+      type uint32;
+      description
+        "VLAN information.";
+    }
+  }
+  notification ndvlancar-alarm {
+    description
+      "ND VLAN CAR became effective on an interface, which was probably due to an attack on the interface.";
+    leaf nd-type {
+      type string {
+        length "1..63";
+      }
+      description
+        "ND protocol type.";
+    }
+    leaf logical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Logical interface.";
+    }
+    leaf physical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Physical interface.";
+    }
+    leaf pe-vlan {
+      type uint32;
+      description
+        "Outer VLAN ID.";
+    }
+    leaf ce-vlan {
+      type uint32;
+      description
+        "Inner VLAN tag.";
+    }
+    leaf sample-rate {
+      type uint32;
+      description
+        "Rate at which packets are sampled.";
+    }
+  }
+  notification ndvlancar-alarm-clear {
+    description
+      "ND VLAN CAR became ineffective on an interface.";
+    leaf nd-type {
+      type string {
+        length "1..63";
+      }
+      description
+        "ND protocol type.";
+    }
+    leaf logical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Logical interface.";
+    }
+    leaf physical-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Physical interface.";
+    }
+    leaf pe-vlan {
+      type uint32;
+      description
+        "Outer VLAN ID.";
+    }
+    leaf ce-vlan {
+      type uint32;
+      description
+        "Inner VLAN tag.";
+    }
+    leaf sample-rate {
+      type uint32;
+      description
+        "Rate at which packets are sampled.";
+    }
+  }
+}

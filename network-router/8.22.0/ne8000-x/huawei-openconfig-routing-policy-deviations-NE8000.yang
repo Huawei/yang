@@ -1,0 +1,259 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-routing-policy-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-openconfig-routing-policy-deviations-NE8000";
+  prefix oc-rpol-devs-NE8000;
+
+  import openconfig-routing-policy {
+    prefix oc-rpol;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for openconfig-routing-policy module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ip-prefix-deviations {
+    type union {
+      type ipv4-prefix-deviations;
+      type ipv6-prefix-deviations;
+    }
+    description
+      "An IPv4 or IPv6 prefix.";
+  }
+
+  typedef ipv4-prefix-deviations {
+    type string {
+      pattern '(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))';
+    }
+    description
+      "An IPv4 prefix represented in dotted quad notation followed by
+       a slash and a CIDR mask (0 <= mask <= 32).";
+  }
+
+  typedef ipv6-prefix-deviations {
+    type string {
+      pattern '(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))/(12[0-8]|1[0-1][0-9]|[1-9][0-9]|[0-9])';
+    }
+    description
+      "An IPv6 prefix represented in full, shortened, or mixed
+       shortened format followed by a slash and CIDR mask
+       (0 <= mask <= 128).";
+  }
+
+  typedef match-set-options-type-deviations {
+    type enumeration {
+      enum ANY {
+        value 1;
+        description
+          "match is true if given value matches any member
+           of the defined set";
+      }
+    }
+    description
+      "Options that govern the behavior of a match statement.  The
+       default behavior is ANY, i.e., the given value matches any
+       of the members of the defined set";
+  }
+
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:neighbor-sets" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:tag-sets" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:config/oc-rpol:call-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:state/oc-rpol:call-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-interface" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-neighbor-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-tag-set" {
+    deviate not-supported;
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set" {
+    deviate add {
+      max-elements 800000;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:config/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..169";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:config/oc-rpol:mode" {
+    deviate replace {
+      type enumeration {
+        enum IPV4 {
+          value 1;
+          description
+            "Prefix set contains IPv4 prefixes only";
+        }
+        enum IPV6 {
+          value 2;
+          description
+            "Prefix set contains IPv6 prefixes only";
+        }
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:state/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..169";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:state/oc-rpol:mode" {
+    deviate replace {
+      type enumeration {
+        enum IPV4 {
+          value 1;
+          description
+            "Prefix set contains IPv4 prefixes only";
+        }
+        enum IPV6 {
+          value 2;
+          description
+            "Prefix set contains IPv6 prefixes only";
+        }
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:prefixes/oc-rpol:prefix" {
+    deviate add {
+      min-elements 1;
+    }
+    deviate add {
+      max-elements 800000;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:prefixes/oc-rpol:prefix/oc-rpol:config/oc-rpol:ip-prefix" {
+    deviate replace {
+      type oc-rpol-devs-NE8000:ip-prefix-deviations;
+    }
+    deviate replace {
+      mandatory false;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:prefixes/oc-rpol:prefix/oc-rpol:config/oc-rpol:masklength-range" {
+    deviate replace {
+      type string {
+        length "1..8";
+        pattern '(1[0-2][0-8]|[0-9]{0,2})\.\.(1[0-2][0-8]|[1-9][0-9]|[1-9])|exact';
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:prefixes/oc-rpol:prefix/oc-rpol:state/oc-rpol:ip-prefix" {
+    deviate replace {
+      type oc-rpol-devs-NE8000:ip-prefix-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:prefixes/oc-rpol:prefix/oc-rpol:state/oc-rpol:masklength-range" {
+    deviate replace {
+      type string {
+        length "1..8";
+        pattern '(1[0-2][0-8]|[0-9]{0,2})\.\.(1[0-2][0-8]|[1-9][0-9]|[1-9])|exact';
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:config/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..200";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:state/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..200";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement" {
+    deviate add {
+      min-elements 1;
+    }
+    deviate add {
+      max-elements 65535;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:config/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..5";
+        pattern '(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{0,3}|0)';
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:state/oc-rpol:name" {
+    deviate replace {
+      type string {
+        length "1..5";
+      }
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-prefix-set/oc-rpol:config/oc-rpol:prefix-set" {
+    deviate add {
+      must '../match-set-options';
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-prefix-set/oc-rpol:config/oc-rpol:match-set-options" {
+    deviate replace {
+      type oc-rpol-devs-NE8000:match-set-options-type-deviations;
+    }
+    deviate add {
+      must '../prefix-set';
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-rpol:match-prefix-set/oc-rpol:state/oc-rpol:match-set-options" {
+    deviate replace {
+      type oc-rpol-devs-NE8000:match-set-options-type-deviations;
+    }
+  }
+  deviation "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-rpol:config/oc-rpol:policy-result" {
+    deviate add {
+      default "ACCEPT_ROUTE";
+    }
+  }
+  ext:deviation-ext "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:config/oc-rpol:mode" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        description
+          "The node cannot be modified, when node is already configured.";
+      }
+    }
+  }
+}

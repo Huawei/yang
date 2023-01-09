@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-flowspec-forward-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-flowspec-forward-deviations-NE8000-F1A";
+  prefix flowspec-forward-devs-NE8000-F1A;
+
+  import huawei-flowspec-forward {
+    prefix flowspec-forward;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-flowspec-forward module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/flowspec-forward:flowspec-forward" {
+    deviate not-supported;
+  }
+
+  deviation "/flowspec-forward:flowspec-forward/flowspec-forward:flowspec-interface-resources" {
+    deviate not-supported;
+  }
+
+}

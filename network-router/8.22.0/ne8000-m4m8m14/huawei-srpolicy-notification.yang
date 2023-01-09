@@ -1,0 +1,346 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-srpolicy-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-srpolicy-notification";
+  prefix srpolicy-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of Segment Routing Policy.";
+  revision 2021-10-13 {
+    description
+      "Init revision."; 
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "srpolicy";
+
+  typedef srpolicy-resource-type {
+    type enumeration {
+      enum "srv6-te-policy" {
+        value 0;
+        description
+          "SRv6 TE Policy.";
+      }
+      enum "srv6-te-policy-segment-list" {
+        value 1;
+        description
+          "Segment list of SRv6 TE Policy.";
+      }
+      enum "sr-mpls-te-policy" {
+        value 3;
+        description
+          "SR-MPLS TE Policy.";
+      }
+      enum "sr-mpls-te-policy-segment-list" {
+        value 4;
+        description
+          "Segment list of SR-MPLS TE Policy.";
+      }
+      enum "srv6-te-flow-group" {
+        value 5;
+        description
+          "SRv6 TE flow group.";
+      }
+      enum "unknown" {
+        value 100;
+        description
+          "Unknown.";
+      }
+    }
+    description
+      "SR Policy resource type.";
+  }
+
+  notification srpolicy-candipath-down {
+    description
+      "The SR Policy's candidate path went down.";
+    leaf endpoint {
+      type string {
+        length "0..255";
+      }
+      description
+        "SR Policy endpoint.";
+    }
+    leaf color {
+      type uint32;
+      description
+        "SR Policy color.";
+    }
+    leaf protocol-origin {
+      type string {
+        length "0..32";
+      }
+      description
+        "Protocol origin of the candidate path.";
+    }
+    leaf node-address {
+      type string {
+        length "0..64";
+      }
+      description
+        "Node address of the candidate path.";
+    }
+    leaf asn {
+      type uint32;
+      description
+        "AS number of the candidate path.";
+    }
+    leaf discriminator {
+      type uint32;
+      description
+        "Discriminator of the candidate path.";
+    }
+    leaf preference {
+      type uint32;
+      description
+        "Preference of the candidate path.";
+    }
+    leaf down-reason {
+      type string {
+        length "0..128";
+      }
+      description
+        "Reason why the candidate path went Down.";
+    }
+  }
+  notification srpolicy-candipath-down-resume {
+    description
+      "The down alarm of SR Policy's candidate path was cleared.";
+    leaf endpoint {
+      type string {
+        length "0..255";
+      }
+      description
+        "SR Policy endpoint.";
+    }
+    leaf color {
+      type uint32;
+      description
+        "SR Policy color.";
+    }
+    leaf protocol-origin {
+      type string {
+        length "0..32";
+      }
+      description
+        "Protocol origin of the candidate path.";
+    }
+    leaf node-address {
+      type string {
+        length "0..64";
+      }
+      description
+        "Node address of the candidate path.";
+    }
+    leaf asn {
+      type uint32;
+      description
+        "AS number of the candidate path.";
+    }
+    leaf discriminator {
+      type uint32;
+      description
+        "Discriminator of the candidate path.";
+    }
+    leaf preference {
+      type uint32;
+      description
+        "Preference of the candidate path.";
+    }
+  }
+
+  notification srpolicy-policy-down {
+    description
+      "The SR Policy went down.";
+    leaf endpoint {
+      type string {
+        length "0..255";
+      }
+      description
+        "SR Policy endpoint.";
+    }
+    leaf color {
+      type uint32;
+      description
+        "SR Policy color.";
+    }
+    leaf down-reason {
+      type string {
+        length "0..64";
+      }
+      description
+        "Reason why the SR Policy went Down.";
+    }
+  }
+  notification srpolicy-policy-down-resume {
+    description
+      "The SR Policy down alarm was cleared.";
+    leaf endpoint {
+      type string {
+        length "0..255";
+      }
+      description
+        "SR Policy endpoint.";
+    }
+    leaf color {
+      type uint32;
+      description
+        "SR Policy color.";
+    }
+  }
+
+  notification srpolicy-res-threshold-exceed {
+    description
+      "The number of SR Policy resources exceeded the specified threshold.";
+    leaf resource-type {
+      type srpolicy-resource-type;
+      description
+        "SR Policy resource type.";
+    }
+    leaf current-count {
+      type uint32;
+      description
+        "Current number of SR Policy resources.";
+    }
+    leaf threshold-upper-limit {
+      type uint32;
+      units "%";
+      description
+        "Upper threshold for the number of SR Policy resources.";
+    }
+    leaf threshold-lower-limit {
+      type uint32;
+      units "%";
+      description
+        "Lower threshold for the number of SR Policy resources.";
+    }
+    leaf total-count {
+      type uint32;
+      description
+        "Total number of SR Policy resources supported.";
+    }
+  }
+  notification srpolicy-res-threshold-exceed-resume {
+    description
+      "The number of SR Policy resources fell below the specified threshold.";
+    leaf resource-type {
+      type srpolicy-resource-type;
+      description
+        "SR Policy resource type.";
+    }
+    leaf current-count {
+      type uint32;
+      description
+        "Current number of SR Policy resources.";
+    }
+    leaf threshold-upper-limit {
+      type uint32;
+      units "%";
+      description
+        "Upper threshold for the number of SR Policy resources.";
+    }
+    leaf threshold-lower-limit {
+      type uint32;
+      units "%";
+      description
+        "Lower threshold for the number of SR Policy resources.";
+    }
+    leaf total-count {
+      type uint32;
+      description
+        "Total number of SR Policy resources supported.";
+    }
+  }
+
+  notification srpolicy-res-total-count-exceed {
+    description
+      "The number of SR Policy resources exceeded the total number supported.";
+    leaf resource-type {
+      type srpolicy-resource-type;
+      description
+        "SR Policy resource type.";
+    }
+    leaf current-count {
+      type uint32;
+      description
+        "Current number of SR Policy resources.";
+    }
+    leaf total-count {
+      type uint32;
+      description
+        "Total number of SR Policy resources supported.";
+    }
+  }
+  notification srpolicy-res-total-count-exceed-resume {
+    description
+      "The number of SR Policy resources fell below the total number supported.";
+    leaf resource-type {
+      type srpolicy-resource-type;
+      description
+        "SR Policy resource type.";
+    }
+    leaf current-count {
+      type uint32;
+      description
+        "Current number of SR Policy resources.";
+    }
+    leaf total-count {
+      type uint32;
+      description
+        "Total number of SR Policy resources supported.";
+    }
+  }
+
+  notification spr-instance-path-switch {
+    description
+      "The path of the SPR instance changed.";
+    leaf spr-instance-endpoint {
+      type string {
+        length "0..64";
+      }
+      description
+        "SPR instance endpoint.";
+    }
+    leaf spr-policy-name {
+      type string {
+        length "0..32";
+      }
+      description
+        "SPR policy name.";
+    }
+    leaf previous-srpolicy-color {
+      type string {
+        length "0..256";
+      }
+      description
+        "Previous SR Policy color.";
+    }
+    leaf current-srpolicy-color {
+      type string {
+        length "0..256";
+      }
+      description
+        "Current SR Policy color.";
+    }
+    leaf switch-reason {
+      type string {
+        length "0..64";
+      }
+      description
+        "Reason why the SPR instance path was switched.";
+    }
+  }
+}

@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-nat444-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-cgn-nat444-deviations-NE8000M8M14";
+  prefix cgn-nat444-devs-NE8000M8M14;
+
+  import huawei-cgn-nat444 {
+    prefix cgn-nat444;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn-nat444 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:send-mode" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:log/cgn-nat444:hosts/cgn-nat444:host/cgn-nat444:secondary" {
+    deviate delete {
+      must "not (../secondary='true' and ../../../send-mode/mode='concurrent')";
+    }
+  }
+
+}

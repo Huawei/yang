@@ -1,0 +1,78 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ip-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-ip-deviations-ATN-980B";
+  prefix ip-devs-ATN-980B;
+
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ip module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/ip:state/ip:addresses/ip:address/ip:is-block" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/ip:state/ip:gateways" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ip:state/ip:addresses/ip:address/ip:is-block" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/ip:address/ip:common-address/ip:addresses/ip:address" {
+    deviate add {
+      must " /ni:network-instance/ni:instances/ni:instance[ni:name=current()/../../../ifm:vrf-name]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/ip:address/ip:common-address/ip:addresses/ip:address/ip:type" {
+    deviate add {
+      must "(../ip:type='sub' and /ifm:ifm/ifm:global/ifm:ipv4-ignore-primary-sub='false') or ../ip:type='main'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/ip:address/ip:unnumbered-address/ip:unnumbered-address/ip:unnumbered-if-name" {
+    deviate add {
+      must "(/ni:network-instance/ni:instances/ni:instance[ni:name=current()/../../../ifm:vrf-name]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']) and (../../../ifm:name!=../unnumbered-if-name) and (/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name = ../../../ifm:vrf-name)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv4/ip:address/ip:negotiate-address/ip:negotiation-address/ip:negotiation-type" {
+    deviate add {
+      must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()/../../../ifm:vrf-name]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ip:auto-link-local" {
+    deviate add {
+      must "../auto-link-local='false' or (../auto-link-local='true' and /ni:network-instance/ni:instances/ni:instance[ni:name=current()/../../ifm:vrf-name]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast'])";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ip:address/ip:common-address/ip:addresses/ip:address" {
+    deviate add {
+      must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()/../../../ifm:vrf-name]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+    }
+  }
+}

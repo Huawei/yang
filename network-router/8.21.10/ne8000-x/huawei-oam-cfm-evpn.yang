@@ -1,0 +1,95 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-evpn {
+  namespace "urn:huawei:yang:huawei-oam-cfm-evpn";
+  prefix oam-cfm-evpn;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Configure the operation, administration and maintenance (OAM) association function.";
+  revision 2020-09-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name  "oammgr";
+  typedef cfm-bind-evpn-type {
+    type enumeration {
+      enum "CFM-EVPN" {
+        value 1;
+        description
+          "Type that CFM transfers fault information to EVPN DF.";
+      }
+      enum "EVPN-CFM" {
+        value 2;
+        description
+          "Type that EVPN DF transfers fault information to CFM.";
+      }
+    }
+    description
+      "Binding type.";
+  }
+  augment "/oammgr:oammgr" {
+    description
+      "Configure the operation, administration and maintenance (OAM) association function.";
+    container cfm-bind-evpns {
+      description
+        "List of associations between CFM and EVPN DF.";
+      list cfm-bind-evpn {
+        key "md-name ma-name if-name bind-type";
+        unique "md-name ma-name bind-type";
+        unique "if-name bind-type";
+        description
+          "Configure an instance of an association between CFM and EVPN DF.";
+        leaf md-name {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+          }
+          description
+            "Configure a MD name.";
+        }
+        leaf ma-name {
+          type leafref {
+            path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md[y1731:name=current()/../md-name]/y1731:mas/y1731:ma/y1731:name";
+          }
+          description
+            "Configure a MA name.";
+        }
+        leaf if-name {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          description
+            "Configure the name of interface which has EVPN DF result.";
+        }
+        leaf bind-type {
+          type cfm-bind-evpn-type;
+          description
+            "Configure a binding type.";
+        }
+      }
+    }
+  }
+}

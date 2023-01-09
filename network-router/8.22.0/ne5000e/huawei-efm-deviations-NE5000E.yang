@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-efm-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-efm-deviations-NE5000E";
+  prefix efm-devs-NE5000E;
+
+  import huawei-efm {
+    prefix efm;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-efm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/efm:efm/efm:session/efm:trigger-mac-renew" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/efm:efm/efm:session/efm:error-frame-period" {
+    deviate not-supported;
+  }
+}

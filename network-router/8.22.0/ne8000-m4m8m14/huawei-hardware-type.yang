@@ -1,0 +1,169 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-hardware-type {
+  namespace "urn:huawei:yang:huawei-hardware-type";
+  prefix hardware-type;
+  
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This YANG module define hardware datatypes.";
+    
+  revision 2020-03-27 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "device-mgr";
+  
+  typedef hardware-entityclass-type {
+    type enumeration {
+      enum "other" {
+        value 0;
+        description
+          "Other.";
+      }
+      enum "chassis" {
+        value 1;
+        description
+          "Chassis.";
+      }
+      enum "container" {
+        value 2;
+        description
+          "Container.";
+      }
+      enum "board" {
+        value 3;
+        description
+          "Board.";
+      }
+      enum "mpu-module" {
+        value 4;
+        description
+          "MPU.";
+      }
+      enum "lpu-module" {
+        value 5;
+        description
+          "LPU.";
+      }
+      enum "sfu-module" {
+        value 6;
+        description
+          "SFU.";
+      }
+      enum "clock-module" {
+        value 7;
+        description
+          "CLK.";
+      }
+      enum "card" {
+        value 8;
+        description
+          "Card.";
+      }
+      enum "flexiblecard-module" {
+        value 9;
+        description
+          "Flexible card.";
+      }
+      enum "port" {
+        value 10;
+        description
+          "Port.";
+      }
+      enum "fan" {
+        value 16;
+        description
+          "Fan.";
+      }
+      enum "powersupply" {
+        value 17;
+        description
+          "Power supply.";
+      }
+      enum "pp-module" {
+        value 4108;
+        description
+          "PP Module.";
+      }
+      enum "swf-module" {
+        value 4109;
+        description
+          "SWF Module.";
+      }
+      enum "icu-module" {
+        value 4111;
+        description
+          "ICU.";
+      }
+      enum "lfe" {
+        value 4162;
+        description
+          "Lfe.";
+      }
+      enum "cf-module" {
+        value 4170;
+        description
+          "CF card.";
+      }
+      enum "cmu-module" {
+        value 5010;
+        description
+          "CMU.";
+      }
+      enum "tsu" {
+        value 5012;
+        description
+          "TSU.";
+      }
+      enum "pmu" {
+        value 5031;
+        description
+          "PMU.";
+      }
+      enum "pm" {
+        value 5032;
+        description
+          "PM.";
+      }
+      enum "pem" {
+        value 5006;
+        description
+          "PEM.";
+      }
+      enum "pdu" {
+        value 5086;
+        description
+          "PDU.";
+      }
+      enum "dmu" {
+        value 5087;
+        description
+          "DMU.";
+      }
+      enum "dacs" {
+        value 5088;
+        description
+          "DACS.";
+      }
+    }
+    description
+      "Physical entity class.";
+  }
+
+}
