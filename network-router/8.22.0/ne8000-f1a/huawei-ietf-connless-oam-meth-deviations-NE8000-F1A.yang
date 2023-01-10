@@ -1,0 +1,179 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-connless-oam-meth-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-ietf-connless-oam-meth-deviations-NE8000-F1A";
+  prefix cloam-methods-devs-NE8000-F1A;
+
+  import ietf-connectionless-oam-methods {
+    prefix cloam-methods;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-connectionless-oam-methods module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/cloam-methods:continuity-check/cloam-methods:input/cloam-methods:destination-tp/cloam-methods:mac-address" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:input/cloam-methods:destination-tp/cloam-methods:tp-attribute" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:input/cloam-methods:destination-tp/cloam-methods:system-info" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:input/cloam-methods:source-interface" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:input/cloam-methods:outbound-interface" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:input/cloam-methods:vrf" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:input/cloam-methods:session-type" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:output/cloam-methods:response-info/cloam-methods:status-sub-code" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:output/cloam-methods:src-test-point" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:output/cloam-methods:dest-test-point" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:output/cloam-methods:sequence-number" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:output/cloam-methods:hop-cnt" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:output/cloam-methods:session-error-statistics/cloam-methods:packet-reorder-count" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:output/cloam-methods:session-delay-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:output/cloam-methods:session-jitter-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:input/cloam-methods:destination-tp/cloam-methods:mac-address" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:input/cloam-methods:destination-tp/cloam-methods:tp-attribute" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:input/cloam-methods:destination-tp/cloam-methods:system-info" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:input/cloam-methods:source-interface" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:input/cloam-methods:outbound-interface" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:input/cloam-methods:vrf" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:input/cloam-methods:session-type" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:response-list/cloam-methods:status-sub-code" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:src-test-point" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:dest-test-point" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:sequence-number" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-verification" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:ingress-intf-name" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:egress-intf-name" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:queue-depth" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:transit-delay" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:app-meta-data" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:ni" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:mac-address" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:tp-attribute" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:system-info" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:timestamp-type" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:timestamp-64bit" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:timestamp-80bit" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:ntp-timestamp-32bit" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:path-trace-info/cloam-methods:path-trace-info-list/cloam-methods:icmp-timestamp-32bit" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:session-error-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:session-delay-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:output/cloam-methods:session-jitter-statistics" {
+    deviate not-supported;
+  }
+  deviation "/cloam-methods:continuity-check/cloam-methods:input/cloam-methods:count" {
+    deviate replace {
+      type uint8 {
+        range "1..10";
+      }
+    }
+  }
+  deviation "/cloam-methods:path-discovery/cloam-methods:input/cloam-methods:max-ttl" {
+    deviate replace {
+      type uint8 {
+        range "1..10";
+      }
+    }
+    deviate replace {
+      default "10";
+    }
+  }
+}

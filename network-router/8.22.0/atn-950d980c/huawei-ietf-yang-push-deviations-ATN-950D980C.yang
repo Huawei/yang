@@ -1,0 +1,87 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-yang-push-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-ietf-yang-push-deviations-ATN-950D980C";
+  prefix yp-devs-ATN-950D980C;
+
+  import ietf-yang-push {
+    prefix yp;
+  }
+  import ietf-subscribed-notifications {
+    prefix sn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-yang-push module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/yp:push-update" {
+    deviate not-supported;
+  }
+  deviation "/yp:push-change-update" {
+    deviate not-supported;
+  }
+  deviation "/yp:resync-subscription" {
+    deviate not-supported;
+  }
+  deviation "/sn:establish-subscription/sn:input/yp:update-trigger/yp:on-change" {
+    deviate not-supported;
+  }
+  deviation "/sn:establish-subscription/sn:input/sn:target/yp:datastore/yp:selection-filter/yp:by-reference" {
+    deviate not-supported;
+  }
+  deviation "/sn:establish-subscription/sn:input/sn:target/yp:datastore/yp:selection-filter/yp:within-subscription/yp:filter-spec/yp:datastore-subtree-filter" {
+    deviate not-supported;
+  }
+  deviation "/sn:modify-subscription/sn:input/yp:update-trigger/yp:on-change" {
+    deviate not-supported;
+  }
+  deviation "/sn:modify-subscription/sn:input/sn:target/yp:datastore/yp:datastore" {
+    deviate not-supported;
+  }
+  deviation "/sn:modify-subscription/sn:input/sn:target/yp:datastore/yp:selection-filter/yp:by-reference" {
+    deviate not-supported;
+  }
+  deviation "/sn:modify-subscription/sn:input/sn:target/yp:datastore/yp:selection-filter/yp:within-subscription/yp:filter-spec/yp:datastore-subtree-filter" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscription-started/yp:update-trigger" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscription-started/sn:target/yp:datastore" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscription-modified/yp:update-trigger" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscription-modified/sn:target/yp:datastore" {
+    deviate not-supported;
+  }
+  deviation "/sn:filters/yp:selection-filter" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/yp:update-trigger/yp:on-change" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:target/yp:datastore/yp:selection-filter/yp:by-reference" {
+    deviate not-supported;
+  }
+  deviation "/sn:subscriptions/sn:subscription/sn:target/yp:datastore/yp:selection-filter/yp:within-subscription/yp:filter-spec/yp:datastore-subtree-filter" {
+    deviate not-supported;
+  }
+}

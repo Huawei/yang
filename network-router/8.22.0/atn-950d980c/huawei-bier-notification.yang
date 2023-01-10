@@ -1,0 +1,323 @@
+/*
+Copyright (C) 2019-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bier-notification";
+  prefix bier-notification;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "The module defines notifications for BIER.";
+  revision 2022-06-02 {
+    description
+      "Add Prefix conflict.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-07-08 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bier";
+
+  typedef ip-addr-type {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown type.";
+      }
+      enum "ipv4unicast" {
+        value 1;
+        description
+          "IPv4 unicast.";
+      }
+      enum "ipv6unicast" {
+        value 2;
+        description
+          "IPv6 unicast.";
+      }
+    }
+    description
+      "Address family.";
+  }
+  typedef conflict-type {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown type.";
+      }
+      enum "bfr-id-conflict" {
+        value 1;
+        description
+          "BFR-ID conflict.";
+      }
+      enum "prefix-conflict" {
+        value 2;
+        description
+          "Prefix conflict.";
+      }
+    }
+    description
+      "Conflict type.";
+  }
+  typedef conflict-state {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown type.";
+      }
+      enum "in-conflict" {
+        value 1;
+        description
+          "A conflict exists.";
+      }
+      enum "conflict-resolved" {
+        value 2;
+        description
+          "The conflict is resolved.";
+      }
+    }
+    description
+      "Conflict state.";
+  }
+  typedef conflict-resolve-cause {
+    type enumeration {
+      enum "local-change" {
+        value 1;
+        description
+          "The local configuration is changed.";
+      }
+      enum "remote-change" {
+        value 2;
+        description
+          "The remote information changes.";
+      }
+    }
+    description
+      "Conflict clearance cause.";
+  }
+  notification bier-prefix-bfrid-conflict {
+    description
+      "In the same BIER sub-domain, BFR-ID or Prefix configuration conflicts exist.";
+    leaf address-family {
+      type ip-addr-type;
+      description
+        "Address family.";
+    }
+    leaf sub-domain-id {
+      type uint32 {
+        range "0..255";
+      }
+      description
+        "BIER sub-domain.";
+    }
+    leaf conflict-type {
+      type conflict-type;
+      description
+        "Conflict type.";
+    }
+    leaf conflict-bfr-id {
+      type uint32 {
+        range "1..65535";
+      }
+      description
+        "Conflicting BFR-ID.";
+    }
+    leaf conflict-prefix {
+      type inet:ip-address-no-zone;
+      description
+        "Conflicting prefix.";
+    }
+    leaf conflict-state {
+      type conflict-state;
+      description
+        "Conflict state.";
+    }
+    leaf current-advertiser {
+      type string {
+        length "1..21";
+      }
+      description
+        "Current advertiser.";
+    }
+    leaf new-advertiser {
+      type string {
+        length "1..21";
+      }
+      description
+        "New advertiser.";
+    }
+    leaf current-bier-prefix {
+      type inet:ip-address-no-zone;
+      description
+        "BIER prefix of the current advertiser.";
+    }
+    leaf new-bier-prefix {
+      type inet:ip-address-no-zone;
+      description
+        "BIER prefix of the new advertiser.";
+    }
+    leaf current-bfr-id {
+      type uint32 {
+        range "1..65535";
+      }
+      description
+        "BFR-ID of the current advertiser.";
+    }
+    leaf new-bfr-id {
+      type uint32 {
+        range "1..65535";
+      }
+      description
+        "BFR-ID of the new advertiser.";
+    }
+  }
+  notification bier-prefix-bfrid-conflict-resume {
+    description
+      "The BFR-ID or Prefix configuration conflicts are removed.";
+    leaf address-family {
+      type ip-addr-type;
+      description
+        "Address family.";
+    }
+    leaf sub-domain-id {
+      type uint32 {
+        range "0..255";
+      }
+      description
+        "BIER sub-domain.";
+    }
+    leaf conflict-type {
+      type conflict-type;
+      description
+        "Conflict type.";
+    }
+    leaf conflict-bfr-id {
+      type uint32 {
+        range "1..65535";
+      }
+      description
+        "Conflicting BFR-ID.";
+    }
+    leaf conflict-prefix {
+      type inet:ip-address-no-zone;
+      description
+        "Conflicting prefix.";
+    }
+    leaf conflict-state {
+      type conflict-state;
+      description
+        "Conflict state.";
+    }
+    leaf current-advertiser {
+      type string {
+        length "1..21";
+      }
+      description
+        "Current advertiser.";
+    }
+    leaf new-advertiser {
+      type string {
+        length "1..21";
+      }
+      description
+        "New advertiser.";
+    }
+    leaf current-bier-prefix {
+      type inet:ip-address-no-zone;
+      description
+        "BIER prefix of the current advertiser.";
+    }
+    leaf new-bier-prefix {
+      type inet:ip-address-no-zone;
+      description
+        "BIER prefix of the new advertiser.";
+    }
+    leaf current-bfr-id {
+      type uint32 {
+        range "1..65535";
+      }
+      description
+        "BFR-ID of the current advertiser.";
+    }
+    leaf new-bfr-id {
+      type uint32 {
+        range "1..65535";
+      }
+      description
+        "BFR-ID of the new advertiser.";
+    }
+  }
+  notification bier-endbier-sid-conflict {
+    description
+      "In the BIER sub-domain, the configured End.BIER SID conflicts with the remote route.";
+    leaf address-family {
+      type ip-addr-type;
+      description
+        "Address family.";
+    }
+    leaf sub-domain-id {
+      type uint32 {
+        range "0..255";
+      }
+      description
+        "BIER sub-domain.";
+    }
+    leaf conflict-endbier-sid {
+      type inet:ip-address-no-zone;
+      description
+        "Conflicting End.BIER SID.";
+    }
+    leaf nexthop-addr {
+      type inet:ip-address-no-zone;
+      description
+        "The next hop address of End.BIER SID in routing-table.";
+    }
+  }
+  notification bier-endbier-sid-conflict-resume {
+    description
+      "The End.BIER SID configuration conflict has been resolved.";
+    leaf address-family {
+      type ip-addr-type;
+      description
+        "Address family.";
+    }
+    leaf sub-domain-id {
+      type uint32 {
+        range "0..255";
+      }
+      description
+        "BIER sub-domain.";
+    }
+    leaf conflict-endbier-sid {
+      type inet:ip-address-no-zone;
+      description
+        "Conflicting End.BIER SID.";
+    }
+    leaf conflict-resolve-cause {
+      type conflict-resolve-cause;
+      description
+        "End.BIER SID conflict clearance cause. 1: The local End.BIER SID configuration is changed. 2: The remote route is changed.";
+    }
+  }
+}

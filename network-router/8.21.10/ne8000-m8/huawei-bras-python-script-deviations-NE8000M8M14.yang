@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-python-script-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-bras-python-script-deviations-NE8000M8M14";
+  prefix bras-python-script-devs-NE8000M8M14;
+
+  import huawei-bras-python-script {
+    prefix bras-python-script;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-python-script module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-python-script:bras-python-script/bras-python-script:cu-python-script-statistics" {
+    deviate not-supported;
+  }
+
+}

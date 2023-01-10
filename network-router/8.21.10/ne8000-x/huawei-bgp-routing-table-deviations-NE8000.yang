@@ -1,0 +1,78 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-routing-table-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-bgp-routing-table-deviations-NE8000";
+  prefix bgp-rt-devs-NE8000;
+
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-routing-table module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-unicast/bgp-rt:routes/bgp-rt:route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-unicast/bgp-rt:peer-receive-routes/bgp-rt:peer-receive-route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-unicast/bgp-rt:peer-receive-active-routes/bgp-rt:peer-receive-active-route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv6-unicast/bgp-rt:routes/bgp-rt:route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv6-unicast/bgp-rt:peer-receive-routes/bgp-rt:peer-receive-route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv6-unicast/bgp-rt:peer-receive-active-routes/bgp-rt:peer-receive-active-route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-vpn/bgp-rt:routes/bgp-rt:route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-vpn/bgp-rt:peer-receive-routes/bgp-rt:peer-receive-route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-vpn/bgp-rt:peer-receive-active-routes/bgp-rt:peer-receive-active-route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv6-vpn/bgp-rt:routes/bgp-rt:route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv6-vpn/bgp-rt:peer-receive-routes/bgp-rt:peer-receive-route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv6-vpn/bgp-rt:peer-receive-active-routes/bgp-rt:peer-receive-active-route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-multicast/bgp-rt:routes/bgp-rt:route/bgp-rt:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-rt:ipv4-labeluni/bgp-rt:routes/bgp-rt:route/bgp-rt:external-flags" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:instance-processs/bgp:instance-process/bgp-rt:bgp-route/bgp-rt:ipv4-unicast/bgp-rt:routes/bgp-rt:route/bgp-rt:external-flags" {
+    deviate not-supported;
+  }
+}

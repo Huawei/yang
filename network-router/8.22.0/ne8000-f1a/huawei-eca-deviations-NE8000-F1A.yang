@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-eca-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-eca-deviations-NE8000-F1A";
+  prefix eca-devs-NE8000-F1A;
+
+  import huawei-eca {
+    prefix eca;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-eca module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/eca:eca/eca:history-service-infos" {
+    deviate not-supported;
+  }
+}

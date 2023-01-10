@@ -1,0 +1,230 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bfd-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-bfd-deviations-ATN-950D980C";
+  prefix bfd-devs-ATN-950D980C;
+
+  import huawei-bfd {
+    prefix bfd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bfd module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef display-type-deviations {
+    type enumeration {
+      enum all {
+        value 0;
+        description
+          "All BFD sessions.";
+      }
+      enum discriminator {
+        value 4;
+        description
+          "Discriminator-specified BFD session.";
+      }
+    }
+    description
+      "BFD session type.";
+  }
+
+  typedef link-type-deviations {
+    type enumeration {
+      enum ip {
+        value 0;
+        description
+          "IP.";
+      }
+      enum ldp-lsp {
+        value 1;
+        description
+          "LDP LSP.";
+      }
+      enum te-lsp {
+        value 3;
+        description
+          "TE LSP.";
+      }
+      enum te-tunnel {
+        value 4;
+        description
+          "TE tunnel.";
+      }
+      enum vll-pw {
+        value 6;
+        description
+          "VLL pseudo wire.";
+      }
+      enum vsi-pw {
+        value 7;
+        description
+          "VSI pseudo wire.";
+      }
+    }
+    description
+      "BFD smp linktype.";
+  }
+
+  deviation "/bfd:bfd/bfd:global/bfd:process-mode" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:global/bfd:process-central-slot" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:global/bfd:process-central-slot2" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:select-board-slot-static-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:select-board-slot2-static-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:lag-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:multicast/bfd:unlimited-nego-multicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:unicast/bfd:per-link-static-unicast-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:select-board-slot-static-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:select-board-slot2-static-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv4/bfd:select-board-slot-auto-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv4/bfd:select-board-slot2-auto-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv4/bfd:per-link-auto-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv6/bfd:select-board-slot-auto-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv6/bfd:select-board-slot2-auto-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:vxlan" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:groups" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:running/bfd:remote-demand-mode" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:running/bfd:acl-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:running/bfd:echo-tx-timer-id" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:statistics/bfd:vxlan-session-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:statistics/bfd:sub-session-up-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:statistics/bfd:sub-session-down-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:demand-enable" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:lag" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:main-sub-role" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:running/bfd:remote-demand-mode" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:running/bfd:acl-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:all-sessions/bfd:all-session/bfd:running/bfd:echo-tx-timer-id" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:mul-cast-sessions/bfd:mul-cast-session/bfd:multi-cast-session-running/bfd:re-demand-mode" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:mul-cast-sessions/bfd:mul-cast-session/bfd:multi-cast-session-running/bfd:acl-num" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:mul-cast-sessions/bfd:mul-cast-session/bfd:multi-cast-session-running/bfd:echo-tx-timer-id" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:bfd-bundle-sessions/bfd:bfd-bundle-session/bfd:te-backup" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:bfd-bundle-sessions/bfd:bfd-bundle-session/bfd:tunnel-id" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:bfd-bundle-sessions/bfd:bfd-bundle-session/bfd:pw-secondary" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:bfd-bundle-sessions/bfd:bfd-bundle-session/bfd:vsi-name" {
+    deviate not-supported;
+  }
+  deviation "/bfd:change-session-board" {
+    deviate not-supported;
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv4/bfd:multicast-or-unicast-ip/bfd:unicast/bfd:is-group-static-unicast-ipv4" {
+    deviate add {
+      must "../bfd:is-group-static-unicast-ipv4='false'";
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:static/bfd:static-session-link-type/bfd:ip/bfd:ip-address-type/bfd:ipv6/bfd:is-group-static-ipv6" {
+    deviate add {
+      must "../bfd:is-group-static-ipv6='false'";
+    }
+  }
+  deviation "/bfd:bfd/bfd:sessions/bfd:session/bfd:session-type/bfd:auto/bfd:auto-session-link-type/bfd:ip/bfd:address-type/bfd:ipv6/bfd:per-link-auto-ipv6" {
+    deviate add {
+      must "../per-link-auto-ipv6='false'";
+    }
+  }
+  deviation "/bfd:bfd/bfd:sbfd/bfd:authentication-keys/bfd:authentication-key/bfd:session-type" {
+    deviate add {
+      must "(contains(../destination-address,':') and (../session-type='sbfd-ip-multi-hop' or ../session-type='sbfd-sr-te-policy-segment-list')) or (not(contains(../destination-address,':')) and (../session-type='sbfd-lsp-tunnel' or ../session-type='sbfd-sr-te-policy-segment-list'))";
+    }
+  }
+  deviation "/bfd:bfd/bfd:authentication-keys/bfd:authentication-key/bfd:session-type" {
+    deviate add {
+      must "(contains(../peer-ip,':') and (../session-type='ip-single-hop' or ../session-type='ip-multi-hop')) or (not(contains(../peer-ip,':')) and (../session-type='ip-single-hop' or ../session-type='ip-multi-hop' or ../session-type='mpls-passive' or ../session-type='lsp-tunnel'))";
+    }
+  }
+  deviation "/bfd:bfd/bfd:track-manager-groups/bfd:track-manager-group/bfd:sessions/bfd:session/bfd:link-type" {
+    deviate replace {
+      type bfd-devs-ATN-950D980C:link-type-deviations;
+    }
+  }
+  deviation "/bfd:reset-bfd-statistics/bfd:input/bfd:reset-type" {
+    deviate replace {
+      type bfd-devs-ATN-950D980C:display-type-deviations;
+    }
+  }
+}

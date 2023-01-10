@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-http-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-http-deviations-OC-NE-X8X16";
+  prefix http-devs-OC-NE-X8X16;
+
+  import huawei-http {
+    prefix http;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-http module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/http:http/http:servers" {
+    deviate not-supported;
+  }
+  deviation "/http:http/http:server-source" {
+    deviate not-supported;
+  }
+  deviation "/http:httpc-transfer-file/http:input/http:password" {
+    deviate replace {
+      type pub-type:password-extend {
+        length "1..127";
+      }
+    }
+  }
+}

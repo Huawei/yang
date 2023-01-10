@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-rip-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-rip-deviations-OC-NE-X8X16";
+  prefix rip-devs-OC-NE-X8X16;
+
+  import huawei-rip {
+    prefix rip;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-rip module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/rip:rip/rip:processs/rip:process/rip:default-route/rip:default-route-mode/rip:route-filter-name" {
+    deviate not-supported;
+  }
+}

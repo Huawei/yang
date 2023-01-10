@@ -1,0 +1,77 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-said-frame-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-said-frame-deviations-ATN-980B";
+  prefix sf-devs-ATN-980B;
+
+  import huawei-said-frame {
+    prefix sf;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-said-frame module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef said-name-mpu-deviations {
+    type enumeration {
+      enum "ping" {
+        value 2;
+        description 
+          "Said ping node.";
+      }
+      enum "ping-trunk" {
+        value 3;
+        description 
+          "Said ping-trunk node.";
+      }
+      enum "seu-igp" {
+        value 5;
+        description 
+          "Said seu-igp node.";
+      }
+      enum "seu-trunk" {
+        value 20;
+        description 
+          "Said seu-trunk node.";
+      }
+    }
+    description 
+      "Said node name mpu deviations.";
+  }
+
+  deviation "/sf:said-frame/sf:lpu-nodes" {
+    deviate not-supported;
+  }
+  deviation "/sf:said-frame/sf:lpunodecfgs" {
+    deviate not-supported;
+  }
+  deviation "/sf:said-frame/sf:mpu-nodes/sf:mpu-node/sf:said-name" {
+    deviate replace {
+      type sf-devs-ATN-980B:said-name-mpu-deviations;
+    }
+  }
+  deviation "/sf:said-frame/sf:mpunodecfgs/sf:mpunodecfg/sf:said-name" {
+    deviate replace {
+      type sf-devs-ATN-980B:said-name-mpu-deviations;
+    }
+  }
+
+}

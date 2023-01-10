@@ -1,0 +1,457 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-user-manage-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-bras-user-manage-deviations-ATN-950D980C";
+  prefix bras-user-manage-devs-ATN-950D980C;
+
+  import huawei-bras-user-manage {
+    prefix bras-user-manage;
+  }
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-bras-ipv4-address-manage {
+    prefix bras-ipv4-address-manage;
+  }
+
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-user-manage module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef authentication-type-for-cut-user-deviations {
+    type enumeration {
+      enum "all" {
+        value 0;
+        description 
+          "All authentication modes.";
+      }
+      enum "none" {
+        value 1;
+        description 
+          "No authentication mode.";
+      }
+      enum "local" {
+        value 2;
+        description 
+          "Local authentication mode.";
+      }
+      enum "radius" {
+        value 3;
+        description 
+          "RADIUS authentication mode.";
+      }
+      enum "hwtacacs" {
+        value 4;
+        description 
+          "HWTACACS authentication mode.";
+      }
+    }
+    description 
+      "Disconnects the user connection in the specified authentication mode.";
+  }
+
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:service-identify-policys" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:domain-map-lists" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:domain-lists" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:ip-userlog" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:trace" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:user-authorization" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:qoe-accounting" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-policy" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:accounting-time-calibration" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-speed/bras-user-manage:adjust-system-state" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-speed/bras-user-manage:access-rate-limitation" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-speed/bras-user-manage:access-queue-threshold" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-speed-cu" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:default-password-templates" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-trigger-loose" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:local-aaa-server-users/bras-user-manage:local-aaa-server-user/bras-user-manage:idle-cut" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:local-aaa-server-users/bras-user-manage:local-aaa-server-user/bras-user-manage:callback-nocheck" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:local-aaa-server-users/bras-user-manage:local-aaa-server-user/bras-user-manage:callback-number" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:local-aaa-server-users/bras-user-manage:local-aaa-server-user/bras-user-manage:qos-profile-name" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:local-aaa-server-users/bras-user-manage:local-aaa-server-user/bras-user-manage:ip-address" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:local-aaa-server-users/bras-user-manage:local-aaa-server-user/bras-user-manage:vpn-name" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:family-or-common-user" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:user-warning-threshold" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:user-resource-exhaust-alarm" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-backup-trap-usernums" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-backup-check-detect" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:local-bill" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-user-specification" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-services" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:user-policy-interface-down" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:up-backup" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:kpi-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:accounting-copy-groups" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:default-user-name-templates" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:userlog-with-username" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:online-fail-or-offline-records/bras-user-manage:online-fail-or-offline-record/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:offline-reason-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-user-types" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-domains" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-by-filters" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-online-number-upmng-instances" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-tables/bras-user-manage:access-table/bras-user-manage:access-user-basic-info/bras-user-manage:nat-port-rds-flg" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-tables/bras-user-manage:access-table/bras-user-manage:access-user-l2tp-or-cu-info/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:slot-access-user-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-user-resource-usage" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:max-online-user-statistic/bras-user-manage:ups" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:cu-max-online-user-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:aaa-call-rate" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:aaa-online-fail-or-offline-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:aaa-online-fail-or-offline-cu-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-user-extend-states" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:online-fail-record-statistic" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:rate-limit-states" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-packet-discard-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:vas-user-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:pevlan-flow-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:cevlan-flow-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:web-module-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:web-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:interface-access-user-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:web-auth-servers" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:slot-card-connect-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-user-accounting-copy-infos" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:access-radius-attribute-info" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:bras-user-manage/bras-user-manage:up-access-users" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:set-cache-local-bill-backup" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:set-cfcard-local-bill-backup" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:reset-cfcard-local-bill" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:reset-access-packet-discard-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:reset-online-fail-record-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:reauthorize-user-name" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:reset-ip-userlog-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-ip-address/bras-user-manage:input/bras-user-manage:nat-ip-address" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:combinable/bras-user-manage:ip-pool-name" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:combinable/bras-user-manage:ipv6-pool-name" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:combinable/bras-user-manage:authen-method" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:combinable/bras-user-manage:pevlan" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:combinable/bras-user-manage:cevlan" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:combinable/bras-user-manage:queue-scheduler" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:combinable/bras-user-manage:direction" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:by-ipv6/bras-user-manage:address-or-prefix/bras-user-manage:ipv6-prefix" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:by-ipv6/bras-user-manage:address-or-prefix/bras-user-manage:ipv6-segment" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:by-up" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-cgn-pub-user" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-tables/bras-user-manage:input/bras-user-manage:up-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-tables/bras-user-manage:input/bras-user-manage:agent-circuit-id" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-tables/bras-user-manage:input/bras-user-manage:up-backup-profile-name" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:filter-access-online-number-by-vlan" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:up-access-user-online-total-number" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:reset-max-online-user/bras-user-manage:input/bras-user-manage:reset-type/bras-user-manage:by-up" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:update-qoe-accounting" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:update-qos-profile" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bras/bras-user-manage:bras-user-manage" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-user-manage:service-identify-policy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-user-manage:default-password-template" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-user-manage:block" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-user-manage:default-user-name-template" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-user-manage:default-user-name" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-user-manage:permit-or-deny-access" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer3-subscriber/bras-basic-access:layer3-subscriber/bras-user-manage:service-identify-policy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer3-subscriber/bras-basic-access:layer3-subscriber/bras-user-manage:default-user-name-template" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer3-subscriber/bras-basic-access:layer3-subscriber/bras-user-manage:default-password-template" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-leaseline/bras-basic-access:layer2-leaseline/bras-user-manage:service-identify-policy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-leaseline/bras-basic-access:layer2-leaseline/bras-user-manage:default-user-name-template" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-leaseline/bras-basic-access:layer2-leaseline/bras-user-manage:default-password-template" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer3-leaseline/bras-basic-access:layer3-leaseline/bras-user-manage:default-user-name-template" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:l2vpn-leaseline/bras-basic-access:l2vpn-leaseline/bras-user-manage:service-identify-policy" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:l2vpn-leaseline/bras-basic-access:l2vpn-leaseline/bras-user-manage:default-password-template" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/bras-user-manage:bras-user-manage/bras-user-manage:authentication-redirect-domain-policy" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas/bras-user-manage:bras-user-manage" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-basic-access:bras/bras-user-manage:block" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/bras-basic-access:bras/bras-user-manage:ip-unr-host-route" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-cu-controller:remote-up-boards/bras-cu-controller:remote-up-board/bras-basic-access:bras/bras-user-manage:ip-unr-host-route" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/bras-ipv4-address-manage:bas/bras-user-manage:bras-user-manage" {
+    deviate not-supported;
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:combinable/bras-user-manage:authentication-type" {
+    deviate replace {
+      type bras-user-manage-devs-ATN-950D980C:authentication-type-for-cut-user-deviations;
+    }
+  }
+  deviation "/bras-user-manage:cut-access-user-by-condition/bras-user-manage:input/bras-user-manage:by-condition/bras-user-manage:by-ipv6/bras-user-manage:vpn-name" {
+    deviate delete {
+      must "../ipv6-address or ../ipv6-prefix or ../ipv6-segment";
+    }
+    deviate add {
+      must "../ipv6-address";
+    }
+  }
+
+}

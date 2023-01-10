@@ -1,0 +1,59 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-global {
+  namespace "urn:huawei:yang:huawei-bier-global";
+  prefix bier-global;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Extended global model for Bit Index Explicit Replication (BIER).";
+  revision 2022-01-29 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bier";
+  
+  typedef address-family-type {
+    type enumeration {
+      enum "ipv6-unicast" {
+        value 2;
+        description
+          "IPv6 address family.";
+      }
+    }
+    description
+      "Address family.";
+  }
+  
+  container bier-global {
+    description
+      "BIER extended global configuration.";
+    container enable-statistics {
+      description
+        "List of enable/disable BIER statistical function.";
+      list enable-statistic {
+        key "address-family";
+        description
+          "Configure BIER statistical function.";
+        leaf address-family {
+          type address-family-type;
+          description
+            "Address family.";
+        }
+      }
+    }
+  }
+}

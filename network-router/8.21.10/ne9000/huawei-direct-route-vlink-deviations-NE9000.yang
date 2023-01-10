@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-direct-route-vlink-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-direct-route-vlink-deviations-NE9000";
+  prefix directrtvlink-devs-NE9000;
+
+  import huawei-direct-route-vlink {
+    prefix directrtvlink;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-direct-route-vlink module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/directrtvlink:vlink-routes" {
+    deviate not-supported;
+  }
+}

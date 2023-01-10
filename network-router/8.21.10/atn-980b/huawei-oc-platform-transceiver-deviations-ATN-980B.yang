@@ -1,0 +1,152 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oc-platform-transceiver-deviations-ATN-980B {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-oc-platform-transceiver-deviations-ATN-980B";
+  prefix oc-transceiver-devs-ATN-980B;
+ 
+  import openconfig-platform {
+    prefix oc-platform;
+  }
+  import openconfig-platform-transceiver {
+    prefix oc-transceiver;
+  }
+  import openconfig-interfaces {
+    prefix oc-if;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for openconfig-platform-transceiver module.";
+
+  revision 2021-02-23 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:form-factor-preconf" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:ethernet-pmd-preconf" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:fec-mode" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:module-functional-type" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:vendor-part" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:vendor-rev" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:sonet-sdh-compliance-code" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:otn-compliance-code" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:date-code" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:fec-status" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:fec-uncorrectable-blocks" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:fec-uncorrectable-words" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:fec-corrected-bytes" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:fec-corrected-bits" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:pre-fec-ber" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:post-fec-ber" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:output-power/oc-transceiver:avg" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:output-power/oc-transceiver:min" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:output-power/oc-transceiver:max" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:output-power/oc-transceiver:interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:output-power/oc-transceiver:min-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:output-power/oc-transceiver:max-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:input-power/oc-transceiver:avg" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:input-power/oc-transceiver:min" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:input-power/oc-transceiver:max" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:input-power/oc-transceiver:interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:input-power/oc-transceiver:min-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:input-power/oc-transceiver:max-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:laser-bias-current/oc-transceiver:avg" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:laser-bias-current/oc-transceiver:min" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:laser-bias-current/oc-transceiver:max" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:laser-bias-current/oc-transceiver:interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:laser-bias-current/oc-transceiver:min-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:state/oc-transceiver:laser-bias-current/oc-transceiver:max-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-transceiver:transceiver/oc-transceiver:physical-channels" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:state/oc-transceiver:transceiver" {
+    deviate not-supported;
+  }
+  deviation "/oc-if:interfaces/oc-if:interface/oc-if:state/oc-transceiver:physical-channel" {
+    deviate not-supported;
+  }
+}

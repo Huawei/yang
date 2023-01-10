@@ -1,0 +1,68 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-pppox-access-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-bras-pppox-access-deviations-NE8000-F1A";
+  prefix bras-pppox-access-devs-NE8000-F1A;
+
+  import huawei-bras-pppox-access {
+    prefix bras-pppox-access;
+  }
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-pppox-access module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/bras-pppox-access:bras-pppox" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-pppox-access:pppox" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-upboards/bras-cu-controller:resource-upboard/bras-pppox-access:pppox" {
+    deviate not-supported;
+  }
+  deviation "/bras-pppox-access:bras-pppox-access/bras-pppox-access:ppp-user-infos/bras-pppox-access:ppp-user-info/bras-pppox-access:user-id" {
+    deviate replace {
+      type uint32 {
+        range "0..3145727";
+      }
+    }
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/bras-pppox-access:bras-pppox/bras-pppox-access:max-sessions/bras-pppox-access:max-session-number" {
+    deviate replace {
+      type uint32 {
+        range "0..65534";
+      }
+    }
+    deviate add {
+      default "65534";
+    }
+  }
+
+}

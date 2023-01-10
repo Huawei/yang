@@ -1,0 +1,53 @@
+/******************************************************
+* Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn-pcp {
+  namespace "urn:huawei:yang:huawei-cgn-pcp";
+  prefix cgn-pcp;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-license {
+    prefix lcs;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn PCP.";
+  revision 2022-08-25 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  augment "/lcs:license" {
+    description
+      "Configure PCP license for CGN board.";
+    container active-pcps {
+      description
+        "List of active pcp for CGN board.";
+      list active-pcp {
+        key "slot";
+        description
+          "Configure active pcp for CGN board.";
+        leaf slot {
+          type string {
+            length "1..16";
+          }
+          description
+            "Slot ID.";
+        }
+      }
+    }
+  }
+  ext:task-name "nat";
+}

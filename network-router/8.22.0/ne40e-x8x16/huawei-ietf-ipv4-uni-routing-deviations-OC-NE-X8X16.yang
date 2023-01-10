@@ -1,0 +1,84 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-ipv4-uni-routing-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-ietf-ipv4-uni-routing-deviations-OC-NE-X8X16";
+  prefix v4ur-devs-OC-NE-X8X16;
+
+  import ietf-ipv4-unicast-routing {
+    prefix v4ur;
+  }
+  import ietf-routing {
+    prefix rt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-ipv4-unicast-routing module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/rt:routing/rt:ribs/rt:rib/rt:routes/rt:route/v4ur:destination-prefix" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop/v4ur:next-hop-address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop/v4ur:address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:ribs/rt:rib/rt:active-route/rt:input/v4ur:destination-address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route/v4ur:destination-prefix" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop/v4ur:next-hop-address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop/v4ur:next-hop-address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:static-routes/v4ur:ipv4/v4ur:route/v4ur:description" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:static-routes/v4ur:ipv4/v4ur:route/v4ur:next-hop/v4ur:next-hop-options/v4ur:special-next-hop" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:static-routes/v4ur:ipv4/v4ur:route/v4ur:next-hop/v4ur:next-hop-options/v4ur:next-hop-list" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/v4ur:destination-prefix" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop/v4ur:next-hop-address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop/v4ur:address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:input/v4ur:destination-address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route/v4ur:destination-prefix" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop/v4ur:next-hop-address" {
+    deviate not-supported;
+  }
+  deviation "/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop/v4ur:next-hop-address" {
+    deviate not-supported;
+  }
+}

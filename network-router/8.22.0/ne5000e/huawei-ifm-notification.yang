@@ -1,0 +1,471 @@
+/*
+Copyright (C) 2020-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ifm-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ifm-notification";
+  prefix ifm-notification;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of ifm.";
+  revision 2022-06-25 {
+    description
+      "Add cause for the IPv4 state changes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-06-15 {
+    description
+      "Add notification to notify the IPv4 state changes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-03-12 {
+    description
+      "Add notification if-ipv4-conflict and if-ipv4-conflict-resume.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-05-30 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "interface-mgr";
+  typedef port-status {
+    type enumeration {
+      enum "up" {
+        value 1;
+        description
+          "The interface is in Up state.";
+      }
+      enum "down" {
+        value 2;
+        description
+          "The interface is in Down state.";
+      }
+    }
+    description
+      "Interface suppression status.";
+  }
+  typedef ipv4-state-change-reason {
+    type enumeration {
+      enum "link-status-down" {
+        value 1;
+        description
+          "The interface link status is down.";
+      }
+      enum "l2-interface" {
+        value 2;
+        description
+          "The interface is a layer 2 interface.";
+      }
+      enum "protocol-down" {
+        value 3;
+        description
+          "The interface protocol status is down.";
+      }
+      enum "address-conflict" {
+        value 4;
+        description
+          "The IPv4 address of the interface conflicts with that of another interface.";
+      }
+      enum "address-deleted" {
+        value 5;
+        description
+          "The IPv4 address of the interface is deleted.";
+      }
+      enum "protocol-up" {
+        value 6;
+        description
+          "The interface protocol status is up.";
+      }
+      enum "interface-deleted" {
+        value 7;
+        description
+          "The interface is deleted.";
+      }
+      enum "numbered-interface-conflict" {
+        value 8;
+        description
+          "The address of the numbered interface conflicts.";
+      }
+    }
+    description
+      "Cause for IPv4 state changes.";
+  }
+  typedef suppress-status {
+    type enumeration {
+      enum "unsuppress" {
+        value 0;
+        description
+          "The interface is not suppressed.";
+      }
+      enum "suppress" {
+        value 1;
+        description
+          "The interface is suppressed.";
+      }
+    }
+    description
+      "Interface suppression status.";
+  }
+  notification error-down {
+    description
+      "Error-down occurred.";
+
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Index of an interface.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Interface name.";
+    }
+    leaf cause {
+      type string {
+        length "1..50";
+      }
+      mandatory true;
+      description
+        "Cause of the errordown event.";
+    }
+    leaf recovery-type {
+      type string {
+        length "1..20";
+      }
+      mandatory true;
+      description
+        "Specifies the alarm clearance type. The value is auto recovery or Null. The alarm clearance type triggered by restarting an interface is auto recovery.";
+    }
+  }
+  notification error-down-recovery {
+    description
+      "Error-down recovered.";
+
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Index of an interface.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Interface name.";
+    }
+    leaf cause {
+      type string {
+        length "1..50";
+      }
+      mandatory true;
+      description
+        "Cause of the errordown event.";
+    }
+    leaf recovery-type {
+      type string {
+        length "1..20";
+      }
+      mandatory true;
+      description
+        "Specifies the alarm clearance type. The value is auto recovery or Null. The alarm clearance type triggered by restarting an interface is auto recovery.";
+    }
+  }
+  notification if-damp-suppress {
+    description
+      "The state of interface changed from unsuppress to suppress.";
+    leaf interface-name {
+      type pub-type:if-name;
+      description
+        "Interface name.";
+    }
+    leaf suppress-state {
+      type suppress-status;
+      description
+        "Interface suppression status: - 0: The interface is not suppressed. - 1: The interface is suppressed.";
+    }
+  }
+  notification if-damp-resume {
+    description
+      "The state of interface changed from suppress to unsuppress.";
+    leaf interface-name {
+      type pub-type:if-name;
+      description
+        "Interface name.";
+    }
+    leaf suppress-state {
+      type suppress-status;
+      description
+        "Interface suppression status: - 0: The interface is not suppressed. - 1: The interface is suppressed.";
+    }
+  }
+  notification physical-admin-if-down {
+    description
+      "The physical manage interface physical status changes to down.";
+
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Interface index.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Name of the physical management interface.";
+    }
+    leaf oper-status {
+      type port-status;
+      mandatory true;
+      description
+        "Status of the physical management interface.";
+    }
+  }
+  notification physical-admin-if-up {
+    description
+      "The physical manage interface physical status changes to up.";
+
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Interface index.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Name of the physical management interface.";
+    }
+    leaf oper-status {
+      type port-status;
+      mandatory true;
+      description
+        "Status of the physical management interface.";
+    }
+  }
+  notification ipv6-if-state-change {
+    description
+      "The IPv6 status changes.";
+
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Interface index.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Indicates the interface name.";
+    }
+    leaf oper-status {
+      type port-status;
+      mandatory true;
+      description
+        "Indicates the current status of an interface.";
+    }
+    leaf admin-status {
+      type port-status;
+      mandatory true;
+      description
+        "Indicates the administrative status of an interface.";
+    }
+    leaf main-if-name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Main interface name.";
+    }
+    leaf reason-code {
+      type uint32;
+      mandatory true;
+      description
+        "Cause for trap generation.";
+    }
+  }
+  notification link-down {
+    description
+      "The interface status changes.";
+
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Interface index.";
+    }
+    leaf admin-status {
+      type port-status;
+      mandatory true;
+      description
+        "Configured interface status.";
+    }
+    leaf oper-status {
+      type port-status;
+      mandatory true;
+      description
+        "Current interface status.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Interface name.";
+    }
+    leaf reason-code {
+      type uint32;
+      mandatory true;
+      description
+        "Cause for trap generation.";
+    }
+    leaf main-if-name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Name of the main interface.";
+    }
+  }
+  notification link-up {
+    description
+      "The interface status changes.";
+
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Interface index.";
+    }
+    leaf admin-status {
+      type port-status;
+      mandatory true;
+      description
+        "Configured interface status.";
+    }
+    leaf oper-status {
+      type port-status;
+      mandatory true;
+      description
+        "Current interface status.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Interface name.";
+    }
+    leaf reason-code {
+      type uint32;
+      mandatory true;
+      description
+        "Cause for trap generation.";
+    }
+    leaf main-if-name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Name of the main interface.";
+    }
+  }
+  notification if-ipv4-conflict {
+    description
+      "The IPv4 address of the interface conflicts with that of another interface.";
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Interface index.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Name of the interface.";
+    }
+  }
+  notification if-ipv4-conflict-resume  {
+    description
+      "The IPv4 address conflict is cleared.";
+    leaf index {
+      type uint32;
+      mandatory true;
+      description
+        "Interface index.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      mandatory true;
+      description
+        "Name of the interface.";
+    }
+  }
+  notification if-ipv4-state-alarm {
+    description
+      "The interface IPv4 status changes.";
+    leaf index {
+      type uint32;
+      description
+        "Interface index.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      description
+        "Name of the interface.";
+    }
+    leaf oper-status {
+      type port-status;
+      description
+        "Current interface status.";
+    }
+    leaf reason-code {
+      type ipv4-state-change-reason;
+      description
+        "Cause for trap generation.";
+    }
+  }
+  notification if-ipv4-state-alarm-resume  {
+    description
+      "The interface IPv4 status changes resume.";
+    leaf index {
+      type uint32;
+      description
+        "Interface index.";
+    }
+    leaf name {
+      type pub-type:if-name;
+      description
+        "Name of the interface.";
+    }
+    leaf oper-status {
+      type port-status;
+      description
+        "Current interface status.";
+    }
+    leaf reason-code {
+      type ipv4-state-change-reason;
+      description
+        "Cause for trap generation.";
+    }
+  }
+}

@@ -1,0 +1,62 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-tty-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-tty-deviations-OC-NE-X8X16";
+  prefix tty-devs-OC-NE-X8X16;
+
+  import huawei-tty {
+    prefix tty;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-tty module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef tty-authmode-type-deviations {
+    type enumeration {
+      enum password {
+        value 2;
+        description
+          "Authentication mode password.";
+      }
+      enum aaa {
+        value 3;
+        description
+          "Authentication mode aaa.";
+      }
+      enum init {
+        value 4;
+        description
+          "Undo authentication mode.";
+      }
+    }
+    description
+      "TTY authentication mode type list.";
+  }
+
+  deviation "/tty:tty/tty:console/tty:auth-mode" {
+    deviate replace {
+      type tty-devs-OC-NE-X8X16:tty-authmode-type-deviations;
+    }
+  }
+  deviation "/tty:tty/tty:aux/tty:auth-mode" {
+    deviate replace {
+      type tty-devs-OC-NE-X8X16:tty-authmode-type-deviations;
+    }
+  }
+}

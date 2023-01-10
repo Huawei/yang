@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bd-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-bd-deviations-NE8000";
+  prefix bd-devs-NE8000;
+
+  import huawei-bd {
+    prefix bd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "BD management.";
+
+  revision 2019-04-23 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bd:bd/bd:instances/bd:instance/bd:encapsulation" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:bind-vlan" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:statistics/bd:inbound-pps" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:statistics/bd:inbound-bps" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:profiles" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:profile-id" {
+    deviate not-supported;
+  }
+}

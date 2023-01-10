@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-res-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mpls-res-deviations-NE5000E";
+  prefix mpls-res-devs-NE5000E;
+
+  import huawei-mpls-res {
+    prefix mpls-res;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mpls-res module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls-res:label-pre-reserve" {
+    deviate not-supported;
+  }
+}

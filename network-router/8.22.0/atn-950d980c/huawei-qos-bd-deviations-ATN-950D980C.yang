@@ -1,0 +1,208 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos-bd-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-qos-bd-deviations-ATN-950D980C";
+  prefix qos-bd-devs-ATN-950D980C;
+
+  import huawei-qos-bd {
+    prefix qos-bd;
+  }
+
+  import huawei-bd {
+    prefix bd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-qos-bd module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef operate-type-deviations {
+    type enumeration {
+      enum "enable" {
+        value 1;
+        description 
+          "Enable phb.";
+      }
+    }
+    description 
+      "To select enable or disable phb.";
+  }
+
+  typedef qos-direction-type-deviations {
+    type enumeration {
+      enum "inbound" {
+        value 0;
+        description 
+          "Inbound.";
+      }
+      enum "outbound" {
+        value 1;
+        description 
+          "Outbound.";
+      }
+    }
+    description 
+      "Direction.";
+  }
+
+  typedef trust-direction-type-deviations {
+    type enumeration {
+      enum "in-outbound" {
+        value 0;
+        description 
+          "Inbound and outbound.";
+      }
+    }
+    description 
+      "Direction.";
+  }
+
+  typedef trust-type-deviations {
+    type enumeration {
+      enum "ip-dscp" {
+        value 0;
+        description 
+          "Trust ip-dscp.";
+      }
+      enum "8021p" {
+        value 1;
+        description 
+          "Trust 8021p.";
+      }
+    }
+    description 
+      "Trust type.";
+  }
+
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:user-queue-statisticss/qos-bd:user-queue-statistics/qos-bd:buffer-total" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:user-queue-statisticss/qos-bd:user-queue-statistics/qos-bd:buffer-used" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:unknownunisup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:unknownunisup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:unknownunisup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:unknownunisup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:unknownunisup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:unknownunisup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:unknownunisup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:unknownunisup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:multicastsup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:multicastsup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:multicastsup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:multicastsup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:multicastsup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:multicastsup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:multicastsup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:multicastsup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:broadcastsup-pass-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:broadcastsup-pass-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:broadcastsup-drop-packets" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:broadcastsup-drop-bytes" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:broadcastsup-pass-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:broadcastsup-pass-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:broadcastsup-drop-packet-rate" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:vxlan-mode-classifier-statisticss/qos-bd:broadcastsup-drop-byte-rate" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/qos-bd:qos/qos-bd:phb-vxlans/qos-bd:phb-vxlan/qos-bd:diffserv-domain-name" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/qos-bd:qos/qos-bd:phbs/qos-bd:phb/qos-bd:diffserv-domain-name" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/qos-bd:qos/qos-bd:car-vxlan-modes" {
+    deviate not-supported;
+  }
+  deviation "/qos-bd:qos-bd/qos-bd:qos-query/qos-bd:vxlan-mode-policy-statisticss/qos-bd:vxlan-mode-policy-statistics/qos-bd:direction" {
+    deviate replace {
+      type qos-bd-devs-ATN-950D980C:qos-direction-type-deviations;
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/qos-bd:qos/qos-bd:trusts/qos-bd:trust/qos-bd:trust-type" {
+    deviate replace {
+      type qos-bd-devs-ATN-950D980C:trust-type-deviations;
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/qos-bd:qos/qos-bd:trusts/qos-bd:trust/qos-bd:direction" {
+    deviate replace {
+      type qos-bd-devs-ATN-950D980C:trust-direction-type-deviations;
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/qos-bd:qos/qos-bd:phbs/qos-bd:phb/qos-bd:operate-type" {
+    deviate replace {
+      type qos-bd-devs-ATN-950D980C:operate-type-deviations;
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/qos-bd:qos/qos-bd:vxlan-mode-policy-applys/qos-bd:vxlan-mode-policy-apply/qos-bd:direction" {
+    deviate replace {
+      type qos-bd-devs-ATN-950D980C:qos-direction-type-deviations;
+    }
+  }
+
+}

@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cfg-notification-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-cfg-notification-deviations-OC-NE-X8X16";
+  prefix cfg-notification-devs-OC-NE-X8X16;
+
+  import huawei-cfg-notification {
+    prefix cfg-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-cfg-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/cfg-notification:configuration-lock" {
+    deviate not-supported;
+  }
+  deviation "/cfg-notification:configuration-unlock" {
+    deviate not-supported;
+  }
+  deviation "/cfg-notification:running-config-change" {
+    deviate not-supported;
+  }
+  deviation "/cfg-notification:mini-system-config-recovery" {
+    deviate not-supported;
+  }
+  deviation "/cfg-notification:mini-system-config-recovery-clear" {
+    deviate not-supported;
+  }
+}

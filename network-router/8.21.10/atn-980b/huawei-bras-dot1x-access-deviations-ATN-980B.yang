@@ -1,0 +1,67 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-dot1x-access-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-bras-dot1x-access-deviations-ATN-980B";
+  prefix bras-dot1x-access-devs-ATN-980B;
+
+  import huawei-bras-dot1x-access {
+    prefix bras-dot1x-access;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-dot1x-access module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/bras-basic-access:bas/bras-basic-access:access-type/bras-basic-access:layer2-subscriber/bras-basic-access:layer2-subscriber/bras-dot1x-access:dot1x-trigger" {
+    deviate not-supported;
+  }
+  deviation "/bras-dot1x-access:bras-dot1x-access/bras-dot1x-access:dot1x-templates/bras-dot1x-access:dot1x-template" {
+    deviate replace {
+      max-elements 16;
+    }
+  }
+  deviation "/bras-dot1x-access:bras-dot1x-access/bras-dot1x-access:dot1x-templates/bras-dot1x-access:dot1x-template/bras-dot1x-access:index" {
+    deviate replace {
+      type uint16 {
+        range "1..16";
+      }
+    }
+  }
+  deviation "/bras-dot1x-access:bras-dot1x-access/bras-dot1x-access:dot1x-templates/bras-dot1x-access:dot1x-template/bras-dot1x-access:keepalive-interval" {
+    deviate replace {
+      default "15";
+    }
+  }
+  deviation "/bras-dot1x-access:bras-dot1x-access/bras-dot1x-access:dot1x-templates/bras-dot1x-access:dot1x-template/bras-dot1x-access:keepalive-retransmit" {
+    deviate replace {
+      default "2";
+    }
+  }
+
+}

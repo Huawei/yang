@@ -1,0 +1,120 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pbr-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-pbr-deviations-NE8000M8M14";
+  prefix pbr-devs-NE8000M8M14;
+
+  import huawei-pbr {
+    prefix pbr;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+
+  import huawei-mpls {
+    prefix mpls;
+  }
+
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-pbr module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef ip-type-deviations {
+    type enumeration {
+      enum ipv4 {
+        value 0;
+        description
+          "IPv4.";
+      }
+      enum ipv6 {
+        value 1;
+        description
+          "IPv6.";
+      }
+    }
+    description
+      "Ip type.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/pbr:pbr" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/pbr:pbr" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/pbr:pbr/pbr:redirect-nexthop-trap-switch" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/pbr:pbr/pbr:routing-filters/pbr:routing-filter/pbr:type" {
+    deviate replace {
+      type pbr-devs-NE8000M8M14:ip-type-deviations;
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:redirect-tunnel/pbr:redirect-tunnel" {
+    deviate add {
+      must "(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/tunnel-name]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:common-attributes/mpls-te:signal-protocol
+and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/tunnel-name]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:rsvp-te/mpls-te:split-tunnel='true'
+or /ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/tunnel-name]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:sr-te/mpls-te:split-tunnel='true'))
+and not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/tunnel-name]/tnlm:tunnel-protocol/mpls-te:te-tunnel/mpls-te:p2mp-te and ./route-forward='true')
+and not(/mpls:mpls/mpls-te:te/mpls-te:associate-groups/mpls-te:associate-group/mpls-te:original-tunnels/mpls-te:original-tunnel[mpls-te:name=current()/tunnel-name])";
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:redirect-srv6-te-policy/pbr:redirect-srv6-te-policy" {
+    deviate add {
+      must "not( ../../pbr:pbr-ipv6/pbr:ipv6-redirect-public-network or ../../pbr:pbr-ipv6/pbr:ipv6-redirect-to-interface/pbr:if-name
+or ../../pbr:pbr-ipv6/pbr:ipv6-nexthop or (count(../../pbr:pbr-ipv6/pbr:ipv6-multinhp-interface/pbr:multi-nhp-interfaces/pbr:multi-nhp-interface)>0)
+or (count(../../pbr:pbr-ipv6/pbr:ipv6-multinhp/pbr:multi-nhps/pbr:multi-nhp)>0) or (count(../../pbr:pbr-ipv6/pbr:ipv6-multinhp-vpn/pbr:multi-vpns/pbr:multi-vpn)>0)
+or (count(../../pbr:pbr-ipv6/pbr:ipv6-multinhp-nqa/pbr:multi-nqas/pbr:multi-nqa)>0) )";
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv4/pbr:pbr-ipv4/pbr:ipv4-multinhp-vpn/pbr:ipv4-multinhp-vpn/pbr:multi-vpns" {
+    deviate add {
+      must "count(./multi-vpn/nqa-instance)=0 or count(./multi-vpn)=count(./multi-vpn/nqa-instance)";
+    }
+  }
+  deviation "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/pbr:pbr/pbr:pbr-ipv6/pbr:pbr-ipv6/pbr:ipv6-multinhp-vpn/pbr:ipv6-multinhp-vpn/pbr:multi-vpns" {
+    deviate add {
+      must "count(./multi-vpn/nqa-instance)=0 or count(./multi-vpn)=count(./multi-vpn/nqa-instance)";
+    }
+  }
+
+}

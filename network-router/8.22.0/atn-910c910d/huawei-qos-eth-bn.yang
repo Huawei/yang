@@ -1,0 +1,83 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+
+module huawei-qos-eth-bn {
+  namespace "urn:huawei:yang:huawei-qos-eth-bn";
+  prefix qos-eth-bn;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "ETH-BN.";
+  revision 2022-01-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "qos";
+  container qos-eth-bn {
+    description
+      "QoS ETH-BN.";
+    container eth-bn-groups {
+      description
+        "List of ETH-BN groups.";
+      list eth-bn-group {
+        key "group-name";
+        max-elements "256";
+        description
+          "Configure the ETH-BN groups.";
+        leaf group-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "ETH-BN group name.";
+        }
+        leaf description {
+          type string {
+            length "1..63";
+          }
+          description
+            "ETH-BN group description.";
+        }
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "Adds QoS ETH-BN configuration to ifm interface model.";
+    container qos-eth-bn {
+      description
+        "Configure QoS ETH-BN apply.";
+      container eth-bn-group-apply {
+        description
+          "Configure ETH-BN bandwidth group.";
+        leaf group-name {
+          when "../../../ethernet:ethernet/ethernet:l3-sub-interface/ethernet:vlan-type-dot1q";
+          type leafref {
+            path "/qos-eth-bn:qos-eth-bn/qos-eth-bn:eth-bn-groups/qos-eth-bn:eth-bn-group/qos-eth-bn:group-name";
+          }
+          description
+            "ETH-BN bandwidth group name of an interface.";
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dcn-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-dcn-deviations-NE9000";
+  prefix dcn-devs-NE9000;
+
+  import huawei-dcn {
+    prefix dcn;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-dcn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/dcn:dcn/dcn:site/dcn:eth-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:pos-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:serial-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:qx/dcn:server-dtls-policy" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:qx/dcn:client-dtls-policy" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:transparent-interfaces" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:auto-restore" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:encrypt-channels" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dcn:dcn/dcn:dcnv4/dcn:vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:udp-session-car" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:tcp-session-car" {
+    deviate not-supported;
+  }
+}

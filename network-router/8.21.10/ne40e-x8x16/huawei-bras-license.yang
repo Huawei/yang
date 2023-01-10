@@ -1,0 +1,60 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-license {
+  namespace urn:huawei:yang:huawei-bras-license;
+  prefix bras-license;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-license {
+    prefix lcs;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Bras license.";
+
+  revision 2020-12-15 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "license";
+
+  augment "/lcs:license" {
+    description
+      "Bas license configurations.";
+    container bras-license {
+      description
+        "Configure Bras license.";
+      container active-bas-slots {
+        description
+          "List of activate BAS on a board.";
+        list active-bas-slot {
+          key "slot-id";
+          description
+            "Configure activate BAS on a board.";
+          leaf slot-id {
+            type leafref {
+              path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+            }
+            description
+              "Specifies the slot ID of a board.";
+          }
+        }
+      }
+    }
+  }
+}

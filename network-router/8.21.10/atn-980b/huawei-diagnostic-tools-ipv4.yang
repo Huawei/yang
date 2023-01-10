@@ -1,0 +1,916 @@
+/*
+Copyright (C) 2019-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-ipv4 {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-diagnostic-tools-common;
+  include huawei-diagnostic-tools-type;
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "IPv4 diagnosis tool.";
+  revision 2022-03-07 {
+    description
+      "Delete must condition for IPv4 ping.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-22 {
+    description
+      "Yang parameter completion.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-08 {
+    description
+      "Change package size for IPv4 ping.";
+    reference
+      "Huawei private.";
+  }
+
+  revision 2020-09-10 {
+    description
+      "Add fast reply inbound node.";
+    reference
+      "Huawei private.";
+  }
+
+  revision 2020-01-14 {
+    description
+      "Delete augment of diagnostic-tools-output.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-12-19 {
+    description
+      "Inherit released YANG.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-10-29 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  grouping ip-ping-trace-result-type {
+    description
+      "IP test result.";
+    container ping-results {
+      description
+        "List of ping test results.";
+      list ping-result {
+        key "test-name";
+        description
+          "Statistics of ping test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf packet-recv {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Total number of received packets.";
+        }
+        leaf packet-send {
+          type uint32 {
+            range "0..4294967295";
+          }
+          description
+            "Total number of sent packets.";
+        }
+        leaf loss-ratio {
+          type pub-type:percent {
+            range "0..100";
+          }
+          units "%";
+          description
+            "Packet loss ratio of a test.";
+        }
+        leaf rtt-min {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          description
+            "Minimum RTT of all test packets.";
+        }
+        leaf rtt-max {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          description
+            "Maximum RTT of all test packets.";
+        }
+        leaf average-rtt {
+          type uint32 {
+            range "0..4294967295";
+          }
+          units "ms";
+          description
+            "Average RTT of all test packets.";
+        }
+        leaf host-name {
+          type pub-type:host-name;
+          description
+            "Host name.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status.";
+        }
+        leaf error-type {
+          type dgntl-error-type;
+          description
+            "Test operation status.";
+        }
+        container details {
+          description
+            "List of ping results of all packets in a test.";
+          list detail {
+            key "index";
+            description
+              "Statistics of probe result.";
+            leaf index {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Serial number of a test packet received.";
+            }
+            leaf ip-addr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Reply address in a received response packet.";
+            }
+            leaf packet-size {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Number of bytes in a received response packet.";
+            }
+            leaf ttl {
+              type uint8 {
+                range "1..255";
+              }
+              description
+                "TTL of received response packets.";
+            }
+            leaf rtt {
+              type uint32 {
+                range "0..4294967295";
+              }
+              units "ms";
+              description
+                "RTT of test packets.";
+            }
+            leaf result-type {
+              type detail-result-type;
+              description
+                "Result of packet sending, which is either Success or Timeout.";
+            }
+            leaf system-time {
+              type yang:date-and-time;
+              description
+                "System time of response packets.";
+            }
+            leaf incoming-if-name {
+              type string {
+                length "1..255";
+              }
+              description
+                "The logical source interface of echo response packet.";
+            }
+            leaf incoming-phy-if-name {
+              type string {
+                length "1..255";
+              }
+              description
+                "The physical source interface of echo response packet.";
+            }
+            leaf error-code {
+              type ip-ping-detail-error-code;
+              description
+                "Error code of a detection failure. This object is displayed only when detail-output is specified and the detection fails due to certain reasons.";
+            }
+            leaf response-mtu {
+              type uint32;
+              units "Byte";
+              description
+                "The interface MTU. This object is displayed only when detail-output is specified and the detection fails because the interface MTU is too small and the packet is forcibly not fragmented.";
+            }
+            leaf actural-icmp-id {
+              type uint32;
+              description
+                "The actural icmp_id. This object is displayed only when detail-output is specified and the detection fails because the icmp_id is not the expected value.";
+            }
+            leaf expect-icmp-id {
+              type uint32;
+              description
+                "The expected icmp_id. This object is displayed only when detail-output is specified and the detection fails because the icmp_id is not the expected value.";
+            }
+            leaf actural-sequence {
+              type uint32;
+              description
+                "The actural sequence. This object is displayed only when detail-output is specified and the detection fails because the sequence is not the expected value.";
+            }
+            leaf expect-sequence {
+              type uint32;
+              description
+                "The expected sequence. This object is displayed only when detail-output is specified and the detection fails because the sequence is not the expected value.";
+            }
+            leaf icmp-error-code {
+              type uint16;
+              description
+                "ICMP error code of a received packet. This object is displayed only when detail-output is specified and the detection fails due to ICMP error.";
+            }
+            leaf icmp-error-type {
+              type uint16;
+              description
+                "ICMP error type of a received packet. This object is displayed only when detail-output is specified and the detection fails due to ICMP error.";
+            }
+            leaf path-reason {
+              type uint32;
+              description
+                "The path reason. This object is displayed only when detail-output is specified and the detection fails due to path reason.";
+            }
+            leaf is-delete {
+              ext:support-filter "true";
+              type boolean;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+            container route-records {
+              description
+                "List of the routes.";
+              list route-record {
+                key "route-address";
+                description
+                  "Statistics of route.";
+                leaf route-address {
+                  type inet:ipv4-address-no-zone;
+                  description
+                    "Route address.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    container trace-results {
+      description
+        "List of trace test results.";
+      list trace-result {
+        key "test-name";
+        description
+          "Statistics of trace test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf host-name {
+          type pub-type:host-name;
+          description
+            "Host name.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status.";
+        }
+        leaf error-type {
+          type dgntl-error-type;
+          status deprecated;
+          description
+            "Test operation status.";
+        }
+        container details {
+          status deprecated;
+          description
+            "List of ping results of all packets in a test.";
+          list detail {
+            key "hop-index";
+            description
+              "Statistics of ping result of a single packet in a test.";
+            leaf hop-index {
+              type uint32;
+              description
+                "Serial number of a hop in the test path. For a ping-type test such as the ping test or LSP ping test, there is only one hop in the test path, so the value is 1. For a trace-type test such as the trace test or LSP trace test, the value indicates the exact serial number of a hop in the test path.";
+            }
+            leaf ttl {
+              type uint8 {
+                range "1..255";
+              }
+              description
+                "TTL of received response packets.";
+            }
+            leaf rtt {
+              type uint32;
+              description
+                "RTT of test packets.";
+            }
+            leaf ds-ip-addr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Destination address of the related hop in a test.";
+            }
+            leaf is-delete {
+              ext:support-filter "true";
+              type boolean;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+          }
+        }
+        container hops {
+          description
+            "List of hop results.";
+          list hop {
+            key "hop-index";
+            description
+              "Statistics of hop result.";
+            leaf hop-index {
+              type uint32;
+              description
+                "The index of the hop.";
+            }           
+            leaf is-delete {
+              ext:support-filter "true";
+              type boolean;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+            container probes {
+              description
+                "List of probe results.";
+              list probe {
+                key "probe-index";
+                description
+                  "Statistics of probe result.";
+                leaf probe-index {
+                  type uint32;
+                  description
+                    "The index of the probe packet.";
+                }
+                leaf rtt {
+                  type uint32;
+                  units "ms";
+                  description
+                    "RTT of test packets.";
+                }
+                leaf replier {
+                  type inet:ipv4-address-no-zone;
+                  description
+                    "Reply address of the related hop in a test.";
+                }
+                leaf host-name {
+                  type pub-type:host-name;
+                  description
+                    "Host name.";
+                }
+                leaf as-num {
+                  type string {
+                    length "1..15";
+                  }
+                  description
+                    "AS number.";
+                }
+                leaf result-type {
+                  type probe-result-type;
+                  description
+                    "Result of packet sending, which is either success or timeout.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc ipv4-start-ip-ping {
+    description
+      "Start IPv4 ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf dest-addr {
+        type pub-type:host-name;
+        mandatory true;
+        description
+          "Destination address of the string type. You can click this node to set different types of addresses and deploy the configurations together with the configuration of the destination address type node. If the destination address type is set to IPv4, this parameter is set to IPv4. If the destination address type is set to IPv6, this parameter is set to IPv6.";
+      }
+      leaf bypass-source-if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Specify IP bypass source interface, send packet via bypass route.";
+      }
+      leaf source-address {
+        type inet:ipv4-address-no-zone;
+        description
+          "Source address of the string type. You can click this node to set different types of addresses and deploy the configurations together with the configuration of the source address type node. If the source address type is set to IPv4, this parameter is set to IPv4. If the source address type is set to IPv6, this parameter is set to IPv6.";
+      }
+      leaf vrf-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "Name of a VPN instance.";
+      }
+      leaf peer-address {
+        when "../vrf-name";
+        type inet:ipv6-address-no-zone;
+        description
+          "VPN IPv6 peer router address.";
+      }
+      leaf packet-size {
+        type uint32 {
+          range "10..9600";
+        }
+        units "Byte";
+        description
+          "Number of bytes in a sent test packet.";
+      }
+      leaf packet-size-min {
+        type uint32 {
+          range "20..9600";
+        }
+        units "Byte";
+        description
+          "The minimum length of data to be sent.";
+      }
+      leaf packet-size-max {
+        type uint32 {
+          range "20..9600";
+        }
+        units "Byte";
+        description
+          "The maximum length of data to be sent.";
+      }
+      leaf packet-size-step {
+        type uint32 {
+          range "1..1000";
+        }
+        units "Byte";
+        description
+          "Data length increment value.";
+      }
+      leaf packet-count {
+        type uint32 {
+          range "1..4294967295";
+        }
+        default "5";
+        description
+          "Number of sent test packets.";
+      }
+      choice priority {
+        description
+          "Priority type.";
+        case dscp-value {
+          description
+            "DSCP value.";
+          leaf dscp {
+            type uint32 {
+              range "0..63";
+            }
+            default "0";
+            description
+              "DSCP value.";
+          }
+        }
+        case tos-value {
+          description
+            "ToS value.";
+          leaf tos {
+            type uint8 {
+              range "0..255";
+            }
+            description
+              "ToS value.";
+          }
+        }
+      }
+      leaf interval {
+        type uint32 {
+          range "1..10000";
+        }
+        units "ms";
+        default "500";
+        description
+          "Interval for sending test packets.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time to wait for a response packet after a test packet is sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+      leaf ttl {
+        type uint8 {
+          range "1..255";
+        }
+        default "255";
+        description
+          "Time to live.";
+      }
+      leaf pattern {
+        type string {
+          length "1..8";
+        }
+        description
+          "Packet fill.";
+      }
+      choice routing-mode {
+        description
+          "Routing mode.";
+        case outbound {
+          description
+            "Specify the outbound information.";
+          leaf if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Name of the outbound interface for test packets.";
+          }
+          leaf next-hop {
+            type inet:ipv4-address-no-zone;
+            description
+              "Next hop address.";
+          }
+          leaf inbound-reply-fast {
+            type boolean;
+            description
+              "Enable/disable fast reply from the specified Eth-Trunk member interface.";
+          }
+        }
+        case inbound {
+          description
+            "Specify the inbound information.";
+          leaf inbound-if-name {
+            type leafref {
+              path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+            }
+            description
+              "Name of the inbound interface for test packets.";
+          }
+        }
+      }
+      leaf service-class {
+        type diagnostic-tools:service-class-value;
+        description
+          "Service class.";
+      }
+      leaf te-class {
+        type uint32 {
+          range "1..65535";
+        }
+        description
+          "TE class.";
+      }
+      leaf priority-8021p {
+        type uint8 {
+          range "0..7";
+        }
+        description
+          "Specify the 8021p value.";
+      }
+      choice fragment-mode {
+        description
+          "Packet fragment processing mode.";
+        case force-no-fragment {
+          description
+            "Set the Don't Fragment flag in packet (IPv4-only).";
+          leaf force-no-fragment {
+            type empty;
+            description
+              "Set the Don't Fragment flag in packet (IPv4-only).";
+          }
+        }
+        case ignore-mtu {
+          description
+            "Send packets without checking the interface MTU.";
+          leaf ignore-mtu {
+            type empty;
+            description
+              "Send packets without checking the interface MTU.";
+          }
+        }
+      }
+      leaf record-route {
+        type empty;
+        description
+          "Includes the RECORD_ROUTE option in the ECHO_REQUEST packet and displays the route.";
+      }
+      leaf ip-forwarding {
+        type empty;
+        description
+          "Specify the request packet forwarded by IP.";
+      }
+      leaf debug-option {
+        type empty;
+        description
+          "Specify the SO_DEBUG option on the socket being used.";
+      }
+      leaf show-host-name {
+        type empty;
+        description
+          "Display the host name of the destination address.";
+      }
+      leaf show-detail {
+        type empty;
+        description
+          "Detail information is displayed.";
+      }
+      leaf show-incoming-if-name {
+        type empty;
+        description
+          "Interface name of incoming packet.";
+      }
+    }
+  }
+
+  rpc ipv4-stop-ip-ping {
+    description
+      "Stop IPv4 ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc ipv4-delete-ip-ping {
+    description
+      "Delete IPv4 ping test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc ipv4-start-ip-trace {
+    description
+      "Start IPv4 trace test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf dest-ip-addr {
+        type pub-type:host-name;
+        mandatory true;
+        description
+          "Destination address of the string type. You can click this node to set different types of addresses and deploy the configurations together with the configuration of the destination address type node. If the destination address type is set to IPv4, this parameter is set to IPv4. If the destination address type is set to IPv6, this parameter is set to IPv6.";
+      }
+      leaf source-address {
+        type inet:ipv4-address-no-zone;
+        description
+          "Source address of the string type. You can click this node to set different types of addresses and deploy the configurations together with the configuration of the source address type node. If the source address type is set to IPv4, this parameter is set to IPv4. If the source address type is set to IPv6, this parameter is set to IPv6.";
+      }
+      leaf first-ttl {
+        type uint8 {
+          range "1..255";
+        }
+        default "1";
+        description
+          "TTL of the first packet in a test.";
+      }
+      leaf max-ttl {
+        type uint8 {
+          range "1..255";
+        }
+        default "30";
+        description
+          "TTL of test packets.";
+      }
+      leaf if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Name of the outbound interface for test packets.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..3600000";
+        }
+        units "ms";
+        default "5000";
+        description
+          "Time to wait for a response packet after a test packet is sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+      leaf vrf-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "Name of a VPN instance.";
+      }
+      leaf peer-address {
+        when "../vrf-name";
+        type inet:ipv6-address-no-zone;
+        description
+          "VPN IPv6 peer router address.";
+      }
+      leaf show-as-num {
+        type empty;
+        must "not(../show-as-num and ../vrf-name)";
+        description
+          "Display the AS number for each hop.";
+      }
+      leaf udp-port {
+        type uint32 {
+          range "0..65535";
+        }
+        default "33434";
+        description
+          "Destination port number.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..65535";
+        }
+        default "3";
+        description
+          "Number of sent test packets.";
+      }
+      leaf packet-size {
+        type uint32 {
+          range "12..9600";
+        }
+        default "12";
+        description
+          "Number of bytes in a sent test packet.";
+      }
+      choice priority {
+        description
+          "Priority type.";
+        case dscp-value {
+          description
+            "DSCP value.";
+          leaf dscp {
+            type uint32 {
+              range "0..63";
+            }
+            default "0";
+            description
+              "DSCP value.";
+          }
+        }
+        case tos-value {
+          description
+            "ToS value.";
+          leaf tos {
+            type uint8 {
+              range "0..255";
+            }
+            description
+              "ToS value.";
+          }
+        }
+      }
+      leaf service-class {
+        type diagnostic-tools:service-class-value;
+        description
+          "Service class.";
+      }
+      leaf te-class {
+        type uint32 {
+          range "1..65535";
+        }
+        description
+          "TE class.";
+      }
+      leaf next-hop {
+        type inet:ipv4-address-no-zone;
+        description
+          "Next hop address.";
+      }
+      leaf show-host-name {
+        type empty;
+        description
+          "Display the host name of the router on each hop.";
+      }
+      leaf pass-route {
+          type empty;
+          description
+            "Enable/disable the function of sending packets without checking the routing table.";
+      }
+    }
+  }
+
+  rpc ipv4-stop-ip-trace {
+    description
+      "Stop IPv4 trace test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:trace-results/diagnostic-tools:trace-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc ipv4-delete-ip-trace {
+    description
+      "Delete IPv4 trace test.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:ipv4/diagnostic-tools:trace-results/diagnostic-tools:trace-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  augment "/diagnostic-tools:diagnostic-tools" {
+    description
+      "List of IPv4 tests.";
+    container ipv4 {
+      description
+        "Statistics of IPv4 tests.";
+      uses ip-ping-trace-result-type;
+    }
+  }
+}

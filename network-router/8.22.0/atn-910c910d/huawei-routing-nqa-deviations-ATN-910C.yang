@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-routing-nqa-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-routing-nqa-deviations-ATN-910C";
+  prefix rt-nqa-devs-ATN-910C;
+
+  import huawei-routing-nqa {
+    prefix rt-nqa;
+  }
+  import huawei-routing {
+    prefix rt;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-routing-nqa module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:static-routing/rt:unicast-route2s/rt:unicast-route2/rt:v4-via-v6-interface-addresses/rt:v4-via-v6-interface-address/rt:track-setting/rt-nqa:nqa" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:static-routing/rt:unicast-route2s/rt:unicast-route2/rt:v4-via-v6-addresses/rt:v4-via-v6-address/rt:track-setting/rt-nqa:nqa" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/rt:routing/rt:static-routing/rt:unicast-route2s/rt:unicast-route2/rt:v4-via-v6-vrf-addresses/rt:v4-via-v6-vrf-address/rt:track-setting/rt-nqa:nqa" {
+    deviate not-supported;
+  }
+}

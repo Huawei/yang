@@ -1,0 +1,71 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-cgn-deviations-NE8000";
+  prefix cgn-devs-NE8000;
+
+  import huawei-cgn {
+    prefix cgn;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/cgn:cgn/cgn:nat-session-statisticss" {
+    deviate not-supported;
+  }
+  deviation "/cgn:cgn/cgn:nat-service-infos" {
+    deviate not-supported;
+  }
+  deviation "/cgn:cgn/cgn:nat-instance-infos" {
+    deviate not-supported;
+  }
+  deviation "/cgn:cgn/cgn:instance-address-usages" {
+    deviate not-supported;
+  }
+  deviation "/cgn:cgn/cgn:nat-ip-pools" {
+    deviate not-supported;
+  }
+  deviation "/cgn:cgn/cgn:log" {
+    deviate not-supported;
+  }
+  deviation "/cgn:get-port-usage-distributes" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/cgn:active-nat-sessions" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/cgn:session-capacitys" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/cgn:active-bandwidths" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/cgn:bandwidth-capacitys" {
+    deviate not-supported;
+  }
+
+}

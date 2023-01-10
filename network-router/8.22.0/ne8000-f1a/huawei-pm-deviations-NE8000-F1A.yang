@@ -1,0 +1,119 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pm-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-pm-deviations-NE8000-F1A";
+  prefix pm-devs-NE8000-F1A;
+
+  import huawei-pm {
+    prefix pm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-pm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef pm-statistic-cycle-type-deviations {
+    type enumeration {
+      enum 1-minute {
+        value 1;
+        description
+          "Sets the statistics cycle to 1 minute.";
+      }
+      enum 5-minutes {
+        value 5;
+        description
+          "Sets the statistics cycle to 5 minutes.";
+      }
+      enum 10-minutes {
+        value 10;
+        description
+          "Sets the statistics cycle to 10 minutes.";
+      }
+      enum 15-minutes {
+        value 15;
+        description
+          "Sets the statistics cycle to 15 minutes.";
+      }
+      enum 30-minutes {
+        value 30;
+        description
+          "Sets the statistics cycle to 30 minutes.";
+      }
+      enum 60-minutes {
+        value 60;
+        description
+          "Sets the statistics cycle to 60 minutes.";
+      }
+      enum 1440-minutes {
+        value 1440;
+        description
+          "Sets the statistics cycle to 1440 minutes.";
+      }
+    }
+    description
+      "PM statistic cycle value.";
+  }
+
+  deviation "/pm:pm/pm:global/pm:statistics-max-tasks" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:global/pm:max-statistics-files-per-task" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:global/pm:current-statistics-task-number" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:task-type" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:threshold-enable" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:record-file-enable" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:upload-request-name" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:elaborate-sample" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:sample-interval" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:task-file-format" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:task-state" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:servers/pm:server/pm:retry-times" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:indicators" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:instance-types" {
+    deviate not-supported;
+  }
+  deviation "/pm:pm/pm:statistics-tasks/pm:statistics-task/pm:statistic-cycle" {
+    deviate replace {
+      type pm-devs-NE8000-F1A:pm-statistic-cycle-type-deviations;
+    }
+  }
+}

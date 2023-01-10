@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-connectionless-oam-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-ietf-connectionless-oam-deviations-NE5000E";
+  prefix cl-oam-devs-NE5000E;
+
+  import ietf-connectionless-oam {
+    prefix cl-oam;
+  }
+  import ietf-network {
+    prefix nd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-connectionless-oam module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/cl-oam:cc-session-statistics-data" {
+    deviate not-supported;
+  }
+  deviation "/nd:networks/nd:network/nd:node/cl-oam:tp-location-type" {
+    deviate not-supported;
+  }
+  deviation "/nd:networks/nd:network/nd:node/cl-oam:ipv4-location-type" {
+    deviate not-supported;
+  }
+  deviation "/nd:networks/nd:network/nd:node/cl-oam:ipv6-location-type" {
+    deviate not-supported;
+  }
+  deviation "/nd:networks/nd:network/nd:node/cl-oam:mac-location-type" {
+    deviate not-supported;
+  }
+  deviation "/nd:networks/nd:network/nd:node/cl-oam:group-as-number-location-type" {
+    deviate not-supported;
+  }
+  deviation "/nd:networks/nd:network/nd:node/cl-oam:group-router-id-location-type" {
+    deviate not-supported;
+  }
+}

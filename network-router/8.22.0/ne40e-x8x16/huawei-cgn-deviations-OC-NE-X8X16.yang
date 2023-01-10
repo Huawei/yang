@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-cgn-deviations-OC-NE-X8X16";
+  prefix cgn-devs-OC-NE-X8X16;
+
+  import huawei-cgn {
+    prefix cgn;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/lcs:license/cgn:active-nat-sessions/cgn:active-nat-session/cgn:engine" {
+    deviate delete {
+      must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+    }
+    deviate add {
+      must "((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+    }
+  }
+  deviation "/lcs:license/cgn:active-nat-sessions/cgn:active-nat-session/cgn:card" {
+    deviate delete {
+      must "((../engine='NA') and (../card='NA')) or ((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+    }
+    deviate add {
+      must "((../engine='NA') and (not(../card='NA'))) or ((not(../engine='NA')) and (../card='NA'))";
+    }
+  }
+
+}

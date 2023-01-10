@@ -1,0 +1,44 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-gps-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-clocksync-gps-deviations-NE8000-F1A";
+  prefix clocksync-gps-devs-NE8000-F1A;
+
+  import huawei-clocksync-gps {
+    prefix clocksync-gps;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-gps module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-gps:gps-port-srcs/clocksync-gps:gps-port-src/clocksync-gps:wtr-time" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-gps:gps-port-srcs/clocksync-gps:gps-port-src/clocksync-gps:holdoff-time" {
+    deviate not-supported;
+  }
+
+}

@@ -1,0 +1,38 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vaccess-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-vaccess-deviations-NE9000";
+  prefix vaccess-devs-NE9000;
+
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-vaccess module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/vaccess:vaccess/vaccess:ap" {
+    deviate not-supported;
+  }
+  deviation "/vaccess:vaccess/vaccess:global/vaccess:enable" {
+    deviate add {
+      must "../enable='false'";
+    }
+  }
+}

@@ -1,0 +1,58 @@
+  /*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-apn-isolation-type {
+  belongs-to huawei-apn-isolation {
+    prefix apn-isolation;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Types related to APN isolation policies.";
+  revision 2022-03-28 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef behavior-type {
+    type enumeration {
+      enum "deny" {
+        value 1;
+        description
+          "Deny matched data packets.";
+      }
+    }
+    description
+      "Behaviors defined in isolation rules.";
+  }
+  typedef peer-type {
+    type enumeration {
+      enum "peer-locator" {
+        value 1;
+        description
+          "Peer locator.";
+      }
+    }
+    description
+      "Peer type.";
+  } 
+  typedef direction-type {
+    type enumeration {
+      enum "inbound" {
+        value 1;
+        description
+          "Apply an isolation policy to the inbound direction of traffic.";
+      }
+    }
+    description
+      "Direction to which an isolation policy is applied.";
+  }   
+}

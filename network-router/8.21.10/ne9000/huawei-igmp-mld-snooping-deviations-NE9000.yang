@@ -1,0 +1,100 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-igmp-mld-snooping-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-igmp-mld-snooping-deviations-NE9000";
+  prefix ims-devs-NE9000;
+
+  import huawei-igmp-mld-snooping {
+    prefix ims;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-igmp-mld-snooping module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef copy-mode-deviations {
+    type enumeration {
+      enum by-vlan {
+        value 1;
+        description
+          "By VLAN.";
+      }
+      enum by-unicast-mac {
+        value 2;
+        description
+          "By unicast MAC.";
+      }
+    }
+    description
+      "Multicast copy mode.";
+  }
+
+  deviation "/bd:bd/bd:instances/bd:instance/ims:igmp-snooping/ims:global/ims:query-suppress-time" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/ims:igmp-snooping/ims:group-ports" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/ims:igmp-snooping/ims:group-ports" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ims:igmp-snooping/ims:port-fast-control" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/ims:igmp-snooping/ims:limit-max-entry/ims:config-entry" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-stacking)';
+    }
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:qinq-termination)';
+    }
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()/../../../l2vpn:interface-name]/ethernet:ethernet/ethernet:l3-sub-interface/ethernet:dot1q-termination)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ims:igmp-snooping" {
+    deviate add {
+      must 'not(ims:learning-disable-vlans or ims:static-router-port-vlans or ims:limit-max-entry or ims:except-acl) or ../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ims:mld-snooping" {
+    deviate add {
+      must 'not(ims:learning-disable-vlans or ims:static-router-port-vlans) or ../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute';
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac/ims:igmp-snooping/ims:report-listening/ims:copy-mode" {
+    deviate replace {
+      type ims-devs-NE9000:copy-mode-deviations;
+    }
+  }
+}

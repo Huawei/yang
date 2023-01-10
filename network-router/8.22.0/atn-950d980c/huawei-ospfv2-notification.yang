@@ -1,0 +1,47 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ospfv2-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-ospfv2-notification";
+  prefix ospfv2-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of ospfv2.";
+  revision 2022-08-10 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ospf";
+  notification neighbor-exceed-threshold {
+    description
+      "This object indicates that the number of ospfv2 exceeds the configed threshold.";
+    leaf neighbor-threshold-upper {
+      type uint32;
+      description
+        "This object indicates the upper alarm threshold for the number of neighbors.";
+    }
+  }
+  notification neighbor-exceed-threshold-resume {
+    description
+      "This object indicates that the number of ospfv2 has been less than the the configed threshold.";
+    leaf neighbor-threshold-upper {
+      type uint32;
+      description
+        "This object indicates the upper alarm threshold for the number of neighbors.";
+    }
+  }
+}

@@ -1,0 +1,93 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-bas-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-multicast-bas-notif";
+  prefix multicast-bas-n;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "The module defines notifications for mcast bas.";
+  revision 2022-07-30 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef ip-addr-type {
+    type enumeration {
+      enum "unknown" {
+        value 0;
+        description
+          "Unknown type.";
+      }
+      enum "ipv4unicast" {
+        value 1;
+        description
+          "IPv4 unicast.";
+      }
+      enum "ipv6unicast" {
+        value 2;
+        description
+          "IPv6 unicast.";
+      }
+    }
+    description
+      "Address family.";
+  }
+
+  notification igmp-mld-user-limit-exceed {
+    description
+      "The total number of muticast users reached the upper limit on the board.";
+    leaf address-family {
+      type multicast-bas-n:ip-addr-type;
+      description
+        "Address family.";
+    }
+    leaf slot-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Slot name of a board.";
+    }
+    leaf limit-number {
+      type uint32;
+      description
+        "Limit number of users on the board.";
+    }
+  }
+    notification igmp-mld-user-limit-exceed-clear {
+    description
+      "The total number of muticast users fell below the lower limit on the board.";
+    leaf address-family {
+      type multicast-bas-n:ip-addr-type;
+      description
+        "Address family.";
+    }
+    leaf slot-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "Slot name of a board.";
+    }
+    leaf limit-number {
+      type uint32;
+      description
+        "Limit number of users on the board.";
+    }
+  }
+  ext:task-name  "mcast-base";
+}

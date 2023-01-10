@@ -1,0 +1,68 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vsm-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-vsm-deviations-NE8000-F1A";
+  prefix vsm-devs-NE8000-F1A;
+
+  import huawei-vsm {
+    prefix vsm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-vsm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/vsm:vsm/vsm:service-locations/vsm:service-location/vsm:location/vsm:location" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:service-locations/vsm:service-location/vsm:location/vsm:backup-slot" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:service-locations/vsm:service-location/vsm:location/vsm:backup-location" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:service-instance-groups/vsm:service-instance-group/vsm:remote-backup-service" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:service-instance-groups/vsm:service-instance-group/vsm:binded-service-locations/vsm:binded-service-location/vsm:weight" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:service-instance-groups/vsm:service-instance-group/vsm:binded-service-locations/vsm:binded-service-location/vsm:weight-info" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:monitor-location-groups" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:on-board-mode" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:ha" {
+    deviate not-supported;
+  }
+  deviation "/vsm:vsm/vsm:service-locations/vsm:service-location/vsm:service-id" {
+    deviate replace {
+      type uint16 {
+        range "1..16";
+      }
+    }
+  }
+
+}

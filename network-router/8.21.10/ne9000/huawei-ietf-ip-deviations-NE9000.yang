@@ -1,0 +1,164 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-ip-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-ietf-ip-deviations-NE9000";
+  prefix ip-devs-NE9000;
+
+  import ietf-ip {
+    prefix ip;
+  }
+  import ietf-interfaces {
+    prefix if;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-ip module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ip-address-origin-deviations {
+    type enumeration {
+      enum other {
+        value 0;
+        description
+          "None of the following.";
+      }
+      enum static {
+        value 1;
+        description
+          "Indicates that the address has been statically
+           configured - for example, using NETCONF or a Command Line
+           Interface.";
+      }
+      enum dhcp {
+        value 2;
+        description
+          "Indicates an address that has been assigned to this
+           system by a DHCP server.";
+      }
+    }
+    description
+      "The origin of an address.";
+  }
+
+  typedef ip-address-status-deviations {
+    type enumeration {
+      enum preferred {
+        value 0;
+        description
+          "This is a valid address that can appear as the
+           destination or source address of a packet.";
+      }
+      enum inaccessible {
+        value 3;
+        description
+          "The address is not accessible because the interface
+           to which this address is assigned is not
+           operational.";
+      }
+      enum tentative {
+        value 5;
+        description
+          "The uniqueness of the address on the link is being
+           verified. Addresses in this state should not be
+           used for general communication and should only be
+           used to determine the uniqueness of the address.";
+      }
+      enum duplicate {
+        value 6;
+        description
+          "The address has been determined to be non-unique on
+           the link and so must not be used.";
+      }
+    }
+    description
+      "The status of an address.";
+  }
+
+  deviation "/if:interfaces/if:interface/ip:ipv4/ip:address/ip:subnet/ip:netmask" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv6/ip:autoconf" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces-state/if:interface/ip:ipv4/ip:address/ip:subnet/ip:netmask" {
+    deviate not-supported;
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv4/ip:forwarding" {
+    deviate replace {
+      default "true";
+    }
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv4/ip:mtu" {
+    deviate replace {
+      type uint16 {
+        range "46..max";
+      }
+    }
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv6/ip:forwarding" {
+    deviate replace {
+      default "true";
+    }
+    deviate add {
+      must "../forwarding='true'";
+    }
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv6/ip:address/ip:prefix-length" {
+    deviate replace {
+      type uint8 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/if:interfaces/if:interface/ip:ipv6/ip:dup-addr-detect-transmits" {
+    deviate replace {
+      type uint32 {
+        range "0..600";
+      }
+    }
+  }
+  deviation "/if:interfaces-state/if:interface/ip:ipv4/ip:mtu" {
+    deviate replace {
+      type uint16 {
+        range "46..max";
+      }
+    }
+  }
+  deviation "/if:interfaces-state/if:interface/ip:ipv4/ip:address/ip:origin" {
+    deviate replace {
+      type ip-devs-NE9000:ip-address-origin-deviations;
+    }
+  }
+  deviation "/if:interfaces-state/if:interface/ip:ipv6/ip:address/ip:prefix-length" {
+    deviate replace {
+      type uint8 {
+        range "1..128";
+      }
+    }
+  }
+  deviation "/if:interfaces-state/if:interface/ip:ipv6/ip:address/ip:origin" {
+    deviate replace {
+      type ip-devs-NE9000:ip-address-origin-deviations;
+    }
+  }
+  deviation "/if:interfaces-state/if:interface/ip:ipv6/ip:address/ip:status" {
+    deviate replace {
+      type ip-devs-NE9000:ip-address-status-deviations;
+    }
+  }
+}

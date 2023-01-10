@@ -1,0 +1,44 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-host-defend-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-host-defend-deviations-NE8000M8M14";
+  prefix host-defend-devs-NE8000M8M14;
+
+  import huawei-host-defend {
+    prefix host-defend;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Host Defend.";
+
+  revision 2021-05-07 {
+    description
+      "The deviations of the huawei-host-defend module were modified.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-04 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/host-defend:host-defend/host-defend:fragment-car-stats" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/host-defend:management-plane-defend-slot" {
+    deviate not-supported;
+  }
+}

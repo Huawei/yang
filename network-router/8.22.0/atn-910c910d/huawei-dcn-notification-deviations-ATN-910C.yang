@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dcn-notification-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-dcn-notification-deviations-ATN-910C";
+  prefix dcn-notification-devs-ATN-910C;
+
+  import huawei-dcn-notification {
+    prefix dcn-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-dcn-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/dcn-notification:dcn-insecure-algorithm" {
+    deviate not-supported;
+  }
+  deviation "/dcn-notification:dcn-insecure-algorithm-resume" {
+    deviate not-supported;
+  }
+}

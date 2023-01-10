@@ -1,0 +1,201 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpn-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-evpn-deviations-NE5000E";
+  prefix evpn-devs-NE5000E;
+
+  import huawei-evpn {
+    prefix evpn;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-evpl {
+    prefix evpl;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-evpn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/evpn:evpn/evpn:base-process/evpn:evpn-overlay" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:ad-per-es-split" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:irb-reoriginated" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:alm-threshold" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:recovery-percentage" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:irb-split-group" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:routerid-extend-private-enable" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:l3-reoriginate-diff-split-grp" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:reflect-same-split-group" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:attribute" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:global-suppressed-statistics" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn:etree-enable" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn:mac-duplication-infos/evpn:mac-duplication-info/evpn:peer-ip" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn:mac-duplication-infos/evpn:mac-duplication-info/evpn:vc-id" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:normal-evpn/evpn:mac-duplication-infos/evpn:mac-duplication-info/evpn:vc-type" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:b-evpn" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:i-evpn" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:etree-enable" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:mac-duplication-statistics" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:mac-duplication-infos/evpn:mac-duplication-info/evpn:peer-ip" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:mac-duplication-infos/evpn:mac-duplication-info/evpn:vc-id" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:mac-duplication-infos/evpn:mac-duplication-info/evpn:vc-type" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:inclusive-provider-tunnel" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:df-timer-info/evpn:pw-infos" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:sticky-mac-confliction-infos" {
+    deviate not-supported;
+  }
+  deviation "/evpn:reset-evpn-mac-duplication/evpn:input/evpn:vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/evpn:reset-all-evpn-mac-duplication" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:umr-originate" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:detail-suppressed" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:umr-forward" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:df-result-spread" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:qualify-compatible" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:es-recover" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/bd:service-points/bd:service-point/evpn:evpn" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/evpn:evpn/evpn:irb2ip" {
+    deviate not-supported;
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpn:evpn/evpn:l2vpn-migrate" {
+    deviate not-supported;
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpn:evpn/evpn:vrrp" {
+    deviate not-supported;
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpn:evpn/evpn:bfd-detect" {
+    deviate not-supported;
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/evpn:evpn/evpn:binding-sids" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/evpn:evpn/evpn:e-tree-leaf" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/evpn:evpn/evpn:ring-id" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/evpn:evpn" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:profiles/bd:profile/evpn:evpn" {
+    deviate not-supported;
+  }
+  deviation "/evpn:evpn/evpn:site/evpn:static-esis/evpn:static-esi/evpn:df-election" {
+    deviate delete {
+      must "(current()='true' and (not(/ifm:ifm/ifm:interfaces/ifm:interface[evpn:evpn/evpn:esi=current()/../esi]/ifm:type) or (/ifm:ifm/ifm:interfaces/ifm:interface[evpn:evpn/evpn:esi=current()/../esi]/ifm:type!='Virtual-Ethernet'))) or current()='false'";
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:esi" {
+    deviate delete {
+      must "(../../nvo3:nvo3/nvo3:vni-list/nvo3:vni[../nvo3:split-horizon='true']) or (../df-result-spread='true') or ((../umr-originate='true') and not(/evpn:evpn/evpn:site/evpn:static-esis/evpn:static-esi[evpn:esi = current()]/evpn:redundancy-mode ='single-active'))";
+    }
+    deviate add {
+      must "../../nvo3:nvo3/nvo3:vni-list/nvo3:vni[../nvo3:split-horizon='true']";
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/evpn:evpn/evpn:tag" {
+    deviate delete {
+      must "../../bd:mac-learn-style!='qualify'";
+    }
+  }
+  deviation "/evpn:evpn/evpn:instances/evpn:instance/evpn:bd-evpn/evpn:mac-policy-name" {
+    deviate not-supported;
+  }
+}

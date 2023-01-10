@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-forward-devm-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-mpls-forward-devm-deviations-ATN-950D980C";
+  prefix mpls-forward-devm-devs-ATN-950D980C;
+
+  import huawei-mpls-forward-devm {
+    prefix mpls-forward-devm;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-loadbalance {
+    prefix loadbalance;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-mpls-forward-devm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/mpls-forward-devm:mpls-forward" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/mpls-forward-devm:mpls-forward/mpls-forward-devm:mpls-load-ctrwords" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/mpls-forward-devm:mpls-hashpacket" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance:loadbalance/mpls-forward-devm:mpls-intfmtu" {
+    deviate not-supported;
+  }
+
+}

@@ -1,0 +1,50 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-evpn-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-oam-cfm-evpn-deviations-ATN-910C";
+  prefix oam-cfm-evpn-devs-ATN-910C;
+
+  import huawei-oam-cfm-evpn {
+    prefix oam-cfm-evpn;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-oam-cfm-evpn module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef cfm-bind-evpn-type-deviations {
+    type enumeration {
+      enum EVPN-CFM {
+        value 2;
+        description
+          "Type that EVPN transfers fault information to CFM.";
+      }
+    }
+    description
+      "Binding type.";
+  }
+
+  deviation "/oammgr:oammgr/oam-cfm-evpn:cfm-bind-evpns/oam-cfm-evpn:cfm-bind-evpn/oam-cfm-evpn:bind-type" {
+    deviate replace {
+      type oam-cfm-evpn-devs-ATN-910C:cfm-bind-evpn-type-deviations;
+    }
+  }
+}

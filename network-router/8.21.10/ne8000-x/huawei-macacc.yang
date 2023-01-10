@@ -1,0 +1,172 @@
+/*
+Copyright (C) 2019-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-macacc {
+  namespace "urn:huawei:yang:huawei-macacc";
+  prefix macacc;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  ext:task-name  "mac";
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "MAC accounting.";
+  revision 2021-03-01 {
+    description
+      "Add MAC accounting containers.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-06-11 {
+    description
+      "Add new containers.";
+    reference
+      "Huawei private.";
+  }
+  revision 2020-03-06 {
+    description
+      "Change description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-04-15 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  rpc reset-mac-accounting-interface {
+    description
+      "Reset MAC accounting counters.";
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf mac-address {
+        type pub-type:mac-address;
+        description
+          "MAC address.";
+      }
+    }
+  }
+  augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls" {
+    description
+      "VSI MAC accounting.";
+    container mac-accounting {
+      when "../l2vpn:work-mode='normal'";
+      description
+        "Configure VSI MAC accounting.";
+      leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the flag of VSI MAC accounting.";
+      }
+    }
+  }
+  augment "/bd:bd/bd:instances/bd:instance" {
+    description
+      "BD MAC accounting.";
+    container mac-accounting {
+      description
+        "Configure BD MAC accounting.";
+      leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable the flag of BD MAC accounting.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface" {
+    description
+      "MAC accounting.";
+    container mac-accounting {
+      description
+        "Configure MAC accounting.";
+      leaf enable {
+          type empty;
+          must "(../../../../ifm:type='Ethernet' or ../../../../ifm:type='GigabitEthernet' or ../../../../ifm:type='Eth-Trunk' or ../../../../ifm:type='100GE' or ../../../../ifm:type='XGigabitEthernet' or ../../../../ifm:type='40GE' or ../../../../ifm:type='10GE' or ../../../../ifm:type='400GE' or ../../../../ifm:type='25GE' or ../../../../ifm:type='FlexE' or ../../../../ifm:type='50GE' or ../../../../ifm:type='50|100GE')";
+          description
+            "Enable/disable the flag of MAC accounting.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "Interface MAC accounting.";
+    container mac-accounting {
+      description
+        "Configure MAC accounting.";
+      container mac-accounting-counters {
+        config false;
+        description
+          "List of the statistics of interface MAC accounting.";
+        list mac-accounting-counter {
+          key "mac-address";
+          description
+            "Statistics of the MAC accounting.";
+          leaf mac-address {
+            type pub-type:mac-address;
+            description
+              "MAC address.";
+          }
+          leaf input-frames {
+            type uint64;
+            units packet;
+            description
+              "Number of upstream packets.";
+          }
+          leaf input-bytes {
+            type uint64;
+            units Byte;
+            description
+              "Number of upstream bytes.";
+          }
+          leaf output-frames {
+            type uint64;
+            units packet;
+            description
+              "Number of downstream packets.";
+          }
+          leaf output-bytes {
+            type uint64;
+            units Byte;
+            description
+              "Number of downstream bytes.";
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,133 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-devm-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-devm-deviations-NE8000-F1A";
+  prefix devm-devs-NE8000-F1A;
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-devm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef loopback-state-type-deviations {
+    type enumeration {
+      enum noLoopback {
+        value 0;
+        description
+          "No loopback.";
+      }
+      enum localLoopback {
+        value 1;
+        description
+          "Local Loopback.";
+      }
+      enum remoteLoopback {
+        value 2;
+        description
+          "Remote Loopback.";
+      }
+    }
+    description
+      "Port loopback state.";
+  }
+
+  deviation "/devm:devm/devm:physical-entitys/devm:physical-entity/devm:esn" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:logic-entitys" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/devm:dust-clean-cycle" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/devm:last-clean-date" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:chassiss/devm:chassis/devm:alarm-exist-days" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:logic-containers" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:containers/devm:container/devm:present" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:containers/devm:container/devm:supported-entity-types" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:sfu-boards" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:logic-ports" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:inconsistent-entitys" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:offlines" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:disable-hardware-alarms" {
+    deviate not-supported;
+  }
+  deviation "/devm:reset-lpu-board" {
+    deviate not-supported;
+  }
+  deviation "/devm:reset-sfu-board" {
+    deviate not-supported;
+  }
+  deviation "/devm:transfer-pnpp" {
+    deviate not-supported;
+  }
+  deviation "/devm:reset-offline-config" {
+    deviate not-supported;
+  }
+  deviation "/devm:cold-reset-lpu" {
+    deviate not-supported;
+  }
+  deviation "/devm:warm-reset-lpu" {
+    deviate not-supported;
+  }
+  deviation "/devm:cold-reset-mpu" {
+    deviate not-supported;
+  }
+  deviation "/devm:warm-reset-mpu" {
+    deviate not-supported;
+  }
+  deviation "/devm:get-reboot-info" {
+    deviate not-supported;
+  }
+  deviation "/devm:get-reset-reason" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:ports/devm:port/devm:hard-type" {
+    deviate replace {
+      type string {
+        length "1..32";
+      }
+    }
+  }
+  deviation "/devm:devm/devm:ports/devm:port/devm:loopback-mode" {
+    deviate replace {
+      type devm-devs-NE8000-F1A:loopback-state-type-deviations;
+    }
+  }
+}

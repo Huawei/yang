@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vlan-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-vlan-deviations-OC-NE-X8X16";
+  prefix vlan-devs-OC-NE-X8X16;
+
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-vlan module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:unknown-flow-drop" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:management-vlan" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:ip-subnet-vlans" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:member-ports/vlan:member-port/vlan:tag-mode" {
+    deviate not-supported;
+  }
+}

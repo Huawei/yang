@@ -1,0 +1,58 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-evpn-ext-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-evpn-ext-deviations-NE8000M8M14";
+  prefix evpn-ext-devs-NE8000M8M14;
+
+  import huawei-evpn-ext {
+    prefix evpn-ext;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-evpn-ext module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/lcs:license/lcs:license-items/lcs:license-item/evpn-ext:lcs-port-vxlans" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/evpn-ext:lcs-port-vxlans" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/lcs:license-items/lcs:license-item/evpn-ext:lcs-port-evpns/evpn-ext:lcs-port-evpn/evpn-ext:position" {
+    deviate replace {
+      type string {
+        length "1..32";
+      }
+    }
+  }
+  deviation "/lcs:license/evpn-ext:lcs-port-evpns/evpn-ext:lcs-port-evpn/evpn-ext:position" {
+    deviate replace {
+      type string {
+        length "1..32";
+      }
+    }
+  }
+
+}

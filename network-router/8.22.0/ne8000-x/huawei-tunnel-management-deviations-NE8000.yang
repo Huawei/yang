@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-tunnel-management-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-tunnel-management-deviations-NE8000";
+  prefix tnlm-devs-NE8000;
+
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-tunnel-management module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/tnlm:tunnel-management/tnlm:tunnel-infos/tnlm:tunnel-info/tnlm:color-type/tnlm:color-priority" {
+    deviate not-supported;
+  }
+  deviation "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:ipv6-set/tnlm:policy-type/tnlm:select-sequences/tnlm:select-sequence/tnlm:unmix" {
+    deviate delete {
+      must "(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'] and ../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'] and ../unmix = 'true') or (../unmix = 'false')";
+    }
+    deviate add {
+      must "(count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'])=1 and count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'])=0 and count(../select-tunnel-types/select-tunnel-type[type = 'gre6'])=0 and (../unmix = 'false')) or (count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'])=0 and count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'])=1 and count(../select-tunnel-types/select-tunnel-type[type = 'gre6'])=0 and (../unmix = 'false')) or (count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'])=0 and count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'])=0 and count(../select-tunnel-types/select-tunnel-type[type = 'gre6'])=1 and (../unmix = 'false')) or (count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-policy'])=1 and count(../select-tunnel-types/select-tunnel-type[type = 'srv6-te-flow-group'])=1 and count(../select-tunnel-types/select-tunnel-type[type = 'gre6'])=0 and (../unmix = 'true'))";
+    }
+  }
+  deviation "/tnlm:tunnel-management/tnlm:tunnel-policys/tnlm:tunnel-policy/tnlm:ipv6-set/tnlm:policy-type/tnlm:select-sequences/tnlm:select-sequence/tnlm:select-tunnel-types/tnlm:select-tunnel-type" {
+    deviate add {
+      must "(type='gre6' and count(../../select-tunnel-types/select-tunnel-type)=1) or (type != 'gre6')";
+    }
+  }
+}

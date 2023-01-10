@@ -1,0 +1,295 @@
+/*
+Copyright (C) 2019-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2-multicast-forward {
+  namespace urn:huawei:yang:huawei-l2-multicast-forward;
+  prefix l2-multicast-forward;
+  
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-igmp-mld-snooping {
+    prefix ims;
+  }
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "L2 multicast VLAN fwroding.";
+  revision 2022-03-20 {
+    description
+      "Add multicast-forward-tlb-statistics nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-02-20 {
+    description
+      "Add trunk-load-balance nodes.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-07-01 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "l2mc";
+  typedef l2mc-forward-mode {
+    type enumeration {
+      enum "ip" {
+	    value 1;
+        description
+          "Forwarding based on IP addresses.";
+      }
+      enum "mac" {
+	    value 2;	  
+        description
+          "Forwarding based on MAC addresses.";
+      }
+    }
+    description
+      "Forwarding mode.";
+  }
+  typedef sg-type {
+    type enumeration {
+      enum "SG" {
+        value 1;
+        description
+          "Multicast entry in which both group and source addresses are specified.";
+      }
+      enum "source-wildcard" {
+        value 2;	  
+        description
+          "Multicast entry in which only a group address is specified.";
+      }
+      enum "rt-port" {
+        value 3;	  
+        description
+          "Router port.";
+      }
+    }
+    description
+      "Port type.";
+  } 
+  container l2-multicast-forward {
+    description
+      "Global configuration of l2mc forward.";
+    container select-boards {
+      description
+        "Configure boards selected for l2mc.";
+      leaf-list slot {
+        type leafref {
+          path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+        }
+        max-elements "20";
+        description
+          "Configure slot ID.";
+      }
+    }
+  }  
+  augment "/vlan:vlan/vlan:vlans/vlan:vlan" {
+    description
+	  "Multicast forward configuration to the VLAN module.";
+    container multicast-forward {
+      description
+        "Configure multicast-forward configurations in the VLAN.";
+      container port-isolate-state {	  
+        description
+          "Configure the isolation of non-multicast traffic in a VLAN.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable isolate non-multicast traffic.";
+        }
+      }
+      container trunk-load-balance-enable {
+        must "../../vlan:type!='super'";
+        must "../../ims:igmp-snooping/ims:global/ims:enable!='true'";
+        must "../../ims:mld-snooping/ims:global/ims:enable!='true'";
+        must "../../vlan:unknown-multicast-discard!='enable'";
+        presence "Trunk load-balance enable";
+        description
+          "Enable/disable trunk load-balance configurations.";
+      }
+      container multicast-forward-tlb-statistics {
+        config false;
+        description
+          "List of statistics information in the multicast forwarding tables of VLANs.";
+        list multicast-forward-tlb-statistic {
+          key "address-family source-address group-address";
+          description
+            "Statistics of the VLAN forwarding table.";
+          leaf address-family {
+            type inet:ip-version;
+            description
+              "IP address family type.";
+          }
+          leaf source-address {
+            type inet:ip-address-no-zone;
+            description
+              "Multicast source address. In IPv4: 0.0.0.0 means that no multicast source address is specified. In IPv6: :: means that no multicast source address is specified.";
+          }
+          leaf group-address {
+            type inet:ip-address-no-zone;
+            description
+              "Address of a multicast group, the value ranges from 224.0.1.0 to 239.255.255.255 or address format is FFxA:xxxx:xxxx:xxxx:xxxxxxx, the range of values of x is 0 to F, and the range of values of A is 0 and 3 to F.";
+          }
+          leaf forwarding-mode {
+            type l2mc-forward-mode;
+            description
+              "Layer 2 multicast forwarding table of a VLAN.";
+          }
+          leaf sg {
+            type sg-type;
+            description
+              "Entry information.";
+          }
+          leaf port-cnt {
+            type uint32;
+            description
+              "Number of ports.";
+          }
+        }
+      }
+    }
+  }
+  augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls" {
+    description
+      "Multicast forward configuration to the L2VPN module."; 
+    container multicast-forward {
+      description
+        "Configure multicast-forward configurations in the VSI.";
+      container trunk-load-balance-enable {
+        must "../../l2vpn:work-mode!='b-vsi' and ../../l2vpn:work-mode!='i-vsi' and ../../l2vpn:work-mode!='i-vsi-p2p' and ../../l2vpn:work-mode!='i-vsi-b-evpn-interworking'";
+        must "../../ims:igmp-snooping/ims:global/ims:enable!='true'";
+        must "../../ims:mld-snooping/ims:global/ims:enable!='true'";
+        must "../../l2vpn:unknown-multicast-action!='drop'";
+        presence "Trunk load-balance enable";
+        description
+          "Enable/disable trunk load-balance configurations.";
+      }
+      container multicast-forward-tlb-statistics {
+        config false;
+        description
+          "List of statistics information in the multicast forwarding tables of VSIs.";
+        list multicast-forward-tlb-statistic {
+          key "address-family source-address group-address";
+          description
+            "Statistics of the VSI forwarding table.";
+          leaf address-family {
+            type inet:ip-version;
+            description
+              "IP address family type.";
+          }
+          leaf source-address {
+            type inet:ip-address-no-zone;
+            description
+              "Multicast source address. In IPv4: 0.0.0.0 means that no multicast source address is specified. In IPv6: :: means that no multicast source address is specified.";
+          }
+          leaf group-address {
+            type inet:ip-address-no-zone;
+            description
+              "Specifies the address of a multicast group, the value ranges from 224.0.1.0 to 239.255.255.255 or address format is FFxA:xxxx:xxxx:xxxx:xxxxxxx, the range of values of x is 0 to F, and the range of values of A is 0 and 3 to F.";
+          }
+          leaf forwarding-mode {
+            type l2mc-forward-mode;
+            description
+              "Layer 2 multicast forwarding table of a VSI.";
+          }
+          leaf sg {
+            type sg-type;
+            description
+              "Entry information.";
+          }
+          leaf port-cnt {
+            type uint32;
+            description
+              "Number of ports.";
+          }
+        }
+      }
+    }
+  }
+  augment "/bd:bd/bd:instances/bd:instance" {
+    description
+      "Multicast forward configuration to the bd module."; 
+    container multicast-forward {
+      description
+        "Configure multicast-forward configurations in the BD.";
+      container trunk-load-balance-enable {
+        must "../../ims:igmp-snooping/ims:global/ims:enable!='true'";
+        must "not(../../nvo3:nvo3/nvo3:vni-list)";
+        must "../../bd:unknown-unicast-discard!='enable'";
+        presence "Trunk load-balance enable";
+        description
+          "Enable/disable trunk load-balance configurations.";
+      }
+      container multicast-forward-tlb-statistics {
+        config false;
+        description
+          "List of the multicast forwarding table statistic information of the BD.";
+        list multicast-forward-tlb-statistic {
+          key "address-family source-address group-address";
+          description
+            "Statistics of the forwarding table in the BD.";
+          leaf address-family {
+            type inet:ip-version;
+            description
+              "IP address family type.";
+          }
+          leaf source-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "Source address. In IPv4: 0.0.0.0 means that no multicast source address is specified.";
+          }
+          leaf group-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "Specifies the address of a multicast group, the value ranges from 224.0.1.0 to 239.255.255.255.";
+          }
+          leaf forwarding-mode {
+            type l2mc-forward-mode;
+            description
+              "Layer 2 multicast forwarding table of the BD.";
+          }
+          leaf sg {
+            type sg-type;
+            description
+              "Entry information.";
+          }
+          leaf port-cnt {
+            type uint32;
+            description
+              "Number of ports.";
+          }
+        }
+      }
+    }
+  }
+}

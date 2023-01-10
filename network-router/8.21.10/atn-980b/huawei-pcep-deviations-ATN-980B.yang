@@ -1,0 +1,90 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pcep-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-pcep-deviations-ATN-980B";
+  prefix pcep-devs-ATN-980B;
+
+  import huawei-pcep {
+    prefix pcep;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+
+  revision 2020-07-10 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/pcep:pcep/pcep:session-car/pcep:ipv4/pcep:cir" {
+    deviate replace {
+      units "pps";
+      default "1";
+    }
+  }
+  deviation "/pcep:pcep/pcep:session-car/pcep:ipv4/pcep:cbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "2";
+    }
+  }
+  deviation "/pcep:pcep/pcep:session-car/pcep:ipv4/pcep:pir" {
+    deviate replace {
+      units "pps";
+      default "400";
+    }
+  }
+  deviation "/pcep:pcep/pcep:session-car/pcep:ipv4/pcep:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "600";
+    }
+  }
+  deviation "/pcep:pcep/pcep:micro-isolation-car/pcep:ipv4/pcep:cir" {
+    deviate replace {
+      units "pps";
+      default "1";
+    }
+  }
+  deviation "/pcep:pcep/pcep:micro-isolation-car/pcep:ipv4/pcep:cbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "10";
+    }
+  }
+  deviation "/pcep:pcep/pcep:micro-isolation-car/pcep:ipv4/pcep:pir" {
+    deviate replace {
+      units "pps";
+      default "400";
+    }
+  }
+  deviation "/pcep:pcep/pcep:micro-isolation-car/pcep:ipv4/pcep:pbs" {
+    deviate replace {
+      type uint32 {
+        range "1..1000000";
+      }
+      units "packet";
+      default "600";
+    }
+  }
+}

@@ -1,0 +1,56 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dcn-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-dcn-deviations-NE8000";
+  prefix dcn-devs-NE8000;
+
+  import huawei-dcn {
+    prefix dcn;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Data communication network.";
+
+  revision 2021-07-28 {
+    description
+      "The deviations of the huawei-dcn module were modified.";
+    reference "Huawei private.";
+  }
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/dcn:dcn/dcn:site/dcn:qx/dcn:server-dtls-policy" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:eth-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:pos-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:serial-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:transparent-interfaces" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dcn:dcn/dcn:dcnv4/dcn:vlan-id" {
+    deviate not-supported;
+  }
+}

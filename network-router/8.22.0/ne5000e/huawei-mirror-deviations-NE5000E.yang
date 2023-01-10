@@ -1,0 +1,171 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mirror-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mirror-deviations-NE5000E";
+  prefix mirror-devs-NE5000E;
+
+  import huawei-mirror {
+    prefix mirror;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-qos {
+    prefix qos;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-mirror module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/mirror:mirror/mirror:query-traffic-policy-ports" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/mirror:mirror" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/mirror:mirror/mirror:observe-filters" {
+    deviate not-supported;
+  }
+  deviation "/qos:qos/qos:global-config/mirror:mirror" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirrors/mirror:port-mirror/mirror:property/mirror:vlan/mirror:cevlan" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:without-header" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-fragments" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:bas-port-mirrors" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:without-filter" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:destination-mac" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:pop-label" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:sub-extend" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-observe/mirror:with-linklayer-header" {
+    deviate not-supported;
+  }
+  ext:deviation-ext "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/mirror:mirror/mirror:mirror-car/mirror:cir" {
+    ext:deviate-ext replace {
+      ext:dynamic-default  {
+        ext:default-value "10000000" {
+          when "../../mirror-enable";
+          description "The default value is 10000000 when mirror-enable is enable.";
+        }
+      }
+    }
+  }
+  ext:deviation-ext "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/mirror:mirror/mirror:mirror-car/mirror:pir" {
+    ext:deviate-ext delete {
+      ext:dynamic-default {
+          ext:default-value "2500000" {
+              when "../../mirror-enable";
+              description "The default value is 2500000 when mirror-enable is enable.";
+          }
+      }
+    }
+  }
+  ext:deviation-ext "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/mirror:mirror/mirror:mirror-car/mirror:cbs" {
+    ext:deviate-ext replace {
+      ext:dynamic-default  {
+        ext:default-value "18700000" {
+          when "../../mirror-enable";
+          description "The default value is 18700000 when mirror-enable is enable.";
+        }
+      }
+    }
+  }
+  ext:deviation-ext "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior/mirror:mirror/mirror:mirror-car/mirror:pbs" {
+    ext:deviate-ext replace {
+      ext:dynamic-default  {
+        ext:default-value "18700000" {
+          when "../../mirror-enable";
+          description "The default value is 18700000 when mirror-enable is enable.";
+        }
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirrors/mirror:port-mirror/mirror:cpu-packet" {
+    deviate add {
+      must "../mirror:cpu-packet='false'";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-slice" {
+    deviate add {
+      must "count(../port-mirrors/port-mirror)>0 or (not(count(../port-mirrors/port-mirror)>0) and not(../port-mirror-slice))";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:port-mirror-to" {
+    deviate add {
+      must "not(../mirror-by-directions/mirror-by-direction[direction='both'] and count(../mirror-to-multis/mirror-to-multi)>0)";
+    }
+    deviate add {
+      must "not(count(../mirror-to-multis/mirror-to-multi)>0 and ../mirror-to-null0)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:mirror-by-directions" {
+    deviate add {
+      must "count(./mirror-by-direction)=0 or not(../port-observe or ../mirror-to-null0 or count(../integrateds/integrated)>0)";
+    }
+    deviate add {
+      must "count(./mirror-by-direction[direction='both'])=0 or (count(./mirror-by-direction[direction='both'])>0 and count(../mirror-to-multis/mirror-to-multi)=0)";
+    }
+    deviate add {
+      must "count(./mirror-by-direction[direction='inbound'])=0 or (count(./mirror-by-direction[direction='inbound'])>0 and count(../mirror-to-multis/mirror-to-multi[direction='inbound'])=0 and count(../mirror-by-directions/mirror-by-direction[direction='both'])=0)";
+    }
+    deviate add {
+      must "count(./mirror-by-direction[direction='outbound'])=0 or (count(./mirror-by-direction[direction='outbound'])>0 and count(../mirror-to-multis/mirror-to-multi[direction='outbound'])=0 and count(../mirror-by-directions/mirror-by-direction[direction='both'])=0)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:mirror-to-null0" {
+    deviate add {
+      must "not(../port-observe or count(../mirror-to-multis/mirror-to-multi)>0 or count(../mirror-by-directions/mirror-by-direction)>0 or count(../integrateds/integrated)>0)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/mirror:mirror/mirror:integrateds" {
+    deviate add {
+      must "not(count(./integrated)>0 and (../port-observe or count(../mirror-by-directions/mirror-by-direction)>0 or count(../mirror-to-multis/mirror-to-multi)>0 or ../mirror-to-null0))";
+    }
+  }
+
+}

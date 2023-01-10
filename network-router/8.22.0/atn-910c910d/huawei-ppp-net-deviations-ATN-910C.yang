@@ -1,0 +1,139 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ppp-net-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-ppp-net-deviations-ATN-910C";
+  prefix ppp-net-devs-ATN-910C;
+
+  import huawei-ppp-net {
+    prefix ppp-net;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-ppp-net module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef mp-fragment-size-deviations {
+    type enumeration {
+      enum "fragment-128" {
+        value 0;
+        description 
+          "Fragment size 128 bytes.";
+      }
+      enum "fragment-256" {
+        value 1;
+        description 
+          "Fragment size 256 bytes.";
+      }
+      enum "fragment-512" {
+        value 2;
+        description 
+          "Fragment size 512 bytes.";
+      }
+      enum "no-fragment" {
+        value 3;
+        description 
+          "No fragment.";
+      }
+    }
+    description 
+      "MP fragment size.";
+  }
+
+  typedef ppp-net-mru-negotiation-type-deviations {
+    type enumeration {
+      enum "ipv4" {
+        value 0;
+        description 
+          "IPv4 MRU negotiation on PPP MRU.";
+      }
+    }
+    description 
+      "PPP LCP MRU negotiation type.";
+  }
+
+  deviation "/ppp-net:ppp-net/ppp-net:ppp-dampening" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/ppp-net:ppp-net" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/ppp-net:ppp-net" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:dead-link-time" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:magic-number-check-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:osicp-negotiation-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:mplscp-negotiation-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:admit-any-dns" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:primary-dns-address" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:second-dns-address" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:pap-authen-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:chap-authen-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:pap-user-name" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:pap-password" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:chap-user-name" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:chap-password" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:ppp/ppp-net:ppp-base/ppp-net:mru-negotiation-type" {
+    deviate replace {
+      type ppp-net-devs-ATN-910C:ppp-net-mru-negotiation-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:multilink-ppp/ppp-net:mp-base/ppp-net:fragment-size" {
+    deviate replace {
+      type ppp-net-devs-ATN-910C:mp-fragment-size-deviations;
+    }
+  }
+
+}

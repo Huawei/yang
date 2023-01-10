@@ -1,0 +1,43 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-ptpadapt-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-clocksync-ptpadapt-deviations-ATN-950D980C";
+  prefix clocksync-ptpadapt-devs-ATN-950D980C;
+
+  import huawei-clocksync-ptpadapt {
+    prefix clocksync-ptpadapt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-ptpadapt module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/clocksync-ptpadapt:clocksync-ptpadapt/clocksync-ptpadapt:ptpa-common/clocksync-ptpadapt:hop-by-hop-mode" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-ptpadapt:reset-ptpa-server-pkt" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-ptpadapt:reset-ptpa-client-pkt" {
+    deviate not-supported;
+  }
+
+}

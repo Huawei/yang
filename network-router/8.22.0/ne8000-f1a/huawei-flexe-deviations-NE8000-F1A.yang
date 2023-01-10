@@ -1,0 +1,61 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-flexe-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-flexe-deviations-NE8000-F1A";
+  prefix flexe-devs-NE8000-F1A;
+
+  import huawei-flexe {
+    prefix flexe;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-flexe module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef flexe-sub-ts-granula-type-deviations {
+    type enumeration {
+      enum "1G" {
+        value 1;
+        description 
+          "Sub-timeslot granularity 1G.";
+      }
+      enum "5G" {
+        value 0;
+        description 
+          "Sub-timeslot granularity 5G.";
+      }
+    }
+    description 
+      "Setting sub-timeslot granularity.";
+  }
+
+  deviation "/flexe:flexe/flexe:card-attributes/flexe:card-attribute/flexe:sub-timeslot-granula" {
+    deviate replace {
+      type flexe-devs-NE8000-F1A:flexe-sub-ts-granula-type-deviations;
+    }
+  }
+  deviation "/flexe:flexe/flexe:groups/flexe:group/flexe:padding-enable" {
+    deviate delete {
+      default "false";
+    }
+  }
+
+}

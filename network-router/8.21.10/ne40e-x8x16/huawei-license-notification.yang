@@ -1,0 +1,76 @@
+/*
+Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-license-notification {
+  namespace "urn:huawei:yang:huawei-license-notification";
+  prefix license-notification;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of license.";
+  revision 2022-04-20 {
+    description
+      "Add cloud-server-offline, cloud-server-offline-resume, cloud-server-offline-locked and cloud-server-offline-locked-resume.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-10-18 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "license";
+  notification license-state-changed {
+    description
+      "The license status changed.";
+    leaf previous-state {
+      type string {
+        length "1..16";
+      }
+      description
+        "Original license status.";
+    }
+    leaf state {
+      type string {
+        length "1..16";
+      }
+      description
+        "Target license status.";
+    }
+  }
+  notification cloud-server-offline {
+    description
+      "The device is disconnected from the cloud license local server.";
+    leaf remaining-days {
+      type uint32 {
+        range "1..60";
+      }
+      description
+        "Remaining days of device offline locking.";
+    }
+  }
+  notification cloud-server-offline-resume {
+    description
+      "The connection between the device and the cloud license local server is restored.";
+  }
+  notification cloud-server-offline-locked {
+    description
+      "The device is locked because it has been disconnected from the cloud license local server for more than 60 days.";
+  }
+  notification cloud-server-offline-locked-resume {
+    description
+      "The device is unlocked because the connection between the device and the cloud license local server is restored.";
+  }
+}

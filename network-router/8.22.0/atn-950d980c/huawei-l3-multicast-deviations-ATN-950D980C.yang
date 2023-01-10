@@ -1,0 +1,124 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l3-multicast-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-l3-multicast-deviations-ATN-950D980C";
+  prefix l3mc-devs-ATN-950D980C;
+
+  import huawei-l3-multicast {
+    prefix l3mc;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-l3-multicast module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef limit-type-ipv4-deviations {
+    type enumeration {
+      enum pim-sm-star-group {
+        value 1;
+        description
+          "PIM-SM (*, g).";
+      }
+      enum pim-sm-source-group {
+        value 2;
+        description
+          "PIM-SM (s, g).";
+      }
+      enum pim-dm-star-group {
+        value 3;
+        description
+          "PIM-DM (*, g).";
+      }
+      enum pim-dm-source-group {
+        value 4;
+        description
+          "PIM-DM (s, g).";
+      }
+    }
+    description
+      "Limit type.";
+  }
+
+  typedef limit-type-ipv4-vpn-deviations {
+    type enumeration {
+      enum pim-sm-star-group {
+        value 1;
+        description
+          "PIM-SM (*, g).";
+      }
+      enum pim-sm-source-group {
+        value 2;
+        description
+          "PIM-SM (s, g).";
+      }
+    }
+    description
+      "Limit type.";
+  }
+
+  typedef limit-type-ipv6-deviations {
+    type enumeration {
+      enum pim-sm-star-group {
+        value 1;
+        description
+          "PIM-SM (*, g).";
+      }
+      enum pim-sm-source-group {
+        value 2;
+        description
+          "PIM-SM (s, g).";
+      }
+    }
+    description
+      "Limit type.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3mc:multicast/l3mc:ipv6/l3mc:limits" {
+    deviate not-supported;
+  }
+  deviation "/l3mc:l3-multicast/l3mc:ipv4/l3mc:limits/l3mc:limit/l3mc:type" {
+    deviate replace {
+      type l3mc-devs-ATN-950D980C:limit-type-ipv4-deviations;
+    }
+  }
+  deviation "/l3mc:l3-multicast/l3mc:ipv4/l3mc:limits/l3mc:limit/l3mc:value" {
+    deviate replace {
+      type uint32 {
+        range "1..16384";
+      }
+    }
+  }
+  deviation "/l3mc:l3-multicast/l3mc:ipv6/l3mc:limits/l3mc:limit/l3mc:type" {
+    deviate replace {
+      type l3mc-devs-ATN-950D980C:limit-type-ipv6-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3mc:multicast/l3mc:ipv4/l3mc:limits/l3mc:limit/l3mc:type" {
+    deviate replace {
+      type l3mc-devs-ATN-950D980C:limit-type-ipv4-vpn-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3mc:multicast/l3mc:ipv6" {
+    deviate add {
+      must "../../ni:name='_public_'";
+    }
+  }
+}

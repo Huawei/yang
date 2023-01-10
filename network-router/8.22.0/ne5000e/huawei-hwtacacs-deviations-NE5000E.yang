@@ -1,0 +1,38 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-hwtacacs-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-hwtacacs-deviations-NE5000E";
+  prefix hwtacacs-devs-NE5000E;
+
+  import huawei-hwtacacs {
+    prefix hwtacacs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-hwtacacs module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/hwtacacs:hwtacacs/hwtacacs:global/hwtacacs:acct-stop-packet-resend-times" {
+    deviate not-supported;
+  }
+  deviation "/hwtacacs:hwtacacs/hwtacacs:templates/hwtacacs:template" {
+    deviate replace {
+      max-elements 128;
+    }
+  }
+}

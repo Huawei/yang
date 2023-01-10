@@ -1,0 +1,47 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-platform-psu-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-openconfig-platform-psu-deviations-ATN-980B";
+  prefix oc-platform-psu-devs-ATN-980B;
+
+  import openconfig-platform-psu {
+    prefix oc-platform-psu;
+  }
+  import openconfig-platform {
+     prefix oc-platform; 
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for openconfig-platform-psu module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:power-supply/oc-platform:state/oc-platform-psu:output-current" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:power-supply/oc-platform:state/oc-platform-psu:output-voltage" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:power-supply/oc-platform:state/oc-platform-psu:output-power" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:power-supply/oc-platform:state/oc-platform-psu:capacity" {
+    deviate not-supported;
+  }
+}

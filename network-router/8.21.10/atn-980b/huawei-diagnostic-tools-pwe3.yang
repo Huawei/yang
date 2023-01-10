@@ -1,0 +1,718 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-diagnostic-tools-pwe3 {
+  yang-version 1;
+  belongs-to huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-diagnostic-tools-common;
+  include huawei-diagnostic-tools-type;
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Pwe3 diagnostic tool.";
+
+  revision 2021-05-11 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+
+  grouping pwe3-ping-trace-result-type {
+    description
+      "PWE3 test result.";
+    container ping-results {
+      config false;
+      description
+        "List of PWE3 ping test results.";
+      list ping-result {
+        key "test-name";
+        description
+          "Statistics of PWE3 ping test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf pw-type {
+          type pw-type;
+          description
+            "PW type.";
+        }
+        leaf pw-id {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "PW ID.";
+        }
+        leaf peer-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Peer IP address.";
+        }
+        leaf sender-ve-id {
+          type uint32 {
+            range "0..65534";
+          }
+          description
+            "Sender VE ID.";
+        }
+        leaf remote-ve-id {
+          type uint32 {
+            range "0..65534";
+          }
+          description
+            "Remote VE ID.";
+        }
+        leaf packet-send {
+          type uint32;
+          description
+            "Total number of sent packets.";
+        }
+        leaf packet-receive {
+          type uint32;
+          description
+            "Total number of received packets.";
+        }
+        leaf loss-ratio {
+          type pub-type:percent;
+          units "%";
+          description
+            "Packet loss ratio of a test.";
+        }
+        leaf rtt-min {
+          type uint32;
+          units "ms";
+          description
+            "Minimum RTT of all test packets.";
+        }
+        leaf rtt-max {
+          type uint32;
+          units "ms";
+          description
+            "Maximum RTT of all test packets.";
+        }
+        leaf rtt-average {
+          type uint32;
+          units "ms";
+          description
+            "Average RTT of all test packets.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status.";
+        }
+        container probes {
+          description
+            "List of PWE3 ping results of all packets in a test.";
+          list probe {
+            key "sequence";
+            description
+              "Statistics of probe result of a single packet in a PWE3 ping test.";
+            leaf sequence {
+              type uint32;
+              description
+                "Serial number of a test packet received.";
+            }
+            leaf replier {
+              type inet:ipv4-address-no-zone;
+              description
+                "Reply address in a received response packet.";
+            }
+            leaf data-bytes {
+              type uint32;
+              description
+                "Number of bytes in a received response packet.";
+            }
+            leaf rtt {
+              type uint32;
+              units "ms";
+              description
+                "RTT of test packets, expressed in milliseconds.";
+            }
+            leaf ttl {
+              type uint8 {
+                range "1..255";
+              }
+              description
+                "TTL of received response packets.";
+            }
+            leaf return-code {
+              type uint32;
+              description
+                "Return code.";
+            }
+            leaf return-subcode {
+              type uint32;
+              description
+                "Return sub-code.";
+            }
+            leaf result-type {
+              type probe-result-type;
+              description
+                "Result of packet sending, which is either Success or Timeout.";
+            }
+            leaf is-delete {
+              type boolean;
+              ext:support-filter true;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+          }
+        }  
+      }
+    }
+    container trace-results {
+      config false;
+      description
+        "List of PWE3 trace test results.";
+      list trace-result {
+        key "test-name";
+        description
+          "Statistics of PWE3 trace test result.";
+        leaf test-name {
+          type string {
+            length "1..32";
+          }
+          description
+            "Test name.";
+        }
+        leaf pw-type {
+          type pw-type;
+          description
+            "PW type.";
+        }
+        leaf pw-id {
+          type uint32;
+          description
+            "PW index.";
+        }
+        leaf peer-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Peer IPv4 address.";
+        }
+        leaf sender-ve-id {
+          type uint16;
+          description
+            "Sender VE ID.";
+        }
+        leaf remote-ve-id {
+          type uint16;
+          description
+            "Remote VE ID.";
+        }
+        leaf status {
+          type dgntl-test-status-type;
+          description
+            "Test status.";
+        }
+        container hops {
+          description
+            "List of PWE3 trace result of each packet in a test.";
+          list hop {
+            key "hop-index";
+            description
+              "Statistics of PWE3 trace result of a single packet in a test.";
+            leaf hop-index {
+              type uint32 {
+                range "1..255";
+              }
+              description
+                "The index of the hop.";
+            }
+            leaf ttl {
+              type uint8;
+              description
+                "TTL of received response packet.";
+            }
+            leaf replier {
+              type inet:ipv4-address-no-zone;
+              description
+                "Reply address of the related hop in a test.";
+            }
+            leaf rtt {
+              type uint32;
+              description
+                "RTT of test packets, expressed in milliseconds.";
+            }
+            leaf transmit-type {
+              type transmit-type;
+              description
+                "Node type.";
+            }
+            leaf ds-address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Downstream address of the related hop in a test.";
+            }
+            leaf return-code {
+              type uint32;
+              description
+                "Return code.";
+            }
+            leaf result-type {
+              type probe-result-type;
+              description
+                "Result of packet sending, which is either Success or Timeout.";
+            }
+            leaf is-delete {
+              type boolean;
+              ext:support-filter true;
+              description
+                "Enable/disable the function of deleting test results.";
+            }
+            container ds-label-lists {
+              description
+                "List of downstream information.";
+              list ds-label-list {
+                key "label-index";
+                description
+                  "Statistics of downstream information.";
+                leaf label-index {
+                  type uint32 {
+                    range "1..4294967295";
+                  }
+                  description
+                    "The index of the downstream label.";
+                }
+                leaf ds-label {
+                  type uint32;
+                  description
+                    "Downstream label.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  rpc pwe3-start-ping {
+    description
+      "Start pwe3 ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      leaf label-type {
+        type pwe3-label-type;
+        mandatory true;
+        description
+          "Label type.";
+      }
+      choice detection-type {
+        mandatory true;
+        description
+          "Detection type.";
+          case pw-id {
+            description
+            "Detecting by PW ID.";
+            leaf pw-type {
+              type pw-type;
+              mandatory true;
+              description
+                "PW type.";
+            }
+            leaf pw-id {
+              type uint32 {
+                range "1..4294967295";
+              }
+              mandatory true;
+              description
+                "PW ID.";
+            }
+            leaf peer-address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Peer IP address.";
+            }
+            leaf remote-pw-id {
+              type uint32 {
+                range "1..4294967295";
+              }
+              description
+                "Remote PW ID.";
+            }
+            leaf remote-address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Remote IP address.";
+            }
+            leaf sender-address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Set the source address of the targeted session.";
+            }
+            leaf ttl {
+              type uint8 {
+                range "1..255";
+              }
+              description
+                "Time to live.";
+            }
+            leaf ttl-mode {
+              type ttl-mode;
+              description
+                "TTL mode (uniform or pipe).";
+            }
+          }
+          case vpws-bgp-vpn-instance {
+            description
+            "Detecting by VPWS BGP VPN instance.";
+            leaf vpws-bgp-vpn-name {
+              type string {
+                length "1..31";
+              }
+              mandatory true;
+              description
+                "VPWS BGP VPN instance name.";
+            }
+            leaf local-ce-id {
+              type uint32 {
+                range "0..65534";
+              }
+              mandatory true;
+              description
+                "Local CE ID.";
+            }
+            leaf remote-ce-id {
+              type uint32 {
+                range "0..65534";
+              }
+              mandatory true;
+              description
+                "Remote CE ID.";
+            }
+          }
+      }
+
+      leaf exp {
+        type uint32 {
+          range "0..7";
+        }
+        default "0";
+        description
+          "EXP value in the label field of MPLS packets. The EXP value is used to distinguish the service types of MPLS packets.";
+      }
+      leaf reply-mode {
+        type reply-mode-pwe3;
+        default "udp";
+        description
+          "Mode for responding to test packets in a test.";
+      }
+      leaf packet-size {
+        type uint32 {
+          range "65..9600";
+        }
+        default "100";
+        description
+          "Number of bytes in a sent test packet.";
+      }
+      leaf count {
+        type uint32 {
+          range "1..4294967295";
+        }
+        default "5";
+        description
+          "Number of sent test packets.";
+      }
+      leaf interval {
+        type uint32 {
+          range "1..10000";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Interval for sending test packets.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time to wait for a response packet after a test packet is sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+      leaf bypass-source-if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Set the specified interface as the source interface of ping packet.";
+      }
+      leaf fragment {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable packet fragmentation function.";
+      }
+      leaf no-control-word {
+        type boolean;
+        description
+          "Enable/disable the function of not carrying control word.";
+      }
+    }
+  }
+
+  rpc pwe3-stop-ping {
+    description
+      "Stop pwe3 ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc pwe3-delete-ping {
+    description
+      "Delete pwe3 ping.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:ping-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:ping-results/diagnostic-tools:ping-result/diagnostic-tools:test-name";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc pwe3-start-trace {
+    description
+      "Start PWE3 trace.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Test name.";
+      }
+      choice detection-type {
+        mandatory true;
+        description
+          "Detection type.";
+        case pw-id {
+          description
+            "Detecting by PW ID.";
+          leaf pw-type {
+            type pw-type;
+            mandatory true;
+            description
+              "PW type.";
+          }
+          leaf pw-id {
+            type uint32 {
+              range "1..4294967295";
+            }
+            mandatory true;
+            description
+              "PW ID.";
+          }
+          leaf peer-address {
+            type inet:ipv4-address-no-zone;
+            description
+              "Peer IPv4 address.";
+          }
+        }
+        case vpws-bgp-vpn-instance {
+          description
+            "Detecting by VPWS BGP VPN instance.";
+          leaf vpws-bgp-vpn-name {
+            type string {
+              length "1..31";
+            }
+            mandatory true;
+            description
+              "VPWS BGP VPN instance name.";
+          }
+          leaf local-ce-id {
+            type uint32 {
+              range "0..65534";
+            }
+            mandatory true;
+            description
+              "Local VC ID.";
+          }
+          leaf remote-ce-id {
+            type uint32 {
+              range "0..65534";
+            }
+            mandatory true;
+            description
+              "Remote VC ID.";
+          }
+        }
+      }
+      leaf label-type {
+        type pwe3-label-type;
+        mandatory true;
+        description
+          "Label type.";
+      }
+      leaf no-control-word {
+        type empty;
+        description
+          "No control word.";
+      }
+      leaf remote-address {
+        type inet:ipv4-address-no-zone;
+        description
+          "Remote address.";
+      }
+      leaf exp {
+        type uint32 {
+          range "0..7";
+        }
+        default "0";
+        description
+          "EXP value in the label field of MPLS packets. The EXP value is used to distinguish the service types of MPLS packets.";
+      }
+      leaf first-ttl {
+        type uint8 {
+          range "1..255";
+        }
+        default "1";
+        description
+          "First time to live.";
+      }
+      leaf max-ttl {
+        type uint8 {
+          range "1..255";
+        }
+        default "30";
+        description
+          "Maximum time to live.";
+      }
+      leaf reply-mode {
+        type reply-mode-pwe3;
+        default "udp";
+        description
+          "Mode for responding to test packets in a test.";
+      }
+      leaf timeout {
+        type uint32 {
+          range "0..65535";
+        }
+        units "ms";
+        default "2000";
+        description
+          "Time to wait for a response packet after a test packet is sent. If no response packet is received within the timeout period, the system considers that the test packet times out.";
+      }
+      leaf fragment {
+        type empty;
+        description
+          "Set the Fragment flag in packet.";
+      }
+      leaf ptn-mode {
+        type empty;
+        description
+          "PTN-Interworking mode.";
+      }
+      leaf ttl-mode {
+        type ttl-mode;
+        description
+          "TTL mode.";
+      }
+      leaf detail {
+        type empty;
+        description
+          "Detail information.";        
+      }
+      leaf bypass-source-if-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Set the interface as the source interface of tracert packet when specifying PW bypass LSP.";
+      }
+    }
+  }
+
+  rpc pwe3-stop-trace {
+    description
+      "Stop PWE3 trace.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:trace-results/diagnostic-tools:trace-result/diagnostic-tools:test-name";
+        }
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  rpc pwe3-delete-trace {
+    description
+      "Delete PWE3 trace.";
+    ext:node-ref "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:trace-results";
+    input {
+      leaf test-name {
+        type leafref {
+          path "/diagnostic-tools:diagnostic-tools/diagnostic-tools:pwe3/diagnostic-tools:trace-results/diagnostic-tools:trace-result/diagnostic-tools:test-name";
+        }
+        description
+          "Test name.";
+      }
+    }
+  }
+
+  augment "/diagnostic-tools:diagnostic-tools" {
+    description
+      "List of PWE3 ping and trace tests.";
+    container pwe3 {
+      config false;
+      description
+        "Statistics of PWE3 ping and trace tests.";
+      uses diagnostic-tools:pwe3-ping-trace-result-type;
+    }
+  }
+}

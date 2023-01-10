@@ -1,0 +1,2201 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-network-instance-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-openconfig-network-instance-deviations-NE8000-F1A";
+  prefix oc-netinst-devs-NE8000-F1A;
+
+  import openconfig-network-instance {
+    prefix oc-netinst;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import openconfig-types {
+    prefix oc-types;
+  }
+  import openconfig-bgp-types {
+    prefix oc-bgp-types;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import openconfig-isis-types {
+    prefix oc-isis-types;
+  }
+  import openconfig-policy-types {
+    prefix oc-pol-types;
+  }
+  import openconfig-network-instance-types {
+    prefix oc-ni-types;
+  }
+  import openconfig-pim-types {
+    prefix oc-pim-types;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for openconfig-network-instance module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef bandwidth-kbps-deviations {
+    type uint64 {
+      range "0..4000000000";
+    }
+    units "kbit/s";
+    description
+      "Bandwidth values expressed in kilobits per second.";
+  }
+
+  typedef ip-address-deviations {
+    type union {
+      type ipv4-address-deviations;
+      type ipv6-address-deviations;
+    }
+    description
+      "An IPv4 or IPv6 address with no prefix specified.";
+  }
+
+  typedef ip-prefix-deviations {
+    type union {
+      type ipv4-prefix-deviations;
+      type ipv6-prefix-deviations;
+    }
+    description
+      "An IPv4 or IPv6 prefix.";
+  }
+
+  typedef ipv4-address-deviations {
+    type string {
+      pattern '(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
+    }
+    description
+      "An IPv4 address in dotted quad notation using the default
+       zone.";
+  }
+
+  typedef ipv4-prefix-deviations {
+    type string {
+      pattern '(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))';
+    }
+    description
+      "An IPv4 prefix represented in dotted quad notation followed by
+       a slash and a CIDR mask (0 <= mask <= 32).";
+  }
+
+  typedef ipv6-address-deviations {
+    type string {
+      pattern '(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))';
+    }
+    description
+      "An IPv6 address represented as either a full address; shortened
+       or mixed-shortened formats, using the default zone.";
+  }
+
+  typedef ipv6-prefix-deviations {
+    type string {
+      pattern '(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))/(12[0-8]|1[0-1][0-9]|[1-9][0-9]|[0-9])';
+    }
+    description
+      "An IPv6 prefix represented in full, shortened, or mixed
+       shortened format followed by a slash and CIDR mask
+       (0 <= mask <= 128).";
+  }
+
+  typedef route-distinguisher-deviations {
+    type union {
+      type string {
+        pattern '(65[0-5][0-3][0-5]|[1-5][1-5][0-9][0-9][0-9]|[1-9]?[1-9]?[0-9][0-9]|[1-9]):(4[0-2][0-9][0-4][0-9][0-6][0-7][0-2][0-9][0-5]|[0-3][0-9]{9}|[1-9][0-9]{1,8}|[1-9])';
+      }
+      type string {
+        pattern '(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]):(65[0-5][0-3][0-5]|[1-5][1-5][0-9][0-9][0-9]|[1-9]?[1-9]?[0-9][0-9]|[1-9])';
+      }
+      type string {
+        pattern '(4[0-2][0-9][0-4][0-9][0-6][0-7][0-2][0-9][0-5]|[0-3][0-9]{9}|[1-9][0-9]{1,8}|[1-9]):(65[0-5][0-3][0-5]|[1-5]{2}[0-9]{3}|[1-9]{0,2}[0-9][0-9]|[1-9])';
+      }
+    }
+    description
+      "A route distinguisher value";
+    reference "RFC4364";
+  }
+
+  typedef bsr-boundary-deviations {
+    type enumeration {
+      enum false {
+        value 0;
+        description
+          "Disable BSR boundary.";
+      }
+      enum true {
+        value 1;
+        description
+          "Enable BSR boundary.";
+      }
+      enum incoming {
+        value 2;
+        description
+          "Enable BSR boundary in the inbound direction.";
+      }
+    }
+    description
+      "Whether to enable BSR boundary.";
+  }
+
+  typedef routing-password-deviations {
+    type string {
+      length "1..432";
+    }
+    description
+      "This type is indicative of a password that is used within
+       a routing protocol which can be returned in plain text to the
+       NMS by the local system. Such passwords are typically stored
+       as encrypted strings. Since the encryption used is generally
+       well known, it is possible to extract the original value from
+       the string - and hence this format is not considered secure.
+       Leaves specified with this type should not be modified by
+       the system, and should be returned to the end-user in plain
+       text. This type exists to differentiate passwords, which
+       may be sensitive, from other string leaves. It could, for
+       example, be used by the NMS to censor this data when
+       viewed by particular users.";
+  }
+
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:router-id" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:mtu" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:encapsulation/oc-netinst:config/oc-netinst:control-word" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:encapsulation/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:default-import-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:default-export-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies/oc-netinst:apply-policy/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:config/oc-netinst:default-import-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:associated-address-families" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:associated-address-families" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:tables" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:local" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:remote/oc-netinst:config/oc-netinst:site-id" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:remote/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:config/oc-netinst:enabled" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:config/oc-netinst:default-metric" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:state/oc-netinst:enabled" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:state/oc-netinst:default-metric" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:config/oc-netinst:set-tag" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:state/oc-netinst:set-tag" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:config/oc-netinst:metric" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:config/oc-netinst:recurse" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:state/oc-netinst:recurse" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:local-aggregates" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:state/oc-netinst:total-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:state/oc-netinst:total-prefixes" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:default-route-distance" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:confederation" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:restart-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:stale-routes-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:helper-only" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:config/oc-netinst:enabled" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:state/oc-netinst:total-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:state/oc-netinst:total-prefixes" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:graceful-restart" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:route-selection-options" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:use-multiple-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:add-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv6-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-labeled-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv6-labeled-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l3vpn-ipv4-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l3vpn-ipv6-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l3vpn-ipv4-multicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l3vpn-ipv6-multicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l2vpn-vpls" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l2vpn-evpn" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:srte-policy-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:srte-policy-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:use-multiple-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:route-selection-options" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:dynamic-neighbor-prefixes" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:peer-group" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:peer-type" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:remove-private-as" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:route-flap-damping" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:send-community" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:peer-group" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:auth-password" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:remove-private-as" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:route-flap-damping" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:send-community" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:last-established" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:established-transitions" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:supported-capabilities" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:messages" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:queues" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:dynamically-configured" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:timers" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:transport" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:error-handling" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:graceful-restart" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:config/oc-netinst:enabled" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:state/oc-netinst:active" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:state/oc-netinst:prefixes" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:graceful-restart" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:add-paths/oc-netinst:config/oc-netinst:eligible-prefix-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:add-paths/oc-netinst:state/oc-netinst:eligible-prefix-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:default-import-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:default-export-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:apply-policy/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast/oc-netinst:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv6-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv6-labeled-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l3vpn-ipv4-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l3vpn-ipv6-unicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l3vpn-ipv4-multicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l3vpn-ipv6-multicast" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l2vpn-vpls" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:l2vpn-evpn" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:srte-policy-ipv4" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:srte-policy-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:use-multiple-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:logging-options" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:ebgp-multihop/oc-netinst:config/oc-netinst:enabled" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:ebgp-multihop/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:route-reflector" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:as-path-options" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:use-multiple-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:apply-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:enable-bfd" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:peer-groups" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:rib" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:mpls" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:virtual-links" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:lsdb" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:priority" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:multi-area-adjacency-primary" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:metric" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:hide-network" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:timers" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:mpls" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:lsa-filter" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:neighbors" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:interface-ref" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:config/oc-netinst:summary-route-cost-mode" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:config/oc-netinst:igp-shortcuts" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:config/oc-netinst:log-adjacency-changes" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:config/oc-netinst:hide-transit-only-networks" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:timers" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:graceful-restart" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:mpls" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:inter-area-propagation-policies" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:config/oc-netinst:authentication-check" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:config/oc-netinst:maximum-area-addresses" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:config/oc-netinst:poi-tlv" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:config/oc-netinst:iid-tlv" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:config/oc-netinst:fast-flooding" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:overload-bit/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:overload-bit/oc-netinst:reset-triggers/oc-netinst:reset-trigger/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:attached-bit/oc-netinst:config/oc-netinst:suppress-bit" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:attached-bit/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:reference-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:nsr" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:spf/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:lsp-generation/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:transport" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:mpls/oc-netinst:igp-ldp-sync/oc-netinst:config/oc-netinst:post-session-up-delay" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:mpls/oc-netinst:igp-ldp-sync/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:igp-shortcuts" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:afi-safi/oc-netinst:af/oc-netinst:config/oc-netinst:metric" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:afi-safi/oc-netinst:af/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:afi-safi/oc-netinst:af/oc-netinst:multi-topology/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:segment-routing" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:inter-level-propagation-policies/oc-netinst:level1-to-level2/oc-netinst:config/oc-netinst:default-import-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:inter-level-propagation-policies/oc-netinst:level1-to-level2/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:inter-level-propagation-policies/oc-netinst:level2-to-level1/oc-netinst:config/oc-netinst:default-import-policy" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:inter-level-propagation-policies/oc-netinst:level2-to-level1/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:config/oc-netinst:authentication-check" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:system-level-counters" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:link-state-database" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:traffic-engineering/oc-netinst:config/oc-netinst:ipv6-router-id" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:traffic-engineering/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:route-preference" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:authentication" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:hello-padding" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:circuit-counters" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:authentication/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:authentication/oc-netinst:key/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:authentication/oc-netinst:keychain" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:afi-safi" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:config/oc-netinst:passive" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:config/oc-netinst:priority" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:packet-counters" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:adjacencies" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:timers/oc-netinst:config/oc-netinst:hello-multiplier" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:timers/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:afi-safi/oc-netinst:af/oc-netinst:config/oc-netinst:enabled" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:afi-safi/oc-netinst:af/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:afi-safi/oc-netinst:af/oc-netinst:segment-routing" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:hello-authentication" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:timers" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:bfd" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:interface-ref/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:global/oc-netinst:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:global/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:global/oc-netinst:ssm" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:global/oc-netinst:rendezvous-points/oc-netinst:rendezvous-point/oc-netinst:config/oc-netinst:multicast-groups" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:global/oc-netinst:rendezvous-points/oc-netinst:rendezvous-point/oc-netinst:state/oc-netinst:multicast-groups" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:join-prune-interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:dead-timer" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:maximum-groups" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:counters" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:mode" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:bsr-border" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:border-router" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:dr-priority" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:join-prune-interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:hello-interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:dead-timer" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:maximum-groups" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:dr-address" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:neighbor-established" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:neighbor-expires" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state/oc-netinst:mode" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:interface-ref" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:enable-bfd/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:global" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:filter-prefixes" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:query-expires" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:version" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:query-interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state/oc-netinst:filter-prefixes" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:counters" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:membership-groups/oc-netinst:group/oc-netinst:state/oc-netinst:reporter" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:static-membership-groups/oc-netinst:static-groups/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:interface-ref" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:fdb/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:fdb/oc-netinst:mac-table" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:route-limits" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:global/oc-netinst:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:global/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:global/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:global/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:interface-ref/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:global/oc-netinst:reserved-label-blocks" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:te-global-attributes" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:te-interface-attributes/oc-netinst:interface/oc-netinst:config/oc-netinst:te-metric" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:te-interface-attributes/oc-netinst:interface/oc-netinst:config/oc-netinst:srlg-membership" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:te-interface-attributes/oc-netinst:interface/oc-netinst:config/oc-netinst:admin-group" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:te-interface-attributes/oc-netinst:interface/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:te-interface-attributes/oc-netinst:interface/oc-netinst:interface-ref" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:te-interface-attributes/oc-netinst:interface/oc-netinst:igp-flooding-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:neighbors" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:global" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:interface-ref/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:bandwidth-reservations" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:hellos" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:authentication/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:subscription/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:protection" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:sessions" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:reconnect-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:recovery-time" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:forwarding-holdtime" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:enabled" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:authentication/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:interface-attributes/oc-netinst:config" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:interface-attributes/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:interface-attributes/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:hello-holdtime" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:interface-attributes/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:hello-interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:interface-attributes/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:interface-attributes/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:interface-ref/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:interface-attributes/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:address-families" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:config/oc-netinst:hello-holdtime" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:config/oc-netinst:hello-interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:address-families/oc-netinst:address-family/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:address-families/oc-netinst:address-family/oc-netinst:targets/oc-netinst:target/oc-netinst:config/oc-netinst:hello-holdtime" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:address-families/oc-netinst:address-family/oc-netinst:targets/oc-netinst:target/oc-netinst:config/oc-netinst:hello-interval" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:address-families/oc-netinst:address-family/oc-netinst:targets/oc-netinst:target/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:hello-adjacencies" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:authentication/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:segment-routing" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:named-explicit-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:description" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:admin-status" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:preference" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:metric-type" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:metric" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:protection-style-requested" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:reoptimize-timer" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:soft-preemption" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:setup-priority" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:hold-priority" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:bandwidth/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:bandwidth/oc-netinst:auto-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:config/oc-netinst:cspf-tiebreaker" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:config/oc-netinst:explicit-path-name" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:config/oc-netinst:preference" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:config/oc-netinst:retry-timer" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:config/oc-netinst:setup-priority" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:config/oc-netinst:hold-priority" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:state" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:candidate-secondary-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:admin-groups" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-secondary-paths" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:unconstrained-path" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:static-lsps" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:segment-routing" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:vlans" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:policy-forwarding" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:afts" {
+    deviate not-supported;
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance" {
+    deviate add {
+      must "((./config/type='oc-ni-types:L2P2P' and (count(./interfaces/interface)=1) and (count(./connection-points/connection-point)=1) and ./connection-points/connection-point/endpoints/endpoint/config/precedence<=2 and ./connection-points/connection-point/endpoints/endpoint/config[precedence=1]) or ./config/type!='oc-ni-types:L2P2P')";
+    }
+    deviate add {
+      must "config/type='oc-ni-types:DEFAULT_INSTANCE' or config/type='oc-ni-types:L2P2P' or config/type='oc-ni-types:L2VSI' or (config/type='oc-ni-types:L3VRF' and config/enabled-address-families)";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+    deviate add {
+      must "(../name='_public_' and ../type='oc-ni-types:DEFAULT_INSTANCE') or (../name!='_public_' and ../type!='oc-ni-types:DEFAULT_INSTANCE')";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:type" {
+    deviate add {
+      must "../type='oc-ni-types:DEFAULT_INSTANCE' or ../type='oc-ni-types:L3VRF' or ../type='oc-ni-types:L2P2P' or ../type='oc-ni-types:L2VSI'";
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:enabled" {
+    deviate add {
+      default "true";
+    }
+    deviate add {
+      must "../type='oc-ni-types:L2VSI' or (not(../type='oc-ni-types:L2VSI') and .='true')";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:description" {
+    deviate replace {
+      type string {
+        length "1..242";
+      }
+    }
+    deviate add {
+      must "../type='oc-ni-types:L3VRF' or ((../type='oc-ni-types:L2P2P' or ../type='oc-ni-types:L2VSI') and (string-length(../description) <= 128))";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:route-distinguisher" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:route-distinguisher-deviations;
+    }
+    deviate add {
+      must "../type='oc-ni-types:L3VRF'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:enabled-address-families" {
+    deviate add {
+      must " (../type='oc-ni-types:L3VRF') and ../enabled-address-families";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:encapsulation" {
+    deviate add {
+      must "../config/type='oc-ni-types:L3VRF' or ../config/type='oc-ni-types:L2P2P' or ../config/type='oc-ni-types:L2VSI'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:encapsulation/oc-netinst:config/oc-netinst:encapsulation-type" {
+    deviate add {
+      default "oc-ni-types:MPLS";
+    }
+    deviate add {
+      must ".='oc-ni-types:MPLS'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:encapsulation/oc-netinst:config/oc-netinst:label-allocation-mode" {
+    deviate add {
+      must "../../../config/route-distinguisher and ../../../config/type='oc-ni-types:L3VRF'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies" {
+    deviate add {
+      must "../config/type='oc-ni-types:L3VRF'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:import-policy" {
+    deviate add {
+      must '../../../../config/route-distinguisher';
+    }
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:export-policy" {
+    deviate add {
+      must '../../../../config/route-distinguisher';
+    }
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:config/oc-netinst:src-protocol" {
+    deviate replace {
+      type leafref {
+        path "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:identifier";
+      }
+    }
+    deviate add {
+      must "not (../src-protocol=../dst-protocol) and (../src-protocol='oc-pol-types:STATIC' or ../src-protocol='oc-pol-types:DIRECTLY_CONNECTED' or (../src-protocol='oc-pol-types:OSPF' and ../address-family='oc-types:IPV4'))";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:config/oc-netinst:address-family" {
+    deviate replace {
+      type identityref {
+        base oc-types:ADDRESS_FAMILY;
+      }
+    }
+    deviate add {
+      must "../address-family='oc-types:IPV4' or ../address-family='oc-types:IPV6'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:config/oc-netinst:dst-protocol" {
+    deviate replace {
+      type leafref {
+        path "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:identifier";
+      }
+    }
+    deviate add {
+      must "../dst-protocol='oc-pol-types:BGP' and ../../../../protocols/protocol[identifier='oc-pol-types:BGP']/bgp/global/afi-safis/afi-safi[afi-safi-name='oc-bgp-types:IPV4_UNICAST']";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:config/oc-netinst:import-policy" {
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:subinterface" {
+    deviate add {
+      must '../interface';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points" {
+    deviate add {
+      must "../config/type='oc-ni-types:L2P2P' or ../config/type='oc-ni-types:L2VSI'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:config/oc-netinst:connection-point-id" {
+    deviate replace {
+      type string {
+        length "1..15";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint" {
+    deviate add {
+      unique "config/precedence";
+    }
+    deviate add {
+      max-elements 2;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:config/oc-netinst:endpoint-id" {
+    deviate replace {
+      type string {
+        length "1..15";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:config/oc-netinst:precedence" {
+    deviate replace {
+      type uint16 {
+        range "1..32";
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:config/oc-netinst:type" {
+    deviate add {
+      must ".='oc-ni-types:REMOTE'";
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:remote/oc-netinst:config/oc-netinst:remote-system" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ipv4-address-deviations;
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:remote/oc-netinst:config/oc-netinst:virtual-circuit-identifier" {
+    deviate replace {
+      type uint32 {
+        range "1..4294967295";
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:identifier" {
+    deviate add {
+      must "(../identifier='oc-pol-types:BGP' and /network-instances/network-instance[name='_public_']/protocols/protocol[identifier='oc-pol-types:BGP']) or (../identifier='oc-pol-types:STATIC' or ../identifier='oc-pol-types:DIRECTLY_CONNECTED' or ../identifier='oc-pol-types:OSPF' or ../identifier='oc-pol-types:ISIS' or ../identifier='oc-pol-types:IGMP' or ../identifier='oc-pol-types:PIM')";
+    }
+    deviate add {
+      must "not (../identifier='oc-pol-types:IGMP' or ../identifier='oc-pol-types:PIM') or (../../../config/name='_public_' or (../../../config/enabled-address-families='oc-types:IPV4' and ../../../config/route-distinguisher))";
+    }
+    deviate add {
+      must "not (../identifier='oc-pol-types:IGMP') or /network-instances/network-instance[name=current()/../../../name]/protocols/protocol[identifier='oc-pol-types:PIM']";
+    }
+    deviate add {
+      must "not (../identifier='oc-pol-types:PIM') or /network-instances/network-instance[name=current()/../../../name]/protocols/protocol[identifier='oc-pol-types:IGMP']";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:name" {
+    deviate add {
+      must "((../identifier='oc-pol-types:STATIC' or ../identifier='oc-pol-types:DIRECTLY_CONNECTED' or ../identifier='oc-pol-types:BGP' or ../identifier='oc-pol-types:IGMP' or ../identifier='oc-pol-types:PIM') and ../name='default') or (../identifier='oc-pol-types:OSPF') or (../identifier='oc-pol-types:ISIS')";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:config/oc-netinst:identifier" {
+    deviate add {
+      must "(../identifier='oc-pol-types:BGP' and /network-instances/network-instance[name='_public_']/protocols/protocol[identifier='oc-pol-types:BGP']) or (../identifier='oc-pol-types:STATIC' or ../identifier='oc-pol-types:DIRECTLY_CONNECTED' or ../identifier='oc-pol-types:OSPF' or ../identifier='oc-pol-types:ISIS' or ../identifier='oc-pol-types:IGMP' or ../identifier='oc-pol-types:PIM')";
+    }
+    deviate add {
+      must "(not (../identifier='oc-pol-types:IGMP') or /network-instances/network-instance[name=current()/../../../../name]/protocols/protocol[identifier='oc-pol-types:PIM'])";
+    }
+    deviate add {
+      must "(not (../identifier='oc-pol-types:PIM') or /network-instances/network-instance[name=current()/../../../../name]/protocols/protocol[identifier='oc-pol-types:IGMP'])";
+    }
+    deviate add {
+      must "not (../identifier='oc-pol-types:IGMP' or ../identifier='oc-pol-types:PIM') or (../../../../config/name='_public_' or (../../../../config/enabled-address-families='oc-types:IPV4' and ../../../../config/route-distinguisher))";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:config/oc-netinst:name" {
+    deviate add {
+      must "((../identifier='oc-pol-types:STATIC' or ../identifier='oc-pol-types:DIRECTLY_CONNECTED' or ../identifier='oc-pol-types:BGP' or ../identifier='oc-pol-types:IGMP' or ../identifier='oc-pol-types:PIM') and ../name='default') or (../identifier='oc-pol-types:OSPF') or (../identifier='oc-pol-types:ISIS')";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:config/oc-netinst:prefix" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-prefix-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:config/oc-netinst:index" {
+    deviate replace {
+      type string {
+        length "1..103";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:config/oc-netinst:next-hop" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-address-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:state/oc-netinst:index" {
+    deviate replace {
+      type string {
+        length "1..103";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:interface-ref/oc-netinst:config/oc-netinst:interface" {
+    deviate replace {
+      type string {
+        length "0..63";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:interface-ref/oc-netinst:config/oc-netinst:subinterface" {
+    deviate add {
+      must '../interface';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:interface-ref/oc-netinst:state/oc-netinst:interface" {
+    deviate replace {
+      type string {
+        length "0..63";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:static-routes/oc-netinst:static/oc-netinst:next-hops/oc-netinst:next-hop/oc-netinst:interface-ref/oc-netinst:state/oc-netinst:subinterface" {
+    deviate add {
+      must '../interface';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:config/oc-netinst:router-id" {
+    deviate replace {
+      type inet:ipv4-address-no-zone;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config" {
+    deviate add {
+      must "../../../../../../name='_public_'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:enabled" {
+    deviate add {
+      default "false";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:config/oc-netinst:afi-safi-name" {
+    deviate add {
+      must "../../../../../../../../name='_public_' or (../../../../../../../../name!='_public_' and (((../afi-safi-name='oc-bgp-types:IPV4_UNICAST' or ../afi-safi-name='oc-bgp-types:IPV4_LABELED_UNICAST' or ../afi-safi-name='oc-bgp-types:IPV4_FLOWSPEC') and ../../../../../../../../config/enabled-address-families[.='oc-types:IPV4'])  or (../afi-safi-name='oc-bgp-types:IPV6_UNICAST' and ../../../../../../../../config/enabled-address-families[.='oc-types:IPV6'])))";
+    }
+    deviate add {
+      must "../afi-safi-name='oc-bgp-types:IPV4_UNICAST' or ../afi-safi-name='oc-bgp-types:IPV6_UNICAST' or ../afi-safi-name='oc-bgp-types:IPV4_LABELED_UNICAST' or ../afi-safi-name='oc-bgp-types:L3VPN_IPV4_UNICAST' or ../afi-safi-name='oc-bgp-types:L3VPN_IPV6_UNICAST' or ../afi-safi-name='oc-bgp-types:L2VPN_VPLS' or ../afi-safi-name='oc-bgp-types:L2VPN_EVPN' or ../afi-safi-name='oc-bgp-types:SRTE_POLICY_IPV4' or ../afi-safi-name='oc-bgp-types:SRTE_POLICY_IPV6' or ../afi-safi-name='oc-bgp-types:L3VPN_IPV4_MULTICAST' or ../afi-safi-name='oc-bgp-types:IPV4_FLOWSPEC' or ../afi-safi-name='oc-bgp-types:VPNV4_FLOWSPEC' or ../afi-safi-name='oc-bgp-types:LINKSTATE'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:neighbor-address" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-address-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:peer-as" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:description" {
+    deviate replace {
+      type string {
+        length "1..255";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:config/oc-netinst:afi-safi-name" {
+    deviate add {
+      must '../../../../../../global/afi-safis/afi-safi[afi-safi-name = current()]';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:add-paths/oc-netinst:config/oc-netinst:send-max" {
+    deviate replace {
+      type uint8 {
+        range "2..64";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:import-policy" {
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:export-policy" {
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast/oc-netinst:prefix-limit/oc-netinst:config/oc-netinst:max-prefixes" {
+    deviate replace {
+      type uint32 {
+        range "1..4294967295";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast/oc-netinst:prefix-limit/oc-netinst:config/oc-netinst:prevent-teardown" {
+    deviate add {
+      must ". = 'false' or ../max-prefixes";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast/oc-netinst:prefix-limit/oc-netinst:config/oc-netinst:warning-threshold-pct" {
+    deviate replace {
+      type uint8 {
+        range "1..100";
+      }
+    }
+    deviate add {
+      default "75";
+    }
+    deviate add {
+      must '../warning-threshold-pct=75 or (../warning-threshold-pct!=75 and ../max-prefixes)';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast/oc-netinst:prefix-limit/oc-netinst:config/oc-netinst:restart-timer" {
+    deviate replace {
+      type uint16 {
+        range "1..1200";
+      }
+    }
+    deviate add {
+      must "../max-prefixes and ../prevent-teardown = 'false'";
+    }
+    deviate replace {
+      units "min";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast/oc-netinst:prefix-limit/oc-netinst:state/oc-netinst:warning-threshold-pct" {
+    deviate replace {
+      type uint8 {
+        range "1..100";
+      }
+    }
+    deviate add {
+      default "75";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-unicast/oc-netinst:prefix-limit/oc-netinst:state/oc-netinst:restart-timer" {
+    deviate replace {
+      type uint16 {
+        range "1..1200";
+      }
+    }
+    deviate replace {
+      units "min";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-labeled-unicast/oc-netinst:prefix-limit/oc-netinst:config/oc-netinst:max-prefixes" {
+    deviate replace {
+      type uint32 {
+        range "1..4294967295";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-labeled-unicast/oc-netinst:prefix-limit/oc-netinst:config/oc-netinst:prevent-teardown" {
+    deviate add {
+      must ". = 'false' or ../max-prefixes";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-labeled-unicast/oc-netinst:prefix-limit/oc-netinst:config/oc-netinst:warning-threshold-pct" {
+    deviate replace {
+      type uint8 {
+        range "1..100";
+      }
+    }
+    deviate add {
+      default "75";
+    }
+    deviate add {
+      must '../warning-threshold-pct=75 or (../warning-threshold-pct!=75 and ../max-prefixes)';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-labeled-unicast/oc-netinst:prefix-limit/oc-netinst:config/oc-netinst:restart-timer" {
+    deviate replace {
+      type uint16 {
+        range "1..1200";
+      }
+    }
+    deviate add {
+      must "../max-prefixes and ../prevent-teardown = 'false'";
+    }
+    deviate replace {
+      units "min";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-labeled-unicast/oc-netinst:prefix-limit/oc-netinst:state/oc-netinst:warning-threshold-pct" {
+    deviate replace {
+      type uint8 {
+        range "1..100";
+      }
+    }
+    deviate add {
+      default "75";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:ipv4-labeled-unicast/oc-netinst:prefix-limit/oc-netinst:state/oc-netinst:restart-timer" {
+    deviate replace {
+      type uint16 {
+        range "1..1200";
+      }
+    }
+    deviate replace {
+      units "min";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:ebgp-multihop/oc-netinst:config/oc-netinst:multihop-ttl" {
+    deviate replace {
+      type uint8 {
+        range "1..255";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:config/oc-netinst:instance" {
+    deviate add {
+      must 'not (/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol[oc-netinst:name != current()/../../../../oc-netinst:name]/oc-netinst:isis/oc-netinst:global/oc-netinst:config[oc-netinst:instance=current()])';
+    }
+    deviate add {
+      must 'number(../instance)>=0 and number(../instance)<=65535';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:config/oc-netinst:max-ecmp-paths" {
+    deviate replace {
+      type uint8 {
+        range "1..64";
+      }
+    }
+    deviate add {
+      default "64";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:overload-bit/oc-netinst:config/oc-netinst:set-bit" {
+    deviate add {
+      must "../set-bit = 'false' or ../set-bit-on-boot = 'false'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:overload-bit/oc-netinst:config/oc-netinst:set-bit-on-boot" {
+    deviate add {
+      must "(../set-bit-on-boot = 'false' and not(../../reset-triggers/reset-trigger/reset-trigger)) or (../set-bit-on-boot = 'true' and ../set-bit = 'false' and ../../reset-triggers/reset-trigger/reset-trigger)";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:overload-bit/oc-netinst:reset-triggers/oc-netinst:reset-trigger" {
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:overload-bit/oc-netinst:reset-triggers/oc-netinst:reset-trigger/oc-netinst:reset-trigger" {
+    deviate add {
+      must "../../../config/set-bit-on-boot = 'true' and ../config/delay";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:overload-bit/oc-netinst:reset-triggers/oc-netinst:reset-trigger/oc-netinst:config/oc-netinst:delay" {
+    deviate replace {
+      type uint32;
+    }
+    deviate add {
+      must '../delay>=5 and ../delay<=86400';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:enabled" {
+    deviate replace {
+      default "true";
+    }
+    deviate add {
+      must "../enabled != 'false'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:helper-only" {
+    deviate add {
+      default "true";
+    }
+    deviate add {
+      must "../helper-only != 'false'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:config/oc-netinst:lsp-lifetime-interval" {
+    deviate replace {
+      type uint16 {
+        range "2..65535";
+      }
+    }
+    deviate add {
+      must '../lsp-lifetime-interval>../lsp-refresh-interval';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:config/oc-netinst:lsp-refresh-interval" {
+    deviate replace {
+      type uint16 {
+        range "1..65534";
+      }
+    }
+    deviate add {
+      default "900";
+    }
+    deviate add {
+      must '../lsp-lifetime-interval>../lsp-refresh-interval';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:spf/oc-netinst:config/oc-netinst:spf-hold-interval" {
+    deviate replace {
+      type uint64 {
+        range "1..120000";
+      }
+    }
+    deviate add {
+      must '(../spf-hold-interval) mod 1000 = 0';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:spf/oc-netinst:config/oc-netinst:spf-first-interval" {
+    deviate replace {
+      type uint64 {
+        range "0..60000";
+      }
+    }
+    deviate add {
+      default "50";
+    }
+    deviate add {
+      must '../spf-first-interval<../spf-hold-interval';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:spf/oc-netinst:config/oc-netinst:spf-second-interval" {
+    deviate replace {
+      type uint64 {
+        range "0..60000";
+      }
+    }
+    deviate add {
+      default "200";
+    }
+    deviate add {
+      must '../spf-second-interval<../spf-hold-interval and (../spf-first-interval>0 or ../spf-second-interval=0)';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:lsp-generation/oc-netinst:config/oc-netinst:lsp-max-wait-interval" {
+    deviate replace {
+      type uint64 {
+        range "1..120000";
+      }
+    }
+    deviate add {
+      default "2000";
+    }
+    deviate add {
+      must '(../lsp-max-wait-interval) mod 1000 = 0';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:lsp-generation/oc-netinst:config/oc-netinst:lsp-first-wait-interval" {
+    deviate replace {
+      type uint64 {
+        range "1..60000";
+      }
+    }
+    deviate add {
+      must '../lsp-first-wait-interval<../lsp-max-wait-interval*1000';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:lsp-generation/oc-netinst:config/oc-netinst:lsp-second-wait-interval" {
+    deviate replace {
+      type uint64 {
+        range "1..60000";
+      }
+    }
+    deviate add {
+      must '../lsp-second-wait-interval<../lsp-max-wait-interval*1000';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:mpls/oc-netinst:igp-ldp-sync/oc-netinst:config/oc-netinst:enabled" {
+    deviate replace {
+      default "false";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:afi-safi/oc-netinst:af/oc-netinst:config/oc-netinst:enabled" {
+    deviate add {
+      default "true";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level" {
+    deviate add {
+      min-elements 2;
+    }
+    deviate add {
+      max-elements 2;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:config/oc-netinst:enabled" {
+    deviate replace {
+      default "true";
+    }
+    deviate add {
+      must "../enabled != 'false'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:config/oc-netinst:metric-style" {
+    deviate add {
+      default "NARROW_METRIC";
+    }
+    deviate add {
+      must '../../../level[level-number=1]/config/metric-style=../../../level[level-number=2]/config/metric-style';
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:traffic-engineering/oc-netinst:config/oc-netinst:enabled" {
+    deviate add {
+      must "../enabled='false' or ../../../config/metric-style='WIDE_METRIC'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level/oc-netinst:traffic-engineering/oc-netinst:config/oc-netinst:ipv4-router-id" {
+    deviate replace {
+      config false;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:enabled" {
+    deviate replace {
+      default "true";
+    }
+    deviate add {
+      must "../enabled != 'false'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:circuit-type" {
+    deviate add {
+      default "BROADCAST";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:config/oc-netinst:enabled" {
+    deviate replace {
+      default "true";
+    }
+    deviate add {
+      must "../enabled != 'false'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:timers/oc-netinst:config/oc-netinst:hello-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..255";
+      }
+    }
+    deviate add {
+      default "10";
+    }
+    deviate add {
+      units "s";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:levels/oc-netinst:level/oc-netinst:afi-safi/oc-netinst:af/oc-netinst:config/oc-netinst:metric" {
+    deviate replace {
+      type uint32 {
+        range "1..16777215";
+      }
+    }
+    deviate delete {
+      default "10";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:global/oc-netinst:rendezvous-points/oc-netinst:rendezvous-point" {
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface" {
+    deviate add {
+      must "./config/enabled='true' or ./config/bsr-border!='false' or ./config/dr-priority!='1' or ./config/hello-interval!='30'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:mode" {
+    deviate add {
+      default "oc-pim-types:PIM_MODE_SPARSE";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:bsr-border" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:bsr-boundary-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:border-router" {
+    deviate replace {
+      default "true";
+    }
+    deviate add {
+      must "../border-router='true'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:dr-priority" {
+    deviate add {
+      default "1";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:hello-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..18000";
+      }
+    }
+    deviate add {
+      default "30";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:enable-bfd/oc-netinst:config/oc-netinst:enabled" {
+    deviate add {
+      default "false";
+    }
+    deviate add {
+      must "../enabled='false' or (../enabled='true' and ../../../config/enabled='true' and ../../../config/mode='oc-pim-types:PIM_MODE_SPARSE')";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface" {
+    deviate add {
+      must "./config/enabled='true' or ./config/version!='2' or ./config/query-interval!='60' or ./static-membership-groups/static-groups";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:version" {
+    deviate add {
+      default "2";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:igmp/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:query-interval" {
+    deviate replace {
+      type uint32 {
+        range "1..18000";
+      }
+    }
+    deviate add {
+      default "60";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:fdb" {
+    deviate add {
+      must "../config/type='oc-ni-types:L2VSI'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:fdb/oc-netinst:config/oc-netinst:mac-learning" {
+    deviate add {
+      default "true";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:fdb/oc-netinst:config/oc-netinst:mac-aging-time" {
+    deviate replace {
+      type uint32 {
+        range "0|60..1000000";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:fdb/oc-netinst:config/oc-netinst:maximum-entries" {
+    deviate replace {
+      type uint32 {
+        range "1..2048000";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:global/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:config/oc-netinst:mpls-enabled" {
+    deviate delete {
+      default "false";
+    }
+    deviate add {
+      must "../mpls-enabled='true'";
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:te-interface-attributes/oc-netinst:interface/oc-netinst:config/oc-netinst:interface-id" {
+    deviate replace {
+      type leafref {
+        path "../../../../oc-netinst:global/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:interface-id";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:config/oc-netinst:interface-id" {
+    deviate replace {
+      type leafref {
+        path "../../../../../../oc-netinst:te-interface-attributes/oc-netinst:interface/oc-netinst:interface-id";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:authentication/oc-netinst:config/oc-netinst:enable" {
+    deviate add {
+      must "(current()='false') or (current()='true' and ../authentication-key)";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:authentication/oc-netinst:config/oc-netinst:authentication-key" {
+    deviate add {
+      must "../enable='true'";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:subscription/oc-netinst:config/oc-netinst:subscription" {
+    deviate replace {
+      type uint16 {
+        range "1..1000";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:config/oc-netinst:lsr-id" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-address-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:graceful-restart/oc-netinst:config/oc-netinst:helper-enable" {
+    deviate replace {
+      type empty;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:authentication/oc-netinst:config/oc-netinst:authentication-key" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:routing-password-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:interface-attributes/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:interface-id" {
+    deviate replace {
+      type leafref {
+        path "../../../../../../../oc-netinst:global/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:interface-id";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:config/oc-netinst:hello-accept" {
+    deviate replace {
+      type empty;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:address-families/oc-netinst:address-family/oc-netinst:targets/oc-netinst:target/oc-netinst:config/oc-netinst:remote-address" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-address-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:address-families/oc-netinst:address-family/oc-netinst:targets/oc-netinst:target/oc-netinst:config/oc-netinst:local-address" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-address-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:targeted/oc-netinst:address-families/oc-netinst:address-family/oc-netinst:targets/oc-netinst:target/oc-netinst:config/oc-netinst:enabled" {
+    deviate delete {
+      default "false";
+    }
+    deviate add {
+      must "../enabled='true'";
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:lsr-id" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-address-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:label-space-id" {
+    deviate replace {
+      type uint16 {
+        range "0";
+      }
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:authentication/oc-netinst:config/oc-netinst:enable" {
+    deviate delete {
+      default "false";
+    }
+    deviate add {
+      must "../enable='true'";
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:authentication/oc-netinst:config/oc-netinst:authentication-key" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:routing-password-deviations;
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:type" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:signaling-protocol" {
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:shortcut-eligible" {
+    deviate replace {
+      default "false";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:config/oc-netinst:source" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-address-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:bandwidth/oc-netinst:config/oc-netinst:set-bandwidth" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:bandwidth-kbps-deviations;
+    }
+    deviate add {
+      default "0";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:config/oc-netinst:destination" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ipv4-address-deviations;
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:config/oc-netinst:use-cspf" {
+    deviate add {
+      default "true";
+    }
+  }
+  deviation "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path/oc-netinst:config/oc-netinst:path-computation-server" {
+    deviate replace {
+      type oc-netinst-devs-NE8000-F1A:ip-address-deviations;
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = '_public_'";
+        description
+          "The public instances is generated automatically.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:type" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        description
+          "The node cannot be modified, when node is already configured.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:encapsulation/oc-netinst:config/oc-netinst:label-allocation-mode" {
+    ext:deviate-ext "add" {
+      ext:dynamic-default {
+        ext:default-value "oc-ni-types:INSTANCE_LABEL" {
+          when "../../../config/route-distinguisher and ../../../config/type='oc-ni-types:L3VRF'";
+        }
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:remote/oc-netinst:config/oc-netinst:remote-system" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        description
+          "The node cannot be modified, when node is already configured.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:connection-points/oc-netinst:connection-point/oc-netinst:endpoints/oc-netinst:endpoint/oc-netinst:remote/oc-netinst:config/oc-netinst:virtual-circuit-identifier" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        description
+          "The node cannot be modified, when node is already configured.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete" {
+        ext:filter "./identifier='oc-pol-types:IGMP' or ./identifier='oc-pol-types:PIM'";
+        description
+          "The node cannot be deleted, when identifier is IGMP or PIM.";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "(identifier='oc-pol-types:STATIC' and name='default') or (identifier='oc-pol-types:DIRECTLY_CONNECTED' and name='default')";
+        description
+          "The STATIC and DIRECTLY_CONNECTED are generated automatically.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        when "../../../../../../oc-netinst:name = '_public_'";
+        ext:filter "afi-safi-name = 'oc-bgp-types:IPV4_UNICAST'";
+        description
+          "The public instances is generated automatically when BGP protocol is created.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:config/oc-netinst:peer-as" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        description
+          "The node cannot be modified, when node is already configured.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:neighbors/oc-netinst:neighbor/oc-netinst:ebgp-multihop/oc-netinst:config/oc-netinst:multihop-ttl" {
+    ext:deviate-ext "add" {
+      ext:dynamic-default {
+        ext:default-value "1";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:lsp-bit/oc-netinst:overload-bit/oc-netinst:config/oc-netinst:advertise-high-metric" {
+    ext:deviate-ext "add" {
+      when "../set-bit-on-boot = 'true'";
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:timers/oc-netinst:lsp-generation/oc-netinst:config/oc-netinst:lsp-second-wait-interval" {
+    ext:deviate-ext "add" {
+      when '../lsp-first-wait-interval>0';
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:global/oc-netinst:afi-safi/oc-netinst:af" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "afi-name='oc-isis-types:IPV4' and safi-name='oc-isis-types:UNICAST'";
+        description
+          "IPv4-unicast is generated automatically when the ISIS process is created.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:levels/oc-netinst:level" {
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        description
+          "Both level-1 and level-2 instances are generated automatically when the ISIS process is created.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:isis/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:authentication/oc-netinst:key/oc-netinst:config/oc-netinst:auth-password" {
+    ext:deviate-ext "add" {
+      when "../../../config/hello-authentication = 'true'";
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:pim/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:mode" {
+    ext:deviate-ext "add" {
+      when "../enabled='true'";
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:rsvp-te/oc-netinst:interface-attributes/oc-netinst:interface/oc-netinst:interface-ref" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "create|delete" {
+        description
+          "The node does not support the create and delete operation.";
+      }
+    }
+  }
+  ext:deviation-ext "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel/oc-netinst:p2p-tunnel-attributes/oc-netinst:p2p-primary-path/oc-netinst:p2p-primary-path" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "create|delete" {
+        description
+          "The node does not support the create and delete operation.";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        description
+          "The p2p primary path is generated automatically.";
+      }
+    }
+  }
+}

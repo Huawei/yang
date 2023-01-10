@@ -1,0 +1,416 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mplsoam-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-mplsoam-deviations-NE8000M8M14";
+  prefix mplsoam-devs-NE8000M8M14;
+
+  import huawei-mplsoam {
+    prefix mplsoam;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mplsoam module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef l2vc-type-deviations {
+    type enumeration {
+      enum atm-1to1-vcc {
+        value 12;
+        description
+          "The VC type is ATM-1to1-VCC.";
+      }
+      enum atm-1to1-vpc {
+        value 13;
+        description
+          "The VC type is ATM-1to1-VPC.";
+      }
+      enum atm-aal5-pdu {
+        value 14;
+        description
+          "The VC type is ATM-aal5-pdu.";
+      }
+      enum atm-aal5-sdu {
+        value 2;
+        description
+          "The VC type is ATM-aal5-sdu.";
+      }
+      enum atm-nto1-vcc {
+        value 9;
+        description
+          "The VC type is ATM-nto1-VCC.";
+      }
+      enum atm-nto1-vpc {
+        value 10;
+        description
+          "The VC type is ATM-nto1-VPC.";
+      }
+      enum atm-trans-cell {
+        value 3;
+        description
+          "The VC type is ATM-trans-cell.";
+      }
+      enum cep {
+        value 16;
+        description
+          "The VC type is CEP.";
+      }
+      enum cesopsn-basic {
+        value 21;
+        description
+          "The VC type is CESoPSN-basic.";
+      }
+      enum ethernet {
+        value 5;
+        description
+          "The VC type is ethernet.";
+      }
+      enum hdlc {
+        value 6;
+        description
+          "The VC type is HDLC.";
+      }
+      enum ip-interworking {
+        value 64;
+        description
+          "The VC type is IP-interworking.";
+      }
+      enum ip-layer2 {
+        value 11;
+        description
+          "The VC type is IP-Layer2.";
+      }
+      enum ppp {
+        value 7;
+        description
+          "The VC type is PPP.";
+      }
+      enum satop-e1 {
+        value 17;
+        description
+          "The VC type is SAToP-E1.";
+      }
+      enum satop-e3 {
+        value 19;
+        description
+          "The VC type is SAToP-E3.";
+      }
+      enum satop-t1 {
+        value 18;
+        description
+          "The VC type is SAToP-T1.";
+      }
+      enum vlan {
+        value 4;
+        description
+          "The VC type is VLAN.";
+      }
+    }
+    description
+      "L2vc type.";
+  }
+
+  deviation "/mplsoam:mplsoam/mplsoam:global/mplsoam:oam-num" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:slm-threshold1" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:slm-threshold2" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:oam-active-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:description" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:bdi-defect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:bdi-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:local-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:local-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:local-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:local-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:remote-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:remote-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:remote-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-id-tunnels/mplsoam:egress-id-tunnel/mplsoam:remote-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:slm-threshold1" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:slm-threshold2" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:oam-active-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:description" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:bdi-defect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:bdi-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:local-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:local-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:local-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:local-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:remote-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:remote-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:remote-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:egress-name-tunnels/mplsoam:egress-name-tunnel/mplsoam:remote-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:slm-threshold1" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:slm-threshold2" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:oam-active-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:description" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:bdi-defect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:bdi-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:local-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:local-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:local-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:local-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:remote-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:remote-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:remote-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:ingress-tunnels/mplsoam:ingress-tunnel/mplsoam:remote-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:slm-threshold1" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:slm-threshold2" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:oam-active-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:description" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:bdi-defect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:bdi-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:local-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:local-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:local-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:local-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:remote-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:remote-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:remote-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:tunnels/mplsoam:co-route-tunnels/mplsoam:co-route-tunnel/mplsoam:remote-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:oam-active-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:slm-threshold1" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:slm-threshold2" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:bdi-defect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:bdi-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:local-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:local-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:local-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:local-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:remote-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:remote-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:remote-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:remote-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:oam-active-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:slm-threshold1" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:slm-threshold2" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:bdi-defect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:bdi-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:local-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:local-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:local-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:local-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:remote-detect-status" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:remote-invalid-time" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:remote-defect-location" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:remote-defect-type" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:enable-co-route-tunnel" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:disable-co-route-tunnel" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:enable-egress-id-tunnel-lsp" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:disable-egress-id-tunnel-lsp" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:enable-egress-name-tunnel-lsp" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:disable-egress-name-tunnel-lsp" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:enable-ingress-tunnel-lsp" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:disable-ingress-tunnel-lsp" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:enable-co-route-tunnel-lsp" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:disable-co-route-tunnel-lsp" {
+    deviate not-supported;
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vll-pws/mplsoam:vll-pw/mplsoam:remote-vc-type" {
+    deviate replace {
+      type mplsoam-devs-NE8000M8M14:l2vc-type-deviations;
+    }
+  }
+  deviation "/mplsoam:mplsoam/mplsoam:vsi-pws/mplsoam:vsi-pw/mplsoam:remote-vc-type" {
+    deviate replace {
+      type mplsoam-devs-NE8000M8M14:l2vc-type-deviations;
+    }
+  }
+}

@@ -1,0 +1,95 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-syslog-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-syslog-deviations-NE8000";
+  prefix syslog-devs-NE8000;
+
+  import huawei-syslog {
+    prefix syslog;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-syslog module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef logfile-type-deviations {
+    type enumeration {
+      enum log {
+        value 1;
+        description
+          "Log logfile.";
+      }
+      enum security {
+        value 3;
+        description
+          "Security logfile.";
+      }
+      enum debug {
+        value 6;
+        description
+          "Debug logfile.";
+      }
+    }
+    description
+      "The type of log.";
+  }
+
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:host-name" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:is-activated" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:is-brief-format" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:facility-mask" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:servers/syslog:server/syslog:severity-mask" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:global-parameter/syslog:character-set" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:domain-servers/syslog:domain-server/syslog:is-brief-format" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:collect-log-process" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:loginfos" {
+    deviate not-supported;
+  }
+  deviation "/syslog:collect-log" {
+    deviate not-supported;
+  }
+  deviation "/syslog:syslog/syslog:logfiles/syslog:logfile/syslog:logfile-type" {
+    deviate replace {
+      type syslog-devs-NE8000:logfile-type-deviations;
+    }
+  }
+  deviation "/syslog:syslog/syslog:logfiles/syslog:logfile/syslog:max-file-size" {
+    deviate delete {
+      must "(../logfile-type='debug' and ../max-file-size='8') or ((../logfile-type='security' or ../logfile-type='operation') and (../max-file-size>=1 and ../max-file-size<=4))or (../logfile-type='log' and (../max-file-size='4' or ../max-file-size='8' or ../max-file-size='16' or ../max-file-size='32'))";
+    }
+    deviate add {
+      must " (../logfile-type='debug' and ../max-file-size='8') or ((../logfile-type='security') and (../max-file-size>=1 and ../max-file-size<=4))or (../logfile-type='log' and (../max-file-size='4' or ../max-file-size='8' or ../max-file-size='16' or ../max-file-size='32'))";
+    }
+  }
+}

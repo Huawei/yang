@@ -1,0 +1,93 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-radius-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-radius-deviations-NE8000-F1A";
+  prefix radius-devs-NE8000-F1A;
+
+  import huawei-radius {
+    prefix radius;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-radius module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:authen-account-attribute/radius:cmcc-up-identifier" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:authen-account-attribute/radius:cmcc-up-ip" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:authen-account-attribute/radius:avpair-subscriber-up-identifier" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:authen-account-attribute/radius:avpair-subscriber-up-ip" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:bod-account-attribute" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:packet-control" {
+    deviate not-supported;
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:standard-attributes/radius:standard-attribute/radius:attribute-name" {
+    deviate add {
+      must "not(../attribute-name='cmcc-up-identifier' or ../attribute-name='cmcc-up-ip')";
+    }
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:standard-attributes/radius:standard-attribute/radius:translate-attribute/radius:attribute-name" {
+    deviate add {
+      must "not(../attribute-name='cmcc-up-identifier' or ../attribute-name='cmcc-up-ip')";
+    }
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:extend-attributes/radius:extend-attribute/radius:attribute-name" {
+    deviate add {
+      must "not(../attribute-name='cmcc-up-identifier' or ../attribute-name='cmcc-up-ip')";
+    }
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:extend-attributes/radius:extend-attribute/radius:translate/radius:attribute/radius:translate-name" {
+    deviate add {
+      must "not(../translate-name='cmcc-up-identifier' or ../translate-name='cmcc-up-ip')";
+    }
+  }
+  deviation "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:vendor-specifics/radius:vendor-specific/radius:translate-attribute" {
+    deviate add {
+      must "not(../translate-attribute='cmcc-up-identifier' or ../translate-attribute='cmcc-up-ip')";
+    }
+  }
+  deviation "/radius:radius/radius:radius-test-groups/radius:radius-test-group/radius:carry-attributes/radius:carry-attribute/radius:attribute-name" {
+    deviate add {
+      must "not(../attribute-name='cmcc-up-identifier' or ../attribute-name='cmcc-up-ip')";
+    }
+  }
+  deviation "/radius:radius/radius:attribute-global/radius:nas-port-id-sub-slots/radius:nas-port-id-sub-slot/radius:sub-slot-id" {
+    deviate replace {
+      type leafref {
+              path "/devm:devm/devm:mpu-boards/devm:mpu-board/devm:position";
+       }
+    }
+  }
+
+}

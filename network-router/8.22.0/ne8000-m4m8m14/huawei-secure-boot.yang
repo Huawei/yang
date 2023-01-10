@@ -1,0 +1,183 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-secure-boot {
+  namespace "urn:huawei:yang:huawei-secure-boot";
+  prefix secure-boot;
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Secure boot management.";
+  revision 2021-01-15 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "upgrade";
+
+  typedef nv-counter-status {
+    type enumeration {
+      enum "need-refresh" {
+        value 0;
+        description
+          "Need refresh.";
+      }
+      enum "refreshed" {
+        value 1;
+        description
+          "Refreshed.";
+      }
+      enum "unsupport" {
+        value 2;
+        description
+          "Not support.";
+      }
+    }
+    description
+      "EFuse NvCnt status value.";
+  }
+
+  typedef software-vrl-load-strategy {
+    type enumeration {
+      enum "force-load" {
+        value 1;
+        description
+          "Not to check whether the current version is revoked and the VRL file is forcibly updated.";
+      }
+      enum "check-load" {
+        value 2;
+        description
+          "Check whether the current version is revoked. If so, an error message is displayed.";
+      }
+    }
+    description
+      "Whether the VRL file needs to be forcibly updated.";
+  }
+
+  container secure-boot {
+    config false;
+    description
+      "Secure boot management.";
+
+    container secure-versions {
+      description
+        "List of EFuse NvCnt states on the device.";
+      list secure-version {
+        key "slot";
+        description
+          "Operational data of EFuse NvCnt state on the device.";
+        leaf slot {
+          type string {
+            length "1..49";
+          }
+          description
+            "Specified slot name.";
+        }
+        leaf board-type {
+          type string {
+            length "1..31";
+          }
+          description
+            "Specified board type.";
+        }
+        leaf current-version {
+          type string {
+            length "1..31";
+          }
+          description
+            "Current version.";
+        }
+        leaf expected-version {
+          type string {
+            length "1..31";
+          }
+          description
+            "Expected version.";
+        }
+        leaf status {
+          type nv-counter-status;
+          description
+            "Whether to update the EFuse NvCnt state.";
+        }
+      }
+    }
+
+    container software-vrls {
+      description
+        "List of vrl information on the device.";
+      list software-vrl {
+        key "slot";
+        description
+          "Operational data of VRL.";
+        leaf slot {
+          type string {
+            length "1..49";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf board-type {
+          type string {
+            length "1..31";
+          }
+          description
+            "Board type.";
+        }
+        leaf vrl-version {
+          type string {
+            length "1..31";
+          }
+        description
+          "VRL version information.";
+        }
+      }
+    }
+  }
+
+  rpc load-vrl-software {
+  description
+    "Load the VRL file.";
+    input {
+      leaf vrl-name {
+        type string {
+          length "5..63";
+        }
+        mandatory true;
+        description
+          "VRL file name, which must be ended with vrl.";
+      }
+      leaf load-strategy {
+        type software-vrl-load-strategy;
+        description
+          "Whether the VRL file needs to be forcibly updated.";
+      }
+    }
+  }
+
+  rpc refresh-startup-secure-version {
+    description
+      "Update the Efuse NvCnt status. If the slot ID is not specified, all board information will be updated.";
+    input {
+      leaf slot {
+        type string {
+          length "1..49";
+        }
+      description
+        "Specified slot ID.";
+      }
+    }
+  }
+}

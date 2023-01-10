@@ -1,0 +1,63 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-apn-type {
+  belongs-to huawei-apn {
+    prefix apn;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "APN type defined file.";
+  revision 2022-04-19 {
+    description
+      "Add APN inherit type.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-03-20 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef apn-field-type {
+    type enumeration {
+      enum "app-group" {
+        value 1;
+        description
+          "Application group.";
+      }
+      enum "user-group" {
+        value 2;
+        description
+          "User group.";
+      }
+    }
+    description
+      "APN field type.";
+  }
+  typedef apn-inherit-type {
+    type enumeration {
+      enum "enable" {
+        value 1;
+        description
+          "Enable the function of inheriting APN IDs.";
+      }
+      enum "disable" {
+        value 2;
+        description
+          "Disable the function of inheriting APN IDs.";
+      }
+    }
+    description
+      "APN inherit type.";
+  }
+}

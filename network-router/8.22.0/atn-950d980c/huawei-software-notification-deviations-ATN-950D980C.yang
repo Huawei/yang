@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-software-notification-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-software-notification-deviations-ATN-950D980C";
+  prefix software-notification-devs-ATN-950D980C;
+
+  import huawei-software-notification {
+    prefix software-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-software-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/software-notification:startup-secure-version-configuration-need-refresh" {
+    deviate not-supported;
+  }
+  deviation "/software-notification:startup-secure-version-configuration-need-refresh-resume" {
+    deviate not-supported;
+  }
+  deviation "/software-notification:system-rollback" {
+    deviate not-supported;
+  }
+  deviation "/software-notification:smart-upgrade-user-data-retention-period-expired" {
+    deviate not-supported;
+  }
+  deviation "/software-notification:smart-upgrade-user-data-retention-period-expired-resume" {
+    deviate not-supported;
+  }
+  deviation "/software-notification:package-operation-success" {
+    deviate not-supported;
+  }
+}

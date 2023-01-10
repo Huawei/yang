@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mc-fwd-notification-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-mc-fwd-notification-deviations-ATN-950D980C";
+  prefix multicast-forward-notification-devs-ATN-950D980C;
+
+  import huawei-mc-fwd-notification {
+    prefix multicast-forward-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-mc-fwd-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/multicast-forward-notification:nat-igmp-report-event" {
+    deviate not-supported;
+  }
+
+}

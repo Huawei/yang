@@ -1,0 +1,301 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-soc-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-soc-notification";
+  prefix soc-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of SOC.";
+  revision 2020-08-24 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "soc";
+  notification l2-loop-detect-alarm {
+    description
+      "L2 loop detect alarmed, a loop occurs on an interface.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis ID of the interface where a loop occurs.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot ID of the interface where a loop occurs. When a device works in 1:1 backup mode, the slot ID is displayed as 0.";
+    }
+    leaf interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of the interface where a loop occurs.";
+    }
+    leaf vlan-id {
+      type uint32;
+      description
+        "ID of the VLAN that the interface joins. If the interface is a member of a VLANIF interface, the VLANID value ranges from 1 to 4094. If the interface is not a member of a VLANIF interface, the VLANID value is 0.";
+    }
+  }
+  notification l2-loop-detect-alarm-clear {
+    description
+      "L2 loop detect cleared, the loop on an interface has cleared.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis ID of the interface where a loop occurs.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot ID of the interface where a loop occurs. When a device works in 1:1 backup mode, the slot ID is displayed as 0.";
+    }
+    leaf interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of the interface where a loop occurs.";
+    }
+    leaf vlan-id {
+      type uint32;
+      description
+        "ID of the VLAN that the interface joins. If the interface is a member of a VLANIF interface, the VLANID value ranges from 1 to 4094. If the interface is not a member of a VLANIF interface, the VLANID value is 0.";
+    }
+  }
+  notification socattack-alarm {
+    description
+      "Security Operation Center detected one attack.";
+    leaf sequenece-number {
+      type uint32;
+      description
+        "Sequence number.";
+    }
+    leaf possibility {
+      type string {
+        length "1..63";
+      }
+      description
+        "Possibility of being attacked.";
+    }
+    leaf reason {
+      type string {
+        length "1..128";
+      }
+      description
+        "Reason for an attack.";
+    }
+    leaf interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of a main interface that is being attacked.";
+    }
+    leaf sub-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of a logic interface that is being attacked.";
+    }
+    leaf pe-vlan {
+      type uint32;
+      description
+        "Outer VLAN ID.";
+    }
+    leaf ce-vlan {
+      type uint32;
+      description
+        "Inner VLAN tag.";
+    }
+    leaf mac-address {
+      type pub-type:mac-address;
+      description
+        "MAC address of an attack source.";
+    }
+    leaf ip-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "IP address of an attack source.";
+    }
+    leaf ipv6-address {
+      type inet:ipv6-address-no-zone;
+      description
+        "IPv6 address of an attack source.";
+    }
+    leaf vni-index {
+      type uint32;
+      description
+        "Index of a VNI that is being attacked.";
+    }
+  }
+  notification socattack-alarm-clear {
+    description
+      "Security Operation Center detected one attack is end.";
+    leaf sequenece-number {
+      type uint32;
+      description
+        "Sequence number.";
+    }
+    leaf possibility {
+      type string {
+        length "1..63";
+      }
+      description
+        "Possibility of being attacked.";
+    }
+    leaf reason {
+      type string {
+        length "1..128";
+      }
+      description
+        "Reason for an attack.";
+    }
+    leaf interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of a main interface that is being attacked.";
+    }
+    leaf sub-interface {
+      type string {
+        length "1..63";
+      }
+      description
+        "Name of a logic interface that is being attacked.";
+    }
+    leaf pe-vlan {
+      type uint32;
+      description
+        "Outer VLAN ID.";
+    }
+    leaf ce-vlan {
+      type uint32;
+      description
+        "Inner VLAN tag.";
+    }
+    leaf mac-address {
+      type pub-type:mac-address;
+      description
+        "MAC address of an attack source.";
+    }
+    leaf ip-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "IP address of an attack source.";
+    }
+    leaf ipv6-address {
+      type inet:ipv6-address-no-zone;
+      description
+        "IPv6 address of an attack source.";
+    }
+    leaf vni-index {
+      type uint32;
+      description
+        "Index of a VNI that is being attacked.";
+    }
+  }
+  notification l3-loop-detect-alarm {
+    description
+      "L3 loop detect alarmed.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf ip-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "IP address.";
+    }
+  }
+  notification l3-loop-detect-alarm-clear {
+    description
+      "L3 loop detect alarm cleared.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis ID.";
+    }
+    leaf slot {
+      type uint32;
+      description
+        "Slot number.";
+    }
+    leaf ip-address {
+      type inet:ipv4-address-no-zone;
+      description
+        "IP address.";
+    }
+  }
+  notification cpratelimit-discarded-alarm {
+    description
+      "CPRL drop packets alarmed.";
+    leaf if-index {
+      type string {
+        length "1..63";
+      }
+      description
+        "Interface index.";
+    }
+    leaf pe-vlan {
+      type uint32;
+      description
+        "Indicates the outer VLAN.";
+    }
+    leaf ce-vlan {
+      type uint32;
+      description
+        "Indicates the inner VLAN.";
+    }
+  }
+  notification cpratelimit-discarded-alarm-clear {
+    description
+      "CPRL drop packets alarm cleared.";
+    leaf if-index {
+      type string {
+        length "1..63";
+      }
+      description
+        "Interface index.";
+    }
+    leaf pe-vlan {
+      type uint32;
+      description
+        "Indicates the outer VLAN.";
+    }
+    leaf ce-vlan {
+      type uint32;
+      description
+        "Indicates the inner VLAN.";
+    }
+  }
+}

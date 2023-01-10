@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-flow-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-bgp-flow-deviations-ATN-980B";
+  prefix bgp-flow-devs-ATN-980B;
+
+  import huawei-bgp-flow {
+    prefix bgp-flow;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-flow module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp-flow:ipv4-flow/bgp-flow:common/bgp-flow:check-origin-as-enable" {
+    deviate not-supported;
+  }
+}

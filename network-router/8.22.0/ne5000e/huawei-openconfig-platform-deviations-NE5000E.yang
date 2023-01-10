@@ -1,0 +1,114 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-platform-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-openconfig-platform-deviations-NE5000E";
+  prefix oc-platform-devs-NE5000E;
+
+  import openconfig-platform {
+    prefix oc-platform;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for openconfig-platform module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:name" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:type" {
+    deviate not-supported;
+    }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:id" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:location" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:description" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:mfg-name" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:mfg-date" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:hardware-version" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:firmware-version" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:software-version" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:serial-no" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:part-no" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:removable" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:oper-status" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:empty" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:parent" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:temperature" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:allocated-power" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:state/oc-platform:used-power" {
+    deviate not-supported;
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:properties" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:subcomponents" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:chassis" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:fabric" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:storage" {
+    deviate not-supported;
+  }
+
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:integrated-circuit" {
+    deviate not-supported;
+  }
+  deviation "/oc-platform:components/oc-platform:component/oc-platform:backplane" {
+    deviate not-supported;
+  }
+  
+}

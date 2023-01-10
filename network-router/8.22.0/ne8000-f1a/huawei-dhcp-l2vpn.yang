@@ -1,0 +1,49 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dhcp-l2vpn {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-dhcp-l2vpn";
+  prefix dhcp-l2vpn;
+  import huawei-dhcp {
+    prefix dhcp;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+    description
+    "This module contains a collection of YANG definitions for managing DHCP l2vpn.";
+  revision 2021-09-03 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "dhcp";
+  augment "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls" {
+    description "Extend L2VPN attribute.";
+    container dhcp-snooping-vsi {
+      description
+        "Configure DHCP snooping VSI attributes.";
+      leaf nni-server-enable {
+        when "/dhcp:dhcp/dhcp:snooping/dhcp:global/dhcp:enable='true'";
+        type boolean;
+        default "false";
+        description
+          "Enable/disable the network node interface to server.";
+      }
+    }
+  }
+}

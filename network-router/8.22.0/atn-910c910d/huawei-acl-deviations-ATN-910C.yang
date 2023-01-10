@@ -1,0 +1,188 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-acl-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-acl-deviations-ATN-910C";
+  prefix acl-devs-ATN-910C;
+
+  import huawei-acl {
+    prefix acl;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-acl module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef group4-type-deviations {
+    type enumeration {
+      enum interface {
+        value 0;
+        description
+          "Interface ACL.";
+      }
+      enum link {
+        value 1;
+        description
+          "Link ACL.";
+      }
+      enum basic {
+        value 2;
+        description
+          "Basic ACL.";
+      }
+      enum advance {
+        value 3;
+        description
+          "Advanced ACL.";
+      }
+      enum mpls {
+        value 7;
+        description
+          "MPLS ACL.";
+      }
+    }
+    description
+      "Type of a rule group.";
+  }
+
+  typedef group6-type-deviations {
+    type enumeration {
+      enum basic {
+        value 4;
+        description
+          "Basic ACL.";
+      }
+      enum advance {
+        value 5;
+        description
+          "Advanced ACL.";
+      }
+      enum interface {
+        value 6;
+        description
+          "Interface ACL.";
+      }
+    }
+    description
+      "Type of a rule group.";
+  }
+
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-basics/acl:rule-basic/acl:ias-priority" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-advances/acl:rule-advance/acl:ias-priority" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-basics/acl:rule-basic/acl:log-enable" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-advances/acl:rule-advance/acl:log-enable" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-ethernets/acl:rule-ethernet/acl:ias-priority" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-ethernets/acl:rule-ethernet/acl:vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-ethernets/acl:rule-ethernet/acl:ce-vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-arps" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-users" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-basics/acl:rule-basic/acl:ias-priority" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-basics/acl:rule-basic/acl:source-ip-mask/acl:negative-mask" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-advances/acl:rule-advance/acl:source/acl:ip/acl:source-ipaddr-mask/acl:negative-mask" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-basics/acl:rule-basic/acl:log-enable" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-advances/acl:rule-advance/acl:ias-priority" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-advances/acl:rule-advance/acl:log-enable" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:ip-pools/acl:ip-pool/acl:apply-type/acl:apply-ip/acl:host-names" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:type" {
+    deviate replace {
+      type acl-devs-ATN-910C:group4-type-deviations;
+    }
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:type" {
+    deviate replace {
+      type acl-devs-ATN-910C:group6-type-deviations;
+    }
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-basics/acl:rule-basic/acl:source-ipaddr" {
+    deviate add {
+      must '(../source-ipaddr and ../source-mask-len)';
+    }
+  }
+  deviation "/acl:acl/acl:group6s/acl:group6/acl:rule-advances/acl:rule-advance/acl:dest/acl:ip/acl:dest-ipaddr-mask/acl:negative-mask" {
+    deviate not-supported;
+  }
+  deviation "/acl:acl/acl:groups/acl:group/acl:rule-advances/acl:rule-advance/acl:vxlan-type" {
+    deviate not-supported;
+  }
+  ext:deviation-ext "/acl:acl/acl:groups/acl:group/acl:match-order" {
+    ext:deviate-ext "delete" {
+      ext:operation-exclude "update|delete" {
+        when '../rule-basics or ../rule-advances or ../rule-ethernets or ../rule-interfaces or ../rule-mplss or ../rule-ucls';
+        description
+          "The 'match-order' cannot be updated, when rule exists.";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        when '(../acl:rule-basics/acl:rule-basic) or (../acl:rule-advances/acl:rule-advance) or (../acl:rule-ethernets/acl:rule-ethernet) or (../acl:rule-mplss/acl:rule-mpls) or(../acl:rule-interfaces/acl:rule-interface)';
+        description
+          "When an ACL rule exists, this value can not be changed.";
+      }
+    }
+  }
+  ext:deviation-ext "/acl:acl/acl:group6s/acl:group6/acl:match-order" {
+    ext:deviate-ext "delete" {
+      ext:operation-exclude "update|delete" {
+        when '../rule-basics or ../rule-advances or ../rule-ucls';
+        description
+          "The 'match-order' cannot be updated, when rule exists.";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        when '(../acl:rule-basics/acl:rule-basic) or (../acl:rule-advances/acl:rule-advance) ';
+        description
+          "When an ACL rule exists, this value can not be changed.";
+      }
+    }
+  }
+}

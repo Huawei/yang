@@ -1,0 +1,81 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cgn-nat64-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-cgn-nat64-deviations-NE8000-F1A";
+  prefix cgn-nat64-devs-NE8000-F1A;
+
+  import huawei-cgn-nat64 {
+    prefix cgn-nat64;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-cgn-nat64 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+typedef nat64-alg-protocol-type-deviations {
+  type enumeration {
+    enum "ftp" {
+      value 1;
+      description "Indicate file transfer protocol.";
+    }
+    enum "dns" {
+      value 16;
+      description "Indicate domain name service.";
+    }
+  }
+  description
+    "ALG Protocol.";
+}
+
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:port-range" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:nat64-translate" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:filter-mode" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:log/cgn-nat64:send-mode" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:log/cgn-nat64:user-log" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:log/cgn-nat64:hosts/cgn-nat64:host/cgn-nat64:inside-vpn-name" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:log/cgn-nat64:hosts/cgn-nat64:host/cgn-nat64:secondary" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:port-reuse" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:algs/cgn-nat64:alg/cgn-nat64:separate-translation" {
+    deviate not-supported;
+  }
+  deviation "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:algs/cgn-nat64:alg/cgn-nat64:protocol" {
+    deviate replace {
+      type cgn-nat64-devs-NE8000-F1A:nat64-alg-protocol-type-deviations;
+    }
+  }
+
+}

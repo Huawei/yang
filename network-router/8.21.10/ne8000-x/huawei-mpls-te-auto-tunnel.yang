@@ -1,0 +1,565 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-te-auto-tunnel {
+  namespace "urn:huawei:yang:huawei-mpls-te-auto-tunnel";
+  prefix mpls-te-auto-tunnel;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Specifies the multi-protocol label switching protocol.";
+  revision 2021-05-21 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "mpls-te";
+  augment /mpls:mpls/mpls-te:te {
+    description
+      "MPLS TE auto tunnel information augment to module MPLS TE.";
+    container rsvp-te-auto-tunnels {
+      config false;
+      description
+        "List of auto-tunnels for p2p rsvp-te.";
+      list rsvp-te-auto-tunnel {
+        key "tunnel-name";
+        description
+          "Statistics of rsvp-te auto tunnel.";
+        leaf tunnel-name {
+          type string {
+            length "1..64";
+          }
+          description
+            "The name of rsvp-te auto tunnel.";
+        }
+        leaf ingress-lsr-id {
+          type inet:ipv4-address-no-zone;
+          description
+            "Ingress LSR ID.";
+        }
+        leaf egress-lsr-id {
+          type inet:ipv4-address-no-zone;
+          description
+            "Egress LSR ID.";
+        }
+        leaf session-id {
+          type uint16 {
+            range "32769..65535";
+          }
+          description
+            "Tunnel ID.";
+        }
+        leaf state {
+          type mpls-te:tunnel-state;
+          description
+            "Tunnel status.";
+        }
+        leaf tunnel-type {
+          type mpls-te:auto-tunnel-type;
+          description
+            "Tunnel type.";
+        }
+        leaf ip-prefix-name {
+          type string {
+            length "0..169";
+          }
+          description
+            "The name of ip prefix.";
+        }
+        leaf template-name {
+          type string {
+            length "0..31";
+          }
+          description
+            "The name of template.";
+        }
+        leaf working-lsp-type {
+          type mpls-te:lsp-path-type;
+          description
+            "LSP type.";
+        }
+        leaf working-lsp-id {
+          type uint32;
+          description
+            "The working LSP ID of a Tunnel.";
+        }
+        leaf entropy-label-enable {
+          type boolean;
+          description
+            "Enable/disable auto tunnel entropy label.";
+        }
+        container lsps {
+          config false;
+          description
+            "List of LSPs of a tunnel.";
+          list lsp {
+            key "ingress-lsr-id egress-lsr-id session-id lsp-id";
+            max-elements 4;
+            description
+              "Statistics of LSP of a tunnel.";
+            leaf ingress-lsr-id {
+              type inet:ipv4-address-no-zone;
+              description
+                "Ingress LSR ID.";
+            }
+            leaf egress-lsr-id {
+              type inet:ipv4-address-no-zone;
+              description
+                "Egress LSR ID.";
+            }
+            leaf session-id {
+              type uint16 {
+                range "0..65535";
+              }
+              description
+                "Tunnel ID.";
+            }
+            leaf lsp-id {
+              type uint16 {
+                range "0..65535";
+              }
+              description
+                "LSP ID.";
+            }
+            leaf setup-priority {
+              type uint8 {
+                range "0..7";
+              }
+              description
+                "Setup priority of a LSP.";
+            }
+            leaf hold-priority {
+              type uint8 {
+                range "0..7";
+              }
+              description
+                "Hold priority of a LSP.";
+            }
+            leaf record-route {
+              type mpls-te:record-route-mode;
+              description
+                "Route record mode.";
+            }
+            leaf dste-mode {
+              type boolean;
+              description
+                "Whether DS-TE is used for LSP bandwidth constraints.";
+            }
+            leaf reserved-bandwidth {
+              type uint32 {
+                range "0..4000000000";
+              }
+              units "kbit/s";
+              description
+                "Reserved bandwidth for non-DS-TE.";
+            }
+            leaf explicit-path-name {
+              type string {
+                length "1..128";
+              }
+              description
+                "Explicit path name of a LSP. The name is case-insensitive.";
+            }
+            leaf include-all {
+              type pub-type:hex-binary;
+              description
+                "Specifies the Include-all (management group attribute) of a LSP.";
+            }
+            leaf include-any {
+              type pub-type:hex-binary;
+              description
+                "Specifies the Include-any (management group attribute) of a LSP.";
+            }
+            leaf exclude-any {
+              type pub-type:hex-binary;
+              description
+                "Specifies the Exclude-any (management group attribute) of a LSP.";
+            }
+            leaf local-protect-enable {
+              type boolean;
+              description
+                "Specifies the enabling or disabling state of FRR for a LSP.";
+            }
+            leaf local-protect-inuse {
+              type mpls-te:fast-reroute-inuse-state;
+              description
+                "Specifies the FRR protection state of this LSP.";
+            }
+            leaf bypass-tunnel-name {
+              type string {
+                length "1..256";
+              }
+              description
+                "Specifies the name of the bypass tunnel that protects the LSP. The name is case-insensitive.";
+            }
+            leaf permit-bandwidth-share {
+              type boolean;
+              description
+                "Indicates whether the LSP permits bandwidth sharing.";
+            }
+            leaf lsp-mtu {
+              type uint32 {
+                range "0..32000000";
+              }
+              description
+                "Specifies a LSP MTU.";
+            }
+            leaf oper-status {
+              type mpls-te:interface-status;
+              description
+                "Operation status of a LSP.";
+            }
+            leaf xcindex {
+              type uint32 {
+                range "0..4294967295";
+              }
+              description
+                "Cross-connect index.";
+            }
+            container ar-hops {
+              description
+                "List of actual path of a LSP.";
+              list ar-hop {
+                key "index";
+                description
+                  "Statistics of actual hop of a LSP.";
+                leaf index {
+                  type uint32;
+                  description
+                    "Actual hop index.";
+                }
+                leaf incomming-type {
+                  type boolean;
+                  description
+                    "Whether the hop is an inbound interface.";
+                }
+                leaf ip-address {
+                  type inet:ipv4-address-no-zone;
+                  description
+                    "IP address of the actual hop.";
+                }
+                leaf label {
+                  type uint32;
+                  description
+                    "Label of the actual hop.";
+                }
+                leaf local-protect-inuse {
+                  type boolean;
+                  description
+                    "FRR protection state.";
+                }
+                leaf local-protect-type {
+                  type mpls-te:local-protect-type;
+                  description
+                    "FRR protection type.";
+                }
+                leaf bandwidth-protection {
+                  type boolean;
+                  description
+                    "FRR bandwidth protection.";
+                }
+              }
+            }
+            container c-hops {
+              config false;
+              description
+                "List of path calculated by CSPF according to LSP constraints.";
+              list c-hop {
+                key "path-index index";
+                description
+                  "Statistics of path calculated by CSPF according to LSP constraints.";
+                leaf path-index {
+                  type uint32;
+                  description
+                    "Path index calculated by CSPF.";
+                }
+                leaf index {
+                  type uint32;
+                  description
+                    "Hop index calculated by CSPF.";
+                }
+                leaf include {
+                  type boolean;
+                  description
+                    "Hop include or exclude.";
+                }
+                leaf hop-type {
+                  type mpls-te:hop-strict-type;
+                  description
+                    "Hop type calculated by CSPF. The available options are strict and loose.";
+                }
+                leaf address-type {
+                  type mpls-te:hop-address-type;
+                  description
+                    "Address type calculated by CSPF. The available options are IPv4 and IPv6.";
+                }
+                leaf ip-address {
+                  type inet:ipv4-address-no-zone;
+                  description
+                    "IP address calculated by CSPF.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    container p2mp-te-auto-tunnels {
+      config false;
+      description
+        "List of auto-tunnels for p2mp te.";
+      list p2mp-te-auto-tunnel {
+        key "tunnel-name";
+        description
+          "Statistics of p2mp te auto tunnel.";
+        leaf tunnel-name {
+          type string {
+            length "1..63";
+          }
+          description
+            "The name of rsvp-te auto tunnel.";
+        }
+        leaf template-name {
+          type string {
+            length "0..31";
+          }
+          description
+            "The name of template.";
+        }
+        leaf state {
+          type mpls-te:tunnel-state;
+          description
+            "Tunnel status.";
+        }
+        leaf ingress-lsr-id {
+          type inet:ipv4-address-no-zone;
+          description
+            "Ingress LSR ID.";
+        }
+        leaf session-id {
+          type uint16;
+          description
+            "Tunnel ID.";
+        }
+        leaf p2mp-id {
+          type inet:ipv4-address-no-zone;
+          description
+            "P2MP ID.";
+        }
+        leaf admin-status {
+          type mpls-te:interface-status;
+          description
+            "Interface administrative status. The available options are Up and Down.";
+        }
+        leaf oper-status {
+          type mpls-te:interface-status;
+          description
+            "Interface operation status. The available options are Up and Down.";
+        }
+        container lsps {
+          config false;
+          description
+            "List of LSPs of a tunnel.";
+          list lsp {
+            key "lsp-id";
+            max-elements 2;
+            description
+              "Statistics of LSP of a tunnel.";
+            leaf lsp-id {
+              type uint16 {
+                range "0..65535";
+              }
+              description
+                "LSP ID.";
+            }
+            leaf modify-lsp {
+              type boolean;
+              description
+                "Whether the LSP is a modifying LSP.";
+            }
+            leaf setup-priority {
+              type uint8 {
+                range "0..7";
+              }
+              description
+                "Setup priority of a LSP.";
+            }
+            leaf hold-priority {
+              type uint8 {
+                range "0..7";
+              }
+              description
+                "Hold priority of a LSP.";
+            }
+            leaf record-route {
+              type mpls-te:record-route-mode;
+              description
+                "Route record mode.";
+            }
+            leaf reserved-bandwidth {
+              type uint32 {
+                range "0..32000000";
+              }
+              units "kbit/s";
+              description
+                "Reserved bandwidth for non-DS-TE.";
+            }
+            leaf leaf-list-name {
+              type string {
+                length "1..32";
+              }
+              description
+                "Leaf list name of a LSP.";
+            }
+            leaf include-all {
+              type pub-type:hex-binary;
+              description
+                "Specifies the Include-all (management group attribute) of a LSP.";
+            }
+            leaf include-any {
+              type pub-type:hex-binary;
+              description
+                "Specifies the Include-any (management group attribute) of a LSP.";
+            }
+            leaf exclude-any {
+              type pub-type:hex-binary;
+              description
+                "Specifies the Exclude-any (management group attribute) of a LSP.";
+            }
+            leaf local-protect-enable {
+              type boolean;
+              description
+                "Specifies the enabling or disabling state of FRR for a LSP.";
+            }
+            leaf permit-bandwidth-share {
+              type boolean;
+              description
+                "Indicates whether the LSP permits bandwidth sharing.";
+            }
+            leaf oper-status {
+              type mpls-te:mpls-te-lsp-status-type;
+              description
+                "The state of LSP.";
+            }
+            container p2mp-leafs {
+              description
+                "List of p2mp leaf.";
+              list p2mp-leaf {
+                key "leaf-address sub-group-id";
+                max-elements 1024;
+                description
+                  "Statistics of p2mp leaf.";
+                leaf leaf-address {
+                  type inet:ipv4-address-no-zone;
+                  description
+                    "IP address of the leaf.";
+                }
+                leaf sub-group-id {
+                  type uint16 {
+		                range "0..65535";
+		              }
+		              description
+		                "Sub-group-id of P2MP LSP.";
+                }
+                leaf leaf-status {
+                  type mpls-te:p2mp-leaf-state;
+                  description
+                    "Leaf status.";
+                }
+                leaf modify-lsp {
+		              type boolean;
+		              description
+		                "Whether the LSP is a modifying LSP.";
+		            }
+                leaf explicit-path-name {
+		              type string {
+		                length "1..128";
+		              }
+		              description
+		                "Explicit path name of a LSP. The name is case-insensitive.";
+		            }
+              }
+            }
+          }
+        }
+      }
+    }
+    container sr-te-auto-tunnels {
+      config false;
+      description
+        "List of auto-tunnels for sr-te.";
+      list sr-te-auto-tunnel {
+        key "tunnel-name";
+        description
+          "Statistics of sr-te auto tunnel.";
+        leaf tunnel-name {
+          type string {
+            length "1..64";
+          }
+          description
+            "The name of sr-te auto tunnel.";
+        }
+        leaf ingress-lsr-id {
+          type inet:ipv4-address-no-zone;
+          description
+            "Ingress LSR ID.";
+        }
+        leaf egress-lsr-id {
+          type inet:ipv4-address-no-zone;
+          description
+            "Egress LSR ID.";
+        }
+        leaf session-id {
+          type uint16 {
+            range "32769..65535";
+          }
+          description
+            "Tunnel ID.";
+        }
+        leaf state {
+          type mpls-te:tunnel-state;
+          description
+            "Tunnel status.";
+        }
+        leaf tunnel-type {
+          type mpls-te:auto-tunnel-type;
+          description
+            "Tunnel type.";
+        }
+        leaf working-lsp-type {
+          type mpls-te:lsp-path-type;
+          description
+            "LSP type.";
+        }
+        leaf working-lsp-id {
+          type uint32;
+          description
+            "The working LSP ID of a Tunnel.";
+        }
+      }
+    }
+  }
+}

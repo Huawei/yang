@@ -1,0 +1,118 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-python-script {
+  yang-version 1;
+  namespace urn:huawei:yang:huawei-bras-python-script;
+  prefix bras-python-script;
+
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Python script refers to the function of an automatically loading of version file (including system software, configuration files and patch files) used for powering on a new factory device or an empty configuration device.";
+  revision 2020-12-14 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+  ext:task-name "bras-control";
+
+  grouping python-script-statistic {
+    description
+      "Statistics for the loaded Python script package grouping.";
+    container python-script-statistic {
+      config false;
+      description
+        "Operational data of statistic related to the loaded Python script package.";
+      leaf package-version {
+          type string {
+            length "1..32";
+          }
+        description
+          "Version number of the Python script package.";
+      }
+      leaf package-run-time {
+        type yang:date-and-time;
+        description
+          "Running time of the Python script package on the device.";
+      }
+      leaf compatible-api-versions {
+          type string {
+            length "1..128";
+          }
+        description
+          "Compatible API version.";
+      }
+      leaf package-api-version {
+          type string {
+            length "1..7";
+          }
+        description
+          "API version of the Python script package.";
+      }
+      container script-states {
+        description
+          "List of script state in the Python script package.";
+        list script-state {
+          key "script-name";
+          description
+            "Operational data of script state in the Python script package.";
+          leaf script-name {
+            type string {
+              length "1..32";
+            }
+            description
+              "Script name.";
+          }
+          leaf run-state {
+            type enumeration {
+              enum "running" {
+                value 1;
+                description
+                  "Running.";
+              }
+            }
+            description
+              "Running status of the script.";
+          }
+        }
+      }
+    }
+  }
+
+  container bras-python-script {
+    description
+      "Python script.";
+    uses python-script-statistic;
+    container cu-python-script-statistics {
+      config false;
+      description
+        "List of statistic related to the loaded Python script package. Only support CU mode.";
+      list cu-python-script-statistic {
+        key "upmng-instance";
+        description
+          "Operational data of statistic related to the loaded Python script package. Only support CU mode.";
+        leaf upmng-instance {
+          type uint32;
+          description
+            "UPMNG instance ID.";
+        }
+        uses python-script-statistic;
+      }
+    }
+  }
+}

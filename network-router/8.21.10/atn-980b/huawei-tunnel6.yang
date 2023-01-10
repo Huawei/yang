@@ -1,0 +1,363 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-tunnel6 {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-tunnel6";
+  prefix tunnel6;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "IP tunnel related configuration.";
+  revision 2020-05-09 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  container tunnel6 {
+    description
+      "IP tunnel related configuration.";
+  container global {
+      description
+        "Configure global configuration of IP tunnel.";
+      leaf encapsulation-limit {
+        type uint8 {
+          range "0..255";
+        }
+        default "4";
+        description
+          "Tunnel encapsulation limit carried in the destination option header extension option in the IPv6 header.";
+      }
+      leaf flow-label {
+        type uint32 {
+          range "0..1048575";
+        }
+        default "0";
+        description
+          "IPv6 flow-label.";
+      }
+      leaf hop-limit {
+        type uint8 {
+          range "1..255";
+        }
+        default "64";
+        description
+          "IPv6 hop-limit.";
+      }
+      leaf traffic-class {
+        type uint16 {
+          range "0..256";
+          ext:value-meaning {
+            ext:item  "256" {
+              ext:meaning "Original";
+            }
+          }
+        }
+        default "0";
+        description
+          "IPv6 traffic-class.";
+      }
+    }
+  container ipip-4over6-bindings {
+      description
+        "List of interfaces bound to IPv4 over IPv6 tunnel. After an IPv4 over IPv6 tunnel interface is created, you need configure a source interface or a source IPv6 address for the tunnel interface. Then, configure a binding interface to enable IPv4 over IPv6 on the source interface or the interface to which the source IPv6 address belongs, so that packets can be transmitted from the source tunnel interface to the corresponding tunnel service boards for processing.";
+      list ipip-4over6-binding {
+        key "bind-ifname";
+        description
+          "Configure a interface bound to IPv4 over IPv6 tunnel.";
+        leaf bind-ifname {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+          }
+          must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'LoopBack'";
+          description
+            "Name of the interface bound to a IPv4 Over IPv6 tunnel.";
+        }
+      }
+    }
+  }
+  augment /ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type {
+    description
+      "IP tunnel related configuration.";
+    case ipip-6over4 {
+      description
+        "6over4 tunnel related configuration.";
+      container ipip-6over4-tunnel {
+        presence "Specifies tunnel-protocol IPv6 over IPv4.";
+        description
+          "Configure IPv6 over IPv4 tunnel interface.";
+        choice source {
+          description
+            "Source configuration.";
+          case address {
+            description
+              "Source address configuration.";
+            leaf source-address {
+              type inet:ipv4-address-no-zone;
+              description
+              "Source address of a tunnel.";
+            }
+          }
+          case interface {
+            description
+              "Source interface configuration.";
+            leaf source-ifname {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name = '_public_' and ../../../ifm:name != ../source-ifname";
+              description
+              "Source interface name of a tunnel.";
+            }
+          }
+        }
+        choice destination {
+          description
+            "Destination configuration.";
+          case ip {
+            description
+              "Destination address configuration.";
+            leaf destination-address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Destination address of a tunnel.";
+            }
+          }
+        }
+      }
+    }
+    case ipip-6to4 {
+      description
+        "6to4 tunnel related configuration.";
+      container ipip-6to4-tunnel {
+        presence "Specifies tunnel-protocol 6to4.";
+        description
+          "Configure 6to4 tunnel interface.";
+        choice source {
+          description
+            "Source configuration.";
+          case address {
+            description
+              "Source address configuration.";
+            leaf source-address {
+              type inet:ipv4-address-no-zone;
+              description
+              "Source address of a tunnel.";
+            }
+          }
+          case interface {
+            description
+              "Source interface configuration.";
+            leaf source-ifname {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name = '_public_' and ../../../ifm:name != ../source-ifname";
+              description
+              "Source interface name of a tunnel.";
+            }
+          }
+        }
+      }
+    }
+    case ipip-6rd {
+      description
+        "6rd tunnel related configuration.";
+      container ipip-6rd-tunnel {
+        must "(ipv6-prefix and ipv6-prefix-length) or (not(ipv6-prefix) and not(ipv6-prefix-length))";
+        must "(ipv6-prefix-length + (32 - ipv4-prefix-length) <= 64) or not (ipv6-prefix-length) or not (ipv4-prefix-length)";
+        presence "Specifies tunnel-protocol 6rd.";
+        description
+          "Configure IPv6 rapid deployment on IPv4 tunnel interface.";
+        choice source {
+          description
+            "Source configuration.";
+          case address {
+            description
+              "Source address configuration.";
+            leaf source-address {
+              type inet:ipv4-address-no-zone;
+              description
+              "Source address of a tunnel.";
+            }
+          }
+          case interface {
+            description
+              "Source interface configuration.";
+            leaf source-ifname {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:vrf-name = '_public_' and ../../../ifm:name != ../source-ifname";
+              description
+              "Source interface name of a tunnel.";
+            }
+          }
+        }
+        leaf ipv6-prefix {
+          type inet:ipv6-address-no-zone;
+          description
+            "IPv6 prefix of a tunnel.";
+        }
+        leaf ipv6-prefix-length {
+          type uint8 {
+            range "1..64";
+          }
+          description
+            "IPv6 prefix length of a tunnel.";
+        }
+        leaf ipv4-prefix-length {
+          type uint8 {
+            range "0..32";
+          }
+          description
+            "IPv4 Prefix Length of a tunnel.";
+        }
+        leaf border-relay-ipv4-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "Border-relay address of a tunnel.";
+        }
+      }
+    }
+    case ipip-4over6 {
+      description
+        "4over6 tunnel related configuration.";
+      container ipip-4over6-tunnel {
+        presence "Specifies tunnel-protocol IPv4 over IPv6.";
+        description
+          "Configure IPv4 Over IPv6 tunnel interface.";
+        choice source {
+          description
+            "Source configuration.";
+          case address {
+            description
+              "Source address configuration.";
+            leaf source-address {
+              type inet:ipv6-address-no-zone;
+              description
+                "Source IPv6 address of a tunnel.";
+              }
+          }
+          case interface {
+            description
+              "Source interface configuration.";
+            leaf source-ifname {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+              }
+              must "/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/ifm:type = 'LoopBack' and ../../../ifm:name != ../source-ifname";
+              description
+              "Source interface name of a tunnel.";
+            }
+          }
+        }
+        choice destination {
+          description
+            "Destination configuration.";
+          case ip {
+            description
+              "Destination address configuration.";
+            leaf destination-address {
+              type inet:ipv6-address-no-zone;
+              mandatory true;
+              description
+                "Destination IPv6 address of a tunnel.";
+            }
+            leaf dest-vrf-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+              }
+              must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+              default "_public_";
+              description
+                "The VPN name of tunnel destination IPv6 address.";
+            }
+          }
+          case domain {
+            description
+              "Destination domain configuration.";
+            leaf domain-name {
+              type pub-type:host-name;
+              mandatory true;
+              description
+                "Destination domain name of a tunnel.";
+            }
+            leaf domain-vrf-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+              }
+              must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv6-unicast']";
+              default "_public_";
+              description
+                "The VPN name of tunnel destination domain name.";
+            }
+          }
+        }
+        leaf encapsulation-limit {
+          type uint8 {
+            range "0..255";
+          }
+          description
+            "Tunnel encapsulation limit carried in the destination option header extension option in the IPv6 header.";
+        }
+        leaf flow-label {
+          type uint32 {
+            range "0..1048575";
+          }
+          description
+            "Specifies a flow label value.";
+        }
+        leaf hop-limit {
+          type uint8 {
+            range "1..255";
+          }
+          description
+            "Specifies a hop limit for IPv6 packets.";
+        }
+        leaf traffic-class {
+          type uint16 {
+            range "0..256";
+            ext:value-meaning {
+              ext:item  "256" {
+                ext:meaning "Original";
+              }
+            }
+          }
+          description
+            "Specifies the traffic class value of an IPv4 over IPv6 tunnel.";
+        }
+      }
+    }
+  }
+  ext:task-name  "tunnel6";
+}

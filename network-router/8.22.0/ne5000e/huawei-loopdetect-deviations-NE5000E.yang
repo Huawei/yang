@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-loopdetect-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-loopdetect-deviations-NE5000E";
+  prefix loopdetect-devs-NE5000E;
+
+  import huawei-loopdetect {
+    prefix loopdetect;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-loopdetect module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/loopdetect:loopdetect" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/loopdetect:loopdetect/loopdetect:mac-withdraw" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/loopdetect:loopdetect/loopdetect:loop-detect" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/loopdetect:loopdetect/loopdetect:loopback-detect/loopdetect:block-time" {
+    deviate replace {
+      type uint32 {
+        range "5..255";
+      }
+    }
+  }
+
+}

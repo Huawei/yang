@@ -1,0 +1,118 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-diagnostic-tools-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-diagnostic-tools-deviations-NE9000";
+  prefix diagnostic-tools-devs-NE9000;
+
+  import huawei-diagnostic-tools {
+    prefix diagnostic-tools;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-diagnostic-tools module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:arp" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:diagnostic-tools/diagnostic-tools:vxlan" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lsp-ping/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srbe/diagnostic-tools:flex-algo-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:start-lsp-trace/diagnostic-tools:input/diagnostic-tools:lsp-protocol/diagnostic-tools:srbe/diagnostic-tools:flex-algo-id" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-start-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-stop-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-delete-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-start-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-stop-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:vxlan-delete-trace" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-ip-start-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-ip-stop-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-ip-delete-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-mac-start-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-mac-stop-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:arp-mac-delete-ping" {
+    deviate not-supported;
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-ping/diagnostic-tools:input/diagnostic-tools:bypass-source-if-name" {
+    deviate add {
+      must "not(../bypass-source-if-name and (../if-name or ../inbound-reply-fast='true' or ../inbound-if-name or ../peer-address or ../debug-option))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-ping/diagnostic-tools:input/diagnostic-tools:peer-address" {
+    deviate add {
+      must 'not(../peer-address and (../service-class or ../te-class))';
+    }
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-ping/diagnostic-tools:input/diagnostic-tools:routing-mode/diagnostic-tools:outbound/diagnostic-tools:inbound-reply-fast" {
+    deviate add {
+      must "not((../inbound-reply-fast='true') and (not(../if-name) or ../peer-address or ../bypass-source-if-name))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv4-start-ip-trace/diagnostic-tools:input/diagnostic-tools:peer-address" {
+    deviate add {
+      must 'not(../peer-address and (../service-class or ../te-class))';
+    }
+  }
+  deviation "/diagnostic-tools:ipv6-start-ping/diagnostic-tools:input/diagnostic-tools:peer-address" {
+    deviate add {
+      must "not(../peer-address and (../te-class or ../service-class or (../inbound-reply-fast='true') or ../sid1 or ../sid2 or ../sid3 or ../sid4 or ../sid5 or ../sid6 or ../sid7 or ../sid8 or ../sid9 or ../sid10 or ../sid11 or ../network-slice-id or ../force-match-slice))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv6-start-trace/diagnostic-tools:input/diagnostic-tools:peer-address" {
+    deviate add {
+      must "not(../peer-address and (../service-class or ../te-class or (../overlay='true') or ../sid1 or ../sid2 or ../sid3 or ../sid4 or ../sid5 or ../sid6 or ../sid7 or ../sid8 or ../sid9 or ../sid10 or ../sid11 or ../network-slice-id or ../force-match-slice))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv6-start-trace/diagnostic-tools:input/diagnostic-tools:priority/diagnostic-tools:tc-value/diagnostic-tools:tc" {
+    deviate add {
+      must "not(../tc and ((../overlay='true') or ../sid1 or ../sid2 or ../sid3 or ../sid4 or ../sid5 or ../sid6 or ../sid7 or ../sid8 or ../sid9 or ../sid10 or ../sid11 or ../network-slice-id or ../force-match-slice))";
+    }
+  }
+  deviation "/diagnostic-tools:ipv6-start-trace/diagnostic-tools:input/diagnostic-tools:show-host-name" {
+    deviate add {
+      must "not(../show-host-name and ((../overlay='true') or ../sid1 or ../sid2 or ../sid3 or ../sid4 or ../sid5 or ../sid6 or ../sid7 or ../sid8 or ../sid9 or ../sid10 or ../sid11 or ../network-slice-id or ../force-match-slice))";
+    }
+  }
+}

@@ -1,0 +1,153 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ospfv2-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-ospfv2-deviations-ATN-910C";
+  prefix ospfv2-devs-ATN-910C;
+
+  import huawei-ospfv2 {
+    prefix ospfv2;
+  }
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ospfv2 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ospfv2:ospfv2/ospfv2:advertise-max-cost" {
+    deviate not-supported;
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:global-state" {
+    deviate not-supported;
+  }
+  deviation "/ospfv2:reset-redistribution" {
+    deviate not-supported;
+  }
+  deviation "/ospfv2:reset-process" {
+    deviate not-supported;
+  }
+  deviation "/ospfv2:reset-spf" {
+    deviate not-supported;
+  }
+  deviation "/ospfv2:reset-frr" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/l3vpn:afs/l3vpn:af/ospfv2:ospf-import-rts" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:bier" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:graceful-restart/ospfv2:gr-non-ietf/ospfv2:gr-non-ietf" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:import-routes/ospfv2:import-route/ospfv2:inherit-route-type" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:cost-bindings" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:interfaces/ospfv2:interface/ospfv2:source-sub-ip-address" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:interfaces/ospfv2:interface/ospfv2:bfd/ospfv2:per-link-flag" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:areas/ospfv2:area/ospfv2:interfaces/ospfv2:interface/ospfv2:bfd/ospfv2:one-arm-echo-flag" {
+    deviate not-supported;
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:session-car/ospfv2:cir-interval" {
+    deviate replace {
+      default "1";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:session-car/ospfv2:cbs-interval" {
+    deviate replace {
+      default "100";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:session-car/ospfv2:pir-interval" {
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:session-car/ospfv2:pbs-interval" {
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:micro-isolation-car/ospfv2:cir" {
+    deviate replace {
+      default "1";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:micro-isolation-car/ospfv2:cbs" {
+    deviate replace {
+      default "100";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:micro-isolation-car/ospfv2:pir" {
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/ospfv2:ospfv2/ospfv2:micro-isolation-car/ospfv2:pbs" {
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/ospfv2:ospfv2/ospfv2:sites/ospfv2:site/ospfv2:mpls-ldp-auto-flag" {
+    deviate add {
+      must "/mpls:mpls/mpls-ldp:ldp/mpls-ldp:enable='true' and ../../../../ni:name='_public_' or ../mpls-ldp-auto-flag='none'";
+    }
+  }
+}

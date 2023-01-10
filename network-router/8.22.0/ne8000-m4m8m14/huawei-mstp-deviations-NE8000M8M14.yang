@@ -1,0 +1,114 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mstp-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-mstp-deviations-NE8000M8M14";
+  prefix mstp-devs-NE8000M8M14;
+
+  import huawei-mstp {
+    prefix mstp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-erps {
+    prefix erps;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mstp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef stp-mode-deviations {
+    type enumeration {
+      enum stp {
+        value 0;
+        description
+          "Spanning tree protocol mode.";
+      }
+      enum rstp {
+        value 2;
+        description
+          "Rapid spanning tree protocol mode.";
+      }
+      enum mstp {
+        value 3;
+        description
+          "Multiple spanning tree protocol mode.";
+      }
+    }
+    description
+      "STP mode.";
+  }
+
+  deviation "/mstp:mstp/mstp:global/mstp:bridge-address" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:global/mstp:vstp-enable" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:default-process/mstp:flush-capability" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:processs/mstp:process/mstp:flush-capability" {
+    deviate not-supported;
+  }
+  deviation "/mstp:mstp/mstp:default-process/mstp:mode" {
+    deviate replace {
+      type mstp-devs-NE8000M8M14:stp-mode-deviations;
+    }
+  }
+  deviation "/mstp:mstp/mstp:processs/mstp:process/mstp:mode" {
+    deviate replace {
+      type mstp-devs-NE8000M8M14:stp-mode-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/mstp:mstp-attribute/mstp:vpls-sub-interface" {
+    deviate add {
+      must "current() = 'false' or not(../../erps:erps-attribute/erps:rings/erps:ring)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/mstp:mstp-attribute/mstp:enable" {
+    deviate add {
+      must "current() = 'false' or not(../../erps:erps-attribute/erps:rings/erps:ring)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/mstp:mstp-attribute/mstp:tc-snooping/mstp:enable" {
+    deviate delete {
+      must "current() = 'false' or ../../enable = 'false'";
+    }
+    deviate add {
+      must "current() = 'false' or (../../enable = 'false' and not(../../../erps:erps-attribute))";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/mstp:mstp-attribute" {
+    deviate add {
+      must "../../../../l2vpn:work-mode != 'i-vsi-b-evpn-interworking'";
+    }
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/mstp:mstp-process-attribute" {
+    deviate add {
+      must "../../../../l2vpn:work-mode != 'i-vsi-b-evpn-interworking'";
+    }
+  }
+}

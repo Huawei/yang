@@ -1,0 +1,81 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mac-flapping-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-mac-flapping-deviations-NE5000E";
+  prefix mac-flapping-devs-NE5000E;
+
+  import huawei-mac-flapping {
+    prefix mac-flapping;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mac-flapping module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mac-flapping:mac-flapping/mac-flapping:global-attribute/mac-flapping:assist-stp" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:mac-flapping/mac-flapping:global-attribute/mac-flapping:traffic-suppression" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:mac-flapping/mac-flapping:global-attribute/mac-flapping:traffic-suppression-threshold" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:mac-flapping/mac-flapping:vsi-blocks" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:mac-flapping/mac-flapping:vlan-blocks" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:reset-pw-bd-loop-detect" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:reset-vsi-loop-detect" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:reset-ac-vsi-loop-detect" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:reset-pw-vsi-loop-detect" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:reset-vlan-loop-detect" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:reset-vlan-traffic-suppression" {
+    deviate not-supported;
+  }
+  deviation "/mac-flapping:reset-vsi-traffic-suppression" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac-flapping:mac-flapping" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/mac-flapping:mac-flapping" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:ldp-signaling/l2vpn:pws/l2vpn:pw/mac-flapping:mac-flapping" {
+    deviate not-supported;
+  }
+}

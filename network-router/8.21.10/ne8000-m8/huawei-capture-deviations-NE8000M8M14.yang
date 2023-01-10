@@ -1,0 +1,88 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-capture-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-capture-deviations-NE8000M8M14";
+  prefix capture-devs-NE8000M8M14;
+
+  import huawei-capture {
+    prefix capture;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-capture module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/capture:capture-end-notification" {
+    deviate not-supported;
+  }
+  deviation "/capture:capture-packet/capture:input/capture:local-host" {
+    deviate not-supported;
+  }
+  deviation "/capture:capture-packet/capture:input/capture:tunnel" {
+    deviate not-supported;
+  }
+  deviation "/capture:capture-packet/capture:input/capture:clear-payload" {
+    deviate not-supported;
+  }
+  deviation "/capture:capture-packet/capture:output/capture:capture-index" {
+    deviate not-supported;
+  }
+  deviation "/capture:stop-capture/capture:input/capture:mode/capture:all" {
+    deviate not-supported;
+  }
+  deviation "/capture:stop-capture/capture:input/capture:mode/capture:index" {
+    deviate not-supported;
+  }
+  deviation "/capture:capture-packet/capture:input/capture:interface-name" {
+    deviate add {
+      min-elements 1;
+    }
+    deviate add {
+      max-elements 8;
+    }
+  }
+  deviation "/capture:capture-packet/capture:input/capture:packet-number" {
+    deviate replace {
+      type uint32 {
+        range "1..6000";
+      }
+    }
+    deviate replace {
+      default "10";
+    }
+  }
+  deviation "/capture:capture-packet/capture:input/capture:packet-length" {
+    deviate replace {
+      default "20";
+    }
+  }
+  deviation "/capture:capture-packet/capture:input/capture:timeout" {
+    deviate replace {
+      default "15";
+    }
+  }
+  deviation "/capture:capture-packet/capture:input/capture:file-name" {
+    deviate delete {
+      default "capture.cap";
+    }
+  }
+
+}

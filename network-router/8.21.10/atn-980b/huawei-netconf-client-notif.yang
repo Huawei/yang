@@ -1,0 +1,228 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-netconf-client-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-netconf-client-notif";
+  prefix netconf-client-notif;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of netconf client.";
+  revision 2021-04-02 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  notification netconf-client-config-failed {
+    description
+      "Failed to deliver configurations to a peer device.";
+    leaf peer-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "Name of the peer.";
+    }
+    leaf addr-type {
+      type inet:ip-version;
+      description
+        "Type of the IP address.";
+    }
+    leaf address {
+      type inet:ipv4-address;
+      description
+        "Address of the peer.";
+    }
+    leaf feature-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "App name.";
+    }
+  }
+  notification netconf-client-config-synchronized-success {
+    description
+      "Successfully synchronized configurations to a peer device.";
+    leaf peer-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "Name of the peer.";
+    }
+    leaf addr-type {
+      type inet:ip-version;
+      description
+        "Type of the IP address.";
+    }
+    leaf address {
+      type inet:ipv4-address;
+      description
+        "Address of the peer.";
+    }
+    leaf feature-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "App name.";
+    }
+  }
+  notification netconf-client-connection-interrupt {
+    description
+      "Remote netconf connection is interrupted.";
+    leaf ip-type {
+      type inet:ip-version;
+      description
+        "IP address type.";
+    }
+    leaf peer-ip {
+      type inet:ipv4-address;
+      description
+        "Peer IP address.";
+    }
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "VPN name.";
+    }
+  }
+  notification netconf-client-connection-resume {
+    description
+      "Remote netconf connection is resumed.";
+    leaf ip-type {
+      type inet:ip-version;
+      description
+        "IP address type.";
+    }
+    leaf peer-ip {
+      type inet:ipv4-address;
+      description
+        "Peer IP address.";
+    }
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "VPN name.";
+    }
+  }
+  notification netconf-client-peer-connection-interrupt {
+    description
+      "The NETCONF connection with a peer device was torn down.";
+    leaf peer-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "Name of the peer.";
+    }
+    leaf addr-type {
+      type inet:ip-version;
+      description
+        "The type of IP address.";
+    }
+    leaf address {
+      type inet:ipv4-address;
+      description
+        "Peer IP address.";
+    }
+    leaf user-name {
+      type string {
+        length "1..50";
+      }
+      description
+        "User name.";
+    }
+  }
+  notification netconf-client-peer-connection-resume {
+    description
+      "The NETCONF connection with a peer device is resumed.";
+    leaf peer-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "Name of the peer.";
+    }
+    leaf addr-type {
+      type inet:ip-version;
+      description
+        "The type of IP address.";
+    }
+    leaf address {
+      type inet:ipv4-address;
+      description
+        "Peer IP address.";
+    }
+    leaf user-name {
+      type string {
+        length "1..50";
+      }
+      description
+        "User name.";
+    }
+  }
+  notification netconf-client-sync-config-failed {
+    description
+      "Failed to synchronize configurations to a peer device.";
+    leaf peer-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "Name of the peer.";
+    }
+    leaf addr-type {
+      type inet:ip-version;
+      description
+        "The type of IP address.";
+    }
+    leaf address {
+      type inet:ipv4-address;
+      description
+        "Peer IP address.";
+    }
+  }
+  notification netconf-client-sync-config-success {
+    description
+      "Successfully synchronized configurations to a peer device.";
+    leaf peer-name {
+      type string {
+        length "1..64";
+      }
+      description
+        "Name of the peer.";
+    }
+    leaf addr-type {
+      type inet:ip-version;
+      description
+        "The type of IP address.";
+    }
+    leaf address {
+      type inet:ipv4-address;
+      description
+        "Peer IP address.";
+    }
+  }
+  ext:task-name "netconfc";
+}

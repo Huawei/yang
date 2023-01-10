@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-netconf-client-notif-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-netconf-client-notif-deviations-NE9000";
+  prefix netconf-client-notif-devs-NE9000;
+
+  import huawei-netconf-client-notif {
+    prefix netconf-client-notif;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-netconf-client-notif module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/netconf-client-notif:netconf-client-config-failed" {
+    deviate not-supported;
+  }
+  deviation "/netconf-client-notif:netconf-client-config-synchronized-success" {
+    deviate not-supported;
+  }
+  deviation "/netconf-client-notif:netconf-client-peer-connection-interrupt" {
+    deviate not-supported;
+  }
+  deviation "/netconf-client-notif:netconf-client-peer-connection-resume" {
+    deviate not-supported;
+  }
+  deviation "/netconf-client-notif:netconf-client-sync-config-failed" {
+    deviate not-supported;
+  }
+  deviation "/netconf-client-notif:netconf-client-sync-config-success" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-loadbalance-notification-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-loadbalance-notification-deviations-NE9000";
+  prefix loadbalance-notification-devs-NE9000;
+
+  import huawei-loadbalance-notification {
+    prefix loadbalance-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-loadbalance-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/loadbalance-notification:hash-key-ip-alarm" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance-notification:hash-key-ip-alarm-resume" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance-notification:l2vxlan-deep-hash-alarm" {
+    deviate not-supported;
+  }
+  deviation "/loadbalance-notification:l2vxlan-deep-hash-alarm-resume" {
+    deviate not-supported;
+  }
+
+}

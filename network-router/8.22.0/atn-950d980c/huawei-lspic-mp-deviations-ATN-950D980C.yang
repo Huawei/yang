@@ -1,0 +1,54 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lspic-mp-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-lspic-mp-deviations-ATN-950D980C";
+  prefix lspic-mp-devs-ATN-950D980C;
+
+  import huawei-lspic-mp {
+    prefix lspic-mp;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  import huawei-ppp-net {
+    prefix ppp-net;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-lspic-mp module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:multilink-ppp/ppp-net:mp-base/lspic-mp:qos-attribute/lspic-mp:dynamic-bandwidth-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:multilink-ppp/ppp-net:mp-base/lspic-mp:qos-attribute/lspic-mp:low-latency-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:multilink-ppp/ppp-net:mp-base/lspic-mp:qos-attribute/lspic-mp:packet-priority" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ppp-net:ppp-net/ppp-net:multilink-ppp/ppp-net:mp-base/lspic-mp:qos-attribute/lspic-mp:packet-queue-depth" {
+    deviate not-supported;
+  }
+
+}

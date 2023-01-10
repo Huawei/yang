@@ -1,0 +1,49 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-debug-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-debug-deviations-NE5000E";
+  prefix debug-devs-NE5000E;
+
+  import huawei-debug {
+    prefix debug;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-debug module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/debug:debug/debug:disk" {
+    deviate not-supported;
+  }
+  deviation "/debug:debug/debug:memory-infos/debug:memory-info" {
+    deviate delete {
+      must 'memreli-notice-threshold <= (memreli-overload-threshold - 5)';
+    }
+    deviate delete {
+      must 'memreli-overload-threshold <= (memreli-exception-threshold - 5)';
+    }
+    deviate delete {
+      must 'overload-threshold <= memreli-exception-threshold';
+    }
+  }
+  deviation "/debug:debug/debug:resouce-reliability/debug:memory-reliability/debug:enable" {
+    deviate replace {
+      default "true";
+    }
+  }
+}

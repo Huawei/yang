@@ -1,0 +1,62 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-telnets-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-telnets-deviations-ATN-910C";
+  prefix telnets-devs-ATN-910C;
+
+  import huawei-telnets {
+    prefix telnets;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-telnets module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/telnets:telnets/telnets:session-car/telnets:cir-interval" {
+    deviate replace {
+      default "32";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/telnets:telnets/telnets:session-car/telnets:cbs-interval" {
+    deviate replace {
+      default "4";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/telnets:telnets/telnets:session-car/telnets:pir-interval" {
+    deviate replace {
+      default "512";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/telnets:telnets/telnets:session-car/telnets:pbs-interval" {
+    deviate replace {
+      default "80";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+}

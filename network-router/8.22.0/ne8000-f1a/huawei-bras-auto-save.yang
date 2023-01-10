@@ -1,0 +1,272 @@
+/*
+Copyright (C) 2019-2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-auto-save {
+  namespace urn:huawei:yang:huawei-bras-auto-save;
+  prefix bras-auto-save;
+  import huawei-aaa {
+    prefix aaa;
+  }
+  import huawei-bras-basic-access {
+    prefix bras-basic-access;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Bras auto save.";
+  revision 2020-03-02 {
+    description
+      "Modify description.";
+    reference
+      "Huawei private.";
+  }
+  revision 2019-03-26 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "bras-control";
+  
+  container bras-auto-save {
+    description
+      "Bras auto save.";
+    container auto-save-max-user {
+      description
+        "Configure auto save max user number.";
+      leaf number {
+        type uint32 {
+          range "4000..1024000";
+        }
+        description
+          "Specifies the maximum number of the DHCPv4 users whose information is automatically backed up.";
+      }
+    }
+    container auto-recover {
+      description
+        "Configure automatic DHCPv4 user login.";
+      leaf enable {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable automatic DHCPv4 user login.";
+      }
+      leaf speed {
+        type enumeration {
+          enum "slow" {
+            value 1;
+            description
+              "Indicates that the maximum rate at which DHCPv4 users automatically go online after the router recovers from a fault is 100/s.";
+          }
+          enum "normal" {
+            value 2;
+            description
+              "Indicates that the maximum rate at which DHCPv4 users automatically go online after the router recovers from a fault is 300/s.";
+          }
+          enum "fast" {
+            value 3;
+            description
+              "Indicates that the maximum rate at which DHCPv4 users automatically go online after the router recovers from a fault is 500/s.";
+          }
+        }
+        default "normal";
+        description
+          "Configures the rate at which DHCPv4 users automatically go online after the router recovers from a fault.";
+      }
+      leaf no-send-packet {
+        type boolean;
+        default "false";
+        description
+          "Enable/disable no send packet to DHCP server.";
+      }
+    }
+    container access-user-statistics {
+      config false;
+      description
+        "Statistics of auto-save access user.";
+      leaf max-backup-user-number {
+        type uint32;
+        description
+          "Maximum number of DHCPv4 users whose information can be automatically backed up.";
+      }
+      leaf current-valid-number {
+        type uint32;
+        description
+          "Number of all DHCPv4 users whose information is backed up. This is the total number of the online DHCPv4 users and the DHCPv4 users who wait to go online.";
+      }
+      leaf current-online-user-number {
+        type uint32;
+        description
+          "Number of online DHCPv4 users whose information is backed up.";
+      }
+      leaf current-wait-recover-user-number {
+        type uint32;
+        description
+          "Number of DHCPv4 users who wait to go online and whose information is backed up.";
+      }
+      leaf user-backup-table-version {
+        type string {
+          length "1..31";
+        }
+        description
+          "Device version in which DHCPv4 users whose information is backed up.";
+      }
+    }
+    container access-user-infos {
+      config false;
+      description
+        "List of access user information.";
+      list access-user-info {
+        key "index";
+        description
+          "Statistics of access user information.";
+        leaf index {
+          type uint32;
+          description
+            "Record index of auto-save user.";
+        }
+        leaf mac-address {
+          type pub-type:mac-address;
+          description
+            "MAC address of a user.";
+          ext:support-filter "true";
+        }
+        leaf access-interface {
+          type string {
+            length "1..63";
+          }
+          description
+            "User access interface.";
+          ext:support-filter "true";
+        }
+        leaf pevlan {
+          type uint16;
+          description
+            "Outer VLAN ID.";
+          ext:support-filter "true";
+        }
+        leaf cevlan {
+          type uint16;
+          description
+            "Inner VLAN ID.";
+          ext:support-filter "true";
+        }
+        leaf status {
+          type enumeration {
+            enum "online" {
+              value 1;
+              description
+                "Online status.";
+            }
+            enum "wait-recover" {
+              value 2;
+              description
+                "Wait recover status.";
+            }
+          }
+          description
+            "User status.";
+          ext:support-filter "true";
+        }
+        leaf ip-address {
+          type inet:ipv4-address-no-zone;
+          description
+            "IPv4 address of a user.";
+        }
+        leaf valid {
+          type boolean;
+          description
+            "Whether it is valid.";
+        }
+        leaf vpn {
+          type string {
+            length "1..31";
+          }
+          description
+            "Vpn name.";
+        }
+        leaf dhcp-server {
+          type inet:ipv4-address-no-zone;
+          description
+            "DHCP server address.";
+        }
+        leaf lease-end-time {
+          type string {
+            length "1..31";
+          }
+          description
+            "Lease end time.";
+        }
+        leaf domain {
+          type string {
+            length "1..64";
+          }
+          description
+            "Domain name.";
+        }
+        leaf option82-agent-circuit-id {
+          type string {
+            length "1..200";
+          }
+          description
+            "Agent-Circuit-Id of option82.";
+        }
+        leaf option82-agent-remote-id {
+          type string {
+            length "1..200";
+          }
+          description
+            "Agent-Remote-Id of option82.";
+        }
+        leaf option60 {
+          type string {
+            length "1..255";
+          }
+          description
+            "Option 60.";
+        }
+        leaf option61 {
+          type string {
+            length "1..64";
+          }
+          description
+            "Option 61.";
+        }
+      }
+    }
+  }
+  augment "/aaa:aaa/aaa:domains/aaa:domain/bras-basic-access:bas" {
+    description
+      "Bras domain configuration.";
+    container bras-auto-save {
+      description
+        "Configure a domain and enters the domain; alternatively, you can enter the existing domain. Exceptionally, the node in this module cannot be deleted or removed to delete its child nodes.";
+      container dhcp-auto-save {
+        description
+          "Configure automatic backup of DHCPv4 user information in a domain.";
+        leaf enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable automatic backup of DHCPv4 user information.";
+        }
+      }
+    }
+  }
+}

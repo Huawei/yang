@@ -1,0 +1,36 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-cfm-interface-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-oam-cfm-interface-deviations-OC-NE-X8X16";
+  prefix oam-cfm-interface-devs-OC-NE-X8X16;
+
+  import huawei-oam-cfm-interface {
+    prefix oam-cfm-interface;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-oam-cfm-interface module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oammgr:oammgr/oam-cfm-interface:cfm-bind-interfaces/oam-cfm-interface:cfm-bind-interface/oam-cfm-interface:trigger-type" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,87 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-wdm-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-wdm-deviations-NE9000";
+  prefix wdm-devs-NE9000;
+
+  import huawei-wdm {
+    prefix wdm;
+  }
+
+  import huawei-driver {
+    prefix driver;
+  }
+
+  import huawei-pic {
+    prefix pic;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-wdm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef wdms-wdm-fecmode-deviations {
+    type enumeration {
+      enum "standard" {
+        value 1;
+        description 
+          "FEC (G.709).";
+      }
+      enum "none" {
+        value 0;
+        description 
+          "FEC Disable.";
+      }
+      enum "enhanced" {
+        value 2;
+        description 
+          "HGFEC (Enhanced).";
+      }
+      enum "enhanced-i-4" {
+        value 3;
+        description 
+          "AFEC-3 (G.975.1 I.4).";
+      }
+      enum "enhanced-i-7" {
+        value 4;
+        description 
+          "AFEC (G.975.1 I.7).";
+      }
+      enum "lhaul-sd" {
+        value 5;
+        description 
+          "Lhaul-sd.";
+      }
+    }
+    description 
+      "Fec mode.";
+  }
+
+  deviation "/driver:driver/driver:global-attribute/pic:global/wdm:source-pm-measurement" {
+    deviate not-supported;
+  }
+  deviation "/wdm:wdm/wdm:wdms/wdm:wdm/wdm:fecmode" {
+    deviate replace {
+      type wdm-devs-NE9000:wdms-wdm-fecmode-deviations;
+    }
+  }
+
+}

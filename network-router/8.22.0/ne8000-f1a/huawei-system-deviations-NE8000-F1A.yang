@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-system-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-system-deviations-NE8000-F1A";
+  prefix system-devs-NE8000-F1A;
+
+  import huawei-system {
+    prefix system;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-system module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/system:system/system:system-info/system:hardware-model" {
+    deviate not-supported;
+  }
+  deviation "/system:system/system:system-info/system:configuration-restoring" {
+    deviate not-supported;
+  }
+  deviation "/system:system/system:system-info/system:startup-type" {
+    deviate not-supported;
+  }
+}

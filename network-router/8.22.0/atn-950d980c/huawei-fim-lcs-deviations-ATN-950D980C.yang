@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-lcs-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-fim-lcs-deviations-ATN-950D980C";
+  prefix fim-lcs-devs-ATN-950D980C;
+
+  import huawei-fim-lcs {
+    prefix fim-lcs;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fim-lcs module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/lcs:license/lcs:license-items/lcs:license-item/fim-lcs:port-slicings" {
+    deviate not-supported;
+  }
+
+}

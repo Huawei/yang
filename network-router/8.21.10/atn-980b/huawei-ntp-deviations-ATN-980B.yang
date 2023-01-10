@@ -1,0 +1,40 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ntp-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-ntp-deviations-ATN-980B";
+  prefix ntp-devs-ATN-980B;
+
+  import huawei-ntp {
+    prefix ntp;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ntp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ntp:ntp/ntp:system-config/ntp:is-auth-password-check" {
+    deviate replace {
+      default "false";
+    }
+  }
+  deviation "/ntp:ntp/ntp:access-controls/ntp:access-control" {
+    deviate add {
+      must 'acl4-identity or acl6-identity';
+    }
+  }
+}

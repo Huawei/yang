@@ -1,0 +1,51 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-lsp-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-bgp-lsp-deviations-NE5000E";
+  prefix bgp-lsp-devs-NE5000E;
+
+  import huawei-bgp-lsp {
+    prefix bgp-lsp;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-lsp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bgp-lsp:bgp-lsp/bgp-lsp:bfd/bgp-lsp:parameters/bgp-lsp:enable" {
+    deviate not-supported;
+  }
+  deviation "/bgp-lsp:bgp-lsp/bgp-lsp:bfd/bgp-lsp:parameters/bgp-lsp:trigger" {
+    deviate not-supported;
+  }
+  deviation "/bgp-lsp:bgp-lsp/bgp-lsp:bfd/bgp-lsp:parameters/bgp-lsp:trigger-ip-prefix-name" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls:common/mpls:global/bgp-lsp:bgp-ttl-mode" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/bgp-lsp:bgp-mpls-lsp" {
+    deviate not-supported;
+  }
+}

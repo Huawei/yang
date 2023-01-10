@@ -1,0 +1,62 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-l2vpn-vpls-ext-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-l2vpn-vpls-ext-deviations-ATN-950D980C";
+  prefix l2vpn-vpls-ext-devs-ATN-950D980C;
+
+  import huawei-l2vpn-vpls-ext {
+    prefix l2vpn-vpls-ext;
+  }
+
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-l2vpn-vpls-ext module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:vpls-ldp-fast-switch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:pw-source-tunnel-check" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:convergence-separate-in-system" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:common/l2vpn-vpls-ext:l2vpn-ext/l2vpn-vpls-ext:vpls-tm-prune-enable" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vsi-pipe/l2vpn-vpls-ext:color" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:reserve-if-switch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vpls-ext/l2vpn-vpls-ext:vsi-multicast-switch" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn-vpls-ext:vpls-ext/l2vpn-vpls-ext:convergence-separate" {
+    deviate not-supported;
+  }
+
+}

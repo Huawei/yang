@@ -1,0 +1,67 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bier-notification-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-bier-notification-deviations-NE5000E";
+  prefix bier-notification-devs-NE5000E;
+
+  import huawei-bier-notification {
+    prefix bier-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bier-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ip-addr-type-deviations {
+    type enumeration {
+      enum unknown {
+        value 0;
+        description
+          "Unknown type.";
+      }
+      enum ipv6unicast {
+        value 2;
+        description
+          "IPv6 unicast.";
+      }
+    }
+    description
+      "Address family.";
+  }
+
+  deviation "/bier-notification:bier-prefix-bfrid-conflict/bier-notification:address-family" {
+    deviate replace {
+      type bier-notification-devs-NE5000E:ip-addr-type-deviations;
+    }
+  }
+  deviation "/bier-notification:bier-prefix-bfrid-conflict-resume/bier-notification:address-family" {
+    deviate replace {
+      type bier-notification-devs-NE5000E:ip-addr-type-deviations;
+    }
+  }
+  deviation "/bier-notification:bier-endbier-sid-conflict/bier-notification:address-family" {
+    deviate replace {
+      type bier-notification-devs-NE5000E:ip-addr-type-deviations;
+    }
+  }
+  deviation "/bier-notification:bier-endbier-sid-conflict-resume/bier-notification:address-family" {
+    deviate replace {
+      type bier-notification-devs-NE5000E:ip-addr-type-deviations;
+    }
+  }
+}

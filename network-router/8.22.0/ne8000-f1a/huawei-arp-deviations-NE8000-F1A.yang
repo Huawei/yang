@@ -1,0 +1,125 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-arp-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-arp-deviations-NE8000-F1A";
+  prefix arp-devs-NE8000-F1A;
+
+  import huawei-arp {
+    prefix arp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-arp module.";
+
+  revision 2021-08-11 {
+    description
+      "The deviations of the huawei-arp module were modified.";
+    reference "Huawei private.";
+  }
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef arpgratuitous-send-deviations {
+    type enumeration {
+      enum enable {
+        value 1;
+        description
+          "Enable gratuitous ARP on interface.";
+      }
+      enum disable {
+        value 3;
+        description
+          "Disable gratuitous ARP on interface.";
+      }
+    }
+    description
+      "Whether to enable gratuitous ARP.";
+  }
+
+  deviation "/arp:arp/arp:global/arp:gateway-dup-enable" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:global/arp:ipconflict-detect-enable" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:global/arp:dfs-backup-rate" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:global/arp:smart-discover-interval" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:global/arp:smart-discover-count" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:query-entries/arp:query-entry/arp:work-dyn-if-name" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:query-entries/arp:query-entry/arp:vni" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:query-entries/arp:query-entry/arp:source-addr" {
+    deviate not-supported;
+  }
+  deviation "/arp:arp/arp:query-entries/arp:query-entry/arp:peer-addr" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/arp:arp-entry/arp:smart-discover-enable" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/arp:arp-list/arp:broadcast-suppress" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/arp:arp-list/arp:l2proxy-gw-enable" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/arp:arp-statistics/arp:receive-proxy-packets" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/arp:arp-statistics/arp:miss-discard" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/arp:arp-statistics/arp:l2proxy-reply" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/arp:arp-entry/arp:expire-time" {
+    deviate replace {
+      type uint32 {
+        range "60..86400";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/arp:arp-entry/arp:gratuitous-send" {
+    deviate replace {
+      type arp-devs-NE8000-F1A:arpgratuitous-send-deviations;
+    }
+    deviate replace {
+      default "enable";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/arp:arp-port-security/arp:l2-sub-interface/arp:l2proxy-max-num" {
+    deviate replace {
+      type uint32 {
+        range "0..344064";
+      }
+    }
+  }
+}

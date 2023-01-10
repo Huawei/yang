@@ -1,0 +1,62 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-nqa-type {
+  yang-version 1;
+  belongs-to huawei-nqa {
+    prefix nqa;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+description
+     "NQA types.";
+
+  revision 2021-04-29 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  
+  typedef unicast-mac-address {
+    type pub-type:mac-address {
+      pattern '[1-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}(-[0-9a-f]{4}){2} |' +
+	          '[0-9a-f][2|4|6|8|a|c|e][0-9a-f]{2}(-[0-9a-f]{4}){2} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][1-9a-f][0-9a-f](-[0-9a-f]{4}){2} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f][1-9a-f](-[0-9a-f]{4}){2} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}-[1-9a-f]([0-9a-f]){3}(-[0-9a-f]{4}){1} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}-[0-9a-f][1-9a-f]([0-9a-f]){2}(-[0-9a-f]{4}){1} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}-([0-9a-f]){2}[1-9a-f][0-9a-f](-[0-9a-f]{4}){1} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}-([0-9a-f]){3}[1-9a-f](-[0-9a-f]{4}){1} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}(-[0-9a-f]{4}){1}-([1-9a-f]){3} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}(-[0-9a-f]{4}){1}-[0-9a-f][1-9a-f]([0-9a-f]){2} |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}(-[0-9a-f]{4}){1}-([0-9a-f]){2}[1-9a-f][0-9a-f] |' +
+			  '[0-9a-f][0|2|4|6|8|a|c|e][0-9a-f]{2}(-[0-9a-f]{4}){1}-([0-9a-f]){3}[1-9a-f]';
+    }
+    description
+      "A uinicast MAC address for nqa test instance. And not 0000-0000-0000.";
+  }
+
+  typedef valid-abc-ipv4-address {
+    type inet:ipv4-address {
+      pattern
+        '(22[0-3]|2[0-1][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])([\.](25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])){3}';
+    }
+    description
+      "Valid class A, B, or C IPv4 address. 1-223.0-255.0-255.0-255.";
+  }
+}

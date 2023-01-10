@@ -1,0 +1,114 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-y1731-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-y1731-notification";
+  prefix y1731-notification;
+  import huawei-y1731 {
+    prefix y1731;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of y1731.";
+  revision 2021-07-26 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name  "y1731";
+
+  notification y1731-pw-trunk-nonsupport {
+    description
+      "Y.1731 PW side packet loss statistics does not support PW public network port type is ETH-Trunk interface.";
+    leaf md-name {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+      }
+      description
+        "MD name.";
+    }
+    leaf ma-name {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:name";
+      }
+      description
+        "MA name.";
+    }
+    leaf mep-id {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:id";
+      }
+      description
+        "MEP ID.";
+    }
+    leaf md-index {
+      type uint32;
+      description
+        "MD index.";
+    }
+    leaf ma-index {
+      type uint32;
+      description
+        "MA index.";
+    }
+    leaf mep-index {
+      type uint32;
+      description
+        "MEP index.";
+    }
+  }
+  notification y1731-pw-trunk-nonsupport-resume {
+    description
+      "The alarm that Y.1731 PW-side frame loss measurement is not supported on an Eth-Trunk interface configured as the PW's public network-side interface is cleared.";
+    leaf md-name {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:name";
+      }
+      description
+        "MD name.";
+    }
+    leaf ma-name {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:name";
+      }
+      description
+        "MA name.";
+    }
+    leaf mep-id {
+      type leafref {
+        path "/y1731:y1731/y1731:global-enable/y1731:mds/y1731:md/y1731:mas/y1731:ma/y1731:meps/y1731:mep/y1731:id";
+      }
+      description
+        "MEP ID.";
+    }
+    leaf md-index {
+      type uint32;
+      description
+        "MD index.";
+    }
+    leaf ma-index {
+      type uint32;
+      description
+        "MA index.";
+    }
+    leaf mep-index {
+      type uint32;
+      description
+        "MEP index.";
+    }
+  }
+}

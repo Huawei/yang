@@ -1,0 +1,63 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-ldp-deviations-OC-NE-X8X16 {
+  namespace "urn:huawei:yang:huawei-mpls-ldp-deviations-OC-NE-X8X16";
+  prefix mpls-ldp-devs-OC-NE-X8X16;
+
+  import huawei-mpls-ldp {
+    prefix mpls-ldp;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mpls-ldp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ldp-peer-group-auth-mode-deviations {
+    type enumeration {
+      enum md5 {
+        value 1;
+        description
+          "Specifies mode for cipher or plain MD5 password.";
+      }
+      enum keychain {
+        value 2;
+        description
+          "Specifies mode for keychain password.";
+      }
+    }
+    description
+      "LDP Peer Authentication Type.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:remote-peers/mpls-ldp:remote-peer/mpls-ldp:status/mpls-ldp:manual-configuration-effect" {
+    deviate add {
+      default "false";
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/mpls-ldp:ldp/mpls-ldp:instance/mpls-ldp:auth-peer-groups/mpls-ldp:auth-peer-group/mpls-ldp:authen-mode" {
+    deviate replace {
+      type mpls-ldp-devs-OC-NE-X8X16:ldp-peer-group-auth-mode-deviations;
+    }
+  }
+}

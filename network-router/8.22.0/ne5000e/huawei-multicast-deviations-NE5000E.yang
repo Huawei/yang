@@ -1,0 +1,56 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-multicast-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-multicast-deviations-NE5000E";
+  prefix mc-devs-NE5000E;
+
+  import huawei-multicast {
+    prefix mc;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-multicast module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef rmbase-af-type-deviations {
+    type enumeration {
+      enum ipv4unicast {
+        value 0;
+        description
+          "IPv4 unicast.";
+      }
+    }
+    description
+      "Address family.";
+  }
+
+  deviation "/mc:multicast/mc:global" {
+    deviate not-supported;
+  }
+  deviation "/mc:multicast/mc:invalid-packet-max-count/mc:ipv4/mc:igmp-snooping-packets" {
+    deviate not-supported;
+  }
+  deviation "/mc:multicast/mc:invalid-packet-max-count/mc:ipv6/mc:mld-snooping-packets" {
+    deviate not-supported;
+  }
+  deviation "/mc:multicast/mc:ssm-mapping-policys/mc:ssm-mapping-policy/mc:address-family" {
+    deviate replace {
+      type mc-devs-NE5000E:rmbase-af-type-deviations;
+    }
+  }
+}

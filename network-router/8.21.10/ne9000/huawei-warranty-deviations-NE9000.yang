@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-warranty-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-warranty-deviations-NE9000";
+  prefix warranty-devs-NE9000;
+
+  import huawei-warranty {
+    prefix warranty;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-warranty module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/warranty:warranty/warranty:global" {
+    deviate not-supported;
+  }
+  deviation "/warranty:warranty/warranty:warranty-infos" {
+    deviate not-supported;
+  }
+  deviation "/warranty:activate-warranty" {
+    deviate not-supported;
+  }
+}

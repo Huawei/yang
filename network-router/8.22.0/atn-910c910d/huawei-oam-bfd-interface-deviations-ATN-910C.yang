@@ -1,0 +1,55 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-oam-bfd-interface-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-oam-bfd-interface-deviations-ATN-910C";
+  prefix oam-bfd-interface-devs-ATN-910C;
+
+  import huawei-oam-bfd-interface {
+    prefix oam-bfd-interface;
+  }
+  import huawei-bfd {
+    prefix bfd;
+  }
+  import huawei-bfd-static-vpws {
+    prefix bfd-static-vpws;
+  }
+  import huawei-oammgr {
+    prefix oammgr;
+  }
+  import huawei-bfd-static-vpls {
+    prefix bfd-static-vpls;
+  }
+  import huawei-bfd-static-mpls-te {
+    prefix bfd-static-mpls-te;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-oam-bfd-interface module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface/oam-bfd-interface:name-or-id/oam-bfd-interface:name/oam-bfd-interface:bfd-sess-name" {
+    deviate add {
+      must "count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-sess-name=current()]) <= 1 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-session-id=(/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd:local-discriminator-multicast-ipv4)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-session-id=(/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd:local-discriminator)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-session-id=(/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd:local-discriminator-static-ipv6)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-session-id=(/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd:local-discriminator-static-ldp-lsp)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-session-id=(/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd-static-mpls-te:local-discriminator-static-te-lsp)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-session-id=(/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd-static-mpls-te:local-discriminator-static-te-tunnel)]) = 0 and (not((/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd:bundle-mode-auto-ipv4 and /bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd:bundle-mode-auto-ipv4 !='none') or (/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd:bundle-mode-auto-ipv6 and /bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd:bundle-mode-auto-ipv6 !='none') or (/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd-static-vpls:vsi-name-static-vsi-pw) or (/bfd:bfd/bfd:sessions/bfd:session[bfd:name=current()]/bfd-static-vpws:out-if-name-static-vll-pw)))";
+    }
+  }
+  deviation "/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface/oam-bfd-interface:name-or-id/oam-bfd-interface:id/oam-bfd-interface:bfd-session-id" {
+    deviate add {
+      must 'count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-session-id=current()]) <= 1 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-sess-name=(/bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-multicast-ipv4=current()]/bfd:name)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-sess-name=(/bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator=current()]/bfd:name)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-sess-name=(/bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-static-ipv6=current()]/bfd:name)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-sess-name=(/bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-static-ldp-lsp=current()]/bfd:name)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-sess-name=(/bfd:bfd/bfd:sessions/bfd:session[bfd-static-mpls-te:local-discriminator-static-te-lsp=current()]/bfd:name)]) = 0 and count(/oammgr:oammgr/oam-bfd-interface:bfd-bind-interfaces/oam-bfd-interface:bfd-bind-interface[oam-bfd-interface:bfd-sess-name=(/bfd:bfd/bfd:sessions/bfd:session[bfd-static-mpls-te:local-discriminator-static-te-tunnel=current()]/bfd:name)]) = 0 and (/bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-multicast-ipv4=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-static-ipv6=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd:local-discriminator-static-ldp-lsp=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd-static-mpls-te:local-discriminator-static-te-lsp=current()] or /bfd:bfd/bfd:sessions/bfd:session[bfd-static-mpls-te:local-discriminator-static-te-tunnel=current()])';
+    }
+  }
+}

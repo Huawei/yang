@@ -1,0 +1,156 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-etrunk-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-etrunk-deviations-ATN-950D980C";
+  prefix etrunk-devs-ATN-950D980C;
+
+  import huawei-etrunk {
+    prefix etrunk;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Enhanced Trunk (E-Trunk) is a mechanism that controls and implements link aggregation among multiple devices. E-Trunk implements device-level not board-level link reliability.";
+
+  revision 2021-05-07 {
+    description
+      "The deviations of the huawei-etrunk module were modified.";
+    reference "Huawei private.";
+  }
+  revision 2020-02-19 {
+    description
+      "Init revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/etrunk:etrunk/etrunk:global/etrunk:etrunk4-session-car/etrunk:cir" {
+    deviate replace {
+      type uint32 {
+        range "0..3000";
+      }
+    }
+    deviate replace {
+      default "32";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:global/etrunk:etrunk4-session-car/etrunk:cbs" {
+    deviate replace {
+      type uint32 {
+        range "0..3000";
+      }
+    }
+    deviate replace {
+      default "160";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:global/etrunk:etrunk4-session-car/etrunk:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..3000";
+      }
+    }
+    deviate replace {
+      default "500";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:global/etrunk:etrunk4-session-car/etrunk:pbs" {
+    deviate replace {
+      type uint32 {
+        range "0..3000";
+      }
+    }
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:global/etrunk:etrunk6-session-car/etrunk:cir" {
+    deviate replace {
+      type uint32 {
+        range "0..3000";
+      }
+    }
+    deviate replace {
+      default "32";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:global/etrunk:etrunk6-session-car/etrunk:cbs" {
+    deviate replace {
+      type uint32 {
+        range "0..3000";
+      }
+    }
+    deviate replace {
+      default "160";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:global/etrunk:etrunk6-session-car/etrunk:pir" {
+    deviate replace {
+      type uint32 {
+        range "0..3000";
+      }
+    }
+    deviate replace {
+      default "500";
+    }
+    deviate replace {
+      units "pps";
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:global/etrunk:etrunk6-session-car/etrunk:pbs" {
+    deviate replace {
+      type uint32 {
+        range "0..3000";
+      }
+    }
+    deviate replace {
+      default "1500";
+    }
+    deviate replace {
+      units "packet";
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:security-key-type" {
+    deviate add {
+      must '../security-key and ../security-key-type';
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:security-key" {
+    deviate add {
+      must '../security-key and ../security-key-type';
+    }
+  }
+  deviation "/etrunk:etrunk/etrunk:instances/etrunk:instance/etrunk:id" {
+    deviate replace {
+      type uint16 {
+        range "1..64";
+      }
+    }
+  }
+}

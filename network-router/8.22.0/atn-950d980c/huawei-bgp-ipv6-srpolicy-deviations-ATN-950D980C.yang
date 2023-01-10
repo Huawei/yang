@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-ipv6-srpolicy-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-bgp-ipv6-srpolicy-deviations-ATN-950D980C";
+  prefix bgp-ipv6-srpolicy-devs-ATN-950D980C;
+
+  import huawei-bgp-ipv6-srpolicy {
+    prefix bgp-ipv6-srpolicy;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-ipv6-srpolicy module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ipv6-srpolicy:ipv6-srpolicy/bgp-ipv6-srpolicy:routes/bgp-ipv6-srpolicy:route/bgp-ipv6-srpolicy:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ipv6-srpolicy:ipv6-srpolicy/bgp-ipv6-srpolicy:peer-receive-routes/bgp-ipv6-srpolicy:peer-receive-route/bgp-ipv6-srpolicy:advertise-nexthop" {
+    deviate not-supported;
+  }
+}

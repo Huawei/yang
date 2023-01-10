@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-ipv4-address-manage-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bras-ipv4-address-manage-notif";
+  prefix bras-ipv4-address-manage-notif;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of IPv4 address management.";
+  revision 2022-03-29 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "ippool";
+  notification unr-import-route-threshold-exceed {
+    description
+      "The number of BRAS UNR VPN import routes exceeded the threshold.";
+    leaf threshold {
+      type uint32;
+      description
+        "BRAS UNR VPN import route threshold.";
+    }
+  }
+
+  notification unr-import-route-threshold-exceed-resume {
+    description
+      "The number of BRAS UNR VPN import routes fell below the threshold.";
+    leaf threshold {
+      type uint32;
+      description
+        "BRAS UNR VPN import route threshold.";
+    }
+  }
+}

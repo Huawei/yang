@@ -1,0 +1,107 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-te-cr-static-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-mpls-te-cr-static-deviations-ATN-950D980C";
+  prefix mpls-te-cr-static-devs-ATN-950D980C;
+
+  import huawei-mpls-te-cr-static {
+    prefix mpls-te-cr-static;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-mpls-te {
+    prefix mpls-te;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-gre {
+    prefix gre;
+  }
+  import huawei-tunnel-management {
+    prefix tnlm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mpls-te-cr-static module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:sr-te-simulate-transit" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te-cr-static:cr-static/mpls-te-cr-static:traffic-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te-cr-static:cr-static/mpls-te-cr-static:tunnel-group/mpls-te-cr-static:paths/mpls-te-cr-static:path/mpls-te-cr-static:forward-lsp-defect-state" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te-cr-static:cr-static/mpls-te-cr-static:tunnel-group/mpls-te-cr-static:paths/mpls-te-cr-static:path/mpls-te-cr-static:reverse-lsp-defect-state" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/tnlm:tunnel-protocol/tnlm:type/mpls-te:mpls-te/mpls-te:te-tunnel/mpls-te-cr-static:cr-static/mpls-te-cr-static:tunnel-group/mpls-te-cr-static:aps-info" {
+    deviate not-supported;
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:ingress/mpls-te-cr-static:ingress/mpls-te-cr-static:out-interface-name" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/gre:gre-tunnel)';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:transit/mpls-te-cr-static:transit/mpls-te-cr-static:in-interface-name" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/gre:gre-tunnel)';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:transit/mpls-te-cr-static:transit/mpls-te-cr-static:out-interface-name" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/gre:gre-tunnel)';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:static-cr-lsps/mpls-te-cr-static:static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:egress/mpls-te-cr-static:egress/mpls-te-cr-static:in-interface-name" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/gre:gre-tunnel)';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:bidirection-static-cr-lsps/mpls-te-cr-static:bidirection-static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:ingress/mpls-te-cr-static:ingress/mpls-te-cr-static:forward/mpls-te-cr-static:out-interface-name" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/gre:gre-tunnel)';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:bidirection-static-cr-lsps/mpls-te-cr-static:bidirection-static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:transit/mpls-te-cr-static:transit/mpls-te-cr-static:forward/mpls-te-cr-static:in-label" {
+    deviate replace {
+      type uint32 {
+        range "16..294927";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:bidirection-static-cr-lsps/mpls-te-cr-static:bidirection-static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:transit/mpls-te-cr-static:transit/mpls-te-cr-static:forward/mpls-te-cr-static:out-interface-name" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/gre:gre-tunnel)';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:bidirection-static-cr-lsps/mpls-te-cr-static:bidirection-static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:transit/mpls-te-cr-static:transit/mpls-te-cr-static:backward/mpls-te-cr-static:out-interface-name" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/gre:gre-tunnel)';
+    }
+  }
+  deviation "/mpls:mpls/mpls-te:te/mpls-te-cr-static:bidirection-static-cr-lsps/mpls-te-cr-static:bidirection-static-cr-lsp/mpls-te-cr-static:lsr-type/mpls-te-cr-static:egress/mpls-te-cr-static:egress/mpls-te-cr-static:backward/mpls-te-cr-static:out-interface-name" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface[ifm:name=current()]/tnlm:tunnel-protocol/gre:gre-tunnel)';
+    }
+  }
+}

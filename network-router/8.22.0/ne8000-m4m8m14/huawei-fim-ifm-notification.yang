@@ -1,0 +1,135 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-ifm-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-fim-ifm-notification";
+  prefix fim-ifm-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of Interface.";
+  revision 2022-03-29 {
+    description
+      "VE notification spelling correction.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-03-25 {
+    description
+      "Add VE Chipidmismath.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-02-23 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "forwarding";
+  
+  grouping common-slice-bandwidth-alarm {
+    description
+      "Common parameters to sliced sub-interfaces bandwidth alarm.";
+    leaf ifindex {
+      type uint32;
+      description
+        "Interface index.";
+    }
+    leaf bandwidth {
+      type uint32;
+      description
+        "Available bandwidth of the main interface.";
+    }
+    leaf sub-interface-bandwidth-sum {
+      type uint32;
+      description
+        "The total bandwidth of the sliced sub-interfaces.";
+    }
+    leaf interface-name {
+      type leafref {
+        path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+      }
+      description
+        "Interface name.";
+    }
+  }
+  notification mode-flexe-bandwidth-exceed {
+    description
+      "The total bandwidth of the sliced sub-interfaces on the same main interface has exceeded the maximum available bandwidth of the main interface.";
+    uses common-slice-bandwidth-alarm;
+  }
+  notification mode-flexe-bandwidth-exceed-resume {
+    description
+      "The total bandwidth of the sliced sub-interfaces on the same main interface less than the maximum available bandwidth of the main interface.";
+    uses common-slice-bandwidth-alarm;
+  }
+  notification mode-flexe-unsupport {
+    description
+      "The mode flexe enable is configured on the sub-interface, and the main interface is not a GigabitEthernet interface, or the main interface works in non-1GE mode.";
+    leaf interface-name {
+      type leafref {
+        path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+      }
+      description
+        "Interface name.";
+    }
+  }
+  notification mode-flexe-unsupport-resume {
+    description
+      "The mode flexe enable is not configured on the sub-interface, and the main interface is a GigabitEthernet interface, or the main interface works in 1GE mode.";
+    leaf interface-name {
+      type leafref {
+        path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+      }
+      description
+        "Interface name.";
+    }
+  }
+  notification virtual-ethernet-chipidmismatch {
+    description
+      "The alarm appear when the chip of the Virtual-Ethernet port is inconsistent with the chip of the internal binding channel port.";
+    leaf interface-name {
+      type leafref {
+        path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+      }
+      description
+        "Name of a Virtual-Ethernet interface.";
+    }
+    leaf interface-index {
+      type uint32;
+      description
+        "Index of a Virtual-Ethernet interface.";
+    }
+  }
+  notification virtual-ethernet-chipidmismatch-resume {
+    description
+      "The alarm disappear when this Virtual-Ethernet Interface configuration has been deleted.";
+    leaf interface-name {
+      type leafref {
+        path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+      }
+      description
+        "Name of a Virtual-Ethernet interface.";
+    }
+    leaf interface-index {
+      type uint32;
+      description
+        "Index of a Virtual-Ethernet interface.";
+    }
+  }
+}

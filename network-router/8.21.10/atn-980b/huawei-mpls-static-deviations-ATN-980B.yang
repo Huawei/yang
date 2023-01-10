@@ -1,0 +1,47 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mpls-static-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-mpls-static-deviations-ATN-980B";
+  prefix mpls-static-devs-ATN-980B;
+
+  import huawei-mpls-static {
+    prefix mpls-static;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mpls-static module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls-static:static/mpls-static:lsps/mpls-static:lsp/mpls-static:transit/mpls-static:in-label" {
+    deviate replace {
+      type uint32 {
+        range "16..147455";
+      }
+    }
+  }
+  deviation "/mpls:mpls/mpls-static:static/mpls-static:lsps/mpls-static:lsp/mpls-static:egress/mpls-static:in-label" {
+    deviate replace {
+      type uint32 {
+        range "16..147455";
+      }
+    }
+  }
+}

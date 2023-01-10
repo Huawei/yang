@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-srv6-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-bgp-srv6-deviations-ATN-950D980C";
+  prefix bgp-srv6-devs-ATN-950D980C;
+
+  import huawei-bgp-srv6 {
+    prefix bgp-srv6;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-srv6 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/bgp:bgp/bgp:base-process/bgp:afs/bgp:af/bgp:ipv6-unicast/bgp-srv6:locators/bgp-srv6:locator/bgp-srv6:apply-sid-mode" {
+    deviate not-supported;
+  }
+}

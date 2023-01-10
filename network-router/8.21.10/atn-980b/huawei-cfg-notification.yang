@@ -1,0 +1,150 @@
+/*
+Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-cfg-notification {
+  namespace "urn:huawei:yang:huawei-cfg-notification";
+  prefix cfg-notification;
+
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "Notification of the Configuration management module.";
+
+  revision 2022-02-10 {
+    description
+      "Add leaf of notification startup-file-integrity-fail.";
+    reference
+      "Huawei private.";
+  }
+
+  revision 2021-09-06 {
+    description
+      "Add configuration-lock notification.";
+    reference
+      "Huawei private.";
+  }
+
+  revision 2021-08-10 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef startup-integrity-fail-file-type {
+    type enumeration {
+      enum "default" {
+        value 0;
+        description
+          "Default configuration file.";
+      }
+      enum "startup" {
+        value 1;
+        description
+          "Startup configuration file.";
+      }
+    }
+    description
+      "Type of the startup configuration file whose integrity check fails.";
+  }
+
+  ext:task-name "config";
+  notification next-startup-file-integrity-fail {
+    description
+      "Integrity check of the next startup configuration file failed.";
+  }
+
+  notification startup-file-integrity-fail {
+    description
+      "Integrity check of the startup configuration file failed.";
+    leaf startup-integrity-fail-file-type {
+      type startup-integrity-fail-file-type;
+      description
+        "Indicates the type of the startup configuration file whose integrity check fails.";
+    }
+  }
+
+  notification startup-file-integrity-fail-clear {
+    description
+      "The Integrity check of the configuration file failed alarm is manually cleared by user.";
+    leaf startup-integrity-fail-file-type {
+      type startup-integrity-fail-file-type;
+      description
+        "Indicates the type of the startup configuration file whose integrity check fails.";
+    }
+  }
+
+  notification configuration-lock {
+    description
+      "A user locks system configurations.";
+    leaf lock-username {
+      type string {
+        length "1..253";
+      }
+      description
+        "Name of a user who locks the system configuration.";
+    }
+    leaf lock-time {
+      type yang:date-and-time;
+      description
+        "Time when the system configuration is locked.";
+    }
+  }
+
+  notification configuration-unlock {
+    description
+      "A user unlocks system configurations.";
+    leaf unlock-username {
+      type string {
+        length "1..253";
+      }
+      description
+        "Name of a user who unlocks the system configuration.";
+    }
+    leaf unlock-time {
+      type yang:date-and-time;
+      description
+        "Time when the system configuration is unlocked.";
+    }
+  }
+   notification running-config-change {
+    description
+      "The running configuration was modified.";
+    leaf current-config-change-sequence-index {
+      type int32;
+      description
+        "Config sequence index.";
+    }
+    leaf config-change-reverse-count {
+      type int32;
+      description
+        "Count of config sequence index reverse.";
+    }
+    leaf config-change-table-max-index {
+      type int32;
+      description
+        "Max count of config sequence index.";
+    }
+    leaf config-baseline-time {
+      type yang:date-and-time;
+      description
+        "Baseline time of system configurations.";
+    }
+  }
+}

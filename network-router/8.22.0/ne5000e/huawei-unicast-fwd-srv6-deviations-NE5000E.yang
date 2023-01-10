@@ -1,0 +1,52 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-unicast-fwd-srv6-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-unicast-fwd-srv6-deviations-NE5000E";
+  prefix unicast-fwd-srv6-devs-NE5000E;
+
+  import huawei-unicast-fwd-srv6 {
+    prefix unicast-fwd-srv6;
+  }
+
+  import huawei-srv6 {
+    prefix srv6;
+  }
+
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-unicast-fwd-srv6 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/unicast-fwd-srv6:global-ipv6uc-attribute/unicast-fwd-srv6:forward-mode-through" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/unicast-fwd-srv6:lcs-usage-slice-items/unicast-fwd-srv6:lcs-usage-slice-item/unicast-fwd-srv6:lcs-info-boards" {
+    deviate not-supported;
+  }
+
+}

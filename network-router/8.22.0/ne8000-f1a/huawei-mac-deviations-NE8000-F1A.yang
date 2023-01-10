@@ -1,0 +1,184 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mac-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-mac-deviations-NE8000-F1A";
+  prefix mac-devs-NE8000-F1A;
+
+  import huawei-mac {
+    prefix mac;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import huawei-l2vpn {
+    prefix l2vpn;
+  }
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-mac module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef mac-type-deviations {
+    type enumeration {
+      enum dynamic {
+        value 2;
+        description
+          "Dynamic type.";
+      }
+      enum dynamic-black-hole {
+        value 15;
+        description
+          "Dynamic blackhole MAC.";
+      }
+      enum sticky {
+        value 3;
+        description
+          "Sticky type.";
+      }
+      enum sticky-static {
+        value 17;
+        description
+          "Sticky static type.";
+      }
+    }
+    description
+      "MAC type.";
+  }
+
+  deviation "/mac:mac/mac:static-flapping-protect" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:global-blackhole-macs" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:learned-period" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:vsi-name" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:bd-mac-total-numbers" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:dynamic-local" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:dynamic-remote" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:dynamic-trunk" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:oam" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:sticky" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:security" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:security-config" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:authen" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:guest" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:mux" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:tunnel" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:snooping" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:evn" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:ovsdb" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:dynamic-blackhole" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-statistics/mac:mac-statistic/mac:capacity" {
+    deviate not-supported;
+  }
+  deviation "/mac:create-sticky-mac" {
+    deviate not-supported;
+  }
+  deviation "/mac:delete-sticky-mac" {
+    deviate not-supported;
+  }
+  deviation "/mac:delete-security-mac" {
+    deviate not-supported;
+  }
+  deviation "/vlan:vlan/vlan:vlans/vlan:vlan/mac:mac-limit/mac:alarm" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/mac:mac-addresss/mac:mac-address/mac:mac-type/mac:static/mac:out-interface-type/mac:ipv6-tunnel" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-addresss/mac:unqualifys/mac:unqualify/mac:mac-type/mac:static/mac:out-bound-type/mac:ac/mac:ce-any" {
+    deviate not-supported;
+  }
+  deviation "/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/mac:mac/mac:mac-limit/mac:alarm" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute/mac:port-security" {
+    deviate not-supported;
+  }
+  deviation "/mac:mac/mac:mac-usages/mac:mac-usage/mac:slot" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:mpu-boards/devm:mpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/mac:mac/mac:bd-dynamic-macs/mac:bd-dynamic-mac/mac:type" {
+    deviate replace {
+      type mac-devs-NE8000-F1A:mac-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/mac:mac-limit/mac:limit-type/mac:limit-rule-ref/mac:rule-name" {
+    deviate add {
+      must '../../ethernet:l2-attribute';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/mac:mac-limit/mac:limit-type/mac:limit-parameter/mac:maximum" {
+    deviate add {
+      must '(../../ethernet:l2-attribute) or (/l2vpn:l2vpn/l2vpn:instances/l2vpn:instance/l2vpn:vpls/l2vpn:acs/l2vpn:ac[l2vpn:interface-name=current()/../../../../ifm:name])';
+    }
+  }
+}

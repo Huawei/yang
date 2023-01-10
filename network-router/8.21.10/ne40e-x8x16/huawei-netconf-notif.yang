@@ -1,0 +1,145 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-netconf-notif {
+  namespace "urn:huawei:yang:huawei-netconf-notif";
+  prefix netconf-notif;
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Notification of NETCONF.";
+  revision 2022-01-05 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private";
+  }
+  ext:task-name "netconf";
+  typedef interrupt-reason-type {
+    type enumeration {
+      enum "closed" {
+        value 1;
+        description
+          "The session was terminated by the client.";
+      }
+      enum "killed" {
+        value 2;
+        description
+          "The session was killed by other session.";
+      }
+      enum "dropped" {
+        value 3;
+        description
+          "The session was terminated because the transport layer connection was unexpectedly closed.";
+      }
+      enum "timeout" {
+        value 4;
+        description
+          "The session was terminated because of timeout.";
+      }
+      enum "bad-hello" {
+        value 5;
+        description
+          "The client's hello message was invalid.";
+      }
+      enum "other" {
+        value 6;
+        description
+          "The session was terminated for some other reasons.";
+      }
+    }
+    description
+      "Reasons of NETCONF interruption.";
+  }
+  typedef interrupt-resume-reason-type {
+    type enumeration {
+      enum "connected" {
+        value 1;
+        description
+          "The NETCONF session is resumed.";
+      }
+      enum "invalid-vpn" {
+        value 2;
+        description
+          "The VPN used by alarm is deleted.";
+      }
+      enum "cleared" {
+        value 3;
+        description
+          "The alarm is disabled.";
+      }
+      enum "aged" {
+        value 4;
+        description
+          "The number of active alarms exceeds the upper limit.";
+      }
+    }
+    description
+      "Reasons of NETCONF interruption resume.";
+  }
+  notification netconf-connection-interrupt {
+    description
+      "The NETCONF session is interrupted.";
+    leaf addr-type {
+      type inet:ip-version;
+      description
+        "Type of the IP address.";
+    }
+    leaf address {
+      type inet:ip-address;
+      description
+        "Address of the remote host for the session.";
+    }
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "VPN name for the session.";
+    }
+    leaf reason {
+      type interrupt-reason-type;
+      description
+        "The reason why the session is interrupted.";
+    }
+  }
+  notification netconf-connection-interrupt-resume {
+    description
+      "The connect-interrupt alarm is cleared.";
+    leaf addr-type {
+      type inet:ip-version;
+      description
+        "Type of the IP address.";
+    }
+    leaf address {
+      type inet:ip-address;
+      description
+        "Address of the remote host for the session.";
+    }
+    leaf vpn-name {
+      type string {
+        length "1..31";
+      }
+      description
+        "VPN name for the session.";
+    }
+    leaf reason {
+      type interrupt-resume-reason-type;
+      description
+        "The reason why the alarm is cleared.";
+    }
+  }
+}

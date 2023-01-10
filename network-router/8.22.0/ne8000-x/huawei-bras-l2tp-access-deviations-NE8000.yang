@@ -1,0 +1,123 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-l2tp-access-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-bras-l2tp-access-deviations-NE8000";
+  prefix bras-l2tp-access-devs-NE8000;
+
+  import huawei-bras-l2tp-access {
+    prefix bras-l2tp-access;
+  }
+
+  import huawei-bras-cu-controller {
+    prefix bras-cu-controller;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-l2tp-access module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:l2tp-groups/bras-l2tp-access:l2tp-group/bras-l2tp-access:l2tp-lac/bras-l2tp-access:cp-source-interfaces" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:l2tp-groups/bras-l2tp-access:l2tp-group/bras-l2tp-access:cp-source-interface" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:l2tp-failover" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:cu-lac-tunnels" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:cu-lac-sessions" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:cp-lns-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:disaster-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:reset-cu-lac-tunnels" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:reset-cp-lns-statistics" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:cu-reset-down-lns" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/bras-l2tp-access:l2tp" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-l2tp-access:l2tp" {
+    deviate not-supported;
+  }
+  deviation "/bras-cu-controller:bras-cu-controller/bras-cu-controller:resource-ups/bras-cu-controller:resource-up/bras-cu-controller:remote-up-boards/bras-cu-controller:remote-up-board/bras-l2tp-access:l2tp" {
+    deviate not-supported;
+  }
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/bras-l2tp-access:l2tp" {
+    deviate not-supported;
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:lns-global/bras-l2tp-access:lns-fast-replys/bras-l2tp-access:lns-fast-reply/bras-l2tp-access:slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:lns-global/bras-l2tp-access:slot-block/bras-l2tp-access:slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:lns-groups/bras-l2tp-access:lns-group/bras-l2tp-access:bind-board/bras-l2tp-access:bind-slots/bras-l2tp-access:bind-slots/bras-l2tp-access:bind-slot/bras-l2tp-access:slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:lns-backup-groups/bras-l2tp-access:lns-backup-group/bras-l2tp-access:bind-slots/bras-l2tp-access:master-slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+  deviation "/bras-l2tp-access:bras-l2tp-access/bras-l2tp-access:lns-backup-groups/bras-l2tp-access:lns-backup-group/bras-l2tp-access:bind-slots/bras-l2tp-access:slave-slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:lpu-boards/devm:lpu-board/devm:position";
+      }
+    }
+  }
+
+}

@@ -1,0 +1,263 @@
+/******************************************************
+* Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn-nat444 {
+  namespace "urn:huawei:yang:huawei-cgn-nat444";
+  prefix cgn-nat444;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-cgn-common {
+    prefix cgn-common;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-vsm {
+    prefix vsm;
+  }
+  import huawei-qos {
+    prefix qos;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-acl {
+    prefix acl;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn NAT444.";
+  revision 2022-03-09 {
+    description
+      "Fix the must condition of leaf acl in container bind-nat.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-29 {
+    description
+      "Add container send-mode. Add use log-host.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-11-05 {
+    description
+      "Add container inter-chassis-distributing, port-range, filter-mode, bind-nat. Add augment to qos and ifm.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-10-11 {
+    description
+      "Add container bind-service-instance-group and nat-server.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-07-31 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  container cgn-nat444 {
+    description
+      "NAT444.";
+    container nat-instances {
+      description
+        "List of nat-instance.";
+      list nat-instance {
+        key "instance-name instance-id";
+        unique "instance-id";
+        unique "instance-name";
+        description
+          "Configure nat instance, used to translate network address.";
+        leaf instance-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Specify the name of a NAT instance.";
+        }
+        leaf instance-id {
+          type uint16 {
+            range "1..4095";
+          }
+          description
+            "Specify the id of a NAT instance.";
+        }
+		container bind-service-instance-group {
+          description
+            "Configure the binded service-instance-group.";
+          leaf name {
+            type leafref {
+              path "/vsm:vsm/vsm:service-instance-groups/vsm:service-instance-group/vsm:group-name";
+            }
+            description
+              "Specify the name of Service-instance-group.";
+          }
+        }
+        container port-range {
+          presence "Enable/Disable the port-range configuration for the nat instance."; 
+          uses cgn-common:port-range-set;
+          description
+            "Configure NAT port-range initial and extend.";
+        }
+        uses cgn-common:alg;
+		container filter-mode {
+          description
+            "Configure the filter mode.";
+          leaf mode {
+            type enumeration {
+              enum "symmetric" {
+                value 0;
+                description
+                  "Symmetric mode.";
+              }
+              enum "full-cone" {
+                value 1;
+                description
+                  "Full-cone mode.";
+              }
+            }
+            default "symmetric";
+            description
+              "NAT filter mode.";
+          }
+        }
+        container log {
+          description "Configure nat log.";
+          uses cgn-common:log-host {
+            refine "hosts/host/secondary" {
+                must "not (../secondary='true' and ../../../send-mode/mode='concurrent')";
+            }
+          }
+          container send-mode {
+            description "Configure nat session log send mode.";
+            uses cgn-common:session-log-send-mode;
+          }
+        }
+        container nat-server {
+          description
+            "Configure nat server.";
+          container attribute {
+            description
+              "Configure nat server attribute.";
+            leaf using-address-group-ip {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable the feature that nat server can use the public IP address in the address group.";
+            }
+          }
+        }
+		container inter-chassis-distributing {
+          presence "Configure the IP address for distributing traffic to the master and slave chassis.";
+          description
+            "Configure the IP address for distributing traffic to the master and slave chassis.";
+          leaf ip-address {
+            type inet:ipv4-address-no-zone;
+            mandatory true;
+            description
+              "Specifies the IP address for distributing traffic to the master and slave chassis.";
+          }
+          leaf mask-length {
+            type uint8 {
+              range "16..32";
+            }
+            mandatory true;
+            description
+              "Specifies the mask length of the IP address.";
+          }
+          leaf vpn-name {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+            description
+              "VPN instance name.";
+          }
+        }
+      }
+    }
+  }
+  augment "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior" {
+    description "Configure binding a traffic behavior to a NAT instance.";
+    container bind-nat {
+      description
+        "Configure binding a traffic behavior to a NAT instance.";
+      leaf nat-instance {
+        type leafref {
+          path "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:instance-name";
+        }
+        description
+          "Specifies the name of a NAT instance.";
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+        "Configure binding an address pool to an ACl on a specified interface in the simplified NAT scenario for NAT traffic distribution on an outbound interface.";
+    container bind-nat {
+      presence "Enable/Disable the bind-nat configuration for the interface.";
+      description
+        "Configure binding an address pool to an ACl on a specified interface in the simplified NAT scenario for NAT traffic distribution on an outbound interface.";
+      leaf acl {
+        type leafref {
+          path "/acl:acl/acl:groups/acl:group/acl:identity";
+        }
+        must "(/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='basic') or (/acl:acl/acl:groups/acl:group[acl:identity=current()]/acl:type='advance')";
+        mandatory true;
+        description
+          "Specifies the number of a basic or advanced ACL.";
+      }
+      leaf nat-instance {
+        type leafref {
+          path "/cgn-nat444:cgn-nat444/cgn-nat444:nat-instances/cgn-nat444:nat-instance/cgn-nat444:instance-name";
+        }
+        mandatory true;
+        description
+          "Specifies the name of a NAT instance.";
+      }
+      leaf deny-action {
+        type enumeration {
+          enum "drop" {
+            value 0;
+            description
+              "Traffic matching the ACL deny rule is discarded.";
+          }
+          enum "forward" {
+            value 1;
+            description
+              "Traffic matching the ACL deny rule is transparently transmitted.";
+          }
+        }
+        default "drop";
+        description "Configure the action for the traffic matching the ACL deny rule.";
+      }
+      leaf precedence {
+        type uint16 {
+          range "0..8191";
+        }
+        default "0";
+        description
+          "Specifies a precedence index.";
+      }
+    }
+  }
+  ext:task-name "nat";
+}

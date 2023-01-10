@@ -1,0 +1,218 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos-board-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-qos-board-deviations-NE5000E";
+  prefix qos-board-devs-NE5000E;
+
+  import huawei-qos-board {
+    prefix qos-board;
+  }
+
+  import huawei-devm-vnf {
+    prefix devm-vnf;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-qos-board module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef policy-match-type-deviations {
+    type enumeration {
+      enum "ip-layer-push" {
+        value 0;
+        description 
+          "Ip-layer-push.";
+      }
+      enum "ip-layer-pop" {
+        value 7;
+        description 
+          "Ip-layer-pop.";
+      }
+      enum "mpls-layer-push" {
+        value 3;
+        description
+          "MF classification based on both IP and MPLS information for incoming traffic on the public network.";
+      }
+      enum "mpls-layer-pop" {
+        value 6;
+        description
+          "MF classification based on both IP and MPLS information for outgoing traffic on the public network.";
+      }
+      enum "protocol-mc-reserved" {
+        value 2;
+        description 
+          "Protocol-mc-reserved.";
+      }
+    }
+    description 
+      "Ip-layer-push/ip-layer-pop/MPLS-layer-push/MPLS-layer-pop/protocol-mc-reserved.";
+  }
+
+  deviation "/devm-vnf:devm-vnf/devm-vnf:vnf-boards/devm-vnf:vnf-board/qos-board:qos" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:mpu-boards/devm:mpu-board/qos-board:qos" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:pq-schedule-prioritys" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:pq-schedule-priority-on-cards" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:multicast-port-queues" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:multicast-port-shaping" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:user-queue-pir-precision" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:exp-phb-disable" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:packet-block-thresholds" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:packet-block-threshold-all" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:channel-alarms" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:channel-profile-precision" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:channel-profile-apply" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:channel-auto-adjust-switch" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:fabric-queue-statistic-enable" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-adjust-number" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-degrade-cycle" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-upgrade-cycle" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-switch" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-inbound-threshold-adjust" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-outbound-threshold-adjust" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-monitor-number" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-enable-switch" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-enable-inbound-switch" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:over-ride-initial-grade" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:multicast-shaping" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:multicast-shaping-service-template" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:port-queue-alarms" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:user-queue-recovery-disable" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:multicast-shapers" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:access-user-board-schedule-enable" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:convergent-precedence-highs" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:user-queue-burst" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:burst-sizes" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:global-buffer-share-thresholds" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:global-buffer-share-queues" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:flow-queue-backpressure-off" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:traffic-policy-match-type" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:user-queue-resource-4cos" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:user-queue-resource-8cos-enhances" {
+    deviate not-supported;
+  }
+  deviation "/lcs:license/qos-board:vm-bandwidths" {
+    deviate not-supported;
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:traffic-policy-matchs/qos-board:traffic-policy-match" {
+    deviate replace {
+      max-elements 3;
+    }
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:traffic-policy-matchs/qos-board:traffic-policy-match/qos-board:type" {
+    deviate replace {
+      type qos-board-devs-NE5000E:policy-match-type-deviations;
+    }
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:traffic-policy-matchs/qos-board:traffic-policy-match" {
+    deviate add {
+      must "(((qos-board:type='ip-layer-push' or qos-board:type='ip-layer-pop') and not(../qos-board:traffic-policy-match[qos-board:type='mpls-layer-push']) and not(../qos-board:traffic-policy-match[qos-board:type='mpls-layer-pop'])) or ((qos-board:type='mpls-layer-push' or qos-board:type='mpls-layer-pop') and not(../qos-board:traffic-policy-match[qos-board:type='ip-layer-push']) and not(../qos-board:traffic-policy-match[qos-board:type='ip-layer-pop'])) or qos-board:type='protocol-mc-reserved')";
+    }
+  }
+  deviation "/devm:devm/devm:lpu-boards/devm:lpu-board/qos-board:qos/qos-board:car-resource-pool-enhanced-mode" {
+    deviate not-supported;
+  }
+}

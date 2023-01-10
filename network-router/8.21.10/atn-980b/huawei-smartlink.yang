@@ -1,0 +1,107 @@
+/*
+Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-smartlink {
+  namespace "urn:huawei:yang:huawei-smartlink";
+  prefix smartlink;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Smartlink configuration.";
+  revision 2022-02-21 {
+    description
+      "Display and reset smart link flush.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-08-23 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "smlk";
+  container smartlink {
+    description
+      "Smart link.";
+    container last-flush-packet-info {
+      config false;
+      description
+        "Statistics of received flush packets.";
+      leaf count {
+        type uint32;
+        description
+          "Number of received flush packets.";
+      }
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        description
+          "Interface that received the latest flush packet.";
+      }
+      leaf time {
+        type yang:date-and-time;
+        description
+          "Time and date that the latest flush packet was received.";
+      }
+      leaf mac-address {
+        type pub-type:mac-address;
+        description
+          "Source MAC address of the latest received flush packet.";
+      }
+      leaf control-vlan {
+        type uint16;
+        description
+          "Control VLAN ID of the latest received flush packet.";
+      }
+    }
+  }
+  rpc reset-flush-packet {
+    description
+      "Reset flush packet statistics.";
+    ext:node-ref "/smartlink:smartlink/smartlink:last-flush-packet-info";
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface/ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute" {
+    description
+      "Configure smartlink with the interface.";
+    container smartlink {
+      description
+        "Configure smartlink attribute.";
+      leaf detect-active-link {
+        type empty;
+        description
+          "Enable/disable detect active link.";
+      }
+      leaf control-vlan {
+        type uint16 {
+            range "1..4094";
+        }
+        description
+          "Receive interface control VLAN ID.";
+      }
+    }
+  }
+}

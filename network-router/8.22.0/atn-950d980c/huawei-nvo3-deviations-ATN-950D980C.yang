@@ -1,0 +1,122 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nvo3-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-nvo3-deviations-ATN-950D980C";
+  prefix nvo3-devs-ATN-950D980C;
+
+  import huawei-nvo3 {
+    prefix nvo3;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-bd {
+    prefix bd;
+  }
+  import huawei-evpl {
+    prefix evpl;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-mac {
+    prefix mac;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-nvo3 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-ipv6-peers" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-evpl-peers" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-evpl-ipv6-peers" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:mcast-groups" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vteps/nvo3:evpl-peers" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vteps/nvo3:cu-peers" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:global-attribute" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:tunnels/nvo3:tunnel/nvo3:mode" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:tunnels/nvo3:tunnel/nvo3:vpn-name" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute/nvo3:source-vtep-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute/nvo3:bypass-vtep-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:pip" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:pip-ipv6" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/nvo3:nvo3/nvo3:vni-list/nvo3:source-vtep-ip" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/nvo3:nvo3/nvo3:map-vnis" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/nvo3:nvo3/nvo3:vni-list/nvo3:source-vtep-ip" {
+    deviate not-supported;
+  }
+  deviation "/evpl:evpl/evpl:instances/evpl:instance/nvo3:nvo3" {
+    deviate not-supported;
+  }
+  deviation "/bd:bd/bd:profiles/bd:profile/nvo3:nvo3" {
+    deviate not-supported;
+  }
+  deviation "/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-peers/nvo3:static-peer/nvo3:address" {
+    deviate add {
+      must 'not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:source-vtep-ip=current()]) and not(/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute[nvo3:bypass-vtep-ip=current()])';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute" {
+    deviate delete {
+      must '(./source-vtep-ipv6 and ./bypass-vtep-ipv6 and ./source-vtep-ipv6 != ./bypass-vtep-ipv6) or not(./source-vtep-ipv6) or not(./bypass-vtep-ipv6) ';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/nvo3:nve/nvo3:attribute/nvo3:source-vtep-ip" {
+    deviate add {
+      must 'not(/nvo3:nvo3/nvo3:vni-instances/nvo3:vni-instance/nvo3:static-peers/nvo3:static-peer[nvo3:address=current()])';
+    }
+  }
+  deviation "/bd:bd/bd:instances/bd:instance/nvo3:nvo3" {
+    deviate delete {
+      must "../bd:mac-learn-style!='qualify'";
+    }
+    deviate add {
+      must "../bd:mac-learn-style!='qualify' and not(../mac:uni-suppressions/mac:uni-suppression/mac:type)";
+    }
+  }
+}

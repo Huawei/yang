@@ -1,0 +1,344 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-1588v2-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-clocksync-1588v2-deviations-ATN-910C";
+  prefix clocksync-1588v2-devs-ATN-910C;
+
+  import huawei-clocksync-1588v2 {
+    prefix clocksync-1588v2;
+  }
+
+  import huawei-extension {
+    prefix ext;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-1588v2 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef ptp-profile-type-deviations {
+    type enumeration {
+      enum "IEEE1588V2" {
+        value 0;
+        description 
+          "IEEE1588V2.";
+      }
+      enum "G8275.1" {
+        value 1;
+        description 
+          "G8275.1.";
+      }
+      enum "CU106" {
+        value 2;
+        description 
+          "CU106.";
+      }
+    }
+    description 
+      "Type of ptp profile.";
+  }
+
+typedef ptp-bits-direction-deviations {
+  type enumeration {
+    enum "in" {
+      value 0;
+      description
+        "In.";
+    }
+    enum "out" {
+      value 1;
+      description
+        "Out.";
+    }
+  }
+  description
+    "Direction of ptp bits.";
+}
+
+typedef ptp-port-state-deviations {
+    type enumeration {
+      enum "slave" {
+        value 0;       
+        description
+          "Slave.";         
+      }
+      enum "passive" {
+        value 2;       
+        description
+          "Passive.";
+      }
+      enum "master" {
+        value 3;        
+        description
+          "Master.";        
+      }
+      enum "premaster" {
+        value 4;       
+        description
+          "Premaster.";         
+      }
+      enum "listening" {
+        value 5;        
+        description
+          "Listening.";        
+      }
+      enum "faulty" {
+        value 6;      
+        description
+          "Faulty.";          
+      }
+      enum "disabled" {
+        value 7;       
+        description
+          "Disabled.";         
+      }
+      enum "initializing" {
+        value 8;       
+        description
+          "Initializing.";         
+      }
+    }
+    description
+      "State of ptp port.";
+  }
+
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:acr-enable" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:access-ctrl-enable" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-permit-clk-ids" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-active-lic-slots" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:delay-req-send-disable" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile" {
+    deviate replace {
+      type clocksync-1588v2-devs-ATN-910C:ptp-profile-type-deviations;
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:domain" {
+    deviate delete {
+      must "((../profile='IEEE1588V2') and (../domain>=0 and ../domain<=255)) or ((../profile='SMPTE2059-2') and (../domain>=0 and ../domain<=127)) or ((../profile='G8275.1' or ../profile='CU106') and (../domain>=24 and ../domain<=43))";
+    }
+    deviate add {
+      must "((../profile='IEEE1588V2') and (../domain>=0 and ../domain<=255)) or ((../profile='G8275.1' or ../profile='CU106') and (../domain>=24 and ../domain<=43))";
+    }
+  }
+  ext:deviation-ext "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:domain" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "0" {
+          when "../profile='IEEE1588V2'";
+          description 
+            "The default value is 0 when profile is IEEE1588V2.";
+        }
+        ext:default-value "24" {
+          when "../profile='G8275.1' or ../profile='CU106'";
+          description 
+            "The default value is 24 when profile is G8275.1 or CU106.";
+        }
+      }
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type" {
+    deviate delete {
+      must "(((../profile='G8275.1' or ../profile='CU106') and (../device-type='t-bc' or ../device-type='t-tc')) or ((../profile='IEEE1588V2' or ../profile='SMPTE2059-2') and (../device-type='oc' or ../device-type='bc' or ../device-type='e2etc' or ../device-type='p2ptc' or ../device-type='e2etcoc' or ../device-type='p2ptcoc' or ../device-type='tcandbc'))) or (../device-type='none')";
+    }
+    deviate add {
+      must "(((../profile='G8275.1' or ../profile='CU106') and (../device-type='t-bc' or ../device-type='t-tc')) or (../profile='IEEE1588V2' and (../device-type='oc' or ../device-type='bc' or ../device-type='e2etc' or ../device-type='p2ptc' or ../device-type='e2etcoc' or ../device-type='p2ptcoc' or ../device-type='tcandbc'))) or (../device-type='none')";
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:std-time-port" {
+    deviate add {
+      must "(../../ptp-bits-srcs/ptp-bits-src[clocksync-1588v2:bits-name=current()]/clocksync-1588v2:bits-direction='in') and (../../ptp-bits-srcs/ptp-bits-src[clocksync-1588v2:bits-name=current()]/clocksync-1588v2:bits-signal='1pps')";
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:offset-sum-alm-thd" {
+    deviate replace {
+      type uint32 {
+        range "0..1000000000";
+      }
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:uhpc-enable" {
+    deviate delete {
+      must "((../profile!='SMPTE2059-2' and ../uhpc-enable='true') or ../uhpc-enable='false')";
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-signal" {
+    deviate add {
+      must "../bits-signal='1pps' and (../bits-direction='in' or ../bits-direction='out')";
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-direction" {
+    deviate replace {
+      type clocksync-1588v2-devs-ATN-910C:ptp-bits-direction-deviations;
+    }
+    deviate replace {
+      default "out";
+    }
+  }
+  deviation "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-bits-srcs/clocksync-1588v2:ptp-bits-src/clocksync-1588v2:bits-send-delay" {
+    deviate replace {
+      type int32 {
+        range "0..10000";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-port-advance/clocksync-1588v2:port-domain" {
+    deviate delete {
+      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') and (../port-domain>=0 and ../port-domain<=255)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../port-domain>=0 and ../port-domain<=127))";
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-port-advance/clocksync-1588v2:port-domain" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "0" {
+          description 
+            "The default value is 0 when profile is IEEE1588V2.";
+        }
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-port-advance/clocksync-1588v2:port-cfg-state" {
+    deviate replace {
+      type clocksync-1588v2-devs-ATN-910C:ptp-port-state-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-port-advance/clocksync-1588v2:clk-step" {
+    deviate add {
+      must "((../clocksync-1588v2:clk-step='onestep') and (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:uhpc-enable='false')) or ((../clocksync-1588v2:clk-step='twostep') and ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='oc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='bc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='t-bc') or (/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:device-type='tcandbc' and ../clocksync-1588v2:port-type-set!='tc')))";
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-port-advance/clocksync-1588v2:clk-step" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+          ext:default-value "twostep" {
+              when "(/ifm:ifm/ifm:interfaces/ifm:interface/ifm:type = 'HP-GE' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:uhpc-enable = 'true')";
+              description "The default value is twostep when interface is hgpe or uhpc is enabled.";
+          }
+          ext:default-value "onestep" {
+              when "(/ifm:ifm/ifm:interfaces/ifm:interface/ifm:type != 'HP-GE' and /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:uhpc-enable = 'false')";
+              description "The default value is onestep when interface is not hgpe and uhpc is disabled.";
+          }
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-pack/clocksync-1588v2:pkt-pack-type" {
+    deviate delete {
+      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and (../pkt-pack-type='mac')) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../pkt-pack-type='udp' or ../pkt-pack-type='none'))";
+    }
+    deviate add {
+      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and (../pkt-pack-type='mac')) or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2'";
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-pack/clocksync-1588v2:pkt-pack-type" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "mac" {
+          description 
+            "The default value is MAC when profile is IEEE1588V2 or G8275.1 or CU106.";
+        }
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:announce-interval" {
+    deviate delete {
+      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') and (../announce-interval>=0 and ../announce-interval<=20)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../announce-interval>=7 and ../announce-interval<=11))";
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:announce-interval" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "7" {
+          description 
+            "The default value is 7 when profile is G8275.1 or CU106 or IEEE1588V2.";
+        }
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:announce-receipt-timeout" {
+    deviate delete {
+      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') and (../announce-receipt-timeout>=3 and ../announce-receipt-timeout<=255)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') and (../announce-receipt-timeout>=2 and ../announce-receipt-timeout<=255)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../announce-receipt-timeout>=2 and ../announce-receipt-timeout<=10))";
+    }
+    deviate add {
+      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') and (../announce-receipt-timeout>=3 and ../announce-receipt-timeout<=255)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') and (../announce-receipt-timeout>=2 and ../announce-receipt-timeout<=255))";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:sync-interval" {
+    deviate delete {
+      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106') and (../sync-interval>=0 and ../sync-interval<=20)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../sync-interval>=3 and ../sync-interval<=9))";
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:sync-interval" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "3" {
+          when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2'";
+          description 
+            "The default value is 3 when profile is IEEE1588V2.";
+        }
+        ext:default-value "6" {
+          when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106'";
+          description 
+            "The default value is 6 when profile is G8275.1 or CU106.";
+        }
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:min-delay-req-interval" {
+    deviate delete {
+      must "((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1') and (../min-delay-req-interval>=0 and ../min-delay-req-interval<=20)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../min-delay-req-interval>=3 and ../min-delay-req-interval<=14))";
+    }
+  }
+  ext:deviation-ext "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:min-delay-req-interval" {
+    ext:deviate-ext replace {
+      ext:dynamic-default {
+        ext:default-value "7" {
+          when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2'";
+          description 
+            "The default value is 7 when profile is IEEE1588V2.";
+        }
+        ext:default-value "6" {
+          when "/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='G8275.1' or /clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='CU106'";
+          description 
+            "The default value is 6 when profile is G8275.1 or CU106.";
+        }
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-1588v2:ptp-port-srcs/clocksync-1588v2:ptp-pkt-control/clocksync-1588v2:min-pdelay-req-interval" {
+    deviate delete {
+      must "(((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='IEEE1588V2') and (../min-pdelay-req-interval>=0 and ../min-pdelay-req-interval<=20)) or ((/clocksync-1588v2:clocksync-1588v2/clocksync-1588v2:ptp-common/clocksync-1588v2:profile='SMPTE2059-2') and (../min-pdelay-req-interval>=3 and ../min-pdelay-req-interval<=14))) or (../min-pdelay-req-interval=7)";
+    }
+  }
+
+}

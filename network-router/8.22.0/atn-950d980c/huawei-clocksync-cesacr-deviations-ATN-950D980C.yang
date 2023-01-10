@@ -1,0 +1,71 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-clocksync-cesacr-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-clocksync-cesacr-deviations-ATN-950D980C";
+  prefix clocksync-cesacr-devs-ATN-950D980C;
+
+  import huawei-clocksync-cesacr {
+    prefix clocksync-cesacr;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-clocksync-cesacr module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef recovery-mode-deviations {
+    type enumeration {
+      enum "ces-acr" {
+        value 1;
+        description 
+          "The clock recovery mode of the CES service is CES ACR.";
+      }
+    }
+    description 
+      "CES ACR clock recovery mode.";
+  }
+
+  deviation "/clocksync-cesacr:clocksync-cesacr/clocksync-cesacr:master-domain-infos" {
+    deviate not-supported;
+  }
+  deviation "/clocksync-cesacr:clocksync-cesacr/clocksync-cesacr:cesacr-sources" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-cesacr:clock-cesacr/clocksync-cesacr:master-domains" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-cesacr:clock-cesacr/clocksync-cesacr:recovery-domains/clocksync-cesacr:recovery-domain/clocksync-cesacr:domain-value" {
+    deviate replace {
+      type int32 {
+        range "1..16";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/clocksync-cesacr:clock-cesacr/clocksync-cesacr:recovery-modes/clocksync-cesacr:service-mode" {
+    deviate replace {
+      type clocksync-cesacr-devs-ATN-950D980C:recovery-mode-deviations;
+    }
+  }
+
+}

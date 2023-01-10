@@ -1,0 +1,50 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ops-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-ops-deviations-NE8000";
+  prefix ops-devs-NE8000;
+
+  import huawei-ops {
+    prefix ops;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ops module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef ops-execution-type-deviations {
+    type enumeration {
+      enum command {
+        value 1;
+        description
+          "The command line.";
+      }
+      enum batch-file {
+        value 3;
+        description
+          "The batch file.";
+      }
+    }
+    description
+      "Ops assistant action type.";
+  }
+
+  deviation "/ops:ops/ops:assistant/ops:cli-assistants/ops:cli-assistant/ops:executions/ops:execution/ops:argument" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,205 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-file-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-file-notification";
+  prefix file-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of filesystem-notification.";
+  revision 2020-08-25 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "filesystem";
+  notification entity-filesystem-abnormal-alarm {
+    description
+      "The filesystem is abnormal.";
+    leaf entity-physical-index {
+      type int32;
+      description
+        "Indicates the physical entity index.";
+    }
+    leaf ent-physical-name {
+      type string {
+        length "1..255";
+      }
+      description
+        "Indicates the physical entity name.";
+    }
+    leaf entity-trap-fault-id {
+      type uint32;
+      description
+        "Indicates the fault ID.";
+    }
+    leaf entity-trap-reason-description {
+      type string {
+        length "1..255";
+      }
+      description
+        "Description of trap reason.";
+    }
+  }
+  notification entity-filesystem-fd-alarm {
+    description
+      "The file handle of the process is overloaded.";
+    leaf entity-physical-index {
+      type int32;
+      description
+        "Indicates the physical entity index.";
+    }
+    leaf physical-name {
+      type string {
+        length "1..255";
+      }
+      description
+        "Indicates the physical entity name.";
+    }
+    leaf process-name {
+      type string {
+        length "1..255";
+      }
+      description
+        "The name of process.";
+    }
+  }
+  notification entity-filesystem-fd-alarm-resume {
+    description
+      "The file handle overload alarm of the process is cleared.";
+    leaf entity-physical-index {
+      type int32;
+      description
+        "Indicates the physical entity index.";
+    }
+    leaf physical-name {
+      type string {
+        length "1..255";
+      }
+      description
+        "Indicates the physical entity name.";
+    }
+    leaf process-name {
+      type string {
+        length "1..255";
+      }
+      description
+        "The name of process.";
+    }
+  }
+  notification entity-ext-disk-full {
+    description
+      "The disk usage exceeded the pre-set overload threshold.";
+    leaf disk-type {
+      type string {
+        length "1..255";
+      }
+      description
+        "Disk type.";
+    }
+    leaf disk-sn {
+      type string {
+        length "1..255";
+      }
+      description
+        "Disk serial number.";
+    }
+    leaf disk-usage {
+      type int32;
+      description
+        "Disk usage.";
+    }
+    leaf disk-usage-threshold {
+      type int32;
+      description
+        "Disk threshold.";
+    }
+  }
+  notification entity-ext-disk-full-resume {
+    description
+      "The disk usage falls below the pre-set clear threshold.";
+    leaf disk-type {
+      type string {
+        length "1..255";
+      }
+      description
+        "Disk type.";
+    }
+    leaf disk-sn {
+      type string {
+        length "1..255";
+      }
+      description
+        "Disk serial number.";
+    }
+    leaf disk-usage {
+      type int32;
+      description
+        "Disk usage.";
+    }
+    leaf disk-usage-threshold {
+      type int32;
+      description
+        "Disk threshold.";
+    }
+  }
+  notification entity-ext-disk-online {
+    description
+      "The disk went online successfully.";
+    leaf disk-type {
+      type string {
+        length "1..255";
+      }
+      description
+        "Disk type.";
+    }
+    leaf disk-sn {
+      type string {
+        length "1..255";
+      }
+      description
+        "Disk serial number.";
+    }
+    leaf disk-slot {
+      type int32;
+      description
+        "ID of the board where the disk is located.";
+    }
+  }
+  notification entity-ext-disk-offline {
+    description
+      "The disk went offline successfully.";
+    leaf disk-type {
+      type string {
+        length "1..255";
+      }
+      description
+        "Disk type.";
+    }
+    leaf disk-sn {
+      type string {
+        length "1..255";
+      }
+      description
+        "Disk serial number.";
+    }
+    leaf disk-slot {
+      type int32;
+      description
+        "ID of the board where the disk is located.";
+    }
+  }
+}

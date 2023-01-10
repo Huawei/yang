@@ -1,0 +1,33 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ietf-netconf-monitoring-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-ietf-netconf-monitoring-deviations-ATN-910C";
+  prefix ncm-devs-ATN-910C;
+
+  import ietf-netconf-monitoring {
+    prefix ncm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for ietf-netconf-monitoring module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ncm:netconf-state/ncm:datastores/ncm:datastore/ncm:locks/ncm:lock-type/ncm:partial-lock" {
+    deviate not-supported;
+  }
+}

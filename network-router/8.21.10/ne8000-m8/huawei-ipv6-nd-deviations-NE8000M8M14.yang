@@ -1,0 +1,87 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ipv6-nd-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-ipv6-nd-deviations-NE8000M8M14";
+  prefix ipv6-nd-devs-NE8000M8M14;
+
+  import huawei-ipv6-nd {
+    prefix ipv6-nd;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-ipv6-nd module.";
+
+  revision 2021-08-11 {
+    description
+      "The deviations of the huawei-ipv6-nd module were modified.";
+    reference "Huawei private.";
+  }
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:m-lag-global" {
+    deviate not-supported;
+  }
+  deviation "/ipv6-nd:ipv6-nd/ipv6-nd:ipv6-neighbors/ipv6-nd:ipv6-neighbor/ipv6-nd:nickname" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:if-property/ipv6-nd:min-interval" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:if-property/ipv6-nd:link-down-trigger-del-flag" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:static-neighbor/ipv6-nd:vbd-ifs/ipv6-nd:vbd-if/ipv6-nd:neighbor-access-type/ipv6-nd:vxlan" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:static-neighbor/ipv6-nd:vbd-ifs/ipv6-nd:vbd-if/ipv6-nd:neighbor-access-type/ipv6-nd:vxlan6" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:ra-property/ipv6-nd:dns-server-addresses" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:ra-property/ipv6-nd:dns-search-suffixes" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ipv6-nd:nd-dyn-nb-limit/ipv6-nd:vlan-limits/ipv6-nd:vlan-limit" {
+    deviate add {
+      must '../../../ethernet:ethernet/ethernet:main-interface/ethernet:l2-attribute';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ip:ipv6/ipv6-nd:nd-collection/ipv6-nd:if-property/ipv6-nd:max-dyn-nb-num" {
+    deviate replace {
+      type uint32 {
+        range "0..147456";
+      }
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/ipv6-nd:nd-dyn-nb-limit/ipv6-nd:vlan-limits/ipv6-nd:vlan-limit/ipv6-nd:max-dyn-nb-num" {
+    deviate replace {
+      type uint32 {
+        range "0..147456";
+      }
+    }
+  }
+}

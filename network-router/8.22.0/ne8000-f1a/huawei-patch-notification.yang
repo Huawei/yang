@@ -1,0 +1,325 @@
+/*
+Copyright (C) 2020-2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-patch-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-patch-notification";
+  prefix patch-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-patch {
+    prefix patch;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of patch.";
+  revision 2021-07-21 {
+    description
+       "Add physical-name for the patch-install-failed node.";
+    reference
+       "Huawei private.";
+  }
+  revision 2021-03-01 {
+    description
+       "Add patch damaged node.";
+    reference
+       "Huawei private.";
+   }
+  revision 2020-01-13 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name "patch";
+  
+  typedef fail-reason-type {
+    type enumeration {
+      enum "open-failed" {
+        value 1;
+        description
+          "Failed to read the configuration information of the patch package.";
+      }
+      enum "unused-value" {
+        value 2;
+        description
+          "The cause value was not used.";
+      }
+      enum "memory-shortage" {
+        value 3;
+        description
+          "The memory space of the memory is not enough.";
+      }
+      enum "conflicted" {
+        value 4;
+        description
+          "The patch conflicted with the previous one.";
+      }
+      enum "version-error" {
+        value 5;
+        description
+          "The patch package version was incorrect.";
+      }
+      enum "disk-shortage" {
+        value 8;
+        description
+          "Failed to synchronize the patch package file because of insufficient disk space.";
+      }
+      enum "inconsistent-configuration" {
+        value 9;
+        description
+          "The patch configuration is inconsistent.";
+      }
+    }
+    description
+      "Cause of the failure to install the patch package.";
+  }
+  typedef patch-error-type {
+    type enumeration {
+      enum "version-invalid" {
+        value 7;
+        description
+          "The patch version is invalid.";
+      }
+      enum "deactive-failed" {
+        value 142;
+        description
+          "Failed to deactive the patch.";
+      }
+      enum "run-failed" {
+        value 180;
+        description
+          "Failed to run the patch.";
+      }
+      enum "delete-failed" {
+        value 182;
+        description
+          "Failed to delete the patch.";
+      }
+      enum "file-not-exist" {
+        value 187;
+        description
+          "The patch package file is not exist.";
+      }
+      enum "package-error" {
+        value 189;
+        description
+          "The patch package error.";
+      }
+      enum "mis-operation" {
+        value 190;
+        description
+          "Incorrect operation of the patch.";
+      }
+      enum "system-unstable" {
+        value 191;
+        description
+          "Error due to system unstability.";
+      }
+      enum "unknown" {
+        value 65535;
+        description
+          "Unknown error.";
+      }
+    }
+    description
+      "Cause of the failure to operate the patch package.";
+  }
+  typedef patch-type {
+    type enumeration {
+      enum "hot-common" {
+        value 1;
+        description
+          "Hot common patch.";
+      }
+      enum "hot-temporary" {
+        value 2;
+        description
+          "Hot temporary patch.";
+      }
+      enum "cool-common" {
+        value 3;
+        description
+          "Cool common patch.";
+      }
+      enum "cool-temporary" {
+        value 4;
+        description
+          "Cool temporary patch.";
+      }
+    }
+    description
+      "The type of the patch.";
+  } 
+  typedef patch-state-type {
+    type enumeration {
+      enum "patch-running" {
+        value 1;
+        description
+          "The patch is running.";
+      }
+      enum "patch-active" {
+        value 2;
+        description
+          "The patch is active.";
+      }
+      enum "patch-deactive" {
+        value 3;
+        description
+          "The patch is deactive.";
+      }
+      enum "patch-deleting" {
+        value 4;
+        description
+          "The patch is being deleted.";
+      }
+    }
+    description
+      "The type of the patch.";
+  }
+
+  notification patch-install-failed {
+    description
+      "Failed to install the patch package."; 
+    leaf package-name {
+      type leafref {
+        path "/patch:patch/patch:patch-infos/patch:patch-info/patch:name";
+      }
+      description
+        "Patch package name.";
+    }
+    leaf package-version {
+      type leafref {
+        path "/patch:patch/patch:patch-infos/patch:patch-info/patch:version";
+      }
+      description
+        "Patch package version.";
+    }
+    leaf fail-reason {
+      type fail-reason-type;
+      description
+        "Cause of the failure to install the patch package.";
+    }
+    leaf physical-name {
+      type string {
+          length "1..63";
+      }
+      description
+        "Name of a physical entity.";
+    }
+  }
+  notification patch-install-failed-resume {
+    description
+      "The patch package installation failure alarm is cleared.";
+    leaf package-name {
+      type leafref {
+        path "/patch:patch/patch:patch-infos/patch:patch-info/patch:name";
+      }
+      description
+        "Patch package name.";
+    }
+    leaf package-version {
+      type leafref {
+        path "/patch:patch/patch:patch-infos/patch:patch-info/patch:version";
+      }
+      description
+        "Patch package version.";
+    }
+    leaf fail-reason {
+      type fail-reason-type;
+      description
+        "Cause of the failure to install the patch package.";
+    }
+    leaf physical-name {
+      type string {
+          length "1..63";
+      }
+      description
+        "Name of a physical entity.";
+    }
+  }
+  notification patch-error {
+    description
+      "Failed to operate patches.";
+    leaf package-name {
+      type leafref {
+        path "/patch:patch/patch:patch-infos/patch:patch-info/patch:name";
+      }
+      description
+        "Name of a patch package.";
+    }
+    leaf error-reason {
+      type patch-error-type;
+      description
+        "Operation error code.";
+    }
+  }
+  notification patch-update-state {
+    description
+      "The patch has updated the state.";
+    leaf patch-version {
+      type leafref {
+        path "/patch:patch/patch:patch-infos/patch:patch-info/patch:version";
+      }
+      description
+        "Indicates the version of the patch.";
+    }
+    leaf patch-type {
+      type patch-type;
+      description
+        "Indicates the type of the patch.";
+    }
+    leaf patch-state {
+      type patch-state-type;
+      description
+        "Indicates the current state of the patch.";
+    }
+  }
+
+  notification patch-damaged {
+    description
+      "The patch package running on a board was damaged.";
+    leaf physical-name {
+      type string {
+          length "1..63";
+      }
+      description
+        "Name of a physical entity.";
+    }
+    leaf patch-name {
+      type string {
+          length "1..63";
+      }
+      description
+        "Name of a patch package.";
+    }
+  }
+  notification patch-damaged-clear {
+    description
+      "The damaged patch package running on a board recovered.";
+    leaf physical-name {
+      type string {
+          length "1..63";
+      }
+      description
+        "Name of a physical entity.";
+    }
+    leaf patch-name {
+      type string {
+          length "1..63";
+      }
+      description
+        "Name of a patch package.";
+    }
+  }
+}

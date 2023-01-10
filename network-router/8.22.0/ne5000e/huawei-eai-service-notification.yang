@@ -1,0 +1,131 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-eai-service-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-eai-service-notification";
+  prefix eai-service-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of eai-service-notification.";
+  revision 2020-05-28 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "eai";
+  notification anomaly-packet-loss {
+    description
+      "Interface flow sudden change and forwarding chip packets loss is detected.";
+    leaf interface-names {
+      type string {
+        length "1..665";
+      }
+      description
+        "Interface name.";
+    }
+    leaf forwarding-chip-info {
+      type string {
+        length "1..800";
+      }
+      description
+        "Forwarding chip info.";
+    }
+  }
+  notification anomaly-packet-loss-resume {
+    description
+      "Interface flow sudden change and forwarding chip packets loss is resumed.";
+    leaf interface-names {
+      type string {
+        length "1..665";
+      }
+      description
+        "Interface name.";
+    }
+    leaf forwarding-chip-info {
+      type string {
+        length "1..800";
+      }
+      description
+        "Forwarding chip info.";
+    }
+  }
+  notification resource-predict-over-threshold {
+    description
+      "Resource trend predict will exceed threshold under current circumstance.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis id.";
+    }
+    leaf slot-id {
+      type uint32;
+      description
+        "Slot id.";
+    }
+    leaf object {
+      type string {
+        length "1..128";
+      }
+      description
+        "Object name.";
+    }
+    leaf reason-id {
+      type int32;
+      description
+        "Reason id.";
+    }
+    leaf reason-description {
+      type string {
+        length "1..256";
+      }
+      description
+        "Reason description.";
+    }
+  }
+  notification resource-predict-over-threshold-resume {
+    description
+      "Resource trend predict over threshold resume.";
+    leaf chassis-id {
+      type uint32;
+      description
+        "Chassis id.";
+    }
+    leaf slot-id {
+      type uint32;
+      description
+        "Slot id.";
+    }
+    leaf object {
+      type string {
+        length "1..128";
+      }
+      description
+        "Object name.";
+    }
+    leaf reason-id {
+      type int32;
+      description
+        "Reason id.";
+    }
+    leaf reason-description {
+      type string {
+        length "1..256";
+      }
+      description
+        "Reason description.";
+    }
+  }
+}

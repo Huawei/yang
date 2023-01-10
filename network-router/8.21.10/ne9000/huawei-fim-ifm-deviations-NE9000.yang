@@ -1,0 +1,77 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fim-ifm-deviations-NE9000 {
+  namespace "urn:huawei:yang:huawei-fim-ifm-deviations-NE9000";
+  prefix fim-ifm-devs-NE9000;
+
+  import huawei-fim-ifm {
+    prefix fim-ifm;
+  }
+
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-fim-ifm module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef ve-interface-type-deviations {
+    type enumeration {
+      enum "L2VE" {
+        value 1;
+        description 
+          "Layer 2 Terminate Virtual-Ethernet interface.";
+      }
+      enum "L3VE" {
+        value 2;
+        description 
+          "Layer 3 Access Virtual-Ethernet interface.";
+      }
+    }
+    description 
+      "VE Interface Type.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim/fim-ifm:statistic-enable" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp6-mss" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:global/fim-ifm:fim-trunk-localfwd" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-ifm-mru/fim-ifm:mru" {
+    deviate delete {
+      must "(not(/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp-mss/fim-ifm:tcp-mss) and not(/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp6-mss/fim-ifm:tcp6-mss))";
+    }
+    deviate add {
+      must "not(/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:fim-tcp-mss/fim-ifm:tcp-mss)";
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/fim-ifm:ve-group/fim-ifm:type" {
+    deviate replace {
+      type fim-ifm-devs-NE9000:ve-interface-type-deviations;
+    }
+  }
+
+}

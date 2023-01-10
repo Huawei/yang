@@ -1,0 +1,49 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-unicast-fwd-srv6-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-unicast-fwd-srv6-deviations-ATN-910C";
+  prefix unicast-fwd-srv6-devs-ATN-910C;
+
+  import huawei-unicast-fwd-srv6 {
+    prefix unicast-fwd-srv6;
+  }
+
+  import huawei-devm {
+    prefix devm;
+  }
+
+  import huawei-license {
+    prefix lcs;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-unicast-fwd-srv6 module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/lcs:license/unicast-fwd-srv6:lcs-network-slices/unicast-fwd-srv6:lcs-network-slice/unicast-fwd-srv6:slot-id" {
+    deviate replace {
+      type leafref {
+        path "/devm:devm/devm:mpu-boards/devm:mpu-board/devm:position";
+      }
+    }
+  }
+
+}

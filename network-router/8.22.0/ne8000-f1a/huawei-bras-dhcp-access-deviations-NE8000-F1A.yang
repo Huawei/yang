@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-dhcp-access-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-bras-dhcp-access-deviations-NE8000-F1A";
+  prefix bras-dhcp-access-devs-NE8000-F1A;
+
+  import huawei-bras-dhcp-access {
+    prefix bras-dhcp-access;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-bras-dhcp-access module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/bras-dhcp-access:bras-dhcp-access/bras-dhcp-access:cp-upgrades" {
+    deviate not-supported;
+  }
+
+}

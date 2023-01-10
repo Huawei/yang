@@ -1,0 +1,98 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-net-slice-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-net-slice-deviations-ATN-910C";
+  prefix net-slice-devs-ATN-910C;
+
+  import huawei-net-slice {
+    prefix net-slice;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-if-ip {
+    prefix if-ip;
+  }
+  import huawei-ip {
+    prefix ip;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-net-slice module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef protocol-type-deviations {
+    type enumeration {
+      enum flex-phy-port {
+        value 0;
+        description
+          "Flex phy port type.";
+      }
+      enum flexe-port {
+        value 1;
+        description
+          "FlexE port type.";
+      }
+      enum channel-phy-port {
+        value 2;
+        description
+          "Channel phy port type.";
+      }
+      enum channelized-phy-port {
+        value 3;
+        description
+          "Channelized phy port type.";
+      }
+    }
+    description
+      "Net slice capability type.";
+  }
+
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/net-slice:slice-capabilitys/net-slice:slice-capability/net-slice:capability" {
+    deviate replace {
+      type net-slice-devs-ATN-910C:protocol-type-deviations;
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/net-slice:net-slice-binding/net-slice:slice-id" {
+    deviate delete {
+      must '../../ip:ipv6';
+    }
+    deviate add {
+      must '../../ip:ipv6 or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if[if-ip:name=current()/../../ifm:name]';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/net-slice:net-slices/net-slice:net-slice/net-slice:mode/net-slice:data-plane-mode/net-slice:data-plane" {
+    deviate delete {
+      must '../../../ip:ipv6 and (../../../ip:ipv6/ip:addresses/ip:address/ip:ip or ../../../net-slice:net-slice-binding)';
+    }
+    deviate add {
+      must '(../../../ip:ipv6 or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if[if-ip:name=current()/../../../ifm:name]) and ((../../../ip:ipv6/ip:addresses/ip:address/ip:ip or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if/if-ip:addresses/if-ip:address/if-ip:ip) or ../../../net-slice:net-slice-binding)';
+    }
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/net-slice:net-slices/net-slice:net-slice/net-slice:mode/net-slice:flex-channel-mode/net-slice:flex-channel" {
+    deviate delete {
+      must '../../../ip:ipv6 and (../../../ip:ipv6/ip:addresses/ip:address/ip:ip or ../../../net-slice:net-slice-binding)';
+    }
+    deviate add {
+      must '(../../../ip:ipv6 or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if[if-ip:name=current()/../../../ifm:name]) and ((../../../ip:ipv6/ip:addresses/ip:address/ip:ip or /ni:network-instance/ni:instances/ni:instance/if-ip:ipv6-ifs/if-ip:ipv6-if/if-ip:addresses/if-ip:address/if-ip:ip) or ../../../net-slice:net-slice-binding)';
+    }
+  }
+}

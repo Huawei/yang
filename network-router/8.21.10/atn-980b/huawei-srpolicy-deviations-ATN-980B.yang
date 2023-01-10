@@ -1,0 +1,214 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-srpolicy-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-srpolicy-deviations-ATN-980B";
+  prefix srpolicy-devs-ATN-980B;
+
+  import huawei-srpolicy {
+    prefix srpolicy;
+  }
+  import huawei-net-slice {
+    prefix net-slice;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-srv6 {
+    prefix srv6;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-segment-routing {
+    prefix sr;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-srpolicy module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef bfd-enable-type-deviations {
+    type enumeration {
+      enum disable {
+        value 0;
+        description
+          "Disable.";
+      }
+      enum sbfd-enable {
+        value 1;
+        description
+          "SBFD enable.";
+      }
+    }
+    description
+      "BFD enable type.";
+  }
+
+  typedef policy-bfd-enable-type-deviations {
+    type enumeration {
+      enum not-configured {
+        value 0;
+        description
+          "Not configured.";
+      }
+      enum sbfd-enable {
+        value 1;
+        description
+          "SBFD enable.";
+      }
+      enum disable {
+        value 2;
+        description
+          "Disable.";
+      }
+    }
+    description
+      "BFD enable type for SR Policy.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:min-rx" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:mtu" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:diffserv-mode" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:switch-delay" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:path-verification" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:path-verification-specified-sid" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:suppress-flapping" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:bypass" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:backup-min-tx" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:backup-multi-num" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:candidate-paths/srpolicy:candidate-path/srpolicy:type/srpolicy:explicit/srpolicy:segment-lists/srpolicy:segment-list/srpolicy:weight" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:candidate-paths/srpolicy:candidate-path/srpolicy:type/srpolicy:explicit/srpolicy:segment-lists/srpolicy:segment-list/srpolicy:path-mtu" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:candidate-paths/srpolicy:candidate-path/srpolicy:template-id" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:candidate-paths/srpolicy:candidate-path/srpolicy:network-slice-id" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-down-reasons/srpolicy:policy-down-reason/srpolicy:list-down-reasons/srpolicy:list-down-reason/srpolicy:preference" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-down-reasons/srpolicy:policy-down-reason/srpolicy:list-down-reasons/srpolicy:list-down-reason/srpolicy:network-slice-id" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-down-reasons/srpolicy:policy-down-reason/srpolicy:list-down-reasons/srpolicy:list-down-reason/srpolicy:path-mtu" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:min-tx" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:backup-min-tx" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:bfd-min-tx" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:bfd-backup-min-tx" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:candidate-paths/srpolicy:candidate-path/srpolicy:network-slice-id" {
+    deviate replace {
+      type leafref {
+        path "/net-slice:net-slice/net-slice:instances/net-slice:instance/net-slice:id";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/srv6:srv6/srpolicy:srpolicy/srpolicy:list-traffic-statistics/srpolicy:list-traffic-statistic/srpolicy:node-address" {
+    deviate replace {
+      type inet:ipv4-address-no-zone;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:enable" {
+    deviate replace {
+      type srpolicy-devs-ATN-980B:bfd-enable-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:min-tx" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-attributes/srpolicy:bfd/srpolicy:min-rx" {
+    deviate replace {
+      type uint32 {
+        range "3..20000";
+      }
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policys/srpolicy:policy/srpolicy:bfd-enable" {
+    deviate replace {
+      type srpolicy-devs-ATN-980B:policy-bfd-enable-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-infos/srpolicy:policy-info/srpolicy:bfd-enable" {
+    deviate replace {
+      type srpolicy-devs-ATN-980B:bfd-enable-type-deviations;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:policy-infos/srpolicy:policy-info/srpolicy:candidate-paths/srpolicy:candidate-path/srpolicy:node-address" {
+    deviate replace {
+      type inet:ipv4-address-no-zone;
+    }
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/sr:segment-routing/srpolicy:srpolicy/srpolicy:list-traffic-statistics/srpolicy:list-traffic-statistic/srpolicy:node-address" {
+    deviate replace {
+      type inet:ipv4-address-no-zone;
+    }
+  }
+}

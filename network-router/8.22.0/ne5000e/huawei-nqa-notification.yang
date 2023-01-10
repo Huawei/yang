@@ -1,0 +1,270 @@
+/*
+Copyright (C) 2021-2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nqa-notification {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-nqa-notification";
+  prefix nqa-notification;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of nqa-notification.";
+  reference
+    "Huawei private.";
+  revision 2022-05-19 {
+    description
+      "Add notification.";
+    reference
+      "Huawei private.";
+  }
+  revision 2021-02-05 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  typedef nqa-address-type {
+    type enumeration {
+      enum "ipv4" {
+        value 1;
+        description
+          "IPv4.";
+      }
+      enum "ipv6" {
+        value 2;
+        description
+          "IPv6.";
+      }
+    }
+    description
+      "Description of address type.";
+  }
+
+  typedef nqa-oper-status-type {
+    type enumeration {
+      enum enabled {
+        value 1;
+        description
+          "Test is in progress.";
+      }
+      enum completed {
+        value 3;
+        description
+          "Test is completed.";
+      }
+    }
+    description
+      "Description of test-finsh-status-type.";
+  }
+  typedef nqa-result-status-type {
+    type enumeration {
+      enum no-result {
+        value 0;
+        description
+          "Init status.";
+      }
+      enum success {
+        value 1;
+        description
+          "Success.";
+      }
+      enum failed {
+        value 2;
+        description
+          "Failed.";
+      }
+      enum negotiate-failed {
+        value 3;
+        description
+          "Negotiate failed.";
+      }
+      enum abnormal {
+        value 5;
+        description
+          "Abnormal.";
+      }
+      enum init {
+        value 255;
+        description
+          "Init status.";
+      }
+    }
+    description
+      "Description of nqa-result-status-type.";
+  }
+  notification ping-test-failed {
+    description
+      "Ping entry test failed.";
+    leaf admin-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "Administrator name.";
+    }
+    leaf test-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "Test instance name.";
+    }
+    leaf target-address-type {
+      type nqa-address-type;
+      description
+        "Destination address type.";
+    }
+    leaf target-address {
+      type string {
+        length "0..255";
+      }
+      description
+        "Destination address of an NQA test instance.";
+    }
+    leaf oper-status {
+      type nqa-oper-status-type;
+      description
+        "Operational status type of an NQA test instance.";
+    }
+    leaf rtt-min {
+      type uint32;
+      units "ms";
+      description
+        "Minimum RTT value of an NQA test instance.";
+    }
+    leaf rtt-max {
+      type uint32;
+      units "ms";
+      description
+        "Maximum RTT value of an NQA test instance.";
+    }
+    leaf rtt-avg {
+      type uint32;
+      units "ms";
+      description
+        "Average RTT value of an NQA test instance.";
+    }
+    leaf probe-responses {
+      type int32;
+      description
+        "Statistics on received packets.";
+    }
+    leaf sent-probes {
+      type int32;
+      description
+        "Statistics on sent packets.";
+    }
+    leaf rtt-square-sum {
+      type uint32;
+      description
+        "Lower 32 bits of the RTT square sum.";
+    }
+    leaf last-good-probe {
+      type string {
+        length "0..30";
+      }
+      description
+        "Time when the latest returned packet is received.";
+    }
+  }
+  notification nqa-test-result-changed {
+    description
+      "NQA entry test result changed.";
+    leaf admin-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "Administrator name.";
+    }
+    leaf test-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "Test instance name.";
+    }
+    leaf result-index {
+      type uint32;
+      description
+        "Test instance result index.";
+    }
+    leaf hop-index {
+      type uint32;
+      description
+        "Hop index.";
+    }
+    leaf last-result {
+      type nqa-result-status-type;
+      description
+        "Last test result.";
+    }
+    leaf current-result {
+      type nqa-result-status-type;
+      description
+        "Current test result.";
+    }
+    leaf change-to-fail-times {
+      type uint32;
+      description
+        "Number of times that the result is changed to a failed result.";
+    }
+    leaf change-to-success-times {
+      type uint32;
+      description
+        "Number of times that the result is changed to a successful result.";
+    }
+    leaf change-to-no-result-times {
+      type uint32;
+      description
+        "Number of times that the result is changed to no result.";
+    }
+    leaf change-to-negotiate-failed-times {
+      type uint32;
+      description
+        "Number of times that the result is changed to a negotiate-failed result.";
+    }
+    leaf change-to-abnormal-times {
+      type uint32;
+      description
+        "Number of times that the result is changed to a abnormal result.";
+    }
+    leaf fail-times {
+      type uint32;
+      description
+        "Times of failed detection.";
+    }
+    leaf success-times {
+      type uint32;
+      description
+        "Times of successful detection.";
+    }
+    leaf no-result-times {
+      type uint32;
+      description
+        "Times of no-result detection.";
+    }
+    leaf negotiate-failed-times {
+      type uint32;
+      description
+        "Times of negotiate-failed detection.";
+    }
+    leaf abnormal-times {
+      type uint32;
+      description
+        "Times of abnormal detection.";
+    }
+  }
+  ext:task-name "sla";
+}

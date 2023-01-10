@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-notification-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-bgp-notification-deviations-ATN-950D980C";
+  prefix bgp-notification-devs-ATN-950D980C;
+
+  import huawei-bgp-notification {
+    prefix bgp-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bgp-notification:bgp-pdpeer-af-route-exceed" {
+    deviate not-supported;
+  }
+  deviation "/bgp-notification:bgp-pdpeer-af-route-exceed-clear" {
+    deviate not-supported;
+  }
+  deviation "/bgp-notification:bgp-pdpeer-af-route-threshold-exceed" {
+    deviate not-supported;
+  }
+  deviation "/bgp-notification:bgp-pdpeer-af-route-threshold-exceed-clear" {
+    deviate not-supported;
+  }
+}

@@ -1,0 +1,340 @@
+/******************************************************
+* Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*******************************************************/
+module huawei-cgn-nat64 {
+  namespace "urn:huawei:yang:huawei-cgn-nat64";
+  prefix cgn-nat64;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-cgn-common {
+    prefix cgn-common;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-acl {
+    prefix acl;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-qos {
+    prefix qos;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+
+  description
+    "This module contains a collection of YANG definitions for Configurations of cgn NAT64.";
+
+  revision 2022-10-13 {
+    description
+      "Add container port-reuse.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-09-22 {
+    description
+      "Add containers bind-service-instance-group, port-range, address-groups, nat64-translate, filter-mode, session-log, user-log.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-26 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  container cgn-nat64 {
+    description
+      "NAT64.";
+    container nat64-instances {
+      description
+        "List of nat64-instance.";
+      list nat64-instance {
+        key "instance-name instance-id";
+        unique "instance-id";
+        unique "instance-name";
+        description
+          "Configure nat64 instance, used to translate network address.";
+        leaf instance-name {
+          type string {
+            length "1..31";
+          }
+          description
+            "Specify the name of a NAT64 instance.";
+        }
+        leaf instance-id {
+          type uint16 {
+            range "1..4095";
+          }
+          description
+            "Specify the id of a NAT64 instance.";
+        }
+        container bind-service-instance-group {
+          uses cgn-common:bind-serv-inst-group;
+          description "Configure the binded service-instance-group for nat64 instance.";
+        }
+        container port-range {
+          presence "Enable/Disable the port-range configuration for the NAT64 instance.";
+          uses cgn-common:port-range-set;
+          description
+            "Configure NAT64 port-range initial and extend.";
+        }
+        container address-groups {
+          description "List of address-group.";
+          list address-group {
+            key "group-name group-id";
+            unique "group-name";
+            unique "group-id";
+            description "Configure nat address-group, used to set public address.";
+            leaf group-name {
+              type string {
+                length "1..31";
+              }
+              description "Address group name.";
+            }
+            leaf group-id {
+              type uint8 {
+                range "0..127";
+              }
+              description "Address group id.";
+            }
+            leaf no-pat{
+              type boolean;
+              default "false";
+              description
+                "Enable/disable not use address translation with PAT.";
+            }
+            leaf vpn-name {
+              type leafref {
+                path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+              }
+              must "/ni:network-instance/ni:instances/ni:instance[ni:name=current()]/l3vpn:afs/l3vpn:af[l3vpn:type='ipv4-unicast']";
+              description "VPN instance name.";
+            }
+            choice address {
+              description "Specify address parameters.";
+              case address-segment {
+                description "Specify address segment.";
+                leaf start-address {
+                  type inet:ipv4-address-no-zone;
+                  mandatory true;
+                  description "Specify the start address of the section.";
+                }
+                choice end {
+                  mandatory true;
+                  description "Specify the end in a address segment.";
+                  case address {
+                    description "Specify the end address.";
+                    leaf end-address {
+                      type inet:ipv4-address-no-zone;
+                      description "Specify the end address of the section.";
+                    }
+                  }
+                  case mask {
+                    description "Specify the mask.";
+                    leaf mask-length {
+                      type uint8 {
+                        range "1..32";
+                      }
+                      description "Specifies the mask length of public IP addresses.";
+                    }
+                  }
+                }
+              }
+              case multi-sections {
+                description "Multiple sections for nat64 address-group.";
+                container sections {
+                  description "List of multi-section.";
+                  list section {
+                    key "section-id";
+                    description "Configure public address in a section.";
+                    leaf section-id {
+                      type uint8 {
+                        range "0..15";
+                      }
+                      description "Specify the id of a section.";
+                    }
+                    choice address {
+                      mandatory true;
+                      description "Specify address parameters.";
+                      case address-segment {
+                        description "Specify address segment.";
+                        leaf start-address {
+                          type inet:ipv4-address-no-zone;
+                          mandatory true;
+                          description "Specify the start address of the section.";
+                        }
+                        choice end {
+                          mandatory true;
+                          description "Specify the end in a address segment.";
+                          case address {
+                            description "Specify the end address of the section.";
+                            leaf end-address {
+                              type inet:ipv4-address-no-zone;
+                              description "Specify the end address of the section.";
+                            }
+                          }
+                          case mask {
+                            description "Specify the mask.";
+                            leaf mask-length {
+                              type uint8 {
+                                range "20..32";
+                              }
+                              description "Specifies the mask length of public IP addresses.";
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        container nat64-translate {
+          description
+            "Configure the translation policy of a NAT64 address pool.";
+          choice rule-type {
+            description
+              "Specifies ACL.";
+            case acl-rule {
+              description "Basic or advanced ACL.";
+              container bind-acls {
+                description "List of binded acls.";
+                list bind-acl {
+                  key "acl-number address-group-name";
+                  unique "acl-number";
+                  unique "address-group-name";
+                  description "Configure ACL.";
+                  leaf acl-number {
+                    type leafref {
+                      path "/acl:acl/acl:group6s/acl:group6/acl:identity";
+                    }
+                    must "(/acl:acl/acl:group6s/acl:group6[acl:identity=current()][acl:type='basic']) or (/acl:acl/acl:group6s/acl:group6[acl:identity=current()][acl:type='advance'])";
+                    description
+                      "Specifies the number of a basic or advanced IPv6 ACL.";
+                  }
+                  leaf address-group-name {
+                    type leafref {
+                      path "../../../../address-groups/address-group/group-name";
+                    }
+                    description 
+                      "Specifies the name of a public IP address pool.";
+                  }
+                }
+              }
+            }
+            case any-rule {
+              description
+                "Ignore ACL rules.";
+              container address-group {
+                description "Configure any acl rule of a NAT64 address pool.";
+                leaf address-group-name {
+                  type leafref {
+                    path "../../../address-groups/address-group/group-name";
+                  }
+                  description 
+                    "Specifies the name of a public IP address pool.";
+                }
+              }
+            }
+          }
+        }
+        uses cgn-common:alg;
+        container filter-mode {
+          description "Configure the filter mode for nat64.";
+          uses cgn-common:nat-filter-mode;
+        }
+        container log {
+          description "Configure nat64 log.";
+          uses cgn-common:log-host;
+          container send-mode {
+            description "Configure nat session log send mode.";
+            uses cgn-common:session-log-send-mode;
+          }
+          container session-log {
+            description "Configure NAT64 session log.";
+            leaf enable {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable session log.";
+            }
+            leaf log-type {
+              when "../enable='true'";
+              type enumeration {
+                enum "elog" {
+                  value 1;
+                  description
+                    "Elog format.";
+                }
+                enum "syslog" {
+                  value 2;
+                  description
+                    "Syslog format.";
+                }
+              }
+              default "elog";
+              description "Specify the format of session log.";
+            }
+          }
+          container user-log {
+            description "Configure NAT64 user log.";
+            leaf enable {
+              type boolean;
+              default "false";
+              description
+                "Enable/disable user log.";
+            }
+            leaf log-type {
+              when "../enable='true'";
+              type enumeration {
+                enum "syslog" {
+                  value 2;
+                  description
+                    "Syslog format.";
+                }
+              }
+              default "syslog";
+              description "Specify the format of user log.";
+            }
+          }
+        }
+        container port-reuse {
+          description "Configure port reuse for nat64 instance.";
+          uses cgn-common:port-reuse;
+        }
+      }
+    }
+  }
+  augment "/qos:qos/qos:classifier-template/qos:traffic-behaviors/qos:traffic-behavior" {
+    description "Configure binding a traffic behavior to a NAT64 instance.";
+    container bind-nat64 {
+      description
+        "Configure binding a traffic behavior to a NAT64 instance.";
+      leaf nat64-instance {
+        type leafref {
+          path "/cgn-nat64:cgn-nat64/cgn-nat64:nat64-instances/cgn-nat64:nat64-instance/cgn-nat64:instance-name";
+        }
+        description
+          "Specifies the name of a NAT64 instance.";
+      }
+    }
+  }
+  ext:task-name "nat";
+}

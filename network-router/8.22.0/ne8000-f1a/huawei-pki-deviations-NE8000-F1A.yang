@@ -1,0 +1,590 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pki-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-pki-deviations-NE8000-F1A";
+  prefix pki-devs-NE8000-F1A;
+
+  import huawei-pki {
+    prefix pki;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-pki module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef certificate-type-deviations {
+    type enumeration {
+      enum ca {
+        value 0;
+        description
+          "Certificate awarded by a CA.";
+      }
+      enum local {
+        value 1;
+        description
+          "Local stored certifacation.";
+      }
+    }
+    description
+      "Certificate type.";
+  }
+
+  typedef certificate-validate-method-deviations {
+    type enumeration {
+      enum none {
+        value 0;
+        description
+          "Select notne check, check success.";
+      }
+      enum crl {
+        value 1;
+        description
+          "Select crl check, if not exist check fail.";
+      }
+    }
+    description
+      "Indicate certificate verification type.";
+  }
+
+  typedef cmp-request-type-deviations {
+    type enumeration {
+      enum IR {
+        value 0;
+        description
+          "Indicate that the certificate request type is initiation request.";
+      }
+    }
+    description
+      "Indicate the CMPv2 certificate request type.";
+  }
+
+  typedef digest-algorithm-type-deviations {
+    type enumeration {
+      enum sha-256 {
+        value 0;
+        description
+          "Select SHA-256 as the hash algorithm.";
+      }
+      enum sha-384 {
+        value 1;
+        description
+          "Select SHA-384 as the hash algorithm.";
+      }
+      enum sha-512 {
+        value 2;
+        description
+          "Select SHA-512 as the hash algorithm.";
+      }
+    }
+    description
+      "Indicate certificate hash algorithm.";
+  }
+
+  typedef file-format-deviations {
+    type enumeration {
+      enum pem {
+        value 0;
+        description
+          "PEM format.";
+      }
+      enum der {
+        value 1;
+        description
+          "DER format.";
+      }
+    }
+    description
+      "Certificate file format.";
+  }
+
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:address/pki:interface-address" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:server-url/pki:ascii-enable" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:authentication-code" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:verification-cert" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:authentication-method" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:source-address/pki:source-ip" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:digest-algorithm" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:key-pair" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:key-usage" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:validate-method" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:crl-update/pki:ldap-services/pki:ldap-service/pki:user-name" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:crl-update/pki:ldap-services/pki:ldap-service/pki:password" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:certificate-infos/pki:certificate-info/pki:certificates/pki:certificate/pki:key-pair-type" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:certificate-infos/pki:certificate-info/pki:certificates/pki:certificate/pki:key-size" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:certificate-infos/pki:certificate-info/pki:certificates/pki:certificate/pki:curve-type" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:key-pair-infos/pki:key-pair-info/pki:curve-type" {
+    deviate not-supported;
+  }
+  deviation "/pki:key-pair-create/pki:input/pki:key-pairs/pki:key-pair/pki:exportable" {
+    deviate not-supported;
+  }
+  deviation "/pki:key-pair-create/pki:input/pki:key-pairs/pki:key-pair/pki:curve-type" {
+    deviate not-supported;
+  }
+  deviation "/pki:certificate-import/pki:input/pki:certificates/pki:certificate/pki:format" {
+    deviate not-supported;
+  }
+  deviation "/pki:certificate-import/pki:input/pki:certificates/pki:certificate/pki:password" {
+    deviate not-supported;
+  }
+  deviation "/pki:certificate-import/pki:input/pki:certificates/pki:certificate/pki:allow-same-cert" {
+    deviate not-supported;
+  }
+  deviation "/pki:certificate-replace/pki:input/pki:certificates/pki:certificate/pki:password" {
+    deviate not-supported;
+  }
+  deviation "/pki:certificate-replace/pki:input/pki:certificates/pki:certificate/pki:allow-same-cert" {
+    deviate not-supported;
+  }
+  deviation "/pki:csr-generate/pki:input/pki:csrs/pki:csr/pki:file-name" {
+    deviate not-supported;
+  }
+  deviation "/pki:csr-generate/pki:input/pki:csrs/pki:csr/pki:password" {
+    deviate not-supported;
+  }
+  deviation "/pki:pki/pki:global/pki:certificate-check/pki:validate-method" {
+    deviate replace {
+      type pki-devs-NE8000-F1A:certificate-validate-method-deviations;
+    }
+    deviate replace {
+      default "none";
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:common-name" {
+    deviate replace {
+      type string {
+        length "1..31";
+        pattern "([0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,31})";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:fqdn" {
+    deviate replace {
+      type string {
+        length "1..31";
+        pattern "([0-9a-zA-Z\\(\\)\\+\\-\\.',/:=@_]{1,31})";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:department" {
+    deviate replace {
+      type string {
+        length "1..31";
+        pattern "([0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,31})";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:organization" {
+    deviate replace {
+      type string {
+        length "1..31";
+        pattern "([0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,31})";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:locality" {
+    deviate replace {
+      type string {
+        length "1..31";
+        pattern "([0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,31})";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:state" {
+    deviate replace {
+      type string {
+        length "1..31";
+        pattern "([0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,31})";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:country" {
+    deviate replace {
+      type string {
+        length "2";
+        pattern '[a-zA-Z]{2}';
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:email" {
+    deviate replace {
+      type string {
+        length "1..31";
+        pattern "([0-9a-zA-Z\\(\\)\\+\\-\\.',/:=@_]{1,31})";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:entitys/pki:entity/pki:address/pki:ip-address/pki:ip-address" {
+    deviate replace {
+      type inet:ipv4-address-no-zone;
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session" {
+    deviate add {
+      unique "entity";
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:name" {
+    deviate replace {
+      type string {
+        length "1..47";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:ca-name" {
+    deviate replace {
+      type string {
+        length "1..255";
+        pattern "(\"(/C=[a-zA-Z]{2})(/ST=[0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,128})?(/L=[0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,128})?(/O=[0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,64})?(/OU=[0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,64})?(/CN=[0-9a-zA-Z\\(\\)\\+\\-\\.',/:=]{1,64})?\")";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:server-url/pki:url" {
+    deviate replace {
+      type string {
+        length "1..127";
+        pattern 'http://[^\s]*';
+      }
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:key-pair/pki:name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:auto-update" {
+    deviate add {
+      must "(../pki:auto-update='false') or (../pki:auto-update='true' and (../pki:entity and /pki:pki/pki:entitys/pki:entity[pki:name = current()/../pki:entity]/pki:common-name and ../pki:ca-name and ../pki:server-url/pki:url and ../pki:key-pair/pki:name and ../pki:authentication-cert))";
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:expire-time" {
+    deviate replace {
+      type uint32 {
+        range "50..99";
+      }
+    }
+    deviate add {
+      default "50";
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:authentication-cert" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:vpn-instance" {
+    deviate add {
+      must '../pki:server-url/pki:url';
+    }
+  }
+  deviation "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:domain-name" {
+    deviate replace {
+      type leafref {
+        path "/pki:pki/pki:domains/pki:domain/pki:name";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:name" {
+    deviate replace {
+      type string {
+        length "1..31";
+        pattern '([0-9a-zA-Z\[\]\{\}\(\)\+\-\^,=@_!#$%&_`]{1,31})';
+      }
+    }
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:entity" {
+    deviate replace {
+      type leafref {
+        path "/pki:pki/pki:entitys/pki:entity/pki:name";
+      }
+    }
+    deviate add {
+      must '/pki:pki/pki:entitys/pki:entity[pki:name = current()]/pki:common-name';
+    }
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:crl-update/pki:update-type" {
+    deviate replace {
+      default "http";
+    }
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:crl-update/pki:http-services/pki:http-service/pki:url" {
+    deviate replace {
+      type string {
+        length "1..255";
+        pattern 'http://[^\s]*';
+      }
+    }
+  }
+  deviation "/pki:pki/pki:domains/pki:domain/pki:crl-update/pki:ldap-services/pki:ldap-service" {
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/pki:pki/pki:certificate-infos/pki:certificate-info/pki:domain-name" {
+    deviate replace {
+      type string {
+        length "0..31";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:certificate-infos/pki:certificate-info/pki:name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/pki:pki/pki:key-pair-infos/pki:key-pair-info/pki:name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:key-pair-create/pki:input/pki:key-pairs/pki:key-pair/pki:name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:key-pair-destroy/pki:input/pki:key-pairs/pki:key-pair/pki:name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:key-pair-import/pki:input/pki:key-pairs/pki:key-pair/pki:name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:key-pair-import/pki:input/pki:key-pairs/pki:key-pair/pki:format" {
+    deviate replace {
+      type pki-devs-NE8000-F1A:file-format-deviations;
+    }
+  }
+  deviation "/pki:key-pair-import/pki:input/pki:key-pairs/pki:key-pair/pki:file-name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/pki:key-pair-import/pki:input/pki:key-pairs/pki:key-pair/pki:password" {
+    deviate replace {
+      mandatory false;
+    }
+  }
+  deviation "/pki:cmp-request-certificate/pki:input/pki:request-certificate/pki:cmp-session" {
+    deviate replace {
+      type string {
+        length "1..47";
+      }
+    }
+  }
+  deviation "/pki:cmp-request-certificate/pki:input/pki:request-certificate/pki:type" {
+    deviate replace {
+      type pki-devs-NE8000-F1A:cmp-request-type-deviations;
+    }
+  }
+  deviation "/pki:certificate-import/pki:input/pki:certificates/pki:certificate/pki:name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/pki:certificate-import/pki:input/pki:certificates/pki:certificate/pki:type" {
+    deviate replace {
+      type pki-devs-NE8000-F1A:certificate-type-deviations;
+    }
+  }
+  deviation "/pki:certificate-import/pki:input/pki:certificates/pki:certificate/pki:domain-name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:certificate-delete/pki:input/pki:certificates/pki:certificate/pki:name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/pki:certificate-delete/pki:input/pki:certificates/pki:certificate/pki:type" {
+    deviate replace {
+      type pki-devs-NE8000-F1A:certificate-type-deviations;
+    }
+  }
+  deviation "/pki:certificate-delete-by-domain/pki:input/pki:domain-certificates/pki:domain-certificate/pki:domain-name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:certificate-delete-by-domain/pki:input/pki:domain-certificates/pki:domain-certificate/pki:type" {
+    deviate replace {
+      type pki-devs-NE8000-F1A:certificate-type-deviations;
+    }
+  }
+  deviation "/pki:certificate-delete-by-domain/pki:input/pki:domain-certificates/pki:domain-certificate/pki:file-name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  deviation "/pki:certificate-replace/pki:input/pki:certificates/pki:certificate/pki:file-name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/pki:certificate-replace/pki:input/pki:certificates/pki:certificate/pki:type" {
+    deviate replace {
+      type pki-devs-NE8000-F1A:certificate-type-deviations;
+    }
+  }
+  deviation "/pki:certificate-replace/pki:input/pki:certificates/pki:certificate/pki:domain-name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:csr-generate/pki:input/pki:csrs/pki:csr/pki:domain-name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:csr-generate/pki:input/pki:csrs/pki:csr/pki:digest-algorithm" {
+    deviate replace {
+      type pki-devs-NE8000-F1A:digest-algorithm-type-deviations;
+    }
+  }
+  deviation "/pki:crl-import/pki:input/pki:crls/pki:crl/pki:file-name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/pki:crl-import/pki:input/pki:crls/pki:crl/pki:domain-name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:crl-delete/pki:input/pki:crls/pki:crl/pki:name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+  }
+  deviation "/pki:crl-delete-by-domain/pki:input/pki:crls/pki:crl/pki:domain-name" {
+    deviate replace {
+      type string {
+        length "1..31";
+      }
+    }
+  }
+  deviation "/pki:crl-delete-by-domain/pki:input/pki:crls/pki:crl/pki:name" {
+    deviate replace {
+      type string {
+        length "1..63";
+      }
+    }
+    deviate add {
+      mandatory true;
+    }
+  }
+  ext:deviation-ext "/pki:pki/pki:entitys/pki:entity" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update" {
+        when '(/pki:pki/pki:cmp-sessions/pki:cmp-session[pki:entity = current()/pki:name]) or (/pki:pki/pki:domains/pki:domain[pki:entity = current()/pki:name])';
+      }
+    }
+  }
+  ext:deviation-ext "/pki:pki/pki:cmp-sessions/pki:cmp-session/pki:domain-name" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update";
+    }
+  }
+}

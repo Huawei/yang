@@ -1,0 +1,42 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-lsp-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-bgp-lsp-deviations-ATN-950D980C";
+  prefix bgp-lsp-devs-ATN-950D980C;
+
+  import huawei-bgp-lsp {
+    prefix bgp-lsp;
+  }
+  import huawei-mpls {
+    prefix mpls;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-lsp module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/mpls:mpls/mpls:common/mpls:global/bgp-lsp:bgp-ttl-mode" {
+    deviate not-supported;
+  }
+  deviation "/ni:network-instance/ni:instances/ni:instance/mpls:mpls/bgp-lsp:bgp-mpls-lsp/bgp-lsp:bgp-ttl-mode" {
+    deviate not-supported;
+  }
+}

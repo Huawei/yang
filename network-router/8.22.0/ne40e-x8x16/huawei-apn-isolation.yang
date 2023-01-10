@@ -1,0 +1,303 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-apn-isolation {
+  namespace "urn:huawei:yang:huawei-apn-isolation";
+  prefix apn-isolation;
+  import huawei-extension {
+    prefix ext;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+  import huawei-apn {
+    prefix apn;
+  }
+  include huawei-apn-isolation-type;
+  
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "APN isolation policy.";
+  revision 2022-04-29 {
+    description
+      "Change unique condition for isolation-rules.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-03-28 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+
+  ext:task-name "apn-service";
+
+  rpc reset-apn-id-isolation-policy-statistics {
+    description
+    "Clear the traffic statistics of an isolation policy.";
+    ext:node-ref "/apn:apn/apn:ipv6/apn:apn-id-isolation-policy-statistics/apn:apn-id-isolation-policy-statistic";
+    input {
+      leaf vpn-instance-name {
+        type leafref {
+          path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+        }
+        description
+          "VPN instance name.";
+      }
+      leaf isolation-policy-name {
+        type leafref {
+          path "/apn:apn/apn:ipv6/apn-isolation:apn-id-isolation-policys/apn-isolation:apn-id-isolation-policy/apn-isolation:name";
+        }
+        description
+          "Isolation policy name.";
+      }
+    }
+  }
+
+  augment "/apn:apn/apn:ipv6" {
+    description
+      "Augment APN isolation configurations to the APN module.";
+    container isolation-groups {
+      description
+        "List of isolation groups.";
+      list isolation-group {
+        key "name";
+        description
+          "Configure an isolation group.";
+        leaf name {
+          type string {
+            length "1..31";
+            pattern '[^ \?]*';
+          }
+          description
+            "Isolation group name.";
+        }
+      }
+    }
+    container apn-id-isolation-policys {
+      description
+        "List of isolation policies.";
+      list apn-id-isolation-policy {
+        key "name";
+        description
+          "Configure an isolation policy.";
+        leaf name {
+          type string {
+            length "1..31";
+            pattern '[^ \?]*';
+          }
+          description
+            "Isolation policy name.";
+        }
+        leaf statistics-enable {
+          type boolean;
+          default "false";
+          description
+            "Enable/disable traffic statistics.";
+        }
+        container isolation-rules {
+          description
+            "List of isolation rules.";
+          list isolation-rule {
+            key "index";
+            unique "instance-name isolation-group-name";
+            description
+              "Configure an isolation rule.";
+            leaf index {
+              type uint32 {
+                range "1..4294967294";
+              }
+              description
+                "Configure index of isolation rule.";
+            }
+            leaf instance-name {
+              type leafref {
+                  path "/apn:apn/apn:ipv6/apn:apn-id-instances/apn:apn-id-instance/apn:name";
+              }
+              mandatory true;
+              description
+                "APN ID instance name.";
+            }
+            leaf isolation-group-name {
+              type leafref {
+                  path "/apn:apn/apn:ipv6/apn-isolation:isolation-groups/apn-isolation:isolation-group/apn-isolation:name";
+              }
+              mandatory true;
+              description
+                "Isolation group name.";
+            }
+            leaf behavior {
+              type behavior-type;
+              mandatory true;
+              description
+                "Isolation rule behavior.";
+            }
+          }
+        }
+      }
+    }
+    container apn-id-isolation-policy-statistics {
+      config false;
+      description
+        "List of traffic statistics about isolation policies of APN IDs.";
+      list apn-id-isolation-policy-statistic {
+        key "vpn-instance-name isolation-policy-name";
+        description
+          "Traffic statistics for an isolation policy.";
+        leaf vpn-instance-name {
+          type string {
+            length "1..31";
+            pattern '[^ \?]*';
+          }
+          description
+            "VPN instance name.";
+        }
+        leaf isolation-policy-name {
+          type string {
+            length "1..31";
+            pattern '[^ \?]*';
+          }
+          description
+            "Isolation policy name.";
+        }
+        leaf matched-packets {
+          type uint64;
+          description
+            "Number of packets matching the isolation policy.";
+        }
+        leaf matched-bytes {
+          type uint64;
+          description
+            "Number of bytes matching the isolation policy.";
+        }
+        leaf matched-packet-rate {
+           type uint64;
+           units "pps";
+           description
+             "Packet rate in the last period.";
+        }
+        leaf matched-byte-rate {
+           type uint64;
+           units "bit/s";
+           description
+             "Byte rate in the last period.";
+        }
+      }
+    }
+	container vpn-mapping-isolation-group {
+      presence "Enter the view for mapping a VPN instance with an isolation group.";
+      description
+        "Enable/disable VPN mapping.";
+      container vpn-peer-isolation-mappings {
+        description
+          "List of mappings between VPN instances and isolation groups.";
+        list vpn-peer-isolation-mapping {
+          key "vpn-instance peer-type peer-address mask-length";
+          description
+            "Configure a mapping between VPN instance and isolation group.";
+          leaf vpn-instance {
+            type leafref {
+              path "/ni:network-instance/ni:instances/ni:instance/ni:name";
+            }
+            description
+              "VPN instance name.";
+          }
+          leaf peer-type {
+            type peer-type;
+            description
+              "Peer type.";
+          }
+          leaf peer-address {
+            type inet:ipv6-address-no-zone;
+            description
+              "Peer IP address.";
+          }
+          leaf mask-length {
+            type uint32 {
+              range "32..120";
+            }
+            description
+              "Mask length.";
+          }
+          leaf isolation-group-name {
+            type leafref {
+              path "/apn:apn/apn:ipv6/apn-isolation:isolation-groups/apn-isolation:isolation-group/apn-isolation:name";
+            }
+            mandatory true;
+            description
+              "APN ID instance name.";
+          }
+        }
+      }
+	}
+  }
+  augment "/ni:network-instance/ni:instances/ni:instance" {
+    description
+    "Augment APN isolation policy configurations to the network-instance module.";
+    container apn {
+      when "../ni:name!='_public_'";
+      description
+        "Configure APN attributes.";
+      container apn-ipv6-isolation {
+        description
+          "Configure APN IPv6 isolation attributes.";
+        container apn-id-isolation-policys {
+          description
+            "List of APN ID isolation policies.";
+          list apn-id-isolation-policy {
+            key "direction";
+            description
+              "Configure an APN ID isolation policy.";
+            leaf direction {
+              type direction-type;
+              description
+                "Configure the direction to which the isolation policy is applied.";
+            }
+            leaf isolation-policy-name {
+              type leafref {
+                path "/apn:apn/apn:ipv6/apn-isolation:apn-id-isolation-policys/apn-isolation:apn-id-isolation-policy/apn-isolation:name";
+              }
+              mandatory true;
+              description
+                "Isolation policy name.";
+            }
+          }
+        }
+      }
+    }
+  }
+  augment "/ifm:ifm/ifm:interfaces/ifm:interface" {
+    description
+      "Augment isolation group configurations to the IFM module.";
+    container apn {
+      description
+        "Configure APN attributes.";
+      container apn-ipv6-isolation {
+        description
+          "Configure APN IPv6 isolation attributes.";
+        leaf isolation-group-name {
+          type leafref {
+            path "/apn:apn/apn:ipv6/apn-isolation:isolation-groups/apn-isolation:isolation-group/apn-isolation:name";
+          }
+          description
+            "Isolation group name. It can configured only on the following types of interfaces or sub-interfaces: GRE tunnel interface, L3VE sub-interface, Ethernet interface, Ethernet sub-interface, Eth-Trunk interface, Eth-Trunk sub-interface, FlexE interface, and FlexE sub-interface.";
+        }
+      }
+    }
+  }
+}

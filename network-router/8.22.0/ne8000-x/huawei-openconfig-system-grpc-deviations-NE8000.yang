@@ -1,0 +1,110 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-system-grpc-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-openconfig-system-grpc-deviations-NE8000";
+  prefix oc-sys-grpc-devs-NE8000;
+
+  import openconfig-system-grpc {
+    prefix oc-sys-grpc;
+  }
+  import openconfig-inet-types {
+    prefix oc-inet;
+  }
+  import openconfig-system {
+    prefix oc-sys;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for openconfig-system-grpc module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:services" {
+    deviate not-supported;
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:transport-security" {
+    deviate not-supported;
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:certificate-id" {
+    deviate not-supported;
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:metadata-authentication" {
+    deviate not-supported;
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:state/oc-sys-grpc:certificate-id" {
+    deviate not-supported;
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server" {
+    deviate add {
+      must "config/enable='false' or config/listen-addresses";
+    }
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:name" {
+    deviate add {
+      must "../oc-sys-grpc:name = 'ipv4' or ../oc-sys-grpc:name = 'ipv6'";
+    }
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:name" {
+    deviate delete {
+      default "DEFAULT";
+    }
+    deviate add {
+      must "../oc-sys-grpc:name = 'ipv4' or ../oc-sys-grpc:name = 'ipv6'";
+    }
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:enable" {
+    deviate add {
+      default "false";
+    }
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:port" {
+    deviate replace {
+      type uint16 {
+        range "10000..57999";
+      }
+    }
+    deviate add {
+      default "57400";
+    }
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:listen-addresses" {
+    deviate replace {
+      type oc-inet:ip-address;
+    }
+    deviate add {
+      max-elements 1;
+    }
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:config/oc-sys-grpc:network-instance" {
+    deviate add {
+      default "_public_";
+    }
+    deviate add {
+      must "../network-instance = '_public_' or ../listen-addresses";
+    }
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:state/oc-sys-grpc:name" {
+    deviate delete {
+      default "DEFAULT";
+    }
+  }
+  deviation "/oc-sys:system/oc-sys-grpc:grpc-servers/oc-sys-grpc:grpc-server/oc-sys-grpc:state/oc-sys-grpc:listen-addresses" {
+    deviate replace {
+      type oc-inet:ip-address;
+    }
+  }
+}

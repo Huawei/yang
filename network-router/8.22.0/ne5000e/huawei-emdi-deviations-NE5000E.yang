@@ -1,0 +1,83 @@
+/*
+Copyright (C) 2019 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-emdi-deviations-NE5000E {
+  namespace "urn:huawei:yang:huawei-emdi-deviations-NE5000E";
+  prefix emdi-devs-NE5000E;
+
+  import huawei-emdi {
+    prefix emdi;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-emdi module.";
+
+  revision 2019-11-06 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  deviation "/emdi:emdi/emdi:emdi-enable/emdi:emdi-global/emdi:age-periods" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:emdi-enable/emdi:emdi-channel-groups/emdi:emdi-channel-group/emdi:channel-type/emdi:emdi-channel/emdi:emdi-channels/emdi:emdi-channel/emdi:channel-group-parameters/emdi:vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:emdi-enable/emdi:emdi-channel-groups/emdi:emdi-channel-group/emdi:channel-type/emdi:emdi-channel/emdi:emdi-channels/emdi:emdi-channel/emdi:channel-group-parameters/emdi:vsi-name" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:emdi-enable/emdi:emdi-channel-groups/emdi:emdi-channel-group/emdi:channel-type/emdi:emdi-channel/emdi:emdi-channels/emdi:emdi-channel/emdi:channel-group-parameters/emdi:bd-id" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:emdi-enable/emdi:emdi-channel-groups/emdi:emdi-channel-group/emdi:channel-type/emdi:emdi-bier-channel" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:emdi-enable/emdi:bier-enable" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:bier-history-records" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:bier-out-history-records" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:bier-telem-reps" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:bier-telem-rtps" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:bier-out-telem-reps" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:bier-out-telem-rtps" {
+    deviate not-supported;
+  }
+  deviation "/emdi:reset-bier-statistic-history" {
+    deviate not-supported;
+  }
+  deviation "/emdi:reset-bier-out-statistic-history" {
+    deviate not-supported;
+  }
+  deviation "/emdi:emdi/emdi:emdi-enable/emdi:emdi-channel-groups/emdi:emdi-channel-group/emdi:channel-type/emdi:emdi-channel/emdi:emdi-channels/emdi:emdi-channel/emdi:channel-name" {
+    deviate delete {
+      must "count(../../../../emdi-channel-group/emdi-channels/emdi-channel/channel-name[.= current()]) + count(../../../../emdi-channel-group/emdi-bier-channels/emdi-bier-channel/channel-name[.= current()]) <= 1";
+    }
+    deviate add {
+      must "count(../../../../emdi-channel-group/emdi-channels/emdi-channel/channel-name[.= current()]) <= 1";
+    }
+  }
+
+}

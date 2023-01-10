@@ -1,0 +1,81 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bras-rui-notif {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-bras-rui-notif";
+  prefix huawei-bras-rui-notif;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "Notification of BRAS RUI.";
+  revision 2022-08-22 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "rui";
+
+  notification rbs-protect-down {
+    description
+      "The protect tunnel on the remote backup service is down.";
+    leaf rbs-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "Name of the remote backup service.";
+    }
+    leaf protect-type {
+      type string {
+        length "1..10";
+      }
+      description
+        "Configured type of the protect tunnel.";
+    }
+    leaf reason {
+      type string {
+        length "1..128";
+      }
+      description
+        "RBS protect tunnel down alarm generation reason.";
+    }
+  }
+
+  notification rbs-protect-down-resume {
+    description
+      "The protect tunnel on the remote backup service has recovered.";
+    leaf rbs-name {
+      type string {
+        length "1..32";
+      }
+      description
+        "Name of the remote backup service.";
+    }
+    leaf protect-type {
+      type string {
+        length "1..10";
+      }
+      description
+        "Configured type of the protect tunnel.";
+    }
+    leaf reason {
+      type string {
+        length "1..128";
+      }
+      description
+        "RBS protect tunnel down alarm clearance reason.";
+    }
+  }
+}

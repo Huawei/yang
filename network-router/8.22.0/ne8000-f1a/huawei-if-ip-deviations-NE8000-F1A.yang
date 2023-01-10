@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-if-ip-deviations-NE8000-F1A {
+  namespace "urn:huawei:yang:huawei-if-ip-deviations-NE8000-F1A";
+  prefix if-ip-devs-NE8000-F1A;
+
+  import huawei-if-ip {
+    prefix if-ip;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-network-instance {
+    prefix ni;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-if-ip module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ni:network-instance/ni:instances/ni:instance/if-ip:ipv4-ifs/if-ip:ipv4-if/if-ip:address/if-ip:config-address/if-ip:addresses/if-ip:address/if-ip:type" {
+    deviate add {
+      must "../if-ip:type='sub' and /ifm:ifm/ifm:global/ifm:ipv4-ignore-primary-sub='false' or ../if-ip:type='main'";
+    }
+  }
+}

@@ -1,0 +1,87 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dcn-deviations-ATN-950D980C {
+  namespace "urn:huawei:yang:huawei-dcn-deviations-ATN-950D980C";
+  prefix dcn-devs-ATN-950D980C;
+
+  import huawei-dcn {
+    prefix dcn;
+  }
+  import huawei-vaccess {
+    prefix vaccess;
+  }
+  import huawei-vaccess-master {
+    prefix vaccess-master;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Data communication network.";
+
+  revision 2021-07-28 {
+    description
+      "The deviations of the huawei-dcn module were modified.";
+    reference "Huawei private.";
+  }
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/dcn:dcn/dcn:udp-session-car" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:tcp-session-car" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:pos-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:qx/dcn:server-dtls-policy" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:core-routings/dcn:core-routing/dcn:pnp-state" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:core-routings/dcn:core-routing/dcn:esn" {
+    deviate not-supported;
+  }
+  deviation "/vaccess:vaccess/vaccess-master:master/dcn:import-admin-ips" {
+    deviate not-supported;
+  }
+  deviation "/vaccess:vaccess/vaccess-master:master/dcn:import-protocols" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:eth-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:serial-bandwidth" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:transparent-interfaces" {
+    deviate not-supported;
+  }
+  deviation "/ifm:ifm/ifm:interfaces/ifm:interface/dcn:dcn/dcn:dcnv4/dcn:vlan-id" {
+    deviate not-supported;
+  }
+  deviation "/dcn:dcn/dcn:site/dcn:ne-number-threshold" {
+    deviate replace {
+      type uint32 {
+        range "30..500";
+      }
+    }
+  }
+}

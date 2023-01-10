@@ -1,0 +1,335 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-aaa-deviations-ATN-910C {
+  namespace "urn:huawei:yang:huawei-aaa-deviations-ATN-910C";
+  prefix aaa-devs-ATN-910C;
+
+  import huawei-aaa {
+    prefix aaa;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-radius {
+    prefix radius;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-aaa module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  typedef aaa-authen-mode-deviations {
+    type enumeration {
+      enum invalid {
+        value 0;
+        description
+          "Invalid authentication mode.";
+      }
+      enum local {
+        value 1;
+        description
+          "Local authentication mode.";
+      }
+      enum hwtacacs {
+        value 2;
+        description
+          "HWTACACS authentication mode.";
+      }
+      enum radius {
+        value 3;
+        description
+          "RADIUS authentication mode.";
+      }
+      enum none {
+        value 4;
+        description
+          "In this mode, users can pass with authentication.";
+      }
+    }
+    description
+      "Authen mode.";
+  }
+
+  typedef aaa-user-access-type-deviations {
+    type enumeration {
+      enum invalid {
+        value 0;
+        description
+          "Invalid user access type.";
+      }
+      enum terminal {
+        value 1;
+        description
+          "Terminal user access type.";
+      }
+      enum telnet {
+        value 2;
+        description
+          "User access type is telnet.";
+      }
+      enum ftp {
+        value 3;
+        description
+          "User access type ftp.";
+      }
+      enum ssh {
+        value 5;
+        description
+          "User access type ssh.";
+      }
+      enum qx {
+        value 6;
+        description
+          "User access type qx.";
+      }
+      enum snmp {
+        value 7;
+        description
+          "User access type snmp.";
+      }
+      enum http {
+        value 8;
+        description
+          "User access type http.";
+      }
+    }
+    description
+      "User access type.";
+  }
+
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:service-ppp" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:service-mml" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:password-policy/aaa:expired-pwd-reuse-num" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:password-policy/aaa:pwd-expire-days" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:service-ppp" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:service-mml" {
+    deviate not-supported;
+  }
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/aaa:authen-mode-type/aaa:ordered-strictly/aaa:first-authen-mode" {
+    deviate replace {
+      type aaa-devs-ATN-910C:aaa-authen-mode-deviations;
+    }
+    deviate replace {
+      default "radius";
+    }
+  }
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/aaa:authen-mode-type/aaa:ordered-strictly/aaa:second-authen-mode" {
+    deviate replace {
+      type aaa-devs-ATN-910C:aaa-authen-mode-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/aaa:authen-mode-type/aaa:ordered-strictly/aaa:third-authen-mode" {
+    deviate replace {
+      type aaa-devs-ATN-910C:aaa-authen-mode-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme/aaa:authen-mode-type/aaa:ordered-strictly/aaa:fourth-authen-mode" {
+    deviate replace {
+      type aaa-devs-ATN-910C:aaa-authen-mode-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:accounting-schemes/aaa:accounting-scheme/aaa:accounting-mode" {
+    deviate replace {
+      default "radius";
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:admin-level" {
+    deviate add {
+      must "not(../aaa:radius-server-template) or ((../aaa:radius-server-template) and (/radius:radius/radius:radius-server-groups/radius:radius-server-group[radius:name=current()/../aaa:radius-server-template]/radius:domain-mode!='exclude'))";
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:author-scheme-name" {
+    deviate add {
+      default "default";
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:radius-server-template" {
+    deviate replace {
+      type leafref {
+        path "/radius:radius/radius:radius-server-groups/radius:radius-server-group/radius:name";
+      }
+    }
+  }
+  deviation "/aaa:aaa/aaa:domains/aaa:domain/aaa:service-telnet" {
+    deviate add {
+      must "(../aaa:service-terminal='true') or (../service-telnet='true') or (../service-ftp='true') or (../service-ssh='true') or (../service-qx='true') or (../service-snmp='true') or (../service-http='true')";
+    }
+  }
+  deviation "/aaa:aaa/aaa:alive-user-qrys/aaa:alive-user-qry/aaa:access-type" {
+    deviate replace {
+      type aaa-devs-ATN-910C:aaa-user-access-type-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:alive-user-qrys/aaa:alive-user-qry/aaa:authen-method" {
+    deviate replace {
+      type aaa-devs-ATN-910C:aaa-authen-mode-deviations;
+    }
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:login-failed-limit/aaa:failed-times" {
+    deviate replace {
+      default "3";
+    }
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:failed-times" {
+    deviate replace {
+      default "3";
+    }
+  }
+  deviation "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:interval" {
+    deviate replace {
+      default "5";
+    }
+  }
+  deviation "/aaa:aaa/aaa:remote-user-policy/aaa:enable" {
+    deviate replace {
+      default "false";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:task-groups" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:task-groups/aaa:task-group" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update|delete" {
+        ext:filter "name = 'manage-tg' or name = 'system-tg' or name = 'monitor-tg' or name = 'visit-tg'";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'manage-tg' or name = 'system-tg' or name = 'monitor-tg' or name = 'visit-tg'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:user-groups" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:user-groups/aaa:user-group" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "update|delete" {
+        ext:filter "name = 'manage-ug' or name = 'system-ug' or name = 'monitor-ug' or name = 'visit-ug'";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'manage-ug' or name = 'system-ug' or name = 'monitor-ug' or name = 'visit-ug'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:authentication-schemes" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:authentication-schemes/aaa:authentication-scheme" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete" {
+        ext:filter "authen-scheme-name = 'default' or authen-scheme-name = 'default0' or authen-scheme-name = 'default1'";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "authen-scheme-name = 'default' or authen-scheme-name = 'default0' or authen-scheme-name = 'default1'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:authorization-schemes" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:authorization-schemes/aaa:authorization-scheme" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete" {
+        ext:filter "author-scheme-name = 'default'";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "author-scheme-name = 'default'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:accounting-schemes" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:accounting-schemes/aaa:accounting-scheme" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete" {
+        ext:filter "acct-scheme-name = 'default0' or acct-scheme-name = 'default1'";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "acct-scheme-name = 'default0' or acct-scheme-name = 'default1'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:domains" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete";
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:domains/aaa:domain" {
+    ext:deviate-ext "add" {
+      ext:operation-exclude "delete" {
+        ext:filter "name = 'default0' or name = 'default1' or name = 'default_admin'";
+      }
+    }
+    ext:deviate-ext "add" {
+      ext:generated-by "system" {
+        ext:filter "name = 'default0' or name = 'default1' or name = 'default_admin'";
+      }
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:domains/aaa:domain/aaa:authen-scheme-name" {
+    ext:deviate-ext "replace" {
+      ext:dynamic-default;
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:domains/aaa:domain/aaa:acct-scheme-name" {
+    ext:deviate-ext "replace" {
+      ext:dynamic-default;
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:domains/aaa:domain/aaa:access-limit" {
+    ext:deviate-ext "add" {
+      ext:dynamic-default;
+    }
+  }
+  ext:deviation-ext "/aaa:aaa/aaa:lam/aaa:users/aaa:user/aaa:name" {
+    ext:deviate-ext "add" {
+      ext:case-sensitivity "lower-only";
+    }
+  }
+}

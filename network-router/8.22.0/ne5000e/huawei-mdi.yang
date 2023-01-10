@@ -1,0 +1,90 @@
+/*
+Copyright (C) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mdi {
+  yang-version 1;
+  namespace urn:huawei:yang:huawei-mdi;
+  prefix mdi;
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "Media Delivery Index.";
+  reference
+    "Huawei private.";
+
+  revision 2020-11-28 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  ext:task-name "emdi";
+
+  container mdi {
+    description
+      "Evaluate and monitor the quality of IPTV multicast.";
+    container rtp {
+      description
+        "Configure monitoring the quality of IPTV multicast scenarios.";
+      container loss-rate {
+        description
+          "Configure a multicast packet loss alarm threshold to monitor the quality of standard-definition videos in IPTV multicast scenarios.";
+        leaf threshold {
+          type uint16 {
+            range 1..5000;
+          }
+          units packet;
+          default 38;
+          description
+            "Multicast packet loss alarm threshold.";
+        }
+      }
+    }
+    container rtp-loss-rate-threshold-infos {
+      config false;
+      description
+        "List of the packet loss alarm thresholds of video flows in IPTV multicast scenarios.";
+      list rtp-loss-rate-threshold-info {
+        key "slot-id";
+        config false;
+        description
+          "Operational data of the packet loss alarm thresholds of video flows in IPTV multicast scenarios.";
+        leaf slot-id {
+          type string {
+            length "1..32";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf standard-definition {
+          type uint32;
+          units packet;
+          description
+            "Packet loss alarm threshold of standard definition.";
+        }
+        leaf high-definition {
+          type uint32;
+          units packet;
+          description
+            "Packet loss alarm threshold of high definition.";
+        }
+        leaf super-definition {
+          type uint32;
+          units packet;
+          description
+            "Packet loss alarm threshold of super definition(4K).";
+        }
+      }
+    }
+  }
+}

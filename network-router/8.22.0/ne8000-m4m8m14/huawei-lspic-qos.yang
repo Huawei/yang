@@ -1,0 +1,433 @@
+/*
+Copyright (C) 2022 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lspic-qos {
+  yang-version 1;
+  namespace "urn:huawei:yang:huawei-lspic-qos";
+  prefix lspic-qos;
+  import huawei-extension {
+    prefix ext;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+    Bantian, Longgang
+    Shenzhen 518129
+    People's Republic of China
+    Website: http://www.huawei.com
+    Email: support@huawei.com";
+  description
+    "QOS service features of low-speed cards.";
+  revision 2022-03-05 {
+    description
+      "Add leaf for port queue statistics.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-02-28 {
+    description
+      "Modify description of wfq-mode.";
+    reference
+      "Huawei private.";
+  }
+  revision 2022-01-05 {
+    description
+      "Init revision.";
+    reference
+      "Huawei private.";
+  }
+  typedef service-class-type {
+    type enumeration {
+      enum "be" {
+        value 0;
+        description
+          "BE service-class.";
+      }
+      enum "af1" {
+        value 1;
+        description
+          "AF1 service-class.";
+      }
+      enum "af2" {
+        value 2;
+        description
+          "AF2 service-class.";
+      }
+      enum "af3" {
+        value 3;
+        description
+          "AF3 service-class.";
+      }
+      enum "af4" {
+        value 4;
+        description
+          "AF4 service-class.";
+      }
+      enum "ef" {
+        value 5;
+        description
+          "EF service-class.";
+      }
+      enum "cs6" {
+        value 6;
+        description
+          "CS6 service-class.";
+      }
+      enum "cs7" {
+        value 7;
+        description
+          "CS7 service-class.";
+      }
+    }
+    description
+      "Service class:be/af1/af2/af3/af4/ef/cs6/cs7.";
+  }
+
+  typedef wfq-mode-type {
+    type enumeration {
+      enum "cir-mode" {
+        value 0;
+        description
+          "CIR mode.";
+      }
+      enum "weight-mode" {
+        value 1;
+        description
+          "Weight mode.";
+      }
+    }
+    description
+      "WFQ mode type.";
+  }
+
+  rpc reset-port-queue-statistics {
+    ext:node-ref "/ifm:ifm/ifm:interfaces/ifm:interface/lspic-qos:ls-port-queue";
+    description
+      "Clear interface user queue statistics.";
+    input {
+      leaf interface-name {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:name";
+        }
+        mandatory true;
+        description
+          "Interface name.";
+      }
+      leaf service-class {
+        type service-class-type;
+        description
+          "Class of service.";
+      }
+    }
+  }
+
+  augment /ifm:ifm/ifm:interfaces/ifm:interface {
+    description
+      "Lspic qos configuration and statistics.";
+    container ls-port-queue {
+      when "(../ifm:type='Mp-group' or ../ifm:type='Global-Mp-Group') or ((../ifm:type='Serial' or ../ifm:type='Trunk-Serial') and (../ifm:link-protocol='ppp' or ../ifm:link-protocol='hdlc'))";
+      description
+        "Configure lspic port-queue configuration and statistics.";
+      leaf wfq-mode {
+        ext:dynamic-default;
+        type wfq-mode-type;
+        description
+          "WFQ queue scheduling mode is divided into weight mode and CIR mode.";
+      }
+      container port-queues {
+        description
+          "List of lspic port-queue configuration.";
+        list port-queue {
+          ext:generated-by "system";
+          ext:operation-exclude "create";
+          key "service-class";
+          max-elements 8;
+          description
+            "Configure lspic port-queue configuration.";
+          leaf service-class {
+            type service-class-type;
+            description
+              "Class of service.";
+          }
+          choice schedule {
+            description
+              "Schedule mode of PQ and WFQ.";
+            case wfq {
+              description
+                "Schedule mode: WFQ.";
+              choice wfq-weight-mode {
+                description
+                  "Wfq schedule mode.";
+                case wfq-cir {
+                  when "../../wfq-mode='cir-mode' and not(service-class='cs7')";
+                  description
+                    "WFQ scheduling mode: CIR mode.";
+                  choice wfq-cir-type {
+                    description
+                      "Committed information rate mode.";
+                    case value {
+                      description
+                        "Committed information rate value.";
+                      leaf wfq-cir-value {
+                        type uint32 {
+                          range "8..65528";
+                        }
+                        units "kbit/s";
+                        description
+                          "Specify value of interface bandwidth.";
+                      }
+                    }
+                    case percentage {
+                      description
+                        "Committed information rate percentage-value.";
+                      leaf wfq-cir-percentage {
+                        type uint32 {
+                          range "1..99";
+                        }
+                        units "%";
+                        ext:dynamic-default;
+                        description
+                          "Committed information rate percentage-value.";
+                      }
+                    }
+                  }
+                  choice wfq-pir-type {
+                    default percentage;
+                    description
+                      "Peak information rate configuration.";
+                    case value {
+                      description
+                        "Peak information rate value.";
+                      leaf wfq-pir-value {
+                        type uint32 {
+                          range "8..65536";
+                        }
+                        units "kbit/s";
+                        must "../wfq-cir-value or ../wfq-cir-percentage";
+                        description
+                          "Peak information rate.";
+                      }
+                    }
+                    case percentage {
+                      description
+                        "Peak information rate percentage.";
+                      leaf wfq-pir-percentage {
+                        type uint32 {
+                          range "1..100";
+                        }
+                        units "%";
+                        must "../wfq-cir-value or ../wfq-cir-percentage";
+                        ext:dynamic-default;
+                        description
+                          "Peak information rate percentage-value.";
+                      }
+                    }
+                  }
+                }
+                case wfq-weight {
+                  when "../../wfq-mode='weight-mode'";
+                  description
+                    "WFQ scheduling mode: weight mode.";
+                  leaf wfq-weight-value {
+                    type uint32 {
+                      range "1..100";
+                    }
+                    units "%";
+                    ext:dynamic-default;
+                    description
+                      "Weight of the weighted fair queue scheduler. It will take effect only when the WFQ queue scheduling mode configured to weight mode.";
+                  }
+                  choice wfq-weight-pir-type {
+                    description
+                      "Shaping configuration.";
+                    case value {
+                      description
+                        "Shaping value.";
+                      leaf wfq-shaping-value {
+                        type uint32 {
+                          range "8..65536";
+                        }
+                        units "kbit/s";
+                        must "../wfq-weight-value";
+                        description
+                          "Shaping value.";
+                      }
+                    }
+                    case percentage {
+                      description
+                        "Shaping percentage.";
+                      leaf wfq-shaping-percentage {
+                        type uint32 {
+                          range "1..100";
+                        }
+                        units "%";
+                        must "../wfq-weight-value";
+                        description
+                          "Shaping percentage-value.";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            case pq {
+              when "not(service-class='be' or service-class='af1')";
+              description
+                "Schedule mode: PQ.";
+              choice pq-pir-type {
+                default percentage;
+                description
+                  "Peak information rate configuration.";
+                case value {
+                  description
+                    "Peak information rate value.";
+                  leaf pq-pir-value {
+                    type uint32 {
+                      range "8..65536";
+                    }
+                    units "kbit/s";
+                    description
+                      "Peak information rate.";
+                  }
+                }
+                case percentage {
+                  description
+                    "Peak information rate percentage.";
+                  leaf pq-pir-percentage {
+                    type uint32 {
+                      range "1..100";
+                    }
+                    units "%";
+                    ext:dynamic-default;
+                    description
+                      "Peak information rate percentage-value.";
+                  }
+                }
+              }
+            }
+          }
+
+          leaf max-buffer-time {
+            type uint32 {
+              range "1..3000";
+            }
+            units "ms";
+            default "50";
+            description
+              "Time for out bound queue buffer, <1-3000> ms (or <1-150> ms, depending on the device).";
+          }
+          container statistic {
+            config false;
+            description
+              "Statistics of Port Queue Statistic.";
+            leaf last-clear-time {
+              type yang:date-and-time;
+              description
+                "Time of last clearing statistics.";
+            }
+            leaf queue-usage {
+              type uint32 {
+                range "0..100";
+              }
+              units "%";
+              description
+                "Current usage percentage of queue.";
+            }
+            leaf total-pass-packets {
+              type uint64;
+              units "packet";
+              description
+                "Total pass packets.";
+            }
+            leaf total-pass-bytes {
+              type uint64;
+              units "Byte";
+              description
+                "Total pass bytes.";
+            }
+            leaf total-pass-packet-rate {
+              type uint64;
+              units "pps";
+              description
+                "Total pass packet rate.";
+            }
+            leaf total-pass-bit-rate {
+              type uint64;
+              units "bit/s";
+              description
+                "Total pass bit rate.";
+            }
+            leaf drop-packets {
+              type uint64;
+              units "packet";
+              description
+                "Downstream drop packets.";
+            }
+            leaf drop-packet-rate {
+              type uint64;
+              units "pps";
+              description
+                "Drop packet rate.";
+            }
+            leaf drop-bytes {
+              type uint64;
+              units "Byte";
+              description
+                "Downstream drop bytes.";
+            }
+            leaf drop-bit-rate {
+              type uint64;
+              units "bit/s";
+              description
+                "Drop bit rate.";
+            }
+            leaf tail-drop-packets {
+              type uint64;
+              units "packet";
+              description
+                "Tail drop packets.";
+            }
+            leaf tail-drop-packet-rate {
+              type uint64;
+              units "pps";
+              description
+                "Tail drop packet rate.";
+            }
+            leaf buffer-drop-packets {
+              type uint64;
+              units "packet";
+              description
+                "Free buffer pool drop packets.";
+            }
+            leaf buffer-drop-packet-rate {
+              type uint64;
+              units "pps";
+              description
+                "Free buffer pool drop packet rate.";
+            }
+            leaf mtu-drop-packets {
+              type uint64;
+              units "packet";
+              description
+                "MTU drop packets.";
+            }
+            leaf mtu-drop-packet-rate {
+              type uint64;
+              units "pps";
+              description
+                "MTU drop packet rate.";
+            }
+          }
+        }
+      }
+    }
+  }
+  ext:task-name "interface-mgr";
+}

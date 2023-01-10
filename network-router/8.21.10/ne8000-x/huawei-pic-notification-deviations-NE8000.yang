@@ -1,0 +1,394 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pic-notification-deviations-NE8000 {
+  namespace "urn:huawei:yang:huawei-pic-notification-deviations-NE8000";
+  prefix pic-notification-devs-NE8000;
+
+  import huawei-pic-notification {
+    prefix pic-notification;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+
+  description
+    "This module defines deviation statements for huawei-pic-notification module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference
+      "Huawei private.";
+  }
+
+  deviation "/pic-notification:optical-remove" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:optical-insert" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:optical-unauthorized" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:optical-unauthorized-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:optical-invalid" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:optical-invalid-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:card-remove" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:card-insert" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:card-fail" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:card-fail-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:flow-control-pause-frame-abnormal" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:flow-control-pause-frame-abnormal-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:au-hp" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:au-hp-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:b1-default-exceed" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:b1-default-exceed-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:bip2-default-exceed" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:bip2-default-exceed-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:b3-default-exceed" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:b3-default-exceed-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:channel-loopback" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:channel-loopback-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:cpos-e1-rai-signal" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:cpos-e1-rai-signal-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:downstream-e1-cpos" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:downstream-e1-cpos-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:loss-of-frame-e1-cpos" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:loss-of-frame-e1-cpos-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:loss-multiframe-e1-cpos" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:loss-multiframe-e1-cpos-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:upstream-e1-cpos" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:upstream-e1-cpos-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-indication-e1" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-indication-e1-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:downstream-e1" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:downstream-e1-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:errored-second-exceed" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:errored-second-exceed-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:loss-multiframe-e1" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:loss-multiframe-e1-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:upstream-e1" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:upstream-e1-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-e3" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-e3-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:upstream-e3" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:upstream-e3-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:j0-trace-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:j0-trace-mismatch-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:signal-mismatch-lp" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:signal-mismatch-lp-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:trace-mismatch-lp" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:trace-mismatch-lp-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:unequipped-lp" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:unequipped-lp-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:out-of-lock-clock" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:out-of-lock-clock-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:tributary-unit-lp" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:tributary-unit-lp-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:v5-virtual-container" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:v5-virtual-container-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:loss-au-lp" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:loss-au-lp-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-defect-lp" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-defect-lp-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-failure-lp" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-failure-lp-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:resource-dead-line" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:resource-dead-line-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:upstream-pcm" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:upstream-pcm-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:gps-module-remove" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:post-fec-error-rising" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:post-fec-error-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:input-error-exceed" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:input-error-exceed-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:laser-shut" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:laser-shut-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:license-resource-lack" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:license-resource-lack-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:negotiation-failed" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:negotiation-failed-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:odu-indication-signal" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:odu-indication-signal-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:odu-locked-signal" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:odu-locked-signal-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:odu-open-connection" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:odu-open-connection-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:odu-signal-degrade" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:odu-signal-degrade-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:optical-fail" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:optical-fail-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:otu-indication-signal" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:otu-indication-signal-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:otu-loss-of-multiframe" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:otu-loss-of-multiframe-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:otu-signal-degrade" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:otu-signal-degrade-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:otu-signal-fail" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:otu-signal-fail-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:crc-error-warning" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:crc-error-warning-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:path-trace-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:path-trace-mismatch-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:port-mode-change" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:port-physical-down" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:port-physical-up" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:port-type-change" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-defect" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:remote-defect-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:section-alignment" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:section-alignment-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:tim-trace-mismatch" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:tim-trace-mismatch-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:cable-snr-abnormal" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:cable-snr-abnormal-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:port-combination-mode-change" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:channel-associated-signalling-abnormal" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:channel-associated-signalling-abnormal-resume" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:port-down" {
+    deviate not-supported;
+  }
+  deviation "/pic-notification:port-up" {
+    deviate not-supported;
+  }
+
+}

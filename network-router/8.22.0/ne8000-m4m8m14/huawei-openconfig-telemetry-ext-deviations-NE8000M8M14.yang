@@ -1,0 +1,75 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-openconfig-telemetry-ext-deviations-NE8000M8M14 {
+  namespace "urn:huawei:yang:huawei-openconfig-telemetry-ext-deviations-NE8000M8M14";
+  prefix hw-telemetry-ext-devs-NE8000M8M14;
+
+  import huawei-openconfig-telemetry-ext {
+    prefix hw-telemetry-ext;
+  }
+  import openconfig-telemetry {
+    prefix ot;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-openconfig-telemetry-ext module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/ot:telemetry-system/hw-telemetry-ext:global/hw-telemetry-ext:config/hw-telemetry-ext:json-only-content" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/hw-telemetry-ext:global/hw-telemetry-ext:state/hw-telemetry-ext:json-only-content" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/ot:destinations/ot:destination/ot:config/hw-telemetry-ext:priority" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/ot:destinations/ot:destination/ot:state/hw-telemetry-ext:priority" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/hw-telemetry-ext:destinations-with-vpn/hw-telemetry-ext:destination-with-vpn/hw-telemetry-ext:config/hw-telemetry-ext:priority" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/hw-telemetry-ext:destinations-with-vpn/hw-telemetry-ext:destination-with-vpn/hw-telemetry-ext:state/hw-telemetry-ext:priority" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/ot:config/hw-telemetry-ext:work-mode" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:destination-groups/ot:destination-group/ot:state/hw-telemetry-ext:work-mode" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/ot:sensor-paths/ot:sensor-path/hw-telemetry-ext:filters/hw-telemetry-ext:filter/hw-telemetry-ext:config/hw-telemetry-ext:op-object" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/ot:sensor-paths/ot:sensor-path/hw-telemetry-ext:filters/hw-telemetry-ext:filter/hw-telemetry-ext:state/hw-telemetry-ext:op-object" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:config/hw-telemetry-ext:pack-enable" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:subscriptions/ot:persistent/ot:subscription/ot:state/hw-telemetry-ext:pack-enable" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/hw-telemetry-ext:sensor-paths-self-define-event/hw-telemetry-ext:sensor-path/hw-telemetry-ext:filters/hw-telemetry-ext:filter/hw-telemetry-ext:config/hw-telemetry-ext:op-object" {
+    deviate not-supported;
+  }
+  deviation "/ot:telemetry-system/ot:sensor-groups/ot:sensor-group/hw-telemetry-ext:sensor-paths-self-define-event/hw-telemetry-ext:sensor-path/hw-telemetry-ext:filters/hw-telemetry-ext:filter/hw-telemetry-ext:state/hw-telemetry-ext:op-object" {
+    deviate not-supported;
+  }
+}

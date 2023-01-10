@@ -1,0 +1,57 @@
+/*
+Copyright (C) 2021 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-bgp-link-state-deviations-ATN-980B {
+  namespace "urn:huawei:yang:huawei-bgp-link-state-deviations-ATN-980B";
+  prefix bgp-ls-devs-ATN-980B;
+
+  import huawei-bgp-link-state {
+    prefix bgp-ls;
+  }
+  import huawei-bgp {
+    prefix bgp;
+  }
+  import huawei-bgp-routing-table {
+    prefix bgp-rt;
+  }
+
+  organization
+    "Huawei Technologies Co., Ltd.";
+  contact
+    "Huawei Industrial Base
+     Bantian, Longgang
+     Shenzhen 518129
+     People's Republic of China
+     Website: http://www.huawei.com
+     Email: support@huawei.com";
+  description
+    "This module defines deviation statements for huawei-bgp-link-state module.";
+
+  revision 2021-05-07 {
+    description
+      "Initial revision.";
+    reference "Huawei private.";
+  }
+
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ls:link-state-unicast/bgp-ls:prefix-routes/bgp-ls:prefix-route/bgp-ls:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ls:link-state-unicast/bgp-ls:link-routes/bgp-ls:link-route/bgp-ls:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ls:link-state-unicast/bgp-ls:node-routes/bgp-ls:node-route/bgp-ls:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ls:link-state-unicast/bgp-ls:srv6sid-routes/bgp-ls:srv6sid-route/bgp-ls:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ls:link-state-unicast/bgp-ls:peer-receive-srv6sid-routes/bgp-ls:peer-receive-srv6sid-route/bgp-ls:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ls:link-state-unicast/bgp-ls:peer-receive-link-routes/bgp-ls:peer-receive-link-route/bgp-ls:advertise-nexthop" {
+    deviate not-supported;
+  }
+  deviation "/bgp:bgp/bgp:base-process/bgp-rt:bgp-route/bgp-ls:link-state-unicast/bgp-ls:te-policy-routes/bgp-ls:te-policy-route/bgp-ls:advertise-nexthop" {
+    deviate not-supported;
+  }
+}
